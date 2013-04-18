@@ -1,0 +1,11 @@
+
+- testing code
+- put margin and padding into cell.data
+- put all global variable into an env variable
+- comments and documents
+
+
+#######################################
+# long term
+the order of sector to support clockwise
+the direction of y-axis can be set (currently pointing to the outside)

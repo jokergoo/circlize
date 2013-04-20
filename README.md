@@ -1,3 +1,5 @@
+== the R package
+
 This package aims to implement circos layout in R.
 
 Since most of the figures are composed of points, lines and polygon (for filled color),
@@ -17,3 +19,10 @@ For how to create or arrange the circos layout, see `example/galary.R`
 Several interesting figures can be found in `example/`
 
 More tests and documents will be added, as well as a vignette.
+
+
+== the Perl module
+
+There is also a Perl module R::Comment2Man to convert comments to documentary files.
+
+Comments are marked as the Markdown-style and it looks more clear than that under the Roxygen package

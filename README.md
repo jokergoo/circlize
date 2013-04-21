@@ -13,9 +13,9 @@ Current there are following functions that can be used for plotting:
 - `circos.link`, This maybe the unique feature for circos layout to represent relationships between elements.
 
 For drawing points, lines and text through the whole track (among several sectors), the following functions are available:
-- `circos.trackPoints
-- `circos.trackLines
-- `circos.trackText
+- `circos.trackPoints`
+- `circos.trackLines`
+- `circos.trackText`
 
 Also, the function drawing histograms in the whole track is available:
 - `circos.trackHist`

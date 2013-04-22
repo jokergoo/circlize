@@ -1,8 +1,8 @@
-
 - testing code
 - put margin and padding into cell.data
 - put all global variable into an env variable
 - comments and documents
+- calculate the length of the parabola
 
 
 #######################################

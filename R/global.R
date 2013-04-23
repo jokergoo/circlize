@@ -66,7 +66,7 @@ has.any.cell.created = function() {
 # x is a vector
 # no x but a xlim
 # xlim as a matrix
-circos.initialize = function(x = NULL, factors = NULL, xlim = NULL, start.degree = 0, clockwise = FALSE) {
+circos.initialize = function(x = NULL, factors = NULL, xlim = NULL, start.degree = circos.par("start.degree"), clockwise = FALSE) {
 
 	.SECTOR.DATA <<- NULL
 	.CELL.DATA <<- NULL

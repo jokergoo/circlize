@@ -525,8 +525,8 @@ circos.text = function(x, y, labels, sector.index = get.current.sector.index(), 
 	return(invisible(NULL))
 }
 
-circos.trackText = function(x, y, factors, track.index = get.current.track.index(),
-                       labels, direction = c("default", "vertical_left", "vertical_right", "horizontal"),
+circos.trackText = function(x, y, labels, factors, track.index = get.current.track.index(),
+                       direction = c("default", "vertical_left", "vertical_right", "horizontal"),
 	                   srt = NULL, adj = par("adj"), cex = 1, col = "black", font = par("font")) {
 	
 	# basic check here

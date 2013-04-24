@@ -1,5 +1,4 @@
 
-
 source("../R/global.R")
 source("../R/plot.R")
 source("../R/utils.R")
@@ -148,7 +147,7 @@ arrows(0, 0, 0.4, 0)
 circos.clear()
 
 ##################################################################################
-# 
+#  dartboard
 ##################################################################################
 
 
@@ -164,3 +163,50 @@ circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.col = rep(c("#E41A1
 circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.col = rep(c("black", "white"), 10), bg.border = "#EEEEEE", track.height = 0.375)
 draw.sector(x = 0, y = 0, start = 0, end = 360, radius = 0.1, col = "#4DAF4A", border = "#EEEEEE")
 draw.sector(x = 0, y = 0, start = 0, end = 360, radius = 0.05, col = "#E41A1C", border = "#EEEEEE")
+
+circos.clear()
+
+
+##################################################################################
+# correlations
+##################################################################################
+
+n = 10
+m = matrix(rnorm(n^2), n, n)
+colnames(m) = letters[1:n]
+m2 = cor(m)
+factors = rownames(m2)
+
+xlim = cbind(rep(0, n), apply(m2, 2, function(x) sum(abs(x)) - 1))
+
+colors = brewer.pal(n, "Set1")
+
+par(mar = c(1, 1, 1, 1))
+circos.par("cell.padding" = c(0, 0, 0, 0))
+circos.initialize(factors = factors, xlim = xlim)
+circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA, panel.fun = function(x, y, ...) {
+    current.sector.index = get.current.sector.index()
+    current.track.index = get.current.track.index()
+    current.cell.data = get.cell.data(current.sector.index, current.track.index)
+    circos.text(mean(current.cell.data$xlim), 0.75, labels = current.sector.index, direction = "horizontal")
+    i = get.sector.numeric.index()
+    circos.rect(min(current.cell.data$xlim), 0, max(current.cell.data$xlim), 0.25, col = colors[i])
+})
+
+rn = rownames(m2)
+sector.sum = numeric(length(rn))
+for(i in 2:n) {
+    for(j in 1:(i-1)) {
+        sector.index1 = rn[i]
+        sector.index2 = rn[j]
+        circos.link(sector.index1,
+                    c(sector.sum[i], sector.sum[i] + abs(m2[i, j])),
+                    sector.index2,
+                    c(sector.sum[j], sector.sum[j] + abs(m2[i, j])),
+                    col = ifelse(m2[i, j] > 0, "#E41A1CD0", "#4DAF4AD0"), border = "grey")
+        sector.sum[i] = sector.sum[i] + abs(m2[i, j])
+        sector.sum[j] = sector.sum[j] + abs(m2[i, j])
+    }
+}
+
+circos.clear()

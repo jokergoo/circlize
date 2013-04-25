@@ -1,7 +1,7 @@
 
-source("../R/global.R")
-source("../R/plot.R")
-source("../R/utils.R")
+source("R/global.R")
+source("R/plot.R")
+source("R/utils.R")
 # library(circlize)
 
 
@@ -171,7 +171,7 @@ circos.clear()
 # correlations
 ##################################################################################
 
-n = 3
+n = 5
 m = matrix(rnorm(n^2), n, n)
 colnames(m) = letters[1:n]
 m2 = cor(m)
@@ -179,7 +179,7 @@ factors = rownames(m2)
 
 xlim = cbind(rep(0, n), apply(m2, 2, function(x) sum(abs(x)) - 1))
 
-colors = brewer.pal(n, "Set1")
+colors = 1:n
 
 par(mar = c(1, 1, 1, 1))
 circos.par("cell.padding" = c(0, 0, 0, 0))

@@ -5,11 +5,11 @@
 - calculate the length of the parabola
 - use `strwidth` to draw text along to the circle
 - `cell.padding` in `circos.par` should not affect the value of `xlim`, add a new element
-- the orders of two parabolas in the belt link need to be looked at (add code to identify the sequence of four end points)
-- end of each link belt should be an arc (need a `arc.point` function)
-- `circos.lines` add an `area` argument
+- need to think about whether enforce all degree in [0, 360) ? (because now 0 and 360 all exist, which makes the problem)
+- use `degree.add` and `degree.minus` to replace all degree math, so it would be simpler to support clock wise mode
 
 #######################################
 # long term
 the order of sector to support clockwise
 the direction of y-axis can be set (currently pointing to the outside)
+- `circos.lines` add an `area` argument

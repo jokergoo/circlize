@@ -21,6 +21,28 @@ circlize = function(x, y, sector.index, track.index, xlim = NULL, ylim = NULL) {
     return(m)
 }
 
+degree.add = function(theta1, theta2) {
+	return((theta1 + theta2) %% 360)
+}
+
+# reverse clockwise
+degree.minus = function(to, from) {
+	return((to - from) %% 360)
+}
+
+degree.seq = function(from, to, length.out = 2) {
+	per = degree.minus(to, from) / (length.out - 1)
+	s = numeric(length.out)
+	s[1] = from
+	for(i in seq_along(s)) {
+		if(i == 1) {
+			next
+		}
+		s[i] = degree.add(s[i - 1], per)
+	}
+	return(s)
+}
+
 polar2Cartesian = function(d) {
     theta = d[, 1]/360 * 2 *pi
     rou = d[, 2]
@@ -135,14 +157,15 @@ get.sector.numeric.index = function(sector.index = get.current.sector.index()) {
 # parabola intersects with the UNIT circle
 # theta1 is the start point and theta2 is the end point
 rotate.parabola = function(theta1, theta2, rou1, rou2 = rou1, theta = (theta1+theta2)/2, 
-    rou = rou1 * abs(cos((theta1 - theta2)/2/180*pi))*rou.ratio, rou.ratio = 0.5,
+    rou = rou1 * abs(cos(degree.minus(theta1, theta2)/2/180*pi))*rou.ratio, rou.ratio = 0.5,
     n = 1001) {
-    
-    # do something with theta1 and theta2
-    theta1 = theta1 %% 360
-    theta2 = theta2 %% 360
-    
-    delta_theta = abs(theta1 - theta2)
+	
+	while(theta2 < theta1) {
+		theta2 = theta2 + 360
+	}
+	
+    delta_theta = degree.minus(theta2, theta1)
+	
 	flag = 0
     if(delta_theta > 180) {
         theta = theta + 180
@@ -150,8 +173,8 @@ rotate.parabola = function(theta1, theta2, rou1, rou2 = rou1, theta = (theta1+th
     }
     
     # y^2 = kx, y = +-sqrt(kx)
-    b = rou1 * abs(sin((theta1 - theta2)/2/180*pi))
-    a = rou1 * abs(cos((theta1 - theta2)/2/180*pi)) - rou
+    b = rou1 * abs(sin(degree.minus(theta2, theta1)/2/180*pi))
+    a = rou1 * abs(cos(degree.minus(theta2, theta1)/2/180*pi)) - rou
     k = b^2/a
     
     if(n %% 2 == 0) {
@@ -164,7 +187,6 @@ rotate.parabola = function(theta1, theta2, rou1, rou2 = rou1, theta = (theta1+th
     y[1:n.half] = sqrt(k*x[1:n.half])
     y[n.half + 1] = 0
     y[1:n.half + n.half + 1] = -sqrt(k*x[1:n.half + n.half + 1])
-    
     
     alpha = numeric(n)
     
@@ -186,8 +208,30 @@ rotate.parabola = function(theta1, theta2, rou1, rou2 = rou1, theta = (theta1+th
 		x = rev(x)
 		y = rev(y)
 	}
-	
-	text(x[1], y[1], "start")
-    
+
     return(cbind(x, y))
+}
+
+is.points.ordered.on.circle = function(theta, clock.wise = FALSE) {
+	if(clock.wise) {
+		theta = rev(theta)
+	}
+	theta = theta %% 360
+	theta = theta - min(theta)
+	min_index = which(theta == 0)
+	if(min_index > 2) {
+		theta2 = c(theta[min_index:length(theta)], c(theta[1:(min_index - 1)]))
+	} else {
+		theta2 = theta
+	}
+	
+	return(identical(order(theta2), 1:length(theta2)))
+}
+
+arc.points = function(theta1, theta2, rou) {
+	n = 100
+	theta = degree.seq(theta1, theta2, length = n)
+	x = rou * cos(theta*pi/180)
+	y = rou * sin(theta*pi/180)
+	return(cbind(x, y))
 }

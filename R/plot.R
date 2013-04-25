@@ -636,13 +636,10 @@ circos.link = function(sector.index1,
         }
         d1 = rotate.parabola(theta1 = theta11, theta2 = theta21, rou1 = rou, rou.ratio = top.ratio)
         d2 = rotate.parabola(theta1 = theta12, theta2 = theta22, rou1 = rou, rou.ratio = top.ratio)
+
         d2 = d2[(dim(d2)[1]):1, ]
 	
-	r1 = lines.expand(c(d1[nrow(d1), 1], d2[1, 1]), c(d1[nrow(d1), 2], d2[1, 2]), sector.index2)
-        d = rbind(d1, r1)
-	d = rbind(d, d2)
-	r2 = lines.expand(c(d1[nrow(d2), 1], d1[1, 1]), c(d1[nrow(d2), 2], d1[1, 2]), sector.index1)
-	d = rbind(d, r2)
+		d = rbind(d1, d2)
         polygon(d, col = col, lty = lty, lwd = lwd, border = border)
     }
     return(invisible(NULL))

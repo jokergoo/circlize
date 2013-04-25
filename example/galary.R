@@ -171,7 +171,7 @@ circos.clear()
 # correlations
 ##################################################################################
 
-n = 10
+n = 3
 m = matrix(rnorm(n^2), n, n)
 colnames(m) = letters[1:n]
 m2 = cor(m)
@@ -203,7 +203,7 @@ for(i in 2:n) {
                     c(sector.sum[i], sector.sum[i] + abs(m2[i, j])),
                     sector.index2,
                     c(sector.sum[j], sector.sum[j] + abs(m2[i, j])),
-                    col = ifelse(m2[i, j] > 0, "#E41A1CD0", "#4DAF4AD0"), border = "grey")
+                    col = ifelse(m2[i, j] > 0, "#E41A1C20", "#4DAF4A20"), border = "grey")
         sector.sum[i] = sector.sum[i] + abs(m2[i, j])
         sector.sum[j] = sector.sum[j] + abs(m2[i, j])
     }

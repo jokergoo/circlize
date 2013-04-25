@@ -133,6 +133,7 @@ get.sector.numeric.index = function(sector.index = get.current.sector.index()) {
 
 
 # parabola intersects with the UNIT circle
+# theta1 is the start point and theta2 is the end point
 rotate.parabola = function(theta1, theta2, rou1, rou2 = rou1, theta = (theta1+theta2)/2, 
     rou = rou1 * abs(cos((theta1 - theta2)/2/180*pi))*rou.ratio, rou.ratio = 0.5,
     n = 1001) {
@@ -142,8 +143,10 @@ rotate.parabola = function(theta1, theta2, rou1, rou2 = rou1, theta = (theta1+th
     theta2 = theta2 %% 360
     
     delta_theta = abs(theta1 - theta2)
+	flag = 0
     if(delta_theta > 180) {
         theta = theta + 180
+		flag = 1
     }
     
     # y^2 = kx, y = +-sqrt(kx)
@@ -178,6 +181,13 @@ rotate.parabola = function(theta1, theta2, rou1, rou2 = rou1, theta = (theta1+th
     
     x = x + center.x
     y = y + center.y
+	
+	if(!flag) {
+		x = rev(x)
+		y = rev(y)
+	}
+	
+	text(x[1], y[1], "start")
     
     return(cbind(x, y))
 }

@@ -32,5 +32,6 @@ recycle.with.levels(NULL, levels)
 # test rotate.parabola
 plot(c(-1, 1), c(-1, 1))
 lines(rotate.parabola(theta1 = 30, theta2 = 90, rou1 = 0.8))
+lines(rotate.parabola(theta1 = 50, theta2 = 70, rou1 = 0.8))
 lines(rotate.parabola(theta1 = 270, theta2 = 330, rou1 = 0.8, rou.ratio = 0.3))
-lines(rotate.parabola(theta1 = 10, theta2 = 330, rou1 = 0.8, rou.ratio = 0.3, n = 5))
+lines(rotate.parabola(theta1 = 10, theta2 = 300, rou1 = 0.8, rou.ratio = 0.3, n = 5))

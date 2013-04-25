@@ -5,8 +5,8 @@
 - calculate the length of the parabola
 - use `strwidth` to draw text along to the circle
 - `cell.padding` in `circos.par` should not affect the value of `xlim`, add a new element
-- `circos.link` seems to have some bugs
-
+- the orders of two parabolas in the belt link need to be looked at
+- end of each link belt should be an arc (need a `arc.point` function)
 
 #######################################
 # long term

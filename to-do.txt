@@ -5,7 +5,7 @@
 - calculate the length of the parabola
 - use `strwidth` to draw text along to the circle
 - `cell.padding` in `circos.par` should not affect the value of `xlim`, add a new element
-- the orders of two parabolas in the belt link need to be looked at
+- the orders of two parabolas in the belt link need to be looked at (add code to identify the sequence of four end points)
 - end of each link belt should be an arc (need a `arc.point` function)
 
 #######################################

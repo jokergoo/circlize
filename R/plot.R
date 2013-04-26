@@ -637,28 +637,34 @@ circos.link = function(sector.index1,
         d1 = rotate.parabola(theta1 = theta11, theta2 = theta21, rou1 = rou, rou.ratio = top.ratio)
         d2 = rotate.parabola(theta1 = theta12, theta2 = theta22, rou1 = rou, rou.ratio = top.ratio)
 
-		if(is.points.ordered.on.circle(c(theta11, theta21, theta22, theta12)) ||
-		   is.points.ordered.on.circle(c(theta11, theta21, theta22, theta12), clock.wise = TRUE) ||
-		   is.points.ordered.on.circle(c(theta21, theta11, theta12, theta22)) ||
-		   is.points.ordered.on.circle(c(theta21, theta11, theta12, theta22), clock.wise = TRUE)) {
-		   d2 = d2[(dim(d2)[1]):1, ]
-		} else {
-		
+		if(is.points.ordered.on.circle(c(theta11, theta21, theta22, theta12))) {
+			d2 = d2[rev(seq_len(nrow(d2))), ]
+			r1 = arc.points(theta12, theta22, rou, clock.wise = TRUE)
+            r2 = arc.points(theta21, theta11, rou, clock.wise = TRUE)
+		} else if(is.points.ordered.on.circle(c(theta11, theta21, theta22, theta12), clock.wise = TRUE)) {
+            d2 = d2[rev(seq_len(nrow(d2))), ]
+			r1 = arc.points(theta12, theta22, rou)
+            r2 = arc.points(theta21, theta11, rou)
+		} else if(is.points.ordered.on.circle(c(theta21, theta11, theta12, theta22))) {
+			d2 = d2[rev(seq_len(nrow(d2))), ]
+			r1 = arc.points(theta12, theta22, rou)
+            r2 = arc.points(theta21, theta11, rou)
+		} else if(is.points.ordered.on.circle(c(theta21, theta11, theta12, theta22), clock.wise = TRUE)) {
+		    d2 = d2[rev(seq_len(nrow(d2))), ]
+			r1 = arc.points(theta12, theta22, rou, clock.wise = TRUE)
+            r2 = arc.points(theta21, theta11, rou, clock.wise = TRUE)
+		} else if(is.points.ordered.on.circle(c(theta11, theta12, theta21, theta22))) {
+		    r1 = arc.points(theta12, theta21, rou)
+            r2 = arc.points(theta22, theta11, rou)
+		} else if(is.points.ordered.on.circle(c(theta11, theta12, theta21, theta22), clock.wise = TRUE)) {
+		    r1 = arc.points(theta12, theta21, rou, clock.wise = TRUE)
+            r2 = arc.points(theta22, theta11, rou, clock.wise = TRUE)
 		}
 		
-		# need to know the order of the four end points, clock wise or reverse close wise?
-		#t1 = atan(d1[nrow(d1), 2]/d1[nrow(d1), 1])*180/pi
-		#t2 = atan(d2[1, 2]/d2[1, 1])*180/pi
-		#r1 = arc.points(t1, t2, rou)
-		
-		#t1 = atan(d2[nrow(d2), 2]/d2[nrow(d2), 1])*180/pi
-		#t2 = atan(d1[1, 2]/d1[1, 1])*180/pi
-		#r2 = arc.points(t1, t2, rou)
-		
-		#d = rbind(d1, r1)
-		#d = rbind(d, d2)
-		#d = rbind(d, r2)
-		d = rbind(d1, d2)
+		d = rbind(d1, r1)
+		d = rbind(d, d2)
+		d = rbind(d, r2)
+		d = rbind(d, d2)
         polygon(d, col = col, lty = lty, lwd = lwd, border = border)
     }
     return(invisible(NULL))

@@ -20,133 +20,133 @@
 # of the plotting region can not be changed.
 circos.trackPlotRegion = function(x = NULL, y = NULL, factors = NULL, track.start = NULL, track.height = circos.par("default.track.height"),
     sector.index = NULL, track.index = NULL, xlim = NULL, ylim = NULL, forced.ylim = TRUE,
-	bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
-	panel.fun = NULL) {
+    bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
+    panel.fun = NULL) {
     
-	# if ``factor`` has not been specified, arguments of ``track.start``, ``track.height``,
-	# ``xlim`` and ``ylim`` which are related to the position of cells are ignored.
-	
-	if(is.null(factors)) {
+    # if ``factor`` has not been specified, arguments of ``track.start``, ``track.height``,
+    # ``xlim`` and ``ylim`` which are related to the position of cells are ignored.
+    
+    if(is.null(factors)) {
         stop("factors should be specified.\n")
     } else {
-		
-		# ``sector.index`` and ``xlim`` are ignored
-		
-		# basic check here
-		# if ``ylim`` set then do not need ``y``
-		if(is.null(ylim) && length(y) != length(factors)) {
-			stop("Length of data and length of factors differ.\n")
-		}
-		
-		if(!is.factor(factors)) {
-			factors = factor(factors)
-		}
-		
-		if(length(setdiff(levels(factors), get.all.sector.index()))) {
-			stop("Factors name should be all in existed sector index.\n")
-		}
-		
-		if(is.null(track.index)) {
-			# new track should inside the most recently created track
-			last.track.index = get.max.track.index()
-			set.current.track.index(last.track.index + 1)
-			track.index = get.current.track.index()
-		} else {
-			set.current.track.index(track.index)
-		}
-		
-		
-		# whether force ylim for all cells in a track same
-		if(is.null(ylim) && forced.ylim) {
-			y.range = range(y)
-		}
-		
-		le = levels(factor(factors))
-		bg.col = recycle.with.levels(bg.col, le)
-		bg.border = recycle.with.levels(bg.border, le)
-		bg.lty = recycle.with.levels(bg.lty, le)
-		bg.lwd = recycle.with.levels(bg.lwd, le)
-		
-		# if ``track.start`` has not been specified, start from the most recently
-		# created track
-		if(is.null(track.start)) {
-			track.start = get.track.end.position(track.index - 1) - circos.par("track.margin")[1]
-		}
-		
-		# check whether there is enough space for the new track and whether the new space
-		# overlap with other tracks
-		check.track.position(track.index, track.start, track.height)
-		
-		# if ``panel.fun`` specified, need to check the ``...``
-		# in ``...``, arguments only can be vectors
-		if(!is.null(panel.fun)) {
-			
-			if((!is.null(x) && length(x) != length(factors)) || 
-			   (!is.null(y) && length(y) != length(factors))) {
-				stop("Length of data and length of factors differ.\n")
-			}
-		}
-		
-		if(!is.null(ylim)) {
-			cell.padding = circos.par("cell.padding")
-			ylim[1] = ylim[1] - (ylim[2] - ylim[1])*cell.padding[1]
-			ylim[2] = ylim[2] + (ylim[2] - ylim[1])*cell.padding[3]
-		}
-		
-		# now for each factor
-		for(i in seq_along(le)) {
-			
-			l = factors == le[i]
-			
-			# if ``ylim`` is not forced to be identical in all cells, then each cell has
-			# its own ``ylim``
-			if(is.null(ylim) && (!forced.ylim)) {
-				y.range = range(y[l])
-			}
-			
-			sector.data = get.sector.data(le[i])
-			xlim = c(sector.data["start.value"], sector.data["end.value"])
-			if(is.null(ylim)) {
-				ylim = y.range
-				cell.padding = circos.par("cell.padding")
-				ylim[1] = ylim[1] - (ylim[2] - ylim[1])*cell.padding[1]
-				ylim[2] = ylim[2] + (ylim[2] - ylim[1])*cell.padding[3]
-			}
-			
-			
-			# create plotting region for single cell
-			circos.createPlotRegion(track.start = track.start,
-			                  track.height = track.height, sector.index = le[i],
-							  track.index = track.index,
-							  xlim = xlim, ylim = ylim, bg.col = bg.col[i],
-							  bg.border = bg.border[i], bg.lty = bg.lty[i], bg.lwd = bg.lwd[i])
-
-			if(! is.null(panel.fun)) {
-				if(is.null(x)) {
-					nx = NULL
-				} else {
-					nx = x[l]
-				}
-				
-				if(is.null(y)) {
-					ny = NULL
-				} else {
-					ny = y[l]
-				}
-				
-				panel.fun(nx, ny)
-			}
-			
-		}
         
-		
-		# After the track has been created, the default tract starting position is set
-		# just next to the most recently created track
-		set.track.end.position(track.index, track.start - track.height - circos.par("track.margin")[2])
-		return(invisible(NULL))
-	}
+        # ``sector.index`` and ``xlim`` are ignored
+        
+        # basic check here
+        # if ``ylim`` set then do not need ``y``
+        if(is.null(ylim) && length(y) != length(factors)) {
+            stop("Length of data and length of factors differ.\n")
+        }
+        
+        if(!is.factor(factors)) {
+            factors = factor(factors)
+        }
+        
+        if(length(setdiff(levels(factors), get.all.sector.index()))) {
+            stop("Factors name should be all in existed sector index.\n")
+        }
+        
+        if(is.null(track.index)) {
+            # new track should inside the most recently created track
+            last.track.index = get.max.track.index()
+            set.current.track.index(last.track.index + 1)
+            track.index = get.current.track.index()
+        } else {
+            set.current.track.index(track.index)
+        }
+        
+        
+        # whether force ylim for all cells in a track same
+        if(is.null(ylim) && forced.ylim) {
+            y.range = range(y)
+        }
+        
+        le = levels(factor(factors))
+        bg.col = recycle.with.levels(bg.col, le)
+        bg.border = recycle.with.levels(bg.border, le)
+        bg.lty = recycle.with.levels(bg.lty, le)
+        bg.lwd = recycle.with.levels(bg.lwd, le)
+        
+        # if ``track.start`` has not been specified, start from the most recently
+        # created track
+        if(is.null(track.start)) {
+            track.start = get.track.end.position(track.index - 1) - circos.par("track.margin")[1]
+        }
+        
+        # check whether there is enough space for the new track and whether the new space
+        # overlap with other tracks
+        check.track.position(track.index, track.start, track.height)
+        
+        # if ``panel.fun`` specified, need to check the ``...``
+        # in ``...``, arguments only can be vectors
+        if(!is.null(panel.fun)) {
+            
+            if((!is.null(x) && length(x) != length(factors)) || 
+               (!is.null(y) && length(y) != length(factors))) {
+                stop("Length of data and length of factors differ.\n")
+            }
+        }
+        
+        if(!is.null(ylim)) {
+            cell.padding = circos.par("cell.padding")
+            ylim[1] = ylim[1] - (ylim[2] - ylim[1])*cell.padding[1]
+            ylim[2] = ylim[2] + (ylim[2] - ylim[1])*cell.padding[3]
+        }
+        
+        # now for each factor
+        for(i in seq_along(le)) {
+            
+            l = factors == le[i]
+            
+            # if ``ylim`` is not forced to be identical in all cells, then each cell has
+            # its own ``ylim``
+            if(is.null(ylim) && (!forced.ylim)) {
+                y.range = range(y[l])
+            }
+            
+            sector.data = get.sector.data(le[i])
+            xlim = c(sector.data["start.value"], sector.data["end.value"])
+            if(is.null(ylim)) {
+                ylim = y.range
+                cell.padding = circos.par("cell.padding")
+                ylim[1] = ylim[1] - (ylim[2] - ylim[1])*cell.padding[1]
+                ylim[2] = ylim[2] + (ylim[2] - ylim[1])*cell.padding[3]
+            }
+            
+            
+            # create plotting region for single cell
+            circos.createPlotRegion(track.start = track.start,
+                              track.height = track.height, sector.index = le[i],
+                              track.index = track.index,
+                              xlim = xlim, ylim = ylim, bg.col = bg.col[i],
+                              bg.border = bg.border[i], bg.lty = bg.lty[i], bg.lwd = bg.lwd[i])
 
-	
+            if(! is.null(panel.fun)) {
+                if(is.null(x)) {
+                    nx = NULL
+                } else {
+                    nx = x[l]
+                }
+                
+                if(is.null(y)) {
+                    ny = NULL
+                } else {
+                    ny = y[l]
+                }
+                
+                panel.fun(nx, ny)
+            }
+            
+        }
+        
+        
+        # After the track has been created, the default tract starting position is set
+        # just next to the most recently created track
+        set.track.end.position(track.index, track.start - track.height - circos.par("track.margin")[2])
+        return(invisible(NULL))
+    }
+
+    
 }
 
 circos.updatePlotRegion = function(sector.index = get.current.sector.index(), track.index = get.current.track.index(),
@@ -221,18 +221,18 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("defau
 # and ``cex`` which have same meaning with those in the `graphics` package.
 circos.points = function(x, y, sector.index = get.current.sector.index(), track.index = get.current.track.index(),
                          pch = par("pch"), col = par("col"), cex = par("cex"), ...) {
-	
-	if(!has.cell(sector.index, track.index)) {
-		stop("'circos.points' can only be used after the plotting region been created\n")
-	}
-	
-	# whether the points that are out of the plotting region.
-	# If there is, throw warnings.
-	check.points.position(x, y, sector.index, track.index)
-	
+    
+    if(!has.cell(sector.index, track.index)) {
+        stop("'circos.points' can only be used after the plotting region been created\n")
+    }
+    
+    # whether the points that are out of the plotting region.
+    # If there is, throw warnings.
+    check.points.position(x, y, sector.index, track.index)
+    
     d = circlize(x, y, sector.index, track.index)
     points(polar2Cartesian(d), pch = pch, col = col, cex = cex, ...)
-	return(invisible(NULL))
+    return(invisible(NULL))
 }
 
 # == title 
@@ -243,42 +243,42 @@ circos.points = function(x, y, sector.index = get.current.sector.index(), track.
 # to the part of data.
 circos.trackPoints = function(x, y, factors, track.index = get.current.track.index(),
                          pch = par("pch"), col = par("col"), cex = par("cex"), ...) {
-	
-	# basic check here
-	if(length(x) != length(factors) || length(y) != length(factors)) {
-		stop("Length of data and length of factors differ.\n")
-	}
-		
-	if(!is.factor(factors)) {
-		factors = factor(factors)
-	}
-	
-	if(length(setdiff(levels(factors), get.all.sector.index()))) {
-		stop("Factors name should be all in existed sector index.\n")
-	}
-		
-	le = levels(factors)
-	
-	# set these graphic parameters with same length as the factors
-	pch = recycle.with.factors(pch, factors)
-	col = recycle.with.factors(col, factors)
-	cex = recycle.with.factors(cex, factors)
-	
-	for(i in seq_along(le)) {
-		l = factors == le[i]
-		
-		nx = x[l]
-		ny = y[l]
-		npch = pch[l]
-		ncol = col[l]
-		ncex = cex[l]
-		circos.points(nx, ny, sector.index = le[i],
-					  track.index = track.index,
-					  pch = npch, col = ncol, cex = ncex,
-					  ...)
-			
-	}
-	return(invisible(NULL))
+    
+    # basic check here
+    if(length(x) != length(factors) || length(y) != length(factors)) {
+        stop("Length of data and length of factors differ.\n")
+    }
+        
+    if(!is.factor(factors)) {
+        factors = factor(factors)
+    }
+    
+    if(length(setdiff(levels(factors), get.all.sector.index()))) {
+        stop("Factors name should be all in existed sector index.\n")
+    }
+        
+    le = levels(factors)
+    
+    # set these graphic parameters with same length as the factors
+    pch = recycle.with.factors(pch, factors)
+    col = recycle.with.factors(col, factors)
+    cex = recycle.with.factors(cex, factors)
+    
+    for(i in seq_along(le)) {
+        l = factors == le[i]
+        
+        nx = x[l]
+        ny = y[l]
+        npch = pch[l]
+        ncol = col[l]
+        ncex = cex[l]
+        circos.points(nx, ny, sector.index = le[i],
+                      track.index = track.index,
+                      pch = npch, col = ncol, cex = ncex,
+                      ...)
+            
+    }
+    return(invisible(NULL))
 }
 
 # straight lines are transformed into curves, so there should be some segmentation
@@ -295,101 +295,101 @@ circos.trackPoints = function(x, y, factors, track.index = get.current.track.ind
 # is that if you want to generate the graph as `grDevices::pdf` format, you would be surprised 
 # that the size of the file is so big.
 circos.lines = function(x, y, sector.index = get.current.sector.index(), track.index = get.current.track.index(),
-	col = "black", lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
-	pt.col = "black", cex = par("cex"), pch = par("pch"), ...) {
+    col = "black", lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
+    pt.col = "black", cex = par("cex"), pch = par("pch"), ...) {
     
-	if(type == "l") {
-		
-	} else if(type == "o") {
-		circos.points(x, y, sector.index = sector.index, track.index = track.index,
-		              col = pt.col, cex = cex, pch = pch, ...)
-		circos.lines(x, y, sector.index = sector.index, track.index = track.index,
-	                 col = col, lwd = lwd, lty = lty)
-		return(invisible(NULL))
-	} else if(type == "h") {
-		cell.data = get.cell.data(sector.index, track.index)
-		for(i in seq_along(x)) {
-			circos.lines(c(x[i], x[i]), c(cell.data$ylim[1], y[i]),
-			             sector.index = sector.index, track.index = track.index, 
-						 col = col, lwd = lwd, lty = lty, straight = TRUE)	
-		}
-		return(invisible(NULL))
-	} else if(type == "s") {
-		for(i in seq_along(x)) {
-			if(i == 1) {
-				next
-			}
-			circos.lines(c(x[i-1], x[i]), c(y[i-1], y[i-1]), sector.index = sector.index, track.index = track.index, 
-			             col = col, lwd = lwd, lty = lty)
-			circos.lines(c(x[i], x[i]), c(y[i-1], y[i]),
-			             sector.index = sector.index, track.index = track.index,
-						 col = col, lwd = lwd, lty = lty, straight = TRUE)
-		}
-		return(invisible(NULL))
-	}
-	
-	if(!has.cell(sector.index, track.index)) {
-		stop("'circos.lines' can only be used after the plotting region been created\n")
-	}
-	
-	# whether the points that are out of the plotting region.
-	check.points.position(x, y, sector.index, track.index)
-	
-	if(straight) {
-		d = cbind(x, y)
-	} else {
-		d = lines.expand(x, y, sector.index)
-	}
-	
-	d2 = circlize(d[, 1], d[, 2], sector.index, track.index)
-	lines(polar2Cartesian(d2), col = col, lwd = lwd, lty = lty)
-	return(invisible(NULL))
+    if(type == "l") {
+        
+    } else if(type == "o") {
+        circos.points(x, y, sector.index = sector.index, track.index = track.index,
+                      col = pt.col, cex = cex, pch = pch, ...)
+        circos.lines(x, y, sector.index = sector.index, track.index = track.index,
+                     col = col, lwd = lwd, lty = lty)
+        return(invisible(NULL))
+    } else if(type == "h") {
+        cell.data = get.cell.data(sector.index, track.index)
+        for(i in seq_along(x)) {
+            circos.lines(c(x[i], x[i]), c(cell.data$ylim[1], y[i]),
+                         sector.index = sector.index, track.index = track.index, 
+                         col = col, lwd = lwd, lty = lty, straight = TRUE)    
+        }
+        return(invisible(NULL))
+    } else if(type == "s") {
+        for(i in seq_along(x)) {
+            if(i == 1) {
+                next
+            }
+            circos.lines(c(x[i-1], x[i]), c(y[i-1], y[i-1]), sector.index = sector.index, track.index = track.index, 
+                         col = col, lwd = lwd, lty = lty)
+            circos.lines(c(x[i], x[i]), c(y[i-1], y[i]),
+                         sector.index = sector.index, track.index = track.index,
+                         col = col, lwd = lwd, lty = lty, straight = TRUE)
+        }
+        return(invisible(NULL))
+    }
+    
+    if(!has.cell(sector.index, track.index)) {
+        stop("'circos.lines' can only be used after the plotting region been created\n")
+    }
+    
+    # whether the points that are out of the plotting region.
+    check.points.position(x, y, sector.index, track.index)
+    
+    if(straight) {
+        d = cbind(x, y)
+    } else {
+        d = lines.expand(x, y, sector.index)
+    }
+    
+    d2 = circlize(d[, 1], d[, 2], sector.index, track.index)
+    lines(polar2Cartesian(d2), col = col, lwd = lwd, lty = lty)
+    return(invisible(NULL))
 }
 
 circos.trackLines = function(x, y, factors, track.index = get.current.track.index(),
                          col = "black", lwd = par("lwd"), lty = par("lty"), straight = FALSE,
-						 pt.col = "black", cex = par("cex"), pch = par("pch"), type = "l", ...) {
-	
-	# basic check here
-	if(length(x) != length(factors) || length(y) != length(factors)) {
-		stop("Length of data and length of factors differ.\n")
-	}
-		
-	if(!is.factor(factors)) {
-		factors = factor(factors)
-	}
-	
-	if(length(setdiff(levels(factors), get.all.sector.index()))) {
-		stop("Factors name should be all in existed sector index.\n")
-	}
-		
-	le = levels(factors)
-	
-	# set these graphic parameters with same length as the factors
-	col = recycle.with.factors(col, factors)
-	lwd = recycle.with.factors(lwd, factors)
-	lty = recycle.with.factors(lty, factors)
-	pt.col = recycle.with.factors(pt.col, factors)
-	cex = recycle.with.factors(cex, factors)
-	pch = recycle.with.factors(pch, factors)
-	
-	for(i in seq_along(le)) {
-		l = factors == le[i]
-		nx = x[l]
-		ny = y[l]
-		ncol = col[l]
-		nlwd = lwd[l]
-		nlty = lty[l]
-		npt.col = pt.col[l]
-		ncex = cex[l]
-		npch = pch[l]
-		circos.lines(nx, ny, sector.index = le[i],
-					  track.index = track.index,
-					  col = ncol, lwd = nlwd, lty = nlty,
-					  pt.col = npt.col, cex = ncex, pch = npch, type = type, straight = straight, ...)
-			
-	}
-	return(invisible(NULL))
+                         pt.col = "black", cex = par("cex"), pch = par("pch"), type = "l", ...) {
+    
+    # basic check here
+    if(length(x) != length(factors) || length(y) != length(factors)) {
+        stop("Length of data and length of factors differ.\n")
+    }
+        
+    if(!is.factor(factors)) {
+        factors = factor(factors)
+    }
+    
+    if(length(setdiff(levels(factors), get.all.sector.index()))) {
+        stop("Factors name should be all in existed sector index.\n")
+    }
+        
+    le = levels(factors)
+    
+    # set these graphic parameters with same length as the factors
+    col = recycle.with.factors(col, factors)
+    lwd = recycle.with.factors(lwd, factors)
+    lty = recycle.with.factors(lty, factors)
+    pt.col = recycle.with.factors(pt.col, factors)
+    cex = recycle.with.factors(cex, factors)
+    pch = recycle.with.factors(pch, factors)
+    
+    for(i in seq_along(le)) {
+        l = factors == le[i]
+        nx = x[l]
+        ny = y[l]
+        ncol = col[l]
+        nlwd = lwd[l]
+        nlty = lty[l]
+        npt.col = pt.col[l]
+        ncex = cex[l]
+        npch = pch[l]
+        circos.lines(nx, ny, sector.index = le[i],
+                      track.index = track.index,
+                      col = ncol, lwd = nlwd, lty = nlty,
+                      pt.col = npt.col, cex = ncex, pch = npch, type = type, straight = straight, ...)
+            
+    }
+    return(invisible(NULL))
 }
 
 
@@ -407,41 +407,41 @@ circos.trackLines = function(x, y, factors, track.index = get.current.track.inde
 circos.rect = function(xleft, ybottom, xright, ytop, sector.index = get.current.sector.index(), track.index = get.current.track.index(),
                        col = NA, border = "black", lty = par("lty"), lwd = par("lwd")) {
     if(! (length(xleft) == 1 &&
-	      length(ybottom) == 1 &&
-	      length(xright) == 1 &&
-	      length(ytop) == 1) ) {
-		stop("There should only be one data points in 'xleft', 'ybottom', 'xright' or 'ytop'\n")  
-	}
+          length(ybottom) == 1 &&
+          length(xright) == 1 &&
+          length(ytop) == 1) ) {
+        stop("There should only be one data points in 'xleft', 'ybottom', 'xright' or 'ytop'\n")  
+    }
 
-	if(!has.cell(sector.index, track.index)) {
-		stop("'circos.rect' can only be used after the plotting region been created\n")
-	}
-	
-	# no filled colors, just four edges, here edges colors are controled by ``border``
-	if(is.na(col)) {
-		# vertical lines in the original coordinate system are still straight lines
-		# in the new coordinate system except they now pointing to the circle center.
-		circos.lines(c(xleft, xleft), c(ybottom, ytop),
-		             sector.index = sector.index, track.index = track.index,
-					 col = border, lty = lty, lwd = lwd, straight = TRUE)
-		# horizontal lines in the original coordinate system are now arcs and the arcs
-		# share the same circle center as the polar coordinate system
-		circos.lines(c(xleft, xright), c(ytop, ytop),
-		           sector.index = sector.index, track.index = track.index,
-				   col = border, lty = lty, lwd = lwd)
-		circos.lines(c(xright, xright), c(ytop, ybottom),
-		             sector.index = sector.index, track.index = track.index,
-					 col = border, lty = lty, lwd = lwd, straight = TRUE)
-		circos.lines(c(xleft, xright), c(ybottom, ybottom),
-		           sector.index = sector.index, track.index = track.index,
-				   col = border, lty = lty, lwd = lwd)
-	} else {
-		circos.polygon(c(xleft, xleft, xright, xright, xleft),
-		               c(ybottom, ytop, ytop, ybottom, ybottom),
-					   sector.index = sector.index, track.index = track.index,
-					   col = col, border = border, lty = lty, lwd = lwd)
-	}
-	return(invisible(NULL))
+    if(!has.cell(sector.index, track.index)) {
+        stop("'circos.rect' can only be used after the plotting region been created\n")
+    }
+    
+    # no filled colors, just four edges, here edges colors are controled by ``border``
+    if(is.na(col)) {
+        # vertical lines in the original coordinate system are still straight lines
+        # in the new coordinate system except they now pointing to the circle center.
+        circos.lines(c(xleft, xleft), c(ybottom, ytop),
+                     sector.index = sector.index, track.index = track.index,
+                     col = border, lty = lty, lwd = lwd, straight = TRUE)
+        # horizontal lines in the original coordinate system are now arcs and the arcs
+        # share the same circle center as the polar coordinate system
+        circos.lines(c(xleft, xright), c(ytop, ytop),
+                   sector.index = sector.index, track.index = track.index,
+                   col = border, lty = lty, lwd = lwd)
+        circos.lines(c(xright, xright), c(ytop, ybottom),
+                     sector.index = sector.index, track.index = track.index,
+                     col = border, lty = lty, lwd = lwd, straight = TRUE)
+        circos.lines(c(xleft, xright), c(ybottom, ybottom),
+                   sector.index = sector.index, track.index = track.index,
+                   col = border, lty = lty, lwd = lwd)
+    } else {
+        circos.polygon(c(xleft, xleft, xright, xright, xleft),
+                       c(ybottom, ytop, ytop, ybottom, ybottom),
+                       sector.index = sector.index, track.index = track.index,
+                       col = col, border = border, lty = lty, lwd = lwd)
+    }
+    return(invisible(NULL))
 }
 
 # == title
@@ -449,121 +449,159 @@ circos.rect = function(xleft, ybottom, xright, ytop, sector.index = get.current.
 #
 # == details
 # similar as `graphics::polygon`
-circos.polygon = function(x, y,	sector.index = get.current.sector.index(), track.index = get.current.track.index(),
+circos.polygon = function(x, y,    sector.index = get.current.sector.index(), track.index = get.current.track.index(),
     col = NA, border = "black", lty = par("lty"), lwd = par("lwd")) {
     
-	if(!has.cell(sector.index, track.index)) {
-		stop("'circos.polygon' can only be used after the plotting region been created\n")
-	}
-	
-	# whether the points that are out of the plotting region.
-	check.points.position(x, y, sector.index, track.index)
-	
-	d = lines.expand(x, y, sector.index)
+    if(!has.cell(sector.index, track.index)) {
+        stop("'circos.polygon' can only be used after the plotting region been created\n")
+    }
+    
+    # whether the points that are out of the plotting region.
+    check.points.position(x, y, sector.index, track.index)
+    
+    d = lines.expand(x, y, sector.index)
     d2 = circlize(d[, 1], d[, 2], sector.index, track.index)
     polygon(polar2Cartesian(d2), col = col, border = border,
-	        lty = lty, lwd = lwd)
-	return(invisible(NULL))
+            lty = lty, lwd = lwd)
+    return(invisible(NULL))
 }
 
 # to-do: text as an arc?
 circos.text = function(x, y, labels, sector.index = get.current.sector.index(), track.index = get.current.track.index(), 
     direction = c("default", "vertical_left", "vertical_right", "horizontal"),
-	srt = NULL, adj = par("adj"), cex = 1, col = "black", font = par("font")) {
+    adj = par("adj"), cex = 1, col = "black", font = par("font")) {
     
-	if(!has.cell(sector.index, track.index)) {
-		stop("'circos.text' can only be used after the plotting region been created\n")
-	}
+    if(!has.cell(sector.index, track.index)) {
+        stop("'circos.text' can only be used after the plotting region been created\n")
+    }
 	
-	# whether the points that are out of the plotting region.
-	check.points.position(x, y, sector.index, track.index)
-	
-	d = circlize(x, y, sector.index, track.index)
-	
-	# if srt not set, srt for text are calculated automaticly
-	if(is.null(srt)) {
-		direction = direction[1]
-		if(! direction %in% c("default", "vertical_left", "vertical_right", "horizontal")) {
-			stop("direction can only be choosen from 'default', 'vertical_left', 'vertical_right', 'horizontal'\n.")
-		}
-		
-		srt = d[,1]-90	#srt = ifelse(srt > 0, srt, 360 + srt)
-		
-		if(direction == "vertical_left") {           # pointing to the circle center, but facing left at 90 degree
-			srt = srt - 90
-		} else if(direction == "vertical_right") {   # pointing to the circle center, but facing right at 90 degree
-			srt = srt + 90
-		} else if(direction == "horizontal") {       # horizontal at the finnal graph
-			srt = rep(0, length(srt))
-		}
-	}
-	
-	m = polar2Cartesian(d)
-	# because ``srt`` can only with length 1
-	# here we do not expand ``adj``, because the original ``adj``
-	# is a vector, after expanding, it would be a matrix. I think 
-	# no one would set it as a matrix
 	if(length(srt) == 1) {
-		srt = rep(srt, length(x))
-	}
-	if(length(cex) == 1) {
-		cex = rep(cex, length(x))
-	}
-	if(length(col) == 1) {
-		col = rep(col, length(x))
-	}
-	if(length(font) == 1) {
-		font = rep(font, length(x))
-	}
+			srt = rep(srt, length(x))
+		}
+		if(length(cex) == 1) {
+			cex = rep(cex, length(x))
+		}
+		if(length(col) == 1) {
+			col = rep(col, length(x))
+		}
+		if(length(font) == 1) {
+			font = rep(font, length(x))
+		}
+    }
 	
-	for(i in seq_along(x)) {
-		text(m[i, 1], m[i, 2], labels = labels[i], srt = srt[i],
-		     cex = cex[i], col = col[i], font = font[i], adj = adj)
-	}
+    # whether the points that are out of the plotting region.
+    check.points.position(x, y, sector.index, track.index)
+    
+    d = circlize(x, y, sector.index, track.index)
+    
+    direction = direction[1]
+    if(! direction %in% c("default", "vertical_left", "vertical_right", "horizontal")) {
+        stop("direction can only be choosen from 'default', 'vertical_left', 'vertical_right', 'horizontal'\n.")
+    }
 	
-	return(invisible(NULL))
+	if(direction == "arc") {
+		opar = par(no.readonly = TRUE)
+		par(cex = cex, font = font)
+		chars = lapply(labels, strsplit, "")
+		strw = lapply(chars, strwidth)
+		strh = lapply(chars, strheight)
+		if(identical(adj, c(0, 0))) {
+			for(i in seq_along(labels)) {
+				# degree of the bottom center of each char
+				theta = numeric(0)
+				alpha = d[i, 1]
+				for(j in  seq_along(strw[[i]])) {
+					theta[j] = alpha - asin(strw[[i]][j]/2/d[i, 2])*180/pi
+					alpha = alpha - asin(strw[[i]][j]/2/d[i, 2])*180/pi
+				}
+				dr = reverse.circlize(theta, rep(d[i, 2], length(theta)), sector.index, track.index)
+				circos.text(dr[, 1], dr[, 2], labels = chars[[i]], direction = "horizontal", cex = cex[i], col = col[i], font = font[i])
+			}
+		} else if(identical(adj, c(0, 0.5))) {
+		
+		} else if(identical(adj, c(0, 1))) {
+		
+		} else if(identical(adj, c(1, 0))) {
+		
+		} else if(identical(adj, c(1, 0.5))) {
+		
+		} else if(identical(adj, c(1, 1))) {
+		
+		} else if(identical(adj, c(0.5, 0))) {
+		
+		} else if(identical(adj, c(0.5, 0.5))) {
+		
+		} else if(identical(adj, c(0.5, 1))) {
+		
+		} else {
+			stop("You `adj` argument is wrong.\n")
+		}
+		par(opar)
+	} else {
+        
+        srt = d[,1]-90    #srt = ifelse(srt > 0, srt, 360 + srt)
+        
+        if(direction == "vertical_left") {           # pointing to the circle center, but facing left at 90 degree
+            srt = srt - 90
+        } else if(direction == "vertical_right") {   # pointing to the circle center, but facing right at 90 degree
+            srt = srt + 90
+        } else if(direction == "horizontal") {       # horizontal at the finnal graph
+            srt = rep(0, length(srt))
+        }
+    
+		m = polar2Cartesian(d)
+		
+		
+		
+		for(i in seq_along(x)) {
+			text(m[i, 1], m[i, 2], labels = labels[i], srt = srt[i],
+				 cex = cex[i], col = col[i], font = font[i], adj = adj)
+		}
+    }
+	
+    return(invisible(NULL))
 }
 
 circos.trackText = function(x, y, labels, factors, track.index = get.current.track.index(),
                        direction = c("default", "vertical_left", "vertical_right", "horizontal"),
-	                   srt = NULL, adj = par("adj"), cex = 1, col = "black", font = par("font")) {
-	
-	# basic check here
-	if(length(x) != length(factors) || length(y) != length(factors)) {
-		stop("Length of data and length of factors differ.\n")
-	}
-		
-	if(!is.factor(factors)) {
-		factors = factor(factors)
-	}
-	
-	if(length(setdiff(levels(factors), get.all.sector.index()))) {
-		stop("Factors name should be all in existed sector index.\n")
-	}
-		
-	le = levels(factors)
-	
-	# set these graphic parameters with same length as the factors
-	# ``direction``, ``srt`` and ``adj`` are not recycled
-	cex = recycle.with.factors(cex, factors)
-	col = recycle.with.factors(col, factors)
-	font = recycle.with.factors(font, factors)
+                       srt = NULL, adj = par("adj"), cex = 1, col = "black", font = par("font")) {
+    
+    # basic check here
+    if(length(x) != length(factors) || length(y) != length(factors)) {
+        stop("Length of data and length of factors differ.\n")
+    }
+        
+    if(!is.factor(factors)) {
+        factors = factor(factors)
+    }
+    
+    if(length(setdiff(levels(factors), get.all.sector.index()))) {
+        stop("Factors name should be all in existed sector index.\n")
+    }
+        
+    le = levels(factors)
+    
+    # set these graphic parameters with same length as the factors
+    # ``direction``, ``srt`` and ``adj`` are not recycled
+    cex = recycle.with.factors(cex, factors)
+    col = recycle.with.factors(col, factors)
+    font = recycle.with.factors(font, factors)
 
-	for(i in seq_along(le)) {
-		l = factors == le[i]
-		nx = x[l]
-		ny = y[l]
-		nlabels = labels[l]
-		ncex = cex[l]
-		ncol = col[l]
-		nfont = font[l]
-		circos.text(nx, ny, sector.index = le[i],
-					  track.index = track.index, labels = nlabels,
-					  direction = direction, srt = srt, adj = adj,
-					  cex = ncex, col = ncol, font = nfont)
-			
-	}
-	return(invisible(NULL))
+    for(i in seq_along(le)) {
+        l = factors == le[i]
+        nx = x[l]
+        ny = y[l]
+        nlabels = labels[l]
+        ncex = cex[l]
+        ncol = col[l]
+        nfont = font[l]
+        circos.text(nx, ny, sector.index = le[i],
+                      track.index = track.index, labels = nlabels,
+                      direction = direction, srt = srt, adj = adj,
+                      cex = ncex, col = ncol, font = nfont)
+            
+    }
+    return(invisible(NULL))
 }
 
 circos.link = function(sector.index1,
@@ -637,34 +675,33 @@ circos.link = function(sector.index1,
         d1 = rotate.parabola(theta1 = theta11, theta2 = theta21, rou1 = rou, rou.ratio = top.ratio)
         d2 = rotate.parabola(theta1 = theta12, theta2 = theta22, rou1 = rou, rou.ratio = top.ratio)
 
-		if(is.points.ordered.on.circle(c(theta11, theta21, theta22, theta12))) {
-			d2 = d2[rev(seq_len(nrow(d2))), ]
-			r1 = arc.points(theta12, theta22, rou, clock.wise = TRUE)
-            r2 = arc.points(theta21, theta11, rou, clock.wise = TRUE)
-		} else if(is.points.ordered.on.circle(c(theta11, theta21, theta22, theta12), clock.wise = TRUE)) {
+        if(is.points.ordered.on.circle(c(theta11, theta21, theta22, theta12))) {
             d2 = d2[rev(seq_len(nrow(d2))), ]
-			r1 = arc.points(theta12, theta22, rou)
-            r2 = arc.points(theta21, theta11, rou)
-		} else if(is.points.ordered.on.circle(c(theta21, theta11, theta12, theta22))) {
-			d2 = d2[rev(seq_len(nrow(d2))), ]
-			r1 = arc.points(theta12, theta22, rou)
-            r2 = arc.points(theta21, theta11, rou)
-		} else if(is.points.ordered.on.circle(c(theta21, theta11, theta12, theta22), clock.wise = TRUE)) {
-		    d2 = d2[rev(seq_len(nrow(d2))), ]
-			r1 = arc.points(theta12, theta22, rou, clock.wise = TRUE)
-            r2 = arc.points(theta21, theta11, rou, clock.wise = TRUE)
-		} else if(is.points.ordered.on.circle(c(theta11, theta12, theta21, theta22))) {
-		    r1 = arc.points(theta12, theta21, rou)
+            r1 = arc.points(theta21, theta22, rou)
+            r2 = arc.points(theta12, theta11, rou)
+        } else if(is.points.ordered.on.circle(c(theta11, theta21, theta22, theta12), clock.wise = TRUE)) {
+            d2 = d2[rev(seq_len(nrow(d2))), ]
+            r1 = arc.points(theta21, theta22, rou, clock.wise = TRUE)
+            r2 = arc.points(theta12, theta11, rou, clock.wise = TRUE)
+        } else if(is.points.ordered.on.circle(c(theta21, theta11, theta12, theta22))) {
+            d2 = d2[rev(seq_len(nrow(d2))), ]
+            r1 = arc.points(theta21, theta22, rou, clock.wise = TRUE)
+            r2 = arc.points(theta12, theta11, rou ,clock.wise = TRUE)
+        } else if(is.points.ordered.on.circle(c(theta21, theta11, theta12, theta22), clock.wise = TRUE)) {
+            d2 = d2[rev(seq_len(nrow(d2))), ]
+            r1 = arc.points(theta21, theta22, rou)
+            r2 = arc.points(theta12, theta11, rou)
+        } else if(is.points.ordered.on.circle(c(theta11, theta12, theta21, theta22))) {
+            r1 = arc.points(theta12, theta21, rou)
             r2 = arc.points(theta22, theta11, rou)
-		} else if(is.points.ordered.on.circle(c(theta11, theta12, theta21, theta22), clock.wise = TRUE)) {
-		    r1 = arc.points(theta12, theta21, rou, clock.wise = TRUE)
+        } else if(is.points.ordered.on.circle(c(theta11, theta12, theta21, theta22), clock.wise = TRUE)) {
+            r1 = arc.points(theta12, theta21, rou, clock.wise = TRUE)
             r2 = arc.points(theta22, theta11, rou, clock.wise = TRUE)
-		}
-		
-		d = rbind(d1, r1)
-		d = rbind(d, d2)
-		d = rbind(d, r2)
-		d = rbind(d, d2)
+        }
+        
+        d = rbind(d1, r1)
+        d = rbind(d, d2)
+        d = rbind(d, r2)
         polygon(d, col = col, lty = lty, lwd = lwd, border = border)
     }
     return(invisible(NULL))
@@ -680,82 +717,82 @@ circos.link = function(sector.index1,
 # first a global hist
 circos.trackHist = function(x, factors, track.start = NULL, track.height = circos.par("default.track.height"),
     track.index = NULL, xlim = NULL, ylim = NULL, forced.ylim = TRUE,
-	col = NA, border = "black", lty = par("lty"), lwd = par("lwd"),
-	bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
-	breaks = "Sturges", include.lowest = TRUE, right = TRUE, draw.density = FALSE) {
-	
-	# basic check here
-	if(length(x) != length(factors)) {
-		stop("Length of data and length of factors differ.\n")
-	}
-		
-	if(!is.factor(factors)) {
-		factors = factor(factors)
-	}
-	
-	if(length(setdiff(levels(factors), get.all.sector.index()))) {
-		stop("Factors name should be all in existed sector index.\n")
-	}
-	
-	# calculate the distributions
-	le = levels(factors)
-	
-	xx = NULL
-	yy = NULL
-	fa = NULL
-	
-	for(i in seq_along(le)) {
-		l = factors == le[i]
-		nx = x[l]
-		
-		h = hist(nx, plot = FALSE, breaks = breaks, include.lowest = include.lowest, right = right)
-		
-		xx = c(xx, h$breaks)
-		if(draw.density) {
-			yy = c(yy, 0, h$density)
-		} else {
-			yy = c(yy, 0, h$counts)
-		}
-		
-		fa = c(fa, rep(le[i], length(h$breaks)))
-	}
-	
-	# create the plotting region
-	circos.trackPlotRegion(y=yy, factors = fa, track.start = track.start, track.height = track.height,
+    col = NA, border = "black", lty = par("lty"), lwd = par("lwd"),
+    bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
+    breaks = "Sturges", include.lowest = TRUE, right = TRUE, draw.density = FALSE) {
+    
+    # basic check here
+    if(length(x) != length(factors)) {
+        stop("Length of data and length of factors differ.\n")
+    }
+        
+    if(!is.factor(factors)) {
+        factors = factor(factors)
+    }
+    
+    if(length(setdiff(levels(factors), get.all.sector.index()))) {
+        stop("Factors name should be all in existed sector index.\n")
+    }
+    
+    # calculate the distributions
+    le = levels(factors)
+    
+    xx = NULL
+    yy = NULL
+    fa = NULL
+    
+    for(i in seq_along(le)) {
+        l = factors == le[i]
+        nx = x[l]
+        
+        h = hist(nx, plot = FALSE, breaks = breaks, include.lowest = include.lowest, right = right)
+        
+        xx = c(xx, h$breaks)
+        if(draw.density) {
+            yy = c(yy, 0, h$density)
+        } else {
+            yy = c(yy, 0, h$counts)
+        }
+        
+        fa = c(fa, rep(le[i], length(h$breaks)))
+    }
+    
+    # create the plotting region
+    circos.trackPlotRegion(y=yy, factors = fa, track.start = track.start, track.height = track.height,
                       track.index = track.index, forced.ylim = forced.ylim,
-	                  bg.col = bg.col, bg.border = bg.border, bg.lty = bg.lty, bg.lwd = bg.lwd)
-	
-	track.index = get.current.track.index()
-	
-	if(draw.density) {
-		circos.trackLines(xx, yy, factors = fa, track.index = track.index,
-		                  col = col, lty = lty, lwd = lwd)
-	} else {
-		# in each cell, draw rectangles
-		col = recycle.with.levels(col, le)
-		border = recycle.with.levels(border, le)
-		lty = recycle.with.levels(lty, le)
-		lwd = recycle.with.levels(lwd, le)
-		for(i in seq_along(le)) {
-			l = fa == le[i]
-			
-			nx = xx[l]
-			ny = yy[l]
+                      bg.col = bg.col, bg.border = bg.border, bg.lty = bg.lty, bg.lwd = bg.lwd)
+    
+    track.index = get.current.track.index()
+    
+    if(draw.density) {
+        circos.trackLines(xx, yy, factors = fa, track.index = track.index,
+                          col = col, lty = lty, lwd = lwd)
+    } else {
+        # in each cell, draw rectangles
+        col = recycle.with.levels(col, le)
+        border = recycle.with.levels(border, le)
+        lty = recycle.with.levels(lty, le)
+        lwd = recycle.with.levels(lwd, le)
+        for(i in seq_along(le)) {
+            l = fa == le[i]
+            
+            nx = xx[l]
+            ny = yy[l]
 
-			cell.data = get.cell.data(le[i], track.index)
-			nx[nx < cell.data$xlim[1]] = cell.data$xlim[1]	
-			nx[nx > cell.data$xlim[2]] = cell.data$xlim[2]
-			
-			for(j in seq_along(nx)) {
-				if(j == 1) {
-					next
-				}
-				
-				circos.rect(nx[j-1], 0, nx[j], ny[j],
-							sector.index = le[i], track.index = track.index,
-							col = col[i], border = border[i], lty = lty[i], lwd = lwd[i])
-			}
-		}
-	}
-	return(invisible(NULL))
+            cell.data = get.cell.data(le[i], track.index)
+            nx[nx < cell.data$xlim[1]] = cell.data$xlim[1]    
+            nx[nx > cell.data$xlim[2]] = cell.data$xlim[2]
+            
+            for(j in seq_along(nx)) {
+                if(j == 1) {
+                    next
+                }
+                
+                circos.rect(nx[j-1], 0, nx[j], ny[j],
+                            sector.index = le[i], track.index = track.index,
+                            col = col[i], border = border[i], lty = lty[i], lwd = lwd[i])
+            }
+        }
+    }
+    return(invisible(NULL))
 }

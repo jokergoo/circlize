@@ -4,8 +4,6 @@
 - comments and documents
 - calculate the length of the parabola
 - use `strwidth` to draw text along to the circle
-- `cell.padding` in `circos.par` should not affect the value of `xlim`, add a new element
-- need to think about whether enforce all degree in [0, 360) ? (because now 0 and 360 all exist, which makes the problem)
 - use `degree.add` and `degree.minus` to replace all degree math, so it would be simpler to support clock wise mode
 
 #######################################

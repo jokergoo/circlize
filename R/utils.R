@@ -16,30 +16,43 @@ circlize = function(x, y, sector.index, track.index, xlim = NULL, ylim = NULL) {
     m = cbind(theta, rou)
     colnames(m) = c("theta", "rou")
     rownames(m) = NULL
-	
+    
     return(m)
 }
 
+reverse.circlize = function(theta, rou, sector.index, track.index) {
+	sector.data = get.sector.data(sector.index)
+    cell.data = get.cell.data(sector.index, track.index)
+	
+	x = (theta - sector.data["start.degree"]) / (sector.data["end.degree"] - sector.data["start.degree"]) *
+	    (sector.data["end.value"] - sector.data["start.value"]) + sector.data["start.value"]
+	y = (cell.data$track.start - rou) / (cell.data$track.height) * (ylim[2] - ylim[1]) + ylim[1]
+	
+	m = cbind(x, y)
+	colnames(m) = c("x", "y")
+	return(m)
+}
+
 degree.add = function(theta1, theta2) {
-	return((theta1 + theta2) %% 360)
+    return((theta1 + theta2) %% 360)
 }
 
 # reverse clockwise
 degree.minus = function(to, from) {
-	return((to - from) %% 360)
+    return((to - from) %% 360)
 }
 
 degree.seq = function(from, to, length.out = 2) {
-	per = degree.minus(to, from) / (length.out - 1)
-	s = numeric(length.out)
-	s[1] = from
-	for(i in seq_along(s)) {
-		if(i == 1) {
-			next
-		}
-		s[i] = degree.add(s[i - 1], per)
-	}
-	return(s)
+    per = degree.minus(to, from) / (length.out - 1)
+    s = numeric(length.out)
+    s[1] = from
+    for(i in seq_along(s)) {
+        if(i == 1) {
+            next
+        }
+        s[i] = degree.add(s[i - 1], per)
+    }
+    return(s)
 }
 
 polar2Cartesian = function(d) {
@@ -85,71 +98,71 @@ lines.expand = function(x, y, sector.index) {
 }
 
 recycle.with.factors = function(x, factors) {
-	le = levels(factors)
-	if(length(x) == 1) {
-		x = rep(x, length(factors))
-	} else if(length(x) == length(le)) {
-		b = factors
-		levels(b) = x
-		x = as.vector(b)
-	}
-	return(x)
+    le = levels(factors)
+    if(length(x) == 1) {
+        x = rep(x, length(factors))
+    } else if(length(x) == length(le)) {
+        b = factors
+        levels(b) = x
+        x = as.vector(b)
+    }
+    return(x)
 }
 
 recycle.with.levels = function(x, levels) {
-	
-	if(length(x) == 1) {
-		x = rep(x, length(levels))
-	} 
-	return(x)
+    
+    if(length(x) == 1) {
+        x = rep(x, length(levels))
+    } 
+    return(x)
 }
 
 check.track.position = function(trace.index, track.start, track.height) {
 
-	track.margin = circos.par("track.margin")
-	if(track.start - track.height - track.margin[2] < 0 ||
-	   track.start - track.height < 0 ||
-	   track.start < 0) {
-		stop(paste("not enough space for plotting region of track index '", trace.index, "'.\n", sep = ""))
-	}
-	if(track.start - track.margin[1] - track.height - track.margin[2] < 0) {
-		stop(paste("not enough space for bottom margin of track index '", trace.index, "'.\n", sep = ""))
-	}
-	
-	if(trace.index > 1) {
-		
-		if(track.start > get.track.end.position(trace.index - 1)) {
-			stop("Plotting region overlaps with previous track.\n")
-		}
-	}
+    track.margin = circos.par("track.margin")
+    if(track.start - track.height - track.margin[2] < 0 ||
+       track.start - track.height < 0 ||
+       track.start < 0) {
+        stop(paste("not enough space for plotting region of track index '", trace.index, "'.\n", sep = ""))
+    }
+    if(track.start - track.margin[1] - track.height - track.margin[2] < 0) {
+        stop(paste("not enough space for bottom margin of track index '", trace.index, "'.\n", sep = ""))
+    }
+    
+    if(trace.index > 1) {
+        
+        if(track.start > get.track.end.position(trace.index - 1)) {
+            stop("Plotting region overlaps with previous track.\n")
+        }
+    }
 }
 
 check.points.position = function(x, y, sector.index = NULL, track.index = NULL) {
-	
-	if(is.null(sector.index)) {
+    
+    if(is.null(sector.index)) {
         sector.index = get.current.sector.index()   
     }
 
     if(is.null(track.index)) {
         track.index = get.current.track.index()
     }
-	
-	cell.data = get.cell.data(sector.index, track.index)
-	xlim = cell.data$xlim
-	ylim = cell.data$ylim
-	
-	l1 = x < xlim[1] | x > xlim[2]
-	l2 = y < ylim[1] | y > ylim[2]
-	l = l1 | l2
-	if(sum(l) && circos.par("points.overflow.warning")) {
-		warning(paste(sum(l), "points are out of plotting region in sector '", sector.index, "', track '", track.index, "'.\n", sep = ""))
-	}
+    
+    cell.data = get.cell.data(sector.index, track.index)
+    xlim = cell.data$xlim
+    ylim = cell.data$ylim
+    
+    l1 = x < xlim[1] | x > xlim[2]
+    l2 = y < ylim[1] | y > ylim[2]
+    l = l1 | l2
+    if(sum(l) && circos.par("points.overflow.warning")) {
+        warning(paste(sum(l), "points are out of plotting region in sector '", sector.index, "', track '", track.index, "'.\n", sep = ""))
+    }
 
-	return(invisible(NULL))
+    return(invisible(NULL))
 }
 
 get.sector.numeric.index = function(sector.index = get.current.sector.index()) {
-	return(which(get.all.sector.index() == sector.index))
+    return(which(get.all.sector.index() == sector.index))
 }
 
 
@@ -158,17 +171,17 @@ get.sector.numeric.index = function(sector.index = get.current.sector.index()) {
 rotate.parabola = function(theta1, theta2, rou1, rou2 = rou1, theta = (theta1+theta2)/2, 
     rou = rou1 * abs(cos(degree.minus(theta1, theta2)/2/180*pi))*rou.ratio, rou.ratio = 0.5,
     n = 1001) {
-	
-	while(theta2 < theta1) {
-		theta2 = theta2 + 360
-	}
-	
+    
+    while(theta2 < theta1) {
+        theta2 = theta2 + 360
+    }
+    
     delta_theta = degree.minus(theta2, theta1)
-	
-	flag = 0
+    
+    flag = 0
     if(delta_theta > 180) {
         theta = theta + 180
-		flag = 1
+        flag = 1
     }
     
     # y^2 = kx, y = +-sqrt(kx)
@@ -202,43 +215,43 @@ rotate.parabola = function(theta1, theta2, rou1, rou2 = rou1, theta = (theta1+th
     
     x = x + center.x
     y = y + center.y
-	
-	if(!flag) {
-		x = rev(x)
-		y = rev(y)
-	}
+    
+    if(!flag) {
+        x = rev(x)
+        y = rev(y)
+    }
 
     return(cbind(x, y))
 }
 
 is.points.ordered.on.circle = function(theta, clock.wise = FALSE) {
-	if(clock.wise) {
-		theta = rev(theta)
-	}
-	theta = theta %% 360
-	theta = theta - min(theta)
-	min_index = which(theta == 0)
-	if(min_index > 2) {
-		theta2 = c(theta[min_index:length(theta)], c(theta[1:(min_index - 1)]))
-	} else {
-		theta2 = theta
-	}
-	
-	return(identical(order(theta2), 1:length(theta2)))
+    if(clock.wise) {
+        theta = rev(theta)
+    }
+    theta = theta %% 360
+    theta = theta - min(theta)
+    min_index = which(theta == 0)
+    if(min_index > 2) {
+        theta2 = c(theta[min_index:length(theta)], c(theta[1:(min_index - 1)]))
+    } else {
+        theta2 = theta
+    }
+    
+    return(identical(order(theta2), 1:length(theta2)))
 }
 
 arc.points = function(theta1, theta2, rou, clock.wise = FALSE) {
-	n = 100
-        if(close.wise) {
+    n = 100
+        if(clock.wise) {
             theta = degree.seq(theta2, theta1, length = n)
-	} else {
+    } else {
             theta = degree.seq(theta1, theta2, length = n)
- 	}
-	x = rou * cos(theta*pi/180)
-	y = rou * sin(theta*pi/180)
-	if(clock.wise) {
+     }
+    x = rou * cos(theta*pi/180)
+    y = rou * sin(theta*pi/180)
+    if(clock.wise) {
             x = rev(x)
             y = rev(y)
-	}
-	return(cbind(x, y))
+    }
+    return(cbind(x, y))
 }

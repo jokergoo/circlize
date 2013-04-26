@@ -1,5 +1,4 @@
 
-
 # return the coordinate in polar coordinate system in a specified cell
 circlize = function(x, y, sector.index, track.index, xlim = NULL, ylim = NULL) {
     
@@ -228,10 +227,18 @@ is.points.ordered.on.circle = function(theta, clock.wise = FALSE) {
 	return(identical(order(theta2), 1:length(theta2)))
 }
 
-arc.points = function(theta1, theta2, rou) {
+arc.points = function(theta1, theta2, rou, clock.wise = FALSE) {
 	n = 100
-	theta = degree.seq(theta1, theta2, length = n)
+        if(close.wise) {
+            theta = degree.seq(theta2, theta1, length = n)
+	} else {
+            theta = degree.seq(theta1, theta2, length = n)
+ 	}
 	x = rou * cos(theta*pi/180)
 	y = rou * sin(theta*pi/180)
+	if(clock.wise) {
+            x = rev(x)
+            y = rev(y)
+	}
 	return(cbind(x, y))
 }

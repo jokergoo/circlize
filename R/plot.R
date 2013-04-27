@@ -867,7 +867,7 @@ circos.link = function(sector.index1,
     }
 	
 	# link is the last track in the current version
-	set.track.end.position(0)
+	#set.track.end.position(0)
     return(invisible(NULL))
 }
 

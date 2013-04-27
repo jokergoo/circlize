@@ -468,26 +468,25 @@ circos.polygon = function(x, y,    sector.index = get.current.sector.index(), tr
 
 # to-do: text as an arc?
 circos.text = function(x, y, labels, sector.index = get.current.sector.index(), track.index = get.current.track.index(), 
-    direction = c("default", "vertical_left", "vertical_right", "horizontal"),
+    direction = c("default", "vertical_left", "vertical_right", "horizontal", "arc"),
     adj = par("adj"), cex = 1, col = "black", font = par("font")) {
     
     if(!has.cell(sector.index, track.index)) {
         stop("'circos.text' can only be used after the plotting region been created\n")
     }
 	
-	if(length(srt) == 1) {
-			srt = rep(srt, length(x))
-		}
-		if(length(cex) == 1) {
-			cex = rep(cex, length(x))
-		}
-		if(length(col) == 1) {
-			col = rep(col, length(x))
-		}
-		if(length(font) == 1) {
-			font = rep(font, length(x))
-		}
-    }
+	if(length(cex) == 1) {
+		cex = rep(cex, length(x))
+	}
+	if(length(col) == 1) {
+		col = rep(col, length(x))
+	}
+	if(length(font) == 1) {
+		font = rep(font, length(x))
+	}
+	if(length(adj) == 1) {
+		adj = c(adj, adj)
+	}
 	
     # whether the points that are out of the plotting region.
     check.points.position(x, y, sector.index, track.index)
@@ -495,48 +494,35 @@ circos.text = function(x, y, labels, sector.index = get.current.sector.index(), 
     d = circlize(x, y, sector.index, track.index)
     
     direction = direction[1]
-    if(! direction %in% c("default", "vertical_left", "vertical_right", "horizontal")) {
-        stop("direction can only be choosen from 'default', 'vertical_left', 'vertical_right', 'horizontal'\n.")
-    }
+  #  if(! direction %in% c("default", "vertical_left", "vertical_right", "horizontal")) {
+  #      stop("direction can only be choosen from 'default', 'vertical_left', 'vertical_right', 'horizontal'\n.")
+  #  }
 	
 	if(direction == "arc") {
-		opar = par(no.readonly = TRUE)
-		par(cex = cex, font = font)
-		chars = lapply(labels, strsplit, "")
-		strw = lapply(chars, strwidth)
-		strh = lapply(chars, strheight)
-		if(identical(adj, c(0, 0))) {
-			for(i in seq_along(labels)) {
-				# degree of the bottom center of each char
-				theta = numeric(0)
-				alpha = d[i, 1]
-				for(j in  seq_along(strw[[i]])) {
-					theta[j] = alpha - asin(strw[[i]][j]/2/d[i, 2])*180/pi
-					alpha = alpha - asin(strw[[i]][j]/2/d[i, 2])*180/pi
-				}
-				dr = reverse.circlize(theta, rep(d[i, 2], length(theta)), sector.index, track.index)
-				circos.text(dr[, 1], dr[, 2], labels = chars[[i]], direction = "horizontal", cex = cex[i], col = col[i], font = font[i])
+		
+		chars = strsplit(labels, "")
+		nlabel = length(labels)
+		strw = lapply(chars, strwidth, cex = cex, font = font)
+		strh = lapply(chars, strheight, cex = cex, font = font)
+		
+		alpha.offset = sapply(strw, function(x) sum(x))*adj[1]/d[, 2] * 180/pi
+		rou.offset = sapply(strh, function(x) -x[1]*adj[2])
+
+		for(i in seq_along(labels)) {
+			# degree of the bottom center of each char
+			theta = numeric(length(strw[[i]]))
+			alpha = d[i, 1] + alpha.offset[i]
+			rou = d[i, 2] + rou.offset[i]
+			
+			for(j in  seq_along(strw[[i]])) {
+				theta[j] = alpha - asin(strw[[i]][j]/2/d[i, 2])*180/pi
+				alpha = alpha - asin(strw[[i]][j]/d[i, 2])*180/pi
 			}
-		} else if(identical(adj, c(0, 0.5))) {
-		
-		} else if(identical(adj, c(0, 1))) {
-		
-		} else if(identical(adj, c(1, 0))) {
-		
-		} else if(identical(adj, c(1, 0.5))) {
-		
-		} else if(identical(adj, c(1, 1))) {
-		
-		} else if(identical(adj, c(0.5, 0))) {
-		
-		} else if(identical(adj, c(0.5, 0.5))) {
-		
-		} else if(identical(adj, c(0.5, 1))) {
-		
-		} else {
-			stop("You `adj` argument is wrong.\n")
+			dr = reverse.circlize(theta, rep(rou, length(theta)), sector.index, track.index)
+			circos.text(dr[, 1], dr[, 2], labels = chars[[i]], cex = cex[i], col = col[i], font = font[i], adj = c(0.5, 0))
+			#circos.points(dr[, 1], dr[, 2], pch = 16, cex = 0.8)
 		}
-		par(opar)
+		
 	} else {
         
         srt = d[,1]-90    #srt = ifelse(srt > 0, srt, 360 + srt)
@@ -564,7 +550,7 @@ circos.text = function(x, y, labels, sector.index = get.current.sector.index(), 
 
 circos.trackText = function(x, y, labels, factors, track.index = get.current.track.index(),
                        direction = c("default", "vertical_left", "vertical_right", "horizontal"),
-                       srt = NULL, adj = par("adj"), cex = 1, col = "black", font = par("font")) {
+                       adj = par("adj"), cex = 1, col = "black", font = par("font")) {
     
     # basic check here
     if(length(x) != length(factors) || length(y) != length(factors)) {
@@ -582,7 +568,7 @@ circos.trackText = function(x, y, labels, factors, track.index = get.current.tra
     le = levels(factors)
     
     # set these graphic parameters with same length as the factors
-    # ``direction``, ``srt`` and ``adj`` are not recycled
+    # ``direction`` and ``adj`` are not recycled
     cex = recycle.with.factors(cex, factors)
     col = recycle.with.factors(col, factors)
     font = recycle.with.factors(font, factors)
@@ -597,7 +583,7 @@ circos.trackText = function(x, y, labels, factors, track.index = get.current.tra
         nfont = font[l]
         circos.text(nx, ny, sector.index = le[i],
                       track.index = track.index, labels = nlabels,
-                      direction = direction, srt = srt, adj = adj,
+                      direction = direction, adj = adj,
                       cex = ncex, col = ncol, font = nfont)
             
     }

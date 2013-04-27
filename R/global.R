@@ -2,26 +2,20 @@
 # this file contains variables and functions related to
 # global variables.
 
-.SECTOR.DATA = NULL
+.CIRCOS.ENV = new.env()
 
-# a list
-.TRACK.END.POSITION = 1
-
-# two layers list
-.CELL.DATA = NULL
-
-.CURRENT.TRACK.INDEX = NULL
-.CURRENT.SECTOR.INDEX = NULL
-
-.CIRCOS.PAR = list(
-    start.degree = 0,
-    gap.degree = 1,
-    track.margin = c(0.01, 0.01),  # top margin and bottom margin
-    unit.circle.segments = 1000,   #to simulate smooth curve
-    cell.padding = c(0.1, 0.1, 0.1, 0.1),
-    default.track.height = 0.2,
-    points.overflow.warning = TRUE
-)
+assign(".SECTOR.DATA", NULL, envir = .CIRCOS.ENV)
+assign(".TRACK.END.POSITION", 1, envir = .CIRCOS.ENV)
+assign(".CELL.DATA", NULL, envir = .CIRCOS.ENV)
+assign(".CURRENT.TRACK.INDEX", NULL, envir = .CIRCOS.ENV)
+assign(".CURRENT.SECTOR.INDEX", NULL, envir = .CIRCOS.ENV)
+assign(".CIRCOS.PAR", list(start.degree = 0,
+	gap.degree = 1,
+	track.margin = c(0.01, 0.01),  # top margin and bottom margin
+	unit.circle.segments = 1000,   #to simulate smooth curve
+	cell.padding = c(0.1, 0.1, 0.1, 0.1),
+	default.track.height = 0.2,
+	points.overflow.warning = TRUE), envir = .CIRCOS.ENV)
 
 circos.par = function (...) {
     args = list(...)

@@ -23,10 +23,11 @@ circlize = function(x, y, sector.index, track.index, xlim = NULL, ylim = NULL) {
 reverse.circlize = function(theta, rou, sector.index, track.index) {
 	sector.data = get.sector.data(sector.index)
     cell.data = get.cell.data(sector.index, track.index)
+	ylim = cell.data$ylim
 	
 	x = (theta - sector.data["start.degree"]) / (sector.data["end.degree"] - sector.data["start.degree"]) *
 	    (sector.data["end.value"] - sector.data["start.value"]) + sector.data["start.value"]
-	y = (cell.data$track.start - rou) / (cell.data$track.height) * (ylim[2] - ylim[1]) + ylim[1]
+	y = (cell.data$track.height - (cell.data$track.start - rou)) / cell.data$track.height * (ylim[2] - ylim[1]) + ylim[1]
 	
 	m = cbind(x, y)
 	colnames(m) = c("x", "y")

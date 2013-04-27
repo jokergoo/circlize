@@ -2,8 +2,6 @@
 - put margin and padding into cell.data
 - put all global variable into an env variable
 - comments and documents
-- calculate the length of the parabola
-- use `strwidth` to draw text along to the circle
 - use `degree.add` and `degree.minus` to replace all degree math, so it would be simpler to support clock wise mode
 
 #######################################

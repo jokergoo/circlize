@@ -1,154 +1,205 @@
 # == title
-# Create or update plot regions
+# Create plotting regions for a whole track
+#
+# == param
+# -factors      Factors which represent the categories of data
+# -x            Data on the x-axis
+# -y            Data on the y-axis
+# -ylim         Range of data on the y-axis
+# -force.ylim   Whether to force all cells in the track to share the same ``ylim``
+# -track.index  Index for the track which is goning to be updated
+# -track.height Height of the track. It is the percentage to the radius of the unit circls.
+#               If to update a track, this argument is disabled.
+# -bg.col       Background color for the plotting region
+# -bg.border    Color for the boder of the plotting region
+# -bg.lty       Line style for the border of the plotting region
+# -bg.lwd       Line width for the border of the plotting region
+# -panel.fun    Panel function to draw figures in each cell, see "details" section
+#               and vignette for explaination.
 #
 # == details
 # This function pretends to be high-level plotting function, which means, 
-# you must firstly call this function to create a plotting region, then those
+# you must first call this function to create a plotting region, then those
 # low-level-style plotting function such as `circos.points`, `circos.lines` can be
 # applied.
 #
 # It has two different usages. First, it can create a complete track which among several
 # sectors. Because currently it does not support creating single cell since it would
-# make the layout disordered, this is the only way to create a plotting region.
+# make the layout disordered, this is the only way to create the plotting region.
 #
 # Currently, all the cells that are created in a same track share same height, which means,
-# there is no cell has longer height than others. However, this can be simulated by other
-# methods.
+# there is no cell has longer height than others.
 #
-# Second, it can update a already-created plotRegion if the index for sector and track
-# is specified. But, if one plotting region is updated, those parameters such as the position
+# Since limitation for values on x-axis has already been defined by `circos.initialize`, only
+# limitation for values on y-axis should be specified in this function. There are two ways to
+# identify the limitation for values on y-axies either by the ..
+#
+# ``panel.fun`` provides a convinient way to draw figures in each cell when initializing the 
+# track. The self-defined function need two arguments: ``x`` and ``y`` which is the data points
+# in the current cell. See vignette for examples of how to use this feature.
+#
+# If ``factors`` does not cover all sectors which has been initialized, the cells in remaining unidenfied
+# sectors would also be created but without drawing anything. The ``ylim`` for these cells
+# are the same as that in the latest created cell.
+#
+# Second, it can update a already-created plotRegion if the index for the track
+# is specified. If the index is one bigger than the largest current track index. It in fact
+# creates the new track. If updating an existed track, those parameters related to the position
 # of the plotting region can not be changed.
-circos.trackPlotRegion = function(x = NULL, y = NULL, factors = NULL, track.start = NULL, track.height = circos.par("default.track.height"),
-    sector.index = NULL, track.index = NULL, xlim = NULL, ylim = NULL, forced.ylim = TRUE,
+circos.trackPlotRegion = function(factors, x = NULL, y = NULL, ylim = NULL, force.ylim = TRUE,
+    track.index = NULL, track.height = circos.par("default.track.height"),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
     panel.fun = NULL) {
     
-    # if ``factor`` has not been specified, arguments of ``track.start``, ``track.height``,
-    # ``xlim`` and ``ylim`` which are related to the position of cells are ignored.
+    # basic check here
+    # if ``ylim`` set then do not need ``y``
+    if(!is.null(y) && length(y) != length(factors) ||
+	   !is.null(x) && length(x) != length(factors)) {
+        stop("Length of data and length of factors differ.\n")
+    }
+        
+    if(!is.factor(factors)) {
+        factors = factor(factors)
+    }
+        
+    if(length(setdiff(levels(factors), get.all.sector.index()))) {
+        stop("Factors name should be all in existed sector index.\n")
+    }
     
-    if(is.null(factors)) {
-        stop("factors should be specified.\n")
+    if(is.null(track.index)) {
+        # new track should inside the most recently created track
+        last.track.index = get.max.track.index()
+        set.current.track.index(last.track.index + 1)
+        track.index = get.current.track.index()
     } else {
+		if(track.index > get.max.track.index() + 1) {
+			stop("Wrong track index.\n")
+		}
+		if(track.index <= get.max.track.index()) {
+			if(! is.null(track.height)) {
+				warning("You are updating an existed track, the `track.height` is not used.\n")
+			}
+			track.height = get.cell.data(factors[1], track.index)$track.height
+		}
+        set.current.track.index(track.index)
+    }
         
-        # ``sector.index`` and ``xlim`` are ignored
+   
+    le = levels(factor(factors))
+	nlevel = length(le)
+    bg.col = recycle.with.levels(bg.col, le)
+    bg.border = recycle.with.levels(bg.border, le)
+    bg.lty = recycle.with.levels(bg.lty, le)
+    bg.lwd = recycle.with.levels(bg.lwd, le)
+	
+     # whether force ylim for all cells in a track same
+    if(is.null(ylim)) {
+		if(force.ylim) {
+			y.range = range(y)
+			y.range = matrix(rep(y.range, nlevel), ncol = 2, byrow = TRUE)
+		} else {
+			y.range = tapply(y, factors, range)
+			y.range = matrix(unlist(y.range), ncol = 2, byrow = TRUE)
+		}
+	}
+	
+    track.start = get.track.end.position(track.index - 1) - circos.par("track.margin")[1]
         
-        # basic check here
-        # if ``ylim`` set then do not need ``y``
-        if(is.null(ylim) && length(y) != length(factors)) {
-            stop("Length of data and length of factors differ.\n")
-        }
+    # check whether there is enough space for the new track and whether the new space
+    # overlap with other tracks
+    check.track.position(track.index, track.start, track.height)
         
-        if(!is.factor(factors)) {
-            factors = factor(factors)
-        }
+    if(!is.null(ylim)) {
+		if(is.vector(ylim) && length(ylim) == 2) {
+			ylim = matrix(rep(ylim, length(le)), ncol = 2, byrow = TRUE)
+		} else if(is.matrix(ylim) && ncol(ylim) == 2 && nrow(ylim) == length(le)) {
+		
+		} else {
+			stop("Wrong `ylim`.\n")
+		}
+    } 
         
-        if(length(setdiff(levels(factors), get.all.sector.index()))) {
-            stop("Factors name should be all in existed sector index.\n")
-        }
-        
-        if(is.null(track.index)) {
-            # new track should inside the most recently created track
-            last.track.index = get.max.track.index()
-            set.current.track.index(last.track.index + 1)
-            track.index = get.current.track.index()
+    # now for each factor
+    for(i in seq_along(le)) {
+            
+        sector.data = get.sector.data(le[i])
+        xlim = c(sector.data["start.value"], sector.data["end.value"])
+		names(xlim) = NULL
+		
+		cell.padding = circos.par("cell.padding")
+		yl = numeric(2)
+        if(is.null(ylim)) {
+            yl[1] = y.range[i, 1] - (y.range[i, 2] - y.range[i, 1])*cell.padding[1]
+            yl[2] = y.range[i, 2] + (y.range[i, 2] - y.range[i, 1])*cell.padding[3]
         } else {
-            set.current.track.index(track.index)
-        }
+			yl[1] = ylim[i, 1] - (ylim[i, 2] - ylim[i, 1])*cell.padding[1]
+            yl[2] = ylim[i, 2] + (ylim[i, 2] - ylim[i, 1])*cell.padding[3]
+		}
         
-        
-        # whether force ylim for all cells in a track same
-        if(is.null(ylim) && forced.ylim) {
-            y.range = range(y)
-        }
-        
-        le = levels(factor(factors))
-        bg.col = recycle.with.levels(bg.col, le)
-        bg.border = recycle.with.levels(bg.border, le)
-        bg.lty = recycle.with.levels(bg.lty, le)
-        bg.lwd = recycle.with.levels(bg.lwd, le)
-        
-        # if ``track.start`` has not been specified, start from the most recently
-        # created track
-        if(is.null(track.start)) {
-            track.start = get.track.end.position(track.index - 1) - circos.par("track.margin")[1]
-        }
-        
-        # check whether there is enough space for the new track and whether the new space
-        # overlap with other tracks
-        check.track.position(track.index, track.start, track.height)
-        
-        # if ``panel.fun`` specified, need to check the ``...``
-        # in ``...``, arguments only can be vectors
-        if(!is.null(panel.fun)) {
-            
-            if((!is.null(x) && length(x) != length(factors)) || 
-               (!is.null(y) && length(y) != length(factors))) {
-                stop("Length of data and length of factors differ.\n")
-            }
-        }
-        
-        if(!is.null(ylim)) {
-            cell.padding = circos.par("cell.padding")
-            ylim[1] = ylim[1] - (ylim[2] - ylim[1])*cell.padding[1]
-            ylim[2] = ylim[2] + (ylim[2] - ylim[1])*cell.padding[3]
-        }
-        
-        # now for each factor
-        for(i in seq_along(le)) {
-            
-            l = factors == le[i]
-            
-            # if ``ylim`` is not forced to be identical in all cells, then each cell has
-            # its own ``ylim``
-            if(is.null(ylim) && (!forced.ylim)) {
-                y.range = range(y[l])
-            }
-            
-            sector.data = get.sector.data(le[i])
-            xlim = c(sector.data["start.value"], sector.data["end.value"])
-            if(is.null(ylim)) {
-                ylim = y.range
-                cell.padding = circos.par("cell.padding")
-                ylim[1] = ylim[1] - (ylim[2] - ylim[1])*cell.padding[1]
-                ylim[2] = ylim[2] + (ylim[2] - ylim[1])*cell.padding[3]
-            }
-            
-            
-            # create plotting region for single cell
-            circos.createPlotRegion(track.start = track.start,
+        # create plotting region for single cell
+        circos.createPlotRegion(track.start = track.start,
                               track.height = track.height, sector.index = le[i],
                               track.index = track.index,
-                              xlim = xlim, ylim = ylim, bg.col = bg.col[i],
+                              xlim = xlim, ylim = yl, bg.col = bg.col[i],
                               bg.border = bg.border[i], bg.lty = bg.lty[i], bg.lwd = bg.lwd[i])
-
-            if(! is.null(panel.fun)) {
-                if(is.null(x)) {
-                    nx = NULL
-                } else {
-                    nx = x[l]
-                }
-                
-                if(is.null(y)) {
-                    ny = NULL
-                } else {
-                    ny = y[l]
-                }
-                
-                panel.fun(nx, ny)
+		
+		l = factors == le[i]
+        if(! is.null(panel.fun)) {
+            if(is.null(x)) {
+                nx = NULL
+            } else {
+                nx = x[l]
             }
-            
+                
+            if(is.null(y)) {
+                ny = NULL
+            } else {
+                ny = y[l]
+            }
+                
+            panel.fun(nx, ny)
         }
-        
-        
-        # After the track has been created, the default tract starting position is set
-        # just next to the most recently created track
-        set.track.end.position(track.index, track.start - track.height - circos.par("track.margin")[2])
-        return(invisible(NULL))
+            
     }
+	
+	# and those sectors not include in factors
+    le2 = setdiff(get.all.sector.index(), levels(factors))
+	if(length(le2)) {
+		for(i in seq_along(le2)) {
+            
+			sector.data = get.sector.data(le2[i])
+			xlim = c(sector.data["start.value"], sector.data["end.value"])
+			names(xlim) = NULL
+			
+			# ylim is the most recent ``yl``
+			circos.createPlotRegion(track.start = track.start,
+								  track.height = track.height, sector.index = le2[i],
+								  track.index = track.index,
+								  xlim = xlim, ylim = yl, bg.col = "white",
+								  bg.border = "white")
+		}
+	}
+	
+    # After the track has been created, the default tract starting position is set
+    # just next to the most recently created track
+    set.track.end.position(track.index, track.start - track.height - circos.par("track.margin")[2])
+    return(invisible(NULL))
 
-    
 }
 
+# == title
+# Update the plotting region in an existed cell
+#
+# == param
+# -sector.index Index for the sector
+# -track.index  Index for the track
+# -bg.col       Background color for the plotting region
+# -bg.border    Color for the boder of the plotting region
+# -bg.lty       Line style for the border of the plotting region
+# -bg.lwd       Line width for the border of the plotting region
+#
+# == details
+# You can update an existed cell by this function by erasing the contents in the plotting regions
 circos.updatePlotRegion = function(sector.index = get.current.sector.index(), track.index = get.current.track.index(),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd")) {
     
@@ -200,8 +251,18 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("defau
         lty = bg.lty, lwd = bg.lwd)
     return(invisible(NULL))
 }
+
 # == title 
 # Add points to the plotting region
+#
+# = param
+# -x            Data points on x-axis
+# -y            Data points on y-axis
+# -sector.index Index for the sector
+# -track.index  Index for the track
+# -pch          Points type
+# -col          Points color
+# -cex          Points size
 #
 # == details
 # This function can only add points in a specified cell. Pretending a low-level plotting 
@@ -220,29 +281,41 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("defau
 # Other graphics parameters which are available in the function are ``pch``, ``col``
 # and ``cex`` which have same meaning with those in the `graphics` package.
 circos.points = function(x, y, sector.index = get.current.sector.index(), track.index = get.current.track.index(),
-                         pch = par("pch"), col = par("col"), cex = par("cex"), ...) {
+                         pch = par("pch"), col = par("col"), cex = par("cex")) {
     
     if(!has.cell(sector.index, track.index)) {
         stop("'circos.points' can only be used after the plotting region been created\n")
     }
-    
+
     # whether the points that are out of the plotting region.
     # If there is, throw warnings.
     check.points.position(x, y, sector.index, track.index)
     
     d = circlize(x, y, sector.index, track.index)
-    points(polar2Cartesian(d), pch = pch, col = col, cex = cex, ...)
+    points(polar2Cartesian(d), pch = pch, col = col, cex = cex)
     return(invisible(NULL))
 }
 
 # == title 
 # Add points to the plotting regions in one track
 #
+# = param
+# -factors      Factors which represent the categories of data
+# -x            Data points on x-axis
+# -y            Data points on y-axis
+# -track.index  Index for the track
+# -pch          Points type
+# -col          Points color
+# -cex          Points size
+#
 # The function adds points in multiple cells by first splitting data into several parts in which
 # each part corresponds to one factor (sector index) and then add points in cells corresponding
 # to the part of data.
-circos.trackPoints = function(x, y, factors, track.index = get.current.track.index(),
-                         pch = par("pch"), col = par("col"), cex = par("cex"), ...) {
+#
+# Length of ``pch``, ``col`` and ``cex`` can be one, length of levels of the factors and length of 
+# factors. All length will be recycled to the length of factors respectively.
+circos.trackPoints = function(factors, x, y, track.index = get.current.track.index(),
+                         pch = par("pch"), col = par("col"), cex = par("cex")) {
     
     # basic check here
     if(length(x) != length(factors) || length(y) != length(factors)) {
@@ -274,13 +347,30 @@ circos.trackPoints = function(x, y, factors, track.index = get.current.track.ind
         ncex = cex[l]
         circos.points(nx, ny, sector.index = le[i],
                       track.index = track.index,
-                      pch = npch, col = ncol, cex = ncex,
-                      ...)
+                      pch = npch, col = ncol, cex = ncex)
             
     }
     return(invisible(NULL))
 }
 
+# == title 
+# Add lines to the plotting region
+#
+# = param
+# -x            Data points on x-axis
+# -y            Data points on y-axis
+# -sector.index Index for the sector
+# -track.index  Index for the track
+# -col          Line color
+# -lwd          line width
+# -lty          line style
+# -straight     whether draw straight lines between points
+# -type         line type, similar as ``type`` argument in `graphics::lines`, but only in ``c("l", "o", "h", "s")``
+# -pt.col       if ``type`` is "o", points color
+# -cex          if ``type`` is "o", points size
+# -pch          if ``type`` is "o", points type
+#
+# ==details
 # straight lines are transformed into curves, so there should be some segmentation
 # of the original lines
 #
@@ -296,7 +386,7 @@ circos.trackPoints = function(x, y, factors, track.index = get.current.track.ind
 # that the size of the file is so big.
 circos.lines = function(x, y, sector.index = get.current.sector.index(), track.index = get.current.track.index(),
     col = "black", lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
-    pt.col = "black", cex = par("cex"), pch = par("pch"), ...) {
+    pt.col = "black", cex = par("cex"), pch = par("pch")) {
     
     if(type == "l") {
         
@@ -346,9 +436,26 @@ circos.lines = function(x, y, sector.index = get.current.sector.index(), track.i
     return(invisible(NULL))
 }
 
-circos.trackLines = function(x, y, factors, track.index = get.current.track.index(),
-                         col = "black", lwd = par("lwd"), lty = par("lty"), straight = FALSE,
-                         pt.col = "black", cex = par("cex"), pch = par("pch"), type = "l", ...) {
+## == title 
+# Add lines to the plotting regions in one track
+#
+# = param
+# -factors      Factors which represent the categories of data
+# -x            Data points on x-axis
+# -y            Data points on y-axis
+# -track.index  Index for the track
+# -col          Line color
+# -lwd          line width
+# -lty          line style
+# -straight     whether draw straight lines between points
+# -type         line type, similar as ``type`` argument in `graphics::lines`, but only in ``c("l", "o", "h", "s")``
+# -pt.col       if ``type`` is "o", points color
+# -cex          if ``type`` is "o", points size
+# -pch          if ``type`` is "o", points type
+#
+circos.trackLines = function(factors, x, y, track.index = get.current.track.index(),
+    col = "black", lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
+    pt.col = "black", cex = par("cex"), pch = par("pch")) {
     
     # basic check here
     if(length(x) != length(factors) || length(y) != length(factors)) {
@@ -386,7 +493,7 @@ circos.trackLines = function(x, y, factors, track.index = get.current.track.inde
         circos.lines(nx, ny, sector.index = le[i],
                       track.index = track.index,
                       col = ncol, lwd = nlwd, lty = nlty,
-                      pt.col = npt.col, cex = ncex, pch = npch, type = type, straight = straight, ...)
+                      pt.col = npt.col, cex = ncex, pch = npch, type = type, straight = straight)
             
     }
     return(invisible(NULL))
@@ -395,6 +502,18 @@ circos.trackLines = function(x, y, factors, track.index = get.current.track.inde
 
 # == title
 # Draw rectangle-like grid
+#
+# = param
+# -xleft
+# -ybottom
+# -xright
+# -ytop
+# -sector.index
+# -track.index
+# -col
+# -border
+# -lty
+# -lwd
 #
 # == details
 # Currently, ``xleft``, ``ybottom``, ``xright``, ``ytop`` are all single values, which means
@@ -447,9 +566,19 @@ circos.rect = function(xleft, ybottom, xright, ytop, sector.index = get.current.
 # == title
 # Draw polygon
 #
+# = param
+# -x
+# -y
+# -sector.index
+# -track.index
+# -col
+# -border
+# -lty
+# -lwd
+#
 # == details
 # similar as `graphics::polygon`
-circos.polygon = function(x, y,    sector.index = get.current.sector.index(), track.index = get.current.track.index(),
+circos.polygon = function(x, y, sector.index = get.current.sector.index(), track.index = get.current.track.index(),
     col = NA, border = "black", lty = par("lty"), lwd = par("lwd")) {
     
     if(!has.cell(sector.index, track.index)) {
@@ -466,7 +595,23 @@ circos.polygon = function(x, y,    sector.index = get.current.sector.index(), tr
     return(invisible(NULL))
 }
 
-# to-do: text as an arc?
+# == title
+# Draw text in a cell
+#
+# == param
+# -x
+# -y
+# -labels
+# -sector.index
+# -track.index
+# -direction
+# -adj
+# -cex
+# -col
+# -font
+#
+# == details
+#
 circos.text = function(x, y, labels, sector.index = get.current.sector.index(), track.index = get.current.track.index(), 
     direction = c("default", "vertical_left", "vertical_right", "horizontal", "arc"),
     adj = par("adj"), cex = 1, col = "black", font = par("font")) {
@@ -494,9 +639,9 @@ circos.text = function(x, y, labels, sector.index = get.current.sector.index(), 
     d = circlize(x, y, sector.index, track.index)
     
     direction = direction[1]
-  #  if(! direction %in% c("default", "vertical_left", "vertical_right", "horizontal")) {
-  #      stop("direction can only be choosen from 'default', 'vertical_left', 'vertical_right', 'horizontal'\n.")
-  #  }
+    if(! direction %in% c("default", "vertical_left", "vertical_right", "horizontal", "arc")) {
+        stop("direction can only be choosen from 'default', 'vertical_left', 'vertical_right', 'horizontal' and 'arc'\n.")
+    }
 	
 	if(direction == "arc") {
 		
@@ -537,8 +682,6 @@ circos.text = function(x, y, labels, sector.index = get.current.sector.index(), 
     
 		m = polar2Cartesian(d)
 		
-		
-		
 		for(i in seq_along(x)) {
 			text(m[i, 1], m[i, 2], labels = labels[i], srt = srt[i],
 				 cex = cex[i], col = col[i], font = font[i], adj = adj)
@@ -548,7 +691,20 @@ circos.text = function(x, y, labels, sector.index = get.current.sector.index(), 
     return(invisible(NULL))
 }
 
-circos.trackText = function(x, y, labels, factors, track.index = get.current.track.index(),
+# == title
+# Draw text in cells among the whole track
+#
+# == param
+# -factors
+# -x
+# -y
+# -track.index
+# -direction
+# -adj
+# -cex
+# -col
+# -font
+circos.trackText = function(factors, x, y, labels, track.index = get.current.track.index(),
                        direction = c("default", "vertical_left", "vertical_right", "horizontal"),
                        adj = par("adj"), cex = 1, col = "black", font = par("font")) {
     
@@ -590,6 +746,23 @@ circos.trackText = function(x, y, labels, factors, track.index = get.current.tra
     return(invisible(NULL))
 }
 
+# == title
+# Draw links between two points or sections
+#
+# = param
+# -sector.index1
+# -point1
+# -sector.index2
+# -point2
+# -rou
+# -top.ratio
+# -col
+# -lwd
+# -lty
+# -border
+#
+# == details
+#
 circos.link = function(sector.index1,
                        point1,  # x or c(x, y)
                        sector.index2,
@@ -603,7 +776,7 @@ circos.link = function(sector.index1,
     
     if(length(point1) == 1 && length(point2) == 1) {
         theta1 = (point1 - sector.data1["start.value"]) / (sector.data1["end.value"] - sector.data1["start.value"]) *
-                 degree.minus(sector.data1["end.degree"] - sector.data1["start.degree"]) + sector.data1["start.degree"]
+                 (sector.data1["end.degree"] - sector.data1["start.degree"]) + sector.data1["start.degree"]
         
         theta2 = (point2 - sector.data2["start.value"]) / (sector.data2["end.value"] - sector.data2["start.value"]) *
                  (sector.data2["end.degree"] - sector.data2["start.degree"]) + sector.data2["start.degree"]
@@ -612,10 +785,12 @@ circos.link = function(sector.index1,
         lines(d, col = col, lwd = lwd, lty = lty)
     } else {
         if(length(point1) == 1) {
-            point1 = c(point1, point1)   
+			current.cell.xrange = get.cell.meta.data("xrange", sector.index1)
+            point1 = c(point1, point1 + current.cell.xrange/100)   
         }
         if(length(point2) == 1) {
-            point2 = c(point2, point2)   
+			current.cell.xrange = get.cell.meta.data("xrange", sector.index2)
+            point2 = c(point2, point2 + current.cell.xrange/100)  
         }
         
         theta11 = (point1[1] - sector.data1["start.value"]) / (sector.data1["end.value"] - sector.data1["start.value"]) *
@@ -690,6 +865,9 @@ circos.link = function(sector.index1,
         d = rbind(d, r2)
         polygon(d, col = col, lty = lty, lwd = lwd, border = border)
     }
+	
+	# link is the last track in the current version
+	set.track.end.position(0)
     return(invisible(NULL))
 }
 
@@ -700,9 +878,33 @@ circos.link = function(sector.index1,
 #
 #####################################################################
 
-# first a global hist
-circos.trackHist = function(x, factors, track.start = NULL, track.height = circos.par("default.track.height"),
-    track.index = NULL, xlim = NULL, ylim = NULL, forced.ylim = TRUE,
+# == title
+# Draw histogram in cells among a whole track
+#
+# = param
+# -factors
+# -x
+# -track.height
+# -track.index
+# -ylim
+# -force.ylim
+# -col
+# -border
+# -lty
+# -lwd
+# -bg.col
+# -bg.border
+# -bg.lty
+# -bg.lwd
+# -breaks
+# -include.lowest
+# -right
+# -draw.density
+#
+# == details
+#
+circos.trackHist = function(factors, x, track.height = circos.par("default.track.height"),
+    track.index = NULL, ylim = NULL, force.ylim = TRUE,
     col = NA, border = "black", lty = par("lty"), lwd = par("lwd"),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
     breaks = "Sturges", include.lowest = TRUE, right = TRUE, draw.density = FALSE) {
@@ -714,10 +916,6 @@ circos.trackHist = function(x, factors, track.start = NULL, track.height = circo
         
     if(!is.factor(factors)) {
         factors = factor(factors)
-    }
-    
-    if(length(setdiff(levels(factors), get.all.sector.index()))) {
-        stop("Factors name should be all in existed sector index.\n")
     }
     
     # calculate the distributions
@@ -744,14 +942,14 @@ circos.trackHist = function(x, factors, track.start = NULL, track.height = circo
     }
     
     # create the plotting region
-    circos.trackPlotRegion(y=yy, factors = fa, track.start = track.start, track.height = track.height,
-                      track.index = track.index, forced.ylim = forced.ylim,
+    circos.trackPlotRegion(factors = fa, y=yy, track.height = track.height,
+                      track.index = track.index, force.ylim = force.ylim,
                       bg.col = bg.col, bg.border = bg.border, bg.lty = bg.lty, bg.lwd = bg.lwd)
     
     track.index = get.current.track.index()
     
     if(draw.density) {
-        circos.trackLines(xx, yy, factors = fa, track.index = track.index,
+        circos.trackLines(factors = fa, xx, yy, track.index = track.index,
                           col = col, lty = lty, lwd = lwd)
     } else {
         # in each cell, draw rectangles

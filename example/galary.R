@@ -20,31 +20,31 @@ for(le in levels(a$factor)) {
 
 par(mar = c(1, 1, 1, 1))
 circos.par("default.track.height" = 0.15)
-circos.initialize(a$x, a$factor)
+circos.initialize(factors = a$factor, x = a$x)
 
 bgcol = rep(c("#EFEFEF", "#CCCCCC"), 4)
 col = rep(c("#FF000010", "#00FF0010"), 4)
-circos.trackPlotRegion(y = a$y, factors = a$factor, track.index = 1)
-circos.trackPoints(a$x, a$y, a$factor, track.index = 1, col = col, pch = 16, cex = 0.5)
-circos.trackHist(a$x, a$factor, bg.col = bgcol, col = NA)
+circos.trackPlotRegion(factors = a$factor, y = a$y, track.index = 1)
+circos.trackPoints(a$factor, a$x, a$y, track.index = 1, col = col, pch = 16, cex = 0.5)
+circos.trackHist(a$factor, a$x, bg.col = bgcol, col = NA)
 
-circos.trackPlotRegion(x = a$x, y = a$y, factors = a$factor, panel.fun = function(x, y, ...) {
+circos.trackPlotRegion(factors = a$factor, x = a$x, y = a$y, panel.fun = function(x, y, ...) {
     grey = c("#FFFFFF", "#CCCCCC", "#999999")
     circos.updatePlotRegion(bg.col = grey[get.sector.numeric.index() %% 3 + 1])
     circos.points(x[1:10], y[1:10], col = "red", pch = 16, cex = 0.6)
     circos.points(x[11:20], y[11:20], col = "blue", cex = 0.6)
 })
 
-circos.updatePlotRegion(sector.index = "d", track.index = 3)
+circos.updatePlotRegion(sector.index = "d", track.index = 2)
 circos.points(x = runif(100), y = runif(100))
 
-circos.trackPlotRegion(y = a$y, factors = a$factor)
+circos.trackPlotRegion(factors = a$factor, y = a$y)
 show.index()
-circos.trackLines(a$x[1:100], a$y[1:100], a$factor[1:100], type = "h")
+circos.trackLines(a$factor[1:100], a$x[1:100], a$y[1:100], type = "h")
 
 circos.link("a", 0, "b", 0, top.ratio = 0.9)
-circos.link("c", c(-0.2, 0.2), "d", c(-0.2,0.2), col = "red", border = "blue", top.ratio = 0.2)
-circos.link("e", 0, "g", c(-0.2,0.2), col = "green", lwd = 2, lty = 2)
+circos.link("c", c(-0.5, 0.5), "d", c(-0.5,0.5), col = "red", border = "blue", top.ratio = 0.2)
+circos.link("e", 0, "g", c(-1,1), col = "green", lwd = 2, lty = 2)
 
 circos.clear()
 
@@ -63,7 +63,7 @@ circos.initialize(factors = factors, xlim = c(0, 1))
 
 circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA,
     panel.fun = function(x, y) {
-        i = get.sector.numeric.index()
+        i = get.cell.meta.data("sector.numeric.index")
         if(i <= 4) {
             circos.rect(0,0,1,1, col = "black")
         } else {
@@ -74,7 +74,7 @@ circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA,
 
 circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA,
     panel.fun = function(x, y, ...) {
-        i = get.sector.numeric.index()
+        i = get.cell.meta.data("sector.numeric.index")
         if(i %in% c(1,2,5,6)) {
             circos.rect(0,0,1,1, col = "black")
         } else {
@@ -85,7 +85,7 @@ circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA,
 
 circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA, 
     panel.fun = function(x, y, ...) {
-        i = get.sector.numeric.index()
+        i = get.cell.meta.data("sector.numeric.index")
         if(i %in% c(1,3,5,7)) {
             circos.rect(0,0,1,1, col = "black")
         } else {

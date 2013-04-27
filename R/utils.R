@@ -162,11 +162,6 @@ check.points.position = function(x, y, sector.index = NULL, track.index = NULL) 
     return(invisible(NULL))
 }
 
-get.sector.numeric.index = function(sector.index = get.current.sector.index()) {
-    return(which(get.all.sector.index() == sector.index))
-}
-
-
 # parabola intersects with the UNIT circle
 # theta1 is the start point and theta2 is the end point
 rotate.parabola = function(theta1, theta2, rou1, rou2 = rou1, theta = (theta1+theta2)/2, 
@@ -225,6 +220,9 @@ rotate.parabola = function(theta1, theta2, rou1, rou2 = rou1, theta = (theta1+th
     return(cbind(x, y))
 }
 
+# this is not a perfect function because it assumes all theta are different
+# but it is ok in this package since the former step can ensure the values
+# are different
 is.points.ordered.on.circle = function(theta, clock.wise = FALSE) {
     if(clock.wise) {
         theta = rev(theta)

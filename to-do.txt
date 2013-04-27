@@ -1,11 +1,8 @@
 - testing code
-- put margin and padding into cell.data
-- put all global variable into an env variable
 - comments and documents
-- use `degree.add` and `degree.minus` to replace all degree math, so it would be simpler to support clock wise mode
 
 #######################################
 # long term
-the order of sector to support clockwise
-the direction of y-axis can be set (currently pointing to the outside)
+- the order of sector to support clockwise
+- the direction of y-axis can be set (currently pointing to the outside)
 - `circos.lines` add an `area` argument

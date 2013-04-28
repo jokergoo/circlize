@@ -262,15 +262,13 @@ circos.clear()
 
 #########################################
 par(mar = c(1, 1, 1, 1))
-x = rnorm(1000)
-factors = rep(letters[1:4], 1000/4)
-x[factors == "a"] = x[factors == "a"] * 0.3
-x[factors == "c"] = x[factors == "c"] * 0.6
+x = rnorm(2600)
+factors = sample(letters, 2600, replace = TRUE)
 circos.initialize(factors = factors, x = x)
-circos.trackHist(factors = factors, x = x)
-circos.trackHist(factors = factors, x = x, force.ylim = FALSE)
-circos.trackHist(factors = factors, x = x, draw.density = TRUE)
-circos.trackHist(factors = factors, x = x, draw.density = TRUE, force.ylim = FALSE)
+circos.trackHist(factors = factors, x = x, track.height = 0.1, col = "#CCCCCC", border = "#CCCCCC")
+circos.trackHist(factors = factors, x = x, force.ylim = FALSE, track.height = 0.1, col = "#CCCCCC", border = "#CCCCCC")
+circos.trackHist(factors = factors, x = x, draw.density = TRUE, track.height = 0.1, col = "#CCCCCC", border = "#CCCCCC")
+circos.trackHist(factors = factors, x = x, draw.density = TRUE, force.ylim = FALSE, track.height = 0.1, col = "#CCCCCC", border = "#CCCCCC")
 
 circos.clear()
 
@@ -344,3 +342,26 @@ circos.text(-1.5, 5, "gap.degree", direction = "vertical_right", sector.index = 
 circos.text(11.5, 5, "gap.degree", direction = "vertical_right", sector.index = "a", track.index = 2)
 circos.clear()
 
+############################################################
+
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:8]
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", bg.border = NA, track.height = 0.05)
+
+circos.link("a", 5, "c", 5)
+circos.link("b", 5, "d", c(4, 6))
+circos.link("a", c(2, 3), "f", c(4, 6))
+
+
+circos.clear()
+
+##########################################################
+plot(c(-1, 1), c(-1, 1), axes = FALSE, ann = FALSE ,type = "n")
+draw.sector(x = 0, y = 0, start = 0, end = 360, radius = 01, col = "white", border = "black")
+d= rotate.parabola(theta1 = 270, theta2 = 330, rou1 = 1, rou.ratio = 0.5)
+lines(rbind(d, d[1, ]))
+lines(c(cos(300/180*pi), cos(120/180*pi)), c(sin(300/180*pi), sin(120/180*pi)))
+points(0, 0, pch = 16)
+lines(c(0, sqrt(3)/4)+0.01, c(0, -3/4)+0.01, lwd = 4, col = "red")
+lines(c(0, sqrt(3)/4/2)-0.01, c(0, -3/4/2)-0.01, lwd = 4, col = "blue")

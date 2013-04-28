@@ -792,7 +792,7 @@ circos.link = function(sector.index1,
                        point2,
                        rou = get.track.end.position(get.current.track.index()),
                        top.ratio = 0.5,
-                       col = "grey", lwd = par("lwd"), lty = par("lty"), border = "black") {
+                       col = "black", lwd = par("lwd"), lty = par("lty"), border = NA) {
     
     sector.data1 = get.sector.data(sector.index1)
     sector.data2 = get.sector.data(sector.index2)
@@ -846,16 +846,6 @@ circos.link = function(sector.index1,
             }
         }
         
-        w1 = abs(theta11 - theta12)/180*pi*rou
-        w2 = abs(theta21 - theta22)/180*pi*rou
-        w = max(w1, w2)
-        if(abs(theta11 - theta21) > abs(theta12 - theta22)) {
-            r1 = 0.5
-            r2 = 0.6
-        } else {
-            r1 = 0.5
-            r2 = 0.4
-        }
         d1 = rotate.parabola(theta1 = theta11, theta2 = theta21, rou1 = rou, rou.ratio = top.ratio)
         d2 = rotate.parabola(theta1 = theta12, theta2 = theta22, rou1 = rou, rou.ratio = top.ratio)
 

@@ -3,6 +3,4 @@
 
 #######################################
 # long term
-- the order of sector to support clockwise
 - the direction of y-axis can be set (currently pointing to the outside)
-- `circos.lines` add an `area` argument

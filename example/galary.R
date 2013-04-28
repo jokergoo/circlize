@@ -11,7 +11,7 @@ source("R/utils.R")
 
 require(RColorBrewer)
 
-col2 = brewer.pal(8, "Set1")
+
 n = 10000
 a = data.frame(factor = sample(letters[1:8], n, replace = TRUE), x = rnorm(n), y = runif(n))
 for(le in levels(a$factor)) {
@@ -19,18 +19,21 @@ for(le in levels(a$factor)) {
 }
 
 par(mar = c(1, 1, 1, 1))
-circos.par("default.track.height" = 0.15)
+circos.par("default.track.height" = 0.15, "clock.wise" = TRUE)
 circos.initialize(factors = a$factor, x = a$x)
 
 bgcol = rep(c("#EFEFEF", "#CCCCCC"), 4)
 col = rep(c("#FF000010", "#00FF0010"), 4)
 circos.trackPlotRegion(factors = a$factor, y = a$y, track.index = 1)
 circos.trackPoints(a$factor, a$x, a$y, track.index = 1, col = col, pch = 16, cex = 0.5)
+circos.text(-1,0.5, "left", sector.index = "a", track.index = 1)
+circos.text(1,0.5, "right", sector.index = "a", track.index = 1)
+
 circos.trackHist(a$factor, a$x, bg.col = bgcol, col = NA)
 
 circos.trackPlotRegion(factors = a$factor, x = a$x, y = a$y, panel.fun = function(x, y, ...) {
     grey = c("#FFFFFF", "#CCCCCC", "#999999")
-    circos.updatePlotRegion(bg.col = grey[get.sector.numeric.index() %% 3 + 1])
+    circos.updatePlotRegion(bg.col = grey[get.cell.meta.data("sector.numeric.index") %% 3 + 1])
     circos.points(x[1:10], y[1:10], col = "red", pch = 16, cex = 0.6)
     circos.points(x[11:20], y[11:20], col = "blue", cex = 0.6)
 })
@@ -103,6 +106,11 @@ draw.sector = function (x, y, start=0, end=360, radius, col="black", border = "b
     }
     
     m = polar2Cartesian(d)
+	if( (end - start) >= 360 || (end - start) %% 360 == 0) {
+		
+	} else {
+		m = rbind(m, c(0, 0))
+	}
     m[, 1] = m[, 1] + x
     m[, 2] = m[, 2] + y
     polygon(m, col = col, border = border)
@@ -210,3 +218,129 @@ for(i in 2:n) {
 }
 
 circos.clear()
+
+
+#####################################
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:4]
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.5, panel.fun = function(x, y) {
+	circos.text(5, 9, "default_default", direction = "default")
+	circos.points(5, 9, pch = 16, col = "red") 
+	circos.text(0, 5, "vertical_left", direction = "vertical_left")
+	circos.points(0, 5, pch = 16, col = "red") 
+	circos.text(10, 5, "vertical_right", direction = "vertical_right")
+	circos.points(10, 5, pch = 16, col = "red") 
+	circos.text(5, 5, "horizontal", direction = "horizontal")
+	circos.points(5, 5, pch = 16, col = "red") 
+	circos.text(5, 1, "arc_arc_arc_arc_arc", direction = "arc")
+	circos.points(5, 1, pch = 16, col = "red") 
+})
+circos.clear()
+
+##########################################
+
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:7]
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.5)
+circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "a")
+circos.text(5, 9, "type = 'l'", sector.index = "a")
+circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "b", type = "o")
+circos.text(5, 9, "type = 'o'", sector.index = "b")
+circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "c", type = "h")
+circos.text(5, 9, "type = 'h'", sector.index = "c")
+circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "d", type = "s")
+circos.text(5, 9, "type = 's'", sector.index = "d")
+circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "e", area = TRUE)
+circos.text(5, 9, "type = 'l', area = TRUE", sector.index = "e")
+circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "f", type = "o", area = TRUE)
+circos.text(5, 9, "type = 'o', area = TRUE", sector.index = "f")
+circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "g", type = "s", area = TRUE)
+circos.text(5, 9, "type = 's', area = TRUE", sector.index = "g")
+circos.clear()
+
+#########################################
+par(mar = c(1, 1, 1, 1))
+x = rnorm(1000)
+factors = rep(letters[1:4], 1000/4)
+x[factors == "a"] = x[factors == "a"] * 0.3
+x[factors == "c"] = x[factors == "c"] * 0.6
+circos.initialize(factors = factors, x = x)
+circos.trackHist(factors = factors, x = x)
+circos.trackHist(factors = factors, x = x, force.ylim = FALSE)
+circos.trackHist(factors = factors, x = x, draw.density = TRUE)
+circos.trackHist(factors = factors, x = x, draw.density = TRUE, force.ylim = FALSE)
+
+circos.clear()
+
+
+#######################################
+par(mar = c(1, 1, 1, 1), "xaxs" = "i", "yaxs" = "i")
+factors = letters[1:8]
+circos.par("canvas.xlim" = c(0, 1), "canvas.ylim" = c(0, 1), "gap.degree" = 3, "start.degree" = 20, "track.margin" = c(0.05, 0.05))
+circos.initialize(factors = factors, xlim = c(0, 10))
+
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.1, bg.border = NA, bg.col = "#E41A1C", panel.fun = function(x, y) {
+	cell.data = get.cell.data()
+	cell.xlim = get.cell.meta.data("xlim")
+	cell.ylim = get.cell.meta.data("ylim")
+	circos.rect(cell.xlim[1], cell.ylim[1], cell.xlim[2], cell.ylim[2], col = "#377EB8", border = "black", lwd = 2)
+	circos.rect(cell.data$xlim[1], cell.data$ylim[2], cell.data$xlim[2], cell.data$ylim[2]+(cell.data$ylim[2]-cell.data$ylim[1])/2, col = "#984EA3", border = NA)
+	circos.rect(cell.data$xlim[1], cell.data$ylim[1]-(cell.data$ylim[2]-cell.data$ylim[1])/2, cell.data$xlim[2], cell.data$ylim[1], col = "#984EA3", border = NA)
+	circos.lines(0:10, runif(11)*10)
+	circos.rect(cell.data$xlim[1], cell.data$ylim[1], cell.data$xlim[2], cell.data$ylim[2], lwd = 2, lty = 2)
+})
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.3, bg.border = NA, bg.col = "#E41A1C", panel.fun = function(x, y) {
+	
+	cell.data = get.cell.data()
+	cell.xlim = get.cell.meta.data("xlim")
+	cell.ylim = get.cell.meta.data("ylim")
+	circos.rect(cell.xlim[1], cell.ylim[1], cell.xlim[2], cell.ylim[2], col = "#377EB8", border = "black", lwd = 2)
+	circos.rect(cell.data$xlim[1], cell.data$ylim[2], cell.data$xlim[2], cell.data$ylim[2]+(cell.data$ylim[2]-cell.data$ylim[1])/6, col = "#984EA3", border = NA)
+	circos.rect(cell.data$xlim[1], cell.data$ylim[1]-(cell.data$ylim[2]-cell.data$ylim[1])/6, cell.data$xlim[2], cell.data$ylim[1], col = "#984EA3", border = NA)
+	circos.lines(0:10, runif(11)*10)
+	circos.rect(cell.data$xlim[1], cell.data$ylim[1], cell.data$xlim[2], cell.data$ylim[2], lwd = 2, lty = 2)
+})
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.1, bg.border = NA, bg.col = "#E41A1C", panel.fun = function(x, y) {
+	cell.data = get.cell.data()
+	cell.xlim = get.cell.meta.data("xlim")
+	cell.ylim = get.cell.meta.data("ylim")
+	circos.rect(cell.xlim[1], cell.ylim[1], cell.xlim[2], cell.ylim[2], col = "#377EB8", border = "black", lwd = 2)
+	circos.rect(cell.data$xlim[1], cell.data$ylim[2], cell.data$xlim[2], cell.data$ylim[2]+(cell.data$ylim[2]-cell.data$ylim[1])/2, col = "#984EA3", border = NA)
+	circos.rect(cell.data$xlim[1], cell.data$ylim[1]-(cell.data$ylim[2]-cell.data$ylim[1])/2, cell.data$xlim[2], cell.data$ylim[1], col = "#984EA3", border = NA)
+	circos.lines(0:10, runif(11)*10)
+	circos.rect(cell.data$xlim[1], cell.data$ylim[1], cell.data$xlim[2], cell.data$ylim[2], lwd = 2, lty = 2)
+})
+
+x = seq(0, 1, length = 1000)
+y = sqrt(1^2 - x^2)
+lines(x, y, lty = 3, lwd = 2)
+
+x = seq(0, 0.8, length = 1000)
+y = sqrt(0.8^2 - x^2)
+lines(x, y, lty = 3, lwd = 2)
+
+x = seq(0, 0.4, length = 1000)
+y = sqrt(0.4^2 - x^2)
+lines(x, y, lty = 3, lwd = 2)
+
+x = seq(0, 0.2, length = 1000)
+y = sqrt(0.2^2 - x^2)
+lines(x, y, lty = 3, lwd = 2)
+
+draw.sector(x = 0, y = 0, start = 20, end = 23, radius = 1, col = "#4DAF4A")
+draw.sector(x = 0, y = 0, start = 65, end = 68, radius = 1, col = "#4DAF4A")
+draw.sector(x = 0, y = 0, start = 0, end = 90, radius = 0.2, col = "#FFFFFF", border = NA)
+
+circos.text(5, 5, "plotting region", sector.index = "a", track.index = 2)
+circos.text(5, 10.5, "cell.padding[3]", sector.index = "a", track.index = 2)
+circos.text(5, -0.5, "cell.padding[1]", sector.index = "a", track.index = 2)
+circos.text(-0.5, 5, "cell.padding[2]", direction = "vertical_right", sector.index = "a", track.index = 2)
+circos.text(10.5, 5, "cell.padding[4]", direction = "vertical_right", sector.index = "a", track.index = 2)
+circos.text(5, -2, "track.margin[1]", sector.index = "a", track.index = 2)
+circos.text(5, 12, "track.margin[2]", sector.index = "a", track.index = 2)
+circos.text(-1.5, 5, "gap.degree", direction = "vertical_right", sector.index = "a", track.index = 2)
+circos.text(11.5, 5, "gap.degree", direction = "vertical_right", sector.index = "a", track.index = 2)
+circos.clear()
+

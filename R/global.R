@@ -17,7 +17,8 @@ assign(".CIRCOS.PAR", list(start.degree = 0,
 	default.track.height = 0.2,
 	points.overflow.warning = TRUE,
 	canvas.xlim = c(-1, 1),
-	canvas.ylim = c(-1, 1)), envir = .CIRCOS.ENV)
+	canvas.ylim = c(-1, 1),
+	clock.wise = FALSE), envir = .CIRCOS.ENV)
 
 # == title
 # Parameters 
@@ -79,23 +80,12 @@ circos.par = function (...) {
     name = names(args)
     if(sum(is.null(name)) == 0) {
         for(i in seq_along(args)) {
-            if(name[i] == "start.degree" && is.circos.initialized()) {
-                warning("'start.degree' can only be modified before `circos.initialize`.\n")
+			if(name[i] %in% c("start.degree", "gap.degree", "canvas.xlim", "canvas.ylim", "clock.wise") &&
+			   is.circos.initialized()) {
+				warning(paste("'", name[i], "' can only be modified before `circos.initialize`.\n", sep = ""))
                 next
-            }
-            if(name[i] == "gap.degree" && is.circos.initialized()) {
-                warning("'gap.degree' can only be modified before `circos.initialize`.\n")
-                next
-            }
-			if(name[i] == "canvas.xlim" && is.circos.initialized()) {
-                warning("'canvas.xlim' can only be modified before `circos.initialize`.\n")
-                next
-            }
-			if(name[i] == "canvas.ylim" && is.circos.initialized()) {
-                warning("'canvas.ylim' can only be modified before `circos.initialize`.\n")
-                next
-            }
-            .CIRCOS.PAR[[ name[i] ]] <<- args[[ name[i] ]]
+			}
+            .CIRCOS.PAR[[ name[i] ]] = args[[ name[i] ]]
         }
 		assign(".CIRCOS.PAR", .CIRCOS.PAR, envir = .CIRCOS.ENV)
         return(invisible(.CIRCOS.PAR))
@@ -190,13 +180,25 @@ circos.initialize = function(factors, x = NULL, xlim = NULL) {
     
     gap.degree = circos.par("gap.degree")
 	start.degree = circos.par("start.degree")
+	clock.wise = circos.par("clock.wise")
     
     # degree per data
     unit = (360 - gap.degree*n.sector) / sum(sector.range)
     for(i in seq_len(n.sector)) {
-        sector[["start.degree"]][i] =  gap.degree + ifelse(i == 1, start.degree, sector[["end.degree"]][i-1])
-        sector[["end.degree"]][i] = sector[["start.degree"]][i] + sector.range[i]*unit   
+		if(clock.wise) {
+			sector[["end.degree"]][i] = -gap.degree + ifelse(i == 1, -start.degree, sector[["start.degree"]][i-1])
+			sector[["start.degree"]][i] =  sector[["end.degree"]][i] - sector.range[i]*unit
+		} else {
+			sector[["start.degree"]][i] =  gap.degree + ifelse(i == 1, start.degree, sector[["end.degree"]][i-1])
+			sector[["end.degree"]][i] = sector[["start.degree"]][i] + sector.range[i]*unit   
+		}
     }
+	if(clock.wise) {
+		for(i in seq_len(n.sector)) {
+			sector[["start.degree"]][i] = sector[["start.degree"]][i] %% 360
+			sector[["end.degree"]][i] = sector[["end.degree"]][i] %% 360
+		}
+	}
     
     sector = as.data.frame(sector)
     .SECTOR.DATA = sector
@@ -240,7 +242,8 @@ circos.clear = function() {
 		default.track.height = 0.2,
 		points.overflow.warning = TRUE,
 		canvas.xlim = c(-1, 1),
-		canvas.ylim = c(-1, 1)), envir = .CIRCOS.ENV)
+		canvas.ylim = c(-1, 1),
+		clock.wise = FALSE), envir = .CIRCOS.ENV)
     
     return(invisible(NULL))
 }
@@ -250,7 +253,7 @@ get.all.sector.index = function() {
     return(as.vector(.SECTOR.DATA$factor))
 }
 
-get.sector.data = function(sector.index) {
+get.sector.data = function(sector.index = get.current.sector.index()) {
 	.SECTOR.DATA = get(".SECTOR.DATA", envir = .CIRCOS.ENV)
     sector.data = as.vector(as.matrix(.SECTOR.DATA[.SECTOR.DATA[[1]] == sector.index, 2:5]))
     names(sector.data) = colnames(.SECTOR.DATA)[2:5]
@@ -306,12 +309,12 @@ set.track.end.position = function(track.index = get.current.track.index(), y) {
     return(invisible(NULL))
 }
 
-get.cell.data = function(sector.index, track.index) {
+get.cell.data = function(sector.index = get.current.sector.index(), track.index = get.current.track.index()) {
 	.CELL.DATA = get(".CELL.DATA", envir = .CIRCOS.ENV)
     .CELL.DATA[[sector.index]][[track.index]]
 }
 
-set.cell.data = function(sector.index, track.index, ...) {
+set.cell.data = function(sector.index = get.current.sector.index(), track.index = get.current.track.index(), ...) {
 	.CELL.DATA = get(".CELL.DATA", envir = .CIRCOS.ENV)
     .CELL.DATA[[sector.index]][[track.index]] = list(...)
 	assign(".CELL.DATA", .CELL.DATA, envir = .CIRCOS.ENV)
@@ -384,23 +387,31 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 	
 	if(name == "xlim") {
 		xlim = numeric(2)
-		xlim[1] = current.cell.data$xlim[1] + (current.cell.data$xlim[2] - current.cell.data$xlim[1])*cell.padding[2]
-		xlim[2] = current.cell.data$xlim[2] - (current.cell.data$xlim[2] - current.cell.data$xlim[1])*cell.padding[4]
+		xlim[1] = ((1 + cell.padding[4])*current.cell.data$xlim[1] + cell.padding[2]*current.cell.data$xlim[2]) /
+		          (1 + cell.padding[2] + cell.padding[4])
+		xlim[2] = (cell.padding[4]*current.cell.data$xlim[1] + (1 + cell.padding[2])*current.cell.data$xlim[2]) /
+		          (1 + cell.padding[2] + cell.padding[4])
 		return(xlim)
 	} else if(name == "ylim") {
 		ylim = numeric(2)
-		ylim[1] = current.cell.data$ylim[1] + (current.cell.data$ylim[2] - current.cell.data$ylim[1])*cell.padding[1]
-		ylim[2] = current.cell.data$ylim[2] - (current.cell.data$ylim[2] - current.cell.data$ylim[1])*cell.padding[3]
+		ylim[1] = ((1 + cell.padding[3])*current.cell.data$ylim[1] + cell.padding[1]*current.cell.data$ylim[2]) /
+		          (1 + cell.padding[1] + cell.padding[3])
+		ylim[2] = (cell.padding[3]*current.cell.data$ylim[1] + (1 + cell.padding[1])*current.cell.data$ylim[2]) /
+		          (1 + cell.padding[1] + cell.padding[3])
 		return(ylim)
 	} else if(name == "xrange") {
 		xlim = numeric(2)
-		xlim[1] = current.cell.data$xlim[1] + (current.cell.data$xlim[2] - current.cell.data$xlim[1])*cell.padding[2]
-		xlim[2] = current.cell.data$xlim[2] - (current.cell.data$xlim[2] - current.cell.data$xlim[1])*cell.padding[4]
+		xlim[1] = ((1 + cell.padding[4])*current.cell.data$xlim[1] + cell.padding[2]*current.cell.data$xlim[2]) /
+		          (1 + cell.padding[2] + cell.padding[4])
+		xlim[2] = (cell.padding[4]*current.cell.data$xlim[1] + (1 + cell.padding[2])*current.cell.data$xlim[2]) /
+		          (1 + cell.padding[2] + cell.padding[4])
 		return(xlim[2] - xlim[1])
 	} else if(name == "yrange") {
 		ylim = numeric(2)
-		ylim[1] = current.cell.data$ylim[1] + (current.cell.data$ylim[2] - current.cell.data$ylim[1])*cell.padding[1]
-		ylim[2] = current.cell.data$ylim[2] - (current.cell.data$ylim[2] - current.cell.data$ylim[1])*cell.padding[3]
+		ylim[1] = ((1 + cell.padding[3])*current.cell.data$ylim[1] + cell.padding[1]*current.cell.data$ylim[2]) /
+		          (1 + cell.padding[1] + cell.padding[3])
+		ylim[2] = (cell.padding[3]*current.cell.data$ylim[1] + (1 + cell.padding[1])*current.cell.data$ylim[2]) /
+		          (1 + cell.padding[1] + cell.padding[3])
 		return(ylim[2] - ylim[1])
 	} else if(name == "sector.numeric.index") {
 		return(which(get.all.sector.index() == sector.index))

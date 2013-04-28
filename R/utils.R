@@ -6,8 +6,8 @@ circlize = function(x, y, sector.index, track.index, xlim = NULL, ylim = NULL) {
     cell.data = get.cell.data(sector.index, track.index)
     ylim = cell.data$ylim
         
-    theta = (x - sector.data["start.value"]) / (sector.data["end.value"] - sector.data["start.value"]) *
-            (sector.data["end.degree"] - sector.data["start.degree"]) + sector.data["start.degree"]
+    theta = sector.data["end.degree"] - (x - sector.data["start.value"]) / (sector.data["end.value"] - sector.data["start.value"]) *
+            (sector.data["end.degree"] - sector.data["start.degree"])
         
     y.range = ylim[2] - ylim[1]
         
@@ -25,7 +25,7 @@ reverse.circlize = function(theta, rou, sector.index, track.index) {
     cell.data = get.cell.data(sector.index, track.index)
 	ylim = cell.data$ylim
 	
-	x = (theta - sector.data["start.degree"]) / (sector.data["end.degree"] - sector.data["start.degree"]) *
+	x = (sector.data["end.degree"] - theta) / (sector.data["end.degree"] - sector.data["start.degree"]) *
 	    (sector.data["end.value"] - sector.data["start.value"]) + sector.data["start.value"]
 	y = (cell.data$track.height - (cell.data$track.start - rou)) / cell.data$track.height * (ylim[2] - ylim[1]) + ylim[1]
 	

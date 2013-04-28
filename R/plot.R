@@ -385,37 +385,47 @@ circos.trackPoints = function(factors, x, y, track.index = get.current.track.ind
 # is that if you want to generate the graph as `grDevices::pdf` format, you would be surprised 
 # that the size of the file is so big.
 circos.lines = function(x, y, sector.index = get.current.sector.index(), track.index = get.current.track.index(),
-    col = "black", lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
+    col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
+	area = FALSE, border = "black",
     pt.col = "black", cex = par("cex"), pch = par("pch")) {
     
     if(type == "l") {
         
     } else if(type == "o") {
         circos.points(x, y, sector.index = sector.index, track.index = track.index,
-                      col = pt.col, cex = cex, pch = pch, ...)
+                      col = pt.col, cex = cex, pch = pch)
         circos.lines(x, y, sector.index = sector.index, track.index = track.index,
-                     col = col, lwd = lwd, lty = lty)
+                     col = col, lwd = lwd, lty = lty, area = area, border = border)
         return(invisible(NULL))
     } else if(type == "h") {
-        cell.data = get.cell.data(sector.index, track.index)
+        ylim = get.cell.meta.data("ylim", sector.index, track.index)
         for(i in seq_along(x)) {
-            circos.lines(c(x[i], x[i]), c(cell.data$ylim[1], y[i]),
+            circos.lines(c(x[i], x[i]), c(ylim[1], y[i]),
                          sector.index = sector.index, track.index = track.index, 
                          col = col, lwd = lwd, lty = lty, straight = TRUE)    
         }
         return(invisible(NULL))
     } else if(type == "s") {
+		d = matrix(nrow = 0, ncol = 2)
         for(i in seq_along(x)) {
             if(i == 1) {
                 next
             }
-            circos.lines(c(x[i-1], x[i]), c(y[i-1], y[i-1]), sector.index = sector.index, track.index = track.index, 
-                         col = col, lwd = lwd, lty = lty)
-            circos.lines(c(x[i], x[i]), c(y[i-1], y[i]),
-                         sector.index = sector.index, track.index = track.index,
-                         col = col, lwd = lwd, lty = lty, straight = TRUE)
+			d = rbind(d, lines.expand(c(x[i-1], x[i]), c(y[i-1], y[i-1]), sector.index))
+			d = rbind(d, cbind(c(x[i], x[i]), c(y[i-1], y[i])))
         }
-        return(invisible(NULL))
+		
+		if(area) {
+			ylim = get.cell.meta.data("ylim", sector.index, track.index)
+			d = rbind(d, c(d[nrow(d), 1], ylim[1]))
+			d = rbind(d, c(d[1, 1], ylim[1]))
+			circos.polygon(d[, 1], d[, 2], sector.index = sector.index, track.index = track.index, 
+				   col = col, border = border, lwd = lwd, lty = lty)
+		} else {
+			circos.lines(d[, 1], d[, 2], sector.index = sector.index, track.index = track.index, 
+							 col = col, lwd = lwd, lty = lty)
+        }
+		return(invisible(NULL))
     }
     
     if(!has.cell(sector.index, track.index)) {
@@ -430,6 +440,15 @@ circos.lines = function(x, y, sector.index = get.current.sector.index(), track.i
     } else {
         d = lines.expand(x, y, sector.index)
     }
+	
+	if(area) {
+		ylim = get.cell.meta.data("ylim", sector.index, track.index)
+		d = rbind(d, c(d[nrow(d), 1], ylim[1]))
+		d = rbind(d, c(d[1, 1], ylim[1]))
+		circos.polygon(d[, 1], d[, 2], sector.index = sector.index, track.index = track.index, 
+		       col = col, border = border, lwd = lwd, lty = lty)
+		return(invisible(NULL))
+	}
     
     d2 = circlize(d[, 1], d[, 2], sector.index, track.index)
     lines(polar2Cartesian(d2), col = col, lwd = lwd, lty = lty)
@@ -455,6 +474,7 @@ circos.lines = function(x, y, sector.index = get.current.sector.index(), track.i
 #
 circos.trackLines = function(factors, x, y, track.index = get.current.track.index(),
     col = "black", lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
+	area = FALSE, border = "black",
     pt.col = "black", cex = par("cex"), pch = par("pch")) {
     
     # basic check here
@@ -479,6 +499,9 @@ circos.trackLines = function(factors, x, y, track.index = get.current.track.inde
     pt.col = recycle.with.factors(pt.col, factors)
     cex = recycle.with.factors(cex, factors)
     pch = recycle.with.factors(pch, factors)
+	
+	area = recycle.with.levels(area, le)
+	border = recycle.with.levels(border, le)
     
     for(i in seq_along(le)) {
         l = factors == le[i]
@@ -492,7 +515,7 @@ circos.trackLines = function(factors, x, y, track.index = get.current.track.inde
         npch = pch[l]
         circos.lines(nx, ny, sector.index = le[i],
                       track.index = track.index,
-                      col = ncol, lwd = nlwd, lty = nlty,
+                      col = ncol, lwd = nlwd, lty = nlty, area = area[i], border = border[i],
                       pt.col = npt.col, cex = ncex, pch = npch, type = type, straight = straight)
             
     }
@@ -775,11 +798,11 @@ circos.link = function(sector.index1,
     sector.data2 = get.sector.data(sector.index2)
     
     if(length(point1) == 1 && length(point2) == 1) {
-        theta1 = (point1 - sector.data1["start.value"]) / (sector.data1["end.value"] - sector.data1["start.value"]) *
-                 (sector.data1["end.degree"] - sector.data1["start.degree"]) + sector.data1["start.degree"]
+        theta1 = sector.data1["end.degree"] - (point1 - sector.data1["start.value"]) / (sector.data1["end.value"] - sector.data1["start.value"]) *
+                 (sector.data1["end.degree"] - sector.data1["start.degree"])
         
-        theta2 = (point2 - sector.data2["start.value"]) / (sector.data2["end.value"] - sector.data2["start.value"]) *
-                 (sector.data2["end.degree"] - sector.data2["start.degree"]) + sector.data2["start.degree"]
+        theta2 = sector.data2["end.degree"] - (point2 - sector.data2["start.value"]) / (sector.data2["end.value"] - sector.data2["start.value"]) *
+                 (sector.data2["end.degree"] - sector.data2["start.degree"])
         
         d = rotate.parabola(theta1 = theta1, theta2 = theta2, rou1 = rou, rou.ratio = top.ratio)
         lines(d, col = col, lwd = lwd, lty = lty)
@@ -793,15 +816,15 @@ circos.link = function(sector.index1,
             point2 = c(point2, point2 + current.cell.xrange/100)  
         }
         
-        theta11 = (point1[1] - sector.data1["start.value"]) / (sector.data1["end.value"] - sector.data1["start.value"]) *
-            (sector.data1["end.degree"] - sector.data1["start.degree"]) + sector.data1["start.degree"]
-        theta12 = (point1[2] - sector.data1["start.value"]) / (sector.data1["end.value"] - sector.data1["start.value"]) *
-            (sector.data1["end.degree"] - sector.data1["start.degree"]) + sector.data1["start.degree"]
+        theta11 = sector.data1["end.degree"] - (point1[1] - sector.data1["start.value"]) / (sector.data1["end.value"] - sector.data1["start.value"]) *
+            (sector.data1["end.degree"] - sector.data1["start.degree"])
+        theta12 =sector.data1["end.degree"] - (point1[2] - sector.data1["start.value"]) / (sector.data1["end.value"] - sector.data1["start.value"]) *
+            (sector.data1["end.degree"] - sector.data1["start.degree"])
         
-        theta21 = (point2[1] - sector.data2["start.value"]) / (sector.data2["end.value"] - sector.data2["start.value"]) *
-            (sector.data2["end.degree"] - sector.data2["start.degree"]) + sector.data2["start.degree"]
-        theta22 = (point2[2] - sector.data2["start.value"]) / (sector.data2["end.value"] - sector.data2["start.value"]) *
-            (sector.data2["end.degree"] - sector.data2["start.degree"]) + sector.data2["start.degree"]
+        theta21 = sector.data2["end.degree"] - (point2[1] - sector.data2["start.value"]) / (sector.data2["end.value"] - sector.data2["start.value"]) *
+            (sector.data2["end.degree"] - sector.data2["start.degree"])
+        theta22 = sector.data2["end.degree"] - (point2[2] - sector.data2["start.value"]) / (sector.data2["end.value"] - sector.data2["start.value"]) *
+            (sector.data2["end.degree"] - sector.data2["start.degree"])
         
         # line from theta11, theta21 and line from theta12, theta22
         # uint circle
@@ -905,7 +928,7 @@ circos.link = function(sector.index1,
 #
 circos.trackHist = function(factors, x, track.height = circos.par("default.track.height"),
     track.index = NULL, ylim = NULL, force.ylim = TRUE,
-    col = NA, border = "black", lty = par("lty"), lwd = par("lwd"),
+    col = ifelse(draw.density, "black", NA), border = "black", lty = par("lty"), lwd = par("lwd"),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
     breaks = "Sturges", include.lowest = TRUE, right = TRUE, draw.density = FALSE) {
     
@@ -947,6 +970,18 @@ circos.trackHist = function(factors, x, track.height = circos.par("default.track
                       bg.col = bg.col, bg.border = bg.border, bg.lty = bg.lty, bg.lwd = bg.lwd)
     
     track.index = get.current.track.index()
+	
+	l3 = logical(0)
+	for(i in seq_along(le)) {
+		cell.xlim = get.cell.meta.data("xlim", sector.index = le[i], track.index = track.index)
+		l = fa == le[i]
+		l2 = xx[l] >= cell.xlim[1] & xx[l] <= cell.xlim[2]
+		l3 = c(l3, l2)
+	}
+	
+	xx = xx[l3]
+	yy = yy[l3]
+	fa = fa[l3]
     
     if(draw.density) {
         circos.trackLines(factors = fa, xx, yy, track.index = track.index,

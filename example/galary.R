@@ -391,3 +391,112 @@ circos.clear()
 par(xpd = NA)
 arrows(0, 1.33, 0, 1.07, code = 2)
 dev.off()
+
+
+#########################################
+pdf("sector_direction.pdf", width = 8, height = 4)
+par(mfrow = c(1, 2))
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:8]
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.par("track.margin" = c(0.1, 0.1))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.4, panel.fun = function(x, y) {
+	circos.text(5, 5, get.cell.meta.data("sector.index"))
+	xlim = get.cell.meta.data("xlim")
+	ylim = get.cell.meta.data("ylim")
+	circos.lines(xlim, c(0, 0))
+	circos.lines(c(9, 10), c(0.5, 0))
+	circos.lines(c(9, 10), c(-0.5, 0))
+	circos.lines(c(0, 0), xlim)
+	circos.lines(c(0.5, 0), c(9, 10))
+	circos.lines(c(-0.5, 0), c(9, 10))
+})
+circos.clear()
+
+x = seq(-0.7, 0.7, length = 100)
+d = cbind(x, sqrt(1 - x^2))
+lines(d)
+arrows(d[2,1], d[2,2], d[1,1], d[1,2])
+
+x = seq(-0.7, 0.7, length = 100)
+d = cbind(x, -sqrt(1 - x^2))
+lines(d)
+arrows(d[99,1], d[99,2], d[100,1], d[100,2])
+
+text(0, 0, 'circos.par("clock.wise" = FALSE)', cex = 0.6)
+
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:8]
+circos.par("track.margin" = c(0.1, 0.1), clock.wise = TRUE)
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.4, panel.fun = function(x, y) {
+	circos.text(5, 5, get.cell.meta.data("sector.index"))
+	xlim = get.cell.meta.data("xlim")
+	ylim = get.cell.meta.data("ylim")
+	circos.lines(xlim, c(0, 0))
+	circos.lines(c(9, 10), c(0.5, 0))
+	circos.lines(c(9, 10), c(-0.5, 0))
+	circos.lines(c(0, 0), xlim)
+	circos.lines(c(0.5, 0), c(9, 10))
+	circos.lines(c(-0.5, 0), c(9, 10))
+})
+circos.clear()
+
+x = seq(-0.7, 0.7, length = 100)
+d = cbind(x, sqrt(1 - x^2))
+lines(d)
+arrows(d[99,1], d[99,2], d[100,1], d[100,2])
+
+
+x = seq(-0.7, 0.7, length = 100)
+d = cbind(x, -sqrt(1 - x^2))
+lines(d)
+arrows(d[2,1], d[2,2], d[1,1], d[1,2])
+text(0, 0, 'circos.par("clock.wise" = TRUE)', cex = 0.6)
+dev.off()
+
+
+##################################################
+par(mar = c(1, 1, 1, 1))
+factors = 1
+circos.par("track.margin" = c(0, 0), "cell.padding" = c(0, 0, 0, 0), "gap.degree" = 0, "gap.degree" = 0)
+circos.initialize(factors = factors, xlim = c(0, 10))
+for(i in 1:50) {
+	circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.04, bg.border = NA, panel.fun = function(x, y) {
+		xlim = get.cell.meta.data("xlim")
+		ylim = get.cell.meta.data("ylim")
+		d = runif(10)
+		d = cumsum(d)/sum(d) * xlim[2]
+
+		#circos.lines(c(0, 0), c(0,10), col = rgb(runif(1), runif(1), runif(1)), lwd = 2)
+			circos.lines(c(0, d[1]), c(10,10), col = rgb(runif(1), runif(1), runif(1)), lwd = 2)
+			circos.lines(c(d[1], d[1]), c(0,10), col = rgb(runif(1), runif(1), runif(1)), lwd = 2)
+			circos.lines(c(0, d[1]), c(0,0), col = rgb(runif(1), runif(1), runif(1)), lwd = 2)
+		for(i in 2:10) {
+			
+			circos.lines(c(d[i-1], d[i-1]), c(0,10), col = rgb(runif(1), runif(1), runif(1)), lwd = 2)
+			circos.lines(c(d[i-1], d[i]), c(10,10), col = rgb(runif(1), runif(1), runif(1)), lwd = 2)
+			if(i < 10) {
+				circos.lines(c(d[i], d[i]), c(0,10), col = rgb(runif(1), runif(1), runif(1)), lwd = 2)
+			}
+			circos.lines(c(d[i-1], d[i]), c(0,0), col = rgb(runif(1), runif(1), runif(1)), lwd = 2)
+		}
+	})
+}
+circos.clear()
+
+
+#####################################################
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:8]
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
+show.index()
+circos.clear()
+
+	
+	
+	

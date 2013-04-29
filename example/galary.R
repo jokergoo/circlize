@@ -365,3 +365,26 @@ lines(c(cos(300/180*pi), cos(120/180*pi)), c(sin(300/180*pi), sin(120/180*pi)))
 points(0, 0, pch = 16)
 lines(c(0, sqrt(3)/4)+0.01, c(0, -3/4)+0.01, lwd = 4, col = "red")
 lines(c(0, sqrt(3)/4/2)-0.01, c(0, -3/4/2)-0.01, lwd = 4, col = "blue")
+
+############################################################
+
+layout(cbind(c(1, 0, 2)), height = c(2,0.5,2))
+par(mar = c(2, 2, 2, 2))
+x = 1:10
+y = rnorm(10)
+plot(x, y, type = "l", axes = FALSE, ann = FALSE)
+text(2, 0, "text", cex = 2)
+box()
+
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:3]
+circos.par("canvas.xlim" = c(-sqrt(3)/2, sqrt(3)/2), "canvas.ylim" = c(1/2*0.6, 1), start.degree = 30, "track.margin" = c(0, 0), "gap.degree" = 0)
+circos.initialize(factors = factors, xlim = c(1, 10))
+circos.trackPlotRegion(factors = factors, ylim = range(y), track.height = 0.4, bg.border = NA)
+circos.updatePlotRegion(sector.index = "a", track.index = 1, bg.border = "black")
+circos.lines(x, y, sector.index = "a", track.index = 1, straight = TRUE)
+circos.text(2, 0, "text", cex = 2)
+circos.clear()
+
+par(xpd = NA)
+arrows(0, 1.33, 0, 1.07, code = 2)

@@ -367,13 +367,14 @@ lines(c(0, sqrt(3)/4)+0.01, c(0, -3/4)+0.01, lwd = 4, col = "red")
 lines(c(0, sqrt(3)/4/2)-0.01, c(0, -3/4/2)-0.01, lwd = 4, col = "blue")
 
 ############################################################
-
+pdf(file = "transformation.pdf", height = 4.5, width = 4)
 layout(cbind(c(1, 0, 2)), height = c(2,0.5,2))
 par(mar = c(2, 2, 2, 2))
 x = 1:10
 y = rnorm(10)
 plot(x, y, type = "l", axes = FALSE, ann = FALSE)
 text(2, 0, "text", cex = 2)
+rect(5, -1, 7, 1)
 box()
 
 par(mar = c(1, 1, 1, 1))
@@ -384,7 +385,9 @@ circos.trackPlotRegion(factors = factors, ylim = range(y), track.height = 0.4, b
 circos.updatePlotRegion(sector.index = "a", track.index = 1, bg.border = "black")
 circos.lines(x, y, sector.index = "a", track.index = 1, straight = TRUE)
 circos.text(2, 0, "text", cex = 2)
+circos.rect(5, -1, 7, 1)
 circos.clear()
 
 par(xpd = NA)
 arrows(0, 1.33, 0, 1.07, code = 2)
+dev.off()

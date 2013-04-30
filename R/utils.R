@@ -40,11 +40,15 @@ degree.add = function(theta1, theta2) {
 
 # reverse clockwise
 # should only deal with start.degree and end.degree
-degree.minus = function(to, from) {
-	if(to == from) {
-		return(360)
-	} else {
+degree.minus = function(to, from, min.zero = TRUE) {
+	if(min.zero) {
 		return((to - from) %% 360)
+	} else {
+		if((to - from) %% 360 == 0) {
+			return(360)
+		} else {
+			return((to - from) %% 360)
+		}
 	}
 }
 

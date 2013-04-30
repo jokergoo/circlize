@@ -498,5 +498,45 @@ show.index()
 circos.clear()
 
 	
-	
-	
+##########################################
+source("R/global.R")
+source("R/plot.R")
+source("R/utils.R")
+# library(circlize)
+
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:8]
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.1, bg.border = NA, panel.fun = function(x, y) {
+	circos.text(5, 10, get.cell.meta.data("sector.index"))
+})
+
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
+circos.axis(sector.index = "a")
+circos.axis(sector.index = "b", direction = "inside")
+circos.axis(sector.index = "c", h = "bottom")
+circos.axis(sector.index = "d", h = "bottom", direction = "inside")
+circos.axis(sector.index = "e", h = 5, major.at = c(1, 3, 5, 7, 9), labels = c("a", "c", "e", "g", "f"))
+circos.axis(sector.index = "f", h = 5, major.at = c(1, 3, 5, 7, 9), labels = c("a", "c", "e", "g", "f"), minor.ticks = 0)
+circos.axis(sector.index = "g", h = 5, major.at = c(1, 3, 5, 7, 9), labels = c("a", "c", "e", "g", "f"), major.tick = FALSE)
+circos.axis(sector.index = "h", h = 2, major.at = c(1, 3, 5, 7, 9), labels = c("a", "c", "e", "g", "f"), major.tick.percentage = 0.3, labels.away.percentage = 0.2)
+circos.clear()
+
+#############################################
+# clock 2
+
+source("R/global.R")
+source("R/plot.R")
+source("R/utils.R")
+# library(circlize)
+
+factors = letters[1]
+par(mar = c(1, 1, 1, 1))
+circos.par("gap.degree" = 0, "cell.padding" = c(0, 0, 0, 0), "start.degree" = -90)
+circos.initialize(factors = factors, xlim = c(0, 12))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 1))
+circos.axis(sector.index = "a", major.at = 0:12, labels = c("", 1:12), direction = "inside", cex = 1.5, major.tick.percentage = 0.3, labels.away.percentage = 0.2)
+arrows(0, 0, 0, 0.7)    
+arrows(0, 0, 0.4, 0)
+
+circos.clear()

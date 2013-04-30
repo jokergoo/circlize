@@ -7,7 +7,7 @@ circlize = function(x, y, sector.index, track.index, xlim = NULL, ylim = NULL) {
     ylim = cell.data$ylim
         
     theta = sector.data["end.degree"] - (x - sector.data["start.value"]) / (sector.data["end.value"] - sector.data["start.value"]) *
-            (sector.data["end.degree"] - sector.data["start.degree"])
+            degree.minus(sector.data["end.degree"], sector.data["start.degree"])
         
     y.range = ylim[2] - ylim[1]
         
@@ -39,8 +39,13 @@ degree.add = function(theta1, theta2) {
 }
 
 # reverse clockwise
+# should only deal with start.degree and end.degree
 degree.minus = function(to, from) {
-    return((to - from) %% 360)
+	if(to == from) {
+		return(360)
+	} else {
+		return((to - from) %% 360)
+	}
 }
 
 degree.seq = function(from, to, length.out = 2) {
@@ -74,17 +79,10 @@ lines.expand = function(x, y, sector.index) {
         if(i == 1) {
             next   
         }
-        
-        # cut 'ncut' parts between (x[i], y[i]) and (x[i-1], y[i-1])
-        ncut1 = abs(x[i] - x[i-1])/(sector.data["end.value"] - sector.data["start.value"]) * (sector.data["end.degree"] - sector.data["start.degree"])
-        ncut1 = floor(ncut1)
-        
-        ncut2 = sqrt((x[i] - x[i-1])^2 + (y[i] - y[i-1])^2)/(2*pi/circos.par("unit.circle.segments"))
-        ncut2 = floor(ncut2)
-        
-        ncut = min(c(ncut1, ncut2))
-        
-        
+
+        ncut = sqrt((x[i] - x[i-1])^2 + (y[i] - y[i-1])^2)/(2*pi/circos.par("unit.circle.segments"))
+        ncut = floor(ncut)
+
         d = sqrt((x[i] - x[i-1])^2 + (y[i] - y[i-1])^2)
         
         

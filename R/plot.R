@@ -451,6 +451,7 @@ circos.lines = function(x, y, sector.index = get.current.sector.index(), track.i
 	}
     
     d2 = circlize(d[, 1], d[, 2], sector.index, track.index)
+	
     lines(polar2Cartesian(d2), col = col, lwd = lwd, lty = lty)
     return(invisible(NULL))
 }
@@ -767,6 +768,83 @@ circos.trackText = function(factors, x, y, labels, track.index = get.current.tra
             
     }
     return(invisible(NULL))
+}
+
+# == title
+# Draw x-axis
+#
+# == param
+# -h
+# -major.at
+# -labels
+# -major.tick
+# -sector.index
+# -track.index
+# -font
+# -col
+# -direction
+# -minor.ticks
+#
+# == details
+circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
+	sector.index = get.current.sector.index(), track.index = get.current.track.index(),
+	labels.font = par("font"), labels.cex = par("cex"), direction = c("outside", "inside"), minor.ticks = 4,
+	major.tick.percentage = 0.1, labels.away.percentage = 0.05, lwd = par("lwd")) {
+	
+	direction = direction[1]
+	
+	xlim = get.cell.meta.data("xlim", sector.index, track.index)
+	
+	cell.data = get.cell.data(sector.index, track.index)
+	sector.data = get.sector.data(sector.index)
+	
+	if(h == "top") {
+		h = cell.data$ylim[2]
+	} else if(h == "bottom") {
+		h = cell.data$ylim[1]
+	}
+	
+	if(is.null(major.at)) {
+		n = floor(abs(degree.minus(sector.data["end.degree"], sector.data["start.degree"]))*(1-circos.par("cell.padding")[2]-circos.par("cell.padding")[4]) / 5)
+		major.at = pretty(xlim, n = n)
+	}
+	
+	minor.at = NULL
+	if(minor.ticks != 0) {
+		for(i in seq_along(major.at)) {
+			if(i == 1) next
+			k = seq_len(minor.ticks) / (minor.ticks + 1)
+			minor.at = c(minor.at, k * (major.at[i] - major.at[i - 1]) + major.at[i - 1])
+		}
+	}
+	
+	circos.lines(c(major.at[1], major.at[length(major.at)]), c(h, h), sector.index = sector.index, track.index = track.index, lwd = lwd)
+	
+	# ticks
+	yrange = get.cell.meta.data("yrange", sector.index, track.index)
+	major.tick.length = yrange * major.tick.percentage
+	for(i in seq_along(major.at)) {
+		if(major.tick) {
+			circos.lines(c(major.at[i], major.at[i]), c(h, h + major.tick.length*ifelse(direction == "outside", 1, -1)), straight = TRUE,
+			             sector.index = sector.index, track.index = track.index, lwd = lwd)
+		}
+		
+		if(is.logical(labels) && labels) {
+			circos.text(major.at[i], h + (major.tick.length+yrange*labels.away.percentage)*ifelse(direction == "outside", 1, -1),
+			            labels = major.at[i], adj = c(0.5, ifelse(direction == "outside", 0, 1)),
+						font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index)
+		} else if(length(labels)) {
+			circos.text(major.at[i], h + (major.tick.length+yrange*labels.away.percentage)*ifelse(direction == "outside", 1, -1),
+			            labels = labels[i], adj = c(0.5, ifelse(direction == "outside", 0, 1)),
+						font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index)
+		}
+	}
+	if(major.tick) {
+		for(i in seq_along(minor.at)) {
+			circos.lines(c(minor.at[i], minor.at[i]), c(h, h + major.tick.length/2*ifelse(direction == "outside", 1, -1)), straight = TRUE,
+			             sector.index = sector.index, track.index = track.index, lwd = lwd)
+		}
+	}
 }
 
 # == title

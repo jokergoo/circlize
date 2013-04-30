@@ -1,6 +1,3 @@
 - testing code
 - comments and documents
-
-#######################################
-# long term
-- the direction of y-axis can be set (currently pointing to the outside)
+- when two degree minus ...

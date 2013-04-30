@@ -18,7 +18,7 @@ assign(".CIRCOS.PAR", list(start.degree = 0,
 	points.overflow.warning = TRUE,
 	canvas.xlim = c(-1, 1),
 	canvas.ylim = c(-1, 1),
-	clock.wise = FALSE), envir = .CIRCOS.ENV)
+	clock.wise = TRUE), envir = .CIRCOS.ENV)
 
 # == title
 # Parameters 
@@ -243,7 +243,7 @@ circos.clear = function() {
 		points.overflow.warning = TRUE,
 		canvas.xlim = c(-1, 1),
 		canvas.ylim = c(-1, 1),
-		clock.wise = FALSE), envir = .CIRCOS.ENV)
+		clock.wise = TRUE), envir = .CIRCOS.ENV)
     
     return(invisible(NULL))
 }

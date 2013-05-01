@@ -7,7 +7,7 @@ circlize = function(x, y, sector.index, track.index, xlim = NULL, ylim = NULL) {
     ylim = cell.data$ylim
         
     theta = sector.data["end.degree"] - (x - sector.data["start.value"]) / (sector.data["end.value"] - sector.data["start.value"]) *
-            degree.minus(sector.data["end.degree"], sector.data["start.degree"])
+            (sector.data["end.degree"] - sector.data["start.degree"])
         
     y.range = ylim[2] - ylim[1]
         

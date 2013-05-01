@@ -9,7 +9,7 @@ assign(".TRACK.END.POSITION", 1, envir = .CIRCOS.ENV)
 assign(".CELL.DATA", NULL, envir = .CIRCOS.ENV)
 assign(".CURRENT.TRACK.INDEX", 0, envir = .CIRCOS.ENV)
 assign(".CURRENT.SECTOR.INDEX", NULL, envir = .CIRCOS.ENV)
-assign(".CIRCOS.PAR", list(start.degree = 0,
+.CIRCOS.PAR.DEFAULT = list(start.degree = 0,
 	gap.degree = 1,
 	track.margin = c(0.01, 0.01),  # top margin and bottom margin
 	unit.circle.segments = 1000,   #to simulate smooth curve
@@ -18,7 +18,8 @@ assign(".CIRCOS.PAR", list(start.degree = 0,
 	points.overflow.warning = TRUE,
 	canvas.xlim = c(-1, 1),
 	canvas.ylim = c(-1, 1),
-	clock.wise = TRUE), envir = .CIRCOS.ENV)
+	clock.wise = TRUE)
+assign(".CIRCOS.PAR", .CIRCOS.PAR.DEFAULT, envir = .CIRCOS.ENV)
 
 # == title
 # Parameters 
@@ -185,6 +186,11 @@ circos.initialize = function(factors, x = NULL, xlim = NULL) {
     # degree per data
     unit = (360 - gap.degree*n.sector) / sum(sector.range)
     for(i in seq_len(n.sector)) {
+		
+		if(sector.range[i] == 0) {
+			stop(paste("range of the sector (", le[i] ,") cannot be 0.\n", sep = ""))
+		}
+	
 		if(clock.wise) {
 			sector[["end.degree"]][i] = -gap.degree + ifelse(i == 1, -start.degree, sector[["start.degree"]][i-1])
 			sector[["start.degree"]][i] =  sector[["end.degree"]][i] - sector.range[i]*unit
@@ -195,8 +201,8 @@ circos.initialize = function(factors, x = NULL, xlim = NULL) {
     }
 	if(clock.wise) {
 		for(i in seq_len(n.sector)) {
-			sector[["start.degree"]][i] = sector[["start.degree"]][i] %% 360
-			sector[["end.degree"]][i] = sector[["end.degree"]][i] %% 360
+			sector[["start.degree"]][i] = sector[["start.degree"]][i] + 360
+			sector[["end.degree"]][i] = sector[["end.degree"]][i] + 360
 		}
 	}
     
@@ -234,16 +240,7 @@ circos.clear = function() {
 	assign(".CELL.DATA", NULL, envir = .CIRCOS.ENV)
 	assign(".CURRENT.TRACK.INDEX", 0, envir = .CIRCOS.ENV)
 	assign(".CURRENT.SECTOR.INDEX", NULL, envir = .CIRCOS.ENV)
-	assign(".CIRCOS.PAR", list(start.degree = 0,
-		gap.degree = 1,
-		track.margin = c(0.01, 0.01),  # top margin and bottom margin
-		unit.circle.segments = 1000,   #to simulate smooth curve
-		cell.padding = c(0.1, 0.1, 0.1, 0.1),
-		default.track.height = 0.2,
-		points.overflow.warning = TRUE,
-		canvas.xlim = c(-1, 1),
-		canvas.ylim = c(-1, 1),
-		clock.wise = TRUE), envir = .CIRCOS.ENV)
+	assign(".CIRCOS.PAR", .CIRCOS.PAR.DEFAULT, envir = .CIRCOS.ENV)
     
     return(invisible(NULL))
 }

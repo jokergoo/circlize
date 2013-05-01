@@ -792,6 +792,9 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	major.tick.percentage = 0.1, labels.away.percentage = 0.05, lwd = par("lwd")) {
 	
 	direction = direction[1]
+	if(! direction %in% c("outside", "inside")) {
+		stop("direction should be in 'outside' and 'inside'.\n")
+	}
 	
 	xlim = get.cell.meta.data("xlim", sector.index, track.index)
 	
@@ -805,7 +808,7 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	}
 	
 	if(is.null(major.at)) {
-		n = floor(abs(degree.minus(sector.data["end.degree"], sector.data["start.degree"]))*(1-circos.par("cell.padding")[2]-circos.par("cell.padding")[4]) / 5)
+		n = floor(abs(sector.data["end.degree"] - sector.data["start.degree"])*(1-circos.par("cell.padding")[2]-circos.par("cell.padding")[4]) / 5)
 		major.at = pretty(xlim, n = n)
 	}
 	
@@ -818,12 +821,20 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 		}
 	}
 	
-	circos.lines(c(major.at[1], major.at[length(major.at)]), c(h, h), sector.index = sector.index, track.index = track.index, lwd = lwd)
+	xlim2 = cell.data$xlim
+	circos.lines(c(ifelse(major.at[1] >= xlim2[1], major.at[1], xlim2[1]),
+	               ifelse(major.at[length(major.at)] <= xlim2[2], major.at[length(major.at)], xlim2[2])), 
+				 c(h, h), sector.index = sector.index, track.index = track.index, lwd = lwd)
 	
 	# ticks
 	yrange = get.cell.meta.data("yrange", sector.index, track.index)
 	major.tick.length = yrange * major.tick.percentage
 	for(i in seq_along(major.at)) {
+		
+		if(major.at[i] < xlim2[1] || major.at[i] > xlim2[2]) {
+			next
+		}
+	
 		if(major.tick) {
 			circos.lines(c(major.at[i], major.at[i]), c(h, h + major.tick.length*ifelse(direction == "outside", 1, -1)), straight = TRUE,
 			             sector.index = sector.index, track.index = track.index, lwd = lwd)
@@ -841,6 +852,10 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	}
 	if(major.tick) {
 		for(i in seq_along(minor.at)) {
+			if(minor.at[i] < xlim2[1] || minor.at[i] > xlim2[2]) {
+				next
+			}
+		
 			circos.lines(c(minor.at[i], minor.at[i]), c(h, h + major.tick.length/2*ifelse(direction == "outside", 1, -1)), straight = TRUE,
 			             sector.index = sector.index, track.index = track.index, lwd = lwd)
 		}

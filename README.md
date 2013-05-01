@@ -9,7 +9,9 @@ Current there are following functions that can be used for plotting:
 - `circos.points`
 - `circos.lines`
 - `circos.rect`
+- `circos.polygon`
 - `circos.text`
+- `circos.axis`
 - `circos.link`, This maybe the unique feature for circos layout to represent relationships between elements.
 
 For drawing points, lines and text through the whole track (among several sectors), the following functions are available:
@@ -22,7 +24,7 @@ Also, the function drawing histograms in the whole track is available:
 
 Functions to arrange the circos layout
 - `circos.trackPlotRegion`
-- `circos.updateRegion`
+- `circos.updatPlotRegion`
 - `circos.par`
 
 Theoretically, you are able to draw most kinds of circos figures by the above functions.

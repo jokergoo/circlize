@@ -26,6 +26,7 @@ Functions to arrange the circos layout
 - `circos.trackPlotRegion`
 - `circos.updatPlotRegion`
 - `circos.par`
+- `circos.clear`
 
 Theoretically, you are able to draw most kinds of circos figures by the above functions.
 

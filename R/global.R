@@ -22,7 +22,7 @@ assign(".CURRENT.SECTOR.INDEX", NULL, envir = .CIRCOS.ENV)
 assign(".CIRCOS.PAR", .CIRCOS.PAR.DEFAULT, envir = .CIRCOS.ENV)
 
 # == title
-# Parameters 
+# Parameters for circos layout
 #
 # == param
 # ... Arguments for the parameters, see "details" section

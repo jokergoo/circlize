@@ -9,6 +9,7 @@ Current there are following functions that can be used for plotting:
 - `circos.points`
 - `circos.lines`
 - `circos.rect`
+- `circos.polygon`
 - `circos.text`
 - `circos.axis`
 - `circos.link`, This maybe the unique feature for circos layout to represent relationships between elements.

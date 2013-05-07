@@ -411,7 +411,7 @@ circos.lines = function(x, y, sector.index = get.current.sector.index(), track.i
             if(i == 1) {
                 next
             }
-			d = rbind(d, lines.expand(c(x[i-1], x[i]), c(y[i-1], y[i-1]), sector.index))
+			d = rbind(d, lines.expand(c(x[i-1], x[i]), c(y[i-1], y[i-1]), sector.index, track.index))
 			d = rbind(d, cbind(c(x[i], x[i]), c(y[i-1], y[i])))
         }
 		
@@ -438,7 +438,7 @@ circos.lines = function(x, y, sector.index = get.current.sector.index(), track.i
     if(straight) {
         d = cbind(x, y)
     } else {
-        d = lines.expand(x, y, sector.index)
+        d = lines.expand(x, y, sector.index, track.index)
     }
 	
 	if(area) {
@@ -612,7 +612,7 @@ circos.polygon = function(x, y, sector.index = get.current.sector.index(), track
     # whether the points that are out of the plotting region.
     check.points.position(x, y, sector.index, track.index)
     
-    d = lines.expand(x, y, sector.index)
+    d = lines.expand(x, y, sector.index, track.index)
     d2 = circlize(d[, 1], d[, 2], sector.index, track.index)
     polygon(polar2Cartesian(d2), col = col, border = border,
             lty = lty, lwd = lwd)
@@ -1100,6 +1100,42 @@ circos.trackHist = function(factors, x, track.height = circos.par("default.track
 }
 
 
-circos.initializeWithIdeogram = function(file) {
-
+circos.initializeWithIdeogram = function(file, track.height = 0.2) {
+	
+	d = read.table(file)
+	d[[2]] = as.numeric(d[[2]])
+	d[[3]] = as.numeric(d[[3]])
+	chromosome = levels(d[[1]])
+	chromosome.ind = gsub("chr", "", chromosome)
+	chromosome.num = grep("^\\d+$", chromosome.ind, value = TRUE)
+	chromosome.letter = chromosome.ind[!grepl("^\\d+$", chromosome.ind)]
+	chromosome.num = sort(as.numeric(chromosome.num))
+	chromosome.letter = sort(chromosome.letter)
+	chromosome.num = paste("chr", chromosome.num, sep = "")
+	chromosome.letter = paste("chr", chromosome.letter, sep = "")
+	
+	chromosome = c(chromosome.num, chromosome.letter)
+	
+	xlim = matrix(nrow = 0, ncol = 2)
+	for(chr in chromosome) {
+		d2 = d[d[[1]] == chr, ]
+		xlim = rbind(xlim,c(min(d2[[2]]), max(d2[[3]])))
+	}
+	
+	par(mar = c(1, 1, 1, 1))
+	circos.initialize(factor(chromosome, levels = chromosome), xlim = c(0,1))
+	circos.trackPlotRegion(factors = factor(chromosome, levels = chromosome), ylim = c(0, 1), bg.border = NA)
+	for(chr in chromosome) {
+		d2 = d[d[[1]] == chr, ]
+		n = nrow(d2)
+		col = rep("#FFFFFF", n)
+		col[d2[[5]] == "acen"] = "#FF0000"
+		col[d2[[5]] == "gpos100"] == "#000000"
+		col[d2[[5]] == "gpos75"] == "#BFBFBF"
+		col[d2[[5]] == "gpos50"] == "#808080"
+		col[d2[[5]] == "gpos25"] == "#404040"
+		for(i in seq_len(n)) {
+			circos.rect(d[i, 2], 0, d[i, 3], 0.5, sector.index = chr, col = col[i], border = NA)
+		}
+	}
 }

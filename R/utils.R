@@ -74,17 +74,19 @@ polar2Cartesian = function(d) {
 }
 
 # expand breakpoints in two points to draw an arc
-lines.expand = function(x, y, sector.index) {
+# x and y are transformed and re-mapped points
+lines.expand = function(x, y, sector.index = get.current.sector.index(), track.index = get.current.track.index()) {
     sector.data = get.sector.data(sector.index)
-    
+	cell.data = get.cell.data(sector.index, track.index)
     nx = x[1]
     ny = y[1]
     for(i in seq_along(x)) {
         if(i == 1) {
             next   
         }
-
-        ncut = sqrt((x[i] - x[i-1])^2 + (y[i] - y[i-1])^2)/(2*pi/circos.par("unit.circle.segments"))
+		
+		l = sqrt((x[i] - x[i-1])^2 + (y[i] - y[i-1])^2)/ (cell.data$ylim[2] - cell.data$ylim[1]) * cell.data$track.height
+        ncut = l/ (2*pi/circos.par("unit.circle.segments"))
         ncut = floor(ncut)
 
         d = sqrt((x[i] - x[i-1])^2 + (y[i] - y[i-1])^2)

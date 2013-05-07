@@ -490,7 +490,7 @@ circos.clear()
 
 #####################################################
 par(mar = c(1, 1, 1, 1))
-factors = letters[1:8]
+factors = letters[1:30]
 circos.initialize(factors = factors, xlim = c(0, 10))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10))

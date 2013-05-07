@@ -34,6 +34,8 @@ For how to create or arrange the circos layout, see `example/galary.R`
 
 Several interesting figures can be found in `example/`
 
+For specific use in genomics, a function called `circos.initializeWithIdeogram` which draws the ideogram and initializes sectors for chromosomes will be added.
+
 More tests and documents will be added, as well as a vignette.
 
 

@@ -1098,3 +1098,8 @@ circos.trackHist = function(factors, x, track.height = circos.par("default.track
     }
     return(invisible(NULL))
 }
+
+
+circos.initializeWithIdeogram = function(file) {
+
+}

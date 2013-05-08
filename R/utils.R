@@ -90,13 +90,12 @@ lines.expand = function(x, y, sector.index = get.current.sector.index(), track.i
 	ncut = sqrt((td3[2, 1] - td3[1, 1])^2 + (td3[2, 2] - td3[2, 1])^2)/ (2*pi/circos.par("unit.circle.segments"))
         ncut = floor(ncut)
 
-        d = sqrt((x[i] - x[i-1])^2 + (y[i] - y[i-1])^2)
-        
-        
-        j = seq_len(ncut) / (ncut + 1)
-        
-        nx = c(nx, x[i-1] + (x[i] - x[i-1])*j, x[i])
-        ny = c(ny, y[i-1] + (y[i] - y[i-1])*j, y[i])
+	if(ncut) {
+	        j = seq_len(ncut) / (ncut + 1)
+	        
+	        nx = c(nx, x[i-1] + (x[i] - x[i-1])*j, x[i])
+	        ny = c(ny, y[i-1] + (y[i] - y[i-1])*j, y[i])
+	}
     }
     
     return(cbind(nx, ny))

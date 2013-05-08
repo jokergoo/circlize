@@ -1102,7 +1102,7 @@ circos.trackHist = function(factors, x, track.height = circos.par("default.track
 
 circos.initializeWithIdeogram = function(file, track.height = 0.2) {
 	
-	d = read.table(file)
+	d = read.table(file, colClasses = c("factor", "numeric", "numeric", "factor", "factor"))
 	d[[2]] = as.numeric(d[[2]])
 	d[[3]] = as.numeric(d[[3]])
 	chromosome = levels(d[[1]])
@@ -1135,7 +1135,12 @@ circos.initializeWithIdeogram = function(file, track.height = 0.2) {
 		col[d2[[5]] == "gpos50"] == "#808080"
 		col[d2[[5]] == "gpos25"] == "#404040"
 		for(i in seq_len(n)) {
-			circos.rect(d[i, 2], 0, d[i, 3], 0.5, sector.index = chr, col = col[i], border = NA)
+			circos.rect(d[i, 2], 0, d[i, 3], 0.4, sector.index = chr, col = col[i], border = NA)
 		}
+		circos.axis(h = 0.5, major.at = seq(0, 10000000000, by = 10000000), labels = paste(major.at/1000000, "MB", sep = ""), sector.index = chr)
+		xlim = get.cell.meta.data("xlim", sector.index = chr)
+		circos.text(xlim[0] + mean(xlim), 0.8, labels = chr)
 	}
+	
+	
 }

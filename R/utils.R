@@ -160,7 +160,7 @@ check.points.position = function(x, y, sector.index = NULL, track.index = NULL) 
     l2 = y < ylim[1] | y > ylim[2]
     l = l1 | l2
     if(sum(l) && circos.par("points.overflow.warning")) {
-        warning(paste(sum(l), "points are out of plotting region in sector '", sector.index, "', track '", track.index, "'.\n", sep = ""))
+        warning(paste(sum(l), " point", ifelse(sum(l) == 1, " is", "s are"), " out of plotting region in sector '", sector.index, "', track '", track.index, "'.\n", sep = ""))
     }
 
     return(invisible(NULL))

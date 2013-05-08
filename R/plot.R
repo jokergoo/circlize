@@ -788,7 +788,8 @@ circos.trackText = function(factors, x, y, labels, track.index = get.current.tra
 # == details
 circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
 	sector.index = get.current.sector.index(), track.index = get.current.track.index(),
-	labels.font = par("font"), labels.cex = par("cex"), labels.direction = "default",direction = c("outside", "inside"), minor.ticks = 4,
+	labels.font = par("font"), labels.cex = par("cex"), labels.direction = "default",
+	direction = c("outside", "inside"), minor.ticks = 4,
 	major.tick.percentage = 0.1, labels.away.percentage = 0.05, lwd = par("lwd")) {
 	
 	direction = direction[1]
@@ -1124,8 +1125,20 @@ circos.trackHist = function(factors, x, track.height = circos.par("default.track
     return(invisible(NULL))
 }
 
-
-circos.initializeWithIdeogram = function(file, track.height = 0.1) {
+# == title
+# Initialize the circos layout with an ideogram
+#
+# == param
+# -file cytoband file. By default it is the cytoband data for human
+#
+# == details
+# This is not a full functional function. It jus provides a way to show how to
+# draw genomics ideogram with this package. How to embed the ideogram into the
+# circos layout is 
+#
+# The cytoband data for human is downloaded from UCSC ftp site (http://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz),
+# should be uncompressed.
+circos.initializeWithIdeogram = function(file = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""), track.height = 0.1) {
 	
 	d = read.table(file, colClasses = c("factor", "numeric", "numeric", "factor", "factor"))
 
@@ -1147,7 +1160,8 @@ circos.initializeWithIdeogram = function(file, track.height = 0.1) {
 	}
 	
 	circos.clear()
-	par(mar = c(1, 1, 1, 1))
+	par(mar = c(1, 1, 1, 1), lwd = 0.5)
+	o.cell.padding = circos.par("cell.padding")
 	circos.par("cell.padding" = c(0, 0, 0, 0))
 	circos.initialize(factor(chromosome, levels = chromosome), xlim = xlim)
 	circos.trackPlotRegion(factors = factor(chromosome, levels = chromosome), ylim = c(0, 1), bg.border = NA, track.height = track.height)
@@ -1165,11 +1179,10 @@ circos.initializeWithIdeogram = function(file, track.height = 0.1) {
 			circos.rect(d2[i, 2], 0, d2[i, 3], 0.4, sector.index = chr, col = col[i], border = NA)
 		}
 		circos.rect(d2[1, 2], 0, d2[n, 3], 0.4, sector.index = chr, border = "black")
-		major.at = seq(0, 10^nchar(max(xlim[, 2])), by = 100000000)
-		circos.axis(h = 0.5, major.at = major.at, labels = paste(major.at/1000000, "MB", sep = ""), sector.index = chr, labels.cex = 0.4)
+		major.at = seq(0, 10^nchar(max(xlim[, 2])), by = 50000000)
+		circos.axis(h = 0.5, major.at = major.at, labels = paste(major.at/1000000, "MB", sep = ""), sector.index = chr, labels.cex = 0.2)
 		cell.xlim = get.cell.meta.data("xlim", sector.index = chr)
-		circos.text(cell.xlim[1] + mean(cell.xlim), 1.2, labels = gsub("chr", "", chr), sector.index = chr)
+		circos.text(cell.xlim[1] + mean(cell.xlim), 1.2, labels = gsub("chr", "", chr), sector.index = chr, cex = 0.8)
 	}
-	
-	
+	circos.par("cell.padding" = o.cell.padding)
 }

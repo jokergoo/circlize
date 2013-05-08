@@ -57,11 +57,8 @@ circos.clear()
 #  taiji and bagua
 ################################################################################
 
-m = rbind(c(1, 1, 1, 1, 2, 2, 2, 2),
-          c(1, 1, 2, 2, 1, 1, 2, 2),
-          c(1, 2, 1, 2, 1, 2, 1, 2))
-m = t(m)
-factors = apply(m, 1, paste, sep = "", collapse = "")
+
+factors = letters[1:8]
 par(mar = c(1, 1, 1, 1))
 circos.par("default.track.height" = 0.15, "start.degree" = 22.5)
 circos.initialize(factors = factors, xlim = c(0, 1))
@@ -128,33 +125,6 @@ draw.sector(x = 0, y = -0.2, start = 0, end = 360, radius = 0.05, col = "white",
 
 circos.clear()
 
-################################################################################
-#  clock
-################################################################################
-
-
-factors = 1:12
-par(mar = c(1, 1, 1, 1))
-circos.par("gap.degree" = 0, "cell.padding" = c(0, 0, 0, 0))
-circos.initialize(factors = factors, xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA, 
-    panel.fun = function(x, y, ...) {
-        circos.lines(c(0, 1), c(1, 1))
-        circos.lines(c(1, 1), c(1, 0.5))
-        circos.lines(c(0.8, 0.8), c(1, 0.75))
-        circos.lines(c(0.6, 0.6), c(1, 0.75))
-        circos.lines(c(0.4, 0.4), c(1, 0.75))
-        circos.lines(c(0.2, 0.2), c(1, 0.75))
-        
-        i = get.sector.numeric.index()
-        i = (12 - i + 3) %% 12
-        i = ifelse(i == 0, 12, i)
-        circos.text(1, 0.3, labels = i, direction = "horizontal")
-    })
-arrows(0, 0, 0, 0.7)    
-arrows(0, 0, 0.4, 0)
-
-circos.clear()
 
 ##################################################################################
 #  dartboard
@@ -199,7 +169,7 @@ circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA, panel.
     current.track.index = get.current.track.index()
     current.cell.data = get.cell.data(current.sector.index, current.track.index)
     circos.text(mean(current.cell.data$xlim), 0.75, labels = current.sector.index, direction = "horizontal")
-    i = get.sector.numeric.index()
+    i = get.cell.meta.data("sector.numeric.index")
     circos.rect(min(current.cell.data$xlim), 0, max(current.cell.data$xlim), 0.25, col = colors[i])
 })
 
@@ -228,15 +198,15 @@ factors = letters[1:4]
 circos.initialize(factors = factors, xlim = c(0, 10))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.5, panel.fun = function(x, y) {
 	circos.text(5, 9, "default_default", direction = "default")
-	circos.points(5, 9, pch = 16, col = "red") 
+	#circos.points(5, 9, pch = 16, col = "red") 
 	circos.text(0, 5, "vertical_left", direction = "vertical_left")
-	circos.points(0, 5, pch = 16, col = "red") 
+	#circos.points(0, 5, pch = 16, col = "red") 
 	circos.text(10, 5, "vertical_right", direction = "vertical_right")
-	circos.points(10, 5, pch = 16, col = "red") 
+	#circos.points(10, 5, pch = 16, col = "red") 
 	circos.text(5, 5, "horizontal", direction = "horizontal")
-	circos.points(5, 5, pch = 16, col = "red") 
+	#circos.points(5, 5, pch = 16, col = "red") 
 	circos.text(5, 1, "arc_arc_arc_arc_arc", direction = "arc")
-	circos.points(5, 1, pch = 16, col = "red") 
+	#circos.points(5, 1, pch = 16, col = "red") 
 })
 circos.clear()
 
@@ -278,7 +248,7 @@ circos.clear()
 #######################################
 par(mar = c(1, 1, 1, 1), "xaxs" = "i", "yaxs" = "i")
 factors = letters[1:8]
-circos.par("canvas.xlim" = c(0, 1), "canvas.ylim" = c(0, 1), "gap.degree" = 3, "start.degree" = 20, "track.margin" = c(0.05, 0.05))
+circos.par("canvas.xlim" = c(0, 1), "canvas.ylim" = c(0, 1), "gap.degree" = 3, "start.degree" = 20, "track.margin" = c(0.05, 0.05), "clock.wise" = FALSE)
 circos.initialize(factors = factors, xlim = c(0, 10))
 
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.1, bg.border = NA, bg.col = "#E41A1C", panel.fun = function(x, y) {
@@ -369,8 +339,8 @@ lines(c(0, sqrt(3)/4)+0.01, c(0, -3/4)+0.01, lwd = 4, col = "red")
 lines(c(0, sqrt(3)/4/2)-0.01, c(0, -3/4/2)-0.01, lwd = 4, col = "blue")
 
 ############################################################
-pdf(file = "transformation.pdf", height = 4.5, width = 4)
-layout(cbind(c(1, 0, 2)), height = c(2,0.5,2))
+pdf(file = "transformation.pdf", height = 8.5, width = 4)
+layout(cbind(c(1, 0, 2, 0, 3)), height = c(2,0.5,2, 0.5, 4))
 par(mar = c(2, 2, 2, 2))
 x = 1:10
 y = rnorm(10)
@@ -381,7 +351,7 @@ box()
 
 par(mar = c(1, 1, 1, 1))
 factors = letters[1:3]
-circos.par("canvas.xlim" = c(-sqrt(3)/2, sqrt(3)/2), "canvas.ylim" = c(1/2*0.6, 1), start.degree = 30, "track.margin" = c(0, 0), "gap.degree" = 0)
+circos.par("canvas.xlim" = c(-sqrt(3)/2, sqrt(3)/2), "canvas.ylim" = c(1/2*0.6, 1), start.degree = 30, "track.margin" = c(0, 0), "gap.degree" = 0, "clock.wise" = FALSE)
 circos.initialize(factors = factors, xlim = c(1, 10))
 circos.trackPlotRegion(factors = factors, ylim = range(y), track.height = 0.4, bg.border = NA)
 circos.updatePlotRegion(sector.index = "a", track.index = 1, bg.border = "black")
@@ -392,6 +362,17 @@ circos.clear()
 
 par(xpd = NA)
 arrows(0, 1.33, 0, 1.07, code = 2)
+
+factors = letters[1:3]
+circos.initialize(factors = factors, xlim = c(1, 10))
+circos.trackPlotRegion(factors = factors, ylim = range(y), track.height = 0.4)
+circos.updatePlotRegion(sector.index = "c", track.index = 1, bg.border = "black")
+circos.lines(x, y, sector.index = "c", track.index = 1, straight = TRUE)
+circos.text(2, 0, "text", cex = 2)
+circos.rect(5, -1, 7, 1)
+circos.clear()
+arrows(0, 1.5, 0, 1.07, code = 2)
+
 dev.off()
 
 
@@ -490,7 +471,7 @@ circos.clear()
 
 #####################################################
 par(mar = c(1, 1, 1, 1))
-factors = letters[1:30]
+factors = factor(letters[1:10], levels = sample(letters[1:10], 10))
 circos.initialize(factors = factors, xlim = c(0, 10))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
@@ -521,7 +502,7 @@ circos.axis(sector.index = "d", h = "bottom", direction = "inside")
 circos.axis(sector.index = "e", h = 5, major.at = c(1, 3, 5, 7, 9))
 circos.axis(sector.index = "f", h = 5, major.at = c(1, 3, 5, 7, 9), labels = c("a", "c", "e", "g", "f"), minor.ticks = 0)
 circos.axis(sector.index = "g", h = 5, major.at = c(1, 3, 5, 7, 9), labels = c("a", "c", "e", "g", "f"), major.tick = FALSE)
-circos.axis(sector.index = "h", h = 2, major.at = c(1, 3, 5, 7, 9), labels = c("a", "c", "e", "g", "f"), major.tick.percentage = 0.3, labels.away.percentage = 0.2, minor.ticks = 2)
+circos.axis(sector.index = "h", h = 2, major.at = c(1, 3, 5, 7, 9), labels = c("a", "c", "e", "g", "f"), major.tick.percentage = 0.3, labels.away.percentage = 0.2, minor.ticks = 2, labels.direction = "vertical_right")
 circos.clear()
 
 #############################################
@@ -537,8 +518,13 @@ par(mar = c(1, 1, 1, 1))
 circos.par("gap.degree" = 0, "cell.padding" = c(0, 0, 0, 0), "start.degree" = -90)
 circos.initialize(factors = factors, xlim = c(0, 12))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.border = NA)
-circos.axis(sector.index = "a", major.at = 0:12, labels = c("", 1:12), direction = "inside", labels.cex = 1.5, major.tick.percentage = 0.3, labels.away.percentage = 0.2)
+circos.axis(sector.index = "a", major.at = 0:12, labels = "", direction = "inside", labels.cex = 1.5, major.tick.percentage = 0.3)
+circos.text(1:12, 0.5, 1:12, direction = "horizontal")
 arrows(0, 0, 0, 0.7)    
 arrows(0, 0, 0.4, 0)
 
 circos.clear()
+
+
+##################################
+circos.initializeWithIdeogram(file = "inst/extdata/cytoBand.txt")

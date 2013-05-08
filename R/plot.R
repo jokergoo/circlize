@@ -1103,8 +1103,7 @@ circos.trackHist = function(factors, x, track.height = circos.par("default.track
 circos.initializeWithIdeogram = function(file, track.height = 0.2) {
 	
 	d = read.table(file, colClasses = c("factor", "numeric", "numeric", "factor", "factor"))
-	d[[2]] = as.numeric(d[[2]])
-	d[[3]] = as.numeric(d[[3]])
+
 	chromosome = levels(d[[1]])
 	chromosome.ind = gsub("chr", "", chromosome)
 	chromosome.num = grep("^\\d+$", chromosome.ind, value = TRUE)
@@ -1129,7 +1128,8 @@ circos.initializeWithIdeogram = function(file, track.height = 0.2) {
 		d2 = d[d[[1]] == chr, ]
 		n = nrow(d2)
 		col = rep("#FFFFFF", n)
-		col[d2[[5]] == "acen"] = "#FF0000"
+		col[d2[[5]] == "acen"] = "#E41A1C"
+		col[d2[[5]] == "gvar"] = "#377EB8"
 		col[d2[[5]] == "gpos100"] == "#000000"
 		col[d2[[5]] == "gpos75"] == "#BFBFBF"
 		col[d2[[5]] == "gpos50"] == "#808080"

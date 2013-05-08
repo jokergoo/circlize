@@ -1,6 +1,5 @@
-
 # return the coordinate in polar coordinate system in a specified cell
-circlize = function(x, y, sector.index, track.index, xlim = NULL, ylim = NULL) {
+circlize = function(x, y, sector.index, track.index) {
     
     sector.data = get.sector.data(sector.index)
     cell.data = get.cell.data(sector.index, track.index)
@@ -84,9 +83,11 @@ lines.expand = function(x, y, sector.index = get.current.sector.index(), track.i
         if(i == 1) {
             next   
         }
-		
-		l = sqrt((x[i] - x[i-1])^2 + (y[i] - y[i-1])^2)/ (cell.data$ylim[2] - cell.data$ylim[1]) * cell.data$track.height
-        ncut = l/ (2*pi/circos.par("unit.circle.segments"))
+	
+	td = cbind(c(x[i-1], x[i]), c(y[i-1], y[i]))
+	td2 = circlize(td[, 1], td[, 2])
+	td3 = polar2Cartesian(td2)
+	ncut = sqrt((td3[2, 1] - td3[1, 1])^2 + (td3[2, 2] - td3[2, 1])^2)/ (2*pi/circos.par("unit.circle.segments"))
         ncut = floor(ncut)
 
         d = sqrt((x[i] - x[i-1])^2 + (y[i] - y[i-1])^2)

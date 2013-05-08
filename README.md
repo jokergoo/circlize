@@ -43,4 +43,9 @@ More tests and documents will be added, as well as a vignette.
 
 There is also a Perl module R::Comment2Man to convert comments to documentary files.
 
-Comments are marked as the Markdown-style and it looks more clear than that under the Roxygen package
+Comments are marked as the Markdown-style and it looks more clear than that under the Roxygen package.
+
+The module could be run as:
+
+    perl -MR::Comment2Man -e "R::Comment2Man->draft('R/')"
+

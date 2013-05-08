@@ -246,7 +246,7 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("defau
     set.current.sector.index(sector.index)
     
     # The plotting region is a rectangle
-    circos.rect(xlim[1], ylim[1],
+    circos.rect(xlim[1], ylim[1], sector.index = sector.index, track.index = track.index,
         xlim[2], ylim[2], col = bg.col, border = bg.border,
         lty = bg.lty, lwd = bg.lwd)
     return(invisible(NULL))
@@ -788,7 +788,7 @@ circos.trackText = function(factors, x, y, labels, track.index = get.current.tra
 # == details
 circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
 	sector.index = get.current.sector.index(), track.index = get.current.track.index(),
-	labels.font = par("font"), labels.cex = par("cex"), direction = c("outside", "inside"), minor.ticks = 4,
+	labels.font = par("font"), labels.cex = par("cex"), labels.direction = "default",direction = c("outside", "inside"), minor.ticks = 4,
 	major.tick.percentage = 0.1, labels.away.percentage = 0.05, lwd = par("lwd")) {
 	
 	direction = direction[1]
@@ -840,14 +840,39 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 			             sector.index = sector.index, track.index = track.index, lwd = lwd)
 		}
 		
+		labels.adj = NULL
+		if(direction == "outside") {
+			if(labels.direction == "default") {
+				labels.adj = c(0.5, 0)
+			} else if(labels.direction == "vertical_left") {
+				labels.adj = c(1, 0.5)
+			} else if(labels.direction == "vertical_right") {
+				labels.adj = c(0, 0.5)
+			} else {
+				labels.adj = c(0.5, 0)
+			}
+		} else {
+			if(labels.direction == "default") {
+				labels.adj = c(0.5, 1)
+			} else if(labels.direction == "vertical_left") {
+				labels.adj = c(0, 0.5)
+			} else if(labels.direction == "vertical_right") {
+				labels.adj = c(1, 0.5)
+			} else {
+				labels.adj = c(0.5, 1)
+			}
+		}
+		
 		if(is.logical(labels) && labels) {
 			circos.text(major.at[i], h + (major.tick.length+yrange*labels.away.percentage)*ifelse(direction == "outside", 1, -1),
-			            labels = major.at[i], adj = c(0.5, ifelse(direction == "outside", 0, 1)),
-						font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index)
+			            labels = major.at[i], adj = labels.adj,
+						font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
+						direction = labels.direction)
 		} else if(length(labels)) {
 			circos.text(major.at[i], h + (major.tick.length+yrange*labels.away.percentage)*ifelse(direction == "outside", 1, -1),
-			            labels = labels[i], adj = c(0.5, ifelse(direction == "outside", 0, 1)),
-						font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index)
+			            labels = labels[i], adj = labels.adj,
+						font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
+						direction = labels.direction)
 		}
 	}
 	if(major.tick) {
@@ -1100,7 +1125,7 @@ circos.trackHist = function(factors, x, track.height = circos.par("default.track
 }
 
 
-circos.initializeWithIdeogram = function(file, track.height = 0.2) {
+circos.initializeWithIdeogram = function(file, track.height = 0.1) {
 	
 	d = read.table(file, colClasses = c("factor", "numeric", "numeric", "factor", "factor"))
 
@@ -1121,25 +1146,29 @@ circos.initializeWithIdeogram = function(file, track.height = 0.2) {
 		xlim = rbind(xlim,c(min(d2[[2]]), max(d2[[3]])))
 	}
 	
+	circos.clear()
 	par(mar = c(1, 1, 1, 1))
-	circos.initialize(factor(chromosome, levels = chromosome), xlim = c(0,1))
-	circos.trackPlotRegion(factors = factor(chromosome, levels = chromosome), ylim = c(0, 1), bg.border = NA)
+	circos.par("cell.padding" = c(0, 0, 0, 0))
+	circos.initialize(factor(chromosome, levels = chromosome), xlim = xlim)
+	circos.trackPlotRegion(factors = factor(chromosome, levels = chromosome), ylim = c(0, 1), bg.border = NA, track.height = track.height)
 	for(chr in chromosome) {
 		d2 = d[d[[1]] == chr, ]
 		n = nrow(d2)
 		col = rep("#FFFFFF", n)
 		col[d2[[5]] == "acen"] = "#E41A1C"
 		col[d2[[5]] == "gvar"] = "#377EB8"
-		col[d2[[5]] == "gpos100"] == "#000000"
-		col[d2[[5]] == "gpos75"] == "#BFBFBF"
-		col[d2[[5]] == "gpos50"] == "#808080"
-		col[d2[[5]] == "gpos25"] == "#404040"
+		col[d2[[5]] == "gpos100"] = "#000000"
+		col[d2[[5]] == "gpos75"] = "#BFBFBF"
+		col[d2[[5]] == "gpos50"] = "#808080"
+		col[d2[[5]] == "gpos25"] = "#404040"
 		for(i in seq_len(n)) {
-			circos.rect(d[i, 2], 0, d[i, 3], 0.4, sector.index = chr, col = col[i], border = NA)
+			circos.rect(d2[i, 2], 0, d2[i, 3], 0.4, sector.index = chr, col = col[i], border = NA)
 		}
-		circos.axis(h = 0.5, major.at = seq(0, 10000000000, by = 10000000), labels = paste(major.at/1000000, "MB", sep = ""), sector.index = chr)
-		xlim = get.cell.meta.data("xlim", sector.index = chr)
-		circos.text(xlim[0] + mean(xlim), 0.8, labels = chr)
+		circos.rect(d2[1, 2], 0, d2[n, 3], 0.4, sector.index = chr, border = "black")
+		major.at = seq(0, 10^nchar(max(xlim[, 2])), by = 100000000)
+		circos.axis(h = 0.5, major.at = major.at, labels = paste(major.at/1000000, "MB", sep = ""), sector.index = chr, labels.cex = 0.4)
+		cell.xlim = get.cell.meta.data("xlim", sector.index = chr)
+		circos.text(cell.xlim[1] + mean(cell.xlim), 1.2, labels = gsub("chr", "", chr), sector.index = chr)
 	}
 	
 	

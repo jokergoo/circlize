@@ -1,5 +1,5 @@
 # return the coordinate in polar coordinate system in a specified cell
-circlize = function(x, y, sector.index, track.index) {
+circlize = function(x, y, sector.index = get.current.sector.index(), track.index = get.current.track.index()) {
     
     sector.data = get.sector.data(sector.index)
     cell.data = get.cell.data(sector.index, track.index)
@@ -84,18 +84,18 @@ lines.expand = function(x, y, sector.index = get.current.sector.index(), track.i
             next   
         }
 	
-	td = cbind(c(x[i-1], x[i]), c(y[i-1], y[i]))
-	td2 = circlize(td[, 1], td[, 2])
-	td3 = polar2Cartesian(td2)
-	ncut = sqrt((td3[2, 1] - td3[1, 1])^2 + (td3[2, 2] - td3[2, 1])^2)/ (2*pi/circos.par("unit.circle.segments"))
+		td = cbind(c(x[i-1], x[i]), c(y[i-1], y[i]))
+		td2 = circlize(td[, 1], td[, 2], sector.index = sector.index, track.index = track.index)
+		td3 = polar2Cartesian(td2)
+		ncut = sqrt((td3[2, 1] - td3[1, 1])^2 + (td3[2, 2] - td3[2, 1])^2)/ (2*pi/circos.par("unit.circle.segments"))
         ncut = floor(ncut)
 
-	if(ncut) {
-	        j = seq_len(ncut) / (ncut + 1)
-	        
-	        nx = c(nx, x[i-1] + (x[i] - x[i-1])*j, x[i])
-	        ny = c(ny, y[i-1] + (y[i] - y[i-1])*j, y[i])
-	}
+		if(ncut) {
+				j = seq_len(ncut) / (ncut + 1)
+				
+				nx = c(nx, x[i-1] + (x[i] - x[i-1])*j, x[i])
+				ny = c(ny, y[i-1] + (y[i] - y[i-1])*j, y[i])
+		}
     }
     
     return(cbind(nx, ny))

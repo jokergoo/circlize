@@ -85,6 +85,8 @@ sub parse {
 	}
 	
 	my @parsed_items;
+	open OUT, ">NAMESPACE";
+	print OUT "export(\n";
 	for(my $i = 0; $i < scalar(@items); $i ++) {
 		my ($section_name, $section_value) = $items[$i]->parse()->format();
 		if($is_overwrite == 0 and -e "man/$items[$i]->{_function_name}.rd") {
@@ -92,8 +94,10 @@ sub parse {
 			($section_name, $section_value) = combine_sections($section_name, $section_value, $old_section_name, $old_section_value);
 		}
 		output($items[$i]->{_function_name}, $section_name, $section_value);
+		print OUT "\t$items[$i]->{_function_name}".($i == $#items ? "" : ",")."\n";
 		print "man/$items[$i]->{_function_name}.rd... done.\n";
 	}
+	print OUT ")\n";
 }
 
 # alignment of two vectors of section name

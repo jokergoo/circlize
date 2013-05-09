@@ -1210,8 +1210,10 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 		n = nrow(d2)
 		col = rep("#FFFFFF", n)
 		col[d2[[5]] == "acen"] = "#E41A1C"
-		col[d2[[5]] == "gvar"] = "#377EB8"
+		col[d2[[5]] == "stalk"] = "#377EB8"
+		col[d2[[5]] == "gvar"] = "#404040"
 		col[d2[[5]] == "gpos100"] = "#000000"
+		col[d2[[5]] == "gpos"] = "#000000"
 		col[d2[[5]] == "gpos75"] = "#BFBFBF"
 		col[d2[[5]] == "gpos50"] = "#808080"
 		col[d2[[5]] == "gpos25"] = "#404040"

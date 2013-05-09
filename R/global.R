@@ -30,35 +30,48 @@ assign(".CIRCOS.PAR", .CIRCOS.PAR.DEFAULT, envir = .CIRCOS.ENV)
 # == details
 # Global parameters for the circos layout. Currently supported parameters are:
 #
-# -start.degree            The starting degree which the circle begin to draw.
-# -gap.degree              Gap between two neighbour sectors.
+# -start.degree            The starting degree which the circle begin to draw. Note this degree is measured
+#     in the standard polar coordinate which means it is anti-clockwise.
+# -gap.degree              Gap between two neighbour sectors. Note there is a gap in front of the first sector.
 # -track.margin            Like ``margin`` in Cascading Style Sheets (CSS), it is the blank area
 #     out of the plotting region, also outside of the borders. Since left and right margin are controlled
 #     by ``gap.degree``, only bottom and top margin need to be set. The value for the ``track.margin``
 #     is the percentage according to the radius of the unit circle.
 # -unit.circoe.segments    Since curves are simulated by a series of straight lines,
-#     this parameter controls the amout of segments to represent a curve.
+#     this parameter controls the amout of segments to represent a curve. The minimal length
+#     of the line segmentation is the length of the unit circle / ``unit.circoe.segments``.
 # -cell.padding            Padding of the cell. Like ``padding`` in Cascading Style Sheets
 #    (CSS), it is the blank area around the plotting regions, but within the borders.
 #     The paramter has four values, which controls the bottom, left, top and right padding
-#     respectively. The four values are percentages in which the first and the third padding
+#     respectively. The four values are all percentages in which the first and the third padding
 #     values are the percentages according to the range of values on y-axis and the second and
 #     fourth values are the percentages according to the range of values on x-axis.
 # -default.track.height    The default height of tracks. It is the percentage according to the radius
-#     of the unit circle. The height include the top and bottom cell paddings.
+#     of the unit circle. The height includes the top and bottom cell paddings but not the margins.
+#     However, the definition would be changed in future version because I think it would be more 
+#     reasonable to include the margins in the track.
 # -points.overflow.warning Since each cell is in fact not a plotting region but only
 #     an ordinary rectangle, it does not eliminate points that are plotted out of
 #     the region. So if some points are out of the plotting region, by default, the 
 #     package would continue drawing the points and print warnings. But in some 
 #     circumstances, draw something out of the plotting region is useful, such as draw
 #     some legend or text. Set this value to ``FALSE`` to turn off the warnings.
+# -canvas.xlim              The coordinate for the canvas. By default, the package draws unit circle, so
+#     the xlim for the canvas would be ``c(-1, 1)``. However, you can set it to a more broad
+#     interval if you want to draw other things out of the circle. By choose proper
+#     ``canvas.xlim`` and ``canvas.ylim``, you can draw part of the circle. E.g. setting
+#     ``canvas.xlim`` to ``c(0, 1)`` and ``canvas.ylim`` to ``c(0, 1)`` would only draw
+#     circle in the region of (0, pi/2).
+# -canvas.ylim              The coordinate for the canvas. By default it is ``c(-1, 1)``
+# -clock.wise               The order of drawing sectors. Default is ``TRUE``.
 #
 # Similar to `graphics::par`, you can get the values of the parameters by specifying the 
 # names of the parameters and you can set the values of the parameters by specifying a
 # named list which contains the new values.
 #
-# ``gap.degree`` and ``start.degree`` and only be set before the initialization of circos layout
-# (i.e. before calling `circos.initialize`) because these two values will not be changed after
+# ``gap.degree``, ``start.degree``, ``canvas.xlim``, ``canvas.ylim`` and ``clock.wise`` 
+# only be set before the initialization of circos layout
+# (i.e. before calling `circos.initialize`) because these values will not be changed after
 # the layout of the sectors. The left and right padding for ``cell.padding`` will also be
 # effectiveless after the initialization because all cells in a sector would share the same
 # left and right paddings. 
@@ -109,17 +122,18 @@ is.circos.initialized = function() {
 #
 # == details
 # The function allocates the sectors according the values on x-axis.
-# The number of sectors are determined by the ``factors``. In this function,
-# the start and end position on the circle (measured by degree) are calculated.
-# The width for each sector are calculated by the values on a-axis.
+# The number of sectors are determined by the ``factors`` and the order
+# of sectors are determined by the levels of factors. In this function,
+# the start and end position  for each sector on the circle (measured by degree)
+# are calculated according to the values on a-axis.
 #
 # If ``x`` is set, the length of ``x`` must be equal to the length of ``factor``.
 # Then the data range for each sector are calculated from ``x`` and ``factor``.
 #
 # If ``xlim`` is set, it should be a vector containing two numbers or a matrix with 2 columns.
 # If ``xlim`` is a vector, it means all sector share the same ``xlim``.
-# If ``xlim`` is a matrix, the number of rows should be equal to the number of categories 
-# identified by ``factors``, then each row of ``xlim`` corresponds to the data range of each sector.
+# If ``xlim`` is a matrix, the number of rows should be equal to the number of categories (number of levels)
+# identified by ``factors``, then each row of ``xlim`` corresponds to the data range for each sector.
 #
 # The function finally call `graphics::plot` and be readly to draw.
 circos.initialize = function(factors, x = NULL, xlim = NULL) {
@@ -335,7 +349,7 @@ has.cell = function(sector.index, track.index) {
 #
 # == details
 # Draw the index of the sector and track for each cell on the figure.
-# This function can help you to find the coordinate of the cell. 
+# This function can help you to find the coordinate of cells. 
 show.index = function() {
 	.CELL.DATA = get(".CELL.DATA", envir = .CIRCOS.ENV)
     sectors = names(.CELL.DATA)
@@ -350,25 +364,25 @@ show.index = function() {
 }
 
 # == title
-# Get the meta data for each cell
+# Get the meta data for a cell
 #
 # == param
-# -name Only support one name at a time, see "details" section
+# -name         Only support one name at a time, see "details" section
 # -sector.index index for the sector
 # -track.index  index for hte track
 #
 # == details
-# The following meta for the cell can be obtained:
+# The following meta information for a cell can be obtained:
 #
-# -sector.index         Would be a element of the factor
-# -sector.numeric.index Numeric index for the sectors
+# -sector.index         The name for the sector
+# -sector.numeric.index Numeric index for the sector
 # -track.index          Numeric index for the track
 # -xlim                 Minimal and maximal values on the x-axis
 # -ylim                 Minimal and maximal values on the y-axis
 # -xrange               Range of the xlim
 # -yrange               Range of the ylim
-# -xplot                Right and left edge degree for the plotting region
-# -yplot                Bottum and top value for the plotting region
+# -xplot                Right and left edge degree for the plotting region in the canvas
+# -yplot                Bottum and top value for the plotting region in the canvas
 #
 # The function would be useful when you use ``panel.fun`` in `circos.initialize` to
 # get the information of the current cell.

@@ -25,7 +25,7 @@ assign(".CIRCOS.PAR", .CIRCOS.PAR.DEFAULT, envir = .CIRCOS.ENV)
 # Parameters for circos layout
 #
 # == param
-# ... Arguments for the parameters, see "details" section
+# -... Arguments for the parameters, see "details" section
 # 
 # == details
 # Global parameters for the circos layout. Currently supported parameters are:

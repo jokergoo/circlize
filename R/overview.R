@@ -1,14 +1,5 @@
 
-# == name
-# circlize-package
-#
-# == alias
-# circlize
-#
-# == docType
-# package
-#
-# == title
+# == title (package:circlize)
 # circos layout in R
 #
 # == details

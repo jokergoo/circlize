@@ -1,0 +1,8 @@
+^\..*
+README.*
+example
+figures
+lib
+test
+to-do.txt
+vignette

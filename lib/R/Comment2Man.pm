@@ -73,10 +73,10 @@ sub parse {
 		my $item;
 		
 		# documented item start with # ## title or something like that
-		if($line =~/^#\s+[@#*\-+$%&]{2}\s*title/) {
+		if($line =~/^#\s+[=@#*\-+$%&]{2}\s*title/) {
 			$item = R::Comment2Man::Item->read(\@lines, $i, is_function => 1);
 			push(@items, $item);
-		} elsif($line =~/^#\s+[@#*\-+$%&]{2}\s*title\s*\(data:(\S+)\)/) {
+		} elsif($line =~/^#\s+[=@#*\-+$%&]{2}\s*title\s*\(data:(\S+)\)/) {
 			$item = R::Comment2Man::Item->read(\@lines, $i, is_function => 0);
 			$item->{_function_name} = $1;
 			$item->{_function_args} = "data($1)";
@@ -85,8 +85,8 @@ sub parse {
 	}
 	
 	my @parsed_items;
-	open OUT, ">NAMESPACE";
-	print OUT "export(\n";
+	open NAMESPACE, ">NAMESPACE";
+	print NAMESPACE "export(\n";
 	for(my $i = 0; $i < scalar(@items); $i ++) {
 		my ($section_name, $section_value) = $items[$i]->parse()->format();
 		if($is_overwrite == 0 and -e "man/$items[$i]->{_function_name}.rd") {
@@ -94,10 +94,11 @@ sub parse {
 			($section_name, $section_value) = combine_sections($section_name, $section_value, $old_section_name, $old_section_value);
 		}
 		output($items[$i]->{_function_name}, $section_name, $section_value);
-		print OUT "\t$items[$i]->{_function_name}".($i == $#items ? "" : ",")."\n";
+		print NAMESPACE "\t$items[$i]->{_function_name}".($i == $#items ? "" : ",")."\n";
 		print "man/$items[$i]->{_function_name}.rd... done.\n";
 	}
-	print OUT ")\n";
+	print NAMESPACE ")\n";
+	close NAMESPACE;
 }
 
 # alignment of two vectors of section name
@@ -133,13 +134,20 @@ sub output {
 	my $section_name = shift;
 	my $section_value = shift;
 	
-	open OUT, ">man/$function_name.rd";
+	open my $fh, ">man/$function_name.rd";
 	for(my $i = 0; $i < scalar(@$section_name); $i ++) {
-		print OUT "\\$section_name->[$i]"."{\n";
-		print OUT "$section_value->[$i]\n";
-		print OUT "}\n";
+		if($section_name->[$i] eq "name" or 
+		   $section_name->[$i] eq "alias") {
+			print $fh "\\$section_name->[$i]"."{";
+			print $fh "$section_value->[$i]";
+			print $fh "}\n";
+		} else {
+			print $fh "\\$section_name->[$i]"."{\n";
+			print $fh "$section_value->[$i]\n";
+			print $fh "}\n";
+		}
 	}
-	close OUT;
+	close $fh;
 }
 
 # some man file may exist
@@ -161,7 +169,8 @@ sub read_manfile_section {
 
 	my @a = $text =~ /\\(\w+)\s*($m)/gms;
 	close F;
-	foreach (values @a) {
+	my %a = @a;
+	foreach (values %a) {
 		s/^\{|}$//g;
 	}
 	
@@ -224,7 +233,7 @@ sub read {
 		my $line = $lines_ref->[$i];
 		
 		if($line =~/^#/) {
-			if($line =~/^#\s+[@#*\-+$%&]{2}\s*(\w+)/) {
+			if($line =~/^#\s+[@#=*\-+$%&]{2}\s*(\w+)/) {
 				$current_section = $1;
 				$current_section = check_synonyms($current_section);
 				$current_section = shift(@$dl)."_".$current_section;
@@ -339,11 +348,17 @@ sub format_section {
 			if($k =~/_paragraph/) {
 				$str .= "  ".inline_format($v)."\n\n";
 			} elsif($k =~/_named_item/) {
+				if($section_name ne "arguments") {
+					$str .= "\\describe{\n";
+				}
 				for(my $i = 0; $i < scalar(@{$v->{name}}); $i ++) {
 					$str .= "  \\item{$v->{name}->[$i]}{".inline_format($v->{value}->[$i])."}\n";
 				}
+				if($section_name ne "arguments") {
+					$str .= "}\n";
+				}
 			} elsif($k =~/_item/) {
-				$str .= "  \\enumerate{\n";
+				$str .= "  \\itemize{\n";
 				for(my $i = 0; $i < scalar(@{$v}); $i ++) {
 					$str .= "    \\item ".inline_format($v->[$i])."\n";
 				}
@@ -530,12 +545,12 @@ sub get_nearest_function_info {
                 for($i ++; $i < scalar(@$lines_ref); $i ++) {
 					$line = $lines_ref->[$i];
                     chomp $line;
-                    $line =~s/^\s+//;
+                    $line =~s/^(\s+)//;
                     if(($closing_position = find_closing_parenthese($line, \$left_parenthese_flag)) > -1) {
                         $function_args .= substr($line, 0, $closing_position);
                         last;
                     }
-                    $function_args .= " " x (length($function_name)+3) . $line;
+                    $function_args .= " " x (length($function_name)+3) . $line . "\n";
                 }
             }
 			if(my ($g, $c) = check_generic_function($function_name)) {
@@ -597,7 +612,7 @@ sub trans_code {
 sub trans_url {
     my $text = shift;
 
-    $text =~s/(http|ftp|https)(:\/\/\S+)([\s\)\]\}\.,;:]*)/\\url{$1$2}$3/g;
+    $text =~s/(http|ftp|https)(:\/\/\S+)([\s\)\]\}\.,;:\]\)\}]*)/\\url{$1$2}$3/g;
 
     return $text;
 }

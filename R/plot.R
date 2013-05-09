@@ -264,7 +264,7 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("defau
 # == title 
 # Add points to a plotting region
 #
-# = param
+# == param
 # -x            Data points on x-axis
 # -y            Data points on y-axis
 # -sector.index Index for the sector
@@ -279,7 +279,7 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("defau
 #
 # You can think the function as the normal `graphics::points`
 # function, just adding points in the plotting region. The position of
-# plotting region is identified by `sector.index` and `track.index`, if they are not
+# plotting region is identified by ``sector.index`` and ``track.index``, if they are not
 # specified, they are in current sector and current track.
 #
 # Data points out of the plotting region will be drawed, but with a warning message.
@@ -305,7 +305,7 @@ circos.points = function(x, y, sector.index = get.current.sector.index(), track.
 # == title 
 # Add points to the plotting regions in one track
 #
-# = param
+# == param
 # -factors      Factors which represent the categories of data
 # -x            Data points on x-axis
 # -y            Data points on y-axis
@@ -362,7 +362,7 @@ circos.trackPoints = function(factors, x, y, track.index = get.current.track.ind
 # == title 
 # Add lines to the plotting region
 #
-# = param
+# == param
 # -x            Data points on x-axis
 # -y            Data points on y-axis
 # -sector.index Index for the sector
@@ -461,7 +461,7 @@ circos.lines = function(x, y, sector.index = get.current.sector.index(), track.i
 ## == title 
 # Add lines to the plotting regions in one track
 #
-# = param
+# == param
 # -factors      Factors which represent the categories of data
 # -x            Data points on x-axis
 # -y            Data points on y-axis
@@ -536,7 +536,7 @@ circos.trackLines = function(factors, x, y, track.index = get.current.track.inde
 # == title
 # Draw rectangle-like grid
 #
-# = param
+# == param
 # -xleft        x for the left bottom points
 # -ybottom      y for the left bottom points
 # -xright       x for the right top points
@@ -599,7 +599,7 @@ circos.rect = function(xleft, ybottom, xright, ytop, sector.index = get.current.
 # == title
 # Draw polygon
 #
-# = param
+# == param
 # -x            Data points on x-axis
 # -y            Data points on y-axis
 # -sector.index Index for the sector
@@ -645,7 +645,7 @@ circos.polygon = function(x, y, sector.index = get.current.sector.index(), track
 # -font         Font style
 #
 # == details
-# The function is similar to `grpahics::text`.
+# The function is similar to `graphics::text`.
 circos.text = function(x, y, labels, sector.index = get.current.sector.index(), track.index = get.current.track.index(), 
     direction = c("default", "vertical_left", "vertical_right", "horizontal", "arc"),
     adj = par("adj"), cex = 1, col = "black", font = par("font")) {
@@ -732,6 +732,7 @@ circos.text = function(x, y, labels, sector.index = get.current.sector.index(), 
 # -factors      Factors which represent the categories of data
 # -x            Data points on x-axis
 # -y            Data points on y-axis
+# -labels       Labels
 # -track.index  Index for the track
 # -direction    Text directions
 # -adj          Adjustment for texts
@@ -805,6 +806,7 @@ circos.trackText = function(factors, x, y, labels, track.index = get.current.tra
 # -minor.ticks      Number of minor ticks between two close major ticks.
 # -major.tick.percentage Length of the major ticks. It is the percentage to the ylim in the cell.
 # -labels.away.percentage The distance for the axis labels to the major ticks. It is the percentage to the ylim in the cell.
+# -lwd              line width for ticks
 #
 # == details
 # It can only draw axis on x-direction.
@@ -913,7 +915,7 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 # == title
 # Draw links between two points or sections
 #
-# = param
+# == param
 # -sector.index1 Sector index for one sector
 # -point1        A single value or a numeric vector of length 2. If it is a 2-elements vector, then
 #                the link would be a belt.
@@ -1044,7 +1046,7 @@ circos.link = function(sector.index1,
 # == title
 # Draw histogram in cells among a whole track
 #
-# = param
+# == param
 # -factors      Factors which represent the categories of data
 # -x            Data on the x-axis
 # -track.index  Index for the track which is goning to be updated. Setting it to ``NULL`` means
@@ -1061,10 +1063,10 @@ circos.link = function(sector.index1,
 # -bg.border    Color for the boder of the plotting regions
 # -bg.lty       Line style for the border of the plotting regions
 # -bg.lwd       Line width for the border of the plotting regions
-# -breaks       see `graphics:hist`
-# -include.lowest see `graphics:hist`
-# -right          see `graphics:hist`
-# -draw.density   see `graphics:hist`
+# -breaks       see `graphics::hist`
+# -include.lowest see `graphics::hist`
+# -right          see `graphics::hist`
+# -draw.density   see `graphics::hist`
 # 
 # == details
 # It draw histogram in cells among a whole track. It is also an example to show how to draw self-defined
@@ -1164,6 +1166,7 @@ circos.trackHist = function(factors, x, track.height = circos.par("default.track
 #
 # == param
 # -file cytoband file. By default it is the cytoband data for human
+# -track.height height for the track
 #
 # == details
 # This is not a full functional function. It jus provides a way to show how to

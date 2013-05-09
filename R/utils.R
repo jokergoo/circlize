@@ -246,9 +246,9 @@ is.points.ordered.on.circle = function(theta, clock.wise = FALSE) {
 arc.points = function(theta1, theta2, rou, clock.wise = FALSE) {
     n = 100
         if(clock.wise) {
-            theta = degree.seq(theta2, theta1, length = n)
+            theta = degree.seq(theta2, theta1, length.out = n)
     } else {
-            theta = degree.seq(theta1, theta2, length = n)
+            theta = degree.seq(theta1, theta2, length.out = n)
      }
     x = rou * cos(theta*pi/180)
     y = rou * sin(theta*pi/180)

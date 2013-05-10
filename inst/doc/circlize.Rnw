@@ -1,0 +1,247 @@
+% \VignetteIndexEntry{circlize}
+% \VignetteDepends{circlize}
+% \VignetteKeywords{circos}
+% \VignetteKeywords{ideogram}
+% \VignetteKeywords{circlize}
+% \VignettePackage{circlize}
+
+\documentclass[a4paper]{article}
+
+\title{A brief introduction of the {\tt circlize} package}
+
+\author{Zuguang Gu\\ German Cancer Research Center, Heidelberg, Germany}
+
+\usepackage{Sweave}
+
+\begin{document}
+
+\maketitle 
+
+\section{Introduction}
+Circos layout is very useful to represent informations, especially for genomic data.
+The {\tt circlize} package implements the circos layout in R. The package allocates
+and illustrates data in a specific category into a cell inside the circle and makes you
+felling that you are plotting figures in a normal plotting coordinate.
+
+Since most of the figures are composed of points, lines and polygon (for filled color), so we just need to implement functions for drawing points, lines and polygon.
+
+Current there are following functions that can be used for plotting:
+
+\begin{itemize}
+  \item {\tt circos.points}
+  \item {\tt circos.lines}
+  \item {\tt circos.rect}
+  \item {\tt circos.polygon}
+  \item {\tt circos.text}
+  \item {\tt circos.axis}
+  \item {\tt circos.link}, This maybe the unique feature for circos layout to represent relationships between elements.
+\end{itemize}
+
+For drawing points, lines and text through the whole track (among several sectors), the following functions are available:
+
+\begin{itemize}
+  \item {\tt circos.trackPoints}
+  \item {\tt circos.trackLines}
+  \item {\tt circos.trackText}
+\end{itemize}
+
+Also, the function drawing histograms in the whole track is available:
+
+\begin{itemize}
+  \item {\tt circos.trackHist}
+\end{itemize}
+
+Functions to arrange the circos layout
+
+\begin{itemize}
+  \item {\tt circos.trackPlotRegion}
+  \item {\tt circos.updatPlotRegion}
+  \item {\tt circos.par}
+  \item {\tt circos.clear}
+\end{itemize}
+
+Theoretically, you are able to draw most kinds of circos figures by the above functions.
+
+Following is an example. First generate some data.
+
+\begin{Schunk}
+\begin{Sinput}
+> n = 10000
+> a = data.frame(factor = sample(letters[1:8], n, replace = TRUE), x = rnorm(n), y = runif(n))
+\end{Sinput}
+\end{Schunk}
+
+Initialize the layout.
+
+\begin{Schunk}
+\begin{Sinput}
+> library(circlize)
+> par(mar = c(1, 1, 1, 1), lwd = 0.1, cex = 0.7)
+> circos.par("default.track.height" = 0.1)
+> circos.initialize(factors = a$factor, x = a$x)
+\end{Sinput}
+\end{Schunk}
+
+Draw the first track.
+
+\begin{Schunk}
+\begin{Sinput}
+> circos.trackPlotRegion(factors = a$factor, y = a$y, panel.fun = function(x, y) {
+>     circos.axis()
+> })
+> circos.trackPoints(a$factor, a$x, a$y, col = col, pch = 16, cex = 0.5)
+> circos.text(-1,0.5, "left", sector.index = "a")
+> circos.text(1,0.5, "right", sector.index = "a")
+\end{Sinput}
+\end{Schunk}
+
+Draw the second track.
+
+\begin{Schunk}
+\begin{Sinput}
+> circos.trackHist(a$factor, a$x, bg.col = bgcol, col = NA)
+\end{Sinput}
+\end{Schunk}
+
+Draw the third track.
+
+\begin{Schunk}
+\begin{Sinput}
+> circos.trackPlotRegion(factors = a$factor, x = a$x, y = a$y, panel.fun = function(x, y, ...) {
+>     grey = c("#FFFFFF", "#CCCCCC", "#999999")
+>     circos.updatePlotRegion(bg.col = grey[get.cell.meta.data("sector.numeric.index") %% 3 + 1])
+>     circos.points(x[1:10], y[1:10], col = "red", pch = 16, cex = 0.6)
+>     circos.points(x[11:20], y[11:20], col = "blue", cex = 0.6)
+> })
+\end{Sinput}
+\end{Schunk}
+
+Update an existed cell.
+
+\begin{Schunk}
+\begin{Sinput}
+> circos.updatePlotRegion(sector.index = "d", track.index = 2)
+> circos.points(x = runif(100), y = runif(100))
+\end{Sinput}
+\end{Schunk}
+
+Draw the fouth track.
+\begin{Schunk}
+\begin{Sinput}
+> circos.trackPlotRegion(factors = a$factor, y = a$y)
+> circos.trackLines(a$factor[1:100], a$x[1:100], a$y[1:100], type = "h")
+\end{Sinput}
+\end{Schunk}
+
+Draw links.
+
+\begin{Schunk}
+\begin{Sinput}
+> circos.link("a", 0, "b", 0, top.ratio = 0.9)
+> circos.link("c", c(-0.5, 0.5), "d", c(-0.5,0.5), col = "red", border = "blue", top.ratio = 0.2)
+> circos.link("e", 0, "g", c(-1,1), col = "green", lwd = 2, lty = 2)
+\end{Sinput}
+\end{Schunk}
+
+See figure \ref{example}.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{example.pdf}
+\caption{example}\label{example}
+\end{center}
+\end{figure}
+
+\section{Coordinate transformation}
+There is a user coordinate in which the range for x-axis and y-axis is the range of data,
+a polar coordinate to allocates different cells and a the canvas coordinate which really
+draw the figures (figure \ref{transformation}).
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{transformation.pdf}
+\caption{coordinate transformation}\label{transformation}
+\end{center}
+\end{figure}
+
+\section{Sectors and tracks}
+A circos layout is composed of sectors and tracks, as illustrated in figure \ref{coordinate}.
+The red circle is the track and the blue one is the sector. The intersection of a sector and 
+a track is called a cell.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{coordinate.pdf}
+\caption{coordinate}\label{coordinate}
+\end{center}
+\end{figure}
+
+\section{Circos parameters}
+A cell has margins and paddings, like in CSS. refers to figure \ref{region}. The directions
+of cells in a track are illustrated in figure \ref{direction}.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{region.pdf}
+\caption{Regions for a cell}\label{region}
+\end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{sector_direction.pdf}
+\caption{Sector direction}\label{direction}
+\end{center}
+\end{figure}
+
+\section{Lines}
+Parameters for drawing lines by {\tt circos.lines} are similar to {\tt lines} function, 
+as illustrated in figure \ref{line}.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{line.pdf}
+\caption{Lines}\label{line}
+\end{center}
+\end{figure}
+
+\sector{Text}
+Only the direction of text by {\tt circos.text} should be noted, as illustrated in figure \ref{text}.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{text.pdf}
+\caption{Texts}\label{text}
+\end{center}
+\end{figure}
+
+\section{Axis}
+Only x-axis for each cell, as illustrated in figure \ref{axis}.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{axis.pdf}
+\caption{axis}\label{axis}
+\end{center}
+\end{figure}
+
+\section{Links}
+Links can be drawn from points and intervals. figure \ref{link}. The height of the link can be controlled
+by {\tt top.ratio} argument in {\tt circos.link} which is the ratio between the length of red line and 
+the blue line (figure \ref{quadratic_curve}.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{link.pdf}
+\caption{link}\label{link}
+\end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{quadratic_curve.pdf}
+\caption{quadratic_curve}\label{quadratic_curve}
+\end{center}
+\end{figure}
+
+\end{document}

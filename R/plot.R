@@ -458,7 +458,7 @@ circos.lines = function(x, y, sector.index = get.current.sector.index(), track.i
     return(invisible(NULL))
 }
 
-## == title 
+# == title 
 # Add lines to the plotting regions in one track
 #
 # == param

@@ -1,0 +1,94 @@
+% \VignetteIndexEntry{Draw relations}
+% \VignetteDepends{circlize}
+% \VignetteKeywords{circos}
+% \VignetteKeywords{relation}
+% \VignetteKeywords{corelation}
+% \VignetteKeywords{circlize}
+% \VignettePackage{circlize}
+
+\documentclass[a4paper]{article}
+
+\title{How to draw relations}
+
+\author{Zuguang Gu\\ German Cancer Research Center, Heidelberg, Germany}
+
+\usepackage{Sweave}
+
+\begin{document}
+
+\maketitle 
+
+The characteristic of the circos layout is the link (or connector) to represent relations
+between elements. Here we show how to represent a correlation matrix.
+
+First, we need a correlation matrix.
+
+\begin{Schunk}
+\begin{Sinput}
+> n = 9
+> m = matrix(rnorm(n^2), n, n)
+> colnames(m) = letters[1:n]
+> m2 = cor(m)
+\end{Sinput}
+\end{Schunk}
+
+Then the range for each element, which is the summation of the correlations with other elements
+
+\begin{Schunk}
+\begin{Sinput}
+> xlim = cbind(rep(0, n), apply(m2, 2, function(x) sum(abs(x)) - 1))
+\end{Sinput}
+\end{Schunk}
+
+Initialize the layout and add the name for elements around each sectors.
+
+\begin{Schunk}
+\begin{Sinput}
+> factors = rownames(m2)
+> colors = 1:n
+>
+> par(mar = c(1, 1, 1, 1))
+> circos.par("cell.padding" = c(0, 0, 0, 0))
+> circos.initialize(factors = factors, xlim = xlim)
+> circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA, panel.fun = function(x, y, ...) {
+>     xlim = get.cell.meta.data("xlim")
+>     current.sector.index = get.cell.meta.data("sector.index")
+>     circos.text(mean(xlim), 0.75, labels = current.sector.index, direction = "horizontal")
+>     i = get.cell.meta.data("sector.numeric.index")
+>     circos.rect(min(xlim), 0, max(xlim), 0.25, col = colors[i])
+> })
+\end{Sinput}
+\end{Schunk}
+
+Draw links
+
+\begin{Schunk}
+\begin{Sinput}
+> rn = rownames(m2)
+> sector.sum = numeric(length(rn))
+> for(i in 2:n) {
+>     for(j in 1:(i-1)) {
+>         sector.index1 = rn[i]
+>         sector.index2 = rn[j]
+>         circos.link(sector.index1,
+>                     c(sector.sum[i], sector.sum[i] + abs(m2[i, j])),
+>                     sector.index2,
+>                     c(sector.sum[j], sector.sum[j] + abs(m2[i, j])),
+>                     col = ifelse(m2[i, j] > 0, "#E41A1CA0", "#4DAF4AA0"), border = "grey")
+>         sector.sum[i] = sector.sum[i] + abs(m2[i, j])
+>         sector.sum[j] = sector.sum[j] + abs(m2[i, j])
+>     }
+> }
+\end{Sinput}
+\end{Schunk}
+
+The finnal figure looks like figure \ref{correlation}.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{correlation.pdf}
+\caption{Representing correlation matrix by circos layout}\label{correlation}
+\end{center}
+\end{figure}
+
+\end{document}

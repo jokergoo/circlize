@@ -157,18 +157,17 @@ factors = rownames(m2)
 
 xlim = cbind(rep(0, n), apply(m2, 2, function(x) sum(abs(x)) - 1))
 
-colors = brewer.pal(n, "Set1")
+colors = 1:n
 
 par(mar = c(1, 1, 1, 1))
 circos.par("start.degree" = 20, "cell.padding" = c(0, 0, 0, 0))
 circos.initialize(factors = factors, xlim = xlim)
-circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA, panel.fun = function(x, y, ...) {
-    current.sector.index = get.current.sector.index()
-    current.track.index = get.current.track.index()
-    current.cell.data = get.cell.data(current.sector.index, current.track.index)
-    circos.text(mean(current.cell.data$xlim), 0.75, labels = current.sector.index, direction = "horizontal")
+circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA, panel.fun = function(x, y) {
+    xlim = get.cell.meta.data("xlim")
+    current.sector.index = get.cell.meta.data("sector.index")
+    circos.text(mean(xlim), 0.75, labels = current.sector.index, direction = "horizontal")
     i = get.cell.meta.data("sector.numeric.index")
-    circos.rect(min(current.cell.data$xlim), 0, max(current.cell.data$xlim), 0.25, col = colors[i])
+    circos.rect(min(xlim), 0, max(xlim), 0.25, col = colors[i])
 })
 
 rn = rownames(m2)

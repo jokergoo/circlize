@@ -1,25 +1,25 @@
-\name{circos.lines}
-\alias{circos.lines}
+\name{circos.trackLines}
+\alias{circos.trackLines}
 \title{
-  Add lines to the plotting region
+  Add lines to the plotting regions in one track
 
 
 }
 \description{
-  Add lines to the plotting region
+  Add lines to the plotting regions in one track
 
 
 }
 \usage{
-circos.lines(x, y, sector.index = get.current.sector.index(), track.index = get.current.track.index(),
-               col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
-               area = FALSE, border = "black",
+circos.trackLines(factors, x, y, track.index = get.current.track.index(),
+                    col = "black", lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
+                    area = FALSE, border = "black",
 pt.col = "black", cex = par("cex"), pch = par("pch"))
 }
 \arguments{
+  \item{factors}{Factors which represent the categories of data}
   \item{x}{Data points on x-axis}
   \item{y}{Data points on y-axis}
-  \item{sector.index}{Index for the sector}
   \item{track.index}{Index for the track}
   \item{col}{Line color}
   \item{lwd}{line width}
@@ -34,9 +34,7 @@ pt.col = "black", cex = par("cex"), pch = par("pch"))
 
 }
 \details{
-  Normally, straight lines in the Cartesian coordinate have to be transformed into curves in the circos layout.But if you do not want to do such transformation you can use this function just drawing straightlines between points by setting \code{straight} to \code{TRUE}.
-
-  Draw areas below lines can help to identify the direction of y-axis in cells. This can be fullfilled by specifying\code{area} to \code{TURE}.
+  The function adds lines in multiple cells by first splitting data into several parts in whicheach part corresponds to one factor (sector index) and then add lines in cells correspondingto the part of data by calling \code{\link{circos.lines}}.
 
 
 }

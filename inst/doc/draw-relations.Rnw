@@ -51,14 +51,14 @@ Initialize the layout and add the name for elements around each sectors.
 > circos.par("cell.padding" = c(0, 0, 0, 0))
 > circos.initialize(factors = factors, xlim = xlim)
 > circos.trackPlotRegion(ylim = c(0, 1), factors = factors,
-+   bg.border = NA, panel.fun = function(x, y, ...) {
->     xlim = get.cell.meta.data("xlim")
->     current.sector.index = get.cell.meta.data("sector.index")
->     circos.text(mean(xlim), 0.75, labels = current.sector.index,
++   bg.border = NA, panel.fun = function(x, y) {
++     xlim = get.cell.meta.data("xlim")
++     current.sector.index = get.cell.meta.data("sector.index")
++     circos.text(mean(xlim), 0.75, labels = current.sector.index,
 +         direction = "horizontal")
->     i = get.cell.meta.data("sector.numeric.index")
->     circos.rect(min(xlim), 0, max(xlim), 0.25, col = colors[i])
-> })
++     i = get.cell.meta.data("sector.numeric.index")
++     circos.rect(min(xlim), 0, max(xlim), 0.25, col = colors[i])
++ })
 \end{Sinput}
 \end{Schunk}
 

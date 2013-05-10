@@ -43,7 +43,6 @@ circos.updatePlotRegion(sector.index = "d", track.index = 2)
 circos.points(x = runif(100), y = runif(100))
 
 circos.trackPlotRegion(factors = a$factor, y = a$y)
-show.index()
 circos.trackLines(a$factor[1:100], a$x[1:100], a$y[1:100], type = "h")
 
 circos.link("a", 0, "b", 0, top.ratio = 0.9)

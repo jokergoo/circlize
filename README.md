@@ -33,11 +33,9 @@ Theoretically, you are able to draw most kinds of circos figures by the above fu
 For specific use in genomics, a function which draws the ideogram and initializes sectors for chromosomes is supported:
 - `circos.initializeWithIdeogram`
 
-For how to create or arrange the circos layout, see `example/galary.R`
-
 Several interesting figures can be found in `example/`
 
-More tests and documents will be added, as well as a vignette.
+More tests will be added.
 
 ## the Perl module
 
@@ -45,7 +43,9 @@ There is also a Perl module R::Comment2Man to convert comments to documentary fi
 
 Comments are marked as the Markdown-style and it looks more clear than that under the Roxygen package.
 
+It still has a lot of bugs, but it works now.
+
 The module could be run as:
 
-    perl -MR::Comment2Man -e "R::Comment2Man->draft('R/')"
+    perl -Ilib -MR::Comment2Man -e "R::Comment2Man->draft('R/')"
 

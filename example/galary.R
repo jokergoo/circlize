@@ -1,4 +1,3 @@
-
 source("R/global.R")
 source("R/plot.R")
 source("R/utils.R")
@@ -19,17 +18,17 @@ for(le in levels(a$factor)) {
 }
 
 par(mar = c(1, 1, 1, 1), lwd = 0.1, cex = 0.7)
-circos.par("default.track.height" = 0.1, "clock.wise" = TRUE)
+circos.par("default.track.height" = 0.1)
 circos.initialize(factors = a$factor, x = a$x)
 
 bgcol = rep(c("#EFEFEF", "#CCCCCC"), 4)
 col = rep(c("#FF000010", "#00FF0010"), 4)
-circos.trackPlotRegion(factors = a$factor, y = a$y, track.index = 1, panel.fun = function(x, y) {
+circos.trackPlotRegion(factors = a$factor, y = a$y, panel.fun = function(x, y) {
 	circos.axis()
 })
-circos.trackPoints(a$factor, a$x, a$y, track.index = 1, col = col, pch = 16, cex = 0.5)
-circos.text(-1,0.5, "left", sector.index = "a", track.index = 1)
-circos.text(1,0.5, "right", sector.index = "a", track.index = 1)
+circos.trackPoints(a$factor, a$x, a$y, col = col, pch = 16, cex = 0.5)
+circos.text(-1,0.5, "left", sector.index = "a")
+circos.text(1,0.5, "right", sector.index = "a")
 
 circos.trackHist(a$factor, a$x, bg.col = bgcol, col = NA)
 

@@ -220,12 +220,14 @@ as a link in the circos layout.
 \end{Schunk}
 
 If position 88888888 in chromosome 6 is important and we want to mark it, we can use following codes.
+Second, draw ideogram directly as the creation of the plotting region by using {\tt panel.fun} argument.
+Here there no specifying of {\tt factors}, thus the new track would create plotting regions for all available
+sectors.
 
 \begin{Schunk}
 \begin{Sinput}
 > # create a new track
-> circos.trackPlotRegion(factors = factor(chromosome, levels = chromosome),
-+     ylim = c(0, 1), bg.border = NA)
+> circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA)
 > circos.text(88888888, 0.2, labels = "site", sector.index = "chr6",
 +     adj = c(0.5, 1))
 > circos.lines(c(88888888, 88888888), c(0.3, 1), sector.index = "chr6",

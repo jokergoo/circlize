@@ -93,6 +93,7 @@ circos.par = function (...) {
     
     name = names(args)
     if(sum(is.null(name)) == 0) {
+		o.cell.padding = .CIRCOS.PAR[["cell.padding"]]
         for(i in seq_along(args)) {
 			if(name[i] %in% c("start.degree", "gap.degree", "canvas.xlim", "canvas.ylim", "clock.wise") &&
 			   is.circos.initialized()) {
@@ -100,7 +101,10 @@ circos.par = function (...) {
                 next
 			}
             .CIRCOS.PAR[[ name[i] ]] = args[[ name[i] ]]
+			
         }
+		.CIRCOS.PAR[["cell.padding"]][2] = o.cell.padding[2]
+		.CIRCOS.PAR[["cell.padding"]][4] = o.cell.padding[4]
 		assign(".CIRCOS.PAR", .CIRCOS.PAR, envir = .CIRCOS.ENV)
         return(invisible(.CIRCOS.PAR))
     }

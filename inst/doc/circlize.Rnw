@@ -9,7 +9,7 @@
 
 \title{A brief introduction of the {\tt circlize} package}
 
-\author{Zuguang Gu\\ German Cancer Research Center, Heidelberg, Germany}
+\author{Zuguang Gu\\ German Cancer Research Center,\\ Heidelberg, Germany}
 
 \usepackage{Sweave}
 
@@ -23,7 +23,8 @@ The {\tt circlize} package implements the circos layout in R. The package alloca
 and illustrates data in a specific category into a cell inside the circle and makes you
 felling that you are plotting figures in a normal plotting coordinate.
 
-Since most of the figures are composed of points, lines and polygon (for filled color), so we just need to implement functions for drawing points, lines and polygon.
+Since most of the figures are composed of points, lines and polygon (for filled color),
+so we just need to implement functions for drawing points, lines and polygon.
 
 Current there are following functions that can be used for plotting:
 
@@ -62,7 +63,8 @@ Functions to arrange the circos layout
 
 Theoretically, you are able to draw most kinds of circos figures by the above functions.
 
-Following is an example. First generate some data.
+Following is an example. First generate some data. There are a factor to represent categories,
+x-values, and y-values.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -83,7 +85,8 @@ Initialize the layout.
 \end{Sinput}
 \end{Schunk}
 
-Draw the first track.
+Draw the first track. Add axis by {\tt panel.fun} argument. Then draw points
+through the whole track. Finally, draw two texts in one cell.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -98,7 +101,8 @@ Draw the first track.
 \end{Sinput}
 \end{Schunk}
 
-Draw the second track.
+Draw the second track. It is histograms among the track. The {\tt circos.trackHist}
+can also create a new track.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -106,7 +110,7 @@ Draw the second track.
 \end{Sinput}
 \end{Schunk}
 
-Draw the third track.
+Draw the third track. Different background colors for cells can be assigned.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -138,7 +142,7 @@ Draw the fouth track.
 \end{Sinput}
 \end{Schunk}
 
-Draw links.
+Draw links. Links can be from point to point, point to interval or interval to interval.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -152,102 +156,115 @@ Draw links.
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{example.pdf}
-\caption{example}\label{example}
+\caption{example}
+\label{example}
 \end{center}
 \end{figure}
 
-See figure \ref{example}.
+The final figure is figure 1.
 
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{transformation.pdf}
-\caption{coordinate transformation}\label{transformation}
+\caption{coordinate transformation}
+\label{transformation}
 \end{center}
 \end{figure}
 
 \section{Coordinate transformation}
 There is a user coordinate in which the range for x-axis and y-axis is the range of data,
 a polar coordinate to allocates different cells and a the canvas coordinate which really
-draw the figures (figure \ref{transformation}).
+draw the figures (figure 2). The package would first transform the user
+coordinate to a polar coordinate and finally transformed into the canvas coordinate.
 
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{coordinate.pdf}
-\caption{coordinate}\label{coordinate}
+\caption{coordinate}
+\label{coordinate}
 \end{center}
 \end{figure}
 
 \section{Sectors and tracks}
-A circos layout is composed of sectors and tracks, as illustrated in figure \ref{coordinate}.
+A circos layout is composed of sectors and tracks, as illustrated in figure 3.
 The red circle is the track and the blue one is the sector. The intersection of a sector and 
-a track is called a cell.
+a track is called a cell. Order of the sectors are determined by the order of levels of the factors
+when initializing and the order of the tracks are integers starting from the most outside track as 1.
 
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{region.pdf}
-\caption{Regions for a cell}\label{region}
+\caption{Regions for a cell}
+\label{region}
 \end{center}
 \end{figure}
 
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{sector_direction.pdf}
-\caption{Sector direction}\label{direction}
+\caption{Sector direction}
+\label{direction}
 \end{center}
 \end{figure}
 
 \section{Circos parameters}
-A cell has margins and paddings, like in CSS. refers to figure \ref{region}. The directions
-of cells in a track are illustrated in figure \ref{direction}.
+A cell has margins and paddings, like in CSS. See figure 4.
+The default start degree is 0 in the polar coordinate. This can be modified by {\tt circos.par}.
+The default direction of the sector is anticlockwise (figure 5).
 
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{line.pdf}
-\caption{Lines}\label{line}
+\caption{Lines}
+\label{line}
 \end{center}
 \end{figure}
 
 \section{Lines}
 Parameters for drawing lines by {\tt circos.lines} are similar to {\tt lines} function, 
-as illustrated in figure \ref{line}.
+as illustrated in figure 6.
 
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{text.pdf}
-\caption{Texts}\label{text}
+\caption{Texts}
+\label{text}
 \end{center}
 \end{figure}
 
-\sector{Text}
-Only the direction of text by {\tt circos.text} should be noted, as illustrated in figure \ref{text}.
+\section{Text}
+Only the direction of text by {\tt circos.text} should be noted, as illustrated in figure 7.
 
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{axis.pdf}
-\caption{axis}\label{axis}
+\caption{axis}
+\label{axis}
 \end{center}
 \end{figure}
 
 \section{Axis}
-Only x-axis for each cell, as illustrated in figure \ref{axis}.
+Only x-axis for each cell, as illustrated in figure 8.
 
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{link.pdf}
-\caption{link}\label{link}
+\caption{link}
+\label{link}
 \end{center}
 \end{figure}
 
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{quadratic_curve.pdf}
-\caption{quadratic_curve}\label{quadratic_curve}
+\caption{quadratic curve}
+\label{quadratic_curve}
 \end{center}
 \end{figure}
 
 \section{Links}
-Links can be drawn from points and intervals. figure \ref{link}. The height of the link can be controlled
+Links can be drawn from points and intervals (figure 9). The height of the link can be controlled
 by {\tt top.ratio} argument in {\tt circos.link} which is the ratio between the length of blue line and 
-the red line (figure \ref{quadratic_curve}).
+the red line (figure 10).
 
 \end{document}

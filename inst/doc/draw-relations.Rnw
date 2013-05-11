@@ -10,7 +10,7 @@
 
 \title{How to draw relations}
 
-\author{Zuguang Gu\\ German Cancer Research Center, Heidelberg, Germany}
+\author{Zuguang Gu\\ German Cancer Research Center,\\ Heidelberg, Germany}
 
 \usepackage{Sweave}
 
@@ -47,6 +47,7 @@ Initialize the layout and add the name for elements around each sectors.
 > factors = rownames(m2)
 > colors = 1:n
 >
+> library(circlize)
 > par(mar = c(1, 1, 1, 1))
 > circos.par("cell.padding" = c(0, 0, 0, 0))
 > circos.initialize(factors = factors, xlim = xlim)
@@ -85,12 +86,13 @@ Draw links
 \end{Sinput}
 \end{Schunk}
 
-The finnal figure looks like figure \ref{correlation}.
+The finnal figure looks like figure 1.
 
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{correlation.pdf}
-\caption{Representing correlation matrix by circos layout}\label{correlation}
+\caption{Representing correlation matrix by circos layout}
+\label{correlation}
 \end{center}
 \end{figure}
 

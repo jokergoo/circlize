@@ -49,3 +49,8 @@ The module could be run as:
 
     perl -Ilib -MR::Comment2Man -e "R::Comment2Man->draft('R/')"
 
+## install the package
+
+    install.packages("devtools")
+    library(devtools)
+    install_github(repo="circlize", username="jokergoo")

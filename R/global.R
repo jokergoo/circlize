@@ -103,8 +103,10 @@ circos.par = function (...) {
             .CIRCOS.PAR[[ name[i] ]] = args[[ name[i] ]]
 			
         }
-		.CIRCOS.PAR[["cell.padding"]][2] = o.cell.padding[2]
-		.CIRCOS.PAR[["cell.padding"]][4] = o.cell.padding[4]
+		if(is.circos.initialized()) {
+			.CIRCOS.PAR[["cell.padding"]][2] = o.cell.padding[2]
+			.CIRCOS.PAR[["cell.padding"]][4] = o.cell.padding[4]
+		}
 		assign(".CIRCOS.PAR", .CIRCOS.PAR, envir = .CIRCOS.ENV)
         return(invisible(.CIRCOS.PAR))
     }

@@ -12,7 +12,7 @@
 }
 \usage{
 circos.link(sector.index1,
-              point1,  # x or c(x, y)
+              point1,
               sector.index2,
               point2,
               rou = get.track.end.position(get.current.track.index()),

@@ -11,13 +11,13 @@
 
 }
 \usage{
-circos.trackPlotRegion(factors, x = NULL, y = NULL, ylim = NULL, force.ylim = TRUE,
+circos.trackPlotRegion(factors = NULL, x = NULL, y = NULL, ylim = NULL, force.ylim = TRUE,
                          track.index = NULL, track.height = circos.par("default.track.height"),
                          bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
 panel.fun = function(x, y) {NULL})
 }
 \arguments{
-  \item{factors}{Factors which represent the categories of data}
+  \item{factors}{Factors which represent the categories of data, if is \code{NULL},  then it is the whole sector index.}
   \item{x}{Data on the x-axis}
   \item{y}{Data on the y-axis}
   \item{ylim}{Range of data on the y-axis}

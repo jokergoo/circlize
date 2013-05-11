@@ -4,4 +4,4 @@ example
 lib
 test
 to-do.txt
-circlize_*
+circlize_.*\.tar\.gz

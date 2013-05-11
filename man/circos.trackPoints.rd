@@ -11,7 +11,7 @@
 
 }
 \usage{
-circos.trackPoints(factors, x, y, track.index = get.current.track.index(),
+circos.trackPoints(factors = NULL, x, y, track.index = get.current.track.index(),
 pch = par("pch"), col = par("col"), cex = par("cex"))
 }
 \arguments{

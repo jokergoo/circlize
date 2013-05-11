@@ -2,7 +2,8 @@
 # Create plotting regions for a whole track
 #
 # == param
-# -factors      Factors which represent the categories of data
+# -factors      Factors which represent the categories of data, if is ``NULL``, 
+#               then it is the whole sector index.
 # -x            Data on the x-axis
 # -y            Data on the y-axis
 # -ylim         Range of data on the y-axis
@@ -55,11 +56,15 @@
 # is specified. If the index is one bigger than the largest current track index. It in fact
 # creates the new track. If updating an existed track, those parameters related to the position
 # of the plotting region can not be changed.
-circos.trackPlotRegion = function(factors, x = NULL, y = NULL, ylim = NULL, force.ylim = TRUE,
+circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NULL, force.ylim = TRUE,
     track.index = NULL, track.height = circos.par("default.track.height"),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
     panel.fun = function(x, y) {NULL}) {
     
+	if(is.null(factors)) {
+		factors = get.all.sector.index()
+	}
+	
     # basic check here
     # if ``ylim`` set then do not need ``y``
     if(!is.null(y) && length(y) != length(factors) ||
@@ -320,7 +325,7 @@ circos.points = function(x, y, sector.index = get.current.sector.index(), track.
 #
 # Length of ``pch``, ``col`` and ``cex`` can be one, length of levels of the factors and length of 
 # factors. All length will be recycled to the length of factors respectively.
-circos.trackPoints = function(factors, x, y, track.index = get.current.track.index(),
+circos.trackPoints = function(factors = NULL, x, y, track.index = get.current.track.index(),
                          pch = par("pch"), col = par("col"), cex = par("cex")) {
     
     # basic check here
@@ -939,7 +944,7 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 # link would look nice. However you can also set teh position and the height of the belts by specifying
 # ``rou`` and ``top.ratio``. See vignette for explaination.
 circos.link = function(sector.index1,
-                       point1,  # x or c(x, y)
+                       point1,
                        sector.index2,
                        point2,
                        rou = get.track.end.position(get.current.track.index()),

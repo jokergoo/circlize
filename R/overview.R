@@ -16,7 +16,7 @@
 #
 # Also, the function drawing histograms in the whole track is available: `circos.trackHist`.
 #
-# Functions to arrange the circos layout: `circos.trackPlotRegion`, `circos.updatPlotRegion`,
+# Functions to arrange the circos layout: `circos.trackPlotRegion`, `circos.updatePlotRegion`,
 # `circos.par` and `circos.clear`.
 #
 # Theoretically, you are able to draw most kinds of circos figures by the above functions.

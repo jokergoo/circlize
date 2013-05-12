@@ -5,7 +5,6 @@ export(
 	show.index,
 	get.cell.meta.data,
 	circos.trackPlotRegion,
-	circos.trackPlotRegion,
 	circos.updatePlotRegion,
 	circos.points,
 	circos.trackPoints,

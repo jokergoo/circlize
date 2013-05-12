@@ -73,15 +73,21 @@ sub parse {
 		my $item;
 		
 		# documented item start with # ## title or something like that
-		if($line =~/^#\s+[=@#*\-+$%&]{2}\s*title/) {
+		if($line =~/^#\s+[=@#*\-+$%&]{2}\s*title\s*$/) {
 			$item = R::Comment2Man::Item->read(\@lines, $i, is_function => 1);
 			push(@items, $item);
-		} elsif($line =~/^#\s+[=@#*\-+$%&]{2}\s*title\s*\(data:(\S+)\)/) {
+		} elsif($line =~/^#\s+[=@#*\-+$%&]{2}\s*title\s*\(\s*data:\s*(\S+)\s*\)/) {
 			$item = R::Comment2Man::Item->read(\@lines, $i, is_function => 0);
 			$item->{_function_name} = $1;
 			$item->{_function_args} = "data($1)";
 			push(@items, $item);
+		} elsif($line =~/^#\s+[=@#*\-+$%&]{2}\s*title\s*\(\s*package:\s*(\S+)\s*\)/) {
+			$item = R::Comment2Man::Item->read(\@lines, $i, is_function => 0);
+			$item->{_function_name} = $1;
+			$item->{_function_args} = "package($1)";
+			push(@items, $item);
 		}
+		
 	}
 	
 	my @parsed_items;
@@ -91,10 +97,17 @@ sub parse {
 		my ($section_name, $section_value) = $items[$i]->parse()->format();
 		if($is_overwrite == 0 and -e "man/$items[$i]->{_function_name}.rd") {
             my ($old_section_name, $old_section_value) = read_manfile_section("man/$items[$i]->{_function_name}.rd");
+			foreach (@$old_section_name) {
+				print "  update $_\n";
+			}
 			($section_name, $section_value) = combine_sections($section_name, $section_value, $old_section_name, $old_section_value);
 		}
 		output($items[$i]->{_function_name}, $section_name, $section_value);
-		print NAMESPACE "\t$items[$i]->{_function_name}".($i == $#items ? "" : ",")."\n";
+		if($items[$i]->{_function_args} =~/^data\(/ or $items[$i]->{_function_args} =~/^package\(/) {
+		
+		} else {
+			print NAMESPACE "\t$items[$i]->{_function_name}".($i == $#items ? "" : ",")."\n";
+		}
 		print "man/$items[$i]->{_function_name}.rd... done.\n";
 	}
 	print NAMESPACE ")\n";
@@ -136,11 +149,27 @@ sub output {
 	
 	open my $fh, ">man/$function_name.rd";
 	for(my $i = 0; $i < scalar(@$section_name); $i ++) {
+		if($section_name->[$i] eq "usage" and $section_value->[$i] =~/^package\(/) {
+			next;
+		}
 		if($section_name->[$i] eq "name" or 
-		   $section_name->[$i] eq "alias") {
+		   $section_name->[$i] eq "docType") {
 			print $fh "\\$section_name->[$i]"."{";
 			print $fh "$section_value->[$i]";
 			print $fh "}\n";
+		} elsif($section_name->[$i] eq "alias") {
+		
+			if(ref($section_value->[$i]) eq "ARRAY") {
+				foreach (@{$section_value->[$i]}) {
+					print $fh "\\$section_name->[$i]"."{";
+					print $fh "$_";
+					print $fh "}\n";
+				}
+			} else {
+				print $fh "\\$section_name->[$i]"."{";
+				print $fh "$section_value->[$i]";
+				print $fh "}\n";
+			}
 		} else {
 			print $fh "\\$section_name->[$i]"."{\n";
 			print $fh "$section_value->[$i]\n";
@@ -297,11 +326,19 @@ sub format {
 	push(@$section_name, "name");
 	push(@$section_value, $self->{_function_name});
 	push(@$section_name, "alias");
-	push(@$section_value, $self->{_function_name});
+	if($self->{_function_args} =~/^package\(/) {
+		push(@$section_value, [$self->{_function_name}, "$self->{_function_name}-package"]);
+	} else {
+		push(@$section_value, $self->{_function_name});
+	}
 	
 	if($self->{_function_args} =~/^data\(/) {
 		push(@$section_name, "docType");
 		push(@$section_value, "data");
+	}
+	if($self->{_function_args} =~/^package\(/) {
+		push(@$section_name, "docType");
+		push(@$section_value, "package");
 	}
 	
 	my $last_section;

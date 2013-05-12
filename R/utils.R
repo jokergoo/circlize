@@ -99,7 +99,9 @@ lines.expand = function(x, y, sector.index = get.current.sector.index(), track.i
     }
     
     d = cbind(nx, ny)
+    if(length(nx) == 1) {
 	d = rbind(d, c(x[length(x)], y[length(y)]))
+    }
     return(d)
 }
 

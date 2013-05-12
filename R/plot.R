@@ -851,7 +851,8 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 		}
 	}
 	
-	xlim2 = cell.data$xlim
+	#xlim2 = cell.data$xlim
+	xlim2 = xlim
 	circos.lines(c(ifelse(major.at[1] >= xlim2[1], major.at[1], xlim2[1]),
 	               ifelse(major.at[length(major.at)] <= xlim2[2], major.at[length(major.at)], xlim2[2])), 
 				 c(h, h), sector.index = sector.index, track.index = track.index, lwd = lwd)

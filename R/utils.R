@@ -79,6 +79,7 @@ lines.expand = function(x, y, sector.index = get.current.sector.index(), track.i
 	cell.data = get.cell.data(sector.index, track.index)
     nx = x[1]
     ny = y[1]
+	
     for(i in seq_along(x)) {
         if(i == 1) {
             next   
@@ -86,19 +87,24 @@ lines.expand = function(x, y, sector.index = get.current.sector.index(), track.i
 	
 		td = cbind(c(x[i-1], x[i]), c(y[i-1], y[i]))
 		td2 = circlize(td[, 1], td[, 2], sector.index = sector.index, track.index = track.index)
+		
+		a = ((td2[1, 1] - td2[2, 1]) %% 360)/180*pi
+		b = abs(td2[1, 2] - td2[2, 2])
+		l = sqrt(a^2 + b^2)
+		
 		td3 = polar2Cartesian(td2)
-		ncut = sqrt((td3[2, 1] - td3[1, 1])^2 + (td3[2, 2] - td3[2, 1])^2)/ (2*pi/circos.par("unit.circle.segments"))
+		ncut = l/ (2*pi/circos.par("unit.circle.segments"))
         ncut = floor(ncut)
 
 		if(ncut) {
-				j = seq_len(ncut) / (ncut + 1)
+			j = seq_len(ncut) / (ncut + 1)
 				
-				nx = c(nx, x[i-1] + (x[i] - x[i-1])*j, x[i])
-				ny = c(ny, y[i-1] + (y[i] - y[i-1])*j, y[i])
+			nx = c(nx, x[i-1] + (x[i] - x[i-1])*j, x[i])
+			ny = c(ny, y[i-1] + (y[i] - y[i-1])*j, y[i])
 		} else {
-                       nx = c(nx, x[i])
-                       ny = c(ny, y[i])
-                }
+            nx = c(nx, x[i])
+            ny = c(ny, y[i])
+        }
     }
     
     d = cbind(nx, ny)

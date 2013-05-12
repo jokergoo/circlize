@@ -68,6 +68,7 @@ x-values, and y-values.
 
 \begin{Schunk}
 \begin{Sinput}
+> set.seed(12345)
 > n = 10000
 > a = data.frame(factor = sample(letters[1:8], n, replace = TRUE),
 +     x = rnorm(n), y = runif(n))
@@ -156,7 +157,7 @@ Draw links. Links can be from point to point, point to interval or interval to i
 
 <<label=figexample, include=FALSE, echo=FALSE>>=
 library(circlize)
-
+set.seed(12345)
 n = 10000
 a = data.frame(factor = sample(letters[1:8], n, replace = TRUE), x = rnorm(n), y = runif(n))
 for(le in levels(a$factor)) {

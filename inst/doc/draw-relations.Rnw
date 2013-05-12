@@ -25,6 +25,7 @@ First, we need a correlation matrix.
 
 \begin{Schunk}
 \begin{Sinput}
+> set.seed(12345)
 > n = 9
 > m = matrix(rnorm(n^2), n, n)
 > colnames(m) = letters[1:n]
@@ -89,7 +90,7 @@ Draw links
 The finnal figure looks like figure \ref{fig:correlation}.
 
 <<label=figcorrelation, include=FALSE, echo=FALSE>>=
-
+set.seed(12345)
 n = 9
 m = matrix(rnorm(n^2), n, n)
 colnames(m) = letters[1:n]

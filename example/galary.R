@@ -599,25 +599,6 @@ circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.05, pane
 	}
 })
 
-circos.trackPlotRegion(ylim = c(-1, 1), bg.border = NA, track.height = 0.1, panel.fun = function(x, y) {
-	i = get.cell.meta.data("sector.numeric.index")
-	circos.updatePlotRegion(bg.col = ifelse(i %% 2, "#D4D4D4", "#FFFFFF"), bg.border = NA)
-	
-	xlim = get.cell.meta.data("xlim")
-	xrange = get.cell.meta.data("xrange")
-	x = NULL
-	y = NULL
-	for(i in 1:5) {
-		
-		x2 = seq(xlim[1] + (i-1)/5*xrange, xlim[1] + (i)/5*xrange, length.out = 100)
-		x = c(x, x2)
-		y = c(y, runif(length(x2))^2*sample(c(-1, 1), 1))
-	}
-	col = ifelse(y > 0, "#E41A1C", "#4DAF4A")
-	circos.points(x, y, col = col, cex = 0.2, pch = 16)
-})
-
-
 chromosome = paste("chr", c(1:22, "X", "Y"), sep = "")
 for(i in 1:50) {
 	chr = sample(chromosome, 2)
@@ -643,3 +624,51 @@ for(i in 1:50) {
 	
 	circos.link(chr[1], x1, chr[2], x2, col = sample(c('#9E0142', '#D53E4F', '#F46D43', '#FDAE61', '#FEE08B', '#FFFFBF', '#E6F598', '#ABDDA4', '#66C2A5', '#3288BD', '#5E4FA2'), 1))
 }
+
+
+###################################################
+
+library(circlize)
+circos.clear()
+
+circos.initializeWithIdeogram()
+circos.clear()
+
+d = read.table(file = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""), colClasses = c("factor", "numeric", "numeric", "factor", "factor"))
+
+	chromosome = c("chr1")
+	
+	xlim = matrix(nrow = 0, ncol = 2)
+	for(chr in chromosome) {
+		d2 = d[d[[1]] == chr, ]
+		xlim = rbind(xlim,c(min(d2[[2]]), max(d2[[3]])))
+	}
+	
+	circos.clear()
+	par(mar = c(1, 1, 1, 1), new = TRUE)
+	
+	circos.par("canvas.xlim" = c(-2, 2), "canvas.ylim" = c(-2, 2), clock.wise = FALSE, start.degree = -90)
+	circos.initialize(factor(chromosome, levels = chromosome), xlim = xlim)
+	circos.trackPlotRegion(factors = factor(chromosome, levels = chromosome), ylim = c(0, 1), bg.border = NA, track.height = 0.2)
+	for(chr in chromosome) {
+		d2 = d[d[[1]] == chr, ]
+		n = nrow(d2)
+		col = rep("#FFFFFF", n)
+		col[d2[[5]] == "acen"] = "#E41A1C"
+		col[d2[[5]] == "stalk"] = "#377EB8"
+		col[d2[[5]] == "gvar"] = "#404040"
+		col[d2[[5]] == "gpos100"] = "#000000"
+		col[d2[[5]] == "gpos"] = "#000000"
+		col[d2[[5]] == "gpos75"] = "#BFBFBF"
+		col[d2[[5]] == "gpos50"] = "#808080"
+		col[d2[[5]] == "gpos25"] = "#404040"
+		for(i in seq_len(n)) {
+			circos.rect(d2[i, 2], 0, d2[i, 3], 0.4, sector.index = chr, col = col[i], border = NA)
+		}
+		circos.rect(d2[1, 2], 0, d2[n, 3], 0.4, sector.index = chr, border = "black")
+		major.at = seq(0, 10^nchar(max(xlim[, 2])), by = 10000000)
+		circos.axis(h = 0.5, major.at = major.at, labels = paste(major.at/1000000, "MB", sep = ""), sector.index = chr, labels.cex = 0.4, labels.direction = "vertical_left")
+		cell.xlim = get.cell.meta.data("xlim", sector.index = chr)
+		circos.text(cell.xlim[1] + mean(cell.xlim), -0.5, labels = chr, sector.index = chr, cex = 0.8)
+	}
+	

@@ -71,19 +71,19 @@ Draw links
 > rn = rownames(m2)
 > sector.sum = numeric(length(rn))
 > for(i in 2:n) {
->     for(j in 1:(i-1)) {
->         sector.index1 = rn[i]
->         sector.index2 = rn[j]
->         circos.link(sector.index1,
++     for(j in 1:(i-1)) {
++         sector.index1 = rn[i]
++         sector.index2 = rn[j]
++         circos.link(sector.index1,
 +             c(sector.sum[i], sector.sum[i] + abs(m2[i, j])),
 +             sector.index2,
 +             c(sector.sum[j], sector.sum[j] + abs(m2[i, j])),
 +             col = ifelse(m2[i, j] > 0, "#E41A1CA0", "#4DAF4AA0"),
 +             border = "grey")
->         sector.sum[i] = sector.sum[i] + abs(m2[i, j])
->         sector.sum[j] = sector.sum[j] + abs(m2[i, j])
->     }
-> }
++         sector.sum[i] = sector.sum[i] + abs(m2[i, j])
++         sector.sum[j] = sector.sum[j] + abs(m2[i, j])
++     }
++ }
 \end{Sinput}
 \end{Schunk}
 

@@ -98,8 +98,9 @@ lines.expand = function(x, y, sector.index = get.current.sector.index(), track.i
 		}
     }
     
-    return(cbind(nx, ny))
-    
+    d = cbind(nx, ny)
+	d = rbind(d, c(x[length(x)], y[length(y)]))
+    return(d)
 }
 
 recycle.with.factors = function(x, factors) {

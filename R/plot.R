@@ -965,13 +965,16 @@ circos.link = function(sector.index1,
         lines(d, col = col, lwd = lwd, lty = lty)
     } else {
         if(length(point1) == 1) {
-			current.cell.xrange = get.cell.meta.data("xrange", sector.index1)
+			current.cell.xrange = get.cell.meta.data("xrange", sector.index1, 1)
             point1 = c(point1, point1 + current.cell.xrange/100)   
         }
         if(length(point2) == 1) {
-			current.cell.xrange = get.cell.meta.data("xrange", sector.index2)
+			current.cell.xrange = get.cell.meta.data("xrange", sector.index2, 1)
             point2 = c(point2, point2 + current.cell.xrange/100)  
         }
+		
+		point1 = sort(point1)
+		point2 = sort(point2)
         
         theta11 = sector.data1["end.degree"] - (point1[1] - sector.data1["start.value"]) / (sector.data1["end.value"] - sector.data1["start.value"]) *
             (sector.data1["end.degree"] - sector.data1["start.degree"])

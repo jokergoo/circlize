@@ -18,7 +18,7 @@
 \maketitle 
 
 \section{Introduction}
-Circos layout is very useful to represent informations, especially for genomic data.
+Circos layout ({\url http://circos.ca}) is very useful to represent informations, especially for genomic data.
 The {\tt circlize} package implements the circos layout in R. The package allocates
 and illustrates data in a specific category into a cell inside the circle and makes you
 felling that you are plotting figures in a normal plotting coordinate.

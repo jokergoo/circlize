@@ -153,23 +153,110 @@ Draw links. Links can be from point to point, point to interval or interval to i
 \end{Sinput}
 \end{Schunk}
 
-\begin{figure}[htbp]
+
+<<label=figexample, include=FALSE, echo=FALSE>>=
+library(circlize)
+
+n = 10000
+a = data.frame(factor = sample(letters[1:8], n, replace = TRUE), x = rnorm(n), y = runif(n))
+for(le in levels(a$factor)) {
+    a$x[a$factor == le] = a$x[a$factor == le] * runif(1)
+}
+
+par(mar = c(1, 1, 1, 1), lwd = 0.1, cex = 0.7)
+circos.par("default.track.height" = 0.1)
+circos.initialize(factors = a$factor, x = a$x)
+
+bgcol = rep(c("#EFEFEF", "#CCCCCC"), 4)
+col = rep(c("#FF000010", "#00FF0010"), 4)
+circos.trackPlotRegion(factors = a$factor, y = a$y, panel.fun = function(x, y) {
+	circos.axis()
+})
+circos.trackPoints(a$factor, a$x, a$y, col = col, pch = 16, cex = 0.5)
+circos.text(-1,0.5, "left", sector.index = "a")
+circos.text(1,0.5, "right", sector.index = "a")
+
+circos.trackHist(a$factor, a$x, bg.col = bgcol, col = NA)
+
+circos.trackPlotRegion(factors = a$factor, x = a$x, y = a$y, panel.fun = function(x, y, ...) {
+    grey = c("#FFFFFF", "#CCCCCC", "#999999")
+    circos.updatePlotRegion(bg.col = grey[get.cell.meta.data("sector.numeric.index") %% 3 + 1])
+    circos.points(x[1:10], y[1:10], col = "red", pch = 16, cex = 0.6)
+    circos.points(x[11:20], y[11:20], col = "blue", cex = 0.6)
+})
+
+circos.updatePlotRegion(sector.index = "d", track.index = 2)
+circos.points(x = runif(100), y = runif(100))
+
+circos.trackPlotRegion(factors = a$factor, y = a$y)
+circos.trackLines(a$factor[1:100], a$x[1:100], a$y[1:100], type = "h")
+
+circos.link("a", 0, "b", 0, top.ratio = 0.9)
+circos.link("c", c(-0.5, 0.5), "d", c(-0.5,0.5), col = "red", border = "blue", top.ratio = 0.2)
+circos.link("e", 0, "g", c(-1,1), col = "green", lwd = 2, lty = 2)
+
+circos.clear()
+@
+
+\begin{figure}
 \begin{center}
-\includegraphics[width=0.99\textwidth]{example.pdf}
-\caption{example}
-\label{example}
+<<label=figexample, fig = TRUE, echo = FALSE>>=
+<<figexample>>
+@
 \end{center}
+\caption{An example for circos layout}
+\label{fig:example}
 \end{figure}
+
 
 The final figure is figure 1.
 
-\begin{figure}[htbp]
+<<label=figtransformation, include=FALSE, echo=FALSE>>=
+library(circlize)
+layout(cbind(c(1, 0, 2, 0, 3)), height = c(2,0.5,2, 0.5, 4))
+par(mar = c(2, 2, 2, 2))
+x = 1:10
+y = rnorm(10)
+plot(x, y, type = "l", axes = FALSE, ann = FALSE)
+text(2, 0, "text", cex = 2)
+rect(5, -1, 7, 1)
+box()
+
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:3]
+circos.par("canvas.xlim" = c(-sqrt(3)/2, sqrt(3)/2), "canvas.ylim" = c(1/2*0.6, 1), start.degree = 30, "track.margin" = c(0, 0), "gap.degree" = 0, "clock.wise" = FALSE)
+circos.initialize(factors = factors, xlim = c(1, 10))
+circos.trackPlotRegion(factors = factors, ylim = range(y), track.height = 0.4, bg.border = NA)
+circos.updatePlotRegion(sector.index = "a", track.index = 1, bg.border = "black")
+circos.lines(x, y, sector.index = "a", track.index = 1, straight = TRUE)
+circos.text(2, 0, "text", cex = 2)
+circos.rect(5, -1, 7, 1)
+circos.clear()
+
+par(xpd = NA)
+arrows(0, 1.33, 0, 1.07, code = 2)
+
+factors = letters[1:3]
+circos.initialize(factors = factors, xlim = c(1, 10))
+circos.trackPlotRegion(factors = factors, ylim = range(y), track.height = 0.4)
+circos.updatePlotRegion(sector.index = "c", track.index = 1, bg.border = "black")
+circos.lines(x, y, sector.index = "c", track.index = 1, straight = TRUE)
+circos.text(2, 0, "text", cex = 2)
+circos.rect(5, -1, 7, 1)
+circos.clear()
+arrows(0, 1.5, 0, 1.07, code = 2)
+@
+
+\begin{figure}
 \begin{center}
-\includegraphics[width=0.5\textwidth]{transformation.pdf}
-\caption{coordinate transformation}
-\label{transformation}
+<<label=figtransformation, fig = TRUE, echo = FALSE, height=8.5, width=4>>=
+<<figtransformation>>
+@
 \end{center}
+\caption{Transformation between different coordinates}
+\label{fig:transformation}
 \end{figure}
+
 
 \section{Coordinate transformation}
 There is a user coordinate in which the range for x-axis and y-axis is the range of data,
@@ -177,19 +264,46 @@ a polar coordinate to allocates different cells and a the canvas coordinate whic
 draw the figures (figure 2). The package would first transform the user
 coordinate to a polar coordinate and finally transformed into the canvas coordinate.
 
-\begin{figure}[htbp]
+
+<<label=figcoordinate, include=FALSE, echo=FALSE>>=
+library(circlize)
+par(mar = c(1, 1, 1, 1))
+factors = factor(letters[1:10], levels = sample(letters[1:10], 10))
+circos.par("cell.padding" = c(0, 0, 0, 0))
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
+for(l in letters[1:10]) {
+	circos.rect(0,0,10,10,sector.index = l, track.index = 2, col = "#FF000040")
+}
+
+for(l in 1:4) {
+	circos.rect(0,0,10,10,sector.index = "a", track.index = l, col = "#0000FF40")
+}
+show.index()
+circos.clear()
+
+@
+
+\begin{figure}
 \begin{center}
-\includegraphics[width=0.99\textwidth]{coordinate.pdf}
-\caption{coordinate}
-\label{coordinate}
+<<label=figcoordinate, fig = TRUE, echo = FALSE>>=
+<<figcoordinate>>
+@
 \end{center}
+\caption{Ideogram in circos layout}
+\label{fig:coordinate}
 \end{figure}
+
 
 \section{Sectors and tracks}
 A circos layout is composed of sectors and tracks, as illustrated in figure 3.
 The red circle is the track and the blue one is the sector. The intersection of a sector and 
 a track is called a cell. Order of the sectors are determined by the order of levels of the factors
 when initializing and the order of the tracks are integers starting from the most outside track as 1.
+
 
 \begin{figure}[htbp]
 \begin{center}
@@ -199,68 +313,327 @@ when initializing and the order of the tracks are integers starting from the mos
 \end{center}
 \end{figure}
 
-\begin{figure}[htbp]
+
+<<label=figdirection, include=FALSE, echo=FALSE>>=
+par(mfrow = c(2, 1))
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:8]
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.par("track.margin" = c(0.1, 0.1))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.4, panel.fun = function(x, y) {
+	circos.text(5, 5, get.cell.meta.data("sector.index"))
+	xlim = get.cell.meta.data("xlim")
+	ylim = get.cell.meta.data("ylim")
+	circos.lines(xlim, c(0, 0))
+	circos.lines(c(9, 10), c(0.5, 0))
+	circos.lines(c(9, 10), c(-0.5, 0))
+	circos.lines(c(0, 0), xlim)
+	circos.lines(c(0.5, 0), c(9, 10))
+	circos.lines(c(-0.5, 0), c(9, 10))
+})
+circos.clear()
+
+x = seq(-0.7, 0.7, length = 100)
+d = cbind(x, sqrt(1 - x^2))
+lines(d)
+arrows(d[2,1], d[2,2], d[1,1], d[1,2])
+
+x = seq(-0.7, 0.7, length = 100)
+d = cbind(x, -sqrt(1 - x^2))
+lines(d)
+arrows(d[99,1], d[99,2], d[100,1], d[100,2])
+
+text(0, 0, 'circos.par("clock.wise" = FALSE)', cex = 0.6)
+
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:8]
+circos.par("track.margin" = c(0.1, 0.1), clock.wise = TRUE)
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.4, panel.fun = function(x, y) {
+	circos.text(5, 5, get.cell.meta.data("sector.index"))
+	xlim = get.cell.meta.data("xlim")
+	ylim = get.cell.meta.data("ylim")
+	circos.lines(xlim, c(0, 0))
+	circos.lines(c(9, 10), c(0.5, 0))
+	circos.lines(c(9, 10), c(-0.5, 0))
+	circos.lines(c(0, 0), xlim)
+	circos.lines(c(0.5, 0), c(9, 10))
+	circos.lines(c(-0.5, 0), c(9, 10))
+})
+circos.clear()
+
+x = seq(-0.7, 0.7, length = 100)
+d = cbind(x, sqrt(1 - x^2))
+lines(d)
+arrows(d[99,1], d[99,2], d[100,1], d[100,2])
+
+
+x = seq(-0.7, 0.7, length = 100)
+d = cbind(x, -sqrt(1 - x^2))
+lines(d)
+arrows(d[2,1], d[2,2], d[1,1], d[1,2])
+text(0, 0, 'circos.par("clock.wise" = TRUE)', cex = 0.6)
+@
+
+\begin{figure}
 \begin{center}
-\includegraphics[width=0.99\textwidth]{sector_direction.pdf}
-\caption{Sector direction}
-\label{direction}
+<<label=figdirection, fig = TRUE, echo = FALSE, width=4, height=8>>=
+<<figdirection>>
+@
 \end{center}
+\caption{Sector directions}
+\label{fig:direction}
 \end{figure}
+
 
 \section{Circos parameters}
 A cell has margins and paddings, like in CSS. See figure 4.
 The default start degree is 0 in the polar coordinate. This can be modified by {\tt circos.par}.
 The default direction of the sector is anticlockwise (figure 5).
 
-\begin{figure}[htbp]
+
+<<label=figlines, include=FALSE, echo=FALSE>>=
+library(circlize)
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:7]
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.5)
+circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "a")
+circos.text(5, 9, "type = 'l'", sector.index = "a")
+circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "b", type = "o")
+circos.text(5, 9, "type = 'o'", sector.index = "b")
+circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "c", type = "h")
+circos.text(5, 9, "type = 'h'", sector.index = "c")
+circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "d", type = "s")
+circos.text(5, 9, "type = 's'", sector.index = "d")
+circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "e", area = TRUE)
+circos.text(5, 9, "type = 'l', area = TRUE", sector.index = "e")
+circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "f", type = "o", area = TRUE)
+circos.text(5, 9, "type = 'o', area = TRUE", sector.index = "f")
+circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "g", type = "s", area = TRUE)
+circos.text(5, 9, "type = 's', area = TRUE", sector.index = "g")
+circos.clear()
+@
+
+\begin{figure}
 \begin{center}
-\includegraphics[width=0.99\textwidth]{line.pdf}
-\caption{Lines}
-\label{line}
+<<label=figlines, fig = TRUE, echo = FALSE>>=
+<<figlines>>
+@
 \end{center}
+\caption{Line style settings}
+\label{fig:lines}
 \end{figure}
+
 
 \section{Lines}
 Parameters for drawing lines by {\tt circos.lines} are similar to {\tt lines} function, 
 as illustrated in figure 6.
 
-\begin{figure}[htbp]
+
+<<label=figtext, include=FALSE, echo=FALSE>>=
+library(circlize)
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:4]
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.5, panel.fun = function(x, y) {
+	circos.text(5, 9, "default_default", direction = "default")
+	circos.text(0, 5, "vertical_left", direction = "vertical_left")
+	circos.text(10, 5, "vertical_right", direction = "vertical_right")
+	circos.text(5, 5, "horizontal", direction = "horizontal")
+	circos.text(5, 1, "arc_arc_arc_arc_arc", direction = "arc")
+})
+circos.clear()
+@
+
+\begin{figure}
 \begin{center}
-\includegraphics[width=0.99\textwidth]{text.pdf}
-\caption{Texts}
-\label{text}
+<<label=figtext, fig = TRUE, echo = FALSE>>=
+<<figtext>>
+@
 \end{center}
+\caption{Text direction settings}
+\label{fig:text}
 \end{figure}
+
 
 \section{Text}
 Only the direction of text by {\tt circos.text} should be noted, as illustrated in figure 7.
 
-\begin{figure}[htbp]
+
+<<label=figaxis, include=FALSE, echo=FALSE>>=
+library(circlize)
+
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:8]
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.1, bg.border = NA, panel.fun = function(x, y) {
+	circos.text(5, 10, get.cell.meta.data("sector.index"))
+})
+
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
+circos.axis(sector.index = "a")
+circos.axis(sector.index = "b", direction = "inside")
+circos.axis(sector.index = "c", h = "bottom")
+circos.axis(sector.index = "d", h = "bottom", direction = "inside")
+circos.axis(sector.index = "e", h = 5, major.at = c(1, 3, 5, 7, 9))
+circos.axis(sector.index = "f", h = 5, major.at = c(1, 3, 5, 7, 9), labels = c("a", "c", "e", "g", "f"), minor.ticks = 0)
+circos.axis(sector.index = "g", h = 5, major.at = c(1, 3, 5, 7, 9), labels = c("a", "c", "e", "g", "f"), major.tick = FALSE)
+circos.axis(sector.index = "h", h = 2, major.at = c(1, 3, 5, 7, 9), labels = c("a", "c", "e", "g", "f"), major.tick.percentage = 0.3, labels.away.percentage = 0.2, minor.ticks = 2, labels.direction = "vertical_right")
+circos.clear()
+@
+
+\begin{figure}
 \begin{center}
-\includegraphics[width=0.99\textwidth]{axis.pdf}
-\caption{axis}
-\label{axis}
+<<label=figaxis, fig = TRUE, echo = FALSE>>=
+<<figaxis>>
+@
 \end{center}
+\caption{Axis settings}
+\label{fig:axis}
 \end{figure}
 
 \section{Axis}
 Only x-axis for each cell, as illustrated in figure 8.
 
-\begin{figure}[htbp]
+
+<<label=figlink, include=FALSE, echo=FALSE>>=
+library(circlize)
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:8]
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", bg.border = NA, track.height = 0.05)
+
+circos.link("a", 5, "c", 5)
+circos.link("b", 5, "d", c(4, 6))
+circos.link("a", c(2, 3), "f", c(4, 6))
+
+circos.clear()
+@
+
+\begin{figure}
 \begin{center}
-\includegraphics[width=0.99\textwidth]{link.pdf}
-\caption{link}
-\label{link}
+<<label=figlink, fig = TRUE, echo = FALSE>>=
+<<figlink>>
+@
 \end{center}
+\caption{Link settings}
+\label{fig:link}
 \end{figure}
 
-\begin{figure}[htbp]
+
+
+<<label=figquadratic, include=FALSE, echo=FALSE>>=
+degree.minus = function(to, from, min.zero = TRUE) {
+	if(min.zero) {
+		return((to - from) %% 360)
+	} else {
+		if((to - from) %% 360 == 0) {
+			return(360)
+		} else {
+			return((to - from) %% 360)
+		}
+	}
+}
+rotate.parabola = function(theta1, theta2, rou1, rou2 = rou1, theta = (theta1+theta2)/2, 
+    rou = rou1 * abs(cos(degree.minus(theta1, theta2)/2/180*pi))*rou.ratio, rou.ratio = 0.5,
+    n = 1001) {
+    
+    while(theta2 < theta1) {
+        theta2 = theta2 + 360
+    }
+    
+    delta_theta = degree.minus(theta2, theta1)
+    
+    flag = 0
+    if(delta_theta > 180) {
+        theta = theta + 180
+        flag = 1
+    }
+    
+    # y^2 = kx, y = +-sqrt(kx)
+    b = rou1 * abs(sin(degree.minus(theta2, theta1)/2/180*pi))
+    a = rou1 * abs(cos(degree.minus(theta2, theta1)/2/180*pi)) - rou
+    k = b^2/a
+    
+    if(n %% 2 == 0) {
+        n = n + 1
+    }
+    n.half = (n - 1) / 2
+    x = numeric(n)
+    y = numeric(n)
+    x = c(n.half:1/n.half, 0, 1:n.half/n.half)*a
+    y[1:n.half] = sqrt(k*x[1:n.half])
+    y[n.half + 1] = 0
+    y[1:n.half + n.half + 1] = -sqrt(k*x[1:n.half + n.half + 1])
+    
+    alpha = numeric(n)
+    
+    alpha[1:n.half] = atan(y[1:n.half]/x[1:n.half])*180/pi
+    alpha[1:n.half + n.half + 1] = atan(y[1:n.half + n.half + 1]/x[1:n.half + n.half + 1])*180/pi
+    alpha[n.half + 1] = 90
+    
+    d = sqrt(x^2 + y^2)
+    x = d*cos((alpha + theta)/180*pi)
+    y = d*sin((alpha + theta)/180*pi)
+    
+    center.x = rou*cos(theta/180*pi)
+    center.y = rou*sin(theta/180*pi)
+    
+    x = x + center.x
+    y = y + center.y
+    
+    if(!flag) {
+        x = rev(x)
+        y = rev(y)
+    }
+
+    return(cbind(x, y))
+}
+draw.sector = function (x, y, start=0, end=360, radius, col="black", border = "black") {
+    d = NULL
+    for (i in 1:500) {
+        d = rbind(d, c(start + abs(end - start)/500*i, radius))
+    }
+    
+    m = polar2Cartesian(d)
+	if( (end - start) >= 360 || (end - start) %% 360 == 0) {
+		
+	} else {
+		m = rbind(m, c(0, 0))
+	}
+    m[, 1] = m[, 1] + x
+    m[, 2] = m[, 2] + y
+    polygon(m, col = col, border = border)
+}
+polar2Cartesian = function(d) {
+    theta = d[, 1]/360 * 2 *pi
+    rou = d[, 2]
+    x = rou * cos(theta)
+    y = rou * sin(theta)
+    return(cbind(x, y))
+}
+par(mar = c(1, 1, 1, 1))
+plot(c(-1, 1), c(-1, 1), axes = FALSE, ann = FALSE ,type = "n")
+draw.sector(x = 0, y = 0, start = 0, end = 360, radius = 01, col = "white", border = "black")
+d= rotate.parabola(theta1 = 270, theta2 = 330, rou1 = 1, rou.ratio = 0.5)
+lines(rbind(d, d[1, ]))
+lines(c(cos(300/180*pi), cos(120/180*pi)), c(sin(300/180*pi), sin(120/180*pi)))
+points(0, 0, pch = 16)
+lines(c(0, sqrt(3)/4)+0.01, c(0, -3/4)+0.01, lwd = 4, col = "red")
+lines(c(0, sqrt(3)/4/2)-0.01, c(0, -3/4/2)-0.01, lwd = 4, col = "blue")
+@
+
+\begin{figure}
 \begin{center}
-\includegraphics[width=0.99\textwidth]{quadratic_curve.pdf}
-\caption{quadratic curve}
-\label{quadratic_curve}
+<<label=figquadratic, fig = TRUE, echo = FALSE>>=
+<<figquadratic>>
+@
 \end{center}
+\caption{Additional settings for links}
+\label{fig:quadratic}
 \end{figure}
+
 
 \section{Links}
 Links can be drawn from points and intervals (figure 9). The height of the link can be controlled

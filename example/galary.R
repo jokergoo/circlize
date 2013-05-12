@@ -532,4 +532,4 @@ circos.clear()
 
 
 ##################################
-circos.initializeWithIdeogram(file = "inst/extdata/cytoBand.txt")
+circos.initializeWithIdeogram()

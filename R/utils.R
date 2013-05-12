@@ -95,13 +95,13 @@ lines.expand = function(x, y, sector.index = get.current.sector.index(), track.i
 				
 				nx = c(nx, x[i-1] + (x[i] - x[i-1])*j, x[i])
 				ny = c(ny, y[i-1] + (y[i] - y[i-1])*j, y[i])
-		}
+		} else {
+                       nx = c(nx, x[i])
+                       ny = c(ny, y[i])
+                }
     }
     
     d = cbind(nx, ny)
-    if(length(nx) == 1) {
-	d = rbind(d, c(x[length(x)], y[length(y)]))
-    }
     return(d)
 }
 

@@ -86,7 +86,7 @@ lines.expand = function(x, y, sector.index = get.current.sector.index(), track.i
         }
 	
 		td = cbind(c(x[i-1], x[i]), c(y[i-1], y[i]))
-               td = td[order(td[, 1]), ]
+        td = td[order(td[, 1]), ]
 		td2 = circlize(td[, 1], td[, 2], sector.index = sector.index, track.index = track.index)
 		
 		a = ((td2[1, 1] - td2[2, 1]) %% 360)/180*pi

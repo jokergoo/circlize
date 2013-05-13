@@ -5,7 +5,7 @@
 % \VignetteKeywords{circlize}
 % \VignettePackage{circlize}
 
-\documentclass[a4paper]{article}
+\documentclass{article}
 
 \title{How to draw ideogram}
 
@@ -17,8 +17,8 @@
 
 \maketitle 
 
-The most wide use for the circos layout is to display genomic information.
-And in most circumstances, the figures contain an ideogram. This document
+The most widely use for the circos layout is to display genomic information.
+In most circumstances, the figures contain an ideogram. This document
 will tell you how to draw ideogram by {\tt circlize} package.
 
 An ideogram is, in fact, a series of rectangles with different colors.
@@ -47,12 +47,14 @@ Uncompress the file and read it into R. Here the package already contains such f
 \end{Soutput}
 \end{Schunk}
 
+In the data frame, the second column and the third column are intervals for locus' intervals.
+
 Here, setting the {\tt colClasses} argument when reading the cytoband file is very important,
 because the positions on chromosomes are large integers (the second column and third column),
 {\tt read.table} would store such data as {\tt integer} mode. The sumation of such large integers
 would throw error of data overflow. So you must set the data mode to float point ({\tt numeric}).
 
-Since chromosomes are sorted by its name as a mode of character, the order would look
+Since chromosomes are sorted by their names which are as mode of character, the order would look
 like "chr1, chr10, chr11, ..., chr2, chr20, ...". We need to sort chromosomes by 
 the numeric index.
 
@@ -78,8 +80,8 @@ the numeric index.
 \end{Schunk}
 
 Calculate the range for each chromosome which is going to be the xlim of
-each sector. In the following code, rows of {\tt xlim} correspond to the 
-element of {\tt chromosome}.
+each sector. In the following code, order of rows of {\tt xlim} correspond to the 
+order of elements in {\tt chromosome}.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -91,19 +93,17 @@ element of {\tt chromosome}.
 \end{Sinput}
 \end{Schunk}
 
-Do some cleanings and set some graphic parameters. Here we do not need
-any cell paddings.
+Set some graphic parameters. Here we do not need any cell paddings.
 
 \begin{Schunk}
 \begin{Sinput}
-> circos.clear()
 > par(mar = c(1, 1, 1, 1), lwd = 0.5)
 > circos.par("cell.padding" = c(0, 0, 0, 0))
 \end{Sinput}
 \end{Schunk}
 
 Initialize the circos layout with ranges of chromosomes. Here you must explicitly
-set the levels of the factors to ensure the order of chromosome is "chr1, chr2,
+set the levels of the factors to ensure the order of chromosomes is "chr1, chr2,
 chr3, ...".
 
 \begin{Schunk}
@@ -166,7 +166,7 @@ can read that.
 \end{Sinput}
 \end{Schunk}
 
-Second, draw ideogram directly as the creation of the plotting region by using {\tt panel.fun} argument.
+Second way, draw ideogram directly as the creation of the plotting region by using {\tt panel.fun} argument.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -219,9 +219,8 @@ as a link in the circos layout.
 \end{Sinput}
 \end{Schunk}
 
-If position 88888888 in chromosome 6 is important and we want to mark it, we can use following codes.
-Second, draw ideogram directly as the creation of the plotting region by using {\tt panel.fun} argument.
-Here there no specifying of {\tt factors}, thus the new track would create plotting regions for all available
+If position 88888888 in chromosome 6 is important and we want to mark it, we can use following codes. First create
+a new track. Here there no specifying of {\tt factors}, thus the new track would create plotting regions for all available
 sectors.
 
 \begin{Schunk}
@@ -260,7 +259,8 @@ The finnal figure looks like figure 1.
 
 In the {\tt circlize} package, there is already a {\tt circos.initializeWithIdeogram}
 function to initialize the circos layout with an ideogram. However, how to embed the ideogram into the
-circos layout is really subjective, users can draw their style of ideogram according
+circos layout is really subjective (such the position and colors of the ideogram, or maybe only subset of chromosomes
+are going to be plotted), users can draw their style of ideogram according
 the above example codes.
 
 Finally, a more beautiful genomic graph is figure 2 and figure 3.
@@ -301,12 +301,14 @@ circos.trackPlotRegion(ylim = c(-1, 1), bg.border = NA, track.height = 0.1, pane
 	circos.points(x, y, col = col, cex = 0.2, pch = 16)
 })
 
-circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.1, panel.fun = function(x, y) {
+circos.trackPlotRegion(ylim = c(-1, 1), bg.border = NA, track.height = 0.1, panel.fun = function(x, y) {
 	xlim = get.cell.meta.data("xlim")
 	xrange = get.cell.meta.data("xrange")
 	x = seq(xlim[1], xlim[2], by = 10000000)
 	y = runif(length(x))
-	circos.lines(x, y, area = TRUE, border = NA, col = "#FF7F00")
+	circos.lines(x, y, area = TRUE, area.baseline = 0, border = NA, col = "#FF7F00")
+	y = -runif(length(x))
+	circos.lines(x, y, area = TRUE, area.baseline = 0, border = NA, col = "#FFFF33")
 })
 
 

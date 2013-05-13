@@ -1,5 +1,4 @@
 \name{circlize}
-\alias{circlize}
 \alias{circlize-package}
 \docType{package}
 \title{

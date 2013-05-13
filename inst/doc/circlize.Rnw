@@ -5,7 +5,7 @@
 % \VignetteKeywords{circlize}
 % \VignettePackage{circlize}
 
-\documentclass[a4paper]{article}
+\documentclass{article}
 
 \title{A brief introduction of the {\tt circlize} package}
 
@@ -18,9 +18,9 @@
 \maketitle 
 
 \section{Introduction}
-Circos layout ({\url http://circos.ca}) is very useful to represent informations, especially for genomic data.
+Circos layout ({\url http://circos.ca}) is very useful to represent complicated informations, especially for genomic data.
 The {\tt circlize} package implements the circos layout in R. The package allocates
-and illustrates data in a specific category into a cell inside the circle and makes you
+and illustrates data in a certain category into a cell inside a circle and makes you
 felling that you are plotting figures in a normal plotting coordinate.
 
 Since most of the figures are composed of points, lines and polygon (for filled color),
@@ -75,7 +75,8 @@ x-values, and y-values.
 \end{Sinput}
 \end{Schunk}
 
-Initialize the layout.
+Initialize the layout. In this step, the function allocates sectors along
+the unit circle according to ranges of x-values in different categories.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -87,14 +88,14 @@ Initialize the layout.
 \end{Schunk}
 
 Draw the first track. Add axis by {\tt panel.fun} argument. Then draw points
-through the whole track. Finally, draw two texts in one cell.
+through the whole track. Finally, draw two texts in a certain cell.
 
 \begin{Schunk}
 \begin{Sinput}
 > circos.trackPlotRegion(factors = a$factor, y = a$y,
 +     panel.fun = function(x, y) {
 +         circos.axis()
-+     })
++ })
 > circos.trackPoints(a$factor, a$x, a$y, col = col,
 +     pch = 16, cex = 0.5)
 > circos.text(-1,0.5, "left", sector.index = "a")
@@ -116,10 +117,10 @@ Draw the third track. Different background colors for cells can be assigned.
 \begin{Schunk}
 \begin{Sinput}
 > circos.trackPlotRegion(factors = a$factor, x = a$x, y = a$y,
-+   panel.fun = function(x, y, ...) {
++   panel.fun = function(x, y) {
 +       grey = c("#FFFFFF", "#CCCCCC", "#999999")
-+       circos.updatePlotRegion(bg.col =
-+           grey[get.cell.meta.data("sector.numeric.index") %% 3 + 1])
++       i = get.cell.meta.data("sector.numeric.index")
++       circos.updatePlotRegion(bg.col = grey[i %% 3 + 1])
 +       circos.points(x[1:10], y[1:10], col = "red", pch = 16, cex = 0.6)
 +       circos.points(x[11:20], y[11:20], col = "blue", cex = 0.6)
 +   })
@@ -179,9 +180,10 @@ circos.text(1,0.5, "right", sector.index = "a")
 
 circos.trackHist(a$factor, a$x, bg.col = bgcol, col = NA)
 
-circos.trackPlotRegion(factors = a$factor, x = a$x, y = a$y, panel.fun = function(x, y, ...) {
+circos.trackPlotRegion(factors = a$factor, x = a$x, y = a$y, panel.fun = function(x, y) {
     grey = c("#FFFFFF", "#CCCCCC", "#999999")
-    circos.updatePlotRegion(bg.col = grey[get.cell.meta.data("sector.numeric.index") %% 3 + 1])
+	i = get.cell.meta.data("sector.numeric.index")
+    circos.updatePlotRegion(bg.col = grey[i %% 3 + 1])
     circos.points(x[1:10], y[1:10], col = "red", pch = 16, cex = 0.6)
     circos.points(x[11:20], y[11:20], col = "blue", cex = 0.6)
 })
@@ -210,7 +212,7 @@ circos.clear()
 \end{figure}
 
 
-The final figure is figure 1.
+The final figure looks like figure 1.
 
 <<label=figtransformation, include=FALSE, echo=FALSE>>=
 library(circlize)
@@ -265,6 +267,9 @@ a polar coordinate to allocates different cells and a the canvas coordinate whic
 draw the figures (figure 2). The package would first transform the user
 coordinate to a polar coordinate and finally transformed into the canvas coordinate.
 
+The finnal canvas coordinate is in fact an ordinary plotting in R plotting system with
+x-range from 0 to 1 and y-range from 0 to 1 by default.
+
 
 <<label=figcoordinate, include=FALSE, echo=FALSE>>=
 library(circlize)
@@ -294,7 +299,7 @@ circos.clear()
 <<figcoordinate>>
 @
 \end{center}
-\caption{Ideogram in circos layout}
+\caption{Coordinate in circos layout}
 \label{fig:coordinate}
 \end{figure}
 
@@ -302,9 +307,11 @@ circos.clear()
 \section{Sectors and tracks}
 A circos layout is composed of sectors and tracks, as illustrated in figure 3.
 The red circle is the track and the blue one is the sector. The intersection of a sector and 
-a track is called a cell. Order of the sectors are determined by the order of levels of the factors
+a track is called a cell which can be thought as an imaginary plotting region for values in certain category. 
+Order of the sectors are determined by the order of levels of the factor
 when initializing and the order of the tracks are integers starting from the most outside track as 1.
-
+Width of sectors are allocated according to the range of x-values in different categories. All cells
+in one sector in different tracks share the same x-ranges.
 
 \begin{figure}[htbp]
 \begin{center}
@@ -388,10 +395,46 @@ text(0, 0, 'circos.par("clock.wise" = TRUE)', cex = 0.6)
 
 
 \section{Circos parameters}
-A cell has margins and paddings, like in CSS. See figure 4.
-The default start degree is 0 in the polar coordinate. This can be modified by {\tt circos.par}.
-The default direction of the sector is anticlockwise (figure 5).
+Some basic parameters for the circos layout can be set through {\tt circos.par}. The paramters
+are as follows, note some parameters can only be assigned before the initialization of the circos layout.
 
+\begin{itemize}
+	\item {\tt start.degree}: The starting degree which the circle begin to draw. Note this degree is measured 
+	      in the standard polar coordinate which means it is anti-clockwise.
+	\item {\tt gap.degree}: Gap between two neighbour sectors. Note a gap is allocated first in front of the first sector. See figure 4.
+	\item {\tt track.margin}: Like {\tt margin} in Cascading Style Sheets (CSS), it is the blank area
+          out of the plotting region, also outside of the borders. Since left and right margin are controlled
+          by {\tt gap.degree}, only bottom and top margin need to be set. The value for the {\tt track.margin}
+          is the percentage according to the radius of the unit circle. See figure 4.
+	\item {\tt cell.padding}: Padding of the cell. Like {\tt padding} in Cascading Style Sheets
+          (CSS), it is the blank area around the plotting regions, but within the borders.
+          The paramter has four values, which controls the bottom, left, top and right padding
+          respectively. The four values are all percentages in which the first and the third padding
+          values are the percentages according to the range of values on y-axis and the second and
+          fourth values are the percentages according to the range of values on x-axis. See figure 4.
+	\item {\tt unit.circoe.segments}: Since curves are simulated by a series of straight lines,
+          this parameter controls the amout of segments to represent a curve. The minimal length
+          of the line segmentation is the length of the unit circle divided by {\tt unit.circoe.segments}.	 
+    \item {\tt default.track.height}: The default height of tracks. It is the percentage according to the radius
+          of the unit circle. The height includes the top and bottom cell paddings but not the margins.
+          However, the definition would be changed in future version because I think it would be more 
+          reasonable to include the margins in the track.
+	\item {\tt points.overflow.warning}: Since each cell is in fact not a plotting region but only
+          an ordinary rectangle, it does not eliminate points that are plotted out of
+          the region. So if some points are out of the plotting region, by default, the 
+          package would continue drawing the points and print warnings. But in some 
+          circumstances, draw something out of the plotting region is useful, such as draw
+          some legend or text. Set this value to {\tt FALSE} to turn off the warnings.
+	\item {\tt canvas.xlim}: The coordinate for the canvas. By default, the package draws unit circle, so
+          the xlim for the canvas would be {\tt c(-1, 1)}. However, you can set it to a more broad
+          interval if you want to draw other things out of the circle. By choose proper
+          {\tt canvas.xlim} and {\tt canvas.ylim}, you can draw part of the circle. E.g. setting
+          {\tt canvas.xlim} to {\tt c(0, 1)} and {\tt canvas.ylim} to {\tt c(0, 1)} would only draw
+          circle in the region of {\tt (0, pi/2)}.
+	\item {\tt canvas.ylim}: The coordinate for the canvas.
+	\item {\tt clock.wise}: The order of drawing sectors. Default is {\tt TRUE} which means anticlockwise (figure 5).
+	      But note that inside each cell, the direction of x-axis is always anticlockwise.
+\end{itemize}
 
 <<label=figlines, include=FALSE, echo=FALSE>>=
 library(circlize)
@@ -429,7 +472,8 @@ circos.clear()
 
 \section{Lines}
 Parameters for drawing lines by {\tt circos.lines} are similar to {\tt lines} function, 
-as illustrated in figure 6.
+as illustrated in figure 6. One additional feature is that the areas under lines can be 
+specified by {\tt area} argument. Also the base line for the area can be set by {\tt area.baseline}.
 
 
 <<label=figtext, include=FALSE, echo=FALSE>>=
@@ -460,6 +504,7 @@ circos.clear()
 
 \section{Text}
 Only the direction of text by {\tt circos.text} should be noted, as illustrated in figure 7.
+Only five direction of text is allowed which are in {\tt c("default", "vertical\_left", "vertical\_right", "horizontal", "arc")}.
 
 
 <<label=figaxis, include=FALSE, echo=FALSE>>=
@@ -495,7 +540,9 @@ circos.clear()
 \end{figure}
 
 \section{Axis}
-Only x-axis for each cell, as illustrated in figure 8.
+Because there may be no space to draw y-axis, only x-axis for each cell is supported, as illustrated in figure 8.
+A lot of styles for axis can be set such as the position and length of major ticks, the number of minor ticks,
+the position and direction of the axis labels and the position of the x-axis.
 
 
 <<label=figlink, include=FALSE, echo=FALSE>>=
@@ -637,8 +684,187 @@ lines(c(0, sqrt(3)/4/2)-0.01, c(0, -3/4/2)-0.01, lwd = 4, col = "blue")
 
 
 \section{Links}
-Links can be drawn from points and intervals (figure 9). The height of the link can be controlled
-by {\tt top.ratio} argument in {\tt circos.link} which is the ratio between the length of blue line and 
-the red line (figure 10).
+Links can be drawn from points and intervals (figure 9). If both ends are points, then the link is represented
+as a line. If one of the ends is an interval, the link would be a belt. The link is in fact a quadratic curve.
+The height of the link can be controlled by {\tt top.ratio} argument in {\tt circos.link} which is the ratio between the length of blue line and 
+the red line (figure 10). Links do not hold any track.
+
+\section{Draw part of the circos layout}
+{\tt canvas.xlim} and {\tt canvas.ylim} in {\tt circos.par} is useful to draw only part of circle. Here
+only sector between $0^\circ$ to $90^\circ$ are plotted (figure 11). Codes are as follows. First, four sectors
+with the same length are initialized. Then only the first sector is drawn with points and lines.
+
+\begin{Schunk}
+\begin{Sinput}
+> par(mar = c(1, 1, 1, 1))
+> circos.par("canvas.xlim" = c(0, 1), "canvas.ylim" = c(0, 1),
++ "clock.wise" = FALSE)
+> factors = letters[1:4]
+> circos.initialize(factors = factors, xlim = c(0, 1))
+> circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.border = NA)
+> circos.updatePlotRegion(sector.index = "a", bg.border = "black")
+> circos.points(runif(100), runif(100), pch = 16, cex = 0.5)
+> circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.border = NA)
+> circos.updatePlotRegion(sector.index = "a", bg.border = "black")
+> circos.lines(1:100/100, runif(100), pch = 16, cex = 0.5)
+> circos.clear()
+\end{Sinput}
+\end{Schunk}
+
+
+<<label=figpart, include=FALSE, echo=FALSE>>=
+library(circlize)
+par(mar = c(1, 1, 1, 1))
+circos.par("canvas.xlim" = c(0, 1), "canvas.ylim" = c(0, 1),"clock.wise" = FALSE, "gap.degree" = 0)
+factors = letters[1:4]
+circos.initialize(factors = factors, xlim = c(0, 1))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.border = NA)
+circos.updatePlotRegion(sector.index = "a", bg.border = "black")
+circos.points(runif(100), runif(100), pch = 16, cex = 0.5)
+circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.border = NA)
+circos.updatePlotRegion(sector.index = "a", bg.border = "black")
+circos.lines(1:100/100, runif(100), pch = 16, cex = 0.5)
+circos.clear()
+@
+
+\begin{figure}
+\begin{center}
+<<label=figpart, fig = TRUE, echo = FALSE>>=
+<<figpart>>
+@
+\end{center}
+\caption{Part of the circos layout}
+\label{fig:part}
+\end{figure}
+
+\section{Combine two parts of circos layouts}
+Since the circos layout by {\tt circlize} finally plotted in an ordinary R plotting system.
+Two seperated circos layouts can be plotted together by some tricks. Here the key is 
+{\tt par(new = TRUE)} which allows to draw a new figure on the previous plotting region.
+
+The first example is to draw one outer circos and an inner circos (figure 12).
+
+\begin{Schunk}
+\begin{Sinput}
+> library(circlize)
+> par(mar = c(1, 1, 1, 1))
+> factors = letters[1:4]
+> circos.initialize(factors = factors, xlim = c(0, 1))
+> circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
++     circos.text(0.5, 0.5, "outer circos")
++ })
+> circos.clear()
+> 
+> par(new = TRUE)
+> circos.par("canvas.xlim" = c(-2, 2), "canvas.ylim" = c(-2, 2))
+> factors = letters[1:3]
+> circos.initialize(factors = factors, xlim = c(0, 1))
+> circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
++     circos.text(0.5, 0.5, "inner circos")
++ })
+> circos.clear()
+\end{Sinput}
+\end{Schunk}
+
+
+<<label=fignested, include=FALSE, echo=FALSE>>=
+library(circlize)
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:4]
+circos.initialize(factors = factors, xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
+	circos.text(0.5, 0.5, "outer circos")
+})
+circos.clear()
+
+par(new = TRUE)
+circos.par("canvas.xlim" = c(-2, 2), "canvas.ylim" = c(-2, 2))
+factors = letters[1:3]
+circos.initialize(factors = factors, xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
+	circos.text(0.5, 0.5, "inner circos")
+})
+circos.clear()
+@
+
+\begin{figure}
+\begin{center}
+<<label=fignested, fig = TRUE, echo = FALSE>>=
+<<fignested>>
+@
+\end{center}
+\caption{An outer and an inner circos layout}
+\label{fig:nested}
+\end{figure}
+
+The second example is to draw to seperated circos layouts in which every
+circos only contains a half.
+
+\begin{Schunk}
+\begin{Sinput}
+> library(circlize)
+> par(mar = c(1, 1, 1, 1))
+> factors = letters[1:4]
+> circos.par("canvas.xlim" = c(-1, 1.2), "canvas.ylim" = c(-1, 1.2),
++     start.degree = -45)
+> circos.initialize(factors = factors, xlim = c(0, 1))
+> circos.trackPlotRegion(ylim = c(0, 1), bg.col = NA, bg.border = NA)
+> circos.updatePlotRegion(sector.index = "b")
+> circos.text(0.5, 0.5, "first one")
+> circos.updatePlotRegion(sector.index = "c")
+> circos.text(0.5, 0.5, "first one")
+>
+> circos.clear()
+>
+> par(new = TRUE)
+> circos.par("canvas.xlim" = c(-1.2, 1), "canvas.ylim" = c(-1.2, 1),
++     start.degree = -45)
+> circos.initialize(factors = factors, xlim = c(0, 1))
+> circos.trackPlotRegion(ylim = c(0, 1), bg.col = NA, bg.border = NA)
+> circos.updatePlotRegion(sector.index = "a")
+> circos.text(0.5, 0.5, "second one")
+> circos.updatePlotRegion(sector.index = "d")
+> circos.text(0.5, 0.5, "second one")
+>
+> circos.clear()
+\end{Sinput}
+\end{Schunk}
+
+<<label=figseperated, include=FALSE, echo=FALSE>>=
+library(circlize)
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:4]
+circos.par("canvas.xlim" = c(-1, 1.2), "canvas.ylim" = c(-1, 1.2), start.degree = -45)
+circos.initialize(factors = factors, xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 1), bg.col = NA, bg.border = NA)
+circos.updatePlotRegion(sector.index = "b")
+circos.text(0.5, 0.5, "first one")
+circos.updatePlotRegion(sector.index = "c")
+circos.text(0.5, 0.5, "first one")
+
+circos.clear()
+
+par(new = TRUE)
+circos.par("canvas.xlim" = c(-1.2, 1), "canvas.ylim" = c(-1.2, 1), start.degree = -45)
+circos.initialize(factors = factors, xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 1), bg.col = NA, bg.border = NA)
+circos.updatePlotRegion(sector.index = "a")
+circos.text(0.5, 0.5, "second one")
+circos.updatePlotRegion(sector.index = "d")
+circos.text(0.5, 0.5, "second one")
+
+circos.clear()
+@
+
+\begin{figure}
+\begin{center}
+<<label=figseperated, fig = TRUE, echo = FALSE>>=
+<<figseperated>>
+@
+\end{center}
+\caption{Two seperated circos layouts}
+\label{fig:nested}
+\end{figure}
+
 
 \end{document}

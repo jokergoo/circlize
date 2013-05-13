@@ -379,6 +379,7 @@ circos.trackPoints = function(factors = NULL, x, y, track.index = get.current.tr
 # -straight     whether draw straight lines between points
 # -area         whether to fill the area below the lines. If it is set to ``TRUE``, ``col`` controls the filled color
 #               in the area and ``border`` controls the color of the line.
+# -area.baseline the base line to draw area under lines, default is the minimal of y-range
 # -border       color for border of the area
 # -pt.col       if ``type`` is "o", points color
 # -cex          if ``type`` is "o", points size
@@ -393,7 +394,7 @@ circos.trackPoints = function(factors = NULL, x, y, track.index = get.current.tr
 # ``area`` to ``TURE``.
 circos.lines = function(x, y, sector.index = get.current.sector.index(), track.index = get.current.track.index(),
     col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
-	area = FALSE, border = "black",
+	area = FALSE, area.baseline = get.cell.meta.data("ylim", sector.index, track.index)[1], border = "black",
     pt.col = "black", cex = par("cex"), pch = par("pch")) {
     
     if(type == "l") {
@@ -424,8 +425,8 @@ circos.lines = function(x, y, sector.index = get.current.sector.index(), track.i
 		
 		if(area) {
 			ylim = get.cell.meta.data("ylim", sector.index, track.index)
-			d = rbind(d, c(d[nrow(d), 1], ylim[1]))
-			d = rbind(d, c(d[1, 1], ylim[1]))
+			d = rbind(d, c(d[nrow(d), 1], area.baseline))
+			d = rbind(d, c(d[1, 1], area.baseline))
 			circos.polygon(d[, 1], d[, 2], sector.index = sector.index, track.index = track.index, 
 				   col = col, border = border, lwd = lwd, lty = lty)
 		} else {
@@ -450,8 +451,8 @@ circos.lines = function(x, y, sector.index = get.current.sector.index(), track.i
 	
 	if(area) {
 		ylim = get.cell.meta.data("ylim", sector.index, track.index)
-		d = rbind(d, c(d[nrow(d), 1], ylim[1]))
-		d = rbind(d, c(d[1, 1], ylim[1]))
+		d = rbind(d, c(d[nrow(d), 1], area.baseline))
+		d = rbind(d, c(d[1, 1], area.baseline))
 		circos.polygon(d[, 1], d[, 2], sector.index = sector.index, track.index = track.index, 
 		       col = col, border = border, lwd = lwd, lty = lty)
 		return(invisible(NULL))
@@ -478,6 +479,7 @@ circos.lines = function(x, y, sector.index = get.current.sector.index(), track.i
 # -straight     whether draw straight lines between points
 # -area         whether to fill the area below the lines. If it is set to ``TRUE``, ``col`` controls the filled color
 #               in the area and ``border`` controls the color of the line.
+# -area.baseline the base line to draw area under lines, default is the minimal of y-range
 # -border       color for border of the area
 # -pt.col       if ``type`` is "o", points color
 # -cex          if ``type`` is "o", points size
@@ -489,7 +491,7 @@ circos.lines = function(x, y, sector.index = get.current.sector.index(), track.i
 # to the part of data by calling `circos.lines`.
 circos.trackLines = function(factors, x, y, track.index = get.current.track.index(),
     col = "black", lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
-	area = FALSE, border = "black",
+	area = FALSE, area.baseline = NA, border = "black",
     pt.col = "black", cex = par("cex"), pch = par("pch")) {
     
     # basic check here
@@ -516,6 +518,7 @@ circos.trackLines = function(factors, x, y, track.index = get.current.track.inde
     pch = recycle.with.factors(pch, factors)
 	
 	area = recycle.with.levels(area, le)
+	area.baseline = recycle.with.levels(area.baseline, le)
 	border = recycle.with.levels(border, le)
     
     for(i in seq_along(le)) {
@@ -531,6 +534,7 @@ circos.trackLines = function(factors, x, y, track.index = get.current.track.inde
         circos.lines(nx, ny, sector.index = le[i],
                       track.index = track.index,
                       col = ncol, lwd = nlwd, lty = nlty, area = area[i], border = border[i],
+					  area.baseline = ifelse(is.na(area.baseline[i]), get.cell.meta.data("ylim", le[i], track.index)[1], area.baseline[i]),
                       pt.col = npt.col, cex = ncex, pch = npch, type = type, straight = straight)
             
     }

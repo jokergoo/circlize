@@ -327,9 +327,9 @@ sub format {
 	push(@$section_value, $self->{_function_name});
 	push(@$section_name, "alias");
 	if($self->{_function_args} =~/^package\(/) {
-		push(@$section_value, [$self->{_function_name}, "$self->{_function_name}-package"]);
+		push(@$section_value, "$self->{_function_name}-package");
 	} else {
-		push(@$section_value, $self->{_function_name});
+		push(@$section_value, "$self->{_function_name}");
 	}
 	
 	if($self->{_function_args} =~/^data\(/) {

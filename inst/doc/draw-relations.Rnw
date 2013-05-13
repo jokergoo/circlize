@@ -6,7 +6,7 @@
 % \VignetteKeywords{circlize}
 % \VignettePackage{circlize}
 
-\documentclass[a4paper]{article}
+\documentclass{article}
 
 \title{How to draw relations}
 
@@ -18,7 +18,7 @@
 
 \maketitle 
 
-The characteristic of the circos layout is the link (or connector) to represent relations
+One feature of circos layout is the link (or connector) to represent relations
 between elements. Here we show how to represent a correlation matrix.
 
 First, we need a correlation matrix.
@@ -33,7 +33,7 @@ First, we need a correlation matrix.
 \end{Sinput}
 \end{Schunk}
 
-Then the range for each element, which is the summation of the correlations with other elements
+Then the range for each element, which is the summation of correlations with other elements.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -41,7 +41,7 @@ Then the range for each element, which is the summation of the correlations with
 \end{Sinput}
 \end{Schunk}
 
-Initialize the layout and add the name for elements around each sectors.
+Initialize the layout and name for element around each sector.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -64,7 +64,8 @@ Initialize the layout and add the name for elements around each sectors.
 \end{Sinput}
 \end{Schunk}
 
-Draw links
+Draw links in which red represents to positive correlation and green
+represents to negative correlation.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -87,7 +88,7 @@ Draw links
 \end{Sinput}
 \end{Schunk}
 
-The finnal figure looks like figure \ref{fig:correlation}.
+The finnal figure looks like figure 1.
 
 <<label=figcorrelation, include=FALSE, echo=FALSE>>=
 set.seed(12345)

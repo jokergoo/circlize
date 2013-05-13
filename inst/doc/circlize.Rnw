@@ -270,6 +270,8 @@ coordinate to a polar coordinate and finally transformed into the canvas coordin
 The finnal canvas coordinate is in fact an ordinary plotting in R plotting system with
 x-range from 0 to 1 and y-range from 0 to 1 by default.
 
+{\bf It should be noted that the circos layout is always drawn inside the circle which has radius of 1 (unit
+circle), from outside to inside. }
 
 <<label=figcoordinate, include=FALSE, echo=FALSE>>=
 library(circlize)

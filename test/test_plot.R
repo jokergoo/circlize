@@ -13,3 +13,21 @@ circos.trackPlotRegion(ylim = c(0, 1), factors = factors, panel.fun = function(x
 })
 
 circos.clear()
+
+library(circlize)
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:2]
+for (theta in seq(-360, 360, by = 30)) {
+	circos.par(start.degree = theta)
+	circos.initialize(factors = factors, xlim = c(0, 1))
+	circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
+		y = runif(20)
+		circos.lines(1:20/20, y, col = "red")
+		
+		y = runif(20)
+		circos.lines(20:1/20, y, col = "blue")
+	})
+	show.index()
+	circos.clear()
+	Sys.sleep(1)
+}

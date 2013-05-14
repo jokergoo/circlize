@@ -12,6 +12,7 @@
 \author{Zuguang Gu\\ German Cancer Research Center,\\ Heidelberg, Germany}
 
 \usepackage{Sweave}
+\usepackage{hyperref}
 
 \begin{document}
 
@@ -25,7 +26,7 @@ An ideogram is, in fact, a series of rectangles with different colors.
 Here we are going to draw the ideogram for human.
 
 The cytoband data for human can be download from \\
-{\url http://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz}.
+\url{http://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz}.
 Uncompress the file and read it into R. Here the package already contains such file.
 
 \begin{Schunk}

@@ -8,6 +8,7 @@ Maintainer: Zuguang Gu <z.gu@dkfz.de>
 Depends: R (>= 2.10.0)
 Description: circos layout in R
 LazyLoad: yes
+URL: https://github.com/jokergoo/circlize
 License: GPL (>= 2)
 Packaged: 2013-05-11 00:00:00 UTC; Administrator
 Repository: CRAN

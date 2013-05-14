@@ -913,4 +913,59 @@ circos.clear()
 \label{fig:hist}
 \end{figure}
 
+\section{Drawing outside the potting region}
+Sometimes it is very useful to draw something outside the plotting region of cell. The following is a simple
+example to illustrate such circumstance (figure 15). The text and the rectangle are all drawn outside the cell.
+
+\begin{Schunk}
+\begin{Sinput}
+> set.seed(12345)
+> factors = letters[1:4]
+> circos.par("canvas.xlim" = c(-2, 2), "canvas.ylim" = c(-2, 2))
+> circos.initialize(facotrs = factors, xlim = c(0, 1))
+> circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
++     circos.points(1:20/20, 1:20/20)
++ })
+> circos.lines(c(1/20, 0.5), c(1/20,1.5), sector.index = "d")
+> circos.text(0.5, 1.5, "mark", sector.index = "d", adj = c(0.5, 0))
+>
+> circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
++     circos.points(1:20/20, 1:20/20)
++ })
+> circos.rect(-0.1, -0.1, 1.1, 2.1, col = "#FF0000D0")
+>
+> circos.clear()
+\end{Sinput}
+\end{Schunk}
+
+<<label=figoutside, include=FALSE, echo=FALSE>>=
+library(circlize)
+set.seed(12345)
+factors = letters[1:4]
+circos.par("canvas.xlim" = c(-2, 2), "canvas.ylim" = c(-2, 2))
+circos.initialize(facotrs = factors, xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
+	circos.points(1:20/20, 1:20/20)
+})
+circos.lines(c(1/20, 0.5), c(1/20,1.5), sector.index = "d")
+circos.text(0.5, 1.5, "mark", sector.index = "d", adj = c(0.5, 0))
+
+circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
+	circos.points(1:20/20, 1:20/20)
+})
+circos.rect(-0.1, -0.1, 1.1, 2.1, col = "#FF0000D0")
+
+circos.clear()
+@
+
+\begin{figure}
+\begin{center}
+<<label=figoutside, fig = TRUE, echo = FALSE>>=
+<<figoutside>>
+@
+\end{center}
+\caption{Drawing outside the cell}
+\label{fig:outside}
+\end{figure}
+
 \end{document}

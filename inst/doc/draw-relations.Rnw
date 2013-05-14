@@ -13,13 +13,15 @@
 \author{Zuguang Gu\\ German Cancer Research Center,\\ Heidelberg, Germany}
 
 \usepackage{Sweave}
+\usepackage{hyperref}
 
 \begin{document}
 
 \maketitle 
 
 One feature of circos layout is the link (or connector) to represent relations
-between elements. Here we show how to represent a correlation matrix.
+between elements (\url{http://circos.ca/intro/tabular_visualization/}). 
+Here we show how to represent a correlation matrix.
 
 First, we need a correlation matrix.
 
@@ -41,7 +43,7 @@ Then the range for each element, which is the summation of correlations with oth
 \end{Sinput}
 \end{Schunk}
 
-Initialize the layout and name for element around each sector.
+Initialize the layout and add names for elements around each sector.
 
 \begin{Schunk}
 \begin{Sinput}

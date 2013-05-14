@@ -99,8 +99,8 @@ through the whole track. Finally, draw two texts in a certain cell.
 + })
 > circos.trackPoints(a$factor, a$x, a$y, col = col,
 +     pch = 16, cex = 0.5)
-> circos.text(-1,0.5, "left", sector.index = "a")
-> circos.text(1,0.5, "right", sector.index = "a")
+> circos.text(-1, 0.5, "left", sector.index = "a")
+> circos.text(1, 0.5, "right", sector.index = "a")
 \end{Sinput}
 \end{Schunk}
 
@@ -885,7 +885,7 @@ high level function accroding to the source code of {\tt circos.trackHist}.
 In figure 13, the first track is histograms in which all the ylim are same.
 The second track is histograms in which {\tt force.ylim} is {\tt FALSE}.
 The third and the fourth tracks are density distributions in which ylims
-are forced same to different.
+are forced same or different.
 
 
 <<label=fighist, include=FALSE, echo=FALSE>>=

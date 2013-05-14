@@ -88,9 +88,9 @@ order of elements in {\tt chromosome}.
 \begin{Sinput}
 > xlim = matrix(nrow = 0, ncol = 2)
 > for(chr in chromosome) {
->     d2 = d[d[[1]] == chr, ]
->     xlim = rbind(xlim,c(min(d2[[2]]), max(d2[[3]])))
-> }
++     d2 = d[d[[1]] == chr, ]
++     xlim = rbind(xlim,c(min(d2[[2]]), max(d2[[3]])))
++ }
 \end{Sinput}
 \end{Schunk}
 
@@ -264,7 +264,7 @@ circos layout is really subjective (such the position and colors of the ideogram
 are going to be plotted), users can draw their style of ideogram according
 the above example codes.
 
-Finally, a more beautiful genomic graph is figure 2 and figure 3.
+Finally, more beautiful genomic graphs are figure 2 and figure 3.
 
 
 <<label=figgenomic, include=FALSE, echo=FALSE>>=

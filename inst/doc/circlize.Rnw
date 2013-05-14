@@ -931,13 +931,13 @@ the traditional way.
 > circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
 +     circos.points(1:20/20, 1:20/20)
 + })
-> circos.lines(c(1/20, 0.5), c(1/20, 2), sector.index = "d")
-> circos.text(0.5, 1.5, "mark", sector.index = "d", adj = c(0.5, 0))
+> circos.lines(c(1/20, 0.5), c(1/20, 2), sector.index = "d", straight = TRUE)
+> circos.text(0.5, 2, "mark", sector.index = "d", adj = c(0.5, 0))
 >
 > circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
 +     circos.points(1:20/20, 1:20/20)
 + })
-> circos.rect(-0.2, -0.2, 1.1, 2.5, col = "#FF000040", border = NA)
+> circos.rect(-0.2, -0.2, 1.2, 2.5, col = "#FF000040", border = NA)
 >
 > text(0, 0, "this is\nthe center", cex = 1.5)
 > legend("bottomleft", pch = 1, legend = "point")
@@ -956,13 +956,13 @@ circos.initialize(factors = factors, xlim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
 	circos.points(1:20/20, 1:20/20)
 })
-circos.lines(c(1/20, 0.5), c(1/20,2), sector.index = "d")
-circos.text(0.5, 1.5, "mark", sector.index = "d", adj = c(0.5, 0))
+circos.lines(c(1/20, 0.5), c(1/20,2), sector.index = "d", straight = TRUE)
+circos.text(0.5, 2, "mark", sector.index = "d", adj = c(0.5, 0))
 
 circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
 	circos.points(1:20/20, 1:20/20)
 })
-circos.rect(-0.2, -0.2, 1.1, 2.5, col = "#FF000040", border = NA)
+circos.rect(-0.2, -0.2, 1.2, 2.5, col = "#FF000040", border = NA)
 text(0, 0, "this is\nthe center", cex = 1.5)
 legend("bottomleft", pch = 1, legend = "point")
 circos.clear()

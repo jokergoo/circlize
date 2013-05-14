@@ -78,6 +78,8 @@ x-values, and y-values.
 
 Initialize the layout. In this step, the function allocates sectors along
 the unit circle according to ranges of x-values in different categories.
+Here we only need x-values because all cells in a sector share the same
+x-ranges.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -88,8 +90,11 @@ the unit circle according to ranges of x-values in different categories.
 \end{Sinput}
 \end{Schunk}
 
-Draw the first track. Add axis by {\tt panel.fun} argument. Then draw points
-through the whole track. Finally, draw two texts in a certain cell.
+Draw the first track. All the tracks should be created by {\tt circos.trackPlotRegion}, then
+those low level function can be applied. Here we should specify the y-values either by {\tt y}
+or {\tt ylim} argument. The axis for each cell is drawn by {\tt panel.fun} argument. The {\tt panel.fun}
+is actually executed after the creation of the plotting region for a cell. Then draw points
+through the whole track by {\tt circos.trackPoints}. Finally, add two texts in a certain cell.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -268,6 +273,33 @@ arrows(0, 1.5, 0, 1.07, code = 2)
 \label{fig:transformation}
 \end{figure}
 
+\section{Rules to draw the circos layout}
+The rules for drawing the circos layout is simple.
+
+\begin{enumerate}
+  \item Initialize the layout using {\tt circos.initialize}. There should be a factor and a x-range.
+  \item Create plotting regions for the next track, and apply plottings. There
+        are three ways to do the plotting job.
+		\begin{enumerate}
+		    \item After the creation of the track. use function like {\tt circos.points},
+			      {\tt circos.lines}, ... to draw graphs cell by cell. It allways involves
+				  a {\tt for} loop.
+			\item Use {\tt circis.trackPoints}, {\tt circos.trackLines}, ... to draw same style
+			      of graphs through cells simultaneously. However, it is not recommended because
+				  it would make you a little confused.
+			\item Use {\tt panel.fun} argument in {\tt circos.trackPlotRegion} to draw
+			      graphs immediately after the creation of certain cell.
+		\end{enumerate}
+		Plotting regions for cells that have been created can be updated by {\tt circos.updatePlotRegion}.
+		{\tt circos.updatePlotRegion} will erase every that you have already plotted in the plotting region of the cell.
+  \item Call {\tt circos.clear} to do cleanings.
+\end{enumerate}
+
+There is a internal variable keep tracing of the current sector and track when applying {\tt circos.trackPlotRegion} and {\tt circos.updatePlotRegion}.
+So although functions like {\tt circos.points}, {\tt circos.lines} need to specify the index for sector and track,
+the values for sector index and the track index, by default, are taken as the current calculated ones. As a result,
+if you draw points, lines, text, ... just after the creation of the track or cell, you do not need to set the sector
+index and the track index explicitly and it is just drawn in the most nearly created cell.
 
 \section{Coordinate transformation}
 There is a user coordinate in which the range for x-axis and y-axis is the range of data,
@@ -485,6 +517,13 @@ Parameters for drawing lines by {\tt circos.lines} are similar to {\tt lines} fu
 as illustrated in figure 6. One additional feature is that the areas under lines can be 
 specified by {\tt area} argument. Also the base line for the area can be set by {\tt area.baseline}.
 
+Straight lines will be transformed to curves when mapping to the circos layout. Normally, 
+curves can be approximated by a series of segmentation of straight lines. With more segmentations,
+there would be better approximations, but with larger size if you generate the graph as pdf format, especially
+if you want to huge genomic data. So, in this package, the number of the segmentation can be controlled by {\tt circos.par("unit.circoe.segments")}.
+The length of minimal segment is the length of circumference of the unit circle divided by 
+{\tt circos.par(unit.circoe.segments)}. If you do not so such curve-transformations (such as some
+radical lines), you can set {\tt straight} argument to {\tt TRUE}. 
 
 <<label=figtext, include=FALSE, echo=FALSE>>=
 library(circlize)
@@ -550,7 +589,7 @@ circos.clear()
 \end{figure}
 
 \section{Axis}
-Because there may be no space to draw y-axis, only x-axis for each cell is supported, as illustrated in figure 8.
+Because there may be no space to draw y-axis, only x-axis for each cell is supported by {\tt circos.axis}, as illustrated in figure 8.
 A lot of styles for axis can be set such as the position and length of major ticks, the number of minor ticks,
 the position and direction of the axis labels and the position of the x-axis.
 
@@ -694,10 +733,10 @@ lines(c(0, sqrt(3)/4/2)-0.01, c(0, -3/4/2)-0.01, lwd = 4, col = "blue")
 
 
 \section{Links}
-Links can be drawn from points and intervals (figure 9). If both ends are points, then the link is represented
+Links can be drawn by {\tt circos.link} from points and intervals (figure 9). If both ends are points, then the link is represented
 as a line. If one of the ends is an interval, the link would be a belt. The link is in fact a quadratic curve.
 The height of the link can be controlled by {\tt top.ratio} argument in {\tt circos.link} which is the ratio between the length of blue line and 
-the red line (figure 10). Links do not hold any track.
+the red line (figure 10). Links do not hold any position of track.
 
 \section{Draw part of the circos layout}
 {\tt canvas.xlim} and {\tt canvas.ylim} in {\tt circos.par} is useful to draw only part of circle. Here
@@ -880,8 +919,9 @@ circos.clear()
 With those low level function such as {\tt circos.lines}, {\tt circos.lines},
 more high level functions can be easily written. The package provides a high
 level function {\tt circos.trackHist} which draws the histogram or the density
-distribution of data (figure 14). So users would know how to implement those
-high level function accroding to the source code of {\tt circos.trackHist}.
+distribution of data (figure 14). So users would know how to implement other
+high level function to support graphs such as barplot, heatmap, et al. accroding to the source code of {\tt circos.trackHist}.
+
 In figure 13, the first track is histograms in which all the ylim are same.
 The second track is histograms in which {\tt force.ylim} is {\tt FALSE}.
 The third and the fourth tracks are density distributions in which ylims
@@ -918,7 +958,7 @@ Sometimes it is very useful to draw something outside the plotting region of cel
 example to illustrate such circumstance (figure 15). The text and the rectangle are all drawn outside the cell.
 
 Since the finnal graph is drawn in the ordinary canvas plotting region, we can add additional graphs through
-the traditional way.
+the traditional way. You can also see how {\tt text} and {\tt legend} work in the following example code.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -931,16 +971,16 @@ the traditional way.
 > circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
 +     circos.points(1:20/20, 1:20/20)
 + })
-> circos.lines(c(1/20, 0.5), c(1/20, 2), sector.index = "d", straight = TRUE)
-> circos.text(0.5, 2, "mark", sector.index = "d", adj = c(0.5, 0))
+> circos.lines(c(1/20, 0.5), c(1/20, 3), sector.index = "d", straight = TRUE)
+> circos.text(0.5, 3, "mark", sector.index = "d", adj = c(0.5, 0))
 >
 > circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
 +     circos.points(1:20/20, 1:20/20)
 + })
-> circos.rect(-0.2, -0.2, 1.2, 2.5, col = "#FF000040", border = NA)
+> circos.rect(-0.2, -1, 1.2, 3, col = "#FF000040", border = NA)
 >
 > text(0, 0, "this is\nthe center", cex = 1.5)
-> legend("bottomleft", pch = 1, legend = "point")
+> legend("bottomleft", pch = 1, legend = "this is the legend")
 >
 > circos.clear()
 \end{Sinput}
@@ -956,15 +996,15 @@ circos.initialize(factors = factors, xlim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
 	circos.points(1:20/20, 1:20/20)
 })
-circos.lines(c(1/20, 0.5), c(1/20,2), sector.index = "d", straight = TRUE)
-circos.text(0.5, 2, "mark", sector.index = "d", adj = c(0.5, 0))
+circos.lines(c(1/20, 0.5), c(1/20, 3), sector.index = "d", straight = TRUE)
+circos.text(0.5, 3, "mark", sector.index = "d", adj = c(0.5, 0))
 
 circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
 	circos.points(1:20/20, 1:20/20)
 })
-circos.rect(-0.2, -0.2, 1.2, 2.5, col = "#FF000040", border = NA)
+circos.rect(-0.2, -1, 1.2, 3, col = "#FF000040", border = NA)
 text(0, 0, "this is\nthe center", cex = 1.5)
-legend("bottomleft", pch = 1, legend = "point")
+legend("bottomleft", pch = 1, legend = "this is the legend")
 circos.clear()
 @
 

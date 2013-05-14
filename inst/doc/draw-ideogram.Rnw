@@ -221,7 +221,7 @@ as a link in the circos layout.
 \end{Schunk}
 
 If position 88888888 in chromosome 6 is important and we want to mark it, we can use following codes. First create
-a new track. Here there no specifying of {\tt factors}, thus the new track would create plotting regions for all available
+a new track. Here there is no specifying of {\tt factors}, thus the new track would create plotting regions for all available
 sectors.
 
 \begin{Schunk}
@@ -260,11 +260,12 @@ The finnal figure looks like figure 1.
 
 In the {\tt circlize} package, there is already a {\tt circos.initializeWithIdeogram}
 function to initialize the circos layout with an ideogram. However, how to embed the ideogram into the
-circos layout is really subjective (such the position and colors of the ideogram, or maybe only subset of chromosomes
-are going to be plotted), users can draw their style of ideogram according
+circos layout is really subjective, such the position and colors of the ideogram, 
+or maybe only subset of chromosomes are going to be plotted, or maybe there are some zoomings for certain chromosomes
+(see \url{http://circos.ca/intro/features/}. 'GLOBAL AND LOCAL ZOOMING' section). Users can draw their style of ideogram according
 the above example codes.
 
-Finally, more beautiful genomic graphs are figure 2 and figure 3.
+Finally, more beautiful and informative genomic graphs are figure 2 and figure 3.
 
 
 <<label=figgenomic, include=FALSE, echo=FALSE>>=

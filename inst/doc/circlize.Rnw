@@ -12,13 +12,14 @@
 \author{Zuguang Gu\\ German Cancer Research Center,\\ Heidelberg, Germany}
 
 \usepackage{Sweave}
+\usepackage{hyperref}
 
 \begin{document}
 
 \maketitle 
 
 \section{Introduction}
-Circos layout ({\url http://circos.ca}) is very useful to represent complicated informations, especially for genomic data.
+Circos layout (\url{http://circos.ca}) is very useful to represent complicated informations, especially for genomic data.
 The {\tt circlize} package implements the circos layout in R. The package allocates
 and illustrates data in a certain category into a cell inside a circle and makes you
 felling that you are plotting figures in a normal plotting coordinate.

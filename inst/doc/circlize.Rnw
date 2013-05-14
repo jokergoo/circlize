@@ -920,19 +920,21 @@ example to illustrate such circumstance (figure 15). The text and the rectangle 
 \begin{Schunk}
 \begin{Sinput}
 > set.seed(12345)
+> par(mar = c(1, 1, 1, 1))
 > factors = letters[1:4]
-> circos.par("canvas.xlim" = c(-2, 2), "canvas.ylim" = c(-2, 2))
-> circos.initialize(facotrs = factors, xlim = c(0, 1))
+> circos.par("canvas.xlim" = c(-1.5, 1.5), "canvas.ylim" = c(-1.5, 1.5),
++     "gap.degree" = 10)
+> circos.initialize(factors = factors, xlim = c(0, 1))
 > circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
 +     circos.points(1:20/20, 1:20/20)
 + })
-> circos.lines(c(1/20, 0.5), c(1/20,1.5), sector.index = "d")
+> circos.lines(c(1/20, 0.5), c(1/20, 2), sector.index = "d")
 > circos.text(0.5, 1.5, "mark", sector.index = "d", adj = c(0.5, 0))
 >
 > circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
 +     circos.points(1:20/20, 1:20/20)
 + })
-> circos.rect(-0.1, -0.1, 1.1, 2.1, col = "#FF0000D0")
+> circos.rect(-0.2, -0.2, 1.1, 2.5, col = "#FF000040", border = NA)
 >
 > circos.clear()
 \end{Sinput}
@@ -941,19 +943,20 @@ example to illustrate such circumstance (figure 15). The text and the rectangle 
 <<label=figoutside, include=FALSE, echo=FALSE>>=
 library(circlize)
 set.seed(12345)
+par(mar = c(1, 1, 1, 1))
 factors = letters[1:4]
-circos.par("canvas.xlim" = c(-2, 2), "canvas.ylim" = c(-2, 2))
-circos.initialize(facotrs = factors, xlim = c(0, 1))
+circos.par("canvas.xlim" = c(-1.5, 1.5), "canvas.ylim" = c(-1.5, 1.5), "gap.degree" = 10)
+circos.initialize(factors = factors, xlim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
 	circos.points(1:20/20, 1:20/20)
 })
-circos.lines(c(1/20, 0.5), c(1/20,1.5), sector.index = "d")
+circos.lines(c(1/20, 0.5), c(1/20,2), sector.index = "d")
 circos.text(0.5, 1.5, "mark", sector.index = "d", adj = c(0.5, 0))
 
 circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
 	circos.points(1:20/20, 1:20/20)
 })
-circos.rect(-0.1, -0.1, 1.1, 2.1, col = "#FF0000D0")
+circos.rect(-0.2, -0.2, 1.1, 2.5, col = "#FF000040", border = NA)
 
 circos.clear()
 @

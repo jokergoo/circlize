@@ -273,10 +273,10 @@ arrows(0, 1.5, 0, 1.07, code = 2)
 There is a user coordinate in which the range for x-axis and y-axis is the range of data,
 a polar coordinate to allocates different cells and a the canvas coordinate which really
 draw the figures (figure 2). The package would first transform the user
-coordinate to a polar coordinate and finally transformed into the canvas coordinate.
+coordinate to a polar coordinate and finally transform into the canvas coordinate.
 
 The finnal canvas coordinate is in fact an ordinary plotting in R plotting system with
-x-range from 0 to 1 and y-range from 0 to 1 by default.
+x-range from -1 to 1 and y-range from -1 to 1 by defaulte.
 
 {\bf It should be noted that the circos layout is always drawn inside the circle which has radius of 1 (unit
 circle), from outside to inside. }

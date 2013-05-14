@@ -913,9 +913,12 @@ circos.clear()
 \label{fig:hist}
 \end{figure}
 
-\section{Drawing outside the potting region}
+\section{Others}
 Sometimes it is very useful to draw something outside the plotting region of cell. The following is a simple
 example to illustrate such circumstance (figure 15). The text and the rectangle are all drawn outside the cell.
+
+Since the finnal graph is drawn in the ordinary canvas plotting region, we can add additional graphs through
+the traditional way.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -935,6 +938,9 @@ example to illustrate such circumstance (figure 15). The text and the rectangle 
 +     circos.points(1:20/20, 1:20/20)
 + })
 > circos.rect(-0.2, -0.2, 1.1, 2.5, col = "#FF000040", border = NA)
+>
+> text(0, 0, "this is\nthe center", cex = 1.5)
+> legend("bottomleft", pch = 1, legend = "point")
 >
 > circos.clear()
 \end{Sinput}
@@ -957,7 +963,8 @@ circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
 	circos.points(1:20/20, 1:20/20)
 })
 circos.rect(-0.2, -0.2, 1.1, 2.5, col = "#FF000040", border = NA)
-
+text(0, 0, "this is\nthe center", cex = 1.5)
+legend("bottomleft", pch = 1, legend = "point")
 circos.clear()
 @
 

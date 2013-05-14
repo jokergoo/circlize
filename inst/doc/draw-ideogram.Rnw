@@ -315,7 +315,7 @@ circos.trackPlotRegion(ylim = c(-1, 1), bg.border = NA, track.height = 0.1, pane
 circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.05, panel.fun = function(x, y) {
 	xlim = get.cell.meta.data("xlim")
 	xrange = get.cell.meta.data("xrange")
-	x = seq(xlim[1], xlim[2], by = 1000000)
+	x = seq(xlim[1], xlim[2], by = 10000000)
 	for(i in seq_along(x)) {
 		if(i == 1) {
 			next

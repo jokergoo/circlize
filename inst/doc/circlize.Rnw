@@ -800,7 +800,7 @@ circos.clear()
 \end{figure}
 
 The second example is to draw to seperated circos layouts in which every
-circos only contains a half (figure 12).
+circos only contains a half (figure 13).
 
 \begin{Schunk}
 \begin{Sinput}
@@ -872,7 +872,7 @@ circos.clear()
 With those low level function such as {\tt circos.lines}, {\tt circos.lines},
 more high level functions can be easily written. The package provides a high
 level function {\tt circos.trackHist} which draws the histogram or the density
-distribution of data (figure 13). So users would know how to implement those
+distribution of data (figure 14). So users would know how to implement those
 high level function accroding to the source code of {\tt circos.trackHist}.
 In figure 13, the first track is histograms in which all the ylim are same.
 The second track is histograms in which {\tt force.ylim} is {\tt FALSE}.

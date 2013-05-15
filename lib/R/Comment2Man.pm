@@ -102,7 +102,7 @@ sub parse {
 			}
 			($section_name, $section_value) = combine_sections($section_name, $section_value, $old_section_name, $old_section_value);
 		}
-		output($items[$i]->{_function_name}, $section_name, $section_value);
+		#output($items[$i]->{_function_name}, $section_name, $section_value);
 		if($items[$i]->{_function_args} =~/^data\(/ or $items[$i]->{_function_args} =~/^package\(/) {
 		
 		} else {
@@ -123,21 +123,19 @@ sub combine_sections {
 	
 	my $tr = R::Comment2Man::Align::align_score_matrix($section_name, $old_section_name);
 	my ($align1, $align2) = R::Comment2Man::Align::align_traceback($section_name, $old_section_name, $tr);
+	
 	my $name;
 	my $value;
-	my $i1 = 0;
-	my $i2 = 0;
 	for(my $i = 0; $i < scalar(@$align1); $i ++) {
 		if($align1->[$i]) {
-			$name->[$i] = $section_name->[$i1];
-			$value->[$i] = $section_value->[$i1];
-			$i1 ++;
+			$name->[$i] = $section_name->[$i];
+			$value->[$i] = $section_value->[$i];
 		} elsif($align2->[$i]) {
-			$name->[$i] = $old_section_name->[$i2];
-			$value->[$i] = $old_section_value->[$i2];
-			$i2 ++;
+			$name->[$i] = $old_section_name->[$i];
+			$value->[$i] = $old_section_value->[$i];
 		}
 	}
+	
 	return($name, $value);
 }
 

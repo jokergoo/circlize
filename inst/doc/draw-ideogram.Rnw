@@ -291,8 +291,12 @@ circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.2, panel
 })
 
 
-circos.trackPlotRegion(ylim = c(-1, 1), bg.border = NA, track.height = 0.1, panel.fun = function(x, y) {
+circos.trackPlotRegion(ylim = c(-1, 1), bg.border = NA, bg.col ="#EEEEEE", track.height = 0.1, panel.fun = function(x, y) {
 	xlim = get.cell.meta.data("xlim")
+	ylim = get.cell.meta.data("ylim")
+	for(i in -2:2) {
+		circos.lines(xlim, c(i, i)/4, col = "white", lwd = 0.5, lty = 2)
+	}
 	xrange = get.cell.meta.data("xrange")
 	x = NULL
 	y = NULL
@@ -354,6 +358,9 @@ for(i in 1:50) {
 	
 	circos.link(chr[1], x1, chr[2], x2, col = sample(c('#9E0142', '#D53E4F', '#F46D43', '#FDAE61', '#FEE08B', '#FFFFBF', '#E6F598', '#ABDDA4', '#66C2A5', '#3288BD', '#5E4FA2'), 1))
 }
+
+xlim.chr1 = get.cell.meta.data("xlim", sector.index = "chr1", track.index = 1)
+circos.rect(xlim.chr1[1], -5.5, xlim.chr1[2], 2, col = "#FF000020", border = NA, sector.index = "chr1", track.index = 1)
 
 @
 

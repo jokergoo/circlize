@@ -130,7 +130,7 @@ ideogram cell by cell.
 \end{Schunk}
 
 In the above codes, it is not necessary to set the {\tt factors} argument. If {\tt factors}
-is not set, {\circos.trackPlotRegion} will create plotting regions for all available sectors
+is not set, {\tt circos.trackPlotRegion} will create plotting regions for all available sectors
 which have already been initialized automatically.
 
 Now in each cell, we draw the ideogram for each chromosome. Code is simple, you

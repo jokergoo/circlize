@@ -95,31 +95,14 @@ circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA,
     })
 
 
-# by default, draw a filled circle
-draw.sector = function (x, y, start=0, end=360, radius, col="black", border = "black") {
-    d = NULL
-    for (i in 1:500) {
-        d = rbind(d, c(start + abs(end - start)/500*i, radius))
-    }
-    
-    m = polar2Cartesian(d)
-	if( (end - start) >= 360 || (end - start) %% 360 == 0) {
-		
-	} else {
-		m = rbind(m, c(0, 0))
-	}
-    m[, 1] = m[, 1] + x
-    m[, 2] = m[, 2] + y
-    polygon(m, col = col, border = border)
-}
 
 # draw taiji
-draw.sector(x = 0, y = 0, start = -90, end = 90, radius = 0.4, col = "black", border = "black")
-draw.sector(x = 0, y = 0, start = 90, end = 270, radius = 0.4, col = "white", border = "black")
-draw.sector(x = 0, y = 0.2, start = 0, end = 360, radius = 0.2, col = "white", border = "white")
-draw.sector(x = 0, y = -0.2, start = 0, end = 360, radius = 0.2, col = "black", border = "black")
-draw.sector(x = 0, y = 0.2, start = 0, end = 360, radius = 0.05, col = "black", border = "black")
-draw.sector(x = 0, y = -0.2, start = 0, end = 360, radius = 0.05, col = "white", border = "white")
+draw.sector(center = c(0, 0), start = -90, end = 90, rou1 = 0.4, col = "black", border = "black")
+draw.sector(center = c(0, 0), start = 90, end = 270, rou1 = 0.4, col = "white", border = "black")
+draw.sector(center = c(0, 0.2), start = 0, end = 360, rou1 = 0.2, col = "white", border = "white")
+draw.sector(center = c(0, -0.2), start = 0, end = 360, rou1 = 0.2, col = "black", border = "black")
+draw.sector(center = c(0, 0.2), start = 0, end = 360, rou1 = 0.05, col = "black", border = "black")
+draw.sector(center = c(0, -0.2), start = 0, end = 360, rou1 = 0.05, col = "white", border = "white")
 
 circos.clear()
 
@@ -139,8 +122,8 @@ circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.col = rep(c("#E41A1
 circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.col = rep(c("black", "white"), 10), bg.border = "#EEEEEE", track.height = 0.275)
 circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.col = rep(c("#E41A1C", "#4DAF4A"), 10), bg.border = "#EEEEEE", track.height = 0.05)
 circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.col = rep(c("black", "white"), 10), bg.border = "#EEEEEE", track.height = 0.375)
-draw.sector(x = 0, y = 0, start = 0, end = 360, radius = 0.1, col = "#4DAF4A", border = "#EEEEEE")
-draw.sector(x = 0, y = 0, start = 0, end = 360, radius = 0.05, col = "#E41A1C", border = "#EEEEEE")
+draw.sector(center = c(0, 0), start = 0, end = 360, rou1 = 0.1, col = "#4DAF4A", border = "#EEEEEE")
+draw.sector(center = c(0, 0), start = 0, end = 360, rou1 = 0.05, col = "#E41A1C", border = "#EEEEEE")
 
 circos.clear()
 
@@ -296,9 +279,9 @@ x = seq(0, 0.2, length = 1000)
 y = sqrt(0.2^2 - x^2)
 lines(x, y, lty = 3, lwd = 2)
 
-draw.sector(x = 0, y = 0, start = 20, end = 23, radius = 1, col = "#4DAF4A")
-draw.sector(x = 0, y = 0, start = 65, end = 68, radius = 1, col = "#4DAF4A")
-draw.sector(x = 0, y = 0, start = 0, end = 90, radius = 0.2, col = "#FFFFFF", border = NA)
+draw.sector(center = c(0, 0), start = 20, end = 23, rou1 = 1, col = "#4DAF4A")
+draw.sector(center = c(0, 0), start = 65, end = 68, rou1 = 1, col = "#4DAF4A")
+draw.sector(center = c(0, 0), start = 0, end = 90, rou1 = 0.2, col = "#FFFFFF", border = NA)
 
 circos.text(5, 5, "plotting region", sector.index = "a", track.index = 2)
 circos.text(5, 10.5, "cell.padding[3]", sector.index = "a", track.index = 2)
@@ -327,7 +310,7 @@ circos.clear()
 
 ##########################################################
 plot(c(-1, 1), c(-1, 1), axes = FALSE, ann = FALSE ,type = "n")
-draw.sector(x = 0, y = 0, start = 0, end = 360, radius = 01, col = "white", border = "black")
+draw.sector(center = c(0, 0), start = 0, end = 360, rou1 = 01, col = "white", border = "black")
 d= rotate.parabola(theta1 = 270, theta2 = 330, rou1 = 1, rou.ratio = 0.5)
 lines(rbind(d, d[1, ]))
 lines(c(cos(300/180*pi), cos(120/180*pi)), c(sin(300/180*pi), sin(120/180*pi)))

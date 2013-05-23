@@ -387,8 +387,12 @@ show.index = function() {
 # -ylim                 Minimal and maximal values on the y-axis
 # -xrange               Range of the xlim
 # -yrange               Range of the ylim
+# -cell.xlim            Minimal and maximal values on the x-axis extended by cell paddings
+# -cell.ylim            Minimal and maximal values on the y-axis extended by cell paddings
 # -xplot                Right and left edge degree for the plotting region in the canvas
 # -yplot                Bottum and top value for the plotting region in the canvas
+# -track.margin         Margin for the cell
+# -cell.padding         Padding for the cell
 #
 # The function would be useful when you use ``panel.fun`` in `circos.initialize` to
 # get the information of the current cell.
@@ -430,6 +434,10 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 		ylim[2] = (cell.padding[3]*current.cell.data$ylim[1] + (1 + cell.padding[1])*current.cell.data$ylim[2]) /
 		          (1 + cell.padding[1] + cell.padding[3])
 		return(ylim[2] - ylim[1])
+	} else if(name == "cell.xlim") {
+		return(current.cell.data$xlim)
+	} else if(name == "cell.ylim") {
+		return(current.cell.data$ylim)
 	} else if(name == "sector.numeric.index") {
 		return(which(get.all.sector.index() == sector.index))
 	} else if(name == "sector.index") {
@@ -437,9 +445,13 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 	} else if(name == "track.index") {
 		return(track.index)
 	} else if(name == "xplot") {
-		return(current.sector.data["start.degree", "end.degree"])
+		return(current.sector.data[c("start.degree", "end.degree")])
 	} else if(name == "yplot") {
 		return(c(current.cell.data$track.start - current.cell.data$track.height, current.cell.data$track.start))
+	} else if(name == "track.margin") {
+		return(current.cell.data$track.margin)
+	} else if(name == "cell.padding") {
+		return(current.cell.data$cell.padding)
 	} else {
 		stop("Wrong name.\n")
 	}

@@ -255,7 +255,9 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("defau
         xlim = xlim,
         ylim = ylim,
         track.start = track.start,
-        track.height = track.height)
+        track.height = track.height,
+		track.margin = circos.par("track.margin"),
+		cell.padding = circos.par("cell.padding"))
     
     set.current.sector.index(sector.index)
     
@@ -1212,10 +1214,9 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 		xlim = rbind(xlim,c(min(d2[[2]]), max(d2[[3]])))
 	}
 	
-	circos.clear()
 	par(mar = c(1, 1, 1, 1), lwd = 0.5)
 	o.cell.padding = circos.par("cell.padding")
-	circos.par("cell.padding" = c(0, 0, 0, 0))
+	circos.par(cell.padding = c(0, 0, 0, 0), points.overflow.warning = FALSE)
 	circos.initialize(factor(chromosome, levels = chromosome), xlim = xlim)
 	circos.trackPlotRegion(factors = factor(chromosome, levels = chromosome), ylim = c(0, 1), bg.border = NA, track.height = track.height)
 	for(chr in chromosome) {
@@ -1239,6 +1240,94 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 		cell.xlim = get.cell.meta.data("xlim", sector.index = chr)
 		circos.text(cell.xlim[1] + mean(cell.xlim), 1.2, labels = gsub("chr", "", chr), sector.index = chr, cex = 0.8)
 	}
-	circos.par("cell.padding" = o.cell.padding)
+	circos.par("cell.padding" = o.cell.padding, points.overflow.warning  = TRUE)
+}
+
+# == title
+# Draw sectors in a circle
+#
+# == param
+# -center         Center of the circle
+# -start.degree   start degree for the sector
+# -end.degree     end degree for the sector
+# -rou1           Radius for one of the arc in the sector
+# -rou2           Radius for the other arc in the sector
+# -col            Filled color
+# -border         Border color
+#
+# == details
+# If the interval between ``start`` and ``end`` (larger or equal to 360 or smaller or equal to -360)
+# it would draw a full circle or ring. If ``rou2`` is set, it would draw part of a ring.
+draw.sector = function(center = c(0, 0), start.degree=0, end.degree=360, rou1 = 1, rou2 = NULL, col=NA, border = "black") {
+
+	if(end.degree < start.degree) {
+		tmp = end.degree
+		end.degree = start.degree
+		start.degree = tmp
+	}
+	
+	if( (end.degree - start.degree) >= 360 || (end.degree - start.degree) <= -360 ) {
+		start.degree = 0
+		end.degree = 360
+	}
+	
+    d1 = NULL
+	l1 = ((end.degree - start.degree))/180*pi*rou1
+	ncut1 = l1/ (2*pi/circos.par("unit.circle.segments"))
+    ncut1 = floor(ncut1)
+	ncut1 = ifelse(ncut1 < 2, 2, ncut1)
+		
+    for (i in c(0, seq_len(ncut1))) {
+        d1 = rbind(d1, c(start.degree + (end.degree - start.degree)/ncut1*i, rou1))
+    }
+	
+	d2 = NULL
+	if(!is.null(rou2)) {
+		l2 = (end.degree - start.degree)/180*pi*rou2
+		ncut2 = l2/ (2*pi/circos.par("unit.circle.segments"))
+		ncut2 = floor(ncut2)
+		ncut2 = ifelse(ncut2 < 2, 2, ncut2)
+	
+		for (i in c(0, seq_len(ncut2))) {
+			d2 = rbind(d2, c(start.degree + (end.degree - start.degree)/ncut2*i, rou2))
+		}
+		d2 = d2[nrow(d2):1, ]
+	}
+
+	if(is.null(rou2)) {
+		m1 = polar2Cartesian(d1)
+		if(end.degree - start.degree == 360) {
+			m = m1
+		} else {
+			m = rbind(m1, c(0, 0))
+		}
+		
+		m[, 1] = m[, 1] + center[1]
+		m[, 2] = m[, 2] + center[2]
+		polygon(m, col = col, border = border)
+	} else {
+		m1 = polar2Cartesian(d1)
+		m2 = polar2Cartesian(d2)
+		
+		if(end.degree - start.degree == 360) {
+			m = rbind(m1, m2)
+			
+			m[, 1] = m[, 1] + center[1]
+			m[, 2] = m[, 2] + center[2]
+			polygon(m, col = col, border = col)
+			lines(m1[, 1]+center[1], m1[, 2]+center[2], col = border)
+			lines(m2[, 1]+center[1], m2[, 2]+center[2], col = border)
+			
+		} else {
+			m = rbind(m1, m2)
+			
+			m[, 1] = m[, 1] + center[1]
+			m[, 2] = m[, 2] + center[2]
+			polygon(m, col = col, border = border)
+		}
+		
+	} 
+	
+    return(invisible(NULL))
 }
 

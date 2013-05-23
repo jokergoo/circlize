@@ -10,7 +10,7 @@
 
 \title{How to draw relations}
 
-\author{Zuguang Gu\\ German Cancer Research Center,\\ Heidelberg, Germany}
+\author{Zuguang Gu {\tt <z.gu@dkfz.de>}\\ German Cancer Research Center,\\ Heidelberg, Germany}
 
 \usepackage{Sweave}
 \usepackage{hyperref}
@@ -20,8 +20,9 @@
 \maketitle 
 
 One feature of circos layout is the link (or connector) to represent relations
-between elements (\url{http://circos.ca/intro/tabular_visualization/}). 
-Here we show how to represent a correlation matrix.
+between elements (\url{http://circos.ca/intro/tabular_visualization/}). Normally,
+the relationship can be represented as a matrix in which value in $i^{th}$ row and $j^{th}$ column
+is kind of degree for the relation. In this vignette we show how to represent a correlation matrix.
 
 First, we need a correlation matrix.
 
@@ -43,7 +44,11 @@ Then the range for each element, which is the summation of correlations with oth
 \end{Sinput}
 \end{Schunk}
 
-Initialize the layout and add names for elements around each sector.
+Initialize the layout and add names of elements around each sector. The size of each sector
+is determined by the range for each element. Here we create the first track by {\tt circos.trackPlotRegion}.
+In this track, we only want to draw one rectangle and add the name for the element. This is
+done by {\tt panel.fun} argument to draw the cell as soon as the corresponding cell has
+been created.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -52,7 +57,6 @@ Initialize the layout and add names for elements around each sector.
 >
 > library(circlize)
 > par(mar = c(1, 1, 1, 1))
-> circos.par("cell.padding" = c(0, 0, 0, 0))
 > circos.initialize(factors = factors, xlim = xlim)
 > circos.trackPlotRegion(ylim = c(0, 1), factors = factors,
 +   bg.border = NA, panel.fun = function(x, y) {
@@ -66,8 +70,8 @@ Initialize the layout and add names for elements around each sector.
 \end{Sinput}
 \end{Schunk}
 
-Draw links in which red represents to positive correlation and green
-represents to negative correlation.
+Finnally we use {\tt circos.link} to draw links from elements to elements, in which red represents positive correlation and green
+represents negative correlation.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -81,7 +85,7 @@ represents to negative correlation.
 +             c(sector.sum[i], sector.sum[i] + abs(m2[i, j])),
 +             sector.index2,
 +             c(sector.sum[j], sector.sum[j] + abs(m2[i, j])),
-+             col = ifelse(m2[i, j] > 0, "#E41A1CA0", "#4DAF4AA0"),
++             col = ifelse(m2[i, j] > 0, "#FF0000A0", "#00FF00A0"),
 +             border = "grey")
 +         sector.sum[i] = sector.sum[i] + abs(m2[i, j])
 +         sector.sum[j] = sector.sum[j] + abs(m2[i, j])
@@ -90,7 +94,9 @@ represents to negative correlation.
 \end{Sinput}
 \end{Schunk}
 
-The finnal figure looks like figure 1.
+The finnal figure looks like figure \ref{fig:correlation} (left part) and a more pretty
+figure is on the right part of figure \ref{fig:correlation} in which correlatioins are
+measured by continuous colors.
 
 <<label=figcorrelation, include=FALSE, echo=FALSE>>=
 set.seed(12345)
@@ -102,11 +108,13 @@ factors = rownames(m2)
 
 xlim = cbind(rep(0, n), apply(m2, 2, function(x) sum(abs(x)) - 1))
 
-colors = 1:n
 
 library(circlize)
+
+par(mfrow = c(2, 1))
+colors = 1:n
+
 par(mar = c(1, 1, 1, 1))
-circos.par("start.degree" = 20, "cell.padding" = c(0, 0, 0, 0))
 circos.initialize(factors = factors, xlim = xlim)
 circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA, panel.fun = function(x, y) {
     xlim = get.cell.meta.data("xlim")
@@ -126,7 +134,84 @@ for(i in 2:n) {
                     c(sector.sum[i], sector.sum[i] + abs(m2[i, j])),
                     sector.index2,
                     c(sector.sum[j], sector.sum[j] + abs(m2[i, j])),
-                    col = ifelse(m2[i, j] > 0, "#E41A1CA0", "#4DAF4AA0"), border = "grey")
+                    col = ifelse(m2[i, j] > 0, "#FF0000A0", "#00FF00A0"), border = "grey")
+        sector.sum[i] = sector.sum[i] + abs(m2[i, j])
+        sector.sum[j] = sector.sum[j] + abs(m2[i, j])
+    }
+}
+
+circos.clear()
+
+
+get_color = function(x,
+                     colors = c("green", "black", "red"), # color points
+                     fc = c(-5, 0, 5),                    # data points
+                     gradient = function(x)x) {
+	
+	# change colors represented as strings to RGB space
+	col_section = sapply(colors, function(x) as.vector(col2rgb(x)))
+	col_section = t(col_section)
+	
+	x[x >= max(fc)] = max(fc)
+	x[x <= min(fc)] = min(fc)
+    
+    fc = sign(fc)*gradient(abs(fc))
+    
+    color = character(length(x))
+    for(i in 1:length(x)) {
+		# NA values, grey color
+        if(!is.numeric(x[i])) {
+            color[i] = rgb(128, 128, 128, maxColorValue = 255)
+            next
+        }
+        value = sign(x[i])*(gradient(abs(x[i])))
+		
+		# find which interval the value belongs to 
+		interval = which(fc >= x[i])[1]
+		if(length(interval) == 0) {
+			interval = length(interval)
+		}
+		if(interval == 1) {
+			interval = 2
+		}
+		
+		# linear interpolation
+		col_num = (value - fc[interval])*(col_section[interval, ] - col_section[interval - 1, ]) / (fc[interval] - fc[interval - 1]) + col_section[interval, ]
+        
+        col_num = ifelse(col_num > 255, 255, col_num)
+        col_num = ifelse(col_num < 0, 0, col_num)
+        
+        color[i] = rgb(col_num[1], col_num[2], col_num[3], maxColorValue = 255)
+    }
+    
+    return(color)
+}
+
+
+colors = c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33", "#A65628", "#F781BF", "#999999")
+
+par(mar = c(1, 1, 1, 1))
+circos.initialize(factors = factors, xlim = xlim)
+circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA, panel.fun = function(x, y) {
+    xlim = get.cell.meta.data("xlim")
+    current.sector.index = get.cell.meta.data("sector.index")
+    circos.text(mean(xlim), 0.75, labels = current.sector.index, direction = "horizontal")
+    i = get.cell.meta.data("sector.numeric.index")
+    circos.rect(min(xlim), 0, max(xlim), 0.25, col = colors[i])
+})
+
+rn = rownames(m2)
+sector.sum = numeric(length(rn))
+for(i in 2:n) {
+    for(j in 1:(i-1)) {
+        sector.index1 = rn[i]
+        sector.index2 = rn[j]
+        circos.link(sector.index1,
+                    c(sector.sum[i], sector.sum[i] + abs(m2[i, j])),
+                    sector.index2,
+                    c(sector.sum[j], sector.sum[j] + abs(m2[i, j])),
+                    col = get_color(m2[i, j], colors = c("#1A9641", "#A6D96A", "#FFFFBF", "#FDAE61", "#D7191C"), fc = seq(-1, 1, length=5)), border = "grey",
+					lwd = 0.5)
         sector.sum[i] = sector.sum[i] + abs(m2[i, j])
         sector.sum[j] = sector.sum[j] + abs(m2[i, j])
     }
@@ -137,11 +222,11 @@ circos.clear()
 
 \begin{figure}
 \begin{center}
-<<label=figcorrelation, fig = TRUE, echo = FALSE>>=
+<<label=figcorrelation, fig = TRUE, echo = FALSE, width=4, height=8>>=
 <<figcorrelation>>
 @
 \end{center}
-\caption{Correlation represented in circos layout}
+\caption{Correlations represented in circos layout}
 \label{fig:correlation}
 \end{figure}
 

@@ -1,0 +1,3 @@
+0.0.2
+- add `draw.sector` so it would be more straightforward to highlight sectors
+- add ``track.margin``, ``cell.padding``, ``cell.xlim`` and ``cell.ylim`` in `get.cell.meta.data` function

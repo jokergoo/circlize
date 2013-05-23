@@ -17,5 +17,6 @@ export(
 	circos.axis,
 	circos.link,
 	circos.trackHist,
-	circos.initializeWithIdeogram
+	circos.initializeWithIdeogram,
+	draw.sector
 )

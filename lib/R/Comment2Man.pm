@@ -102,7 +102,7 @@ sub parse {
 			}
 			($section_name, $section_value) = combine_sections($section_name, $section_value, $old_section_name, $old_section_value);
 		}
-		#output($items[$i]->{_function_name}, $section_name, $section_value);
+		output($items[$i]->{_function_name}, $section_name, $section_value);
 		if($items[$i]->{_function_args} =~/^data\(/ or $items[$i]->{_function_args} =~/^package\(/) {
 		
 		} else {

@@ -33,17 +33,3 @@ adj = par("adj"), cex = 1, col = "black", font = par("font"))
 
 
 }
-\examples{
-library(circlize)
-par(mar = c(1, 1, 1, 1))
-factors = letters[1:4]
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.5, panel.fun = function(x, y) {
-	circos.text(5, 9, "default_default", direction = "default")
-	circos.text(0, 5, "vertical_left", direction = "vertical_left")
-	circos.text(10, 5, "vertical_right", direction = "vertical_right")
-	circos.text(5, 5, "horizontal", direction = "horizontal") 
-	circos.text(5, 1, "arc_arc_arc_arc_arc", direction = "arc")
-})
-circos.clear()
-}

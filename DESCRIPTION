@@ -1,7 +1,7 @@
 Package: circlize
 Type: Package
 Title: circos layout in R
-Version: 0.0.1
+Version: 0.0.2
 Date: 2013-05-14
 Author: Zuguang Gu
 Maintainer: Zuguang Gu <z.gu@dkfz.de>

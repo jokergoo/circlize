@@ -7,9 +7,9 @@
 
 \documentclass{article}
 
-\title{A brief introduction of the {\tt circlize} package}
+\title{An introduction of the {\tt circlize} package}
 
-\author{Zuguang Gu\\ German Cancer Research Center,\\ Heidelberg, Germany}
+\author{Zuguang Gu {\tt <z.gu@dkfz.de>}\\ German Cancer Research Center,\\ Heidelberg, Germany}
 
 \usepackage{Sweave}
 \usepackage{hyperref}
@@ -28,24 +28,25 @@ felling that you are plotting figures in a normal plotting coordinate.
 Since most of the figures are composed of simple graphs, such as points, lines, polygon (for filled color) {\it et al},
 so we just need to implement those low level functions to draw figures in circos layout.
 
-Currently there are following functions that can be used for plotting:
+Currently there are following functions that can be used for plotting, they are similar to the functions without {\tt circos.}
+prefix from the traditional graph engine:
 
 \begin{itemize}
-  \item {\tt circos.points}
-  \item {\tt circos.lines}
-  \item {\tt circos.rect}
-  \item {\tt circos.polygon}
-  \item {\tt circos.text}
-  \item {\tt circos.axis}
-  \item {\tt circos.link}, This maybe the unique feature for circos layout to represent relationships between elements.
+  \item {\tt circos.points}: draw points in a cell
+  \item {\tt circos.lines}: draw lines in a cell
+  \item {\tt circos.rect}: draw rectangle in a cell
+  \item {\tt circos.polygon}: draw polygon in a cell
+  \item {\tt circos.text}: draw text in a cell
+  \item {\tt circos.axis}: draw axis in a cell
+  \item {\tt circos.link}: this maybe the unique feature for circos layout to represent relationships between elements.
 \end{itemize}
 
 For drawing points, lines and text through the whole track (among several sectors), the following functions are available:
 
 \begin{itemize}
-  \item {\tt circos.trackPoints}
-  \item {\tt circos.trackLines}
-  \item {\tt circos.trackText}
+  \item {\tt circos.trackPoints}: this can be replaced by {\tt circos.points} through a {\tt for} loop.
+  \item {\tt circos.trackLines}: this can be replaced by {\tt circos.lines} through a {\tt for} loop.
+  \item {\tt circos.trackText}: this can be replaced by {\tt circos.text} through a {\tt for} loop.
 \end{itemize}
 
 Also, the function drawing histograms in the whole track is available:
@@ -57,21 +58,22 @@ Also, the function drawing histograms in the whole track is available:
 Functions to arrange the circos layout:
 
 \begin{itemize}
-  \item {\tt circos.trackPlotRegion}
-  \item {\tt circos.updatPlotRegion}
-  \item {\tt circos.par}
-  \item {\tt circos.clear}
+  \item {\tt circos.trackPlotRegion}: create plotting regions of cells in one track
+  \item {\tt circos.updatPlotRegion}: update one specified cell
+  \item {\tt circos.par}: circos parameters
+  \item {\tt circos.clear}: reset circos parameters and internal variables
 \end{itemize}
 
 Theoretically, you are able to draw most kinds of circos figures by the above functions.
 
 The following part of this vignette is structured as follows: First there is an example
 to give a quick glance of how to draw a circos layout. Then it tells you the basic principle
-(or the order of using the circos functions) for drawing. Finally a detailed explaination
-of circos parameters, coordinates and basic graphs would be represented. 
+(or the order of using the circos functions) for drawing. After that a detailed explaination
+of circos parameters, coordinates and low level functions. Finally it would tell some tricks
+for drawing more complicated circos plot.
 
 \section{A quick glance}
-Following is an example. First generate some data. There are a factor to represent categories,
+Following is an example. First generate some data. There needs to have a factor to represent categories,
 values on x-axis, and values on y-axis.
 
 \begin{Schunk}
@@ -84,12 +86,12 @@ values on x-axis, and values on y-axis.
 \end{Schunk}
 
 Initialize the layout. In this step, the function allocates sectors along
-the unit circle according to ranges of x-values in different categories. E.g,
+the circle according to ranges of x-values in different categories. E.g,
 if there are two categories, range for x-values in the first category is {\tt c(0, 2)}
 and range for x-values in the second category is {\tt c(0, 1)}, the first category
 would hold approximately $67\%$ areas of the circle.
 Here we only need x-values because all cells in a sector share the same
-x-ranges.
+x-ranges. The order of the sectors in the circle is the order of levels of {\tt factors}.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -100,18 +102,24 @@ x-ranges.
 \end{Sinput}
 \end{Schunk}
 
-Draw the first track. All the tracks should be created by {\tt circos.trackPlotRegion}, then
-those low level functions can be applied. Here we should specify the y-values either by {\tt y}
-or {\tt ylim} argument. The axis for each cell is drawn by {\tt panel.fun} argument. The {\tt panel.fun}
-is actually executed after the creation of the plotting region for a cell. After that, draw points
+Draw the first track. Before drawing any track we need to know that all tracks should firstly be created by {\tt circos.trackPlotRegion}, then
+those low level functions can be applied. X-lims for cells in the track have been already defined by the initialization step, 
+so here we only need to specify the y-lims for each cell, either by {\tt y}
+or {\tt ylim} argument. 
+
+We also draw axis for each cell in the first track, The axis for each cell is drawn by {\tt panel.fun} argument. 
+{\tt circos.trackPlotRegion} creates plotting region cell by cell and the {\tt panel.fun}
+is actually executed after the creation of the plotting region for the cell. So {\tt panel.fun} actually means
+drawing graphs in the ``current cell''. After that, draw points
 through the whole track by {\tt circos.trackPoints}. Finally, add two texts in a certain cell
 (the cell is specified by {\tt sector.index} argument).
 
-Here what should be note is that the first track has a index number of 1 since this is the first track.
+Here what should be note is that the first track has a index number of 1.
 Then an internal variable which traces the tracks would set the current track index to 1. So if the track
 index is not specified in the plotting functions such as {\tt circos.trackPoints} and {\tt circos.text}
 which are called after the creation of the track, the current track index would be assigned internally.
-So if {\tt track.index} is not specifed, it means the track index is the current track index.
+So if {\tt track.index} is not specifed, it means the track index is the current track index (it would be explained
+in the following sections).
 
 \begin{Schunk}
 \begin{Sinput}
@@ -127,7 +135,7 @@ So if {\tt track.index} is not specifed, it means the track index is the current
 \end{Schunk}
 
 Draw the second track. It is histograms among the track. The {\tt circos.trackHist}
-can also create a new track. So the track index for this track is 2.
+can also create a new track because drawing histogram is really high level. So the track index for this track is 2.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -135,10 +143,10 @@ can also create a new track. So the track index for this track is 2.
 \end{Sinput}
 \end{Schunk}
 
-Draw the third track. Different background colors for cells can be assigned. Here some
-meta data for a cell can be obtained by {\tt get.cell.meta.data}. This function needs
+Draw the third track. Different background colors for cells can be assigned. So it may highlight some
+feature of the {\tt circlize} package. Here some meta data for a cell can be obtained by {\tt get.cell.meta.data}. This function needs
 {\tt sector.index} and {\tt track.index} arguments, and if they are not specified, it means
-it is the current sector index and the current track.index.
+it is the current sector index and the current track index.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -154,7 +162,7 @@ it is the current sector index and the current track.index.
 \end{Schunk}
 
 You can update an existed cell by specifying {\tt sector.index} and {\tt track.index}.
-The function erases graphs which are drawn. Here we erase graphs in one cell in track 2 
+The function erases graphs which have been drawn. Here we erase graphs in one cell in track 2, sector d
 and re-draw some points.
 
 \begin{Schunk}
@@ -173,6 +181,7 @@ Draw the fouth track. Here you can choose different line types.
 \end{Schunk}
 
 Draw links. Links can be from point to point, point to interval or interval to interval.
+Some of the arguments would be explained in the following sections.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -294,29 +303,36 @@ arrows(0, 1.5, 0, 1.07, code = 2)
 \label{fig:transformation}
 \end{figure}
 
-\section{Rules to draw the circos layout}
-The rules for drawing the circos layout is rather simple.
+\section{Details}
+In this section, more details of the package would be explained.
+
+\subsection{Rules to draw the circos layout}
+The rules for drawing the circos layout is rather simple. It follows the sequence of
+``initialize - create track - draw graphs - create track - draw graphs - ... - clear''.
 
 \begin{enumerate}
-  \item Initialize the layout using {\tt circos.initialize}. There should be a factor and a x-range to allocate 
-        sectors.
-  \item Create plotting regions for the new track and apply plottings. The new track is created just below
-        the previous created one and the index of the track is added by 1. Only after the creation of the track can you
-		add other graphs. There are three ways to do the plotting job.
+  \item Initialize the layout using {\tt circos.initialize}. Since circos layout in fact visualizes data which is in categories,
+        there should be a factor and a x-range to allocate categories into sectors.
+  \item Create plotting regions for the new track and apply plottings. The new track is created just inside
+        the previous created one and the index of the track is added by 1 automatically. Only after the creation of the track can you
+		add other graphs on it. There are three ways to do the plotting job.
 		\begin{enumerate}
-		    \item After the creation of the track. use function like {\tt circos.points},
+		    \item After the creation of the track. use low level function like {\tt circos.points},
 			      {\tt circos.lines}, ... to draw graphs cell by cell. It allways involves
 				  a {\tt for} loop.
 			\item Use {\tt circis.trackPoints}, {\tt circos.trackLines}, ... to draw same style
-			      of graphs through cells simultaneously. However, it is not recommended because
+			      of graphs through all cells simultaneously. However, it is not recommended because
 				  it would make you a little confused.
 			\item Use {\tt panel.fun} argument in {\tt circos.trackPlotRegion} to draw
 			      graphs immediately after the creation of certain cell. {\tt panel.fun} needs
-				  two arguments which are {\tt x} and {\tt y} which are x-values and y-values that
+				  two arguments {\tt x} and {\tt y} which are x-values and y-values that
 				  in the current category. This subset operation would be applied internally.
 		\end{enumerate}
 		Plotting regions for cells that have been created can be updated by {\tt circos.updatePlotRegion}.
 		{\tt circos.updatePlotRegion} will erase every that you have already plotted in the plotting region of the cell.
+		
+		Low level functions such as {\tt circos.points} can be applied on any created cell by specifying
+		{\tt sector.index} and {\tt track.index}.
   \item Call {\tt circos.clear} to do cleanings.
 \end{enumerate}
 
@@ -335,7 +351,6 @@ Codes for the circos layout drawing rule would looks like (pseudo code):
 or like following:
 \begin{Schunk}
 \begin{Sinput}
-> circos.initialize(factors, xlim)
 > circos.trackPlotRegion(factors, ylim)
 > circos.trackPoints(factors, x, y)
 > circos.trackLines(factors, x, y)
@@ -353,13 +368,15 @@ or like following. This the most natural way I feel.
 \end{Sinput}
 \end{Schunk}
 
-There is a internal variable keep tracing of the current sector and track when applying {\tt circos.trackPlotRegion} and {\tt circos.updatePlotRegion}.
+There is several internal variables keeping tracing of the current sector and track when applying {\tt circos.trackPlotRegion} and {\tt circos.updatePlotRegion}.
 So although functions like {\tt circos.points}, {\tt circos.lines} need to specify the index for sector and track,
 the values for sector index and the track index, by default, are taken as the current calculated ones. As a result,
-if you draw points, lines, text, ... just after the creation of the track or cell, you do not need to set the sector
+if you draw points, lines, text, {\it et al} just after the creation of the track or cell, you do not need to set the sector
 index and the track index explicitly and it is just drawn in the most nearly created cell.
 
-\section{Coordinate transformation}
+Finally, in {\tt circlize} package, function with prefix {\tt circos.} would affect all cells in a track.
+
+\subsection{Coordinate transformation}
 There is a user coordinate in which the range for x-axis and y-axis is the range of data,
 a polar coordinate to allocates different cells and a the canvas coordinate which really
 draw the figures (figure \ref{fig:transformation}). The package would first transform the user
@@ -404,7 +421,8 @@ circos.clear()
 \end{figure}
 
 
-\section{Sectors and tracks}
+\subsection{Sectors and tracks}
+Sector allocation is determined by {\tt circos.initialize} and track allocation is determined by {circos.trackPlotRegion}
 A circos layout is composed of sectors and tracks, as illustrated in figure \ref{fig:coordinate}.
 The red circle is the track and the blue one is the sector. The intersection of a sector and 
 a track is called a cell which can be thought as an imaginary plotting region for values in certain category. 
@@ -412,6 +430,8 @@ Order of the sectors are determined by the order of levels of the factor
 when initializing and the order of the tracks are integers starting from the most outside track as 1.
 Width of sectors are allocated according to the range of x-values in different categories. All cells
 in one sector in different tracks share the same x-ranges.
+
+if do not set factor argument, or it is not a facotr...
 
 \begin{figure}[htbp]
 \begin{center}
@@ -494,7 +514,7 @@ text(0, 0, 'circos.par("clock.wise" = TRUE)', cex = 0.6)
 \end{figure}
 
 
-\section{Circos parameters}
+\subsection{Circos parameters}
 Some basic parameters for the circos layout can be set through {\tt circos.par}. The paramters
 are as follows, note some parameters can only be assigned before the initialization of the circos layout.
 
@@ -576,7 +596,7 @@ circos.clear()
 \end{figure}
 
 
-\section{Lines}
+\subsection{Lines}
 Parameters for drawing lines by {\tt circos.lines} are similar to {\tt lines} function, 
 as illustrated in figure \ref{fig:lines}. One additional feature is that the areas under lines can be 
 specified by {\tt area} argument. Also the base line for the area can be set by {\tt area.baseline}.
@@ -616,7 +636,7 @@ circos.clear()
 \end{figure}
 
 
-\section{Text}
+\subsection{Text}
 Only the direction of text by {\tt circos.text} should be noted, as illustrated in figure \ref{fig:text}.
 Only five direction of text is allowed which are in {\tt c("default", "vertical\_left", "vertical\_right", "horizontal", "arc")}.
 
@@ -661,7 +681,7 @@ circos.clear()
 \label{fig:axis}
 \end{figure}
 
-\section{Axis}
+\subsection{Axis}
 Because there may be no space to draw y-axis, only x-axis for each cell is supported by {\tt circos.axis}, as illustrated in figure \ref{fig:axis}.
 A lot of styles for axis can be set such as the position and length of major ticks, the number of minor ticks,
 the position and direction of the axis labels and the position of the x-axis.
@@ -791,13 +811,13 @@ lines(c(0, sqrt(3)/4/2)-0.01, c(0, -3/4/2)-0.01, lwd = 4, col = "blue")
 \end{figure}
 
 
-\section{Links}
+\subsection{Links}
 Links can be drawn by {\tt circos.link} from points and intervals (figure \ref{fig:link}). If both ends are points, then the link is represented
 as a line. If one of the ends is an interval, the link would be a belt. The link is in fact a quadratic curve.
 The height of the link can be controlled by {\tt top.ratio} argument in {\tt circos.link} which is the ratio between the length of blue line and 
 the red line (figure \ref{fig:quadratic}). Links do not hold any position of track.
 
-\section{Draw part of the circos layout}
+\subsection{Draw part of the circos layout}
 {\tt canvas.xlim} and {\tt canvas.ylim} in {\tt circos.par} is useful to draw only part of circle. Here
 only sector between $0^\circ$ to $90^\circ$ are plotted (figure \ref{fig:part}). Codes are as follows. First, four sectors
 with the same length are initialized. Then only the first sector is drawn with points and lines.
@@ -845,7 +865,54 @@ circos.clear()
 \label{fig:part}
 \end{figure}
 
-\section{Combine two parts of circos layouts}
+
+\subsection{High level plotting functions}
+With those low level function such as {\tt circos.lines}, {\tt circos.lines},
+more high level functions can be easily written. The package provides a high
+level function {\tt circos.trackHist} which draws the histogram or the density
+distribution of data (figure \ref{fig:hist}). So users would know how to implement other
+high level function to support graphs such as barplot, heatmap, et al. accroding to the source code of {\tt circos.trackHist}.
+
+In figure 13, the first track is histograms in which all the ylim are same.
+The second track is histograms in which {\tt force.ylim} is {\tt FALSE}.
+The third and the fourth tracks are density distributions in which ylims
+are forced same or different.
+
+
+<<label=fighist, include=FALSE, echo=FALSE>>=
+library(circlize)
+par(mar = c(1, 1, 1, 1))
+x = rnorm(2600)
+factors = sample(letters, 2600, replace = TRUE)
+circos.initialize(factors = factors, x = x)
+circos.trackHist(factors = factors, x = x, track.height = 0.1, col = "#CCCCCC", border = "#CCCCCC")
+circos.trackHist(factors = factors, x = x, force.ylim = FALSE, track.height = 0.1, col = "#CCCCCC", border = "#CCCCCC")
+circos.trackHist(factors = factors, x = x, draw.density = TRUE, track.height = 0.1, col = "#CCCCCC", border = "#CCCCCC")
+circos.trackHist(factors = factors, x = x, draw.density = TRUE, force.ylim = FALSE, track.height = 0.1, col = "#CCCCCC", border = "#CCCCCC")
+
+circos.clear()
+
+@
+
+\begin{figure}
+\begin{center}
+<<label=fighist, fig = TRUE, echo = FALSE>>=
+<<fighist>>
+@
+\end{center}
+\caption{Drawing histograms}
+\label{fig:hist}
+\end{figure}
+
+\subsection{Do not forget {\tt circos.clear}}
+You should call {\tt circos.clear} to complete end the circos plottings. Because there are several
+global variables tracing the status of the plot such as the index and position for the newest track.
+Such variables should be reset before drawing any new circos figures.
+
+\section{Other thicks}
+
+
+\subsection{Combine two parts of circos layouts}
 Since the circos layout by {\tt circlize} finally plotted in an ordinary R plotting system.
 Two seperated circos layouts can be plotted together by some tricks. Here the key is 
 {\tt par(new = TRUE)} which allows to draw a new figure on the previous plotting region.
@@ -974,50 +1041,7 @@ circos.clear()
 \label{fig:twoseperate}
 \end{figure}
 
-\section{High level plotting functions}
-With those low level function such as {\tt circos.lines}, {\tt circos.lines},
-more high level functions can be easily written. The package provides a high
-level function {\tt circos.trackHist} which draws the histogram or the density
-distribution of data (figure \ref{fig:hist}). So users would know how to implement other
-high level function to support graphs such as barplot, heatmap, et al. accroding to the source code of {\tt circos.trackHist}.
-
-In figure 13, the first track is histograms in which all the ylim are same.
-The second track is histograms in which {\tt force.ylim} is {\tt FALSE}.
-The third and the fourth tracks are density distributions in which ylims
-are forced same or different.
-
-
-<<label=fighist, include=FALSE, echo=FALSE>>=
-library(circlize)
-par(mar = c(1, 1, 1, 1))
-x = rnorm(2600)
-factors = sample(letters, 2600, replace = TRUE)
-circos.initialize(factors = factors, x = x)
-circos.trackHist(factors = factors, x = x, track.height = 0.1, col = "#CCCCCC", border = "#CCCCCC")
-circos.trackHist(factors = factors, x = x, force.ylim = FALSE, track.height = 0.1, col = "#CCCCCC", border = "#CCCCCC")
-circos.trackHist(factors = factors, x = x, draw.density = TRUE, track.height = 0.1, col = "#CCCCCC", border = "#CCCCCC")
-circos.trackHist(factors = factors, x = x, draw.density = TRUE, force.ylim = FALSE, track.height = 0.1, col = "#CCCCCC", border = "#CCCCCC")
-
-circos.clear()
-
-@
-
-\begin{figure}
-\begin{center}
-<<label=fighist, fig = TRUE, echo = FALSE>>=
-<<fighist>>
-@
-\end{center}
-\caption{Drawing histograms}
-\label{fig:hist}
-\end{figure}
-
-\section{Do not forget {\tt circos.clear}}
-You should call {\tt circos.clear} to complete end the circos plottings. Because there are several
-global variables tracing the status of the plot such as the index and position for the newest track.
-Such variables should be reset before drawing any new circos figures.
-
-\section{Others}
+\subsector{Drawing outside and combine with canvas coordinate}
 Sometimes it is very useful to draw something outside the plotting region of cell. The following is a simple
 example to illustrate such circumstance (figure \ref{fig:outside}). The text is drawn outside the cell.
 
@@ -1079,5 +1103,7 @@ circos.clear()
 \caption{Drawing outside the cell and combine with canvas coordinate}
 \label{fig:outside}
 \end{figure}
+
+
 
 \end{document}

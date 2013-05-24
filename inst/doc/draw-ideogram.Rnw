@@ -9,7 +9,7 @@
 
 \title{How to draw ideogram}
 
-\author{Zuguang Gu\\ German Cancer Research Center,\\ Heidelberg, Germany}
+\author{Zuguang Gu {\tt <z.gu@dkfz.de>}\\ German Cancer Research Center,\\ Heidelberg, Germany}
 
 \usepackage{Sweave}
 \usepackage{hyperref}
@@ -19,11 +19,11 @@
 \maketitle 
 
 The most widely use for the circos layout is to display genomic information.
-In most circumstances, the figures contain an ideogram. This document
-will tell you how to draw ideogram by {\tt circlize} package.
+In most circumstances, figures contain an ideogram. Drawing ideogram by {\tt circlize} 
+package is rather simple.
 
 An ideogram is, in fact, a series of rectangles with different colors.
-Here we are going to draw the ideogram for human.
+In the following example we are going to draw the ideogram for human.
 
 The cytoband data for human can be download from \\
 \url{http://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz}.
@@ -48,7 +48,7 @@ Uncompress the file and read it into R. Here the package already contains such f
 \end{Soutput}
 \end{Schunk}
 
-In the data frame, the second column and the third column are intervals for locus.
+In the data frame, the second column and the third column are intervals for loci.
 
 Here, setting the {\tt colClasses} argument when reading the cytoband file is very important,
 because the positions on chromosomes are large integers (the second column and third column),
@@ -57,7 +57,10 @@ would throw error of data overflow. So you must set the data mode to floating po
 
 Since chromosomes are sorted by their names which are as mode of {\tt character}, the order would look
 like ``chr1, chr10, chr11, ..., chr2, chr20, ...''. We need to sort chromosomes by 
-the numeric index.
+the numeric index first.
+
+The process is simple. Extract the number part (1, 2, ..., 22) and the letter part ({\tt X}, {\tt Y}) of chromosome names.
+Sorted them seperately and finally combine them.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -80,9 +83,9 @@ the numeric index.
 \end{Soutput}
 \end{Schunk}
 
-Calculate the range for each chromosome which is going to be the {\tt xlim} of
-each sector. In the following code, order of rows of {\tt xlim} correspond to the 
-order of elements in {\tt chromosome}.
+The cytoband data also provides the range of each chromosome. This can be set as the {\tt xlim} of each chromosome.
+In the following code, we calculate the start position and the end position of each chromosome and store them
+in a matrix in which order of rows of {\tt xlim} correspond to the order of elements in {\tt chromosome}.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -94,7 +97,7 @@ order of elements in {\tt chromosome}.
 \end{Sinput}
 \end{Schunk}
 
-Set some graphic parameters. Here we do not need any cell paddings.
+Before we draw the circos layout, we need to set some graphic parameters. Here we do not need any cell paddings.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -103,38 +106,56 @@ Set some graphic parameters. Here we do not need any cell paddings.
 \end{Sinput}
 \end{Schunk}
 
-Initialize the circos layout with ranges of chromosomes. Here you must explicitly
+Initialize the circos layout with ranges of chromosomes. In the initialization step, width of 
+each sector would correspond to the range of each chromosome. Also the order of sectors would
+be determined in this step. Here we must explicitly
 set the levels of the factors to ensure the order of chromosomes is ``chr1, chr2,
-chr3, ...''.
+chr3, ...'' or else the order would be the character order which is ``chr1, chr11, ...''.
+After the initialization step, the position of each chromosome as well as the order are stored
+in an internal variable. So in the later step, as long as the chromosome is specified, graphs
+would be draw in the sector which corresponds to the selected chromosome.
+
+In the initialization step, order of the {\tt xim} matrix should correspond to the order 
+of {\tt levels} of the {\tt factors}, so do not be confused here.
 
 \begin{Schunk}
 \begin{Sinput}
-> circos.initialize(factor(chromosome, levels = chromosome), xlim = xlim)
+> circos.initialize(factors = factor(chromosome, levels = chromosome),
++     xlim = xlim)
 \end{Sinput}
 \end{Schunk}
 
-We will draw the ideogram, the axis for chromosomes and the name of chromosomes in a same track. 
+After the range of each chromosome has been allocated in the circle, we can draw the ideogram.
+Besides that, we also want to draw additional information such as the axis for chromosomes and the name of chromosomes. 
+Here we would draw ideogram, axis and the chromosome names in one track 
 (It is just an option, also you can draw ideogram, axis and names of chromosomes in different tracks). 
-Here we create the first track in which there are 24 cells and each cell corresponds to 
+in the following code, we create the first track in which there are 24 cells and each cell corresponds to 
 a chromosome. The x-range of each cell is the range of the chromosome and the y-range of
 each cell is from 0 to 1.
 
-There are two ways to draw the ideogram. First, create the plotting region first, then draw
+There are two ways to draw the ideogram. First, create the plotting region first, and draw
 ideogram cell by cell.
 
 \begin{Schunk}
 \begin{Sinput}
-> circos.trackPlotRegion(factors = factor(chromosome, levels = chromosome),
+> circos.trackPlotRegion(factors = chromosome,
 +     ylim = c(0, 1), bg.border = NA, track.height = 0.1)
 \end{Sinput}
 \end{Schunk}
 
 In the above codes, it is not necessary to set the {\tt factors} argument. If {\tt factors}
 is not set, {\tt circos.trackPlotRegion} will create plotting regions for all available sectors
-which have already been initialized automatically.
+which have already been initialized automatically. But explicitly specifying the {\tt factors}
+argument would make your code more clear for reading. And the value for {\tt factors} does not
+need to be a real factor. If it is not a factor, it would be converted to a factor internally.
+If the value for {\tt factors} is already a factor, the level of the factor also does not need
+to be specified because the cells are created by the order of chromosomes which is defined in the 
+initialization step.
 
-Now in each cell, we draw the ideogram for each chromosome. Code is simple, you
-can read that.
+Now in each cell, we draw the ideogram for each chromosome. Code is simple. The steps are: for each chromosome, 1. assign different colors
+for different locus, 2. draw rectangle for different locus, 3. add axis, 4. add
+chromosome names.
+
 \begin{Schunk}
 \begin{Sinput}
 > for(chr in chromosome) {
@@ -172,10 +193,12 @@ can read that.
 \end{Schunk}
 
 The second way, draw ideogram directly as the creation of the plotting region by using {\tt panel.fun} argument.
+Inside {\tt panel.fun}, we do not need to set {\tt sector.index} because the default {\tt sector.index}
+is the current sector index for the cell which is just created.
 
 \begin{Schunk}
 \begin{Sinput}
-> circos.trackPlotRegion(factors = factor(chromosome, levels = chromosome),
+> circos.trackPlotRegion(factors = chromosome,
 +   ylim = c(0, 1), bg.border = NA, track.height = 0.1,
 +   panel.fun = function(x, y) {
 +     
@@ -214,6 +237,8 @@ The second way, draw ideogram directly as the creation of the plotting region by
 There may be some warnings saying some points are out of the plotting region. Don't worry about that,
 it's just OK.
 
+If you do not want to draw ideogram in the most outside of the circos layout. You can draw it in other tracks.
+
 If there is a translocation from position 111111111 in chromosome 2 to position 55555555 in chromosome 16. It can represent
 as a link in the circos layout.
 
@@ -226,7 +251,8 @@ as a link in the circos layout.
 
 If position 88888888 in chromosome 6 is important and we want to mark it, we can use following codes. First create
 a new track. Here there is no specifying of {\tt factors}, thus the new track would create plotting regions for all available
-sectors.
+sectors. Note you can not create plotting region for a single cell, however you can write so, but in fact plotting region for cells in 
+all sectors would be created.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -264,12 +290,15 @@ The finnal figure looks like figure \ref{fig:ideogram}.
 
 In the {\tt circlize} package, there is already a {\tt circos.initializeWithIdeogram}
 function to initialize the circos layout with an ideogram. However, how to embed the ideogram into the
-circos layout is really subjective, such the position and colors of the ideogram, 
+circos layout is really subjective, such as the position and colors of the ideogram, 
 or maybe only subset of chromosomes are going to be plotted, or maybe there are some zoomings for certain chromosomes
-(see \url{http://circos.ca/intro/features/}. `GLOBAL AND LOCAL ZOOMING' section). Users can draw their style of ideogram according
+(see \url{http://circos.ca/intro/features/}. `GLOBAL AND LOCAL ZOOMING' section). So the {\tt circos.initializeWithIdeogram}
+is not a real functional function, it is only an example function to show how to allocate sectors for chromosomes and how
+to draw ideogram. Thus users can draw their style of ideogram according
 the above example codes. All you need to remember is that complicated graphs are assembled by simple graphs.
 
-Finally, more informative and specialized genomic graphs are figure \ref{fig:genomic} and figure \ref{fig:twochr}.
+Finally, more informative and specialized genomic graphs are figure \ref{fig:genomic} and figure \ref{fig:twochr}. Figure
+\ref{fig:twochr} in fact combines two independent circos plots, users can refer to the main vignette to find out how to do it.
 
 <<label=figgenomic, include=FALSE, echo=FALSE>>=
 library(circlize)

@@ -1218,7 +1218,7 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 	o.cell.padding = circos.par("cell.padding")
 	circos.par(cell.padding = c(0, 0, 0, 0), points.overflow.warning = FALSE)
 	circos.initialize(factor(chromosome, levels = chromosome), xlim = xlim)
-	circos.trackPlotRegion(factors = factor(chromosome, levels = chromosome), ylim = c(0, 1), bg.border = NA, track.height = track.height)
+	circos.trackPlotRegion(factors = chromosome, ylim = c(0, 1), bg.border = NA, track.height = track.height)
 	for(chr in chromosome) {
 		d2 = d[d[[1]] == chr, ]
 		n = nrow(d2)

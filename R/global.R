@@ -12,7 +12,7 @@ assign(".CURRENT.SECTOR.INDEX", NULL, envir = .CIRCOS.ENV)
 .CIRCOS.PAR.DEFAULT = list(start.degree = 0,
 	gap.degree = 1,
 	track.margin = c(0.01, 0.01),  # top margin and bottom margin
-	unit.circle.segments = 100,   #to simulate smooth curve
+	unit.circle.segments = 500,   #to simulate smooth curve
 	cell.padding = c(0.1, 0.1, 0.1, 0.1),
 	default.track.height = 0.2,
 	points.overflow.warning = TRUE,

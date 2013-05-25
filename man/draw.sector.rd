@@ -28,3 +28,13 @@ draw.sector(center = c(0, 0), start.degree=0, end.degree=360, rou1 = 1, rou2 = N
 
 
 }
+\examples{
+library(circlize)
+par(mar = c(1,1,1,1))
+plot(0, 1, xlim = c(-1, 1), ylim = c(-1, 1), type = "n")
+draw.sector(c(0, 0), start = 0, end = 360, rou1 = 1, col = NA, border = "black")
+draw.sector(c(0, 0), start = 30, end = 60, rou1 = 0.8, rou2 = 0.5, col = "red", border = "black")
+draw.sector(c(0, 0), start = 0, end = 400, rou1 = 0.4, rou2 = 0.3, col = "orange", border = "black")
+draw.sector(c(0, 0), start = 0, end = -400, rou1 = 0.2, col = "green", border = "black")
+draw.sector(c(0, 0), start = 120, end = 200, rou1 = 0.9, col = "#FF000040", border = "black")
+}

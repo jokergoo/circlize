@@ -1276,7 +1276,7 @@ draw.sector = function(center = c(0, 0), start.degree=0, end.degree=360, rou1 = 
 	ncut1 = l1/ (2*pi/circos.par("unit.circle.segments"))
     ncut1 = floor(ncut1)
 	ncut1 = ifelse(ncut1 < 2, 2, ncut1)
-		
+	
     for (i in c(0, seq_len(ncut1))) {
         d1 = rbind(d1, c(start.degree + (end.degree - start.degree)/ncut1*i, rou1))
     }

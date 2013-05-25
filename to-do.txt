@@ -1,4 +1,1 @@
 - testing code, especially in `utils.R`
-- when two degree minus ...
-
-- definition of `track.start` and `track.height` 

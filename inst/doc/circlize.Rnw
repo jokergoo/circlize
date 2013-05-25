@@ -382,11 +382,15 @@ a polar coordinate to allocates different cells and a the canvas coordinate whic
 draw the figures (figure \ref{fig:transformation}). The package would first transform the user
 coordinate to a polar coordinate and finally transform into the canvas coordinate.
 
-The finnal canvas coordinate is in fact an ordinary plotting in R plotting system with
+The finnal canvas coordinate is in fact an ordinary coordinate in R plotting system with
 x-range from -1 to 1 and y-range from -1 to 1 by defaulte.
 
-{\bf It should be noted that the circos layout is always drawn inside the circle which has radius of 1 (unit
-circle), from outside to inside. }
+{\it {\bf It should be noted that the circos layout is always drawn inside the circle which has radius of 1 (unit
+circle), from outside to inside. } }
+
+However, for users, they only need to imagine that each cell is a normal rectangular plotting region (user coordinate) in
+which x-lim and y-lim are ranges of data in that category respectively. The {\tt circlize} package would
+know which cell you are drawing in.
 
 <<label=figcoordinate, include=FALSE, echo=FALSE>>=
 library(circlize)
@@ -422,16 +426,49 @@ circos.clear()
 
 
 \subsection{Sectors and tracks}
-Sector allocation is determined by {\tt circos.initialize} and track allocation is determined by {circos.trackPlotRegion}
+
 A circos layout is composed of sectors and tracks, as illustrated in figure \ref{fig:coordinate}.
 The red circle is the track and the blue one is the sector. The intersection of a sector and 
 a track is called a cell which can be thought as an imaginary plotting region for values in certain category. 
-Order of the sectors are determined by the order of levels of the factor
-when initializing and the order of the tracks are integers starting from the most outside track as 1.
-Width of sectors are allocated according to the range of x-values in different categories. All cells
-in one sector in different tracks share the same x-ranges.
 
-if do not set factor argument, or it is not a facotr...
+Sectors are first allocated is determined by {\tt circos.initialize} and track allocation is then determined by {circos.trackPlotRegion}.
+{\tt circos.initialize} needs a category variable and data value which implicates the range of data in each category. The range
+of data can be specified either by {\tt x} or {\tt xlim}.
+
+\begin{Schunk}
+\begin{Sinput}
+> circos.initialize(factors, x)
+> circos.initialize(factors, xlim)
+\end{Sinput}
+\end{Schunk}
+
+There are something very important that should be noted in the initialization step. In this step, not only the width
+of each sector is assigned, but also the order of each sector on the circle would be determined. 
+Order of the sectors are determined by {\bf the order of levels of the factor}. So if you want to change the order
+of the sectors, just change of the level of the {\tt factors} variable. If {\tt x} which is the x-value corresponding
+to {\tt factors} is specified, the range for x-value in different category would be calculated according to {\tt factors}
+automatically. And if {\tt xlim} is specified, it should be either a matrix which has same number of rows as the length
+of the level of {\tt factors} or a two-element vector. If it is a two-element vector, it would be extended to a matrix which 
+has the same number of rows as the length of {\tt factors} levels. Here, every row in {\tt xlim} correspongs to the x-ranges
+of a category and the order of rows in {\tt xlim} corresponds to the order of levels of {\tt factors}.
+
+Since all cells in one sector in different tracks share the same x-ranges, for each track, we only need to specify the y-ranges
+for cells. Similar as {\tt circos.initialize}, {\tt circos.trackPlotRegion} can also receive either {\tt y} or {\tt ylim} arguments
+to specify the range of y-values. There is also a {\tt force.ylim} argument to sepcify whether all cells in one track should
+share the same y-ranges
+
+\begin{Schunk}
+\begin{Sinput}
+> circos.trackPlotRegion(factors, y)
+> circos.trackPlotRegion(factors, ylim)
+\end{Sinput}
+\end{Schunk}
+
+In track creataion step, since all the sectors are already allocated in the circle, if {\tt factors} argument is not set, 
+{\tt circos.trackPlotRegion} would create plotting regions for all available sectors. Also, levels of {\tt factors} do not
+need to be specified explicitly because the order of sectors has already be determined. If {\tt factors} is just a vector, it 
+would be converted to factor automatically. And finally if users just create cells in part of sectors in the track, in fact, the cells in remaining
+unspecified sectors would also be created, but with no borders (pretending they are not created).
 
 \begin{figure}[htbp]
 \begin{center}
@@ -865,6 +902,8 @@ circos.clear()
 \label{fig:part}
 \end{figure}
 
+\subsection{The {\tt panel.fun} argument}
+
 
 \subsection{High level plotting functions}
 With those low level function such as {\tt circos.lines}, {\tt circos.lines},
@@ -904,12 +943,14 @@ circos.clear()
 \label{fig:hist}
 \end{figure}
 
+\subsection{Other functions}
+
 \subsection{Do not forget {\tt circos.clear}}
 You should call {\tt circos.clear} to complete end the circos plottings. Because there are several
 global variables tracing the status of the plot such as the index and position for the newest track.
 Such variables should be reset before drawing any new circos figures.
 
-\section{Other thicks}
+\section{Advanced plottings}
 
 
 \subsection{Combine two parts of circos layouts}

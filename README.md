@@ -37,13 +37,21 @@ Several interesting figures can be found in `example/`
 
 More tests will be added.
 
+### Install
+
+The package has been submitted to CRAN, so you can install it through:
+
+    install.packages("circlize")
+
+Together with the package are four vignettes which provide detailed descriptions and examples.
+
 ## the Perl module
 
 There is also a Perl module `R::Comment2Man` to convert comments to documentary files.
 
 Comments are marked as the Markdown-style and it looks more clear than that under the `Roxygen` package.
 
-It still has a lot of bugs, but it works now.
+It still has a lot of bugs, but it at least works.
 
 The module could be run as:
 

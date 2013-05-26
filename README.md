@@ -56,3 +56,23 @@ It still has a lot of bugs, but it at least works.
 The module could be run as:
 
     perl -Ilib -MR::Comment2Man -e "R::Comment2Man->draft('R/')"
+
+An example of the comment of a function is:
+
+    # == title
+    # title of the function
+    #
+    # == param
+    # -x a value returned by `function`
+    # -y a value returned by `package::function2`. If ``x`` is a list, then ...
+    #
+    # == details
+    # first line, blablabla...
+    #
+    # - item1...
+    # - item2...
+    #
+    # -item1 named item1...
+    # -item2 named itme2...
+    #
+    f = function(x, y)

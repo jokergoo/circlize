@@ -89,7 +89,7 @@ lines.expand = function(x, y, sector.index = get.current.sector.index(), track.i
         td = td[order(td[, 1]), ]
 		td2 = circlize(td[, 1], td[, 2], sector.index = sector.index, track.index = track.index)
 		
-		a = ((td2[1, 1] - td2[2, 1]) %% 360)/180*pi
+		a = (abs(td2[1, 1] - td2[2, 1]))/180*pi
 		b = abs(td2[1, 2] - td2[2, 2])
 		l = sqrt(a^2 + b^2)
 		
@@ -107,7 +107,7 @@ lines.expand = function(x, y, sector.index = get.current.sector.index(), track.i
             ny = c(ny, y[i])
         }
     }
-    
+   
     d = cbind(nx, ny)
     return(d)
 }

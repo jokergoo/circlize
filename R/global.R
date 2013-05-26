@@ -141,7 +141,7 @@ is.circos.initialized = function() {
 # If ``xlim`` is a matrix, the number of rows should be equal to the number of categories (number of levels)
 # identified by ``factors``, then each row of ``xlim`` corresponds to the data range for each sector.
 #
-# The function finally call `graphics::plot` and be readly to draw.
+# The function finally call `graphics::plot` and be ready to draw.
 circos.initialize = function(factors, x = NULL, xlim = NULL) {
 
     assign(".SECTOR.DATA", NULL, envir = .CIRCOS.ENV)
@@ -212,7 +212,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL) {
 		}
 	
 		if(clock.wise) {
-			sector[["end.degree"]][i] = -gap.degree + ifelse(i == 1, -start.degree, sector[["start.degree"]][i-1])
+			sector[["end.degree"]][i] = -gap.degree + ifelse(i == 1, start.degree, sector[["start.degree"]][i-1])
 			sector[["start.degree"]][i] =  sector[["end.degree"]][i] - sector.range[i]*unit
 		} else {
 			sector[["start.degree"]][i] =  gap.degree + ifelse(i == 1, start.degree, sector[["end.degree"]][i-1])

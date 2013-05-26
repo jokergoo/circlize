@@ -12,9 +12,9 @@
 }
 \usage{
 circos.trackLines(factors, x, y, track.index = get.current.track.index(),
-                    col = "black", lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
-                    area = FALSE, area.baseline = NA, border = "black",
-pt.col = "black", cex = par("cex"), pch = par("pch"))
+    col = "black", lwd = par("lwd"), lty = par("lty"), type = "l",
+    straight = FALSE, area = FALSE, area.baseline = NA, border = "black",
+    pt.col = "black", cex = par("cex"), pch = par("pch"))
 }
 \arguments{
   \item{factors}{Factors which represent the categories of data}

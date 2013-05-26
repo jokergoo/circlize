@@ -1,0 +1,167 @@
+% \VignetteIndexEntry{Some interesting graphics}
+% \VignetteDepends{circlize}
+% \VignetteKeywords{circos}
+% \VignetteKeywords{circlize}
+% \VignettePackage{circlize}
+
+\documentclass{article}
+
+\title{Some interesting graphics}
+
+\author{Zuguang Gu {\tt <z.gu@dkfz.de>}\\ German Cancer Research Center,\\ Heidelberg, Germany}
+
+\usepackage{Sweave}
+\usepackage{hyperref}
+
+\begin{document}
+
+\maketitle 
+
+We would show how to use {\tt circlize} package to draw several rather interesting
+graphcis.
+
+The first one is a clock. The key function here is {\tt circos.axis} (figure \ref{fig:clock}).
+
+<<label=figclock, include=TRUE, echo=TRUE>>=
+library(circlize)
+factors = letters[1]
+par(mar = c(1, 1, 1, 1))
+circos.par("gap.degree" = 0, "cell.padding" = c(0, 0, 0, 0), "start.degree" = 90)
+circos.initialize(factors = factors, xlim = c(0, 12))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.border = NA)
+circos.axis(sector.index = "a", major.at = 0:12, labels = "", direction = "inside",
+    labels.cex = 1.5, major.tick.percentage = 0.3)
+circos.text(1:12, 0.5, 1:12, direction = "horizontal")
+arrows(0, 0, 0, 0.7)    
+arrows(0, 0, 0.4, 0)
+
+circos.clear()
+@
+
+\begin{figure}
+\begin{center}
+<<label=figclock, fig = TRUE, echo = FALSE>>=
+<<figclock>>
+@
+\end{center}
+\caption{A clock}
+\label{fig:clock}
+\end{figure}
+
+The second example is a dartboard. In the graphic, each cell is initialized with
+different colors (figure \ref{fig:dartboard}).
+
+<<label=figdartboard, include=TRUE, echo=TRUE>>=
+library(circlize)
+factors = 1:20
+par(mar = c(1, 1, 1, 1))
+circos.par("gap.degree" = 0, "cell.padding" = c(0, 0, 0, 0),
+    start.degree = 360/40, track.margin = c(0, 0), "clock.wise" = FALSE)
+circos.initialize(factors = factors, xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.col = "black",
+    track.height = 0.15)
+circos.trackText(rep(0.5, 20), rep(0.5, 20),
+    labels = c(13, 4, 18, 1, 20, 5, 12, 9, 14, 11,
+        8, 16, 7, 19, 3, 17, 2, 15, 10, 6),
+    factors = factors, col = "#EEEEEE", font = 2, direction = "horizontal")
+circos.trackPlotRegion(ylim = c(0, 1), factors = factors,
+    bg.col = rep(c("#E41A1C", "#4DAF4A"), 10), bg.border = "#EEEEEE",
+    track.height = 0.05)
+circos.trackPlotRegion(ylim = c(0, 1), factors = factors,
+    bg.col = rep(c("black", "white"), 10), bg.border = "#EEEEEE",
+    track.height = 0.275)
+circos.trackPlotRegion(ylim = c(0, 1), factors = factors,
+    bg.col = rep(c("#E41A1C", "#4DAF4A"), 10), bg.border = "#EEEEEE",
+    track.height = 0.05)
+circos.trackPlotRegion(ylim = c(0, 1), factors = factors, 
+    bg.col = rep(c("black", "white"), 10), bg.border = "#EEEEEE",
+    track.height = 0.375)
+draw.sector(center = c(0, 0), start = 0, end = 360, rou1 = 0.1,
+    col = "#4DAF4A", border = "#EEEEEE")
+draw.sector(center = c(0, 0), start = 0, end = 360, rou1 = 0.05, 
+    col = "#E41A1C", border = "#EEEEEE")
+
+circos.clear()
+@
+
+\begin{figure}
+\begin{center}
+<<label=figdartboard, fig = TRUE, echo = FALSE>>=
+<<figdartboard>>
+@
+\end{center}
+\caption{A dartboard}
+\label{fig:dartboard}
+\end{figure}
+
+The third example is Ba-gua (\url{https://en.wikipedia.org/wiki/Ba_gua}). The
+key functions are {\tt circos.rect} and {\tt draw.sector} (figure \ref{fig:bagua}).
+
+<<label=figbagua, include=TRUE, echo=TRUE>>=
+library(circlize)
+factors = letters[1:8]
+par(mar = c(1, 1, 1, 1))
+circos.par("default.track.height" = 0.15, "start.degree" = 22.5)
+circos.initialize(factors = factors, xlim = c(0, 1))
+
+circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA,
+    panel.fun = function(x, y) {
+        i = get.cell.meta.data("sector.numeric.index")
+        if(i %in% c(1, 3, 5, 6)) {
+            circos.rect(0,0,1,1, col = "black")
+        } else {
+            circos.rect(0,0,0.45,1, col = "black")
+            circos.rect(0.55,0,1,1, col = "black")
+        }
+    })
+
+circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA,
+    panel.fun = function(x, y, ...) {
+        i = get.cell.meta.data("sector.numeric.index")
+        if(i %in% c(1, 2, 5, 8)) {
+            circos.rect(0,0,1,1, col = "black")
+        } else {
+            circos.rect(0,0,0.45,1, col = "black")
+            circos.rect(0.55,0,1,1, col = "black")
+        }
+    })
+
+circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA, 
+    panel.fun = function(x, y, ...) {
+        i = get.cell.meta.data("sector.numeric.index")
+        if(i %in% c(1, 4, 5, 8)) {
+            circos.rect(0,0,1,1, col = "black")
+        } else {
+            circos.rect(0,0,0.45,1, col = "black")
+            circos.rect(0.55,0,1,1, col = "black")
+        }
+    })
+
+# draw taiji
+draw.sector(center = c(0, 0), start = -90, end = 90, rou1 = 0.4,
+    col = "black", border = "black")
+draw.sector(center = c(0, 0), start = 90, end = 270, rou1 = 0.4,
+    col = "white", border = "black")
+draw.sector(center = c(0, 0.2), start = 0, end = 360, rou1 = 0.2,
+    col = "white", border = "white")
+draw.sector(center = c(0, -0.2), start = 0, end = 360, rou1 = 0.2,
+    col = "black", border = "black")
+draw.sector(center = c(0, 0.2), start = 0, end = 360, rou1 = 0.05,
+    col = "black", border = "black")
+draw.sector(center = c(0, -0.2), start = 0, end = 360, rou1 = 0.05,    
+    col = "white", border = "white")
+
+circos.clear()
+@
+
+\begin{figure}
+\begin{center}
+<<label=figbagua, fig = TRUE, echo = FALSE>>=
+<<figbagua>>
+@
+\end{center}
+\caption{A Ba-gua}
+\label{fig:bagua}
+\end{figure}
+
+\end{document}

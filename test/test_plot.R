@@ -165,3 +165,29 @@ draw.sector(c(0, 0), start = 220, end = 270, rou1 = 0.4, rou2 = 0.6, col = "yell
 draw.sector(c(0, 0), start = 0, end = 400, rou1 = 0.4, rou2 = 0.3, col = "orange", border = "black")
 draw.sector(c(0, 0), start = 0, end = -400, rou1 = 0.2, col = "green", border = "black")
 
+
+#######################
+# test one sector
+factors = 1
+
+par(mar = c(1, 1, 1, 1))
+circos.par(cell.padding = c(0, 0, 0, 0), gap.degree = 0)
+circos.initialize(factors = factors, xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 1))
+circos.lines(c(0, 1), c(0, 1), col = "red")
+circos.clear()
+
+par(mar = c(1, 1, 1, 1))
+circos.par(cell.padding = c(0, 0, 0, 0), gap.degree = 0, start.degree = 90)
+circos.initialize(factors = factors, xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 1))
+circos.lines(c(0, 1), c(0, 1))
+circos.clear()
+
+par(mar = c(1, 1, 1, 1))
+circos.par(cell.padding = c(0, 0, 0, 0), gap.degree = 0, start.degree = -90)
+circos.initialize(factors = factors, xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 1))
+circos.lines(c(0, 1), c(0, 1))
+circos.clear()
+

@@ -12,10 +12,11 @@
 }
 \usage{
 circos.trackHist(factors, x, track.height = circos.par("default.track.height"),
-                   track.index = NULL, ylim = NULL, force.ylim = TRUE,
-                   col = ifelse(draw.density, "black", NA), border = "black", lty = par("lty"), lwd = par("lwd"),
-                   bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
-breaks = "Sturges", include.lowest = TRUE, right = TRUE, draw.density = FALSE)
+    track.index = NULL, ylim = NULL, force.ylim = TRUE,
+    col = ifelse(draw.density, "black", NA), border = "black", lty = par("lty"),
+    lwd = par("lwd"), bg.col = NA, bg.border = "black", bg.lty = par("lty"),
+    bg.lwd = par("lwd"), breaks = "Sturges", include.lowest = TRUE,
+    right = TRUE, draw.density = FALSE)
 }
 \arguments{
   \item{factors}{Factors which represent the categories of data}
@@ -49,10 +50,14 @@ par(mar = c(1, 1, 1, 1))
 x = rnorm(2600)
 factors = sample(letters, 2600, replace = TRUE)
 circos.initialize(factors = factors, x = x)
-circos.trackHist(factors = factors, x = x, track.height = 0.1, col = "#CCCCCC", border = "#CCCCCC")
-circos.trackHist(factors = factors, x = x, force.ylim = FALSE, track.height = 0.1, col = "#CCCCCC", border = "#CCCCCC")
-circos.trackHist(factors = factors, x = x, draw.density = TRUE, track.height = 0.1, col = "#CCCCCC", border = "#CCCCCC")
-circos.trackHist(factors = factors, x = x, draw.density = TRUE, force.ylim = FALSE, track.height = 0.1, col = "#CCCCCC", border = "#CCCCCC")
+circos.trackHist(factors = factors, x = x, track.height = 0.1, col = "#CCCCCC",
+    border = "#CCCCCC")
+circos.trackHist(factors = factors, x = x, force.ylim = FALSE, track.height = 0.1,
+    col = "#CCCCCC", border = "#CCCCCC")
+circos.trackHist(factors = factors, x = x, draw.density = TRUE, track.height = 0.1,
+    col = "#CCCCCC", border = "#CCCCCC")
+circos.trackHist(factors = factors, x = x, draw.density = TRUE, force.ylim = FALSE,
+    track.height = 0.1, col = "#CCCCCC", border = "#CCCCCC")
 
 circos.clear()
 }

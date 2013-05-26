@@ -12,8 +12,8 @@
 }
 \usage{
 circos.trackText(factors, x, y, labels, track.index = get.current.track.index(),
-                   direction = c("default", "vertical_left", "vertical_right", "horizontal"),
-adj = par("adj"), cex = 1, col = "black", font = par("font"))
+    direction = c("default", "vertical_left", "vertical_right", "horizontal"),
+    adj = par("adj"), cex = 1, col = "black", font = par("font"))
 }
 \arguments{
   \item{factors}{Factors which represent the categories of data}

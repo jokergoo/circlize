@@ -11,8 +11,9 @@
 
 }
 \usage{
-circos.updatePlotRegion(sector.index = get.current.sector.index(), track.index = get.current.track.index(),
-bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"))
+circos.updatePlotRegion(sector.index = get.current.sector.index(),
+    track.index = get.current.track.index(), bg.col = NA, bg.border = "black",
+    bg.lty = par("lty"), bg.lwd = par("lwd"))
 }
 \arguments{
   \item{sector.index}{Index for the sector}

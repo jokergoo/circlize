@@ -12,7 +12,7 @@
 }
 \usage{
 circos.trackPoints(factors = NULL, x, y, track.index = get.current.track.index(),
-pch = par("pch"), col = par("col"), cex = par("cex"))
+    pch = par("pch"), col = par("col"), cex = par("cex"))
 }
 \arguments{
   \item{factors}{Factors which represent the categories of data}

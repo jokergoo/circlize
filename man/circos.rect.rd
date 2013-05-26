@@ -11,8 +11,9 @@
 
 }
 \usage{
-circos.rect(xleft, ybottom, xright, ytop, sector.index = get.current.sector.index(), track.index = get.current.track.index(),
-col = NA, border = "black", lty = par("lty"), lwd = par("lwd"))
+circos.rect(xleft, ybottom, xright, ytop, sector.index = get.current.sector.index(),
+    track.index = get.current.track.index(),
+    col = NA, border = "black", lty = par("lty"), lwd = par("lwd"))
 }
 \arguments{
   \item{xleft}{x for the left bottom points}

@@ -26,7 +26,7 @@ circos.initialize(factors, x = NULL, xlim = NULL)
 
   If \code{xlim} is set, it should be a vector containing two numbers or a matrix with 2 columns.If \code{xlim} is a vector, it means all sector share the same \code{xlim}.If \code{xlim} is a matrix, the number of rows should be equal to the number of categories (number of levels)identified by \code{factors}, then each row of \code{xlim} corresponds to the data range for each sector.
 
-  The function finally call \code{\link[graphics]{plot}} and be readly to draw.
+  The function finally call \code{\link[graphics]{plot}} and be ready to draw.
 
 
 }

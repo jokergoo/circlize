@@ -12,7 +12,7 @@
 }
 \usage{
 get.cell.meta.data(name, sector.index = get.current.sector.index(), 
-track.index = get.current.track.index())
+    track.index = get.current.track.index())
 }
 \arguments{
   \item{name}{Only support one name at a time, see "details" section}

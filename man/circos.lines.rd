@@ -11,10 +11,11 @@
 
 }
 \usage{
-circos.lines(x, y, sector.index = get.current.sector.index(), track.index = get.current.track.index(),
-               col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
-               area = FALSE, area.baseline = get.cell.meta.data("ylim", sector.index, track.index)[1], border = "black",
-pt.col = "black", cex = par("cex"), pch = par("pch"))
+circos.lines(x, y, sector.index = get.current.sector.index(),
+    track.index = get.current.track.index(), col = ifelse(area, "grey", "black"),
+    lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE, area = FALSE,
+    area.baseline = get.cell.meta.data("ylim", sector.index, track.index)[1],
+    border = "black", pt.col = "black", cex = par("cex"), pch = par("pch"))
 }
 \arguments{
   \item{x}{Data points on x-axis}
@@ -58,9 +59,11 @@ circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "d", type = "s")
 circos.text(5, 9, "type = 's'", sector.index = "d")
 circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "e", area = TRUE)
 circos.text(5, 9, "type = 'l', area = TRUE", sector.index = "e")
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "f", type = "o", area = TRUE)
+circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "f", type = "o",
+    area = TRUE)
 circos.text(5, 9, "type = 'o', area = TRUE", sector.index = "f")
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "g", type = "s", area = TRUE)
+circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "g", type = "s",
+    area = TRUE)
 circos.text(5, 9, "type = 's', area = TRUE", sector.index = "g")
 circos.clear()
 }

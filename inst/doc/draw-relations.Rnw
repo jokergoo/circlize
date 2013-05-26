@@ -147,36 +147,36 @@ get_color = function(x,
                      colors = c("green", "black", "red"), # color points
                      fc = c(-5, 0, 5),                    # data points
                      gradient = function(x)x) {
-	
-	# change colors represented as strings to RGB space
-	col_section = sapply(colors, function(x) as.vector(col2rgb(x)))
-	col_section = t(col_section)
-	
-	x[x >= max(fc)] = max(fc)
-	x[x <= min(fc)] = min(fc)
+    
+    # change colors represented as strings to RGB space
+    col_section = sapply(colors, function(x) as.vector(col2rgb(x)))
+    col_section = t(col_section)
+    
+    x[x >= max(fc)] = max(fc)
+    x[x <= min(fc)] = min(fc)
     
     fc = sign(fc)*gradient(abs(fc))
     
     color = character(length(x))
     for(i in 1:length(x)) {
-		# NA values, grey color
+        # NA values, grey color
         if(!is.numeric(x[i])) {
             color[i] = rgb(128, 128, 128, maxColorValue = 255)
             next
         }
         value = sign(x[i])*(gradient(abs(x[i])))
-		
-		# find which interval the value belongs to 
-		interval = which(fc >= x[i])[1]
-		if(length(interval) == 0) {
-			interval = length(interval)
-		}
-		if(interval == 1) {
-			interval = 2
-		}
-		
-		# linear interpolation
-		col_num = (value - fc[interval])*(col_section[interval, ] - col_section[interval - 1, ]) / (fc[interval] - fc[interval - 1]) + col_section[interval, ]
+        
+        # find which interval the value belongs to 
+        interval = which(fc >= x[i])[1]
+        if(length(interval) == 0) {
+            interval = length(interval)
+        }
+        if(interval == 1) {
+            interval = 2
+        }
+        
+        # linear interpolation
+        col_num = (value - fc[interval])*(col_section[interval, ] - col_section[interval - 1, ]) / (fc[interval] - fc[interval - 1]) + col_section[interval, ]
         
         col_num = ifelse(col_num > 255, 255, col_num)
         col_num = ifelse(col_num < 0, 0, col_num)
@@ -211,7 +211,7 @@ for(i in 2:n) {
                     sector.index2,
                     c(sector.sum[j], sector.sum[j] + abs(m2[i, j])),
                     col = get_color(m2[i, j], colors = c("#1A9641", "#A6D96A", "#FFFFBF", "#FDAE61", "#D7191C"), fc = seq(-1, 1, length=5)), border = "grey",
-					lwd = 0.5)
+                    lwd = 0.5)
         sector.sum[i] = sector.sum[i] + abs(m2[i, j])
         sector.sum[j] = sector.sum[j] + abs(m2[i, j])
     }

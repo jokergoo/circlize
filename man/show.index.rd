@@ -29,11 +29,11 @@ circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
 for(l in letters[1:10]) {
-	circos.rect(0,0,10,10,sector.index = l, track.index = 2, col = "#FF000040")
+    circos.rect(0,0,10,10,sector.index = l, track.index = 2, col = "#FF000040")
 }
 
 for(l in 1:4) {
-	circos.rect(0,0,10,10,sector.index = "a", track.index = l, col = "#0000FF40")
+    circos.rect(0,0,10,10,sector.index = "a", track.index = l, col = "#0000FF40")
 }
 show.index()
 circos.clear()

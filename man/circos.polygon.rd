@@ -11,8 +11,9 @@
 
 }
 \usage{
-circos.polygon(x, y, sector.index = get.current.sector.index(), track.index = get.current.track.index(),
-col = NA, border = "black", lty = par("lty"), lwd = par("lwd"))
+circos.polygon(x, y, sector.index = get.current.sector.index(),
+    track.index = get.current.track.index(),
+    col = NA, border = "black", lty = par("lty"), lwd = par("lwd"))
 }
 \arguments{
   \item{x}{Data points on x-axis}

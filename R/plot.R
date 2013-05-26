@@ -648,7 +648,7 @@ circos.polygon = function(x, y, sector.index = get.current.sector.index(), track
 # -labels       Labels for each points
 # -sector.index Index for the sector
 # -track.index  Index for the track
-# -direction    Direction of the text, should be one of ``c("default", "vertical_left", "vertical_right", "horizontal", "arc")``.
+# -direction    Direction of the text, should be one of (``default``, ``vertical_left``, ``vertical_right``, ``horizontal``, ``arc``).
 #               How to choose text direction can be found in the vignette.
 # -adj          Adjustment for texts
 # -cex          Font size

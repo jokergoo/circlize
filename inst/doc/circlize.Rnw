@@ -999,7 +999,7 @@ and radius for two edges (or one edge) of the arc. An example is figure \ref{fig
 
 <<label=sectorhighlight, include=FALSE, echo=FALSE>>=
 par(mar = c(1,1,1,1))
-plot(0, 1, xlim = c(-1, 1), ylim = c(-1, 1), type = "n")
+plot(0, 1, xlim = c(-1, 1), ylim = c(-1, 1), type = "n", axes = FALSE, ann = FALSE)
 draw.sector(c(0, 0), start = 0, end = 360, rou1 = 1, col = NA, border = "black")
 draw.sector(c(0, 0), start = 30, end = 60, rou1 = 0.8, rou2 = 0.5, col = "red", border = "black")
 draw.sector(c(0, 0), start = 0, end = 400, rou1 = 0.4, rou2 = 0.3, col = "orange", border = "black")

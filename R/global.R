@@ -210,7 +210,8 @@ circos.initialize = function(factors, x = NULL, xlim = NULL) {
 		if(sector.range[i] == 0) {
 			stop(paste("range of the sector (", le[i] ,") cannot be 0.\n", sep = ""))
 		}
-	
+		
+		# it must ensure that end.degree should be bigger than start.degree (absolute value)
 		if(clock.wise) {
 			sector[["end.degree"]][i] = -gap.degree + ifelse(i == 1, start.degree, sector[["start.degree"]][i-1])
 			sector[["start.degree"]][i] =  sector[["end.degree"]][i] - sector.range[i]*unit

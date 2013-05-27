@@ -3,3 +3,7 @@
 - add ``track.margin``, ``cell.padding``, ``cell.xlim`` and ``cell.ylim`` in `get.cell.meta.data` function
 - figures in vignettes are all generated automatically
 - vignettes have been imporved
+
+0.0.3
+- vignettes has been improved
+- ``xplot`` in `get.cell.meta.data` is now corresponding to the data direction in the cell

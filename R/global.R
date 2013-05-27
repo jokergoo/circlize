@@ -100,6 +100,9 @@ circos.par = function (...) {
 				warning(paste("'", name[i], "' can only be modified before `circos.initialize`.\n", sep = ""))
                 next
 			}
+			if(name[i] == "gap.degree" && (args[[ name[i] ]] < 0 || args[[ name[i] ]] >= 360)) {
+				stop("`gap.degree` should only in [0, 360).\n")
+			}
             .CIRCOS.PAR[[ name[i] ]] = args[[ name[i] ]]
 			
         }
@@ -160,44 +163,51 @@ circos.initialize = function(factors, x = NULL, xlim = NULL) {
     
     # initialize .SECTOR.DATA
     # you can think it as the global x axis configuration
-    # calculate start and end value for each sectors
+    # calculate min and max value for each sectors
     # there are several ways
-    if(is.vector(x)) {
-    
-        if(length(x) != length(factors)) {
-            stop("Length of data and length of factors differ.\n")
-        }
-        start.value = tapply(x, factors, min)
-        end.value = tapply(x, factors, max)
-    } else if(is.vector(xlim)) {
+    if(is.vector(xlim)) {
         if(length(xlim) != 2) {
-            stop("xlim should 2")
+            stop("xlim should be length of 2.\n")
         }    
         
-        start.value = rep(xlim[1], length(le))
-        end.value = rep(xlim[2], length(le))
+        min.value = rep(xlim[1], length(le))
+        max.value = rep(xlim[2], length(le))
     } else if(is.matrix(xlim)) {
         if(dim(xlim)[1] != length(le) || dim(xlim)[2] != 2) {
             stop()
         }
         
-        start.value = apply(xlim, 1, function(x) x[1])
-        end.value = apply(xlim, 1, function(x) x[2])
-    }
+        min.value = apply(xlim, 1, function(x) x[1])
+        max.value = apply(xlim, 1, function(x) x[2])
+    } else if(is.vector(x)) {
+    
+        if(length(x) != length(factors)) {
+            stop("Length of data and length of factors differ.\n")
+        }
+        min.value = tapply(x, factors, min)
+        max.value = tapply(x, factors, max)
+    } else {
+		stop("You should specify either `x` or `xlim`.\n")
+	}
     
     
     cell.padding = circos.par("cell.padding")
     
-    sector.range = end.value - start.value
-    start.value = start.value - cell.padding[2]*sector.range
-    end.value = end.value + cell.padding[4]*sector.range
+	# range for sectors
+    sector.range = max.value - min.value
+    min.value = min.value - cell.padding[2]*sector.range  # real min value
+    max.value = max.value + cell.padding[4]*sector.range  # real max value
     n.sector = length(le)
     
     sector = vector("list", 5)
-    names(sector) = c("factor", "start.value", "end.value", "start.degree", "end.degree")
+	# for each sector, `start.degree always referto `min.value` and `end.degree` always
+	# refer to `max.value` in a reverse clockwise fasion. So here `start.degree` and 
+	# `end.degree` also correspond to the direction.
+	# So in the polar coordinate, `start.degree` would be larger than `end.degree`
+    names(sector) = c("factor", "min.value", "max.value", "start.degree", "end.degree")
     sector[["factor"]] = le
-    sector[["start.value"]] = start.value
-    sector[["end.value"]] = end.value
+    sector[["min.value"]] = min.value
+    sector[["max.value"]] = max.value
     
     gap.degree = circos.par("gap.degree")
 	start.degree = circos.par("start.degree")
@@ -205,27 +215,24 @@ circos.initialize = function(factors, x = NULL, xlim = NULL) {
     
     # degree per data
     unit = (360 - gap.degree*n.sector) / sum(sector.range)
+	if(unit <= 0) {
+		stop("Maybe your `gap.degree` is too large that there is not space to allocate sectors.\n")
+	}
     for(i in seq_len(n.sector)) {
 		
 		if(sector.range[i] == 0) {
-			stop(paste("range of the sector (", le[i] ,") cannot be 0.\n", sep = ""))
+			stop(paste("Range of the sector (", le[i] ,") cannot be 0.\n", sep = ""))
 		}
 		
-		# it must ensure that end.degree should be bigger than start.degree (absolute value)
+		# since data coordinate is reverse clock wise, start degree is larger than end.degree
 		if(clock.wise) {
-			sector[["end.degree"]][i] = -gap.degree + ifelse(i == 1, start.degree, sector[["start.degree"]][i-1])
-			sector[["start.degree"]][i] =  sector[["end.degree"]][i] - sector.range[i]*unit
+			sector[["start.degree"]][i] = -gap.degree + ifelse(i == 1, start.degree, sector[["end.degree"]][i-1])
+			sector[["end.degree"]][i] =  sector[["start.degree"]][i] - sector.range[i]*unit
 		} else {
-			sector[["start.degree"]][i] =  gap.degree + ifelse(i == 1, start.degree, sector[["end.degree"]][i-1])
-			sector[["end.degree"]][i] = sector[["start.degree"]][i] + sector.range[i]*unit   
+			sector[["end.degree"]][i] =  gap.degree + ifelse(i == 1, start.degree, sector[["start.degree"]][i-1])
+			sector[["start.degree"]][i] = sector[["end.degree"]][i] + sector.range[i]*unit   
 		}
     }
-	if(clock.wise) {
-		for(i in seq_len(n.sector)) {
-			sector[["start.degree"]][i] = sector[["start.degree"]][i] + 360
-			sector[["end.degree"]][i] = sector[["end.degree"]][i] + 360
-		}
-	}
     
     sector = as.data.frame(sector)
     .SECTOR.DATA = sector
@@ -401,44 +408,26 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
                               track.index = get.current.track.index()) {
 	current.sector.data = get.sector.data(sector.index)
 	current.cell.data = get.cell.data(sector.index, track.index)
-	cell.padding = circos.par("cell.padding")
+	cell.padding = current.cell.data$cell.padding
 	
 	if(length(name) != 1) {
 		stop("``name`` only have length 1.\n")
 	}
 	
 	if(name == "xlim") {
-		xlim = numeric(2)
-		xlim[1] = ((1 + cell.padding[4])*current.cell.data$xlim[1] + cell.padding[2]*current.cell.data$xlim[2]) /
-		          (1 + cell.padding[2] + cell.padding[4])
-		xlim[2] = (cell.padding[4]*current.cell.data$xlim[1] + (1 + cell.padding[2])*current.cell.data$xlim[2]) /
-		          (1 + cell.padding[2] + cell.padding[4])
-		return(xlim)
+		return(current.cell.data$xlim)
 	} else if(name == "ylim") {
-		ylim = numeric(2)
-		ylim[1] = ((1 + cell.padding[3])*current.cell.data$ylim[1] + cell.padding[1]*current.cell.data$ylim[2]) /
-		          (1 + cell.padding[1] + cell.padding[3])
-		ylim[2] = (cell.padding[3]*current.cell.data$ylim[1] + (1 + cell.padding[1])*current.cell.data$ylim[2]) /
-		          (1 + cell.padding[1] + cell.padding[3])
-		return(ylim)
+		return(current.cell.data$ylim)
 	} else if(name == "xrange") {
-		xlim = numeric(2)
-		xlim[1] = ((1 + cell.padding[4])*current.cell.data$xlim[1] + cell.padding[2]*current.cell.data$xlim[2]) /
-		          (1 + cell.padding[2] + cell.padding[4])
-		xlim[2] = (cell.padding[4]*current.cell.data$xlim[1] + (1 + cell.padding[2])*current.cell.data$xlim[2]) /
-		          (1 + cell.padding[2] + cell.padding[4])
+		xlim = current.cell.data$xlim
 		return(xlim[2] - xlim[1])
 	} else if(name == "yrange") {
-		ylim = numeric(2)
-		ylim[1] = ((1 + cell.padding[3])*current.cell.data$ylim[1] + cell.padding[1]*current.cell.data$ylim[2]) /
-		          (1 + cell.padding[1] + cell.padding[3])
-		ylim[2] = (cell.padding[3]*current.cell.data$ylim[1] + (1 + cell.padding[1])*current.cell.data$ylim[2]) /
-		          (1 + cell.padding[1] + cell.padding[3])
+		ylim = current.cell.data$ylim
 		return(ylim[2] - ylim[1])
 	} else if(name == "cell.xlim") {
-		return(current.cell.data$xlim)
+		return(current.cell.data$cell.xlim)
 	} else if(name == "cell.ylim") {
-		return(current.cell.data$ylim)
+		return(current.cell.data$cell.ylim)
 	} else if(name == "sector.numeric.index") {
 		return(which(get.all.sector.index() == sector.index))
 	} else if(name == "sector.index") {

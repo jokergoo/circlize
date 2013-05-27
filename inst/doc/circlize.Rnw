@@ -994,17 +994,43 @@ circos.clear()
 \subsection{Other functions}
 {\tt draw.sector} can be used to draw sectors or part of a ring. This is useful if you want to hightlight some part of your circos plot.
 As you can think, this function need argument of the position of circle center, the start degree and the end degree for the sector, 
-and radius for two edges (or one edge) of the arc. An example is figure \ref{fig:sectorhighlight}.
+and radius for two edges (or one edge) of the arc. These information can be obtained by {\tt get.cell.meta.data}. In {\tt get.cell.meta.data},
+{\tt xplot} is the start and end degree for the cell and {\tt yplot} is the top radius and the bottom radius for the top and bottom edges
+of the cell. An example is as follows and see \ref{fig:sectorhighlight}.
 
 
-<<label=sectorhighlight, include=FALSE, echo=FALSE>>=
+<<label=sectorhighlight, include=TRUE, echo=TRUE>>=
+library(circlize)
 par(mar = c(1,1,1,1))
-plot(0, 1, xlim = c(-1, 1), ylim = c(-1, 1), type = "n", axes = FALSE, ann = FALSE)
-draw.sector(c(0, 0), start = 0, end = 360, rou1 = 1, col = NA, border = "black")
-draw.sector(c(0, 0), start = 30, end = 60, rou1 = 0.8, rou2 = 0.5, col = "red", border = "black")
-draw.sector(c(0, 0), start = 0, end = 400, rou1 = 0.4, rou2 = 0.3, col = "orange", border = "black")
-draw.sector(c(0, 0), start = 0, end = -400, rou1 = 0.2, col = "green", border = "black")
-draw.sector(c(0, 0), start = 120, end = 200, rou1 = 0.9, col = "#FF000040", border = "black")
+factors = letters[1:8]
+circos.par(gap.degree = 5, track.margin = c(0.05, 0.05))
+circos.initialize(factors = factors, xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 1), bg.col = "pink")
+circos.trackPlotRegion(ylim = c(0, 1), bg.col = "orange")
+
+xplot.a = get.cell.meta.data("xplot", sector.index = "a", track.index = 1)
+yplot.a = get.cell.meta.data("yplot", sector.index = "a", track.index = 1)
+margin.a = get.cell.meta.data("track.margin", sector.index = "a", track.index = 1)
+gap.degree = circos.par("gap.degree")
+draw.sector(center = c(0, 0), start.degree = xplot.a[1] - gap.degree/2,
+    end.degree = xplot.a[2] + gap.degree/2,
+    rou1 = yplot.a[2]+ margin.a[2], border = NA, col = "#FF000040")
+
+draw.sector(center = c(0, 0), start.degree = 0, end.degree = 360,
+	rou1 = yplot.a[2]+ margin.a[2], rou2 = yplot.a[1] - margin.a[1],
+	border = NA, col = "#0000FF40")
+
+xplot.d = get.cell.meta.data("xplot", sector.index = "d", track.index = 1)
+yplot.d2 = get.cell.meta.data("yplot", sector.index = "d", track.index = 2)
+margin.d2 = get.cell.meta.data("track.margin", sector.index = "d", track.index = 2)
+xplot.e = get.cell.meta.data("xplot", sector.index = "e", track.index = 1)
+
+draw.sector(center = c(0, 0), start.degree = xplot.e[2] - gap.degree/2,
+    end.degree = xplot.d[1] + gap.degree/2,
+    rou1 = yplot.d2[2]+ margin.d2[2], rou2 = yplot.d2[1] - margin.d2[1],
+    border = NA, col = "#00FF0040")
+show.index()
+circos.clear()
 @
 
 \begin{figure}

@@ -1,2 +1,4 @@
 - testing code, especially in `utils.R`
 - or maybe, degree addition and substraction should be manuplated by `degree.add` and `degree.minus`?
+- how defind start.degree and end.degree in a cell. In the polar coordinate, and in the data coordinate,
+  the direction is oppsite....

@@ -61,23 +61,27 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
     panel.fun = function(x, y) {NULL}) {
     
+	# if there is no factors, default are all the available factors
 	if(is.null(factors)) {
 		factors = get.all.sector.index()
 	}
 	
-    # basic check here
-    # if ``ylim`` set then do not need ``y``
+    # although ``x`` and ``y`` are not necessary, but once they are set, they must
+	# have same length as ``factors``
     if(!is.null(y) && length(y) != length(factors) ||
 	   !is.null(x) && length(x) != length(factors)) {
         stop("Length of data and length of factors differ.\n")
     }
-        
+    
+	# need to be a factor
     if(!is.factor(factors)) {
         factors = factor(factors)
     }
-        
-    if(length(setdiff(levels(factors), get.all.sector.index()))) {
-        stop("Factors name should be all in existed sector index.\n")
+    
+	# check whether there are some categories that are not in the circle
+	setdiff.factors = setdiff(levels(factors), get.all.sector.index())
+    if(length(setdiff.factors)) {
+        stop(paste("Cannot find these categories in existed sectors:", paste(setdiff.factors, collpase = ", "), ".\n", sep = ""))
     }
     
     if(is.null(track.index)) {
@@ -85,9 +89,9 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
         last.track.index = get.max.track.index()
         set.current.track.index(last.track.index + 1)
         track.index = get.current.track.index()
-    } else {
+    } else {   # update an existed track
 		if(track.index > get.max.track.index() + 1) {
-			stop("Wrong track index.\n")
+			stop(paste("Wrong track index: it should be no more than ", get.max.track.index(), "\n", sep = ""))
 		}
 		if(track.index <= get.max.track.index()) {
 			if(! is.null(track.height)) {
@@ -106,8 +110,12 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
     bg.lty = recycle.with.levels(bg.lty, le)
     bg.lwd = recycle.with.levels(bg.lwd, le)
 	
-     # whether force ylim for all cells in a track same
+     # whether to force ylim for all cells in a track same
     if(is.null(ylim)) {
+		if(is.null(y)) {
+			stop("You have to specify either `y` or `ylim`.\n")
+		}
+		
 		if(force.ylim) {
 			y.range = range(y)
 			y.range = matrix(rep(y.range, nlevel), ncol = 2, byrow = TRUE)
@@ -117,12 +125,19 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 		}
 	}
 	
-    track.start = get.track.end.position(track.index - 1) - circos.par("track.margin")[1]
-        
+	if(track.index <= get.max.track.index()) {  # if just update a whole track
+		track.start = get.cell.data(factors[1], track.index)$track.start
+	} else {
+		track.start = get.track.end.position(track.index - 1) - circos.par("track.margin")[1]
+    }
+	
     # check whether there is enough space for the new track and whether the new space
-    # overlap with other tracks
-    check.track.position(track.index, track.start, track.height)
-        
+    # overlap with other tracks. Only for creatation mode.
+	if(track.index > get.max.track.index()) {
+		check.track.position(track.index, track.start, track.height)
+    }
+	
+	# if `ylim` is specified
     if(!is.null(ylim)) {
 		if(is.vector(ylim) && length(ylim) == 2) {
 			ylim = matrix(rep(ylim, length(le)), ncol = 2, byrow = TRUE)
@@ -133,28 +148,20 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 		}
     } 
         
-    # now for each factor
+    # now for each factor, create plotting region
     for(i in seq_along(le)) {
-            
-        sector.data = get.sector.data(le[i])
-        xlim = c(sector.data["start.value"], sector.data["end.value"])
-		names(xlim) = NULL
-		
-		cell.padding = circos.par("cell.padding")
-		yl = numeric(2)
+		# `ylim` is prior to `y`
         if(is.null(ylim)) {
-            yl[1] = y.range[i, 1] - (y.range[i, 2] - y.range[i, 1])*cell.padding[1]
-            yl[2] = y.range[i, 2] + (y.range[i, 2] - y.range[i, 1])*cell.padding[3]
+			ylim2 = y.range[i, ]
         } else {
-			yl[1] = ylim[i, 1] - (ylim[i, 2] - ylim[i, 1])*cell.padding[1]
-            yl[2] = ylim[i, 2] + (ylim[i, 2] - ylim[i, 1])*cell.padding[3]
+			ylim2 = ylim[i, ]
 		}
         
         # create plotting region for single cell
         circos.createPlotRegion(track.start = track.start,
                               track.height = track.height, sector.index = le[i],
                               track.index = track.index,
-                              xlim = xlim, ylim = yl, bg.col = bg.col[i],
+                              ylim = ylim2, bg.col = bg.col[i],
                               bg.border = bg.border[i], bg.lty = bg.lty[i], bg.lwd = bg.lwd[i])
 		
 		l = factors == le[i]
@@ -181,16 +188,12 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 	if(length(le2)) {
 		for(i in seq_along(le2)) {
             
-			sector.data = get.sector.data(le2[i])
-			xlim = c(sector.data["start.value"], sector.data["end.value"])
-			names(xlim) = NULL
-			
-			# ylim is the most recent ``yl``
+			# ylim is the most recent ``ylim2``
 			circos.createPlotRegion(track.start = track.start,
 								  track.height = track.height, sector.index = le2[i],
 								  track.index = track.index,
-								  xlim = xlim, ylim = yl, bg.col = "white",
-								  bg.border = "white")
+								  ylim = ylim2, bg.col = NA,
+								  bg.border = NA)
 		}
 	}
 	
@@ -221,39 +224,50 @@ circos.updatePlotRegion = function(sector.index = get.current.sector.index(), tr
         stop("You can only update an existed cell.\n")
     }
     
-    cell.data = get.cell.data(sector.index, track.index)
-    xlim = cell.data$xlim
-    ylim = cell.data$ylim
+    cell.xlim = get.cell.meta.data("cell.xlim", sector.index = sector.index, track.index = track.index)
+    cell.ylim = get.cell.meta.data("cell.ylim", sector.index = sector.index, track.index = track.index)
     
     set.current.sector.index(sector.index)
     set.current.track.index(track.index)
     
     # cover the exsited region by fill with white
-    circos.rect(xlim[1], ylim[1],
-        xlim[2], ylim[2], 
+    circos.rect(cell.xlim[1], cell.ylim[1],
+        cell.xlim[2], cell.ylim[2], 
         sector.index = sector.index, track.index = track.index,
         col = "white", border = "white",
         lty = 1, lwd = 1)
-    circos.rect(xlim[1], ylim[1],
-        xlim[2], ylim[2], 
+    circos.rect(cell.xlim[1], cell.ylim[1],
+        cell.xlim[2], cell.ylim[2], 
         sector.index = sector.index, track.index = track.index,
         col = bg.col, border = bg.border,
         lty = bg.lty, lwd = bg.lwd)
     return(invisible(NULL))
 }
 
-# internal
+# internal, so we do not need to check arguments
 circos.createPlotRegion = function(track.start, track.height = circos.par("default.track.height"),
-    sector.index = get.current.sector.index(), track.index = get.current.track.index(), xlim, ylim,
+    sector.index = get.current.sector.index(), track.index = get.current.track.index(), ylim,
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd")) {
-    
-    # when creating the plotting region for a single cell, ``track.start``, ``track.height``,
-    # ``xlim`` and ``ylim`` are already set and because it's done internally, so there is no
-    # need to check these arguments.
+
+	sector.data = get.sector.data(sector.index)
+    cell.xlim = c(sector.data["min.value"], sector.data["max.value"])
+	names(cell.xlim) = NULL
+	
+	cell.padding = circos.par("cell.padding")
+	
+	xlim = numeric(2)
+	xlim[1] = ((1 + cell.padding[4])*cell.xlim[1] + cell.padding[2]*cell.xlim[2]) / (1 + cell.padding[2] + cell.padding[4])
+	xlim[2] = (cell.padding[4]*cell.xlim[1] + (1 + cell.padding[2])*cell.xlim[2]) / (1 + cell.padding[2] + cell.padding[4])
+	
+	yl[1] = ylim[1] - (ylim[2] - ylim[1])*cell.padding[1]
+    yl[2] = ylim[2] + (ylim[2] - ylim[1])*cell.padding[3]
+	
     set.cell.data(sector.index = sector.index,
         track.index = track.index,
-        xlim = xlim,
-        ylim = ylim,
+		xlim = xlim,
+		ylim = ylim,
+        cell.xlim = cell.xlim,
+        cell.ylim = yl,
         track.start = track.start,
         track.height = track.height,
 		track.margin = circos.par("track.margin"),
@@ -262,9 +276,8 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("defau
     set.current.sector.index(sector.index)
     
     # The plotting region is a rectangle
-    circos.rect(xlim[1], ylim[1], sector.index = sector.index, track.index = track.index,
-        xlim[2], ylim[2], col = bg.col, border = bg.border,
-        lty = bg.lty, lwd = bg.lwd)
+    circos.rect(cell.xlim[1], cell.ylim[1], cell.xlim[2], cell.ylim[2], sector.index = sector.index, track.index = track.index,
+        col = bg.col, border = bg.border, lty = bg.lty, lwd = bg.lwd)
     return(invisible(NULL))
 }
 
@@ -397,7 +410,7 @@ circos.trackPoints = function(factors = NULL, x, y, track.index = get.current.tr
 circos.lines = function(x, y, sector.index = get.current.sector.index(), track.index = get.current.track.index(),
     col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
 	area = FALSE, area.baseline = get.cell.meta.data("ylim", sector.index, track.index)[1], border = "black",
-    pt.col = "black", cex = par("cex"), pch = par("pch")) {
+    pt.col = par("col"), cex = par("cex"), pch = par("pch")) {
     
     if(type == "l") {
         
@@ -481,7 +494,7 @@ circos.lines = function(x, y, sector.index = get.current.sector.index(), track.i
 # -straight     whether draw straight lines between points
 # -area         whether to fill the area below the lines. If it is set to ``TRUE``, ``col`` controls the filled color
 #               in the area and ``border`` controls the color of the line.
-# -area.baseline the base line to draw area under lines, default is the minimal of y-range
+# -area.baseline the base line to draw area under lines, default is ``NA`` which means the baseline for each cell would be calculated seperately
 # -border       color for border of the area
 # -pt.col       if ``type`` is "o", points color
 # -cex          if ``type`` is "o", points size
@@ -494,7 +507,7 @@ circos.lines = function(x, y, sector.index = get.current.sector.index(), track.i
 circos.trackLines = function(factors, x, y, track.index = get.current.track.index(),
     col = "black", lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
 	area = FALSE, area.baseline = NA, border = "black",
-    pt.col = "black", cex = par("cex"), pch = par("pch")) {
+    pt.col = par("col"), cex = par("cex"), pch = par("pch")) {
     
     # basic check here
     if(length(x) != length(factors) || length(y) != length(factors)) {
@@ -829,7 +842,7 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	
 	direction = direction[1]
 	if(! direction %in% c("outside", "inside")) {
-		stop("direction should be in 'outside' and 'inside'.\n")
+		stop("Direction should be in 'outside' and 'inside'.\n")
 	}
 	
 	xlim = get.cell.meta.data("xlim", sector.index, track.index)
@@ -838,13 +851,15 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	sector.data = get.sector.data(sector.index)
 	
 	if(h == "top") {
-		h = cell.data$ylim[2]
+		h = get.cell.meta.data("cell.ylim", sector.index, track.index)[2]
 	} else if(h == "bottom") {
-		h = cell.data$ylim[1]
+		h = get.cell.meta.data("cell.ylim", sector.index, track.index)[1]
 	}
 	
 	if(is.null(major.at)) {
-		n = floor(abs(sector.data["end.degree"] - sector.data["start.degree"])*(1-circos.par("cell.padding")[2]-circos.par("cell.padding")[4]) / 5)
+		# every 10 degrees there is a major tick. This is hard coded.
+		# start.degree - end.degree is always a positive value.
+		n = floor(abs(sector.data["start.degree"] - sector.data["end.degree"]) / 10)
 		major.at = pretty(xlim, n = n)
 	}
 	
@@ -857,7 +872,6 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 		}
 	}
 	
-	#xlim2 = cell.data$xlim
 	xlim2 = xlim
 	circos.lines(c(ifelse(major.at[1] >= xlim2[1], major.at[1], xlim2[1]),
 	               ifelse(major.at[length(major.at)] <= xlim2[2], major.at[length(major.at)], xlim2[2])), 
@@ -962,13 +976,13 @@ circos.link = function(sector.index1,
     sector.data2 = get.sector.data(sector.index2)
     
     if(length(point1) == 1 && length(point2) == 1) {
-        theta1 = sector.data1["end.degree"] - (point1 - sector.data1["start.value"]) / (sector.data1["end.value"] - sector.data1["start.value"]) *
-                 (sector.data1["end.degree"] - sector.data1["start.degree"])
+        theta1 = sector.data1["start.degree"] - (point1 - sector.data1["min.value"]) / (sector.data1["max.value"] - sector.data1["min.value"]) *
+                 (sector.data1["start.degree"] - sector.data1["end.degree"])
         
-        theta2 = sector.data2["end.degree"] - (point2 - sector.data2["start.value"]) / (sector.data2["end.value"] - sector.data2["start.value"]) *
-                 (sector.data2["end.degree"] - sector.data2["start.degree"])
+        theta2 = sector.data2["start.degree"] - (point1 - sector.data2["min.value"]) / (sector.data2["max.value"] - sector.data2["min.value"]) *
+                 (sector.data2["start.degree"] - sector.data2["end.degree"])
         
-        d = rotate.parabola(theta1 = theta1, theta2 = theta2, rou1 = rou, rou.ratio = top.ratio)
+        d = rotate.parabola(theta1, theta2, rou1 = rou, rou.ratio = top.ratio)
         lines(d, col = col, lwd = lwd, lty = lty)
     } else {
         if(length(point1) == 1) {
@@ -983,15 +997,15 @@ circos.link = function(sector.index1,
 		point1 = sort(point1)
 		point2 = sort(point2)
         
-        theta11 = sector.data1["end.degree"] - (point1[1] - sector.data1["start.value"]) / (sector.data1["end.value"] - sector.data1["start.value"]) *
-            (sector.data1["end.degree"] - sector.data1["start.degree"])
-        theta12 =sector.data1["end.degree"] - (point1[2] - sector.data1["start.value"]) / (sector.data1["end.value"] - sector.data1["start.value"]) *
-            (sector.data1["end.degree"] - sector.data1["start.degree"])
+        theta11 = sector.data1["start.degree"] - (point1[1] - sector.data1["min.value"]) / (sector.data1["max.value"] - sector.data1["min.value"]) *
+            (sector.data1["start.degree"] - sector.data1["end.degree"])
+        theta12 = sector.data1["start.degree"] - (point1[2] - sector.data1["min.value"]) / (sector.data1["max.value"] - sector.data1["min.value"]) *
+            (sector.data1["start.degree"] - sector.data1["end.degree"])
         
-        theta21 = sector.data2["end.degree"] - (point2[1] - sector.data2["start.value"]) / (sector.data2["end.value"] - sector.data2["start.value"]) *
-            (sector.data2["end.degree"] - sector.data2["start.degree"])
-        theta22 = sector.data2["end.degree"] - (point2[2] - sector.data2["start.value"]) / (sector.data2["end.value"] - sector.data2["start.value"]) *
-            (sector.data2["end.degree"] - sector.data2["start.degree"])
+        theta21 = sector.data2["start.degree"] - (point2[1] - sector.data2["min.value"]) / (sector.data2["max.value"] - sector.data2["min.value"]) *
+            (sector.data2["start.degree"] - sector.data2["end.degree"])
+        theta22 = sector.data2["start.degree"] - (point2[2] - sector.data2["min.value"]) / (sector.data2["max.value"] - sector.data2["min.value"]) *
+            (sector.data2["start.degree"] - sector.data2["end.degree"])
         
         # line from theta11, theta21 and line from theta12, theta22
         # uint circle
@@ -1133,9 +1147,9 @@ circos.trackHist = function(factors, x, track.height = circos.par("default.track
 	
 	l3 = logical(0)
 	for(i in seq_along(le)) {
-		cell.xlim = get.cell.meta.data("xlim", sector.index = le[i], track.index = track.index)
+		xlim = get.cell.meta.data("xlim", sector.index = le[i], track.index = track.index)
 		l = fa == le[i]
-		l2 = xx[l] >= cell.xlim[1] & xx[l] <= cell.xlim[2]
+		l2 = xx[l] >= xlim[1] & xx[l] <= xlim[2]
 		l3 = c(l3, l2)
 	}
 	
@@ -1158,9 +1172,9 @@ circos.trackHist = function(factors, x, track.height = circos.par("default.track
             nx = xx[l]
             ny = yy[l]
 
-            cell.data = get.cell.data(le[i], track.index)
-            nx[nx < cell.data$xlim[1]] = cell.data$xlim[1]    
-            nx[nx > cell.data$xlim[2]] = cell.data$xlim[2]
+            cell.xlim = get.cell.meta.data("cell.xlim", le[i], track.index)
+            nx[nx < cell.xlim[1]] = cell.xlim[1]    
+            nx[nx > cell.xlim[2]] = cell.xlim[2]
             
             for(j in seq_along(nx)) {
                 if(j == 1) {
@@ -1258,7 +1272,7 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 # == details
 # If the interval between ``start`` and ``end`` (larger or equal to 360 or smaller or equal to -360)
 # it would draw a full circle or ring. If ``rou2`` is set, it would draw part of a ring.
-draw.sector = function(center = c(0, 0), start.degree=0, end.degree=360, rou1 = 1, rou2 = NULL, col=NA, border = "black") {
+draw.sector = function(center = c(0, 0), start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL, col=NA, border = "black") {
 
 	if(end.degree < start.degree) {
 		tmp = end.degree
@@ -1271,19 +1285,25 @@ draw.sector = function(center = c(0, 0), start.degree=0, end.degree=360, rou1 = 
 		end.degree = 360
 	}
 	
+	# the following codes ensure that end.degree is larger than start.degree and the minus is less than or equal to 360
+	
     d1 = NULL
-	l1 = ((end.degree - start.degree))/180*pi*rou1
+	
+	# calculate the number of segments of the up arc
+	l1 = as.radian(end.degree - start.degree) * rou1
 	ncut1 = l1/ (2*pi/circos.par("unit.circle.segments"))
     ncut1 = floor(ncut1)
 	ncut1 = ifelse(ncut1 < 2, 2, ncut1)
 	
+	# d1 is from the start.degree to end.degree
     for (i in c(0, seq_len(ncut1))) {
         d1 = rbind(d1, c(start.degree + (end.degree - start.degree)/ncut1*i, rou1))
     }
 	
 	d2 = NULL
 	if(!is.null(rou2)) {
-		l2 = (end.degree - start.degree)/180*pi*rou2
+		# calculate the number of segments of the bottom arc
+		l2 = as.radian(end.degree - start.degree) * rou2
 		ncut2 = l2/ (2*pi/circos.par("unit.circle.segments"))
 		ncut2 = floor(ncut2)
 		ncut2 = ifelse(ncut2 < 2, 2, ncut2)
@@ -1296,12 +1316,13 @@ draw.sector = function(center = c(0, 0), start.degree=0, end.degree=360, rou1 = 
 
 	if(is.null(rou2)) {
 		m1 = polar2Cartesian(d1)
-		if(end.degree - start.degree == 360) {
+		if(end.degree - start.degree == 360) {  # it is a circle
 			m = m1
 		} else {
 			m = rbind(m1, c(0, 0))
 		}
 		
+		# and shift to the center
 		m[, 1] = m[, 1] + center[1]
 		m[, 2] = m[, 2] + center[2]
 		polygon(m, col = col, border = border)
@@ -1309,7 +1330,7 @@ draw.sector = function(center = c(0, 0), start.degree=0, end.degree=360, rou1 = 
 		m1 = polar2Cartesian(d1)
 		m2 = polar2Cartesian(d2)
 		
-		if(end.degree - start.degree == 360) {
+		if(end.degree - start.degree == 360) {  # a ring
 			m = rbind(m1, m2)
 			
 			m[, 1] = m[, 1] + center[1]

@@ -5,8 +5,8 @@ circlize = function(x, y, sector.index = get.current.sector.index(), track.index
     cell.data = get.cell.data(sector.index, track.index)
     ylim = cell.data$ylim
         
-    theta = sector.data["end.degree"] - (x - sector.data["start.value"]) / (sector.data["end.value"] - sector.data["start.value"]) *
-            (sector.data["end.degree"] - sector.data["start.degree"])
+    theta = sector.data["start.degree"] - (x - sector.data["end.value"]) / (sector.data["max.value"] - sector.data["min.value"]) *
+            (sector.data["start.degree"] - sector.data["end.degree"])
         
     y.range = ylim[2] - ylim[1]
         
@@ -33,21 +33,20 @@ reverse.circlize = function(theta, rou, sector.index, track.index) {
 	return(m)
 }
 
-degree.add = function(theta1, theta2) {
-    return((theta1 + theta2) %% 360)
+# if restrict is TRUE, then value should belong to [0, 360)
+degree.add = function(theta1, theta2, restrict = FALSE) {
+	if(restrict) {
+		return((theta1 + theta2) %% 360)
+	} else {
+		return(theta1 + theta2)
+	}
 }
 
-# reverse clockwise
-# should only deal with start.degree and end.degree
-degree.minus = function(to, from, min.zero = TRUE) {
-	if(min.zero) {
+degree.minus = function(to, from, restrict = FALSE) {
+	if(restrict) {
 		return((to - from) %% 360)
 	} else {
-		if((to - from) %% 360 == 0) {
-			return(360)
-		} else {
-			return((to - from) %% 360)
-		}
+		return(to - from)
 	}
 }
 
@@ -255,16 +254,25 @@ is.points.ordered.on.circle = function(theta, clock.wise = FALSE) {
 
 arc.points = function(theta1, theta2, rou, clock.wise = FALSE) {
     n = 100
-        if(clock.wise) {
-            theta = degree.seq(theta2, theta1, length.out = n)
-    } else {
-            theta = degree.seq(theta1, theta2, length.out = n)
-     }
-    x = rou * cos(theta*pi/180)
-    y = rou * sin(theta*pi/180)
     if(clock.wise) {
-            x = rev(x)
-            y = rev(y)
+        theta = degree.seq(from = theta2, to = theta1, length.out = n)
+    } else {
+        theta = degree.seq(from = theta1, to = theta2, length.out = n)
+     }
+    x = rou * cos(as.radian(theta))
+    y = rou * sin(as.radian(theta))
+    if(clock.wise) {
+        x = rev(x)
+        y = rev(y)
     }
     return(cbind(x, y))
+}
+
+
+as.radian = function(degree) {
+	return(degree/180*pi)
+}
+
+as.degree = function(radian) {
+	return(radian/pi*180)
 }

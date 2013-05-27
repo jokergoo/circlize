@@ -1,1 +1,2 @@
 - testing code, especially in `utils.R`
+- or maybe, degree addition and substraction should be manuplated by `degree.add` and `degree.minus`?

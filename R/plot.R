@@ -312,6 +312,10 @@ circos.points = function(x, y, sector.index = get.current.sector.index(), track.
     if(!has.cell(sector.index, track.index)) {
         stop("'circos.points' can only be used after the plotting region been created\n")
     }
+	
+	if(length(x) != length(y)) {
+		stop("length of x and y differ.\n")
+	}
 
     # whether the points that are out of the plotting region.
     # If there is, throw warnings.
@@ -414,6 +418,10 @@ circos.lines = function(x, y, sector.index = get.current.sector.index(), track.i
 	area = FALSE, area.baseline = get.cell.meta.data("ylim", sector.index, track.index)[1], border = "black",
     pt.col = par("col"), cex = par("cex"), pch = par("pch")) {
     
+	if(length(x) != length(y)) {
+		stop("length of x and y differ.\n")
+	}
+	
     if(type == "l") {
         
     } else if(type == "o") {
@@ -1147,7 +1155,7 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 		}
 		circos.rect(d2[1, 2], 0, d2[n, 3], 0.4, sector.index = chr, border = "black")
 		major.at = seq(0, 10^nchar(max(xlim[, 2])), by = 50000000)
-		circos.axis(h = 0.5, major.at = major.at, labels = paste(major.at/1000000, "MB", sep = ""), sector.index = chr, labels.cex = 0.2)
+		circos.axis(h = 0.5, major.at = major.at, labels = paste(major.at/1000000, "MB", sep = ""), sector.index = chr, labels.cex = 0.3)
 		cell.xlim = get.cell.meta.data("xlim", sector.index = chr)
 		circos.text(cell.xlim[1] + mean(cell.xlim), 1.2, labels = gsub("chr", "", chr), sector.index = chr, cex = 0.8)
 	}

@@ -1,3 +1,7 @@
+# functions to draw links are not so nice,
+# a little inconsistant to the other functions and a little hard to understand
+# it may be improved later.
+
 
 # == title
 # Draw links between two points or sections

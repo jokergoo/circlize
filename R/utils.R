@@ -19,6 +19,7 @@ circlize = function(x, y, sector.index = get.current.sector.index(), track.index
     return(m)
 }
 
+# reverse function of circlize
 reverse.circlize = function(theta, rou, sector.index, track.index) {
 	sector.data = get.sector.data(sector.index)
     cell.data = get.cell.data(sector.index, track.index)
@@ -80,6 +81,8 @@ lines.expand = function(x, y, sector.index = get.current.sector.index(), track.i
     return(d)
 }
 
+# if x has same length as levels of factors
+# the order of x is same as the order of levels
 recycle.with.factors = function(x, factors) {
     le = levels(factors)
     if(length(x) == 1) {
@@ -130,11 +133,11 @@ check.points.position = function(x, y, sector.index = NULL, track.index = NULL) 
         track.index = get.current.track.index()
     }
     
-    xlim = get.cell.meta.data("cell.xlim", sector.index, track.index)
-    ylim = get.cell.meta.data("cell.ylim", sector.index, track.index)
+    cell.xlim = get.cell.meta.data("cell.xlim", sector.index, track.index)
+    cell.ylim = get.cell.meta.data("cell.ylim", sector.index, track.index)
     
-    l1 = x < xlim[1] | x > xlim[2]
-    l2 = y < ylim[1] | y > ylim[2]
+    l1 = x < cell.xlim[1] | x > cell.xlim[2]
+    l2 = y < cell.ylim[1] | y > cell.ylim[2]
     l = l1 | l2
     if(sum(l) && circos.par("points.overflow.warning")) {
         warning(paste(sum(l), " point", ifelse(sum(l) == 1, " is", "s are"), " out of plotting region in sector '", sector.index, "', track '", track.index, "'.\n", sep = ""))

@@ -259,6 +259,7 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("defau
 	xlim[1] = ((1 + cell.padding[4])*cell.xlim[1] + cell.padding[2]*cell.xlim[2]) / (1 + cell.padding[2] + cell.padding[4])
 	xlim[2] = (cell.padding[4]*cell.xlim[1] + (1 + cell.padding[2])*cell.xlim[2]) / (1 + cell.padding[2] + cell.padding[4])
 	
+	yl = numeric(2)
 	yl[1] = ylim[1] - (ylim[2] - ylim[1])*cell.padding[1]
     yl[2] = ylim[2] + (ylim[2] - ylim[1])*cell.padding[3]
 	
@@ -276,6 +277,7 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("defau
     set.current.sector.index(sector.index)
     
     # The plotting region is a rectangle
+	cell.ylim = yl
     circos.rect(cell.xlim[1], cell.ylim[1], cell.xlim[2], cell.ylim[2], sector.index = sector.index, track.index = track.index,
         col = bg.col, border = bg.border, lty = bg.lty, lwd = bg.lwd)
     return(invisible(NULL))

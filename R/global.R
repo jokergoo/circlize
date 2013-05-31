@@ -9,11 +9,12 @@ assign(".TRACK.END.POSITION", 1, envir = .CIRCOS.ENV)
 assign(".CELL.DATA", NULL, envir = .CIRCOS.ENV)
 assign(".CURRENT.TRACK.INDEX", 0, envir = .CIRCOS.ENV)
 assign(".CURRENT.SECTOR.INDEX", NULL, envir = .CIRCOS.ENV)
-.CIRCOS.PAR.DEFAULT = list(start.degree = 0,
+.CIRCOS.PAR.DEFAULT = list(
+    start.degree = 0,
 	gap.degree = 1,
-	track.margin = c(0.01, 0.01),  # top margin and bottom margin
+	track.margin = c(0.01, 0.01),  # top margin and bottom margin, percentage
 	unit.circle.segments = 500,   #to simulate smooth curve
-	cell.padding = c(0.1, 0.1, 0.1, 0.1),
+	cell.padding = c(0.1, 0.1, 0.1, 0.1),  # percentage
 	default.track.height = 0.2,
 	points.overflow.warning = TRUE,
 	canvas.xlim = c(-1, 1),
@@ -79,6 +80,7 @@ circos.par = function (...) {
     args = list(...)
     
 	.CIRCOS.PAR = get(".CIRCOS.PAR", envir = .CIRCOS.ENV)
+	par.names = names(.CIRCOS.PAR)
 	
     if(length(args) == 0) {
         return(.CIRCOS.PAR)
@@ -95,13 +97,18 @@ circos.par = function (...) {
     if(sum(is.null(name)) == 0) {
 		o.cell.padding = .CIRCOS.PAR[["cell.padding"]]
         for(i in seq_along(args)) {
+			
+			if(sum(name[i] %in% par.names) == 0) {
+				stop(paste("Wrong element: '", name[i], "' in `circos.par()`", sep = ""))
+			}
+			
 			if(name[i] %in% c("start.degree", "gap.degree", "canvas.xlim", "canvas.ylim", "clock.wise") &&
 			   is.circos.initialized()) {
 				warning(paste("'", name[i], "' can only be modified before `circos.initialize`.\n", sep = ""))
                 next
 			}
 			if(name[i] == "gap.degree" && (args[[ name[i] ]] < 0 || args[[ name[i] ]] >= 360)) {
-				stop("`gap.degree` should only in [0, 360).\n")
+				stop("`gap.degree` should be only in [0, 360).\n")
 			}
             .CIRCOS.PAR[[ name[i] ]] = args[[ name[i] ]]
 			
@@ -165,16 +172,17 @@ circos.initialize = function(factors, x = NULL, xlim = NULL) {
     # you can think it as the global x axis configuration
     # calculate min and max value for each sectors
     # there are several ways
+	# xlim is prior than x
     if(is.vector(xlim)) {
         if(length(xlim) != 2) {
-            stop("xlim should be length of 2.\n")
+            stop("Since `xlim` is vector, it should have length of 2.\n")
         }    
         
         min.value = rep(xlim[1], length(le))
         max.value = rep(xlim[2], length(le))
     } else if(is.matrix(xlim)) {
         if(dim(xlim)[1] != length(le) || dim(xlim)[2] != 2) {
-            stop()
+            stop("Since `xlim` is a matrix, it should have same number of rows as the length of the level of `factors` and number of columns of 2.\n")
         }
         
         min.value = apply(xlim, 1, function(x) x[1])
@@ -182,7 +190,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL) {
     } else if(is.vector(x)) {
     
         if(length(x) != length(factors)) {
-            stop("Length of data and length of factors differ.\n")
+            stop("Length of `x` and length of `factors` differ.\n")
         }
         min.value = tapply(x, factors, min)
         max.value = tapply(x, factors, max)
@@ -216,7 +224,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL) {
     # degree per data
     unit = (360 - gap.degree*n.sector) / sum(sector.range)
 	if(unit <= 0) {
-		stop("Maybe your `gap.degree` is too large that there is not space to allocate sectors.\n")
+		stop("Maybe your `gap.degree` is too large so that there is no space to allocate sectors.\n")
 	}
     for(i in seq_len(n.sector)) {
 		
@@ -224,7 +232,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL) {
 			stop(paste("Range of the sector (", le[i] ,") cannot be 0.\n", sep = ""))
 		}
 		
-		# since data coordinate is reverse clock wise, start degree is larger than end.degree
+		# only to ensure value are always increasing or decreasing with the absolute degree value
 		if(clock.wise) {
 			sector[["start.degree"]][i] = -gap.degree + ifelse(i == 1, start.degree, sector[["end.degree"]][i-1])
 			sector[["end.degree"]][i] =  sector[["start.degree"]][i] - sector.range[i]*unit
@@ -233,8 +241,17 @@ circos.initialize = function(factors, x = NULL, xlim = NULL) {
 			sector[["start.degree"]][i] = sector[["end.degree"]][i] + sector.range[i]*unit   
 		}
     }
+	
+	# from start.degree, degree is increasing in a reverse-clock wise fasion
+	# so, if circos is created clock wise, the forward sector would have large degrees
+	# if circos is created reverse clock wise, the forward sector would have small degrees
+	# just for goodlooking for the degree
+	if(clock.wise) {
+		sector[["start.degree"]] = sector[["start.degree"]] + 360
+		sector[["end.degree"]] = sector[["end.degree"]] + 360
+	}
     
-    sector = as.data.frame(sector)
+    sector = as.data.frame(sector, stringsAsFactors = FALSE)
     .SECTOR.DATA = sector
     
     # initialize .CELL.DATA which contains information of each cell
@@ -251,7 +268,9 @@ circos.initialize = function(factors, x = NULL, xlim = NULL) {
     
     # draw everything in a unit circle
     plot(circos.par("canvas.xlim"), circos.par("canvas.ylim"), type = "n", ann = FALSE, axes = FALSE)
-    return(invisible(sector))
+    
+	# all the information of cells would be visited through `get.cell.meta.data`
+	return(invisible(NULL))
 }
 
 # == title
@@ -285,6 +304,7 @@ get.sector.data = function(sector.index = get.current.sector.index()) {
     return(sector.data)
 }
 
+# numeric index, i.e. 1, 2, 3, ...
 get.current.track.index = function() {
 	.CURRENT.TRACK.INDEX = get(".CURRENT.TRACK.INDEX", envir = .CIRCOS.ENV)
     return(.CURRENT.TRACK.INDEX)   
@@ -305,6 +325,7 @@ get.max.track.index = function() {
     }
 }
 
+# factors name, note it is not numeric index
 get.current.sector.index = function() {
 	.CURRENT.SECTOR.INDEX = get(".CURRENT.SECTOR.INDEX", envir = .CIRCOS.ENV)
     return(.CURRENT.SECTOR.INDEX)   
@@ -317,6 +338,12 @@ set.current.sector.index = function(x) {
     return(invisible(NULL))
 }
 
+# Position where the current track ends (position of the bottom edge - bottom margin)
+# If no track has been created, the position is 1
+# Note there would be a little inconsistence for the definition of track.
+# In the package, the track is the height of cells
+# but in this funciton, track includes the margins. However, it is an internal function
+# and the definition of track would be unified
 get.track.end.position = function(track.index = get.current.track.index()) {
     
     if(track.index == 0) {
@@ -346,6 +373,7 @@ set.cell.data = function(sector.index = get.current.sector.index(), track.index 
     return(invisible(NULL))
 }
 
+# whether cell in sector.index, track.index exists?
 has.cell = function(sector.index, track.index) {
 
 	.CELL.DATA = get(".CELL.DATA", envir = .CIRCOS.ENV)
@@ -365,16 +393,18 @@ has.cell = function(sector.index, track.index) {
 # Draw the index of the sector and track for each cell on the figure.
 # This function can help you to find the coordinate of cells. 
 show.index = function() {
-	.CELL.DATA = get(".CELL.DATA", envir = .CIRCOS.ENV)
-    sectors = names(.CELL.DATA)
-    for(i in seq_along(sectors)) {
-        for(j in seq_along(.CELL.DATA[[ sectors[i] ]])) {
-            d = .CELL.DATA[[ sectors[i] ]][[j]]
-            circos.text(mean(d$xlim), mean(d$ylim), sector.index = sectors[i],
-                        track.index = j, labels = paste(sectors[i], j, sep = ":"), 
-                        direction = "horizontal")
-        }
-    }
+	sectors = get.all.sector.index()
+	max.track.index = get.max.track.index()
+	if(length(sectors) && max.track.index > 0) {
+		for(i in seq_along(sectors)) {
+			for(j in seq_len(max.track.index)) {
+				cell.xlim = get.cell.meta.data("cell.xlim", sector.index = sectors[i], track.index = j)
+				cell.ylim = get.cell.meta.data("cell.ylim", sector.index = sectors[i], track.index = j)
+				circos.text(mean(cell.xlim), mean(cell.ylim), labels = paste(sectors[i], j, sep = ":"),
+				    sector.index = sectors[i], track.index = j, direction = "horizontal")
+			}
+		}
+	}
 }
 
 # == title
@@ -411,7 +441,7 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 	cell.padding = current.cell.data$cell.padding
 	
 	if(length(name) != 1) {
-		stop("``name`` only have length 1.\n")
+		stop("``name`` only should have length of 1.\n")
 	}
 	
 	if(name == "xlim") {
@@ -435,7 +465,9 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 	} else if(name == "track.index") {
 		return(track.index)
 	} else if(name == "xplot") {
-		return(current.sector.data[c("start.degree", "end.degree")])
+		x = current.sector.data[c("start.degree", "end.degree")]
+		names(x) = NULL
+		return(x)
 	} else if(name == "yplot") {
 		return(c(current.cell.data$track.start - current.cell.data$track.height, current.cell.data$track.start))
 	} else if(name == "track.margin") {
@@ -443,7 +475,7 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 	} else if(name == "cell.padding") {
 		return(current.cell.data$cell.padding)
 	} else {
-		stop("Wrong name.\n")
+		stop("Wrong cell meta name.\n")
 	}
 	return(NULL)
 }

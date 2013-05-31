@@ -50,17 +50,21 @@ degree.minus = function(to, from, restrict = FALSE) {
 	}
 }
 
-degree.seq = function(from, to, length.out = 2) {
-    per = degree.minus(to, from) / (length.out - 1)
-    s = numeric(length.out)
-    s[1] = from
-    for(i in seq_along(s)) {
-        if(i == 1) {
-            next
-        }
-        s[i] = degree.add(s[i - 1], per)
-    }
-    return(s)
+degree.seq = function(from, to, length.out = 2, restrict = FALSE) {
+	if(length.out == 2) {
+		return(c(from, to))
+	} else if(length.out > 2) {
+		per = degree.minus(to, from, restrict = FALSE) / (length.out - 1)
+		s = numeric(length.out)
+		s[1] = degree.add(from, 0, restrict)
+		for(i in seq_along(s)) {
+			if(i == 1) {
+				next
+			}
+			s[i] = degree.add(s[i - 1], per, restrict)
+		}
+		return(s)
+	}
 }
 
 polar2Cartesian = function(d) {

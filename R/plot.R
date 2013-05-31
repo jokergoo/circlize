@@ -81,7 +81,7 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 	# check whether there are some categories that are not in the circle
 	setdiff.factors = setdiff(levels(factors), get.all.sector.index())
     if(length(setdiff.factors)) {
-        stop(paste("Cannot find these categories in existed sectors:", paste(setdiff.factors, collpase = ", "), ".\n", sep = ""))
+        stop(paste("Cannot find these categories in existed sectors:", paste(setdiff.factors, collapse = ", "), ".\n", sep = ""))
     }
     
     if(is.null(track.index)) {
@@ -103,7 +103,7 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
     }
         
    
-    le = levels(factor(factors))
+    le = levels(factors)
 	nlevel = length(le)
     bg.col = recycle.with.levels(bg.col, le)
     bg.border = recycle.with.levels(bg.border, le)
@@ -233,12 +233,10 @@ circos.updatePlotRegion = function(sector.index = get.current.sector.index(), tr
     # cover the exsited region by fill with white
     circos.rect(cell.xlim[1], cell.ylim[1],
         cell.xlim[2], cell.ylim[2], 
-        sector.index = sector.index, track.index = track.index,
         col = "white", border = "white",
         lty = 1, lwd = 1)
     circos.rect(cell.xlim[1], cell.ylim[1],
         cell.xlim[2], cell.ylim[2], 
-        sector.index = sector.index, track.index = track.index,
         col = bg.col, border = bg.border,
         lty = bg.lty, lwd = bg.lwd)
     return(invisible(NULL))
@@ -354,8 +352,10 @@ circos.trackPoints = function(factors = NULL, x, y, track.index = get.current.tr
         factors = factor(factors)
     }
     
-    if(length(setdiff(levels(factors), get.all.sector.index()))) {
-        stop("Factors name should be all in existed sector index.\n")
+	# check whether there are some categories that are not in the circle
+	setdiff.factors = setdiff(levels(factors), get.all.sector.index())
+    if(length(setdiff.factors)) {
+        stop(paste("Cannot find these categories in existed sectors:", paste(setdiff.factors, collapse = ", "), ".\n", sep = ""))
     }
         
     le = levels(factors)
@@ -520,8 +520,10 @@ circos.trackLines = function(factors, x, y, track.index = get.current.track.inde
         factors = factor(factors)
     }
     
-    if(length(setdiff(levels(factors), get.all.sector.index()))) {
-        stop("Factors name should be all in existed sector index.\n")
+    # check whether there are some categories that are not in the circle
+	setdiff.factors = setdiff(levels(factors), get.all.sector.index())
+    if(length(setdiff.factors)) {
+        stop(paste("Cannot find these categories in existed sectors:", paste(setdiff.factors, collapse = ", "), ".\n", sep = ""))
     }
         
     le = levels(factors)
@@ -673,7 +675,7 @@ circos.polygon = function(x, y, sector.index = get.current.sector.index(), track
 # == details
 # The function is similar to `graphics::text`.
 circos.text = function(x, y, labels, sector.index = get.current.sector.index(), track.index = get.current.track.index(), 
-    direction = c("default", "vertical_left", "vertical_right", "horizontal", "arc"),
+    direction = c("default", "default2", "vertical_left", "vertical_right", "horizontal", "arc"),
     adj = par("adj"), cex = 1, col = "black", font = par("font")) {
     
     if(!has.cell(sector.index, track.index)) {
@@ -699,8 +701,8 @@ circos.text = function(x, y, labels, sector.index = get.current.sector.index(), 
     d = circlize(x, y, sector.index, track.index)
     
     direction = direction[1]
-    if(! direction %in% c("default", "vertical_left", "vertical_right", "horizontal", "arc")) {
-        stop("direction can only be choosen from 'default', 'vertical_left', 'vertical_right', 'horizontal' and 'arc'\n.")
+    if(! direction %in% c("default", "default2", "vertical_left", "vertical_right", "horizontal", "arc")) {
+        stop("direction can only be choosen from 'default', 'default2', 'vertical_left', 'vertical_right', 'horizontal' and 'arc'\n.")
     }
 	
 	if(direction == "arc") {
@@ -738,7 +740,9 @@ circos.text = function(x, y, labels, sector.index = get.current.sector.index(), 
             srt = srt + 90
         } else if(direction == "horizontal") {       # horizontal at the finnal graph
             srt = rep(0, length(srt))
-        }
+        } else if(direction == "default2") {
+			srt = srt + 180
+		}
     
 		m = polar2Cartesian(d)
 		
@@ -771,7 +775,7 @@ circos.text = function(x, y, labels, sector.index = get.current.sector.index(), 
 # each part corresponds to one factor (sector index) and then add texts in cells corresponding
 # to the part of data by calling `circos.text`.
 circos.trackText = function(factors, x, y, labels, track.index = get.current.track.index(),
-                       direction = c("default", "vertical_left", "vertical_right", "horizontal"),
+                       direction = c("default", "default2", "vertical_left", "vertical_right", "horizontal"),
                        adj = par("adj"), cex = 1, col = "black", font = par("font")) {
     
     # basic check here
@@ -783,8 +787,10 @@ circos.trackText = function(factors, x, y, labels, track.index = get.current.tra
         factors = factor(factors)
     }
     
-    if(length(setdiff(levels(factors), get.all.sector.index()))) {
-        stop("Factors name should be all in existed sector index.\n")
+    # check whether there are some categories that are not in the circle
+	setdiff.factors = setdiff(levels(factors), get.all.sector.index())
+    if(length(setdiff.factors)) {
+        stop(paste("Cannot find these categories in existed sectors:", paste(setdiff.factors, collapse = ", "), ".\n", sep = ""))
     }
         
     le = levels(factors)
@@ -895,7 +901,7 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 		
 		labels.adj = NULL
 		if(direction == "outside") {
-			if(labels.direction == "default") {
+			if(labels.direction == "default" || labels.direction == "default2") {
 				labels.adj = c(0.5, 0)
 			} else if(labels.direction == "vertical_left") {
 				labels.adj = c(1, 0.5)
@@ -905,7 +911,7 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 				labels.adj = c(0.5, 0)
 			}
 		} else {
-			if(labels.direction == "default") {
+			if(labels.direction == "default" || labels.direction == "default2" ) {
 				labels.adj = c(0.5, 1)
 			} else if(labels.direction == "vertical_left") {
 				labels.adj = c(0, 0.5)
@@ -939,134 +945,6 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 		}
 	}
 }
-
-# == title
-# Draw links between two points or sections
-#
-# == param
-# -sector.index1 Sector index for one sector
-# -point1        A single value or a numeric vector of length 2. If it is a 2-elements vector, then
-#                the link would be a belt.
-# -sector.index2 Sector index for the other sector
-# -point2        A single value or a numeric vector of length 2. If it is a 2-elements vector, then
-#                the link would be a belt.
-# -rou           The position of the 'root' of the link. It is the percentage of the radius of the unit circle.
-#                It would be calculated automatically.
-# -top.ratio     The height of the quadratic curve
-# -col           Color of the link. If the link is a belt, then it is the filled color for the belt.
-# -lwd           Line width
-# -lty           Line style
-# -border        If the link is a belt, then it is the color for the belt border.
-#
-# == details
-# The link is in fact a quadratic curve.
-#
-# Drawing links does not create any track.
-#
-# By default you only need to set ``sector.index1``, ``point1``, ``sector.index2`` and ``point2``. The
-# link would look nice. However you can also set teh position and the height of the belts by specifying
-# ``rou`` and ``top.ratio``. See vignette for explaination.
-circos.link = function(sector.index1,
-                       point1,
-                       sector.index2,
-                       point2,
-                       rou = get.track.end.position(get.current.track.index()),
-                       top.ratio = 0.5,
-                       col = "black", lwd = par("lwd"), lty = par("lty"), border = NA) {
-    
-    sector.data1 = get.sector.data(sector.index1)
-    sector.data2 = get.sector.data(sector.index2)
-    
-    if(length(point1) == 1 && length(point2) == 1) {
-        theta1 = sector.data1["start.degree"] - (point1 - sector.data1["min.value"]) / (sector.data1["max.value"] - sector.data1["min.value"]) *
-                 (sector.data1["start.degree"] - sector.data1["end.degree"])
-        
-        theta2 = sector.data2["start.degree"] - (point1 - sector.data2["min.value"]) / (sector.data2["max.value"] - sector.data2["min.value"]) *
-                 (sector.data2["start.degree"] - sector.data2["end.degree"])
-        
-        d = rotate.parabola(theta1, theta2, rou1 = rou, rou.ratio = top.ratio)
-        lines(d, col = col, lwd = lwd, lty = lty)
-    } else {
-        if(length(point1) == 1) {
-			current.cell.xrange = get.cell.meta.data("xrange", sector.index1, 1)
-            point1 = c(point1, point1 + current.cell.xrange/100)   
-        }
-        if(length(point2) == 1) {
-			current.cell.xrange = get.cell.meta.data("xrange", sector.index2, 1)
-            point2 = c(point2, point2 + current.cell.xrange/100)  
-        }
-		
-		point1 = sort(point1)
-		point2 = sort(point2)
-        
-        theta11 = sector.data1["start.degree"] - (point1[1] - sector.data1["min.value"]) / (sector.data1["max.value"] - sector.data1["min.value"]) *
-            (sector.data1["start.degree"] - sector.data1["end.degree"])
-        theta12 = sector.data1["start.degree"] - (point1[2] - sector.data1["min.value"]) / (sector.data1["max.value"] - sector.data1["min.value"]) *
-            (sector.data1["start.degree"] - sector.data1["end.degree"])
-        
-        theta21 = sector.data2["start.degree"] - (point2[1] - sector.data2["min.value"]) / (sector.data2["max.value"] - sector.data2["min.value"]) *
-            (sector.data2["start.degree"] - sector.data2["end.degree"])
-        theta22 = sector.data2["start.degree"] - (point2[2] - sector.data2["min.value"]) / (sector.data2["max.value"] - sector.data2["min.value"]) *
-            (sector.data2["start.degree"] - sector.data2["end.degree"])
-        
-        # line from theta11, theta21 and line from theta12, theta22
-        # uint circle
-        k1 = (sin(theta11/180*pi) - sin(theta21/180*pi))/(cos(theta11/180*pi) - cos(theta21/180*pi))
-        b1 = sin(theta11/180*pi) - k1*cos(theta11/180*pi)
-        k2 = (sin(theta12/180*pi) - sin(theta22/180*pi))/(cos(theta12/180*pi) - cos(theta22/180*pi))
-        b2 = sin(theta12/180*pi) - k2*cos(theta12/180*pi)
-        
-        if(k1 != k2) {
-            # cross of the two lines
-            cross.x = -(b1 - b2)/(k1 - k2)
-            cross.y = (k1*b2 - k2*b1)/(k1 - k2)
-            r = sqrt(cross.x^2 + cross.y^2)
-            # cross in the circle, swap theta21 and theta22
-            if(r < 1) {
-                t = theta21
-                theta21 = theta22
-                theta22 = t
-            }
-        }
-        
-        d1 = rotate.parabola(theta1 = theta11, theta2 = theta21, rou1 = rou, rou.ratio = top.ratio)
-        d2 = rotate.parabola(theta1 = theta12, theta2 = theta22, rou1 = rou, rou.ratio = top.ratio)
-
-        if(is.points.ordered.on.circle(c(theta11, theta21, theta22, theta12))) {
-            d2 = d2[rev(seq_len(nrow(d2))), ]
-            r1 = arc.points(theta21, theta22, rou)
-            r2 = arc.points(theta12, theta11, rou)
-        } else if(is.points.ordered.on.circle(c(theta11, theta21, theta22, theta12), clock.wise = TRUE)) {
-            d2 = d2[rev(seq_len(nrow(d2))), ]
-            r1 = arc.points(theta21, theta22, rou, clock.wise = TRUE)
-            r2 = arc.points(theta12, theta11, rou, clock.wise = TRUE)
-        } else if(is.points.ordered.on.circle(c(theta21, theta11, theta12, theta22))) {
-            d2 = d2[rev(seq_len(nrow(d2))), ]
-            r1 = arc.points(theta21, theta22, rou, clock.wise = TRUE)
-            r2 = arc.points(theta12, theta11, rou ,clock.wise = TRUE)
-        } else if(is.points.ordered.on.circle(c(theta21, theta11, theta12, theta22), clock.wise = TRUE)) {
-            d2 = d2[rev(seq_len(nrow(d2))), ]
-            r1 = arc.points(theta21, theta22, rou)
-            r2 = arc.points(theta12, theta11, rou)
-        } else if(is.points.ordered.on.circle(c(theta11, theta12, theta21, theta22))) {
-            r1 = arc.points(theta12, theta21, rou)
-            r2 = arc.points(theta22, theta11, rou)
-        } else if(is.points.ordered.on.circle(c(theta11, theta12, theta21, theta22), clock.wise = TRUE)) {
-            r1 = arc.points(theta12, theta21, rou, clock.wise = TRUE)
-            r2 = arc.points(theta22, theta11, rou, clock.wise = TRUE)
-        }
-        
-        d = rbind(d1, r1)
-        d = rbind(d, d2)
-        d = rbind(d, r2)
-        polygon(d, col = col, lty = lty, lwd = lwd, border = border)
-    }
-	
-	# link is the last track in the current version
-	#set.track.end.position(0)
-    return(invisible(NULL))
-}
-
 
 #####################################################################
 #
@@ -1115,6 +993,12 @@ circos.trackHist = function(factors, x, track.height = circos.par("default.track
         
     if(!is.factor(factors)) {
         factors = factor(factors)
+    }
+	
+	# check whether there are some categories that are not in the circle
+	setdiff.factors = setdiff(levels(factors), get.all.sector.index())
+    if(length(setdiff.factors)) {
+        stop(paste("Cannot find these categories in existed sectors:", paste(setdiff.factors, collapse = ", "), ".\n", sep = ""))
     }
     
     # calculate the distributions
@@ -1209,7 +1093,7 @@ circos.trackHist = function(factors, x, track.height = circos.par("default.track
 #
 # The cytoband data for human is downloaded from UCSC ftp site (http://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz),
 # should be uncompressed.
-circos.initializeWithIdeogram = function(file = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""), track.height = 0.1) {
+circos.initializeWithIdeogram = function(file = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""), chromosome.index = NULL, track.height = 0.1) {
 	
 	d = read.table(file, colClasses = c("factor", "numeric", "numeric", "factor", "factor"))
 
@@ -1223,6 +1107,12 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 	chromosome.letter = paste("chr", chromosome.letter, sep = "")
 	
 	chromosome = c(chromosome.num, chromosome.letter)
+	
+	if(! is.null(chromosome.index)) {
+		chromosome.index = gsub("chr", "", chromosome.index)
+		chromosome.index = paste("chr", chromosome.index, sep = "")
+		chromosome = chromosome[chromosome %in% chromosome.index]
+	}
 	
 	xlim = matrix(nrow = 0, ncol = 2)
 	for(chr in chromosome) {
@@ -1239,14 +1129,19 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 		d2 = d[d[[1]] == chr, ]
 		n = nrow(d2)
 		col = rep("#FFFFFF", n)
-		col[d2[[5]] == "acen"] = "#E41A1C"
-		col[d2[[5]] == "stalk"] = "#377EB8"
-		col[d2[[5]] == "gvar"] = "#404040"
-		col[d2[[5]] == "gpos100"] = "#000000"
-		col[d2[[5]] == "gpos"] = "#000000"
-		col[d2[[5]] == "gpos75"] = "#BFBFBF"
-		col[d2[[5]] == "gpos50"] = "#808080"
-		col[d2[[5]] == "gpos25"] = "#404040"
+		
+		# color panel is from http://circos.ca/tutorials/course/slides/session-2.pdf, page 42
+		col[d2[[5]] == "gpos100"] = rgb(0, 0, 0, max = 255)
+		col[d2[[5]] == "gpos"]    = rgb(0, 0, 0, max = 255)
+		col[d2[[5]] == "gpos75"]  = rgb(130, 130, 130, max = 255)
+		col[d2[[5]] == "gpos66"]  = rgb(160, 160, 160, max = 255)
+		col[d2[[5]] == "gpos50"]  = rgb(200, 200, 200, max = 255)
+		col[d2[[5]] == "gpos33"]  = rgb(210, 210, 210, max = 255)
+		col[d2[[5]] == "gpos25"]  = rgb(200, 200, 200, max = 255)
+		col[d2[[5]] == "gvar"]    = rgb(220, 220, 220, max = 255)
+		col[d2[[5]] == "gneg"]    = rgb(255, 255, 255, max = 255)
+		col[d2[[5]] == "acen"]    = rgb(217, 47, 39, max = 255)
+		col[d2[[5]] == "stalk"]   = rgb(100, 127, 164, max = 255)
 		for(i in seq_len(n)) {
 			circos.rect(d2[i, 2], 0, d2[i, 3], 0.4, sector.index = chr, col = col[i], border = NA)
 		}
@@ -1256,7 +1151,7 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 		cell.xlim = get.cell.meta.data("xlim", sector.index = chr)
 		circos.text(cell.xlim[1] + mean(cell.xlim), 1.2, labels = gsub("chr", "", chr), sector.index = chr, cex = 0.8)
 	}
-	circos.par("cell.padding" = o.cell.padding, points.overflow.warning  = TRUE)
+	circos.par("cell.padding" = o.cell.padding, "points.overflow.warning" = TRUE)
 }
 
 # == title
@@ -1274,7 +1169,7 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 # == details
 # If the interval between ``start`` and ``end`` (larger or equal to 360 or smaller or equal to -360)
 # it would draw a full circle or ring. If ``rou2`` is set, it would draw part of a ring.
-draw.sector = function(center = c(0, 0), start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL, col=NA, border = "black") {
+draw.sector = function(center = c(0, 0), start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL, col = NA, border = "black") {
 
 	if(end.degree < start.degree) {
 		tmp = end.degree

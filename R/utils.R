@@ -3,14 +3,14 @@ circlize = function(x, y, sector.index = get.current.sector.index(), track.index
     
     sector.data = get.sector.data(sector.index)
     cell.data = get.cell.data(sector.index, track.index)
-    ylim = cell.data$ylim
+    cell.ylim = get.cell.meta.data("cell.ylim", sector.index, track.index)
         
-    theta = sector.data["start.degree"] - (x - sector.data["end.value"]) / (sector.data["max.value"] - sector.data["min.value"]) *
-            (sector.data["start.degree"] - sector.data["end.degree"])
+    theta = sector.data["start.degree"] - (x - sector.data["min.value"]) / (sector.data["max.value"] - sector.data["min.value"]) *
+            abs(sector.data["start.degree"] - sector.data["end.degree"])
         
-    y.range = ylim[2] - ylim[1]
+    y.range = cell.ylim[2] - cell.ylim[1]
         
-    rou = cell.data$track.start - (ylim[2] - y) / y.range * cell.data$track.height
+    rou = cell.data$track.start - (cell.ylim[2] - y) / y.range * cell.data$track.height
     
     m = cbind(theta, rou)
     colnames(m) = c("theta", "rou")
@@ -22,53 +22,19 @@ circlize = function(x, y, sector.index = get.current.sector.index(), track.index
 reverse.circlize = function(theta, rou, sector.index, track.index) {
 	sector.data = get.sector.data(sector.index)
     cell.data = get.cell.data(sector.index, track.index)
-	ylim = cell.data$ylim
+	cell.ylim = get.cell.meta.data("cell.ylim", sector.index, track.index)
 	
-	x = (sector.data["end.degree"] - theta) / (sector.data["end.degree"] - sector.data["start.degree"]) *
-	    (sector.data["end.value"] - sector.data["start.value"]) + sector.data["start.value"]
-	y = (cell.data$track.height - (cell.data$track.start - rou)) / cell.data$track.height * (ylim[2] - ylim[1]) + ylim[1]
+	x = (sector.data["start.degree"] - theta) / abs(sector.data["end.degree"] - sector.data["start.degree"]) *
+	    (sector.data["max.value"] - sector.data["min.value"]) + sector.data["min.value"]
+	y = (cell.data$track.height - (cell.data$track.start - rou)) / cell.data$track.height * (cell.ylim[2] - cell.ylim[1]) + cell.ylim[1]
 	
 	m = cbind(x, y)
 	colnames(m) = c("x", "y")
 	return(m)
 }
 
-# if restrict is TRUE, then value should belong to [0, 360)
-degree.add = function(theta1, theta2, restrict = FALSE) {
-	if(restrict) {
-		return((theta1 + theta2) %% 360)
-	} else {
-		return(theta1 + theta2)
-	}
-}
-
-degree.minus = function(to, from, restrict = FALSE) {
-	if(restrict) {
-		return((to - from) %% 360)
-	} else {
-		return(to - from)
-	}
-}
-
-degree.seq = function(from, to, length.out = 2, restrict = FALSE) {
-	if(length.out == 2) {
-		return(c(from, to))
-	} else if(length.out > 2) {
-		per = degree.minus(to, from, restrict = FALSE) / (length.out - 1)
-		s = numeric(length.out)
-		s[1] = degree.add(from, 0, restrict)
-		for(i in seq_along(s)) {
-			if(i == 1) {
-				next
-			}
-			s[i] = degree.add(s[i - 1], per, restrict)
-		}
-		return(s)
-	}
-}
-
 polar2Cartesian = function(d) {
-    theta = d[, 1]/360 * 2 *pi
+    theta = as.radian(d[, 1])
     rou = d[, 2]
     x = rou * cos(theta)
     y = rou * sin(theta)
@@ -92,11 +58,10 @@ lines.expand = function(x, y, sector.index = get.current.sector.index(), track.i
         td = td[order(td[, 1]), ]
 		td2 = circlize(td[, 1], td[, 2], sector.index = sector.index, track.index = track.index)
 		
-		a = (abs(td2[1, 1] - td2[2, 1]))/180*pi
+		a = as.radian(abs(td2[1, 1] - td2[2, 1]))
 		b = abs(td2[1, 2] - td2[2, 2])
 		l = sqrt(a^2 + b^2)
 		
-		td3 = polar2Cartesian(td2)
 		ncut = l/ (2*pi/circos.par("unit.circle.segments"))
         ncut = floor(ncut)
 
@@ -165,9 +130,8 @@ check.points.position = function(x, y, sector.index = NULL, track.index = NULL) 
         track.index = get.current.track.index()
     }
     
-    cell.data = get.cell.data(sector.index, track.index)
-    xlim = cell.data$xlim
-    ylim = cell.data$ylim
+    xlim = get.cell.meta.data("cell.xlim", sector.index, track.index)
+    ylim = get.cell.meta.data("cell.ylim", sector.index, track.index)
     
     l1 = x < xlim[1] | x > xlim[2]
     l2 = y < ylim[1] | y > ylim[2]
@@ -178,100 +142,6 @@ check.points.position = function(x, y, sector.index = NULL, track.index = NULL) 
 
     return(invisible(NULL))
 }
-
-# parabola intersects with the UNIT circle
-# theta1 is the start point and theta2 is the end point
-rotate.parabola = function(theta1, theta2, rou1, rou2 = rou1, theta = (theta1+theta2)/2, 
-    rou = rou1 * abs(cos(degree.minus(theta1, theta2)/2/180*pi))*rou.ratio, rou.ratio = 0.5,
-    n = 1001) {
-    
-    while(theta2 < theta1) {
-        theta2 = theta2 + 360
-    }
-    
-    delta_theta = degree.minus(theta2, theta1)
-    
-    flag = 0
-    if(delta_theta > 180) {
-        theta = theta + 180
-        flag = 1
-    }
-    
-    # y^2 = kx, y = +-sqrt(kx)
-    b = rou1 * abs(sin(degree.minus(theta2, theta1)/2/180*pi))
-    a = rou1 * abs(cos(degree.minus(theta2, theta1)/2/180*pi)) - rou
-    k = b^2/a
-    
-    if(n %% 2 == 0) {
-        n = n + 1
-    }
-    n.half = (n - 1) / 2
-    x = numeric(n)
-    y = numeric(n)
-    x = c(n.half:1/n.half, 0, 1:n.half/n.half)*a
-    y[1:n.half] = sqrt(k*x[1:n.half])
-    y[n.half + 1] = 0
-    y[1:n.half + n.half + 1] = -sqrt(k*x[1:n.half + n.half + 1])
-    
-    alpha = numeric(n)
-    
-    alpha[1:n.half] = atan(y[1:n.half]/x[1:n.half])*180/pi
-    alpha[1:n.half + n.half + 1] = atan(y[1:n.half + n.half + 1]/x[1:n.half + n.half + 1])*180/pi
-    alpha[n.half + 1] = 90
-    
-    d = sqrt(x^2 + y^2)
-    x = d*cos((alpha + theta)/180*pi)
-    y = d*sin((alpha + theta)/180*pi)
-    
-    center.x = rou*cos(theta/180*pi)
-    center.y = rou*sin(theta/180*pi)
-    
-    x = x + center.x
-    y = y + center.y
-    
-    if(!flag) {
-        x = rev(x)
-        y = rev(y)
-    }
-
-    return(cbind(x, y))
-}
-
-# this is not a perfect function because it assumes all theta are different
-# but it is ok in this package since the former step can ensure the values
-# are different
-is.points.ordered.on.circle = function(theta, clock.wise = FALSE) {
-    if(clock.wise) {
-        theta = rev(theta)
-    }
-    theta = theta %% 360
-    theta = theta - min(theta)
-    min_index = which(theta == 0)
-    if(min_index > 2) {
-        theta2 = c(theta[min_index:length(theta)], c(theta[1:(min_index - 1)]))
-    } else {
-        theta2 = theta
-    }
-    
-    return(identical(order(theta2), 1:length(theta2)))
-}
-
-arc.points = function(theta1, theta2, rou, clock.wise = FALSE) {
-    n = 100
-    if(clock.wise) {
-        theta = degree.seq(from = theta2, to = theta1, length.out = n)
-    } else {
-        theta = degree.seq(from = theta1, to = theta2, length.out = n)
-     }
-    x = rou * cos(as.radian(theta))
-    y = rou * sin(as.radian(theta))
-    if(clock.wise) {
-        x = rev(x)
-        y = rev(y)
-    }
-    return(cbind(x, y))
-}
-
 
 as.radian = function(degree) {
 	return(degree/180*pi)

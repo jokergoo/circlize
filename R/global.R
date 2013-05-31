@@ -474,6 +474,18 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 		return(current.cell.data$track.margin)
 	} else if(name == "cell.padding") {
 		return(current.cell.data$cell.padding)
+	} else if(name == "cell.start.degree") {
+		x = current.sector.data["start.degree"]
+		names(x) = NULL
+		return(x)
+	} else if(name == "cell.end.degree") {
+		x = current.sector.data["end.degree"]
+		names(x) = NULL
+		return(x)
+	} else if(name == "cell.bottom.radius") {
+		return(current.cell.data$track.start - current.cell.data$track.height)
+	} else if(name == "track.top.radius") {
+		return(current.cell.data$track.start)
 	} else {
 		stop("Wrong cell meta name.\n")
 	}

@@ -4,7 +4,7 @@
 
 
 # == title
-# Draw links between two points or sections
+# Draw links between points or intervals
 #
 # == param
 # -sector.index1 Sector index for one sector
@@ -14,28 +14,24 @@
 # -point2        A single value or a numeric vector of length 2. If it is a 2-elements vector, then
 #                the link would be a belt.
 # -rou           The position of the 'root' of the link. It is the percentage of the radius of the unit circle.
-#                It would be calculated automatically.
-# -top.ratio     The height of the quadratic curve
+#                By default it is the end (bottom) of the most recent track.
+# -top.ratio     Set the height of the quadratic curve.
 # -col           Color of the link. If the link is a belt, then it is the filled color for the belt.
-# -lwd           Line width
-# -lty           Line style
+# -lwd           Line (or border) width
+# -lty           Line (or border) style
 # -border        If the link is a belt, then it is the color for the belt border.
 #
 # == details
 # The link is in fact a quadratic curve.
 #
-# Drawing links does not create any track.
+# Drawing links does not create any track. So you can think it is independent of the tracks
 #
 # By default you only need to set ``sector.index1``, ``point1``, ``sector.index2`` and ``point2``. The
-# link would look nice. However you can also set teh position and the height of the belts by specifying
-# ``rou`` and ``top.ratio``. See vignette for explaination.
-circos.link = function(sector.index1,
-                       point1,
-                       sector.index2,
-                       point2,
-                       rou = get.track.end.position(get.current.track.index()),
-                       top.ratio = 0.5,
-                       col = "black", lwd = par("lwd"), lty = par("lty"), border = NA) {
+# link would look nice. However you can also set the position and the height of links by specifying
+# ``rou`` and ``top.ratio``. See vignette for detailed explaination.
+circos.link = function(sector.index1, point1, sector.index2, point2,
+    rou = get.track.end.position(get.current.track.index()), top.ratio = 0.5,
+    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA) {
     
     sector.data1 = get.sector.data(sector.index1)
     sector.data2 = get.sector.data(sector.index2)
@@ -44,7 +40,7 @@ circos.link = function(sector.index1,
         theta1 = sector.data1["start.degree"] - (point1 - sector.data1["min.value"]) / (sector.data1["max.value"] - sector.data1["min.value"]) *
                  abs(sector.data1["start.degree"] - sector.data1["end.degree"])
         
-        theta2 = sector.data2["start.degree"] - (point1 - sector.data2["min.value"]) / (sector.data2["max.value"] - sector.data2["min.value"]) *
+        theta2 = sector.data2["start.degree"] - (point2 - sector.data2["min.value"]) / (sector.data2["max.value"] - sector.data2["min.value"]) *
                  abs(sector.data2["start.degree"] - sector.data2["end.degree"])
         
         d = rotate.parabola(theta1, theta2, rou1 = rou, rou.ratio = top.ratio)

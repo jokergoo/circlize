@@ -1,7 +1,7 @@
 source("R/global.R")
 source("R/plot.R")
 source("R/utils.R")
-
+source("R/link.R")
 
 # circos.par
 circos.par()

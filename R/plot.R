@@ -20,14 +20,14 @@
 #               and vignette for explaination.
 #
 # == details
-# This function pretends to be high-level plotting function, which means, 
+# This function pretends to be a high-level plotting function, which means, 
 # you must first call this function to create a plotting region, then those
 # low-level-style plotting function such as `circos.points`, `circos.lines` can be
 # applied.
 #
 # It has two different usages. First, it can create a complete track which among several
 # sectors. Because currently it does not support creating single cell since it would
-# make the layout disordered, this is the only way to create the plotting region.
+# make the layout disordered, this is the only way to create the plotting regions.
 #
 # Currently, all the cells that are created in a same track sharing same height, which means,
 # there is no cell has longer height than others.
@@ -52,7 +52,7 @@
 # sectors would also be created but without drawing anything. The ``ylim`` for these cells
 # are the same as that in the latest created cell.
 #
-# Second, it can update a already-created plotRegion if the index for the track
+# Second, it can update a already-created track if the index for the track
 # is specified. If the index is one bigger than the largest current track index. It in fact
 # creates the new track. If updating an existed track, those parameters related to the position
 # of the plotting region can not be changed.
@@ -216,7 +216,9 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 # -bg.lwd       Line width for the border of the plotting region
 #
 # == details
-# You can update an existed cell by this function by erasing the contents in the plotting regions
+# You can update an existed cell by this function by erasing the contents in the plotting regions.
+# But the ``xlim`` and ``ylim`` inside the cell still remains unchanged. Note if you use `circos.trackPlotRegion`
+# to update an already created track, you can re-define ``ylim`` in these cells.
 circos.updatePlotRegion = function(sector.index = get.current.sector.index(), track.index = get.current.track.index(),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd")) {
     
@@ -323,7 +325,7 @@ circos.points = function(x, y, sector.index = get.current.sector.index(), track.
 }
 
 # == title 
-# Add points to the plotting regions in one track
+# Add points to the plotting regions in a same track
 #
 # == param
 # -factors      Factors which represent the categories of data
@@ -340,6 +342,8 @@ circos.points = function(x, y, sector.index = get.current.sector.index(), track.
 #
 # Length of ``pch``, ``col`` and ``cex`` can be one, length of levels of the factors and length of 
 # factors. All length will be recycled to the length of factors respectively.
+#
+# This function can be replaced by a ``for`` loop containing `circos.points`.
 circos.trackPoints = function(factors = NULL, x, y, track.index = get.current.track.index(),
                          pch = par("pch"), col = par("col"), cex = par("cex")) {
     
@@ -396,7 +400,7 @@ circos.trackPoints = function(factors = NULL, x, y, track.index = get.current.tr
 # -straight     whether draw straight lines between points
 # -area         whether to fill the area below the lines. If it is set to ``TRUE``, ``col`` controls the filled color
 #               in the area and ``border`` controls the color of the line.
-# -area.baseline the base line to draw area under lines, default is the minimal of y-range
+# -area.baseline the base line to draw area below lines, default is the minimal of y-range (most bottom)
 # -border       color for border of the area
 # -pt.col       if ``type`` is "o", points color
 # -cex          if ``type`` is "o", points size
@@ -407,7 +411,7 @@ circos.trackPoints = function(factors = NULL, x, y, track.index = get.current.tr
 # But if you do not want to do such transformation you can use this function just drawing straight
 # lines between points by setting ``straight`` to ``TRUE``.
 #
-# Draw areas below lines can help to identify the direction of y-axis in cells. This can be fullfilled by specifying
+# Draw areas below lines can help to identify the direction of y-axis in cells (since it is a circle). This can be fullfilled by specifying
 # ``area`` to ``TURE``.
 circos.lines = function(x, y, sector.index = get.current.sector.index(), track.index = get.current.track.index(),
     col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
@@ -486,7 +490,7 @@ circos.lines = function(x, y, sector.index = get.current.sector.index(), track.i
 }
 
 # == title 
-# Add lines to the plotting regions in one track
+# Add lines to the plotting regions in a same track
 #
 # == param
 # -factors      Factors which represent the categories of data
@@ -510,6 +514,8 @@ circos.lines = function(x, y, sector.index = get.current.sector.index(), track.i
 # The function adds lines in multiple cells by first splitting data into several parts in which
 # each part corresponds to one factor (sector index) and then add lines in cells corresponding
 # to the part of data by calling `circos.lines`.
+#
+# This function can be replaced by a ``for`` loop containing `circos.lines`.
 circos.trackLines = function(factors, x, y, track.index = get.current.track.index(),
     col = "black", lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
 	area = FALSE, area.baseline = NA, border = "black",
@@ -669,7 +675,7 @@ circos.polygon = function(x, y, sector.index = get.current.sector.index(), track
 # -labels       Labels for each points
 # -sector.index Index for the sector
 # -track.index  Index for the track
-# -direction    Direction of the text, should be one of (``default``, ``vertical_left``, ``vertical_right``, ``horizontal``, ``arc``).
+# -direction    Direction of the text, should be one of (``default``, ``default2``, ``vertical_left``, ``vertical_right``, ``horizontal``, ``arc``).
 #               How to choose text direction can be found in the vignette.
 # -adj          Adjustment for texts
 # -cex          Font size
@@ -677,7 +683,7 @@ circos.polygon = function(x, y, sector.index = get.current.sector.index(), track
 # -font         Font style
 #
 # == details
-# The function is similar to `graphics::text`.
+# The function is similar to `graphics::text`. All you need to note is the ``direction`` settings.
 circos.text = function(x, y, labels, sector.index = get.current.sector.index(), track.index = get.current.track.index(), 
     direction = c("default", "default2", "vertical_left", "vertical_right", "horizontal", "arc"),
     adj = par("adj"), cex = 1, col = "black", font = par("font")) {
@@ -772,7 +778,7 @@ circos.text = function(x, y, labels, sector.index = get.current.sector.index(), 
 # -y            Data points on y-axis
 # -labels       Labels
 # -track.index  Index for the track
-# -direction    Text directions
+# -direction    Text directions, see `circos.text`
 # -adj          Adjustment for texts
 # -cex          Font size
 # -col          Font color
@@ -782,6 +788,8 @@ circos.text = function(x, y, labels, sector.index = get.current.sector.index(), 
 # The function adds texts in multiple cells by first splitting data into several parts in which
 # each part corresponds to one factor (sector index) and then add texts in cells corresponding
 # to the part of data by calling `circos.text`.
+#
+# This function can be replaced by a ``for`` loop containing `circos.text`.
 circos.trackText = function(factors, x, y, labels, track.index = get.current.track.index(),
                        direction = c("default", "default2", "vertical_left", "vertical_right", "horizontal"),
                        adj = par("adj"), cex = 1, col = "black", font = par("font")) {
@@ -832,8 +840,8 @@ circos.trackText = function(factors, x, y, labels, track.index = get.current.tra
 # == param
 # -h                position of the x-axis, can be "top", "bottom" or a numeric value
 # -major.at         If it is numeric vector, it identifies the poisitions
-#                   of the major ticks. It can exceed the xlim value and the exceeding part
-#                   would be trimmed automatically. If it is ``NULL``, it would be calculated by `base::pretty`.
+#                   of the major ticks. It can exceed ``xlim`` value and the exceeding part
+#                   would be trimmed automatically. If it is ``NULL``, it would be calculated by `base::pretty` (about every 10 degrees there is a major tick).
 # -labels           labels of the major ticks. Also, the exceeding part would be trimmed automatically.
 # -major.tick       Whether to draw major tick. If it is set to ``FALSE``, there would be
 #                   no minor ticks either. 
@@ -841,7 +849,7 @@ circos.trackText = function(factors, x, y, labels, track.index = get.current.tra
 # -track.index      Index for the track
 # -labels.font      font style for the axis labels
 # -labels.cex       font size for the axis labels
-# -labels.direction font direction for the axis labels
+# -labels.direction font direction for the axis labels, shoud be in (``default``, ``default2``, ``vertical_left``, ``vertical_right``, ``horizontal``, ``arc``)
 # -direction        whether the axis ticks point to the outside or inside of the circle.
 # -minor.ticks      Number of minor ticks between two close major ticks.
 # -major.tick.percentage Length of the major ticks. It is the percentage to the ylim in the cell.
@@ -973,8 +981,7 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 #               creating the plotting regions in the next newest track.
 # -track.height Height of the track. It is the percentage to the radius of the unit circls.
 #               If to update a track, this argument is disabled.
-# -ylim         Range of data on the y-axis
-# -force.ylim   Whether to force all cells in the track to share the same ``ylim``
+# -force.ylim   Whether to force all cells in the track to share the same ``ylim``. Btw, ``ylim`` is calculated automatically.
 # -col          Filled color for histogram
 # -border       Border color for histogram
 # -lty          Line style for histogram
@@ -986,13 +993,13 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 # -breaks       see `graphics::hist`
 # -include.lowest see `graphics::hist`
 # -right          see `graphics::hist`
-# -draw.density   see `graphics::hist`
+# -draw.density   whether draw density lines instead of histogram bars.
 # 
 # == details
 # It draw histogram in cells among a whole track. It is also an example to show how to draw self-defined
 # figures by this package.
 circos.trackHist = function(factors, x, track.height = circos.par("default.track.height"),
-    track.index = NULL, ylim = NULL, force.ylim = TRUE,
+    track.index = NULL, force.ylim = TRUE,
     col = ifelse(draw.density, "black", NA), border = "black", lty = par("lty"), lwd = par("lwd"),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
     breaks = "Sturges", include.lowest = TRUE, right = TRUE, draw.density = FALSE) {
@@ -1091,20 +1098,23 @@ circos.trackHist = function(factors, x, track.height = circos.par("default.track
 # Initialize the circos layout with an ideogram
 #
 # == param
-# -file cytoband file. By default it is the cytoband data for human
-# -track.height height for the track
+# -file             cytoband file. By default it is the cytoband data for human
+# -chromosome.index index for chromosome. The index is used only for subsetting, not for re-ordering.
+#                   The value should be 1, 2, ... or chr1, chr2, ...
+# -track.height     height for the track
 #
 # == details
 # This is not a full functional function. It jus provides a way to show how to
 # draw genomics ideogram by this package. How to embed the ideogram into the
 # circos layout is really subjective and should be applied according to specific situation.
 #
-# In fact, draw ideogram with this package is really simple, you can look at the source code
+# In fact, drawing ideogram with this package is really simple, you can look at the source code
 # of this function to get a clue.
 #
 # The cytoband data for human is downloaded from UCSC ftp site (http://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz),
-# should be uncompressed.
-circos.initializeWithIdeogram = function(file = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""), chromosome.index = NULL, track.height = 0.1) {
+# it should be uncompressed.
+circos.initializeWithIdeogram = function(file = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""),
+    chromosome.index = NULL, track.height = 0.1) {
 	
 	d = read.table(file, colClasses = c("factor", "numeric", "numeric", "factor", "factor"))
 
@@ -1166,7 +1176,7 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 }
 
 # == title
-# Draw sectors in a circle
+# Draw sectors or rings in a circle
 #
 # == param
 # -center         Center of the circle
@@ -1176,11 +1186,13 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 # -rou2           Radius for the other arc in the sector
 # -col            Filled color
 # -border         Border color
+# -lwd            Line width
+# -lty            Line style
 #
 # == details
 # If the interval between ``start`` and ``end`` (larger or equal to 360 or smaller or equal to -360)
 # it would draw a full circle or ring. If ``rou2`` is set, it would draw part of a ring.
-draw.sector = function(center = c(0, 0), start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL, col = NA, border = "black") {
+draw.sector = function(center = c(0, 0), start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL, col = NA, border = "black", lwd = par("lwd"), lty = par("lty")) {
 
 	if(end.degree < start.degree) {
 		tmp = end.degree
@@ -1233,7 +1245,7 @@ draw.sector = function(center = c(0, 0), start.degree = 0, end.degree = 360, rou
 		# and shift to the center
 		m[, 1] = m[, 1] + center[1]
 		m[, 2] = m[, 2] + center[2]
-		polygon(m, col = col, border = border)
+		polygon(m, col = col, border = border, lwd = lwd, lty = lty)
 	} else {
 		m1 = polar2Cartesian(d1)
 		m2 = polar2Cartesian(d2)
@@ -1244,15 +1256,15 @@ draw.sector = function(center = c(0, 0), start.degree = 0, end.degree = 360, rou
 			m[, 1] = m[, 1] + center[1]
 			m[, 2] = m[, 2] + center[2]
 			polygon(m, col = col, border = col)
-			lines(m1[, 1]+center[1], m1[, 2]+center[2], col = border)
-			lines(m2[, 1]+center[1], m2[, 2]+center[2], col = border)
+			lines(m1[, 1]+center[1], m1[, 2]+center[2], col = border, lwd = lwd, lty = lty)
+			lines(m2[, 1]+center[1], m2[, 2]+center[2], col = border, lwd = lwd, lty = lty)
 			
 		} else {
 			m = rbind(m1, m2)
 			
 			m[, 1] = m[, 1] + center[1]
 			m[, 2] = m[, 2] + center[2]
-			polygon(m, col = col, border = border)
+			polygon(m, col = col, border = border, lwd = lwd, lty = lty)
 		}
 		
 	} 

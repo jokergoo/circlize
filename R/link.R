@@ -20,6 +20,9 @@
 # -lwd           Line (or border) width
 # -lty           Line (or border) style
 # -border        If the link is a belt, then it is the color for the belt border.
+# -n             Number of points to represent a quadratic curve. Because currently I don't know how to 
+#                calculate the length of a quadratic curve, the number of segmentation of the quadratic curve
+#                cannot be calculated now. It should be an odd value because we need the point for the vertex.
 #
 # == details
 # The link is in fact a quadratic curve.
@@ -31,7 +34,7 @@
 # ``rou`` and ``top.ratio``. See vignette for detailed explaination.
 circos.link = function(sector.index1, point1, sector.index2, point2,
     rou = get.track.end.position(get.current.track.index()), top.ratio = 0.5,
-    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA) {
+    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA, n = 501) {
     
     sector.data1 = get.sector.data(sector.index1)
     sector.data2 = get.sector.data(sector.index2)
@@ -43,7 +46,7 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
         theta2 = sector.data2["start.degree"] - (point2 - sector.data2["min.value"]) / (sector.data2["max.value"] - sector.data2["min.value"]) *
                  abs(sector.data2["start.degree"] - sector.data2["end.degree"])
         
-        d = rotate.parabola(theta1, theta2, rou1 = rou, rou.ratio = top.ratio)
+        d = rotate.parabola(theta1, theta2, rou1 = rou, rou.ratio = top.ratio, n = n)
         lines(d, col = col, lwd = lwd, lty = lty)
     } else {
         if(length(point1) == 1) {
@@ -54,6 +57,12 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 			current.cell.xrange = get.cell.meta.data("xrange", sector.index2, 1)
             point2 = c(point2, point2 + current.cell.xrange/100)  
         }
+		
+		if(sector.index1 == sector.index2) {
+			if(max(c(point1, point2)) - min(c(point1, point2)) < max(point2) - min(point2) + max(point1) - min(point1)) {
+				stop("Two intervals in a same sector, but they should not be intersected.\n")
+			}
+		}
 		
 		point1 = sort(point1)
 		point2 = sort(point2)
@@ -88,8 +97,8 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
             }
         }
         
-        d1 = rotate.parabola(theta1 = theta11, theta2 = theta21, rou1 = rou, rou.ratio = top.ratio)
-        d2 = rotate.parabola(theta1 = theta12, theta2 = theta22, rou1 = rou, rou.ratio = top.ratio)
+        d1 = rotate.parabola(theta1 = theta11, theta2 = theta21, rou1 = rou, rou.ratio = top.ratio, n = n)
+        d2 = rotate.parabola(theta1 = theta12, theta2 = theta22, rou1 = rou, rou.ratio = top.ratio, n = n)
 
         if(is.points.ordered.on.circle(c(theta11, theta21, theta22, theta12))) {
             d2 = d2[rev(seq_len(nrow(d2))), ]
@@ -131,7 +140,7 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 # theta1 is the start point and theta2 is the end point
 rotate.parabola = function(theta1, theta2, rou1, rou2 = rou1, theta = (theta1+theta2)/2, 
     rou = rou1 * abs(cos(degree.minus(theta1, theta2)/2/180*pi))*rou.ratio, rou.ratio = 0.5,
-    n = 1001) {
+    n = 501) {
     
     while(theta2 < theta1) {
         theta2 = theta2 + 360
@@ -205,11 +214,19 @@ is.points.ordered.on.circle = function(theta, clock.wise = FALSE) {
 }
 
 arc.points = function(theta1, theta2, rou, clock.wise = FALSE) {
-    n = 100
+    
     if(clock.wise) {
-        theta = degree.seq(from = theta2, to = theta1, length.out = n)
+		l = as.radian(theta1 - theta2)*rou
+		ncut = l/ (2*pi/circos.par("unit.circle.segments"))
+		ncut = floor(ncut)
+		ncut = ifelse(ncut < 2, 2, ncut)
+        theta = degree.seq(from = theta2, to = theta1, length.out = ncut)
     } else {
-        theta = degree.seq(from = theta1, to = theta2, length.out = n)
+		l = as.radian(theta2 - theta1)*rou
+		ncut = l/ (2*pi/circos.par("unit.circle.segments"))
+		ncut = floor(ncut)
+		ncut = ifelse(ncut < 2, 2, ncut)
+        theta = degree.seq(from = theta1, to = theta2, length.out = ncut)
      }
     x = rou * cos(as.radian(theta))
     y = rou * sin(as.radian(theta))

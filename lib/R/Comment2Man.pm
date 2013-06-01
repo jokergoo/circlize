@@ -587,7 +587,10 @@ sub get_nearest_function_info {
                     }
                     $function_args .= " " x (length($function_name)+3) . $line . "\n";
                 }
+				
+				
             }
+			$function_args = re_format_function_args($function_args);
 			if(my ($g, $c) = check_generic_function($function_name)) {
 				return ($function_name, "\\method{$g}{$c}($function_args)");
 			} else {
@@ -597,6 +600,19 @@ sub get_nearest_function_info {
 	}
 	
 	return ();
+}
+
+sub re_format_function_args {
+	my $str = shift;
+	my @str = split "\n", $str;
+	for(my $i = 0; $i < scalar(@str); $i ++) {
+		$str[$i] =~s/^\s+//;
+		$str[$i] =~s/\s+$//;
+		if($i > 0) {
+			$str[$i] = "    $str[$i]";
+		}
+	}
+	return(join "\n", @str);
 }
 
 

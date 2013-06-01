@@ -1,6 +1,6 @@
 % \VignetteIndexEntry{Draw relations}
 % \VignetteDepends{circlize}
-% \VignetteKeywords{circos}
+% \VignetteKeywords{circos R}
 % \VignetteKeywords{relation}
 % \VignetteKeywords{corelation}
 % \VignetteKeywords{circlize}
@@ -26,23 +26,23 @@ is kind of degree for the relation. In this vignette we show how to represent a 
 
 First, we need a correlation matrix.
 
-\begin{Schunk}
-\begin{Sinput}
-> set.seed(12345)
-> n = 9
-> m = matrix(rnorm(n^2), n, n)
-> colnames(m) = letters[1:n]
-> m2 = cor(m)
-\end{Sinput}
-\end{Schunk}
+<<label=figcorrelation1, echo=FALSE, eval=FALSE>>=
+par(mfrow = c(2, 1))
+@
+
+<<label=figcorrelation2, echo=TRUE, eval=FALSE>>=
+set.seed(12345)
+n = 9
+m = matrix(rnorm(n^2), n, n)
+colnames(m) = letters[1:n]
+m2 = cor(m)
+@
 
 Then the range for each element, which is the summation of correlations with other elements.
 
-\begin{Schunk}
-\begin{Sinput}
-> xlim = cbind(rep(0, n), apply(m2, 2, function(x) sum(abs(x)) - 1))
-\end{Sinput}
-\end{Schunk}
+<<label=figcorrelation3, echo=TRUE, eval=FALSE>>=
+xlim = cbind(rep(0, n), apply(m2, 2, function(x) sum(abs(x)) - 1))
+@
 
 Initialize the layout and add names of elements around each sector. The size of each sector
 is determined by the range for each element. Here we create the first track by {\tt circos.trackPlotRegion}.
@@ -50,80 +50,28 @@ In this track, we only want to draw one rectangle and add the name for the eleme
 done by {\tt panel.fun} argument to draw the cell as soon as the corresponding cell has
 been created.
 
-\begin{Schunk}
-\begin{Sinput}
-> factors = rownames(m2)
-> colors = 1:n
->
-> library(circlize)
-> par(mar = c(1, 1, 1, 1))
-> circos.initialize(factors = factors, xlim = xlim)
-> circos.trackPlotRegion(ylim = c(0, 1), factors = factors,
-+   bg.border = NA, panel.fun = function(x, y) {
-+     xlim = get.cell.meta.data("xlim")
-+     current.sector.index = get.cell.meta.data("sector.index")
-+     circos.text(mean(xlim), 0.75, labels = current.sector.index,
-+         direction = "horizontal")
-+     i = get.cell.meta.data("sector.numeric.index")
-+     circos.rect(min(xlim), 0, max(xlim), 0.25, col = colors[i])
-+ })
-\end{Sinput}
-\end{Schunk}
-
-Finnally we use {\tt circos.link} to draw links from elements to elements, in which red represents positive correlation and green
-represents negative correlation.
-
-\begin{Schunk}
-\begin{Sinput}
-> rn = rownames(m2)
-> sector.sum = numeric(length(rn))
-> for(i in 2:n) {
-+     for(j in 1:(i-1)) {
-+         sector.index1 = rn[i]
-+         sector.index2 = rn[j]
-+         circos.link(sector.index1,
-+             c(sector.sum[i], sector.sum[i] + abs(m2[i, j])),
-+             sector.index2,
-+             c(sector.sum[j], sector.sum[j] + abs(m2[i, j])),
-+             col = ifelse(m2[i, j] > 0, "#FF0000A0", "#00FF00A0"),
-+             border = "grey")
-+         sector.sum[i] = sector.sum[i] + abs(m2[i, j])
-+         sector.sum[j] = sector.sum[j] + abs(m2[i, j])
-+     }
-+ }
-\end{Sinput}
-\end{Schunk}
-
-The finnal figure looks like figure \ref{fig:correlation} (left part) and a more pretty
-figure is on the right part of figure \ref{fig:correlation} in which correlatioins are
-measured by continuous colors.
-
-<<label=figcorrelation, include=FALSE, echo=FALSE>>=
-set.seed(12345)
-n = 9
-m = matrix(rnorm(n^2), n, n)
-colnames(m) = letters[1:n]
-m2 = cor(m)
-factors = rownames(m2)
-
-xlim = cbind(rep(0, n), apply(m2, 2, function(x) sum(abs(x)) - 1))
-
-
+<<label=figcorrelation4, echo=TRUE, eval=FALSE>>=
 library(circlize)
-
-par(mfrow = c(2, 1))
+factors = rownames(m2)
 colors = 1:n
 
 par(mar = c(1, 1, 1, 1))
 circos.initialize(factors = factors, xlim = xlim)
-circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA, panel.fun = function(x, y) {
-    xlim = get.cell.meta.data("xlim")
-    current.sector.index = get.cell.meta.data("sector.index")
-    circos.text(mean(xlim), 0.75, labels = current.sector.index, direction = "horizontal")
-    i = get.cell.meta.data("sector.numeric.index")
-    circos.rect(min(xlim), 0, max(xlim), 0.25, col = colors[i])
-})
+circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA,
+    panel.fun = function(x, y) {
+        xlim = get.cell.meta.data("xlim")
+        current.sector.index = get.cell.meta.data("sector.index")
+        circos.text(mean(xlim), 0.75, labels = current.sector.index,
+            direction = "horizontal")
+        i = get.cell.meta.data("sector.numeric.index")
+        circos.rect(min(xlim), 0, max(xlim), 0.25, col = colors[i])
+    })
+@
 
+Finnally we use {\tt circos.link} to draw links from elements to elements, in which red represents positive correlation and green
+represents negative correlation.
+
+<<label=figcorrelation5, echo=TRUE, eval=FALSE>>=
 rn = rownames(m2)
 sector.sum = numeric(length(rn))
 for(i in 2:n) {
@@ -131,18 +79,24 @@ for(i in 2:n) {
         sector.index1 = rn[i]
         sector.index2 = rn[j]
         circos.link(sector.index1,
-                    c(sector.sum[i], sector.sum[i] + abs(m2[i, j])),
-                    sector.index2,
-                    c(sector.sum[j], sector.sum[j] + abs(m2[i, j])),
-                    col = ifelse(m2[i, j] > 0, "#FF0000A0", "#00FF00A0"), border = "grey")
+            c(sector.sum[i],sector.sum[i] + abs(m2[i, j])),
+            sector.index2,
+            c(sector.sum[j], sector.sum[j] + abs(m2[i, j])),
+            col = ifelse(m2[i, j] > 0, "#FF0000A0", "#00FF00A0"),
+            border = "grey")
         sector.sum[i] = sector.sum[i] + abs(m2[i, j])
         sector.sum[j] = sector.sum[j] + abs(m2[i, j])
     }
 }
 
 circos.clear()
+@
 
+The finnal figure looks like figure \ref{fig:correlation} (top part) and a more pretty
+figure is on the bottom part of figure \ref{fig:correlation} in which correlatioins are
+measured by continuous colors.
 
+<<label=figcorrelation6, echo=FALSE, eval=FALSE>>=
 get_color = function(x,
                      colors = c("green", "black", "red"), # color points
                      fc = c(-5, 0, 5),                    # data points
@@ -223,7 +177,12 @@ circos.clear()
 \begin{figure}
 \begin{center}
 <<label=figcorrelation, fig = TRUE, echo = FALSE, width=4, height=8>>=
-<<figcorrelation>>
+<<figcorrelation1>>
+<<figcorrelation2>>
+<<figcorrelation3>>
+<<figcorrelation4>>
+<<figcorrelation5>>
+<<figcorrelation6>>
 @
 \end{center}
 \caption{Correlations represented in circos layout}

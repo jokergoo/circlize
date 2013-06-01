@@ -11,10 +11,9 @@
 
 }
 \usage{
-circos.trackPlotRegion(factors = NULL, x = NULL, y = NULL, ylim = NULL,
-    force.ylim = TRUE, track.index = NULL,
-    track.height = circos.par("default.track.height"), bg.col = NA,
-    bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
+circos.trackPlotRegion(factors = NULL, x = NULL, y = NULL, ylim = NULL, force.ylim = TRUE,
+    track.index = NULL, track.height = circos.par("default.track.height"),
+    bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
     panel.fun = function(x, y) {NULL})
 }
 \arguments{
@@ -33,9 +32,9 @@ circos.trackPlotRegion(factors = NULL, x = NULL, y = NULL, ylim = NULL,
 
 }
 \details{
-  This function pretends to be high-level plotting function, which means, you must first call this function to create a plotting region, then thoselow-level-style plotting function such as \code{\link{circos.points}}, \code{\link{circos.lines}} can beapplied.
+  This function pretends to be a high-level plotting function, which means, you must first call this function to create a plotting region, then thoselow-level-style plotting function such as \code{\link{circos.points}}, \code{\link{circos.lines}} can beapplied.
 
-  It has two different usages. First, it can create a complete track which among severalsectors. Because currently it does not support creating single cell since it wouldmake the layout disordered, this is the only way to create the plotting region.
+  It has two different usages. First, it can create a complete track which among severalsectors. Because currently it does not support creating single cell since it wouldmake the layout disordered, this is the only way to create the plotting regions.
 
   Currently, all the cells that are created in a same track sharing same height, which means,there is no cell has longer height than others.
 
@@ -47,7 +46,7 @@ circos.trackPlotRegion(factors = NULL, x = NULL, y = NULL, ylim = NULL,
 
   If \code{factors} does not cover all sectors which is going to be initialized, the cells in remaining unselectedsectors would also be created but without drawing anything. The \code{ylim} for these cellsare the same as that in the latest created cell.
 
-  Second, it can update a already-created plotRegion if the index for the trackis specified. If the index is one bigger than the largest current track index. It in factcreates the new track. If updating an existed track, those parameters related to the positionof the plotting region can not be changed.
+  Second, it can update a already-created track if the index for the trackis specified. If the index is one bigger than the largest current track index. It in factcreates the new track. If updating an existed track, those parameters related to the positionof the plotting region can not be changed.
 
 
 }

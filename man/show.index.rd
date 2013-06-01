@@ -14,7 +14,7 @@
 show.index()
 }
 \details{
-  Draw the index of the sector and track for each cell on the figure.This function can help you to find the coordinate of cells. 
+  Draw the index of the sector and the track for each cell on the figure.This function can help you to find the coordinates of cells. 
 
 
 }
@@ -28,14 +28,6 @@ circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
-for(l in letters[1:10]) {
-    circos.rect(0,0,10,10,sector.index = l, track.index = 2, col = "#FF000040")
-}
-
-for(l in 1:4) {
-    circos.rect(0,0,10,10,sector.index = "a", track.index = l, col = "#0000FF40")
-}
 show.index()
 circos.clear()
-
 }

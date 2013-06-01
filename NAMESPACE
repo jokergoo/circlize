@@ -4,6 +4,7 @@ export(
 	circos.clear,
 	show.index,
 	get.cell.meta.data,
+	circos.link,
 	circos.trackPlotRegion,
 	circos.updatePlotRegion,
 	circos.points,
@@ -15,7 +16,6 @@ export(
 	circos.text,
 	circos.trackText,
 	circos.axis,
-	circos.link,
 	circos.trackHist,
 	circos.initializeWithIdeogram,
 	draw.sector

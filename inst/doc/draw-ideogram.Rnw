@@ -1,6 +1,6 @@
 % \VignetteIndexEntry{Draw ideogram}
 % \VignetteDepends{circlize}
-% \VignetteKeywords{circos}
+% \VignetteKeywords{circos R}
 % \VignetteKeywords{ideogram}
 % \VignetteKeywords{circlize}
 % \VignettePackage{circlize}
@@ -29,24 +29,13 @@ The cytoband data for human can be download from \\
 \url{http://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz}.
 Uncompress the file and read it into R. Here the package already contains such file.
 
-\begin{Schunk}
-\begin{Sinput}
-> library(circlize)
-> d = read.table(file = paste(system.file(package = "circlize"),
-+                       "/extdata/cytoBand.txt", sep=""),
-+     colClasses = c("factor", "numeric", "numeric", "factor", "factor"))
-> head(d)
-\end{Sinput}
-\begin{Soutput}
-    V1       V2       V3     V4     V5
-1 chr1        0  2300000 p36.33   gneg
-2 chr1  2300000  5400000 p36.32 gpos25
-3 chr1  5400000  7200000 p36.31   gneg
-4 chr1  7200000  9200000 p36.23 gpos25
-5 chr1  9200000 12700000 p36.22   gneg
-6 chr1 12700000 16200000 p36.21 gpos50
-\end{Soutput}
-\end{Schunk}
+<<label=figideogram1, include=TRUE, echo=TRUE>>=
+library(circlize)
+d = read.table(file = paste(system.file(package = "circlize"),
+        "/extdata/cytoBand.txt", sep=""),
+    colClasses = c("factor", "numeric", "numeric", "factor", "factor"))
+head(d)
+@
 
 In the data frame, the second column and the third column are intervals for loci.
 
@@ -62,49 +51,38 @@ the numeric index first.
 The process is simple. Extract the number part (1, 2, ..., 22) and the letter part ({\tt X}, {\tt Y}) of chromosome names.
 Sorted them seperately and finally combine them.
 
-\begin{Schunk}
-\begin{Sinput}
-> chromosome = levels(d[[1]])
-> chromosome.ind = gsub("chr", "", chromosome)
-> chromosome.num = grep("^\\d+$", chromosome.ind, value = TRUE)
-> chromosome.letter = chromosome.ind[!grepl("^\\d+$", chromosome.ind)]
-> chromosome.num = sort(as.numeric(chromosome.num))
-> chromosome.letter = sort(chromosome.letter)
-> chromosome.num = paste("chr", chromosome.num, sep = "")
-> chromosome.letter = paste("chr", chromosome.letter, sep = "")
->
-> chromosome = c(chromosome.num, chromosome.letter)
-> chromosome
-\end{Sinput}
-\begin{Soutput}
- [1] "chr1"  "chr2"  "chr3"  "chr4"  "chr5"  "chr6"  "chr7"  "chr8"  "chr9" 
-[10] "chr10" "chr11" "chr12" "chr13" "chr14" "chr15" "chr16" "chr17" "chr18"
-[19] "chr19" "chr20" "chr21" "chr22" "chrX"  "chrY" 
-\end{Soutput}
-\end{Schunk}
+<<label=figideogram2, include=TRUE, echo=TRUE>>=
+chromosome = levels(d[[1]])
+chromosome.ind = gsub("chr", "", chromosome)
+chromosome.num = grep("^\\d+$", chromosome.ind, value = TRUE)
+chromosome.letter = chromosome.ind[!grepl("^\\d+$", chromosome.ind)]
+chromosome.num = sort(as.numeric(chromosome.num))
+chromosome.letter = sort(chromosome.letter)
+chromosome.num = paste("chr", chromosome.num, sep = "")
+chromosome.letter = paste("chr", chromosome.letter, sep = "")
+
+chromosome = c(chromosome.num, chromosome.letter)
+chromosome
+@
 
 The cytoband data also provides the range of each chromosome. This can be set as the {\tt xlim} of each chromosome.
 In the following code, we calculate the start position and the end position of each chromosome and store them
 in a matrix in which order of rows of {\tt xlim} correspond to the order of elements in {\tt chromosome}.
 
-\begin{Schunk}
-\begin{Sinput}
-> xlim = matrix(nrow = 0, ncol = 2)
-> for(chr in chromosome) {
-+     d2 = d[d[[1]] == chr, ]
-+     xlim = rbind(xlim,c(min(d2[[2]]), max(d2[[3]])))
-+ }
-\end{Sinput}
-\end{Schunk}
+<<label=figideogram3, echo=TRUE, eval=FALSE>>=
+xlim = matrix(nrow = 0, ncol = 2)
+for(chr in chromosome) {
+    d2 = d[d[[1]] == chr, ]
+    xlim = rbind(xlim,c(min(d2[[2]]), max(d2[[3]])))
+}
+@
 
 Before we draw the circos layout, we need to set some graphic parameters. Here we do not need any cell paddings.
 
-\begin{Schunk}
-\begin{Sinput}
-> par(mar = c(1, 1, 1, 1), lwd = 0.5)
-> circos.par("cell.padding" = c(0, 0, 0, 0))
-\end{Sinput}
-\end{Schunk}
+<<label=figideogram4, echo=TRUE, eval=FALSE>>=
+par(mar = c(1, 1, 1, 1), lwd = 0.5)
+circos.par("cell.padding" = c(0, 0, 0, 0))
+@
 
 Initialize the circos layout with ranges of chromosomes. In the initialization step, width of 
 each sector would correspond to the range of each chromosome. Also the order of sectors would
@@ -118,12 +96,10 @@ would be draw in the sector which corresponds to the selected chromosome.
 In the initialization step, order of the {\tt xim} matrix should correspond to the order 
 of {\tt levels} of the {\tt factors}, so do not be confused here.
 
-\begin{Schunk}
-\begin{Sinput}
-> circos.initialize(factors = factor(chromosome, levels = chromosome),
-+     xlim = xlim)
-\end{Sinput}
-\end{Schunk}
+<<label=figideogram5, echo=TRUE, eval=FALSE>>=
+circos.initialize(factors = factor(chromosome, levels = chromosome),
+    xlim = xlim)
+@
 
 After the range of each chromosome has been allocated in the circle, we can draw the ideogram.
 Besides that, we also want to draw additional information such as the axis for chromosomes and the name of chromosomes. 
@@ -136,12 +112,10 @@ each cell is from 0 to 1.
 There are two ways to draw the ideogram. First, create the plotting region first, and draw
 ideogram cell by cell.
 
-\begin{Schunk}
-\begin{Sinput}
-> circos.trackPlotRegion(factors = chromosome,
-+     ylim = c(0, 1), bg.border = NA, track.height = 0.1)
-\end{Sinput}
-\end{Schunk}
+<<label=figideogram6, echo=TRUE, eval=FALSE>>=
+circos.trackPlotRegion(factors = chromosome, ylim = c(0, 1),
+    bg.border = NA, track.height = 0.1)
+@
 
 In the above codes, it is not necessary to set the {\tt factors} argument. If {\tt factors}
 is not set, {\tt circos.trackPlotRegion} will create plotting regions for all available sectors
@@ -156,83 +130,42 @@ Now in each cell, we draw the ideogram for each chromosome. Code is simple. The 
 for different locus, 2. draw rectangle for different locus, 3. add axis, 4. add
 chromosome names.
 
-\begin{Schunk}
-\begin{Sinput}
-> for(chr in chromosome) {
-+     d2 = d[d[[1]] == chr, ]
-+     n = nrow(d2)
-+     # assign colors
-+     col = rep("#FFFFFF", n)
-+     col[d2[[5]] == "acen"] = "#E41A1C"
-+     col[d2[[5]] == "stalk"] = "#377EB8"
-+     col[d2[[5]] == "gvar"] = "#404040"
-+     col[d2[[5]] == "gpos100"] = "#000000"
-+     col[d2[[5]] == "gpos"] = "#000000"
-+     col[d2[[5]] == "gpos75"] = "#BFBFBF"
-+     col[d2[[5]] == "gpos50"] = "#808080"
-+     col[d2[[5]] == "gpos25"] = "#404040"
-+     # rectangles for different locus
-+     for(i in seq_len(n)) {
-+         circos.rect(d2[i, 2], 0, d2[i, 3], 0.4, sector.index = chr,
-+              col = col[i], border = NA)
-+     }
-+     circos.rect(d2[1, 2], 0, d2[n, 3], 0.4, sector.index = chr,
-+         border = "black")
-+     # axis
-+     major.at = seq(0, 10^nchar(max(xlim[, 2])), by = 50000000)
-+     circos.axis(h = 0.5, major.at = major.at,
-+         labels = paste(major.at/1000000, "MB", sep = ""),
-+         sector.index = chr, labels.cex = 0.2)
-+     cell.xlim = get.cell.meta.data("xlim", sector.index = chr)
-+     # chromosome names
-+     circos.text(cell.xlim[1] + mean(cell.xlim), 1.2,
-+         labels = gsub("chr", "", chr),
-+         sector.index = chr, cex = 0.8)
-+ }
-\end{Sinput}
-\end{Schunk}
-
-The second way, draw ideogram directly as the creation of the plotting region by using {\tt panel.fun} argument.
-Inside {\tt panel.fun}, we do not need to set {\tt sector.index} because the default {\tt sector.index}
-is the current sector index for the cell which is just created.
-
-\begin{Schunk}
-\begin{Sinput}
-> circos.trackPlotRegion(factors = chromosome,
-+   ylim = c(0, 1), bg.border = NA, track.height = 0.1,
-+   panel.fun = function(x, y) {
-+     
-+     chr = get.cell.meta.data("sector.index")
-+     d2 = d[d[[1]] == chr, ]
-+     n = nrow(d2)
-+     # assign colors
-+     col = rep("#FFFFFF", n)
-+     col[d2[[5]] == "acen"] = "#E41A1C"
-+     col[d2[[5]] == "stalk"] = "#377EB8"
-+     col[d2[[5]] == "gvar"] = "#404040"
-+     col[d2[[5]] == "gpos100"] = "#000000"
-+     col[d2[[5]] == "gpos"] = "#000000"
-+     col[d2[[5]] == "gpos75"] = "#BFBFBF"
-+     col[d2[[5]] == "gpos50"] = "#808080"
-+     col[d2[[5]] == "gpos25"] = "#404040"
-+     # rectangles for different locus
-+     for(i in seq_len(n)) {
-+         circos.rect(d2[i, 2], 0, d2[i, 3], 0.4, col = col[i], border = NA)
-+     }
-+     circos.rect(d2[1, 2], 0, d2[n, 3], 0.4, border = "black")
-+     # axis
-+     major.at = seq(0, 10^nchar(max(xlim[, 2])), by = 50000000)
-+     circos.axis(h = 0.5, major.at = major.at,
-+         labels = paste(major.at/1000000, "MB", sep = ""),
-+         labels.cex = 0.2)
-+     cell.xlim = get.cell.meta.data("xlim")
-+     # chromosome names
-+     circos.text(cell.xlim[1] + mean(cell.xlim), 1.2,
-+         labels = gsub("chr", "", chr), cex = 0.8)
-+
-+ })
-\end{Sinput}
-\end{Schunk}
+<<label=figideogram7, echo=TRUE, eval=FALSE>>=
+for(chr in chromosome) {
+    d2 = d[d[[1]] == chr, ]
+    n = nrow(d2)
+    # assign colors
+    col = rep("#FFFFFF", n)
+    col[d2[[5]] == "gpos100"] = rgb(0, 0, 0, maxColorValue = 255)
+	col[d2[[5]] == "gpos"]    = rgb(0, 0, 0, maxColorValue = 255)
+    col[d2[[5]] == "gpos75"]  = rgb(130, 130, 130, maxColorValue = 255)
+	col[d2[[5]] == "gpos66"]  = rgb(160, 160, 160, maxColorValue = 255)
+	col[d2[[5]] == "gpos50"]  = rgb(200, 200, 200, maxColorValue = 255)
+	col[d2[[5]] == "gpos33"]  = rgb(210, 210, 210, maxColorValue = 255)
+	col[d2[[5]] == "gpos25"]  = rgb(200, 200, 200, maxColorValue = 255)
+	col[d2[[5]] == "gvar"]    = rgb(220, 220, 220, maxColorValue = 255)
+	col[d2[[5]] == "gneg"]    = rgb(255, 255, 255, maxColorValue = 255)
+	col[d2[[5]] == "acen"]    = rgb(217, 47, 39, maxColorValue = 255)
+	col[d2[[5]] == "stalk"]   = rgb(100, 127, 164, maxColorValue = 255)
+    # rectangles for different locus
+    for(i in seq_len(n)) {
+        circos.rect(d2[i, 2], 0, d2[i, 3], 0.4, sector.index = chr,
+            col = col[i], border = NA)
+    }
+    circos.rect(d2[1, 2], 0, d2[n, 3], 0.4, sector.index = chr,
+        border = "black")
+    # axis
+    major.at = seq(0, 10^nchar(max(xlim[, 2])), by = 50000000)
+    circos.axis(h = 0.5, major.at = major.at,
+        labels = paste(major.at/1000000, "MB", sep = ""),
+        sector.index = chr, labels.cex = 0.2)
+    cell.xlim = get.cell.meta.data("xlim", sector.index = chr)
+    # chromosome names
+    circos.text(cell.xlim[1] + mean(cell.xlim), 1.2,
+        labels = gsub("chr", "", chr),
+        sector.index = chr, cex = 0.8)
+}
+@
 
 There may be some warnings saying some points are out of the plotting region. Don't worry about that,
 it's just OK.
@@ -242,43 +175,35 @@ If you do not want to draw ideogram in the most outside of the circos layout. Yo
 If there is a translocation from position 111111111 in chromosome 2 to position 55555555 in chromosome 16. It can represent
 as a link in the circos layout.
 
-\begin{Schunk}
-\begin{Sinput}
-> circos.link(sector.index1 = "chr2", point1 = 111111111,
-+             sector.index2 = "chr16", point2 = 55555555)
-\end{Sinput}
-\end{Schunk}
+<<label=figideogram8, echo=TRUE, eval=FALSE>>=
+circos.link(sector.index1 = "chr2", point1 = 111111111,
+            sector.index2 = "chr16", point2 = 55555555)
+@
 
 If position 88888888 in chromosome 6 is important and we want to mark it, we can use following codes. First create
 a new track. Here there is no specifying of {\tt factors}, thus the new track would create plotting regions for all available
 sectors. Note you can not create plotting region for a single cell, however you can write so, but in fact plotting region for cells in 
 all sectors would be created.
 
-\begin{Schunk}
-\begin{Sinput}
-> # create a new track
-> circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA)
-> circos.text(88888888, 0.2, labels = "site", sector.index = "chr6",
-+     adj = c(0.5, 1))
-> circos.lines(c(88888888, 88888888), c(0.3, 1), sector.index = "chr6",
-+     straight = TRUE)
-\end{Sinput}
-\end{Schunk}
-
-
-<<label=figideogram, include=FALSE, echo=FALSE>>=
-library(circlize)
-circos.initializeWithIdeogram()
-circos.link(sector.index1 = "chr2", point1 = 111111111, sector.index2 = "chr16", point2 = 55555555)
+<<label=figideogram9, echo=TRUE, eval=FALSE>>=
+# create a new track
 circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA)
-circos.text(88888888, 0.2, labels = "site", sector.index = "chr6", adj = c(0.5, 1))
-circos.lines(c(88888888, 88888888), c(0.3, 1), sector.index = "chr6", straight = TRUE)
+circos.text(88888888, 0.2, labels = "site", sector.index = "chr6",
+    adj = c(0.5, 1))
+circos.lines(c(88888888, 88888888), c(0.3, 1), sector.index = "chr6",
+    straight = TRUE)
 @
 
 \begin{figure}
 \begin{center}
-<<label=figideogram, fig = TRUE, echo = FALSE>>=
-<<figideogram>>
+<<label=figideogram, fig=TRUE, echo=FALSE, eval=TRUE>>=
+<<figideogram3>>
+<<figideogram4>>
+<<figideogram5>>
+<<figideogram6>>
+<<figideogram7>>
+<<figideogram8>>
+<<figideogram9>>
 @
 \end{center}
 \caption{Ideogram in circos layout}
@@ -300,67 +225,73 @@ the above example codes. All you need to remember is that complicated graphs are
 Finally, more informative and specialized genomic graphs are figure \ref{fig:genomic} and figure \ref{fig:twochr}. Figure
 \ref{fig:twochr} in fact combines two independent circos plots, users can refer to the main vignette to find out how to do it.
 
-<<label=figgenomic, include=FALSE, echo=FALSE>>=
+<<label=figgenomic, echo=FALSE, eval=FALSE>>=
 library(circlize)
 set.seed(12345)
 
 circos.initializeWithIdeogram()
 
-circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.2, panel.fun = function(x, y) {
-    xlim = get.cell.meta.data("xlim")
-    xrange = get.cell.meta.data("xrange")
+circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.2,
+    panel.fun = function(x, y) {
+        xlim = get.cell.meta.data("xlim")
+        xrange = get.cell.meta.data("xrange")
 
-    x1 = xlim[1] + runif(5)*xrange
-    x1 = sort(x1)
-    x2 = seq(xlim[1], xlim[2], length.out = 5)
-    for(i in 1:5) {
-        circos.lines(c(x1[i], x2[i]), c(1, 0.5), straight = TRUE)
-        circos.text(x2[i], 0.4, labels = "gene", adj = c(0, 0.5), cex = 0.4, direction = "vertical_left")
-    }
-})
-
-
-circos.trackPlotRegion(ylim = c(-1, 1), bg.border = NA, bg.col ="#EEEEEE", track.height = 0.1, panel.fun = function(x, y) {
-    xlim = get.cell.meta.data("xlim")
-    ylim = get.cell.meta.data("ylim")
-    for(i in -2:2) {
-        circos.lines(xlim, c(i, i)/2, col = "#999999", lwd = 0.2)
-    }
-    xrange = get.cell.meta.data("xrange")
-    x = NULL
-    y = NULL
-    for(i in 1:5) {
-        
-        x2 = seq(xlim[1] + (i-1)/5*xrange, xlim[1] + (i)/5*xrange, by = 1000000)
-        x = c(x, x2)
-        y = c(y, runif(length(x2))^2*sample(c(-1, 1), 1))
-    }
-    col = ifelse(y > 0, "#E41A1C", "#4DAF4A")
-    circos.points(x, y, col = col, cex = 0.2, pch = 16)
-})
-
-circos.trackPlotRegion(ylim = c(-1, 1), bg.border = NA, track.height = 0.1, panel.fun = function(x, y) {
-    xlim = get.cell.meta.data("xlim")
-    xrange = get.cell.meta.data("xrange")
-    x = seq(xlim[1], xlim[2], by = 10000000)
-    y = runif(length(x))
-    circos.lines(x, y, area = TRUE, area.baseline = 0, border = NA, col = "#FF7F00")
-    y = -runif(length(x))
-    circos.lines(x, y, area = TRUE, area.baseline = 0, border = NA, col = "#FFFF33")
-})
-
-
-circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.05, panel.fun = function(x, y) {
-    xlim = get.cell.meta.data("xlim")
-    xrange = get.cell.meta.data("xrange")
-    x = seq(xlim[1], xlim[2], by = 10000000)
-    for(i in seq_along(x)) {
-        if(i == 1) {
-            next
+        x1 = xlim[1] + runif(5)*xrange
+        x1 = sort(x1)
+        x2 = seq(xlim[1], xlim[2], length.out = 5)
+        for(i in 1:5) {
+            circos.lines(c(x1[i], x2[i]), c(1, 0.5), straight = TRUE)
+            circos.text(x2[i], 0.4, labels = "gene", adj = c(0, 0.5),
+                cex = 0.4, direction = "vertical_left")
         }
-        circos.rect(x[i-1], 0, x[i], 1, col = rgb(runif(1), runif(1), runif(1)), border = NA)
-    }
-})
+    })
+
+
+circos.trackPlotRegion(ylim = c(-1, 1), bg.border = NA, bg.col ="#EEEEEE",
+    track.height = 0.1, panel.fun = function(x, y) {
+		xlim = get.cell.meta.data("xlim")
+		ylim = get.cell.meta.data("ylim")
+		for(i in -2:2) {
+			circos.lines(xlim, c(i, i)/2, col = "#999999", lwd = 0.2)
+		}
+		xrange = get.cell.meta.data("xrange")
+		x = NULL
+		y = NULL
+		for(i in 1:5) {
+			
+			x2 = seq(xlim[1] + (i-1)/5*xrange, xlim[1] + (i)/5*xrange, by = 1000000)
+			x = c(x, x2)
+			y = c(y, runif(length(x2))^2*sample(c(-1, 1), 1))
+		}
+		col = ifelse(y > 0, "#E41A1C", "#4DAF4A")
+		circos.points(x, y, col = col, cex = 0.2, pch = 16)
+	})
+
+circos.trackPlotRegion(ylim = c(-1, 1), bg.border = NA, track.height = 0.1,
+    panel.fun = function(x, y) {
+		xlim = get.cell.meta.data("xlim")
+		xrange = get.cell.meta.data("xrange")
+		x = seq(xlim[1], xlim[2], by = 10000000)
+		y = runif(length(x))
+		circos.lines(x, y, area = TRUE, area.baseline = 0, border = NA, col = "#FF7F00")
+		y = -runif(length(x))
+		circos.lines(x, y, area = TRUE, area.baseline = 0, border = NA, col = "#FFFF33")
+	})
+
+
+circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.05,
+	panel.fun = function(x, y) {
+		xlim = get.cell.meta.data("xlim")
+		xrange = get.cell.meta.data("xrange")
+		x = seq(xlim[1], xlim[2], by = 10000000)
+		for(i in seq_along(x)) {
+			if(i == 1) {
+				next
+			}
+			circos.rect(x[i-1], 0, x[i], 1, col = rgb(runif(1), runif(1), runif(1)), 
+			    border = NA)
+		}
+	})
 
 chromosome = paste("chr", c(1:22, "X", "Y"), sep = "")
 for(i in 1:50) {
@@ -385,7 +316,9 @@ for(i in 1:50) {
     }
     
     
-    circos.link(chr[1], x1, chr[2], x2, col = sample(c('#9E0142', '#D53E4F', '#F46D43', '#FDAE61', '#FEE08B', '#FFFFBF', '#E6F598', '#ABDDA4', '#66C2A5', '#3288BD', '#5E4FA2'), 1))
+    circos.link(chr[1], x1, chr[2], x2, col = sample(c('#9E0142', '#D53E4F', '#F46D43',
+	      '#FDAE61', '#FEE08B', '#FFFFBF', '#E6F598',
+		  '#ABDDA4', '#66C2A5', '#3288BD', '#5E4FA2'), 1))
 }
 
 degree = get.cell.meta.data("xplot", sector.index = "chr1", track.index = 1)
@@ -401,7 +334,7 @@ circos.clear()
 
 \begin{figure}
 \begin{center}
-<<label=figgenomic, fig = TRUE, echo = FALSE>>=
+<<label=figgenomic, fig = TRUE, echo = FALSE, eval=TRUE>>=
 <<figgenomic>>
 @
 \end{center}
@@ -413,7 +346,7 @@ circos.clear()
 
 
 
-<<label=figtwo, include=FALSE, echo=FALSE>>=
+<<label=figtwo, echo=FALSE, eval=FALSE>>=
 
 library(circlize)
 circos.clear()
@@ -423,51 +356,62 @@ circos.link("chr1", 12345678, "chr1", 87654321, top.ratio = 0.8)
 circos.link("chr1", 22222222, "chr1", 99999999, top.ratio = 0.8)
 circos.clear()
 
-d = read.table(file = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""), colClasses = c("factor", "numeric", "numeric", "factor", "factor"))
+d = read.table(file = paste(system.file(package = "circlize"),
+    "/extdata/cytoBand.txt", sep=""),
+	colClasses = c("factor", "numeric", "numeric", "factor", "factor"))
 
-    chromosome = c("chr1")
+chromosome = c("chr1")
     
-    xlim = matrix(nrow = 0, ncol = 2)
-    for(chr in chromosome) {
-        d2 = d[d[[1]] == chr, ]
-        xlim = rbind(xlim,c(min(d2[[2]]), max(d2[[3]])))
+xlim = matrix(nrow = 0, ncol = 2)
+for(chr in chromosome) {
+    d2 = d[d[[1]] == chr, ]
+    xlim = rbind(xlim,c(min(d2[[2]]), max(d2[[3]])))
+}
+    
+circos.clear()
+par(mar = c(1, 1, 1, 1), new = TRUE)
+    
+circos.par("canvas.xlim" = c(-2, 2), "canvas.ylim" = c(-2, 2),
+    clock.wise = FALSE, start.degree = -90)
+circos.initialize(factor(chromosome, levels = chromosome), xlim = xlim)
+circos.trackPlotRegion(factors = factor(chromosome, levels = chromosome),
+    ylim = c(0, 1), bg.border = NA, track.height = 0.2)
+for(chr in chromosome) {
+    d2 = d[d[[1]] == chr, ]
+    n = nrow(d2)
+    col = rep("#FFFFFF", n)
+    col[d2[[5]] == "gpos100"] = rgb(0, 0, 0, maxColorValue = 255)
+	col[d2[[5]] == "gpos"]    = rgb(0, 0, 0, maxColorValue = 255)
+    col[d2[[5]] == "gpos75"]  = rgb(130, 130, 130, maxColorValue = 255)
+	col[d2[[5]] == "gpos66"]  = rgb(160, 160, 160, maxColorValue = 255)
+	col[d2[[5]] == "gpos50"]  = rgb(200, 200, 200, maxColorValue = 255)
+	col[d2[[5]] == "gpos33"]  = rgb(210, 210, 210, maxColorValue = 255)
+	col[d2[[5]] == "gpos25"]  = rgb(200, 200, 200, maxColorValue = 255)
+	col[d2[[5]] == "gvar"]    = rgb(220, 220, 220, maxColorValue = 255)
+	col[d2[[5]] == "gneg"]    = rgb(255, 255, 255, maxColorValue = 255)
+	col[d2[[5]] == "acen"]    = rgb(217, 47, 39, maxColorValue = 255)
+	col[d2[[5]] == "stalk"]   = rgb(100, 127, 164, maxColorValue = 255)
+    for(i in seq_len(n)) {
+        circos.rect(d2[i, 2], 0, d2[i, 3], 0.4, sector.index = chr,
+		    col = col[i], border = NA)
     }
-    
-    circos.clear()
-    par(mar = c(1, 1, 1, 1), new = TRUE)
-    
-    circos.par("canvas.xlim" = c(-2, 2), "canvas.ylim" = c(-2, 2), clock.wise = FALSE, start.degree = -90)
-    circos.initialize(factor(chromosome, levels = chromosome), xlim = xlim)
-    circos.trackPlotRegion(factors = factor(chromosome, levels = chromosome), ylim = c(0, 1), bg.border = NA, track.height = 0.2)
-    for(chr in chromosome) {
-        d2 = d[d[[1]] == chr, ]
-        n = nrow(d2)
-        col = rep("#FFFFFF", n)
-        col[d2[[5]] == "acen"] = "#E41A1C"
-        col[d2[[5]] == "stalk"] = "#377EB8"
-        col[d2[[5]] == "gvar"] = "#404040"
-        col[d2[[5]] == "gpos100"] = "#000000"
-        col[d2[[5]] == "gpos"] = "#000000"
-        col[d2[[5]] == "gpos75"] = "#BFBFBF"
-        col[d2[[5]] == "gpos50"] = "#808080"
-        col[d2[[5]] == "gpos25"] = "#404040"
-        for(i in seq_len(n)) {
-            circos.rect(d2[i, 2], 0, d2[i, 3], 0.4, sector.index = chr, col = col[i], border = NA)
-        }
-        circos.rect(d2[1, 2], 0, d2[n, 3], 0.4, sector.index = chr, border = "black")
-        major.at = seq(0, 10^nchar(max(xlim[, 2])), by = 10000000)
-        circos.axis(h = 0.5, major.at = major.at, labels = paste(major.at/1000000, "MB", sep = ""), sector.index = chr, labels.cex = 0.4, labels.direction = "vertical_left")
-        cell.xlim = get.cell.meta.data("xlim", sector.index = chr)
-        circos.text(cell.xlim[1] + mean(cell.xlim), -0.5, labels = chr, sector.index = chr, cex = 0.8)
-                circos.link("chr1", 12345678, "chr1", 87654321)
-                circos.link("chr1", 22222222, "chr1", 99999999)
-    }
-    
+    circos.rect(d2[1, 2], 0, d2[n, 3], 0.4, sector.index = chr, border = "black")
+    major.at = seq(0, 10^nchar(max(xlim[, 2])), by = 10000000)
+    circos.axis(h = 0.5, major.at = major.at, 
+	    labels = paste(major.at/1000000, "MB", sep = ""), sector.index = chr, 
+		labels.cex = 0.4, labels.direction = "vertical_left")
+    cell.xlim = get.cell.meta.data("xlim", sector.index = chr)
+    circos.text(cell.xlim[1] + mean(cell.xlim), -0.5, labels = chr, 
+	    sector.index = chr, cex = 0.8)
+    circos.link("chr1", 12345678, "chr1", 87654321)
+    circos.link("chr1", 22222222, "chr1", 99999999)
+}
+circos.clear()       
 @
 
 \begin{figure}
 \begin{center}
-<<label=figtwo, fig = TRUE, echo = FALSE>>=
+<<label=figtwo, fig = TRUE, echo = FALSE, eval=TRUE>>=
 <<figtwo>>
 @
 \end{center}

@@ -400,7 +400,8 @@ circos.trackPoints = function(factors = NULL, x, y, track.index = get.current.tr
 # -straight     whether draw straight lines between points
 # -area         whether to fill the area below the lines. If it is set to ``TRUE``, ``col`` controls the filled color
 #               in the area and ``border`` controls the color of the line.
-# -area.baseline the base line to draw area below lines, default is the minimal of y-range (most bottom)
+# -area.baseline the base line to draw area below lines, default is the minimal of y-range (most bottom). It can be a string or number.
+#               If a string, it should be one of ``bottom`` and ``top``.
 # -border       color for border of the area
 # -pt.col       if ``type`` is "o", points color
 # -cex          if ``type`` is "o", points size
@@ -415,11 +416,17 @@ circos.trackPoints = function(factors = NULL, x, y, track.index = get.current.tr
 # ``area`` to ``TURE``.
 circos.lines = function(x, y, sector.index = get.current.sector.index(), track.index = get.current.track.index(),
     col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
-	area = FALSE, area.baseline = get.cell.meta.data("ylim", sector.index, track.index)[1], border = "black",
+	area = FALSE, area.baseline = "bottom", border = "black",
     pt.col = par("col"), cex = par("cex"), pch = par("pch")) {
     
 	if(length(x) != length(y)) {
 		stop("length of x and y differ.\n")
+	}
+	
+	if(area.baseline == "bottom") {
+		area.baseline = get.cell.meta.data("ylim", sector.index, track.index)[1]
+	} else if(area.baseline == "top") {
+		area.baseline = get.cell.meta.data("ylim", sector.index, track.index)[2]
 	}
 	
     if(type == "l") {
@@ -1152,17 +1159,17 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 		col = rep("#FFFFFF", n)
 		
 		# color panel is from http://circos.ca/tutorials/course/slides/session-2.pdf, page 42
-		col[d2[[5]] == "gpos100"] = rgb(0, 0, 0, max = 255)
-		col[d2[[5]] == "gpos"]    = rgb(0, 0, 0, max = 255)
-		col[d2[[5]] == "gpos75"]  = rgb(130, 130, 130, max = 255)
-		col[d2[[5]] == "gpos66"]  = rgb(160, 160, 160, max = 255)
-		col[d2[[5]] == "gpos50"]  = rgb(200, 200, 200, max = 255)
-		col[d2[[5]] == "gpos33"]  = rgb(210, 210, 210, max = 255)
-		col[d2[[5]] == "gpos25"]  = rgb(200, 200, 200, max = 255)
-		col[d2[[5]] == "gvar"]    = rgb(220, 220, 220, max = 255)
-		col[d2[[5]] == "gneg"]    = rgb(255, 255, 255, max = 255)
-		col[d2[[5]] == "acen"]    = rgb(217, 47, 39, max = 255)
-		col[d2[[5]] == "stalk"]   = rgb(100, 127, 164, max = 255)
+		col[d2[[5]] == "gpos100"] = rgb(0, 0, 0, maxColorValue = 255)
+		col[d2[[5]] == "gpos"]    = rgb(0, 0, 0, maxColorValue = 255)
+		col[d2[[5]] == "gpos75"]  = rgb(130, 130, 130, maxColorValue = 255)
+		col[d2[[5]] == "gpos66"]  = rgb(160, 160, 160, maxColorValue = 255)
+		col[d2[[5]] == "gpos50"]  = rgb(200, 200, 200, maxColorValue = 255)
+		col[d2[[5]] == "gpos33"]  = rgb(210, 210, 210, maxColorValue = 255)
+		col[d2[[5]] == "gpos25"]  = rgb(200, 200, 200, maxColorValue = 255)
+		col[d2[[5]] == "gvar"]    = rgb(220, 220, 220, maxColorValue = 255)
+		col[d2[[5]] == "gneg"]    = rgb(255, 255, 255, maxColorValue = 255)
+		col[d2[[5]] == "acen"]    = rgb(217, 47, 39, maxColorValue = 255)
+		col[d2[[5]] == "stalk"]   = rgb(100, 127, 164, maxColorValue = 255)
 		for(i in seq_len(n)) {
 			circos.rect(d2[i, 2], 0, d2[i, 3], 0.4, sector.index = chr, col = col[i], border = NA)
 		}

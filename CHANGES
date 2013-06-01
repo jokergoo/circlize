@@ -7,3 +7,7 @@
 0.0.3
 - vignettes has been improved
 - ``xplot`` in `get.cell.meta.data` is now corresponding to the data direction in the cell
+- number of points to draw links deduced.
+- `get.cell.meta.data` can provide more meta data for a cell
+- start degree and end degree now consistent with the data axis.
+- the first sector is drawn first now.

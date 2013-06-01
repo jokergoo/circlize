@@ -12,8 +12,8 @@
 }
 \usage{
 circos.points(x, y, sector.index = get.current.sector.index(),
-	track.index = get.current.track.index(),
-	pch = par("pch"), col = par("col"), cex = par("cex"))
+    track.index = get.current.track.index(),
+    pch = par("pch"), col = par("col"), cex = par("cex"))
 }
 \arguments{
   \item{x}{Data points on x-axis}

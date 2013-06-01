@@ -1,12 +1,12 @@
 \name{circos.trackPoints}
 \alias{circos.trackPoints}
 \title{
-  Add points to the plotting regions in one track
+  Add points to the plotting regions in a same track
 
 
 }
 \description{
-  Add points to the plotting regions in one track
+  Add points to the plotting regions in a same track
 
 
 }
@@ -25,6 +25,8 @@ circos.trackPoints(factors = NULL, x, y, track.index = get.current.track.index()
   The function adds points in multiple cells by first splitting data into several parts in whicheach part corresponds to one factor (sector index) and then add points in cells correspondingto the part of data by calling \code{\link{circos.points}}.
 
   Length of \code{pch}, \code{col} and \code{cex} can be one, length of levels of the factors and length of factors. All length will be recycled to the length of factors respectively.
+
+  This function can be replaced by a \code{for} loop containing \code{\link{circos.points}}.
 
 
 }

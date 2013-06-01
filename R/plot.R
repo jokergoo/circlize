@@ -231,14 +231,10 @@ circos.updatePlotRegion = function(sector.index = get.current.sector.index(), tr
     set.current.track.index(track.index)
     
     # cover the exsited region by fill with white
-    circos.rect(cell.xlim[1], cell.ylim[1],
-        cell.xlim[2], cell.ylim[2], 
-        col = "white", border = "white",
-        lty = 1, lwd = 1)
-    circos.rect(cell.xlim[1], cell.ylim[1],
-        cell.xlim[2], cell.ylim[2], 
-        col = bg.col, border = bg.border,
-        lty = bg.lty, lwd = bg.lwd)
+    circos.rect(cell.xlim[1], cell.ylim[1], cell.xlim[2], cell.ylim[2], 
+        col = "white", border = "white", lty = 1, lwd = 1)
+    circos.rect(cell.xlim[1], cell.ylim[1], cell.xlim[2], cell.ylim[2], 
+        col = bg.col, border = bg.border, lty = bg.lty, lwd = bg.lwd)
     return(invisible(NULL))
 }
 
@@ -598,7 +594,7 @@ circos.rect = function(xleft, ybottom, xright, ytop, sector.index = get.current.
           length(ybottom) == 1 &&
           length(xright) == 1 &&
           length(ytop) == 1) ) {
-        stop("There should only be one data points in 'xleft', 'ybottom', 'xright' or 'ytop'\n")  
+        stop("There should only be one data points in 'xleft', 'ybottom', 'xright' or 'ytop'.\n")  
     }
 
     if(!has.cell(sector.index, track.index)) {
@@ -686,6 +682,10 @@ circos.text = function(x, y, labels, sector.index = get.current.sector.index(), 
     direction = c("default", "default2", "vertical_left", "vertical_right", "horizontal", "arc"),
     adj = par("adj"), cex = 1, col = "black", font = par("font")) {
     
+	if(length(x) != length(y)) {
+		stop("length of x and y differ.\n")
+	}
+	
     if(!has.cell(sector.index, track.index)) {
         stop("'circos.text' can only be used after the plotting region been created\n")
     }
@@ -863,7 +863,6 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	
 	xlim = get.cell.meta.data("xlim", sector.index, track.index)
 	
-	cell.data = get.cell.data(sector.index, track.index)
 	sector.data = get.sector.data(sector.index)
 	
 	if(h == "top") {
@@ -909,8 +908,10 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 		
 		labels.adj = NULL
 		if(direction == "outside") {
-			if(labels.direction == "default" || labels.direction == "default2") {
+			if(labels.direction == "default") {
 				labels.adj = c(0.5, 0)
+			} else if(labels.direction == "default2") {
+				labels.adj = c(0.5, 1)
 			} else if(labels.direction == "vertical_left") {
 				labels.adj = c(1, 0.5)
 			} else if(labels.direction == "vertical_right") {
@@ -919,8 +920,10 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 				labels.adj = c(0.5, 0)
 			}
 		} else {
-			if(labels.direction == "default" || labels.direction == "default2" ) {
+			if(labels.direction == "default") {
 				labels.adj = c(0.5, 1)
+			} else if(labels.direction == "default2") {
+				labels.adj = c(0.5, 0)
 			} else if(labels.direction == "vertical_left") {
 				labels.adj = c(0, 0.5)
 			} else if(labels.direction == "vertical_right") {

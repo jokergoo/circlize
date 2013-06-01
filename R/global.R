@@ -242,6 +242,15 @@ circos.initialize = function(factors, x = NULL, xlim = NULL) {
 		}
     }
 	
+	# gap not draw first
+	if(clock.wise) {
+		sector[["start.degree"]] = sector[["start.degree"]] + gap.degree
+		sector[["end.degree"]] = sector[["end.degree"]] + gap.degree
+	} else {
+		sector[["start.degree"]] = sector[["start.degree"]] - gap.degree
+		sector[["end.degree"]] = sector[["end.degree"]] - gap.degree
+	}
+	
 	# from start.degree, degree is increasing in a reverse-clock wise fasion
 	# so, if circos is created clock wise, the forward sector would have large degrees
 	# if circos is created reverse clock wise, the forward sector would have small degrees

@@ -1,7 +1,11 @@
+source("R/plot.R")
+source("R/utils.R")
+source("R/global.R")
+source("R/link.R")
 
 #############
 # test histgrame
-library(circlize)
+
 par(mar = c(1, 1, 1, 1))
 x = rnorm(2600)
 factors = sample(letters, 2600, replace = TRUE)

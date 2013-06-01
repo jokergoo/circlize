@@ -1,3 +1,7 @@
+source("R/plot.R")
+source("R/utils.R")
+source("R/global.R")
+source("R/link.R")
 
 par(mar = c(1, 1, 1, 1))
 factors = letters[1:7]
@@ -17,4 +21,13 @@ circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "f", type = "o", ar
 circos.text(5, 9, "type = 'o', area = TRUE", sector.index = "f")
 circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "g", type = "s", area = TRUE)
 circos.text(5, 9, "type = 's', area = TRUE", sector.index = "g")
+circos.clear()
+
+factors = 1:4
+par(mar = c(1, 1, 1, 1))
+circos.initialize(factors = factors, xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 1))
+circos.trackLines(factors = sample(1:4, 50, replace = TRUE), x = runif(50), y = runif(50))
+circos.trackPlotRegion(ylim = c(0, 1))
+circos.trackLines(factors = sample(1:2, 50, replace = TRUE), x = runif(50), y = runif(50))
 circos.clear()

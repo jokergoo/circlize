@@ -1,6 +1,7 @@
 source("R/global.R")
 source("R/plot.R")
 source("R/utils.R")
+source("R/link.R")
 # library(circlize)
 
 par(mar = c(1, 1, 1, 1))
@@ -12,8 +13,9 @@ circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.1, b
 
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
 circos.axis(sector.index = "a")
-circos.axis(sector.index = "b", direction = "inside")
+circos.axis(sector.index = "b", direction = "inside", labels.direction = "default2")
 circos.axis(sector.index = "c", h = "bottom")
+
 circos.axis(sector.index = "d", h = "bottom", direction = "inside")
 circos.axis(sector.index = "e", h = 5, major.at = c(1, 3, 5, 7, 9))
 circos.axis(sector.index = "f", h = 5, major.at = c(1, 3, 5, 7, 9), labels = c("a", "c", "e", "g", "f"), minor.ticks = 0)

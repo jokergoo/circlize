@@ -191,7 +191,7 @@ for(chr in chromosome) {
         labels = paste(major.at/1000000, "MB", sep = ""), sector.index = chr, 
         labels.cex = 0.4, labels.direction = "vertical_left")
     cell.xlim = get.cell.meta.data("xlim", sector.index = chr)
-    circos.text(cell.xlim[1] + mean(cell.xlim), -0.5, labels = chr, 
+    circos.text(mean(cell.xlim), -0.5, labels = chr, 
         sector.index = chr, cex = 0.8)
     circos.link("chr1", 12345678, "chr1", 87654321)
     circos.link("chr1", 22222222, "chr1", 99999999)

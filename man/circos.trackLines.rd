@@ -12,8 +12,8 @@
 }
 \usage{
 circos.trackLines(factors, x, y, track.index = get.current.track.index(),
-    col = "black", lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
-    area = FALSE, area.baseline = NA, border = "black",
+    col = "black", lwd = par("lwd"), lty = par("lty"), type = "l",
+    straight = FALSE, area = FALSE, area.baseline = NA, border = "black",
     pt.col = par("col"), cex = par("cex"), pch = par("pch"))
 }
 \arguments{

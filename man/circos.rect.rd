@@ -11,7 +11,8 @@
 
 }
 \usage{
-circos.rect(xleft, ybottom, xright, ytop, sector.index = get.current.sector.index(),
+circos.rect(xleft, ybottom, xright, ytop,
+    sector.index = get.current.sector.index(),
     track.index = get.current.track.index(),
     col = NA, border = "black", lty = par("lty"), lwd = par("lwd"))
 }

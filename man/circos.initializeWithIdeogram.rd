@@ -11,7 +11,8 @@
 
 }
 \usage{
-circos.initializeWithIdeogram(file = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""),
+circos.initializeWithIdeogram(file = paste(system.file(package = "circlize"),
+    "/extdata/cytoBand.txt", sep=""),
     chromosome.index = NULL, track.height = 0.1)
 }
 \arguments{
@@ -64,7 +65,8 @@ circos.trackPlotRegion(ylim = c(-1, 1), bg.border = NA, bg.col ="#EEEEEE",
         y = NULL
         for(i in 1:5) {
             
-            x2 = seq(xlim[1] + (i-1)/5*xrange, xlim[1] + (i)/5*xrange, by = 1000000)
+            x2 = seq(xlim[1] + (i-1)/5*xrange, xlim[1] + (i)/5*xrange,
+                by = 1000000)
             x = c(x, x2)
             y = c(y, runif(length(x2))^2*sample(c(-1, 1), 1))
         }
@@ -78,9 +80,11 @@ circos.trackPlotRegion(ylim = c(-1, 1), bg.border = NA, track.height = 0.1,
         xrange = get.cell.meta.data("xrange")
         x = seq(xlim[1], xlim[2], by = 10000000)
         y = runif(length(x))
-        circos.lines(x, y, area = TRUE, area.baseline = 0, border = NA, col = "#FF7F00")
+        circos.lines(x, y, area = TRUE, area.baseline = 0, border = NA,
+            col = "#FF7F00")
         y = -runif(length(x))
-        circos.lines(x, y, area = TRUE, area.baseline = 0, border = NA, col = "#FFFF33")
+        circos.lines(x, y, area = TRUE, area.baseline = 0, border = NA, 
+            col = "#FFFF33")
     })
 
 
@@ -93,8 +97,8 @@ circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.05,
             if(i == 1) {
                 next
             }
-            circos.rect(x[i-1], 0, x[i], 1, col = rgb(runif(1), runif(1), runif(1)),
-                border = NA)
+            circos.rect(x[i-1], 0, x[i], 1, col = rgb(runif(1), runif(1),
+                runif(1)), border = NA)
         }
     })
 
@@ -121,9 +125,9 @@ for(i in 1:50) {
     }
     
     
-    circos.link(chr[1], x1, chr[2], x2, col = sample(c('#9E0142', '#D53E4F', '#F46D43',
-          '#FDAE61', '#FEE08B', '#FFFFBF', '#E6F598',
-          '#ABDDA4', '#66C2A5', '#3288BD', '#5E4FA2'), 1))
+    circos.link(chr[1], x1, chr[2], x2, col = sample(c('#9E0142', '#D53E4F',
+        '#F46D43', '#FDAE61', '#FEE08B', '#FFFFBF', '#E6F598',
+        '#ABDDA4', '#66C2A5', '#3288BD', '#5E4FA2'), 1))
 }
 
 degree = get.cell.meta.data("xplot", sector.index = "chr1", track.index = 1)

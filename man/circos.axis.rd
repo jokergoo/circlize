@@ -12,10 +12,13 @@
 }
 \usage{
 circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
-    sector.index = get.current.sector.index(), track.index = get.current.track.index(),
-    labels.font = par("font"), labels.cex = par("cex"), labels.direction = "default",
+    sector.index = get.current.sector.index(),
+    track.index = get.current.track.index(),
+    labels.font = par("font"), labels.cex = par("cex"),
+    labels.direction = "default",
     direction = c("outside", "inside"), minor.ticks = 4,
-    major.tick.percentage = 0.1, labels.away.percentage = 0.05, lwd = par("lwd"))
+    major.tick.percentage = 0.1, labels.away.percentage = 0.05,
+    lwd = par("lwd"))
 }
 \arguments{
   \item{h}{position of the x-axis, can be "top", "bottom" or a numeric value}
@@ -53,7 +56,8 @@ circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.1,
 
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
 circos.axis(sector.index = "a")
-circos.axis(sector.index = "b", direction = "inside", labels.direction = "default2")
+circos.axis(sector.index = "b", direction = "inside",
+    labels.direction = "default2")
 circos.axis(sector.index = "c", h = "bottom")
 circos.axis(sector.index = "d", h = "bottom", direction = "inside")
 circos.axis(sector.index = "e", h = 5, major.at = c(1, 3, 5, 7, 9))

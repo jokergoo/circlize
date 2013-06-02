@@ -11,3 +11,4 @@
 - `get.cell.meta.data` can provide more meta data for a cell
 - start degree and end degree now consistent with the data axis.
 - the first sector is drawn first now.
+- add `draw.sector`

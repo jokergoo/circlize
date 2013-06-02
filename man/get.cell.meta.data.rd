@@ -34,7 +34,7 @@ get.cell.meta.data(name, sector.index = get.current.sector.index(),
   \item{cell.xlim}{Minimal and maximal values on the x-axis extended by cell paddings}
   \item{cell.ylim}{Minimal and maximal values on the y-axis extended by cell paddings}
   \item{xplot}{Right and left edge degree for the plotting region in the circle. The first element corresponds to the start point of values on x-axis (\code{cell.xlm[1]}) and the second element corresponds to the end point of values on x-axis (\code{cell.xlim[2]}) Since x-axis in data coordinate in cells are always reverse clockwise, \code{xplot[1]} is larger than \code{xplot[2]}.}
-  \item{yplot}{Bottom and top value for the plotting region in the canvas. It is the value of radius of arc corresponding to top border or bottom border.}
+  \item{yplot}{Bottom and top radius value for borders of the plotting region. It is the value of radius of arc corresponding to inner border or outer border.}
   \item{cell.start.degree}{Same as \code{xplot[1]}}
   \item{cell.end.degree}{Same as \code{xplot[2]}}
   \item{cell.bottom.radius}{Same as \code{yplot[1]}}

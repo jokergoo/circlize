@@ -11,7 +11,8 @@
 
 }
 \usage{
-draw.sector(center = c(0, 0), start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL, col = NA, border = "black", lwd = par("lwd"), lty = par("lty"))
+draw.sector(center = c(0, 0), start.degree = 0, end.degree = 360, rou1 = 1,
+    rou2 = NULL, col = NA, border = "black", lwd = par("lwd"), lty = par("lty"))
 }
 \arguments{
   \item{center}{Center of the circle}

@@ -60,12 +60,16 @@ circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "d", type = "s")
 circos.text(5, 9, "type = 's'", sector.index = "d")
 circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "e", area = TRUE)
 circos.text(5, 9, "type = 'l', area = TRUE", sector.index = "e")
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "f", type = "o", area = TRUE)
+circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "f",
+    type = "o", area = TRUE)
 circos.text(5, 9, "type = 'o', area = TRUE", sector.index = "f")
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "g", type = "s", area = TRUE)
+circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "g",
+    type = "s", area = TRUE)
 circos.text(5, 9, "type = 's', area = TRUE", sector.index = "g")
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "h", area = TRUE, area.baseline = "top")
-circos.text(5, 1, "type = 'l', area = TRUE\narea.baseline = 'top'", sector.index = "h")
+circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "h",
+    area = TRUE, area.baseline = "top")
+circos.text(5, 1, "type = 'l', area = TRUE\narea.baseline = 'top'",
+    sector.index = "h")
 circos.clear()
 par(cex = 1)
 }

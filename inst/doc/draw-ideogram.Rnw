@@ -80,7 +80,8 @@ for(chr in chromosome) {
 }
 @
 
-Before we draw the circos layout, we need to set some graphic parameters. Here we do not need any cell paddings.
+Before we draw the circos layout, we need to set some graphic parameters. Here we do not need any cell paddings
+and we also do not need the line width to be too wide because genomic graph is a huge graph.
 
 <<label=figideogram4, echo=TRUE, eval=FALSE>>=
 par(mar = c(1, 1, 1, 1), lwd = 0.5)
@@ -91,7 +92,7 @@ Initialize the circos layout with ranges of chromosomes. In the initialization s
 each sector would correspond to the range of each chromosome. Also the order of sectors would
 be determined in this step. Here we must explicitly
 set the levels of the factors to ensure the order of chromosomes is ``chr1, chr2,
-chr3, ...'' or else the order would be the character order which is ``chr1, chr11, ...'' (this is the default behavior for {\tt factor}).
+chr3, ...'' or else the order would be the character order which is ``chr1, chr11, ...'' (this is the default behavior for the function of {\tt factor}).
 After the initialization step, the position of each chromosome as well as the order are stored
 in an internal variable. So in the later step, as long as the chromosome is specified, graphs
 would be draw in the sector which corresponds to the selected chromosome.
@@ -123,7 +124,7 @@ which have already been initialized. But explicitly specifying the {\tt factors}
 argument would make your code more clear for reading. And the value for {\tt factors} does not
 need to be a real factor. If it is not a factor, it would be converted to a factor internally.
 If the value for {\tt factors} is already a factor, the level of the factor also does not need
-to be specified because the cells are created by the order of chromosomes which is defined in the 
+to be specified because the cells are positioned with the order of chromosomes which is already defined in the 
 initialization step.
 
 Now in each cell, we draw the ideogram for each chromosome. Code is simple. The steps are: 
@@ -167,16 +168,17 @@ for(chr in chromosome) {
     cell.xlim = get.cell.meta.data("xlim", sector.index = chr)
     
     # chromosome names, only the number part or the letter part
-    circos.text(cell.xlim[1] + mean(cell.xlim), 1.2,
-        labels = gsub("chr", "", chr),
+    circos.text(mean(cell.xlim), 1.2, labels = gsub("chr", "", chr),
         sector.index = chr, cex = 0.8)
 }
 @
 
-There may be some warnings saying some points are out of the plotting region. Don't worry about that,
-it's just OK.
+In the above code, you can find the {\tt ylim} for the cells in the first track is {\tt c(0, 1)}
+and the y-value in {\tt circos.text} is {\tt 1.2} which exceeds the {\tt ylim}. 
+There may be some warnings saying some points are out of the plotting region. But in fact it is OK
+to draw something outside the plotting regions. You just need to ensure the final figure looks good.
 
-If you do not want to draw ideogram in the most outside of the circos layout. You can draw it in other tracks.
+If you do not want to draw ideogram in the most outside of the circos layout. You can draw it in other tracks as you wish.
 
 If there is a translocation from position 111111111 in chromosome 2 to position 55555555 in chromosome 16. It can represent
 as a link in the circos layout.
@@ -188,7 +190,7 @@ circos.link(sector.index1 = "chr2", point1 = 111111111,
 
 If position 88888888 in chromosome 6 is important and we want to mark it, we can use following codes. First create
 a new track. Here there is no specifying of {\tt factors}, thus the new track would create plotting regions for all available
-sectors (but with no borders). Note you can not create plotting region for a single cell, however you can write so, but in fact plotting region for cells in 
+sectors (but with no borders. You would not see these cells but they really exist.). Note you can not create plotting region for a single cell, however you can write so, but in fact plotting region for cells in 
 all sectors would be created.
 
 <<label=figideogram9, echo=TRUE, eval=FALSE>>=
@@ -224,12 +226,12 @@ function to initialize the circos layout with an ideogram. However, how to embed
 circos layout is really subjective, such as the position and colors of the ideogram, 
 or maybe only subset of chromosomes are going to be plotted, or maybe there are some zoomings for certain chromosomes
 (see \url{http://circos.ca/intro/features/}. `GLOBAL AND LOCAL ZOOMING' section). So the {\tt circos.initializeWithIdeogram}
-is not a real functional function, it is only an example function to show how to allocate sectors for chromosomes and how
+is not a full functional function, it is only an example function to show how to allocate sectors for chromosomes and how
 to draw ideogram. Thus users can draw their style of ideogram according
-the above example codes. All you need to remember is that complicated graphs are assembled by simple graphs.
+the above example codes. All you need to remember is that {\bf complicated graphs are assembled by simple graphs}.
 
 Finally, more informative and specialized genomic graphs are figure \ref{fig:genomic} and figure \ref{fig:twochr}. Figure
-\ref{fig:twochr} in fact combines two independent circos plots, users can refer to the main vignette to find out how to do it.
+\ref{fig:twochr} in fact combines two independent circos plots, users can refer to the main vignette to find out how to realize it.
 
 <<label=figgenomic, echo=FALSE, eval=FALSE>>=
 library(circlize)

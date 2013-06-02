@@ -21,7 +21,8 @@ We would show how to use {\tt circlize} package to draw some rather interesting
 graphcis.
 
 The first one is a clock. The key function here is {\tt circos.axis} (figure \ref{fig:clock}).
-The whole circle only contains one sector in which major tick 0 is overlapping with major tick 12.
+The whole circle only contains one sector in which major tick at 0 is overlapping with major tick at 12.
+The two arrows are drawn in the canvas coordinate. 
 
 <<label=figclock, echo=TRUE, eval=FALSE>>=
 library(circlize)
@@ -52,7 +53,7 @@ circos.clear()
 \end{figure}
 
 The second example is a dartboard. In the graphic, tracks are assigned with different height and each cell is initialized with
-different colors (figure \ref{fig:dartboard}).
+different colors (figure \ref{fig:dartboard}). The most inside green ring and red circle are drawn by {\tt draw.sector}.
 
 <<label=figdartboard, echo=TRUE, eval=FALSE>>=
 library(circlize)
@@ -101,7 +102,7 @@ circos.clear()
 The third example is Ba-gua (\url{https://en.wikipedia.org/wiki/Ba_gua}). The
 key functions are {\tt circos.rect} and {\tt draw.sector} (figure \ref{fig:bagua}). 
 
-Ba-gua origined about several thousands years ago. It is the source of almost all ancient
+Ba-gua origined about several thousands years ago in China. It is the source of almost all ancient
 Chinese philosophy. It abstracts the rule of universe into base signs (i.e. - - which is called Yang and {\tt -} which is called Ying).
 And combination of the two basic signs generates the whole system of the universe.
 
@@ -114,7 +115,7 @@ And that is Tai-ji.
 So look at the Tai-ji, you can see there are two states interacting with each other. The
 white one and the black one gradually transformed into each other at the end. In real world,
 Tai-ji can represent all phenomenon that is of dualism. Such as male and female, correct and
-wrong. However thing would change, good thing would become bad thing as time gone by, and bad
+wrong. However things would change, good thing would become bad thing as time goes by, and bad
 thing also would turn good according how you look at the world. So when you are upset, just
 think about the Ba-gua and Tai-ji.
 

@@ -1175,9 +1175,9 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 		}
 		circos.rect(d2[1, 2], 0, d2[n, 3], 0.4, sector.index = chr, border = "black")
 		major.at = seq(0, 10^nchar(max(xlim[, 2])), by = 50000000)
-		circos.axis(h = 0.5, major.at = major.at, labels = paste(major.at/1000000, "MB", sep = ""), sector.index = chr, labels.cex = 0.3)
+		circos.axis(h = 0.5, major.at = major.at, labels = paste(major.at/1000000, "MB", sep = ""), sector.index = chr, labels.cex = 0.3, labels.direction = "vertical_right")
 		cell.xlim = get.cell.meta.data("xlim", sector.index = chr)
-		circos.text(mean(cell.xlim), 1.2, labels = gsub("chr", "", chr), sector.index = chr, cex = 0.8)
+		circos.text(mean(cell.xlim), 1.3, labels = gsub("chr", "", chr), sector.index = chr, cex = 1)
 	}
 	circos.par("cell.padding" = o.cell.padding, "points.overflow.warning" = TRUE)
 }

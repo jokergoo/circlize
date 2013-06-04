@@ -13,7 +13,7 @@
 \usage{
 circos.link(sector.index1, point1, sector.index2, point2,
     rou = get.track.end.position(get.current.track.index()), top.ratio = 0.5,
-    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA, n = 501)
+    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA, n = 101)
 }
 \arguments{
   \item{sector.index1}{Sector index for one sector}

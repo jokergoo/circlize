@@ -80,7 +80,7 @@ values on x-axis, and values on y-axis.
 
 <<label=figexample1, echo=TRUE, eval=FALSE>>=
 set.seed(12345)
-n = 10000
+n = 1000
 a = data.frame(factor = sample(letters[1:8], n, replace = TRUE),
     x = rnorm(n), y = runif(n))
 @
@@ -190,11 +190,11 @@ circos.clear()
 
 
 set.seed(12345)
-n = 10000
+n = 1000
 a = data.frame(factor = sample(letters[1:8], n, replace = TRUE),
     x = rnorm(n), y = runif(n))
 library(circlize)
-par(mar = c(1, 1, 1, 1), lwd = 0.1, cex = 0.7)
+par(mar = c(1, 1, 1, 1), lwd = 0.1)
 layout(rbind(1:2, 3:4, 5:6))
 
 ######################################
@@ -355,41 +355,47 @@ The final figure looks like figure \ref{fig:example}.
 <<label=figorder, fig = TRUE, echo = FALSE, height=4, width=6>>=
 library(circlize)
 par(mar = c(1, 1, 1, 1), mfrow = c(2, 3))
+circos.par(gap.degree = 5)
 circos.initialize(1:4, xlim = rbind(c(0, 1), c(0, 2), c(0, 3), c(0, 4)))
 circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA)
 for(i in 1:4) {
     de = get.cell.meta.data("cell.start.degree", i, 1) - circos.par("gap.degree")/2
     lines(c(0, cos(de/180*pi)), c(0, sin(de/180*pi)), lty = 2, col = "#999999")
 }
+draw.sector(start.degree = 0, end.degree = 360, rou1 = 1, col = NA, lty = 2, border = "#999999")
 circos.clear()
 
+circos.par(gap.degree = 5)
 circos.initialize(1:4, xlim = rbind(c(0, 1), c(0, 2), c(0, 3), c(0, 4)))
 circos.trackPlotRegion(ylim = c(0, 1))
 circos.clear()
 
+circos.par(gap.degree = 5)
 circos.initialize(1:4, xlim = rbind(c(0, 1), c(0, 2), c(0, 3), c(0, 4)))
 circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
     xlim = get.cell.meta.data("xlim")
-    points(runif(20)*(xlim[2] - xlim[1])+xlim[1], runif(10), pch = 16)
+    circos.points(runif(20)*(xlim[2] - xlim[1])+xlim[1], runif(20), pch = 16)
 })
 circos.clear()
 
+circos.par(gap.degree = 5)
 circos.initialize(1:4, xlim = rbind(c(0, 1), c(0, 2), c(0, 3), c(0, 4)))
 circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
     xlim = get.cell.meta.data("xlim")
-    points(runif(20)*(xlim[2] - xlim[1])+xlim[1], runif(10), pch = 16)
+    circos.points(runif(20)*(xlim[2] - xlim[1])+xlim[1], runif(20), pch = 16)
 })
 circos.trackPlotRegion(ylim = c(0, 1))
 circos.clear()
 
+circos.par(gap.degree = 5)
 circos.initialize(1:4, xlim = rbind(c(0, 1), c(0, 2), c(0, 3), c(0, 4)))
 circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
     xlim = get.cell.meta.data("xlim")
-    points(runif(20)*(xlim[2] - xlim[1])+xlim[1], runif(10), pch = 16)
+    circos.points(runif(20)*(xlim[2] - xlim[1])+xlim[1], runif(20), pch = 16)
 })
 circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
     xlim = get.cell.meta.data("xlim")
-    points(runif(20)*(xlim[2] - xlim[1])+xlim[1], runif(10), pch = 16)
+    circos.points(runif(20)*(xlim[2] - xlim[1])+xlim[1], runif(20), pch = 16)
 })
 circos.clear()
 
@@ -604,10 +610,10 @@ of the sectors, just change of the level of the {\tt factors} variable. The foll
 
 \begin{Schunk}
 \begin{Sinput}
-> fa = sample(letters[1:7], 7)
+> fa = c("d", "f", "e", "c", "g", "b", "a")
 > f1 = factor(fa)
 > circos.initialize(factors = f1, xlim = c(0, 1))
-> f2 = factor(fa, levels = letters[1:7])
+> f2 = factor(fa, levels = fa)
 > circos.initialize(factors = f2, xlim = c(0, 1))
 \end{Sinput}
 \end{Schunk}
@@ -617,17 +623,19 @@ of the sectors, just change of the level of the {\tt factors} variable. The foll
 <<label=figfactor, fig = TRUE, echo = FALSE, width=8, height=4>>=
 library(circlize)
 par(mar = c(1, 1, 1, 1), mfrow = c(1, 2))
-fa = sample(letters[1:7], 7)
+fa = c("d", "f", "e", "c", "g", "b", "a")
 f1 = factor(fa)
 circos.initialize(factors = f1, xlim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1))
 show.index()
+text(0, 0, "factor(fa)", adj = c(0.5, 0.5), cex = 1.3)
 circos.clear()
 
-f2 = factor(fa, levels = letters[1:7])
+f2 = factor(fa, levels = fa)
 circos.initialize(factors = f2, xlim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1))
 show.index()
+text(0, 0, "factor(fa,\nlevels = fa)", adj = c(0.5, 0.5), cex = 1.3)
 circos.clear()
 
 @
@@ -900,7 +908,22 @@ par(cex = 1)
 \end{figure}
 
 \subsection{Points}
-Drawing points is similar as {\tt points} function.
+Drawing points by {\tt circos.points} is similar as {\tt points} function. Possible usage is:
+
+\begin{Schunk}
+\begin{Sinput}
+> circos.points(x, y)
+> circos.points(x, y, sector.index, track.index)
+> circos.points(x, y, pch, col, cex)
+\end{Sinput}
+\end{Schunk}
+
+Since {\tt circos.points} is a low-level function, it can only be applied to those
+cells which have been created. If {\tt sector.index} or {\tt track.index} is not
+specified, it would use the 'current' index for sector and track.
+
+{\tt circos.trackPoints} can draw points in the whole cells on a same track.
+However, it is the same if you use {\tt circos.points} in a {\tt for} loop.
 
 
 \subsection{Lines}
@@ -916,6 +939,21 @@ for huge genomic data. So, in this package, the number of the segmentation can b
 The length of minimal segment is the length of the unit circle divided by 
 {\tt circos.par("unit.circle.segments")}. If you do not want such curve-transformations (such as
 radical lines), you can set {\tt straight} argument to {\tt TRUE}. 
+
+Possible usage for {\tt circos.lines} is:
+
+\begin{Schunk}
+\begin{Sinput}
+> circos.lines(x, y)
+> circos.lines(x, y, sector.index, track.index)
+> circos.lines(x, y, col, lwd, lty, type, straight)
+> circos.lines(x, y, col, area, area.baseline, border)
+\end{Sinput}
+\end{Schunk}
+
+Similar as {\tt circos.points}, if no {\tt sector.index} or {\tt track.index} is
+specified, 'current' index would be used. Also, there is a {\tt circos.trackLines}
+which is identical to {\tt circos.lines} in a {\tt for} loop.
 
 <<label=figtext, echo=FALSE, eval=FALSE>>=
 library(circlize)
@@ -961,6 +999,18 @@ Only six directions of text are allowed which are in {\tt c("default", "default2
 {\tt srt} in {\tt text} has been degenerated as {\tt direction} in {\tt circos.text} which only support only six rotation.
 But {\tt adj} argument is still applicable in {\tt circos.text}.
 
+Possible usage for {\tt circos.text} is:
+
+\begin{Schunk}
+\begin{Sinput}
+> circos.text(x, y, labels)
+> circos.text(x, y, labels, sector.index, track.index)
+> circos.text(x, y, labels, direction, adj, cex, col, font)
+\end{Sinput}
+\end{Schunk}
+
+There is also a {\tt circos.trackText} in the package.
+
 <<label=figaxis, echo=FALSE, eval=FALSE>>=
 library(circlize)
 
@@ -994,6 +1044,31 @@ circos.clear()
 \label{fig:axis}
 \end{figure}
 
+\subsection{Rectangle}
+If you imagin the plotting region in a cell as Cartesian coordinate, then it is rectangle.
+In the polar coordinate, the up and bottom edge become two arcs. Usage is similar
+as {\tt rect}:
+
+\begin{Schunk}
+\begin{Sinput}
+> circos.rect(xleft, ybottom, xright, ytop)
+> circos.rect(xleft, ybottom, xright, ytop, sector.index, track.index)
+> circos.rect(xleft, ybottom, xright, ytop, col, border, lty, lwd)
+\end{Sinput}
+\end{Schunk}
+
+\subsection{Polygon}
+Similar as {\tt circos.rect} and {\tt polygon}, it draws a polygon through a series
+of points in a cell:
+
+\begin{Schunk}
+\begin{Sinput}
+> circos.polygon(x, y)
+> circos.polygon(x, y, sector.index, track.index)
+> circos.polygon(x, y, col, border, lty, lwd)
+\end{Sinput}
+\end{Schunk}
+
 \subsection{Axis}
 Because there may be no space to draw y-axis, only drawing x-axis for each cell is supported by {\tt circos.axis}, as illustrated in figure \ref{fig:axis}.
 A lot of styles for axis can be set such as the position and length of major ticks, the number of minor ticks,
@@ -1006,13 +1081,26 @@ In figure \ref{fig:axis}, axis styles in different sectors are :
   \item a: Major ticks are calculated automatically, other settings are default.
   \item b: Ticks are pointing to inside of the circle, facing of tick labels is set to {\tt default2}.
   \item c: Position of x-axis is {\tt bottom} of the cell.
-  \item d: Ticks are pointing to inside of the circle, facing of tick labels is set to {\tt vertical_left}.
+  \item d: Ticks are pointing to inside of the circle, facing of tick labels is set to {\tt vertical\_left}.
   \item e: Self-defined major ticks.
   \item f: Self-defined major ticks and tick labels, no minor ticks.
-  \item g: No ticks for both major and minor, facing of tick labels is set to {\tt vertical_left}.
-  \item h: Number of minor ticks between two major ticks is set to 2. Length of ticks is longer and axis labels are more away from ticks. Facing of tick labels is set to {\tt vertical_right}.
+  \item g: No ticks for both major and minor, facing of tick labels is set to {\tt vertical\_left}.
+  \item h: Number of minor ticks between two major ticks is set to 2. Length of ticks is longer and axis labels are more away from ticks. Facing of tick labels is set to {\tt vertical\_right}.
 \end{itemize}
 
+For {\tt circos.axis}, possible usage is:
+
+\begin{Schunk}
+\begin{Sinput}
+> circos.axis(h)
+> circos.axis(h, sector.index, track.index)
+> circos.axis(h, major.at, labels, major.tick)
+> circos.axis(h, major.at, labels, major.tick, labels.font, labels.cex,
++             labels.direction, labels.away.percentage)
+> circos.axis(h, major.at, labels, major.tick, minor.ticks,
++             major.tick.percentage, lwd)
+\end{Sinput}
+\end{Schunk}
 
 <<label=figlink, echo=FALSE, eval=FALSE>>=
 library(circlize)
@@ -1135,6 +1223,18 @@ So normally, you don't need to care about this setting.
 The height of the link can be controlled by {\tt top.ratio} argument in {\tt circos.link} which is the ratio between the length of blue line and 
 the red line (maximum of the link height), see figure \ref{fig:link}, bottom. The default height looks well from my view point, so you don't need to change this value.
 
+Possible usage for {\tt circos.link} is:
+
+\begin{Schunk}
+\begin{Sinput}
+> circos.link(sector.index1, 0, sector.index2, 0)
+> circos.link(sector.index1, c(0, 1), sector.index2, 0)
+> circos.link(sector.index1, c(0, 1), sector.index2, c(1, 2))
+> circos.link(sector.index1, 0, sector.index2, 0, rou, top.ratio)
+> circos.link(sector.index1, c(0, 1), sector.index2, 0,
++             col, lwd, lty, border)
+\end{Sinput}
+\end{Schunk}
 
 \subsection{The {\tt panel.fun} argument in {\tt circos.trackPlotRegion}}
 {\tt panel.fun} argument in {\tt circos.trackPlotRegion} is useful to apply plottings as soon as the cell has been created. This self-defined
@@ -1212,7 +1312,28 @@ and end degree can be obtained through {\tt cell.start.degree} and {\tt cell.end
 border on the circle radius can be obtained through {\tt cell.top.radius} and {\tt cell.bottom.radius}. An example is as follows and see figure \ref{fig:sectorhighlight}
 in which different colors correspond to different regions that need to be highlighted.
 
-{\tt get.cell.meta.cell} can provide detailed information for a cell:
+Usage for {\tt draw.sector} is:
+
+\begin{Schunk}
+\begin{Sinput}
+> draw.sector(center, start.degree, end.degree, rou1)
+> draw.sector(center, start.degree, end.degree, rou1, rou2)
+> draw.sector(center, start.degree, end.degree, rou1, rou2,
++             col, border, lwd, lty)
+\end{Sinput}
+\end{Schunk}
+
+{\tt get.cell.meta.cell} can provide detailed information for a cell. It needs the index
+of sector and track as arguments. As usually, it would use 'current' index by default.
+
+\begin{Schunk}
+\begin{Sinput}
+> get.cell.meta.data(name)
+> get.cell.meta.data(name, sector.index, track.index)
+\end{Sinput}
+\end{Schunk}
+
+Items that can be extracted by {\tt get.cell.meta.data} are:
 
 \begin{itemize}
   \item {\tt sector.index}: The name (label) for the sector
@@ -1267,7 +1388,7 @@ start.c2 = get.cell.meta.data("cell.start.degree", "c", 2)
 end.d2 = get.cell.meta.data("cell.end.degree", "d", 2)
 top.c2 = get.cell.meta.data("cell.top.radius", "c", 2)
 bottom.c2 = get.cell.meta.data("cell.bottom.radius", "c", 2)
-draw.sector(start.degree = start.c2, end.degree = end.c2, rou1 = top.c2, rou2 = bottom.c2, border = NA, col = "#0000FF40")
+draw.sector(start.degree = start.c2, end.degree = end.d2, rou1 = top.c2, rou2 = bottom.c2, border = NA, col = "#0000FF40")
 
 
 start.g2 = get.cell.meta.data("cell.start.degree", "g", 2)
@@ -1338,6 +1459,8 @@ factors = letters[1:4]
 circos.initialize(factors = factors, xlim = c(0, 1))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 1))
 circos.updatePlotRegion(sector.index = "a", bg.border = "black")
+x1 = runif(100)
+y1 = runif(100)
 circos.points(x1, y1, pch = 16, cex = 0.5)
 circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.border = NA)
 circos.updatePlotRegion(sector.index = "a", bg.border = "black")
@@ -1356,10 +1479,10 @@ factors = letters[1:4]
 circos.initialize(factors = factors, xlim = c(0, 1))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.border = NA)
 circos.updatePlotRegion(sector.index = "a", bg.border = "black")
-circos.points(runif(100), runif(100), pch = 16, cex = 0.5)
+circos.points(x1, y1, pch = 16, cex = 0.5)
 circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.border = NA)
 circos.updatePlotRegion(sector.index = "a", bg.border = "black")
-circos.lines(1:100/100, runif(100), pch = 16, cex = 0.5)
+circos.lines(1:100/100, y1, pch = 16, cex = 0.5)
 circos.clear()
 box()
 par(xpd = NA)
@@ -1378,7 +1501,7 @@ text(0, 1, 1, adj = c(0.5, 0))
 \label{fig:part}
 \end{figure}
 
-\subsection{Combine two parts of circos layouts}
+\subsection{Combine several parts of circos layouts}
 Since the circos layout by {\tt circlize} is finally plotted in an ordinary R plotting system.
 Two seperated circos layouts can be plotted together by some tricks. Here the key is 
 {\tt par(new = TRUE)} which allows to draw a new figure on the previous canvas region.
@@ -1560,44 +1683,27 @@ circos.clear()
 \end{figure}
 
 The third example is to draw sectors with different radius (figure \ref{fig:difrad}). In fact,
-it draws four circos graphs in which only one sector of each graphs is plotted.
+it draws four circos graphs in which only one sector of each graphs is plotted. Note links
+can not be drawn in these different sectors because links can only be drawn in one circos
+layout.
 
 <<label=figdifrad, echo=FALSE, eval=FALSE>>=
 library(circlize)
 par(mar = c(1, 1, 1, 1))
-circos.par("default.track.height" = 0.4)
-circos.initialize(factors = letters[1:4], xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA)
-circos.updatePlotRegion(sector.index = "a", bg.border = "black")
-circos.points(runif(10), runif(10), pch = 16)
-circos.clear()
-
-par(new = TRUE)
-circos.par("canvas.xlim" = c(-1.1, 1.1), "canvas.ylim" = c(-1.1, 1.1),
-    "default.track.height" = 0.4)
-circos.initialize(factors = letters[1:4], xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA)
-circos.updatePlotRegion(sector.index = "b", bg.border = "black")
-circos.points(runif(10), runif(10), pch = 16)
-circos.clear()
-
-par(new = TRUE)
-circos.par("canvas.xlim" = c(-1.2, 1.2), "canvas.ylim" = c(-1.2, 1.2),
-    "default.track.height" = 0.4)
-circos.initialize(factors = letters[1:4], xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA)
-circos.updatePlotRegion(sector.index = "c", bg.border = "black")
-circos.points(runif(10), runif(10), pch = 16)
-circos.clear()
-
-par(new = TRUE)
-circos.par("canvas.xlim" = c(-1.3, 1.3), "canvas.ylim" = c(-1.3, 1.3),
-    "default.track.height" = 0.4)
-circos.initialize(factors = letters[1:4], xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA)
-circos.updatePlotRegion(sector.index = "d", bg.border = "black")
-circos.points(runif(10), runif(10), pch = 16)
-circos.clear()
+factors = letters[1:4]
+lim = c(1, 1.1, 1.2, 1.3)
+for(i in 1:4) {
+    circos.par("canvas.xlim" = c(-lim[i], lim[i]),
+        "canvas.ylim" = c(-lim[i], lim[i]),
+        "default.track.height" = 0.4)
+    circos.initialize(factors = factors, xlim = c(0, 1))
+    circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA)
+    circos.updatePlotRegion(sector.index = factors[i], bg.border = "black")
+    circos.points(runif(10), runif(10), pch = 16)
+    circos.clear()
+    par(new = TRUE)
+}
+par(new = FALSE)
 @
 
 \begin{figure}

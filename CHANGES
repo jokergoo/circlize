@@ -16,3 +16,4 @@
 == 0.0.4
 - number of points to simulate quadratic curves decreased
 - labels on axis in `circos.initializeWithIdeogram` is now 'vertical_right' by default
+- size of the vignettes reduced

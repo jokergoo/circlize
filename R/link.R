@@ -34,7 +34,7 @@
 # ``rou`` and ``top.ratio``. See vignette for detailed explaination.
 circos.link = function(sector.index1, point1, sector.index2, point2,
     rou = get.track.end.position(get.current.track.index()), top.ratio = 0.5,
-    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA, n = 501) {
+    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA, n = 101) {
     
     sector.data1 = get.sector.data(sector.index1)
     sector.data2 = get.sector.data(sector.index2)
@@ -140,7 +140,7 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 # theta1 is the start point and theta2 is the end point
 rotate.parabola = function(theta1, theta2, rou1, rou2 = rou1, theta = (theta1+theta2)/2, 
     rou = rou1 * abs(cos(degree.minus(theta1, theta2)/2/180*pi))*rou.ratio, rou.ratio = 0.5,
-    n = 501) {
+    n = 101) {
     
     while(theta2 < theta1) {
         theta2 = theta2 + 360
@@ -165,7 +165,8 @@ rotate.parabola = function(theta1, theta2, rou1, rou2 = rou1, theta = (theta1+th
     n.half = (n - 1) / 2
     x = numeric(n)
     y = numeric(n)
-    x = c(n.half:1/n.half, 0, 1:n.half/n.half)*a
+    # x points should be more thick near the vertex
+    x = c((n.half:1)^2/n.half^2, 0, (1:n.half)^2/n.half^2)*a
     y[1:n.half] = sqrt(k*x[1:n.half])
     y[n.half + 1] = 0
     y[1:n.half + n.half + 1] = -sqrt(k*x[1:n.half + n.half + 1])

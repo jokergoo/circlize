@@ -7,8 +7,12 @@
 == 0.0.3
 - vignettes has been improved
 - ``xplot`` in `get.cell.meta.data` is now corresponding to the data direction in the cell
-- number of points to draw links deduced.
+- number of points to draw links decreased.
 - `get.cell.meta.data` can provide more meta data for a cell
 - start degree and end degree now consistent with the data axis.
 - the first sector is drawn first now.
 - add `draw.sector`
+
+== 0.0.4
+- number of points to simulate quadratic curves decreased
+- labels on axis in `circos.initializeWithIdeogram` is now 'vertical_right' by default

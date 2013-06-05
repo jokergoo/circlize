@@ -1,4 +1,3 @@
-
 # this file contains variables and functions related to
 # global variables.
 
@@ -439,7 +438,7 @@ show.index = function() {
 # -xplot                Right and left edge degree for the plotting region in the circle.
 #                       The first element corresponds to the start point of values on x-axis (``cell.xlm[1]``)
 #                       and the second element corresponds to the end point of values on x-axis (``cell.xlim[2]``)
-#                       Since x-axis in data coordinate in cells are always reverse clockwise, ``xplot[1]`` is larger
+#                       Since x-axis in data coordinate in cells are always clockwise, ``xplot[1]`` is larger
 #                       than ``xplot[2]``.
 # -yplot                Bottom and top value for the plotting region in the canvas. It is the value
 #                       of radius of arc corresponding to top border or bottom border.

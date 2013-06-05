@@ -14,7 +14,7 @@
 circos.clear()
 }
 \details{
-  The package uses several global variables (internal) to trace the plotting procedure.If you want to draw a new figure, you must call this function first to reseteverything.
-
+Because there are several parameters for circos plot which can only be set before \code{\link{circos.initialize}}. So before you draw the next
+circos plot, you need to reset these parameters.
 
 }

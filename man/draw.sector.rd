@@ -42,43 +42,44 @@ circos.trackPlotRegion(ylim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1))
 
-xplot.a1 = get.cell.meta.data("xplot", "a", 1)
-yplot.a1 = get.cell.meta.data("yplot", "a", 1)
-draw.sector(start.degree = xplot.a1[1], end.degree = xplot.a1[2],
-    rou1 = yplot.a1[2], border = NA, col = "#FF000040")
+start.a1 = get.cell.meta.data("cell.start.degree", "a", 1)
+end.a1 = get.cell.meta.data("cell.end.degree", "a", 1)
+top.a1 = get.cell.meta.data("cell.top.radius", "a", 1)
+draw.sector(start.degree = start.a1, end.degree = end.a1, rou1 = top.a1,
+    border = NA, col = "#FF000040")
 
-xplot.b2 = get.cell.meta.data("xplot", "b", 2)
-yplot.b2 = get.cell.meta.data("yplot", "b", 2)
-draw.sector(start.degree = xplot.b2[1], end.degree = xplot.b2[2],
-    rou1 = yplot.b2[2], border = NA, col = "#FF00FF40")
+start.b2 = get.cell.meta.data("cell.start.degree", "b", 2)
+end.b2 = get.cell.meta.data("cell.end.degree", "b", 2)
+top.b2 = get.cell.meta.data("cell.top.radius", "b", 2)
+draw.sector(start.degree = start.b2, end.degree = end.b2, rou1 = top.b2,
+    border = NA, col = "#FF00FF40")
 
-draw.sector(start.degree = 0, end.degree = 360, rou1 = yplot.a1[2],
-    rou2 = yplot.a1[1], border = NA, col = "#00FF0040")
+bottom.a1 = get.cell.meta.data("cell.bottom.radius", "a", 1)
+draw.sector(start.degree = 0, end.degree = 360, rou1 = top.a1,
+    rou2 = bottom.a1, border = NA, col = "#00FF0040")
 
-xplot.c2 = get.cell.meta.data("xplot", "c", 2)
-yplot.c2 = get.cell.meta.data("yplot", "c", 2)
-xplot.d2 = get.cell.meta.data("xplot", "d", 3)
-yplot.d2 = get.cell.meta.data("yplot", "d", 3)
-draw.sector(start.degree = xplot.c2[1], end.degree = xplot.d2[2],
-    rou1 = yplot.c2[2], rou2 = yplot.c2[1], border = NA, col = "#0000FF40")
+start.c2 = get.cell.meta.data("cell.start.degree", "c", 2)
+end.d2 = get.cell.meta.data("cell.end.degree", "d", 2)
+top.c2 = get.cell.meta.data("cell.top.radius", "c", 2)
+bottom.c2 = get.cell.meta.data("cell.bottom.radius", "c", 2)
+draw.sector(start.degree = start.c2, end.degree = end.d2, rou1 = top.c2,
+    rou2 = bottom.c2, border = NA, col = "#0000FF40")
 
-xplot.g2 = get.cell.meta.data("xplot", "g", 2)
-yplot.g2 = get.cell.meta.data("yplot", "g", 2)
-xplot.g3 = get.cell.meta.data("xplot", "g", 3)
-yplot.g3 = get.cell.meta.data("yplot", "g", 3)
-draw.sector(start.degree = xplot.g2[1], end.degree = xplot.g2[2],
-    rou1 = yplot.g2[2], rou2 = yplot.g3[1], border = NA, col = "#00FFFF40")
 
-xplot.e2 = get.cell.meta.data("xplot", "e", 2)
-yplot.e2 = get.cell.meta.data("yplot", "e", 2)
-xplot.e3 = get.cell.meta.data("xplot", "e", 3)
-yplot.e3 = get.cell.meta.data("yplot", "e", 3)
-xplot.f2 = get.cell.meta.data("xplot", "f", 2)
-yplot.f2 = get.cell.meta.data("yplot", "f", 2)
-xplot.f3 = get.cell.meta.data("xplot", "f", 3)
-yplot.f3 = get.cell.meta.data("yplot", "f", 3)
-draw.sector(start.degree = xplot.e2[1], end.degree = xplot.f2[2],
-    rou1 = yplot.e2[2], rou2 = yplot.e3[1], border = NA, col = "#FFFF0040")
+start.g2 = get.cell.meta.data("cell.start.degree", "g", 2)
+end.g2 = get.cell.meta.data("cell.end.degree", "g", 2)
+top.g2 = get.cell.meta.data("cell.top.radius", "g", 2)
+bottom.g3 = get.cell.meta.data("cell.bottom.radius", "g", 3)
+draw.sector(start.degree = start.g2, end.degree = end.g2, rou1 = top.g2,
+    rou2 = bottom.g3, border = NA, col = "#00FFFF40")
+
+
+start.e2 = get.cell.meta.data("cell.start.degree", "e", 2)
+end.f2 = get.cell.meta.data("cell.end.degree", "f", 2)
+top.e2 = get.cell.meta.data("cell.top.radius", "e", 2)
+bottom.e3 = get.cell.meta.data("cell.bottom.radius", "e", 3)
+draw.sector(start.degree = start.e2, end.degree = end.f2, rou1 = top.e2,
+    rou2 = bottom.e3, border = NA, col = "#FFFF0040")
 show.index()
 circos.clear()
 }

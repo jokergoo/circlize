@@ -80,7 +80,7 @@ circos.trackPlotRegion(factors = a$factor, x = a$x, y = a$y,
   panel.fun = function(x, y) {
       grey = c("#FFFFFF", "#CCCCCC", "#999999")
       i = get.cell.meta.data("sector.numeric.index")
-      circos.updatePlotRegion(bg.col = grey[i %% 3 + 1])
+      circos.updatePlotRegion(bg.col = grey[i \%\% 3 + 1])
       circos.points(x[1:10], y[1:10], col = "red", pch = 16, cex = 0.6)
       circos.points(x[11:20], y[11:20], col = "blue", cex = 0.6)
   })

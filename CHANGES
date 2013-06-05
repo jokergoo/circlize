@@ -19,3 +19,4 @@
 - size of the vignettes reduced
 - add example of drawing heatmap and cluster dendrogram in the main vignette
 - vignette improved
+- ``gap.degree`` in `circos.par` can be a vector which means different degrees for gaps can be set

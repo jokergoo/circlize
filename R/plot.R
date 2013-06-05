@@ -336,6 +336,7 @@ circos.points = function(x, y, sector.index = get.current.sector.index(), track.
 # -col          Points color
 # -cex          Points size
 #
+# == details
 # The function adds points in multiple cells by first splitting data into several parts in which
 # each part corresponds to one factor (sector index) and then add points in cells corresponding
 # to the part of data by calling `circos.points`.

@@ -32,7 +32,7 @@ assign(".CIRCOS.PAR", .CIRCOS.PAR.DEFAULT, envir = .CIRCOS.ENV)
 #
 # -start.degree            The starting degree from which the circle begin to draw. Note this degree is measured
 #     in the standard polar coordinate which means it is reverse-clockwise.
-# -gap.degree              Gap between two neighbour sectors.
+# -gap.degree              Gap between two neighbour sectors. It can be a single value or a vector.
 # -track.margin            Like ``margin`` in Cascading Style Sheets (CSS), it is the blank area
 #     out of the plotting region, also outside of the borders. Since left and right margin are controlled
 #     by ``gap.degree``, only bottom and top margin need to be set. And all cells in a same track share the same margins, and
@@ -105,9 +105,16 @@ circos.par = function (...) {
 				warning(paste("'", name[i], "' can only be modified before `circos.initialize`.\n", sep = ""))
                 next
 			}
-			if(name[i] == "gap.degree" && (args[[ name[i] ]] < 0 || args[[ name[i] ]] >= 360)) {
-				stop("`gap.degree` should be only in [0, 360).\n")
+
+			if(name[i] == "gap.degree") {
+				gap.degree = args[[ name[i] ]]
+				for(k in seq_along(gap.degree)) {
+					if(gap.degree[k] >= 360 || gap.degree[k] < 0) {
+						stop("`gap.degree` should be only in [0, 360).\n")
+					}
+				}
 			}
+
             .CIRCOS.PAR[[ name[i] ]] = args[[ name[i] ]]
 			
         }
@@ -217,11 +224,17 @@ circos.initialize = function(factors, x = NULL, xlim = NULL) {
     sector[["max.value"]] = max.value
     
     gap.degree = circos.par("gap.degree")
+	if(length(gap.degree) == 1) {
+		gap.degree = rep(gap.degree, n.sector)
+	} else if(length(gap.degree) != n.sector) {
+		stop("Since `gap.degree` parameter has length larger than 1, it should have same length as number of levels of factors.\n")
+	}
+	
 	start.degree = circos.par("start.degree")
 	clock.wise = circos.par("clock.wise")
     
     # degree per data
-    unit = (360 - gap.degree*n.sector) / sum(sector.range)
+    unit = (360 - sum(gap.degree)) / sum(sector.range)
 	if(unit <= 0) {
 		stop("Maybe your `gap.degree` is too large so that there is no space to allocate sectors.\n")
 	}
@@ -233,22 +246,13 @@ circos.initialize = function(factors, x = NULL, xlim = NULL) {
 		
 		# only to ensure value are always increasing or decreasing with the absolute degree value
 		if(clock.wise) {
-			sector[["start.degree"]][i] = -gap.degree + ifelse(i == 1, start.degree, sector[["end.degree"]][i-1])
+			sector[["start.degree"]][i] = ifelse(i == 1, start.degree, sector[["end.degree"]][i-1] - gap.degree[i-1])
 			sector[["end.degree"]][i] =  sector[["start.degree"]][i] - sector.range[i]*unit
 		} else {
-			sector[["end.degree"]][i] =  gap.degree + ifelse(i == 1, start.degree, sector[["start.degree"]][i-1])
+			sector[["end.degree"]][i] = ifelse(i == 1, start.degree, sector[["start.degree"]][i-1] + gap.degree[i-1])
 			sector[["start.degree"]][i] = sector[["end.degree"]][i] + sector.range[i]*unit   
 		}
     }
-	
-	# gap not draw first
-	if(clock.wise) {
-		sector[["start.degree"]] = sector[["start.degree"]] + gap.degree
-		sector[["end.degree"]] = sector[["end.degree"]] + gap.degree
-	} else {
-		sector[["start.degree"]] = sector[["start.degree"]] - gap.degree
-		sector[["end.degree"]] = sector[["end.degree"]] - gap.degree
-	}
 	
 	# from start.degree, degree is increasing in a reverse-clock wise fasion
 	# so, if circos is created clock wise, the forward sector would have large degrees
@@ -282,12 +286,12 @@ circos.initialize = function(factors, x = NULL, xlim = NULL) {
 }
 
 # == title
-# Reset the circos layout parameters and internal variables
+# Reset the circos layout parameters
 #
 # == details
-# The package uses several global variables (internal) to trace the plotting procedure.
-# If you want to draw a new figure, you must call this function first to reset
-# everything.
+# Because there are several
+# parameters for circos plot which can only be set before `circos.initialize`. So before you draw the next
+# circos plot, you need to reset these parameters.
 circos.clear = function() {
     
 	assign(".SECTOR.DATA", NULL, envir = .CIRCOS.ENV)

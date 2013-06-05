@@ -17,3 +17,5 @@
 - number of points to simulate quadratic curves decreased
 - labels on axis in `circos.initializeWithIdeogram` is now 'vertical_right' by default
 - size of the vignettes reduced
+- add example of drawing heatmap and cluster dendrogram in the main vignette
+- vignette improved

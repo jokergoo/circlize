@@ -125,7 +125,7 @@ circos.trackPlotRegion(factors = a$factor, y = a$y,
     panel.fun = function(x, y) {
         circos.axis()
 })
-col = rep(c("#FF000010", "#00FF0010"), 4)
+col = rep(c("#FF0000", "#00FF00"), 4)
 circos.trackPoints(a$factor, a$x, a$y, col = col,
     pch = 16, cex = 0.5)
 circos.text(-1, 0.5, "left", sector.index = "a", track.index = 1)
@@ -186,7 +186,7 @@ circos.clear()
 
 \begin{figure}
 \begin{center}
-<<label=figexample, fig = TRUE, echo = FALSE, height = 6, width=4>>=
+<<label=figexample, fig = TRUE, echo = FALSE, height = 18, width=12, results=hide>>=
 
 
 set.seed(12345)
@@ -204,7 +204,7 @@ circos.trackPlotRegion(factors = a$factor, y = a$y,
     panel.fun = function(x, y) {
         circos.axis()
 })
-col = rep(c("#FF000010", "#00FF0010"), 4)
+col = rep(c("#FF0000", "#00FF00"), 4)
 circos.trackPoints(a$factor, a$x, a$y, col = col,
     pch = 16, cex = 0.5)
 circos.text(-1, 0.5, "left", sector.index = "a", track.index = 1)
@@ -219,7 +219,7 @@ circos.trackPlotRegion(factors = a$factor, y = a$y,
     panel.fun = function(x, y) {
         circos.axis()
 })
-col = rep(c("#FF000010", "#00FF0010"), 4)
+col = rep(c("#FF0000", "#00FF00"), 4)
 circos.trackPoints(a$factor, a$x, a$y, col = col,
     pch = 16, cex = 0.5)
 circos.text(-1, 0.5, "left", sector.index = "a", track.index = 1)
@@ -235,7 +235,7 @@ circos.trackPlotRegion(factors = a$factor, y = a$y,
     panel.fun = function(x, y) {
         circos.axis()
 })
-col = rep(c("#FF000010", "#00FF0010"), 4)
+col = rep(c("#FF0000", "#00FF00"), 4)
 circos.trackPoints(a$factor, a$x, a$y, col = col,
     pch = 16, cex = 0.5)
 circos.text(-1, 0.5, "left", sector.index = "a", track.index = 1)
@@ -259,7 +259,7 @@ circos.trackPlotRegion(factors = a$factor, y = a$y,
     panel.fun = function(x, y) {
         circos.axis()
 })
-col = rep(c("#FF000010", "#00FF0010"), 4)
+col = rep(c("#FF0000", "#00FF00"), 4)
 circos.trackPoints(a$factor, a$x, a$y, col = col,
     pch = 16, cex = 0.5)
 circos.text(-1, 0.5, "left", sector.index = "a", track.index = 1)
@@ -286,7 +286,7 @@ circos.trackPlotRegion(factors = a$factor, y = a$y,
     panel.fun = function(x, y) {
         circos.axis()
 })
-col = rep(c("#FF000010", "#00FF0010"), 4)
+col = rep(c("#FF0000", "#00FF00"), 4)
 circos.trackPoints(a$factor, a$x, a$y, col = col,
     pch = 16, cex = 0.5)
 circos.text(-1, 0.5, "left", sector.index = "a", track.index = 1)
@@ -315,7 +315,7 @@ circos.trackPlotRegion(factors = a$factor, y = a$y,
     panel.fun = function(x, y) {
         circos.axis()
 })
-col = rep(c("#FF000010", "#00FF0010"), 4)
+col = rep(c("#FF0000", "#00FF00"), 4)
 circos.trackPoints(a$factor, a$x, a$y, col = col,
     pch = 16, cex = 0.5)
 circos.text(-1, 0.5, "left", sector.index = "a", track.index = 1)
@@ -352,7 +352,7 @@ The final figure looks like figure \ref{fig:example}.
 
 \begin{figure}
 \begin{center}
-<<label=figorder, fig = TRUE, echo = FALSE, height=6, width=7>>=
+<<label=figorder, fig = TRUE, echo = FALSE, height=6, width=7, results=hide>>=
 library(circlize)
 layout(rbind(1:4, 5:8, 9:12), width = c(1.5, 2, 1.5, 2))
 par(mar = c(1, 1, 1, 1), xpd = NA)
@@ -430,7 +430,7 @@ par(xpd = FALSE)
 
 <<label=figtransformation, echo=FALSE, eval=FALSE>>=
 library(circlize)
-layout(cbind(c(1, 0, 2, 0, 3)), height = c(2,0.5,2, 0.5, 4))
+layout(cbind(c(1, 0, 2, 0, 3)), height = c(1,0.25,1, 0.25, 2))
 par(mar = c(2, 2, 2, 2))
 x = 1:10
 y = rnorm(10)
@@ -473,7 +473,7 @@ arrows(0, 1.5, 0, 1.07, code = 2)
 
 \begin{figure}
 \begin{center}
-<<label=figtransformation, fig = TRUE, echo = FALSE, height=8.5, width=3.9>>=
+<<label=figtransformation, fig = TRUE, echo = FALSE, height=5.64, width=2.5, results=hide>>=
 <<figtransformation>>
 @
 \end{center}
@@ -599,7 +599,7 @@ circos.clear()
 
 \begin{figure}
 \begin{center}
-<<label=figcoordinate, fig = TRUE, echo = FALSE>>=
+<<label=figcoordinate, fig = TRUE, echo = FALSE, results=hide>>=
 <<figcoordinate>>
 @
 \end{center}
@@ -642,7 +642,7 @@ of the sectors, just change of the level of the {\tt factors} variable. The foll
 
 \begin{figure}
 \begin{center}
-<<label=figfactor, fig = TRUE, echo = FALSE, width=8, height=4>>=
+<<label=figfactor, fig = TRUE, echo = FALSE, width=8, height=4, results=hide>>=
 library(circlize)
 par(mar = c(1, 1, 1, 1), mfrow = c(1, 2))
 fa = c("d", "f", "e", "c", "g", "b", "a")
@@ -767,7 +767,7 @@ circos.clear()
 
 \begin{figure}
 \begin{center}
-<<label=figregion, fig = TRUE, echo = FALSE>>=
+<<label=figregion, fig = TRUE, echo = FALSE, results=hide>>=
 <<figregion>>
 @
 \caption{Regions for a cell}
@@ -840,7 +840,7 @@ text(0, 0, 'circos.par("clock.wise" = TRUE,\nstart.degree = -30)', cex = 0.6)
 
 \begin{figure}
 \begin{center}
-<<label=figdirection, fig = TRUE, echo = FALSE, width=4, height=8>>=
+<<label=figdirection, fig = TRUE, echo = FALSE, width=4, height=8, results=hide>>=
 <<figdirection>>
 @
 \end{center}
@@ -924,7 +924,7 @@ par(cex = 1)
 
 \begin{figure}
 \begin{center}
-<<label=figlines, fig = TRUE, echo = FALSE>>=
+<<label=figlines, fig = TRUE, echo = FALSE, results=hide>>=
 <<figlines>>
 @
 \end{center}
@@ -1000,7 +1000,7 @@ circos.clear()
 
 \begin{figure}
 \begin{center}
-<<label=figtext, fig = TRUE, echo = FALSE>>=
+<<label=figtext, fig = TRUE, echo = FALSE, results=hide>>=
 <<figtext>>
 @
 \end{center}
@@ -1067,8 +1067,9 @@ is drawn by {\tt circos.polygon}.
 
 \begin{figure}
 \begin{center}
-<<label=figerrorline, fig = TRUE, echo = FALSE>>=
+<<label=figerrorline, fig = TRUE, echo = FALSE, results=hide>>=
 library(circlize)
+par(mar = c(1, 1, 1, 1))
 factors = letters[1:4]
 circos.initialize(factors, xlim = c(0, 1))
 circos.trackPlotRegion(ylim = c(-3, 3), track.height = 0.4, panel.fun = function(x, y) {
@@ -1118,7 +1119,7 @@ circos.clear()
 
 \begin{figure}
 \begin{center}
-<<label=figaxis, fig = TRUE, echo = FALSE>>=
+<<label=figaxis, fig = TRUE, echo = FALSE, results=hide>>=
 <<figaxis>>
 @
 \end{center}
@@ -1263,7 +1264,7 @@ lines(c(0, sqrt(3)/4/2)-0.01, c(0, -3/4/2)-0.01, lwd = 4, col = "blue")
 
 \begin{figure}
 \begin{center}
-<<label=figlink, fig = TRUE, echo = FALSE, height=8, width=4>>=
+<<label=figlink, fig = TRUE, echo = FALSE, height=8, width=4, results=hide>>=
 <<figlink>>
 @
 \end{center}
@@ -1355,7 +1356,7 @@ circos.clear()
 
 \begin{figure}
 \begin{center}
-<<label=fighist, fig = TRUE, echo = FALSE>>=
+<<label=fighist, fig = TRUE, echo = FALSE, results=hide>>=
 <<fighist>>
 @
 \end{center}
@@ -1376,7 +1377,7 @@ chunk of ``figheatmap".)
 
 \begin{figure}
 \begin{center}
-<<label=figheatmap, fig = TRUE, echo = FALSE>>=
+<<label=figheatmap, fig = TRUE, echo = FALSE, results=hide>>=
 
 circos.dendrogram = function(dend, maxy) {
   labels = as.character(labels(dend))
@@ -1613,7 +1614,7 @@ circos.clear()
 
 \begin{figure}
 \begin{center}
-<<label=sectorhighlight, fig = TRUE, echo = FALSE>>=
+<<label=sectorhighlight, fig = TRUE, echo = FALSE, results=hide>>=
 <<sectorhighlight>>
 @
 \end{center}
@@ -1697,7 +1698,7 @@ text(0, 1, 1, adj = c(0.5, 0))
 
 \begin{figure}
 \begin{center}
-<<label=figpart, fig = TRUE, echo = FALSE, height=8, width=4>>=
+<<label=figpart, fig = TRUE, echo = FALSE, height=8, width=4, results=hide>>=
 <<figpart>>
 @
 \end{center}
@@ -1779,7 +1780,7 @@ circos.clear()
 
 \begin{figure}
 \begin{center}
-<<label=fignested, fig = TRUE, echo = FALSE, height=8, width=8>>=
+<<label=fignested, fig = TRUE, echo = FALSE, height=6, width=6, results=hide>>=
 <<fignested>>
 @
 \end{center}
@@ -1878,7 +1879,7 @@ circos.clear()
 
 \begin{figure}
 \begin{center}
-<<label=figseperated, fig = TRUE, echo = FALSE, height=8, width=8>>=
+<<label=figseperated, fig = TRUE, echo = FALSE, height=6, width=6, results=hide>>=
 <<figseperated>>
 @
 \end{center}
@@ -1913,7 +1914,7 @@ par(new = FALSE)
 
 \begin{figure}
 \begin{center}
-<<label=figdifrad, fig = TRUE, echo = FALSE>>=
+<<label=figdifrad, fig = TRUE, echo = FALSE, results=hide>>=
 <<figdifrad>>
 @
 \end{center}
@@ -1955,7 +1956,7 @@ circos.clear()
 
 \begin{figure}
 \begin{center}
-<<label=figoutside, fig = TRUE, echo = FALSE>>=
+<<label=figoutside, fig = TRUE, echo = FALSE, results=hide>>=
 <<figoutside>>
 @
 \end{center}
@@ -1996,7 +1997,7 @@ for(i in 1:9) {
 
 \begin{figure}
 \begin{center}
-<<label=figlayout, fig = TRUE, echo = FALSE>>=
+<<label=figlayout, fig = TRUE, echo = FALSE, results=hide>>=
 <<figlayout>>
 @
 \end{center}

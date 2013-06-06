@@ -18,5 +18,6 @@
 - labels on axis in `circos.initializeWithIdeogram` is now 'vertical_right' by default
 - size of the vignettes reduced
 - add example of drawing heatmap and cluster dendrogram in the main vignette
+- add example of drawing error area of lines by `circos.polygon`
 - vignette improved
 - ``gap.degree`` in `circos.par` can be a vector which means different degrees for gaps can be set

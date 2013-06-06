@@ -176,7 +176,7 @@ circos.clear()
 
 \begin{figure}
 \begin{center}
-<<label=figcorrelation, fig = TRUE, echo = FALSE, width=4, height=8>>=
+<<label=figcorrelation, fig = TRUE, echo = FALSE, width=4, height=8, results=hide>>=
 <<figcorrelation1>>
 <<figcorrelation2>>
 <<figcorrelation3>>

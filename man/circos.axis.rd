@@ -103,7 +103,7 @@ while(1) {
         direction = "inside", labels.cex = 1.5, major.tick.percentage = 0.3)
     circos.text(1:12, rep(0.5, 12), 1:12, direction = "horizontal")
 
-    current.time = Sys.time()
+    current.time = as.POSIXlt(Sys.time())
     sec = ceiling(current.time$sec)
     min = current.time$min
     hour = current.time$hour

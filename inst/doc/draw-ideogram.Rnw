@@ -204,7 +204,7 @@ circos.lines(c(88888888, 88888888), c(0.3, 1), sector.index = "chr6",
 
 \begin{figure}
 \begin{center}
-<<label=figideogram, fig=TRUE, echo=FALSE, eval=TRUE>>=
+<<label=figideogram, fig=TRUE, echo=FALSE, eval=TRUE, results=hide>>=
 <<figideogram3>>
 <<figideogram4>>
 <<figideogram5>>
@@ -342,7 +342,7 @@ circos.clear()
 
 \begin{figure}
 \begin{center}
-<<label=figgenomic, fig = TRUE, echo = FALSE, eval=TRUE>>=
+<<label=figgenomic, fig = TRUE, echo = FALSE, eval=TRUE, results=hide>>=
 <<figgenomic>>
 @
 \end{center}
@@ -419,7 +419,7 @@ circos.clear()
 
 \begin{figure}
 \begin{center}
-<<label=figtwo, fig = TRUE, echo = FALSE, eval=TRUE>>=
+<<label=figtwo, fig = TRUE, echo = FALSE, eval=TRUE, results=hide>>=
 <<figtwo>>
 @
 \end{center}

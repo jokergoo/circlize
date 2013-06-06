@@ -22,7 +22,8 @@ graphcis.
 
 The first one is a clock. The key function here is {\tt circos.axis} (figure \ref{fig:clock}).
 The whole circle only contains one sector in which major tick at 0 is overlapping with major tick at 12.
-The two arrows are drawn in the canvas coordinate. 
+The two arrows are drawn in the canvas coordinate. An example of the real-time clock is in the {\tt examples} section of
+the help page of {\tt circos.axis}.
 
 <<label=figclock, echo=TRUE, eval=FALSE>>=
 library(circlize)
@@ -44,7 +45,7 @@ circos.clear()
 
 \begin{figure}
 \begin{center}
-<<label=figclock, fig = TRUE, echo=FALSE>>=
+<<label=figclock, fig = TRUE, echo=FALSE, results=hide>>=
 <<figclock>>
 @
 \end{center}
@@ -91,7 +92,7 @@ circos.clear()
 
 \begin{figure}
 \begin{center}
-<<label=figdartboard, fig = TRUE, echo = FALSE>>=
+<<label=figdartboard, fig = TRUE, echo = FALSE, results=hide>>=
 <<figdartboard>>
 @
 \end{center}
@@ -178,7 +179,7 @@ circos.clear()
 
 \begin{figure}
 \begin{center}
-<<label=figbagua, fig = TRUE, echo=FALSE>>=
+<<label=figbagua, fig = TRUE, echo=FALSE, results=hide>>=
 <<figbagua>>
 @
 \end{center}

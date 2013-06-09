@@ -1,4 +1,17 @@
-# return the coordinate in polar coordinate system in a specified cell
+# == circlize
+# Return the coordinate in polar coordinate system in a specified cell
+#
+# == param
+# -x            Data points on x-axis
+# -y            Data points on y-axis
+# -sector.index Index for the sector
+# -track.index  Index for the track
+#
+# == details
+# Return the coordinate in polar coordinate system in a specified cell
+#
+# == values
+# A matrix with two columns (``theta`` and ``rou``)
 circlize = function(x, y, sector.index = get.current.sector.index(), track.index = get.current.track.index()) {
     
     sector.data = get.sector.data(sector.index)

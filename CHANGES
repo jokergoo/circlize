@@ -21,3 +21,4 @@
 - add example of drawing error area of lines by `circos.polygon`
 - vignette improved
 - ``gap.degree`` in `circos.par` can be a vector which means different degrees for gaps can be set
+- export core function `circlize` now

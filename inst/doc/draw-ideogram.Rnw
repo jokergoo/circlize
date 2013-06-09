@@ -165,10 +165,10 @@ for(chr in chromosome) {
     circos.axis(h = 0.5, major.at = major.at,
         labels = paste(major.at/1000000, "MB", sep = ""),
         sector.index = chr, labels.cex = 0.3)
-    cell.xlim = get.cell.meta.data("xlim", sector.index = chr)
+    chr.xlim = get.cell.meta.data("xlim", sector.index = chr)
     
     # chromosome names, only the number part or the letter part
-    circos.text(mean(cell.xlim), 1.2, labels = gsub("chr", "", chr),
+    circos.text(mean(chr.xlim), 1.2, labels = gsub("chr", "", chr),
         sector.index = chr, cex = 0.8)
 }
 @

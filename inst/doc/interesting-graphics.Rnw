@@ -117,8 +117,8 @@ So look at the Tai-ji, you can see there are two states interacting with each ot
 white one and the black one gradually transformed into each other at the end. In real world,
 Tai-ji can represent all phenomenon that is of dualism. Such as male and female, correct and
 wrong. However things would change, good thing would become bad thing as time goes by, and bad
-thing also would turn good according how you look at the world. So when you are upset, just
-think about the Ba-gua and Tai-ji.
+thing also would turn good according how you look at the world. So when you are upset, dont't worry,
+things will be good.
 
 <<label=figbagua, echo=TRUE, eval=FALSE>>=
 library(circlize)

@@ -1063,7 +1063,8 @@ of points in a cell:
 \end{Schunk}
 
 In figure \ref{fig:errorline}, the area of standard deviation of the smoothed line
-is drawn by {\tt circos.polygon}.
+is drawn by {\tt circos.polygon}. (Source code is in the examples section of {\tt circos.polygon}
+help page.)
 
 \begin{figure}
 \begin{center}
@@ -1517,6 +1518,17 @@ and end degree can be obtained through {\tt cell.start.degree} and {\tt cell.end
 border on the circle radius can be obtained through {\tt cell.top.radius} and {\tt cell.bottom.radius}. An example is as follows and see figure \ref{fig:sectorhighlight}
 in which different colors correspond to different regions that need to be highlighted.
 
+Degrees and radius for any points in a given cell can be obtained by the core function {\tt circlize},
+so you can highlight any region in the circos layout. Note {\tt circlize} always returns a matrix with two
+columns in which the first column are degrees and the second column are radius for the points.
+
+\begin{Schunk}
+\begin{Sinput}
+> circlize(x, y, sector.index, track.index)
+> circlize(x, y)
+\end{Sinput}
+\end{Schunk}
+
 Remember the color should be semi-transparent in the highlighted area. Usage for {\tt draw.sector} is:
 
 \begin{Schunk}
@@ -1576,8 +1588,10 @@ circos.trackPlotRegion(ylim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1))
 
-start.a1 = get.cell.meta.data("cell.start.degree", "a", 1)
-end.a1 = get.cell.meta.data("cell.end.degree", "a", 1)
+#start.a1 = get.cell.meta.data("cell.start.degree", "a", 1)
+start.a1 = circlize(0.2, 1.2, "a", 1)[1, 1]
+#end.a1 = get.cell.meta.data("cell.end.degree", "a", 1)
+end.a1 = circlize(0.8, 1.2, "a", 1)[1, 1]
 top.a1 = get.cell.meta.data("cell.top.radius", "a", 1)
 draw.sector(start.degree = start.a1, end.degree = end.a1, rou1 = top.a1, border = NA, col = "#FF000040")
 

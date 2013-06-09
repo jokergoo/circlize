@@ -2,7 +2,7 @@ Package: circlize
 Type: Package
 Title: circos layout in R
 Version: 0.0.4
-Date: 2013-06-05
+Date: 2013-06-09
 Author: Zuguang Gu
 Maintainer: Zuguang Gu <z.gu@dkfz.de>
 Depends: R (>= 2.10.0)
@@ -14,6 +14,6 @@ Description: circlize is an R package which implements circos layout
 LazyLoad: yes
 URL: https://github.com/jokergoo/circlize
 License: GPL (>= 2)
-Packaged: 2013-06-05 00:00:00 UTC; Administrator
+Packaged: 2013-06-09 00:00:00 UTC; Administrator
 Repository: CRAN
-Date/Publication: 2013-06-05 00:00:00
+Date/Publication: 2013-06-09 00:00:00

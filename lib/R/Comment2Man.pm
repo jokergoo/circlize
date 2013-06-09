@@ -83,7 +83,7 @@ sub parse {
 			push(@items, $item);
 		} elsif($line =~/^#\s+[=@#*\-+$%&]{2}\s*title\s*\(\s*package:\s*(\S+)\s*\)/) {
 			$item = R::Comment2Man::Item->read(\@lines, $i, is_function => 0);
-			$item->{_function_name} = $1;
+			$item->{_function_name} = "$1-package";
 			$item->{_function_args} = "package($1)";
 			push(@items, $item);
 		}
@@ -325,7 +325,7 @@ sub format {
 	push(@$section_value, $self->{_function_name});
 	push(@$section_name, "alias");
 	if($self->{_function_args} =~/^package\(/) {
-		push(@$section_value, "$self->{_function_name}-package");
+		push(@$section_value, "$self->{_function_name}");
 	} else {
 		push(@$section_value, "$self->{_function_name}");
 	}

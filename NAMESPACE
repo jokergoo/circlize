@@ -18,5 +18,6 @@ export(
 	circos.axis,
 	circos.trackHist,
 	circos.initializeWithIdeogram,
-	draw.sector
+	draw.sector,
+	circlize
 )

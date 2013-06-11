@@ -128,7 +128,7 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 	if(track.index <= get.max.track.index()) {  # if just update a whole track
 		track.start = get.cell.data(factors[1], track.index)$track.start
 	} else {
-		track.start = get.track.end.position(track.index - 1) - circos.par("track.margin")[1]
+		track.start = get.track.end.position(track.index - 1) - circos.par("track.margin")[2]
     }
 	
     # check whether there is enough space for the new track and whether the new space
@@ -199,7 +199,7 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 	
     # After the track has been created, the default tract starting position is set
     # just next to the most recently created track
-    set.track.end.position(track.index, track.start - track.height - circos.par("track.margin")[2])
+    set.track.end.position(track.index, track.start - track.height - circos.par("track.margin")[1])
     return(invisible(NULL))
 
 }

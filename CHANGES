@@ -22,3 +22,4 @@
 - vignette improved
 - ``gap.degree`` in `circos.par` can be a vector which means different degrees for gaps can be set
 - export core function `circlize` now
+- track.margin now is in correct order

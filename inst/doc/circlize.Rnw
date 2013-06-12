@@ -1165,7 +1165,7 @@ For {\tt circos.axis}, possible usage is as follows. {\tt h} can be pre-defined 
 
 <<label=figlink, echo=FALSE, eval=FALSE>>=
 library(circlize)
-par(mar = c(1, 1, 1, 1), mfrow = c(2, 1))
+par(mar = c(1, 1, 1, 1), mfrow = c(2, 2))
 factors = letters[1:8]
 circos.par(points.overflow.warning = FALSE)
 circos.initialize(factors = factors, xlim = c(0, 10))
@@ -1261,11 +1261,59 @@ lines(c(cos(300/180*pi), cos(120/180*pi)), c(sin(300/180*pi), sin(120/180*pi)))
 points(0, 0, pch = 16)
 lines(c(0, sqrt(3)/4)+0.01, c(0, -3/4)+0.01, lwd = 4, col = "red")
 lines(c(0, sqrt(3)/4/2)-0.01, c(0, -3/4/2)-0.01, lwd = 4, col = "blue")
+
+
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:8]
+circos.par(points.overflow.warning = FALSE)
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.par(track.margin = c(0.1, 0))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", bg.border = NA, track.height = 0.05)
+
+circos.link("a", c(2, 3), "f", c(4, 6), border = "black")
+
+# the following codes calculate the position for the 'little rectangle'
+cell.ylim = get.cell.meta.data("cell.ylim", "a")
+d1 = circlize(2, cell.ylim[1], "a")
+theta1 = d1[1, 1]
+rou1 = d1[1, 2]
+
+d2 = circlize(3, cell.ylim[1], "a")
+theta2 = d2[1, 1]
+rou2 = d2[1, 2] - circos.par("track.margin")[1]
+
+# draw the 'little rectangle'
+draw.sector(start.degree = theta1, end.degree = theta2, rou1 = rou1, rou2 = rou2, col = "black", border = "black")
+circos.clear()
+
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:8]
+circos.par(points.overflow.warning = FALSE)
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.par(track.margin = c(0.1, 0))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", bg.border = NA, track.height = 0.05)
+
+circos.link("a", c(2, 3), "f", c(4, 6), border = "black")
+
+# the following codes calculate the position for the 'little rectangle'
+cell.ylim = get.cell.meta.data("cell.ylim", "a")
+d1 = circlize(2, cell.ylim[1], "a")
+theta1 = d1[1, 1]
+rou1 = d1[1, 2]
+
+d2 = circlize(3, cell.ylim[1], "a")
+theta2 = d2[1, 1]
+rou2 = d2[1, 2] - circos.par("track.margin")[1]
+
+# draw the 'little rectangle'
+draw.sector(start.degree = theta1, end.degree = theta2, rou1 = rou1, rou2 = rou2, col = "red", border = "red")
+circos.clear()
+
 @
 
 \begin{figure}
 \begin{center}
-<<label=figlink, fig = TRUE, echo = FALSE, height=8, width=4, results=hide>>=
+<<label=figlink, fig = TRUE, echo = FALSE, width=8, height=8, results=hide>>=
 <<figlink>>
 @
 \end{center}
@@ -1295,6 +1343,42 @@ Possible usage for {\tt circos.link} is:
 > circos.link(sector.index1, 0, sector.index2, 0, rou, top.ratio)
 > circos.link(sector.index1, c(0, 1), sector.index2, 0,
 +             col, lwd, lty, border)
+\end{Sinput}
+\end{Schunk}
+
+{\tt circlize} draws links as quadratic curves of which the symmetry axes pass through the center of the circle, 
+so the two ends of the link must locate in a same circle. But sometimes drawing ends of links with different height
+is useful to represent the direction of links. Anyway, if the difference of the height of two ends are not too large,
+there is a way to approximate. The solution is add a rectangle at one end of a link (see figure \ref{fig:link}). Following is 
+the code:
+
+\begin{Schunk}
+\begin{Sinput}
+> par(mar = c(1, 1, 1, 1))
+> factors = letters[1:8]
+> circos.initialize(factors = factors, xlim = c(0, 10))
+>
+> circos.par(track.margin = c(0.1, 0))
+> circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey",
++    bg.border = NA, track.height = 0.05)
++
+> circos.link("a", c(2, 3), "f", c(4, 6), border = "black")
+>
+> # the following codes calculate the position for the 'little rectangle'
+> cell.ylim = get.cell.meta.data("cell.ylim", "a")
+> d1 = circlize(2, cell.ylim[1], "a")
+> theta1 = d1[1, 1]
+> rou1 = d1[1, 2]
+> 
+> d2 = circlize(3, cell.ylim[1], "a")
+> theta2 = d2[1, 1]
+> rou2 = d2[1, 2] - circos.par("track.margin")[1]
+>
+> # draw the 'little rectangle'
+> draw.sector(start.degree = theta1, end.degree = theta2, rou1 = rou1,
++    rou2 = rou2, col = "black", border = "black")
+>
+> circos.clear()
 \end{Sinput}
 \end{Schunk}
 

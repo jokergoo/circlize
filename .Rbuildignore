@@ -6,3 +6,4 @@ test
 to-do.txt
 circlize_.*\.tar\.gz
 check.bat
+R/link-bezier.R

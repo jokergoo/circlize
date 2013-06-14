@@ -1,1 +1,2 @@
 - testing code
+- since using bezier curve, two ends can have different position, so, if it is a belt, how to calculate the different height of the two bezier edges? and it must ensure one edge should below the other one.

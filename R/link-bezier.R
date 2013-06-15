@@ -47,7 +47,7 @@ circos.link2 = function(sector.index1, point1, sector.index2, point2,
         theta2 = sector.data2["start.degree"] - (point2 - sector.data2["min.value"]) / (sector.data2["max.value"] - sector.data2["min.value"]) *
                  abs(sector.data2["start.degree"] - sector.data2["end.degree"])
         
-        dq = polar2Cartesian(cbind(c(theta1, quadratic.mean.degree(theta1, theta2), theta2), c(rou1, max(c(rou1, rou2))*height, rou2)))
+        dq = polar2Cartesian(cbind(c(theta1, quadratic.mean.degree(theta1, theta2), theta2), c(rou1, quadratic.height(theta1, theta2, max(c(rou1, rou2))), rou2)))
 		d = quadratic.bezier(dq[1, ], dq[2, ], dq[3, ])
         lines(d, col = col, lwd = lwd, lty = lty)
     } else if(length(point1) == 1 && length(point2) == 2) {
@@ -58,12 +58,12 @@ circos.link2 = function(sector.index1, point1, sector.index2, point2,
         theta22 = sector.data2["start.degree"] - (point2[2] - sector.data2["min.value"]) / (sector.data2["max.value"] - sector.data2["min.value"]) *
             abs(sector.data2["start.degree"] - sector.data2["end.degree"])
 		
-		dq1 = polar2Cartesian(cbind(c(theta1, quadratic.mean.degree(theta1, theta21), theta21), c(rou1, max(c(rou1, rou2))*height, rou2)))
+		dq1 = polar2Cartesian(cbind(c(theta1, quadratic.mean.degree(theta1, theta21), theta21), c(rou1, quadratic.height(theta1, theta21, max(c(rou1, rou2))), rou2)))
 		d1 = quadratic.bezier(dq1[1, ], dq1[2, ], dq1[3, ])
-		dq2 = polar2Cartesian(cbind(c(theta1, quadratic.mean.degree(theta1, theta22), theta22), c(rou1, max(c(rou1, rou2))*height, rou2)))
+		dq2 = polar2Cartesian(cbind(c(theta1, quadratic.mean.degree(theta1, theta22), theta22), c(rou1, quadratic.height(theta1, theta22, max(c(rou1, rou2))), rou2)))
 		d2 = quadratic.bezier(dq2[1, ], dq2[2, ], dq2[3, ])
-		r = arc.points(theta21, theta22, rou2)
-		
+		r = arc.points(theta21, theta22, rou2, clock.wise = TRUE)
+
 		d = rbind(d1, r)
 		d = rbind(d, d2[rev(seq_len(nrow(d2))), ])
 		polygon(d, col = col, lty = lty, lwd = lwd, border = border)
@@ -76,12 +76,12 @@ circos.link2 = function(sector.index1, point1, sector.index2, point2,
 		theta2 = sector.data2["start.degree"] - (point2 - sector.data2["min.value"]) / (sector.data2["max.value"] - sector.data2["min.value"]) *
                  abs(sector.data2["start.degree"] - sector.data2["end.degree"])
 		
-		dq1 = polar2Cartesian(cbind(c(theta11, quadratic.mean.degree(theta11, theta2), theta2), c(rou1, max(c(rou1, rou2))*height, rou2)))
+		dq1 = polar2Cartesian(cbind(c(theta11, quadratic.mean.degree(theta11, theta2), theta2), c(rou1, quadratic.height(theta11, theta2, max(c(rou1, rou2))), rou2)))
 		d1 = quadratic.bezier(dq1[1, ], dq1[2, ], dq1[3, ])
-		dq2 = polar2Cartesian(cbind(c(theta12, quadratic.mean.degree(theta12, theta2), theta2), c(rou1, max(c(rou1, rou2))*height, rou2)))
+		dq2 = polar2Cartesian(cbind(c(theta12, quadratic.mean.degree(theta12, theta2), theta2), c(rou1, quadratic.height(theta12, theta2, max(c(rou1, rou2))), rou2)))
 		d2 = quadratic.bezier(dq2[1, ], dq2[2, ], dq2[3, ])
-		r = arc.points(theta11, theta12, rou2)
-		
+		r = arc.points(theta11, theta12, rou2, clock.wise = TRUE)
+
 		d = rbind(r, d2)
 		d = rbind(d, d1[rev(seq_len(nrow(d1))), ])
 		polygon(d, col = col, lty = lty, lwd = lwd, border = border)
@@ -101,13 +101,13 @@ circos.link2 = function(sector.index1, point1, sector.index2, point2,
         theta22 = sector.data2["start.degree"] - (point2[2] - sector.data2["min.value"]) / (sector.data2["max.value"] - sector.data2["min.value"]) *
             abs(sector.data2["start.degree"] - sector.data2["end.degree"])
 			
-		dq1 = polar2Cartesian(cbind(c(theta11, quadratic.mean.degree(theta11, theta22), theta22), c(rou1, max(c(rou1, rou2))*height, rou2)))
+		dq1 = polar2Cartesian(cbind(c(theta11, quadratic.mean.degree(theta11, theta22), theta22), c(rou1, quadratic.height(theta11, theta22, max(c(rou1, rou2))), rou2)))
 		d1 = quadratic.bezier(dq1[1, ], dq1[2, ], dq1[3, ])
-		dq2 = polar2Cartesian(cbind(c(theta12, quadratic.mean.degree(theta12, theta21), theta21), c(rou1, max(c(rou1, rou2))*height, rou2)))
+		dq2 = polar2Cartesian(cbind(c(theta12, quadratic.mean.degree(theta12, theta21), theta21), c(rou1, quadratic.height(theta12, theta21, max(c(rou1, rou2))), rou2)))
 		d2 = quadratic.bezier(dq2[1, ], dq2[2, ], dq2[3, ])
-		r1 = arc.points(theta11, theta12, rou1)
-		r2 = arc.points(theta21, theta22, rou2)
-	
+		r1 = arc.points(theta11, theta12, rou1, clock.wise = TRUE)
+		r2 = arc.points(theta21, theta22, rou2, clock.wise = TRUE)
+		
 		d = rbind(d1, r2[rev(seq_len(nrow(r2))), ])
 		d = rbind(d, d2[rev(seq_len(nrow(d2))), ])
 		d = rbind(d, r1)
@@ -121,6 +121,13 @@ circos.link2 = function(sector.index1, point1, sector.index2, point2,
 }
 
 quadratic.bezier = function(p0, p1, p2, n = 100) {
+	
+	col = sample(1:10, 1)
+	
+	points(p0[1], p0[2], pch = 16, col = col)
+	points(p1[1], p1[2], pch = 16, col = col)
+	points(p2[1], p2[2], pch = 16, col = col)
+	
 	t = seq(0, 1, length.out = n)
 	x = (1-t)^2 * p0[1] + 2*t*(1-t)*p1[1] + t^2*p2[1]
 	y = (1-t)^2 * p0[2] + 2*t*(1-t)*p1[2] + t^2*p2[2]
@@ -138,4 +145,18 @@ quadratic.mean.degree = function(theta1, theta2) {
 		return((theta2 + theta1)/2)
 	}
 
+}
+
+quadratic.height = function(theta1, theta2, rou) {
+	theta1 = theta1 %% 360
+	theta2 = theta2 %% 360
+	
+	if(abs(theta2 - theta1) > 180) {
+		theta = (abs(theta2 - theta1) - 180)/2
+	} else {
+		theta = (abs(theta2 - theta1))/2
+	}
+	
+	#return(cos(as.radian(theta))*rou)
+	return(0)
 }

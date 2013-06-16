@@ -13,7 +13,8 @@
 \usage{
 circos.link(sector.index1, point1, sector.index2, point2,
     rou = get.track.end.position(get.current.track.index()), top.ratio = 0.5,
-    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA, n = 101)
+    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA, n = 101,
+	top.ratio.low = NULL)
 }
 \arguments{
   \item{sector.index1}{Sector index for one sector}
@@ -27,7 +28,7 @@ circos.link(sector.index1, point1, sector.index2, point2,
   \item{lty}{Line (or border) style}
   \item{border}{If the link is a belt, then it is the color for the belt border.}
   \item{n}{Number of points to represent a quadratic curve. Because currently I don't know how to  calculate the length of a quadratic curve, the number of segmentation of the quadratic curve cannot be calculated now. It should be an odd value because we need the point for the vertex.}
-
+  \item{top.ratio.low}{Adjust the height of the lower border of a link (if it is like a belt)}
 }
 \details{
   The link is in fact a quadratic curve.

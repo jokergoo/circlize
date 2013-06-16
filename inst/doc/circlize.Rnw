@@ -1382,6 +1382,48 @@ the code:
 \end{Sinput}
 \end{Schunk}
 
+Anyway, there are always some problems when implementing the link function. When the link
+represents as a belt (i.e. link from point to interval or from interval to interval),
+It can not ensure that one border is always below or above the other. Which means, in 
+some cases, the two borders would intersect and it would make the link so ugly. It happens
+especially when position of the two ends are too close or the width of one end is extremely large while
+the width of the other end is too small. I did some optimization to control such circumstance but
+it is not valid for all cases. However, I think such situation will not happen too often in real applications,
+but users can adjust the height of the low border by hand if they really meet it. The not-so-good argument {\tt top.ratio.low}
+can control the height of the low border such as:
+
+\begin{Schunk}
+\begin{Sinput}
+> circos.link("c", 1, "c", c(2, 8),
++     top.ratio = 0.5, top.ratio.low = 0.8)
+\end{Sinput}
+\end{Schunk}
+
+The value of {\tt top.ratio.low} must be larger than {\tt top.ratio}. Example can be found in figure \ref{fig:adjlink}.
+The design of the function is not friendly and I am sorry for that. I would try to figure out a good solution in the future.
+
+
+\begin{figure}
+\begin{center}
+<<label=figadjlink, fig = TRUE, echo = FALSE, results=hide>>=
+library(circlize)
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:8]
+circos.initialize(factors = factors, xlim = c(0, 10))
+
+circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", bg.border = NA, track.height = 0.05)
+
+circos.link("b", 1, "b", c(2, 8), top.ratio = 0.5)
+circos.link("c", 1, "c", c(2, 8), top.ratio = 0.5, top.ratio.low = 0.8)
+
+circos.clear()
+@
+\end{center}
+\caption{Adjust the links: right link is under default settings and the height of the low border of left link is adjusted by hand.}
+\label{fig:adjlink}
+\end{figure}
+
+
 \subsection{The {\tt panel.fun} argument in {\tt circos.trackPlotRegion}}
 {\tt panel.fun} argument in {\tt circos.trackPlotRegion} is useful to apply plottings as soon as the cell has been created. This self-defined
 function need two arguments {\tt x} and {\tt y} which are data points that belong to this cell. The value for such values are automatically extracted from {\tt x} and {\tt y}

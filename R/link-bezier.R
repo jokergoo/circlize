@@ -160,3 +160,94 @@ quadratic.height = function(theta1, theta2, rou) {
 	#return(cos(as.radian(theta))*rou)
 	return(0)
 }
+
+
+f.linear.segment = function(px, x, y) {
+	or = order(x)
+	x = x[or]
+	y = y[or]
+
+	if(sum(px < x[1] | px > x[length(x)]) > 0) {
+		print(px)
+		print(x)
+		stop("px out of data range")
+	}
+	py = numeric(length(px))
+	for(i in seq_along(x)) {
+		if(i == 1) next
+		ind = which(px >= x[i - 1] & px <= x[i])
+		
+		if(x[i] != x[i - 1]) {
+			k = (y[i] - y[i - 1])/(x[i] - x[i - 1])
+			b = y[i] - k*x[i]
+			py[ind] = k*px[ind] + b
+		} else {
+			py[ind] = y[i]
+		}
+	}
+	return(py)
+}
+
+is.lines.intersected = function(x1, y1, x2, y2) {
+
+	if(max(x1) <= min(x2) || min(x1) >= max(x2)) {
+		return(FALSE)
+	}
+	
+	r1 = max(min(x1), min(x2))
+	r2 = min(max(x1), max(x2))
+	px = seq(r1, r2, length.out = 100)
+	
+	py1 = f.linear.segment(px, x1, y1)
+	py2 = f.linear.segment(px, x2, y2)
+	print(py1)
+	print(py2)
+	s = sum(sign(py1 - py2))
+	
+	if(s >= length(px)*0.6) {
+		return(FALSE)
+	} else {
+		return(TRUE)
+	}
+}
+
+
+is.lines.intersected2 = function(x1, y1, x2, y2) {
+	n1 = length(x1)
+	n2 = length(n2)
+	
+	for(i in seq_len(n1)) {
+		if(i == 1) next
+		for(j in seq_len(n2)) {
+			if(j == 1) next
+			
+			a_1x = x1[i-1]
+			a_1y = y1[i-1]
+			a_2x = x1[i]
+			a_2y = y1[i]
+				
+			k1 = (a_1y - a_2y)/(a_1x - a_2x)
+			b1 = a_1y - k1*a_1x
+				
+			b_1x = x2[i-1]
+			b_1y = y2[i-1]
+			b_2x = x2[i]
+			b_2y = y2[i]
+				
+			k2 = (b_1y - b_2y)/(b_1x - b_2x)
+			b2 = b_1y - k2*b_1x
+				
+			i_x = - (b2 - b1)/(k2 - k1)
+			i_y = k1*i_x + b1
+			
+			a_minx = min(c(a_1x, a_2x))
+			a_maxx = max(c(a_1x, a_2x))
+			a_miny = min(c(a_1y, a_2y))
+			a_maxy = max(c(a_1y, a_2y))
+			if(i_x >= a_minx && i_x <= a_maxx && i_y >= a_miny && i_y <= a_maxy) {
+				return(TRUE)
+			}
+		}
+	}
+	return(FALSE)
+}

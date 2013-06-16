@@ -932,6 +932,8 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 				labels.adj = c(1, 0.5)
 			} else if(labels.direction == "vertical_right") {
 				labels.adj = c(0, 0.5)
+			} else if(labels.direction == "horizontal") {
+				labels.adj = c(0.5, 0.5)
 			} else {
 				labels.adj = c(0.5, 0)
 			}
@@ -944,6 +946,8 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 				labels.adj = c(0, 0.5)
 			} else if(labels.direction == "vertical_right") {
 				labels.adj = c(1, 0.5)
+			} else if(labels.direction == "horizontal") {
+				labels.adj = c(0.5, 0.5)
 			} else {
 				labels.adj = c(0.5, 1)
 			}

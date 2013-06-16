@@ -200,8 +200,7 @@ is.lines.intersected = function(x1, y1, x2, y2) {
 	
 	py1 = f.linear.segment(px, x1, y1)
 	py2 = f.linear.segment(px, x2, y2)
-	print(py1)
-	print(py2)
+	
 	s = sum(sign(py1 - py2))
 	
 	if(s >= length(px)*0.6) {
@@ -214,7 +213,7 @@ is.lines.intersected = function(x1, y1, x2, y2) {
 
 is.lines.intersected2 = function(x1, y1, x2, y2) {
 	n1 = length(x1)
-	n2 = length(n2)
+	n2 = length(x2)
 	
 	for(i in seq_len(n1)) {
 		if(i == 1) next
@@ -251,3 +250,4 @@ is.lines.intersected2 = function(x1, y1, x2, y2) {
 	}
 	return(FALSE)
 }
+

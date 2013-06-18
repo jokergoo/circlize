@@ -217,22 +217,23 @@ is.lines.intersected2 = function(x1, y1, x2, y2) {
 	
 	for(i in seq_len(n1)) {
 		if(i == 1) next
+		
+		a_1x = x1[i-1]
+		a_1y = y1[i-1]
+		a_2x = x1[i]
+		a_2y = y1[i]
+			
+		k1 = (a_1y - a_2y)/(a_1x - a_2x)
+		b1 = a_1y - k1*a_1x	
+						
 		for(j in seq_len(n2)) {
 			if(j == 1) next
+
+			b_1x = x2[j-1]
+			b_1y = y2[j-1]
+			b_2x = x2[j]
+			b_2y = y2[j]
 			
-			a_1x = x1[i-1]
-			a_1y = y1[i-1]
-			a_2x = x1[i]
-			a_2y = y1[i]
-				
-			k1 = (a_1y - a_2y)/(a_1x - a_2x)
-			b1 = a_1y - k1*a_1x
-				
-			b_1x = x2[i-1]
-			b_1y = y2[i-1]
-			b_2x = x2[i]
-			b_2y = y2[i]
-				
 			k2 = (b_1y - b_2y)/(b_1x - b_2x)
 			b2 = b_1y - k2*b_1x
 				
@@ -241,9 +242,9 @@ is.lines.intersected2 = function(x1, y1, x2, y2) {
 			
 			a_minx = min(c(a_1x, a_2x))
 			a_maxx = max(c(a_1x, a_2x))
-			a_miny = min(c(a_1y, a_2y))
-			a_maxy = max(c(a_1y, a_2y))
-			if(i_x >= a_minx && i_x <= a_maxx && i_y >= a_miny && i_y <= a_maxy) {
+			b_minx = min(c(b_1x, b_2x))
+			b_maxx = max(c(b_1x, b_2x))
+			if(i_x >= a_minx && i_x <= a_maxx && i_x >= b_minx && i_x <= b_maxx) {
 				return(TRUE)
 			}
 		}

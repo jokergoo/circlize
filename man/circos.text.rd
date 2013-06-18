@@ -15,7 +15,7 @@ circos.text(x, y, labels, sector.index = get.current.sector.index(),
     track.index = get.current.track.index(),
     direction = c("default", "default2", "vertical_left",
                   "vertical_right", "horizontal", "arc"),
-    adj = par("adj"), cex = 1, col = "black", font = par("font"))
+    adj = par("adj"), cex = 1, col = "black", font = par("font"), ...)
 }
 \arguments{
   \item{x}{Data points on x-axis}
@@ -28,7 +28,7 @@ circos.text(x, y, labels, sector.index = get.current.sector.index(),
   \item{cex}{Font size}
   \item{col}{Font color}
   \item{font}{Font style}
-
+  \item{...}{Pass to \code{\link[graphics]{text}}}
 }
 \details{
   The function is similar to \code{\link[graphics]{text}}. All you need to note is the \code{direction} settings.

@@ -46,9 +46,9 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
 }
   \item{minor.ticks}{Number of minor ticks between two close major ticks.
 }
-  \item{major.tick.percentage}{Length of the major ticks. It is the percentage to the ylim in the cell.
+  \item{major.tick.percentage}{Length of the major ticks. It is the percentage to the height of the cell.
 }
-  \item{labels.away.percentage}{The distance for the axis labels to the major ticks. It is the percentage to the ylim in the cell.
+  \item{labels.away.percentage}{The distance for the axis labels to the major ticks. It is the percentage to the height of the cell.
 }
   \item{lwd}{line width for ticks
 }

@@ -689,12 +689,13 @@ circos.polygon = function(x, y, sector.index = get.current.sector.index(), track
 # -cex          Font size
 # -col          Font color
 # -font         Font style
+# -...          Pass to `graphics::text`
 #
 # == details
 # The function is similar to `graphics::text`. All you need to note is the ``direction`` settings.
 circos.text = function(x, y, labels, sector.index = get.current.sector.index(), track.index = get.current.track.index(), 
     direction = c("default", "default2", "vertical_left", "vertical_right", "horizontal", "arc"),
-    adj = par("adj"), cex = 1, col = "black", font = par("font")) {
+    adj = par("adj"), cex = 1, col = "black", font = par("font"), ...) {
     
 	if(length(x) != length(y)) {
 		stop("length of x and y differ.\n")
@@ -748,7 +749,7 @@ circos.text = function(x, y, labels, sector.index = get.current.sector.index(), 
 				alpha = alpha - asin(strw[[i]][j]/d[i, 2])*180/pi
 			}
 			dr = reverse.circlize(theta, rep(rou, length(theta)), sector.index, track.index)
-			circos.text(dr[, 1], dr[, 2], labels = chars[[i]], cex = cex[i], col = col[i], font = font[i], adj = c(0.5, 0))
+			circos.text(dr[, 1], dr[, 2], labels = chars[[i]], cex = cex[i], col = col[i], font = font[i], adj = c(0.5, 0), ...)
 			#circos.points(dr[, 1], dr[, 2], pch = 16, cex = 0.8)
 		}
 		
@@ -770,7 +771,7 @@ circos.text = function(x, y, labels, sector.index = get.current.sector.index(), 
 		
 		for(i in seq_along(x)) {
 			text(m[i, 1], m[i, 2], labels = labels[i], srt = srt[i],
-				 cex = cex[i], col = col[i], font = font[i], adj = adj)
+				 cex = cex[i], col = col[i], font = font[i], adj = adj, ...)
 		}
     }
 	
@@ -860,8 +861,8 @@ circos.trackText = function(factors, x, y, labels, track.index = get.current.tra
 # -labels.direction font direction for the axis labels, shoud be in (``default``, ``default2``, ``vertical_left``, ``vertical_right``, ``horizontal``, ``arc``)
 # -direction        whether the axis ticks point to the outside or inside of the circle.
 # -minor.ticks      Number of minor ticks between two close major ticks.
-# -major.tick.percentage Length of the major ticks. It is the percentage to the ylim in the cell.
-# -labels.away.percentage The distance for the axis labels to the major ticks. It is the percentage to the ylim in the cell.
+# -major.tick.percentage Length of the major ticks. It is the percentage to the height of the cell.
+# -labels.away.percentage The distance for the axis labels to the major ticks. It is the percentage to the height of the cell.
 # -lwd              line width for ticks
 #
 # == details

@@ -114,35 +114,25 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
         d1 = rotate.parabola(theta1 = theta11, theta2 = theta21, rou1 = rou, rou.ratio = top.ratio, n = n)
         d2 = rotate.parabola(theta1 = theta12, theta2 = theta22, rou1 = rou, rou.ratio = top.ratio, n = n)
 		
-		if(min(quadratic.minus.degree(theta11, theta12), quadratic.minus.degree(theta21, theta22)) < 5 &&
-		          max(quadratic.minus.degree(theta11, theta12), quadratic.minus.degree(theta21, theta22)) > 15 &&
-				  top.ratio <= 1- 0.05) {
-			if(quadratic.minus.degree(theta11, theta21) > quadratic.minus.degree(theta12, theta22)) {
-				d2 = rotate.parabola(theta1 = theta12, theta2 = theta22, rou1 = rou, rou.ratio = top.ratio+0.05, n = n)
-			} else {
-				d1 = rotate.parabola(theta1 = theta11, theta2 = theta21, rou1 = rou, rou.ratio = top.ratio+0.05, n = n)
-			}		  
-		} else if(min(quadratic.minus.degree(theta11, theta21), quadratic.minus.degree(theta12, theta22)) < 10 && top.ratio <= 1- 0.02) {
-			
-			if(quadratic.minus.degree(theta11, theta21) > quadratic.minus.degree(theta12, theta22)) {
-				d2 = rotate.parabola(theta1 = theta12, theta2 = theta22, rou1 = rou, rou.ratio = top.ratio+0.02, n = n)
-			} else {
-				d1 = rotate.parabola(theta1 = theta11, theta2 = theta21, rou1 = rou, rou.ratio = top.ratio+0.02, n = n)
-			}		
-		} else if(min(quadratic.minus.degree(theta11, theta21), quadratic.minus.degree(theta12, theta22)) < 20  && top.ratio <= 1- 0.01) {
-			
-			if(quadratic.minus.degree(theta11, theta21) > quadratic.minus.degree(theta12, theta22)) {
-				d2 = rotate.parabola(theta1 = theta12, theta2 = theta22, rou1 = rou, rou.ratio = top.ratio+0.01, n = n)
-			} else {
-				d1 = rotate.parabola(theta1 = theta11, theta2 = theta21, rou1 = rou, rou.ratio = top.ratio+0.01, n = n)
-			}		
-		}
-		
 		if(!is.null(top.ratio.low)) {
+			if(top.ratio.low < top.ratio) {
+				stop("'top.ratio.low' should be larger than 'top.ratio'.\n")
+			}
 			if(quadratic.minus.degree(theta11, theta21) > quadratic.minus.degree(theta12, theta22)) {
 				d2 = rotate.parabola(theta1 = theta12, theta2 = theta22, rou1 = rou, rou.ratio = top.ratio.low, n = n)
 			} else {
 				d1 = rotate.parabola(theta1 = theta11, theta2 = theta21, rou1 = rou, rou.ratio = top.ratio.low, n = n)
+			}
+		} else {
+			if(min(quadratic.minus.degree(theta11, theta12), quadratic.minus.degree(theta21, theta22)) < 5 && 
+			   min(quadratic.minus.degree(theta11, theta21), quadratic.minus.degree(theta12, theta22)) < 60 &&
+			   top.ratio <= 1- 0.05) {
+				
+				if(quadratic.minus.degree(theta11, theta21) > quadratic.minus.degree(theta12, theta22)) {
+					d2 = rotate.parabola(theta1 = theta12, theta2 = theta22, rou1 = rou, rou.ratio = top.ratio+0.05, n = n)
+				} else {
+					d1 = rotate.parabola(theta1 = theta11, theta2 = theta21, rou1 = rou, rou.ratio = top.ratio+0.05, n = n)
+				}		
 			}
 		}
 		

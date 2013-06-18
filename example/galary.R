@@ -55,6 +55,8 @@ circos.clear()
 #  taiji and bagua
 ################################################################################
 library(circlize)
+library(Cairo)
+CairoPDF("taiji.pdf")
 factors = letters[1:8]
 par(mar = c(1, 1, 1, 1))
 circos.par("default.track.height" = 0.15, "start.degree" = 22.5,
@@ -74,7 +76,7 @@ circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA,
             circos.rect(0.55,0,1,1, col = "black")
         }
 		
-		circos.text(0.5, 1.8, name[i], cex = 1.2)
+		circos.text(0.5, 1.8, name[i], cex = 1.2, family="SimSun")
     })
 
 circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA,
@@ -114,6 +116,8 @@ draw.sector(center = c(0, -0.2), start = 0, end = 360, rou1 = 0.05,
     col = "white", border = "white")
 
 circos.clear()
+dev.off()
+
 ##################################################################################
 #  dartboard
 ##################################################################################

@@ -124,8 +124,12 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 				d1 = rotate.parabola(theta1 = theta11, theta2 = theta21, rou1 = rou, rou.ratio = top.ratio.low, n = n)
 			}
 		} else {
-			if(min(quadratic.minus.degree(theta11, theta12), quadratic.minus.degree(theta21, theta22)) < 5 && 
-			   min(quadratic.minus.degree(theta11, theta21), quadratic.minus.degree(theta12, theta22)) < 60 &&
+			al = min(quadratic.minus.degree(theta11, theta12), quadratic.minus.degree(theta21, theta22))
+			th2 = max(quadratic.minus.degree(theta11, theta21), quadratic.minus.degree(theta12, theta22))
+			th1 = min(quadratic.minus.degree(theta11, theta21), quadratic.minus.degree(theta12, theta22))
+			if(quadratic.minus.degree(th2, th1) < 90 &&
+			   al < 5 &&  #alpha
+			   th2 < 45 && th2 < 180 - th1 &&
 			   top.ratio <= 1- 0.05) {
 				
 				if(quadratic.minus.degree(theta11, theta21) > quadratic.minus.degree(theta12, theta22)) {

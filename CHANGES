@@ -23,4 +23,4 @@
 - ``gap.degree`` in `circos.par` can be a vector which means different degrees for gaps can be set
 - export core function `circlize` now
 - track.margin now is in correct order
-- for links from interval to interval whose two ends are very close, one edge is now completely below or up the other one.(although not a good solution)
+- links are optimized (although not so perfect)

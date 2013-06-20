@@ -1846,6 +1846,45 @@ text(0, 1, 1, adj = c(0.5, 0))
 \label{fig:part}
 \end{figure}
 
+In the second situation, you don't need some sectors or cells but still you need to draw the whole circle.
+Remember when you are creating new track with {\tt circos.trackPlotRegion} and set {\tt bg.col} and {\tt bg.border}
+to {\tt NA}, it means create the new track and draw nothing. After that, you can use {\tt circos.updatePlotRegion} to update
+these invisible cells of interest to add graphs on it (figure \ref{fig:part2}).
+
+<<label=figpart2, echo=TRUE, eval=FALSE>>=
+library(circlize)
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:4]
+circos.initialize(factors = factors, xlim = c(0, 1))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 1),
+    bg.col = NA, bg.border = NA)
+circos.updatePlotRegion(sector.index = "a", bg.border = "black")
+x1 = runif(100)
+y1 = runif(100)
+circos.points(x1, y1, pch = 16, cex = 0.5)
+
+circos.trackPlotRegion(factors = factors, ylim = c(0, 1),
+    bg.col = NA, bg.border = NA)
+circos.updatePlotRegion(sector.index = "a", bg.border = "black")
+x1 = runif(100)
+y1 = runif(100)
+circos.points(x1, y1, pch = 16, cex = 0.5)
+
+circos.trackPlotRegion(factors = factors, ylim = c(0, 1))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 1))
+circos.clear()
+@
+
+\begin{figure}
+\begin{center}
+<<label=figpart2, fig = TRUE, height=4, width=4, results=hide>>=
+<<figpart2>>
+@
+\end{center}
+\caption{Part of the circos layout, situation 2.}
+\label{fig:part2}
+\end{figure}
+
 \subsection{Combine several parts of circos layouts}
 Since the circos layout by {\tt circlize} is finally plotted in an ordinary R plotting system.
 Two seperated circos layouts can be plotted together by some tricks. Here the key is 
@@ -2030,7 +2069,12 @@ circos.clear()
 The third example is to draw sectors with different radius (figure \ref{fig:difrad}). In fact,
 it draws four circos graphs in which only one sector of each graphs is plotted. Note links
 can not be drawn in these different sectors because links can only be drawn in one circos
-layout.
+layout. 
+
+It is different from example in ``Draw part of the circos layout'' section. In that example,
+cells both visible and invisible are all in a same track and they are in a same circos plot, so they
+should have same radius. But here, cells have different radius to the center of the circle and they
+belong to different circos plot (although only part of each circos plot is visible).
 
 <<label=figdifrad, echo=TRUE, eval=FALSE>>=
 library(circlize)

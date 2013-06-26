@@ -912,6 +912,9 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	# ticks
 	yrange = get.cell.meta.data("yrange", sector.index, track.index)
 	major.tick.length = yrange * major.tick.percentage
+	
+	op = circos.par("points.overflow.warning")
+	circos.par("points.overflow.warning" = FALSE)
 	for(i in seq_along(major.at)) {
 		
 		if(major.at[i] < xlim2[1] || major.at[i] > xlim2[2]) {
@@ -976,6 +979,9 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 			             sector.index = sector.index, track.index = track.index, lwd = lwd)
 		}
 	}
+	
+	circos.par("points.overflow.warning" = op)
+	return(invisible(NULL))
 }
 
 #####################################################################
@@ -1186,6 +1192,7 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 		circos.text(mean(cell.xlim), 1.3, labels = gsub("chr", "", chr), sector.index = chr, cex = 1)
 	}
 	circos.par("cell.padding" = o.cell.padding, "points.overflow.warning" = TRUE)
+	return(invisible(NULL))
 }
 
 # == title

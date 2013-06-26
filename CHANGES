@@ -24,3 +24,4 @@
 - export core function `circlize` now
 - track.margin now is in correct order
 - links are optimized (although not so perfect)
+- no point overflow warnings when drawing axes

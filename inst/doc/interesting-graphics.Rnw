@@ -187,4 +187,18 @@ circos.clear()
 \label{fig:bagua}
 \end{figure}
 
+Figure \ref{fig:painting} is a circular style of a long painting (\url{https://en.wikipedia.org/wiki/Along_the_River_During_the_Qingming_Festival}). The masterpiece is
+drawn about one thousand years ago. The width of the origin painting is 528 cm
+and the height is 24.8 cm (about a ratio of 20:1). There are two parts in the painting,
+one is the countryside and the other is the city. Totally about 800 people, 60 animals,
+28 ships, 30 buldings, 20 cars, and 170 trees are in it.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{painting.jpeg}
+\caption{A painting}
+\label{fig:painting}
+\end{figure}
+
+
 \end{document}

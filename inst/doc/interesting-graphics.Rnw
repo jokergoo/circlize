@@ -193,6 +193,10 @@ and the height is 24.8 cm (about a ratio of 20:1). There are two parts in the pa
 one is the countryside and the other is the city. Totally about 800 people, 60 animals,
 28 ships, 30 buldings, 20 cars, and 170 trees are in it.
 
+The circos transformation is as follows: 1. use {\tt jpeg} package to read RGB
+information for each pixel which is in the figure into R; 2. use {\tt circos.rect} to draw
+every pixel into the circle.
+
 \begin{figure}[htbp]
 \centering
 \includegraphics{painting.jpeg}

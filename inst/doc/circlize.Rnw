@@ -1324,7 +1324,7 @@ circos.clear()
 
 \subsection{Links}
 Links can be drawn by {\tt circos.link} from points and intervals (figure \ref{fig:link}, top). If both ends are points, then the link is represented
-as a line. If one of the ends is an interval, the link would be a belt. The link is in fact a quadratic curve. Links do not hold any position of track.
+as a line. If one of the ends is an interval, the link would be a belt/ribbon. The link is in fact a quadratic curve. Links do not hold any position of track.
 So links can be overlapping with tracks.
 
 The position of the 'root' of the link is controlled by {\tt rou} argument. By default, it is the end position of the most recently created track.
@@ -1383,7 +1383,7 @@ the code:
 \end{Schunk}
 
 Anyway, there are always some problems when implementing the link function. When the link
-represents as a belt (i.e. link from point to interval or from interval to interval),
+represents as a belt/ribbon (i.e. link from point to interval or from interval to interval),
 It can not ensure that one border is always below or above the other. Which means, in 
 some cases, the two borders would intersect and it would make the link so ugly. It happens
 especially when position of the two ends are too close or the width of one end is extremely large while

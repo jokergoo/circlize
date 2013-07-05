@@ -18,7 +18,7 @@
 # - `circos.axis`
 # - `circos.link`, This maybe the unique feature for circos layout to represent relationships between elements.
 # 
-# For drawing points, lines and text through the whole track (among several sectors), the following
+# For drawing points, lines and text through the whole track (among several sectors), the following 
 # functions are available:
 #
 # - `circos.trackPoints`
@@ -38,9 +38,9 @@
 #
 # Theoretically, you are able to draw most kinds of circos figures by the above functions.
 #
-# For specific use in genomics, a function which draws the ideogram and initializes sectors
+# For specific use in genomics, a function which draws the ideogram and initializes sectors 
 # for chromosomes is supported: `circos.initializeWithIdeogram`.
 #
-# Refer to the vignettes to find how to draw basic and advanced circos figure by this package.
+# Refer to the vignettes to find out how to draw basic and advanced circos figure by this package.
 #
 

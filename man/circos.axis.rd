@@ -23,11 +23,11 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
 \arguments{
   \item{h}{position of the x-axis, can be "top", "bottom" or a numeric value
 }
-  \item{major.at}{If it is numeric vector, it identifies the poisitions
+  \item{major.at}{If it is numeric vector, it identifies the positions
  of the major ticks. It can exceed \code{xlim} value and the exceeding part
- would be trimmed automatically. If it is \code{NULL}, it would be calculated by \code{\link[base]{pretty}} (about every 10 degrees there is a major tick).
+ would be trimmed automatically. If it is \code{NULL}, it would be calculated by \code{\link[base]{pretty}} (about every 10 degrees a major tick on the circle).
 }
-  \item{labels}{labels of the major ticks. Also, the exceeding part would be trimmed automatically.
+  \item{labels}{labels of the major ticks. Also, the exceeding part according to \code{major.tick} would be trimmed automatically.
 }
   \item{major.tick}{Whether to draw major tick. If it is set to \code{FALSE}, there would be
  no minor ticks either. 
@@ -50,7 +50,7 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
 }
   \item{labels.away.percentage}{The distance for the axis labels to the major ticks. It is the percentage to the height of the cell.
 }
-  \item{lwd}{line width for ticks
+  \item{lwd}{line width for ticks and axes
 }
 
 }

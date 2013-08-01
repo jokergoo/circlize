@@ -162,6 +162,11 @@ is.circos.initialized = function() {
 # identified by ``factors``, then each row of ``xlim`` corresponds to the data range for each sector
 # and the order of rows is corresponding to the order of levels of ``factors``.
 #
+# Normally, width of sectors will be calculated internally according to the data range in sectors. But you can
+# still set the width manually. However, it is not always a good idear to change the default sector width since
+# the width can reflect the range of data in sectors. Anyway, in some circumstances, it is useful to manually set
+# the width such as you want to zoom in some part of the sector.
+#
 # The function finally call `graphics::plot` and be ready to draw.
 circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL) {
 

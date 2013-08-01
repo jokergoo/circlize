@@ -189,7 +189,7 @@ one is the countryside and the other is the city. Totally about 800 people, 60 a
 28 ships, 30 buldings, 20 cars, and 170 trees are in it.
 
 The circular transformation is as follows: 1. use {\tt jpeg} package to read RGB
-information for each pixel in the figure; 2. use {\tt circos.rect} to draw
+information for each pixel which is in the figure into R; 2. use {\tt circos.rect} to draw
 every pixel into the circle.
 
 \begin{figure}[htbp]

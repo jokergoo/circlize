@@ -186,7 +186,7 @@ circos.clear()
 <<figcorrelation6>>
 @
 \end{center}
-\caption{Correlations represented in circular layout}
+\caption{Correlations represented in circos layout}
 \label{fig:correlation}
 \end{figure}
 

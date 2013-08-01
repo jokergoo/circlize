@@ -19,7 +19,5 @@ export(
 	circos.trackHist,
 	circos.initializeWithIdeogram,
 	draw.sector,
-	circlize,
-	read.cytoband,
-	cytoband.col
+	circlize
 )

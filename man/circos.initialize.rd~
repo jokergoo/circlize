@@ -11,7 +11,7 @@
 
 }
 \usage{
-circos.initialize(factors, x = NULL, xlim = NULL, sector.width = NULL)
+circos.initialize(factors, x = NULL, xlim = NULL)
 }
 \arguments{
   \item{factors}{Factors which represent the categories of data}

@@ -45,6 +45,7 @@ read.cytoband = function(file = paste(system.file(package = "circlize"), "/extda
 # == details
 # The color theme is from http://circos.ca/tutorials/course/slides/session-2.pdf, page 42.
 cytoband.col = function(x) {
+	x = as.vector(x)
 	col.panel = c("gpos100" = rgb(0, 0, 0, maxColorValue = 255), 
                   "gpos"    = rgb(0, 0, 0, maxColorValue = 255),
                   "gpos75"  = rgb(130, 130, 130, maxColorValue = 255),

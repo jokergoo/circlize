@@ -56,22 +56,11 @@ circos.clear()
 factors = 1:4
 
 par(mar = c(1, 1, 1, 1))
+circos.par("cell.padding" = c(0.6, 20, 0.6, 20))
 circos.initialize(factors = factors, xlim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1), factors = factors, panel.fun = function(x, y) {
 	circos.rect(0, 0, 1, 1, col = "red")
-})
-circos.par("cell.padding" = c(0.1, 0.1, 0.1, 0.1))
-circos.trackPlotRegion(ylim = c(0, 1), factors = factors, panel.fun = function(x, y) {
-	circos.rect(0, 0, 1, 1, col = "blue")
-})
-circos.par("cell.padding" = c(0.4, 0.4, 0.4, 0.4))
-circos.trackPlotRegion(ylim = c(0, 1), factors = factors, panel.fun = function(x, y) {
-	circos.rect(0, 0, 1, 1, col = "green")
-})
-circos.par("cell.padding" = c(0.8, 0.8, 0.8, 0.8))
-circos.trackPlotRegion(ylim = c(0, 1), factors = factors, panel.fun = function(x, y) {
-	circos.rect(0, 0, 1, 1, col = "green")
-})
+}, track.height = 0.6)
 circos.clear()
 
 #############################

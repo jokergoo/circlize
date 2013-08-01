@@ -13,7 +13,7 @@ assign(".CURRENT.SECTOR.INDEX", NULL, envir = .CIRCOS.ENV)
 	gap.degree = 1,
 	track.margin = c(0.01, 0.01),  # top margin and bottom margin, percentage
 	unit.circle.segments = 500,   #to simulate smooth curve
-	cell.padding = c(0.1, 0.1, 0.1, 0.1),  # percentage
+	cell.padding = c(0.02, 1, 0.02, 1),  # percentage
 	default.track.height = 0.2,
 	points.overflow.warning = TRUE,
 	canvas.xlim = c(-1, 1),
@@ -219,8 +219,6 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
     
 	# range for sectors
     sector.range = max.value - min.value
-    min.value = min.value - cell.padding[2]*sector.range  # real min value
-    max.value = max.value + cell.padding[4]*sector.range  # real max value
     n.sector = length(le)
     
     sector = vector("list", 5)
@@ -230,8 +228,6 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 	# So in the polar coordinate, `start.degree` would be larger than `end.degree`
     names(sector) = c("factor", "min.value", "max.value", "start.degree", "end.degree")
     sector[["factor"]] = le
-    sector[["min.value"]] = min.value
-    sector[["max.value"]] = max.value
     
     gap.degree = circos.par("gap.degree")
 	if(length(gap.degree) == 1) {
@@ -301,6 +297,15 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 		sector[["start.degree"]] = sector[["start.degree"]] + 360
 		sector[["end.degree"]] = sector[["end.degree"]] + 360
 	}
+	
+	if(any(cell.padding[2] + cell.padding[4] >= sector[["start.degree"]] - sector[["end.degree"]])) {
+		stop("Sumation of cell padding on x-direction are larger than the width of the sectors.\n")
+	}
+	
+	min.value = min.value - cell.padding[2]/(sector[["start.degree"]] - sector[["end.degree"]] - cell.padding[2] - cell.padding[4])*sector.range  # real min value
+    max.value = max.value + cell.padding[4]/(sector[["start.degree"]] - sector[["end.degree"]] - cell.padding[2] - cell.padding[4])*sector.range  # real max value
+    sector[["min.value"]] = min.value
+    sector[["max.value"]] = max.value
     
     sector = as.data.frame(sector, stringsAsFactors = FALSE)
     .SECTOR.DATA = sector

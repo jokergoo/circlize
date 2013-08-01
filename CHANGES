@@ -29,6 +29,6 @@
 == 0.0.5
 - support self-define width of sectors when initializing
 - add simple functions to read and manuplate cytoband file
-- vignettes have been improved.
-- ``cell.padding`` in `circos.par` now using degree as its measure
-- ``track.margin`` in `circos.par` now using percentage of radius as its measure
+- add several new figures in the vignettes and vignettes have been improved.
+- ``cell.padding`` in `circos.par` now using degree as its measurement.
+- ``track.margin`` in `circos.par` now using percentage of radius as its measurement.

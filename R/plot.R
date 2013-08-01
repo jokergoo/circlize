@@ -244,20 +244,25 @@ circos.updatePlotRegion = function(sector.index = get.current.sector.index(), tr
 circos.createPlotRegion = function(track.start, track.height = circos.par("default.track.height"),
     sector.index = get.current.sector.index(), track.index = get.current.track.index(), ylim,
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd")) {
-
+	
+	# we do not have such meta for the cell, so we need to calculate them
 	sector.data = get.sector.data(sector.index)
     cell.xlim = c(sector.data["min.value"], sector.data["max.value"])
 	names(cell.xlim) = NULL
 	
 	cell.padding = circos.par("cell.padding")
-	
+
 	xlim = numeric(2)
-	xlim[1] = ((1 + cell.padding[4])*cell.xlim[1] + cell.padding[2]*cell.xlim[2]) / (1 + cell.padding[2] + cell.padding[4])
-	xlim[2] = (cell.padding[4]*cell.xlim[1] + (1 + cell.padding[2])*cell.xlim[2]) / (1 + cell.padding[2] + cell.padding[4])
+	xlim[1] = cell.xlim[1] + (cell.xlim[2] - cell.xlim[1]) / (sector.data["start.degree"] - sector.data["end.degree"]) *cell.padding[2]
+	xlim[2] = cell.xlim[2] - (cell.xlim[2] - cell.xlim[1]) / (sector.data["start.degree"] - sector.data["end.degree"]) *cell.padding[4]
+	
+	if(cell.padding[1] + cell.padding[3] >= track.height) {
+		stop("Sumation of cell padding on y-direction are larger than the width of the cells.\n")
+	}
 	
 	yl = numeric(2)
-	yl[1] = ylim[1] - (ylim[2] - ylim[1])*cell.padding[1]
-    yl[2] = ylim[2] + (ylim[2] - ylim[1])*cell.padding[3]
+	yl[1] = ylim[1] - (ylim[2] - ylim[1])*cell.padding[1] / track.height
+    yl[2] = ylim[2] + (ylim[2] - ylim[1])*cell.padding[3] / track.height
 	
     set.cell.data(sector.index = sector.index,
         track.index = track.index,

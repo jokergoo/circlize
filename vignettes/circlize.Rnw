@@ -11,7 +11,7 @@
 \title{An introduction to {\tt circlize} package}
 
 \author{Zuguang Gu {\tt <z.gu@dkfz.de>}\\ German Cancer Research Center,\\ Heidelberg, Germany}
-\usepackage[margin=1.5in]{geometry}
+\usepackage[margin=1in, a4paper]{geometry}
 
 \usepackage{Sweave}
 \usepackage{hyperref}
@@ -21,9 +21,9 @@
 \maketitle 
 
 \section{Introduction}
-Circos layout (\url{http://circos.ca}) is very useful to represent complicated information, especially for genomic data.
+Circular layout (\url{http://circos.ca}) is very useful to represent complicated information, especially for genomic data.
 It is not only a way to visualize data, but also enhances the representation of scientific results into a level of aesthetics.
-The {\tt circlize} package implements the circos layout in R. The advantage is that R is natural born to draw statistical
+The {\tt circlize} package implements the circular layout in R. The advantage is that R is natural born to draw statistical
 graphs, thus, types of plottings are not restricted by the package but by user's inspiration. The {\tt circlize} package allocates
 and illustrates data which is from a certain category into a cell inside a circle and makes you
 felling that you are plotting figures in a normal plotting coordinate.
@@ -32,7 +32,17 @@ Since most of the figures are composed of simple graphs, such as points, lines, 
 so we just need to implement those low-level functions for drawing figures in circos layout.
 
 Currently there are following functions that can be used for plotting, they are similar to the functions without {\tt "circos."}
-prefix from the traditional graph engine:
+prefix from the traditional graph engine (you can also see the correspondence in figure \ref{fig:correspondence}):
+
+\begin{figure}
+\begin{center}
+<<label=figcorrespondence, fig = TRUE, echo = FALSE, results=hide>>=
+source("src/intro-00-correspondence.R")
+@
+\end{center}
+\caption{Correspondence between graphic functions in {\tt circlize} and in traditional R graphic engein.}
+\label{fig:correspondence}
+\end{figure}
 
 \begin{itemize}
   \item {\tt circos.points}: draw points in a cell, similar as {\tt points}.
@@ -81,7 +91,7 @@ Following is an example to show the basic feature and usage of {\tt circlize} pa
 First generate some data. There needs to have a factor to represent categories,
 values on x-axis, and values on y-axis.
 
-<<label=figexample1, echo=TRUE, eval=FALSE>>=
+<<echo=TRUE, eval=FALSE>>=
 set.seed(12345)
 n = 1000
 a = data.frame(factor = sample(letters[1:8], n, replace = TRUE),
@@ -96,7 +106,7 @@ would hold approximately $67\%$ areas of the circle.
 Here we only need x-values because all cells in a sector share the same
 x-ranges.
 
-<<label=figexample2, echo=TRUE, eval=FALSE>>=
+<<echo=TRUE, eval=FALSE>>=
 library(circlize)
 par(mar = c(1, 1, 1, 1), lwd = 0.1, cex = 0.7)
 circos.par("default.track.height" = 0.1)
@@ -122,7 +132,7 @@ index is not specified in the plotting functions such as {\tt circos.trackPoints
 which are called after the creation of the track, the current track index would be assigned internally.
  (details would be explained in the following sections).
 
-<<label=figexample3, echo=TRUE, eval=FALSE>>=
+<<echo=TRUE, eval=FALSE>>=
 circos.trackPlotRegion(factors = a$factor, y = a$y,
     panel.fun = function(x, y) {
         circos.axis()
@@ -137,7 +147,7 @@ circos.text(1, 0.5, "right", sector.index = "a")
 Draw the second track (figure \ref{fig:example}, top right). There are histograms among the track. The {\tt circos.trackHist}
 can also create a new track because drawing histogram is really high-level. The track index for this track is 2.
 
-<<label=figexample4, echo=TRUE, eval=FALSE>>=
+<<echo=TRUE, eval=FALSE>>=
 bgcol = rep(c("#EFEFEF", "#CCCCCC"), 4)
 circos.trackHist(a$factor, a$x, bg.col = bgcol, col = NA)
 @
@@ -147,7 +157,7 @@ features of the {\tt circlize} package. Here some meta data for a cell can be ob
 {\tt sector.index} and {\tt track.index} arguments, and if they are not specified, it means
 it is the current sector index and the current track index.
 
-<<label=figexample5, echo=TRUE, eval=FALSE>>=
+<<echo=TRUE, eval=FALSE>>=
 circos.trackPlotRegion(factors = a$factor, x = a$x, y = a$y,
   panel.fun = function(x, y) {
       grey = c("#FFFFFF", "#CCCCCC", "#999999")
@@ -163,14 +173,14 @@ The function erases graphs which have been drawn. Here we erase graphs in one ce
 and re-draw some points (figure \ref{fig:example}, middle right). {\tt circos.updatePlotRegion} can not modify the {\tt xlim}
 and {\tt ylim} of the cell as well as other settings related to the position of the cell.
 
-<<label=figexample6, echo=TRUE, eval=FALSE>>=
+<<echo=TRUE, eval=FALSE>>=
 circos.updatePlotRegion(sector.index = "d", track.index = 2)
 circos.points(x = -2:2, y = rep(0, 5))
 @}
 
 Draw the fouth track (figure \ref{fig:example}, bottom left). Here you can choose different line types.
 
-<<label=figexample7, echo=TRUE, eval=FALSE>>=
+<<echo=TRUE, eval=FALSE>>=
 circos.trackPlotRegion(factors = a$factor, y = a$y)
 circos.trackLines(a$factor[1:100], a$x[1:100], a$y[1:100], type = "h")
 @
@@ -178,7 +188,7 @@ circos.trackLines(a$factor[1:100], a$x[1:100], a$y[1:100], type = "h")
 Draw links (figure \ref{fig:example}, bottom right). Links can be from point to point, point to interval or interval to interval.
 Some of the arguments would be explained in the following sections.
 
-<<label=figexample8, echo=TRUE, eval=FALSE>>=
+<<echo=TRUE, eval=FALSE>>=
 circos.link("a", 0, "b", 0, top.ratio = 0.9)
 circos.link("c", c(-0.5, 0.5), "d", c(-0.5,0.5), col = "red",
     border = "blue", top.ratio = 0.2)
@@ -189,161 +199,7 @@ circos.clear()
 \begin{figure}
 \begin{center}
 <<label=figexample, fig = TRUE, echo = FALSE, height = 18, width=12, results=hide>>=
-
-
-set.seed(12345)
-n = 1000
-a = data.frame(factor = sample(letters[1:8], n, replace = TRUE),
-    x = rnorm(n), y = runif(n))
-library(circlize)
-par(mar = c(1, 1, 1, 1), lwd = 0.1)
-layout(rbind(1:2, 3:4, 5:6))
-
-######################################
-circos.par("default.track.height" = 0.1)
-circos.initialize(factors = a$factor, x = a$x)
-circos.trackPlotRegion(factors = a$factor, y = a$y,
-    panel.fun = function(x, y) {
-        circos.axis()
-})
-col = rep(c("#FF0000", "#00FF00"), 4)
-circos.trackPoints(a$factor, a$x, a$y, col = col,
-    pch = 16, cex = 0.5)
-circos.text(-1, 0.5, "left", sector.index = "a", track.index = 1)
-circos.text(1, 0.5, "right", sector.index = "a")
-circos.clear()
-
-###########################################
-
-circos.par("default.track.height" = 0.1)
-circos.initialize(factors = a$factor, x = a$x)
-circos.trackPlotRegion(factors = a$factor, y = a$y,
-    panel.fun = function(x, y) {
-        circos.axis()
-})
-col = rep(c("#FF0000", "#00FF00"), 4)
-circos.trackPoints(a$factor, a$x, a$y, col = col,
-    pch = 16, cex = 0.5)
-circos.text(-1, 0.5, "left", sector.index = "a", track.index = 1)
-circos.text(1, 0.5, "right", sector.index = "a")
-bgcol = rep(c("#EFEFEF", "#CCCCCC"), 4)
-circos.trackHist(a$factor, a$x, bg.col = bgcol, col = NA)
-circos.clear()
-
-###########################################
-circos.par("default.track.height" = 0.1)
-circos.initialize(factors = a$factor, x = a$x)
-circos.trackPlotRegion(factors = a$factor, y = a$y,
-    panel.fun = function(x, y) {
-        circos.axis()
-})
-col = rep(c("#FF0000", "#00FF00"), 4)
-circos.trackPoints(a$factor, a$x, a$y, col = col,
-    pch = 16, cex = 0.5)
-circos.text(-1, 0.5, "left", sector.index = "a", track.index = 1)
-circos.text(1, 0.5, "right", sector.index = "a")
-bgcol = rep(c("#EFEFEF", "#CCCCCC"), 4)
-circos.trackHist(a$factor, a$x, bg.col = bgcol, col = NA)
-circos.trackPlotRegion(factors = a$factor, x = a$x, y = a$y,
-  panel.fun = function(x, y) {
-      grey = c("#FFFFFF", "#CCCCCC", "#999999")
-      i = get.cell.meta.data("sector.numeric.index")
-      circos.updatePlotRegion(bg.col = grey[i %% 3 + 1])
-      circos.points(x[1:10], y[1:10], col = "red", pch = 16, cex = 0.6)
-      circos.points(x[11:20], y[11:20], col = "blue", cex = 0.6)
-  })
-circos.clear()
-
-##############################################
-circos.par("default.track.height" = 0.1)
-circos.initialize(factors = a$factor, x = a$x)
-circos.trackPlotRegion(factors = a$factor, y = a$y,
-    panel.fun = function(x, y) {
-        circos.axis()
-})
-col = rep(c("#FF0000", "#00FF00"), 4)
-circos.trackPoints(a$factor, a$x, a$y, col = col,
-    pch = 16, cex = 0.5)
-circos.text(-1, 0.5, "left", sector.index = "a", track.index = 1)
-circos.text(1, 0.5, "right", sector.index = "a")
-bgcol = rep(c("#EFEFEF", "#CCCCCC"), 4)
-circos.trackHist(a$factor, a$x, bg.col = bgcol, col = NA)
-circos.trackPlotRegion(factors = a$factor, x = a$x, y = a$y,
-  panel.fun = function(x, y) {
-      grey = c("#FFFFFF", "#CCCCCC", "#999999")
-      i = get.cell.meta.data("sector.numeric.index")
-      circos.updatePlotRegion(bg.col = grey[i %% 3 + 1])
-      circos.points(x[1:10], y[1:10], col = "red", pch = 16, cex = 0.6)
-      circos.points(x[11:20], y[11:20], col = "blue", cex = 0.6)
-  })
-circos.updatePlotRegion(sector.index = "d", track.index = 2)
-circos.points(x = -2:2, y = rep(0, 5))
-circos.clear()
-
-################################################
-
-circos.par("default.track.height" = 0.1)
-circos.initialize(factors = a$factor, x = a$x)
-circos.trackPlotRegion(factors = a$factor, y = a$y,
-    panel.fun = function(x, y) {
-        circos.axis()
-})
-col = rep(c("#FF0000", "#00FF00"), 4)
-circos.trackPoints(a$factor, a$x, a$y, col = col,
-    pch = 16, cex = 0.5)
-circos.text(-1, 0.5, "left", sector.index = "a", track.index = 1)
-circos.text(1, 0.5, "right", sector.index = "a")
-bgcol = rep(c("#EFEFEF", "#CCCCCC"), 4)
-circos.trackHist(a$factor, a$x, bg.col = bgcol, col = NA)
-circos.trackPlotRegion(factors = a$factor, x = a$x, y = a$y,
-  panel.fun = function(x, y) {
-      grey = c("#FFFFFF", "#CCCCCC", "#999999")
-      i = get.cell.meta.data("sector.numeric.index")
-      circos.updatePlotRegion(bg.col = grey[i %% 3 + 1])
-      circos.points(x[1:10], y[1:10], col = "red", pch = 16, cex = 0.6)
-      circos.points(x[11:20], y[11:20], col = "blue", cex = 0.6)
-  })
-circos.updatePlotRegion(sector.index = "d", track.index = 2)
-circos.points(x = -2:2, y = rep(0, 5))
-circos.trackPlotRegion(factors = a$factor, y = a$y)
-circos.trackLines(a$factor[1:100], a$x[1:100], a$y[1:100], type = "h")
-circos.clear()
-
-###################################################
-
-circos.par("default.track.height" = 0.1)
-circos.initialize(factors = a$factor, x = a$x)
-circos.trackPlotRegion(factors = a$factor, y = a$y,
-    panel.fun = function(x, y) {
-        circos.axis()
-})
-col = rep(c("#FF0000", "#00FF00"), 4)
-circos.trackPoints(a$factor, a$x, a$y, col = col,
-    pch = 16, cex = 0.5)
-circos.text(-1, 0.5, "left", sector.index = "a", track.index = 1)
-circos.text(1, 0.5, "right", sector.index = "a")
-bgcol = rep(c("#EFEFEF", "#CCCCCC"), 4)
-circos.trackHist(a$factor, a$x, bg.col = bgcol, col = NA)
-circos.trackPlotRegion(factors = a$factor, x = a$x, y = a$y,
-  panel.fun = function(x, y) {
-      grey = c("#FFFFFF", "#CCCCCC", "#999999")
-      i = get.cell.meta.data("sector.numeric.index")
-      circos.updatePlotRegion(bg.col = grey[i %% 3 + 1])
-      circos.points(x[1:10], y[1:10], col = "red", pch = 16, cex = 0.6)
-      circos.points(x[11:20], y[11:20], col = "blue", cex = 0.6)
-  })
-circos.updatePlotRegion(sector.index = "d", track.index = 2)
-circos.points(x = -2:2, y = rep(0, 5))
-circos.trackPlotRegion(factors = a$factor, y = a$y)
-circos.trackLines(a$factor[1:100], a$x[1:100], a$y[1:100], type = "h")
-circos.link("a", 0, "b", 0, top.ratio = 0.9)
-circos.link("c", c(-0.5, 0.5), "d", c(-0.5,0.5), col = "red",
-    border = "blue", top.ratio = 0.2)
-circos.link("e", 0, "g", c(-1,1), col = "green", lwd = 2, lty = 2)
-circos.clear()
-
-layout(rbind(1))
-
+source("src/intro-01-glance.R")
 @
 \end{center}
 \caption{An example for circos layout}
@@ -352,136 +208,29 @@ layout(rbind(1))
 
 The final figure looks like figure \ref{fig:example}.
 
+\setkeys{Gin}{width=\textwidth}
 \begin{figure}
 \begin{center}
 <<label=figorder, fig = TRUE, echo = FALSE, height=6, width=7, results=hide>>=
-library(circlize)
-layout(rbind(1:4, 5:8, 9:12), width = c(1.5, 2, 1.5, 2))
-par(mar = c(1, 1, 1, 1), xpd = NA)
-
-plot(c(0, 1), c(0, 1), type = "n", ann = FALSE, axes = FALSE)
-text(0.5, 0.5, "circos.initialize", adj = c(0.5, 0.5), cex = 1.2)
-
-circos.par(gap.degree = 5)
-circos.initialize(1:4, xlim = rbind(c(0, 1), c(0, 2), c(0, 3), c(0, 4)))
-circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA)
-for(i in 1:4) {
-    de = get.cell.meta.data("cell.start.degree", i, 1) - circos.par("gap.degree")/2
-    lines(c(0, cos(de/180*pi)), c(0, sin(de/180*pi)), lty = 2, col = "#999999")
-}
-draw.sector(start.degree = 0, end.degree = 360, rou1 = 1, col = NA, lty = 2, border = "#999999")
-circos.clear()
-
-plot(c(0, 1), c(0, 1), type = "n", ann = FALSE, axes = FALSE)
-text(0.5, 0.5, "circos.trackPlotRegion", adj = c(0.5, 0.5), cex = 1.2)
-
-circos.par(gap.degree = 5)
-circos.initialize(1:4, xlim = rbind(c(0, 1), c(0, 2), c(0, 3), c(0, 4)))
-circos.trackPlotRegion(ylim = c(0, 1))
-circos.clear()
-
-plot(c(0, 1), c(0, 1), type = "n", ann = FALSE, axes = FALSE)
-text(0.5, 0.5, "circos.points", adj = c(0.5, 0.5), cex = 1.2)
-
-circos.par(gap.degree = 5)
-circos.initialize(1:4, xlim = rbind(c(0, 1), c(0, 2), c(0, 3), c(0, 4)))
-circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
-    xlim = get.cell.meta.data("xlim")
-    circos.points(runif(20)*(xlim[2] - xlim[1])+xlim[1], runif(20), pch = 16)
-})
-circos.clear()
-
-plot(c(0, 1), c(0, 1), type = "n", ann = FALSE, axes = FALSE)
-text(0.5, 0.5, "circos.trackPlotRegion", adj = c(0.5, 0.5), cex = 1.2)
-
-circos.par(gap.degree = 5)
-circos.initialize(1:4, xlim = rbind(c(0, 1), c(0, 2), c(0, 3), c(0, 4)))
-circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
-    xlim = get.cell.meta.data("xlim")
-    circos.points(runif(20)*(xlim[2] - xlim[1])+xlim[1], runif(20), pch = 16)
-})
-circos.trackPlotRegion(ylim = c(0, 1))
-circos.clear()
-
-plot(c(0, 1), c(0, 1), type = "n", ann = FALSE, axes = FALSE)
-text(0.5, 0.5, "circos.points", adj = c(0.5, 0.5), cex = 1.2)
-
-circos.par(gap.degree = 5)
-circos.initialize(1:4, xlim = rbind(c(0, 1), c(0, 2), c(0, 3), c(0, 4)))
-circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
-    xlim = get.cell.meta.data("xlim")
-    circos.points(runif(20)*(xlim[2] - xlim[1])+xlim[1], runif(20), pch = 16)
-})
-circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
-    xlim = get.cell.meta.data("xlim")
-    circos.points(runif(20)*(xlim[2] - xlim[1])+xlim[1], runif(20), pch = 16)
-})
-circos.clear()
-
-plot(c(0, 1), c(0, 1), type = "n", ann = FALSE, axes = FALSE)
-text(0.5, 0.5, "...\ncircos.clear", adj = c(0.5, 0.5), cex = 1.2)
-
-layout(rbind(1))
-par(xpd = FALSE)
-
+source("src/intro-02-order.R")
 @
 \end{center}
 \caption{Order of drawing circos layout}
 \label{fig:order}
 \end{figure}
+\setkeys{Gin}{width=0.8\textwidth}
 
-<<label=figtransformation, echo=FALSE, eval=FALSE>>=
-library(circlize)
-layout(cbind(c(1, 0, 2, 0, 3)), height = c(1,0.25,1, 0.25, 2))
-par(mar = c(2, 2, 2, 2))
-x = 1:10
-y = rnorm(10)
-plot(x, y, type = "l", axes = FALSE, ann = FALSE)
-text(2, 0, "text", cex = 2)
-rect(5, -1, 7, 1)
-box()
-axis(side = 1)
-
-par(mar = c(1, 1, 1, 1))
-factors = letters[1:3]
-circos.par("canvas.xlim" = c(-sqrt(3)/2, sqrt(3)/2), "canvas.ylim" = c(1/2*0.6, 1), start.degree = 30, "track.margin" = c(0, 0), "gap.degree" = 0, "clock.wise" = FALSE, points.overflow.warning = FALSE)
-circos.initialize(factors = factors, xlim = c(1, 10))
-circos.trackPlotRegion(factors = factors, ylim = range(y), track.height = 0.4, bg.border = NA)
-circos.updatePlotRegion(sector.index = "a", track.index = 1, bg.border = "black")
-circos.lines(x, y, sector.index = "a", track.index = 1, straight = TRUE)
-circos.text(2, 0, "text", cex = 2)
-circos.rect(5, -1, 7, 1)
-circos.axis(h = "bottom")
-circos.clear()
-
-par(xpd = NA)
-arrows(0, 1.33, 0, 1.07, code = 2)
-
-par(mar = c(3, 3, 3, 3))
-factors = letters[1:3]
-circos.initialize(factors = factors, xlim = c(1, 10))
-circos.trackPlotRegion(factors = factors, ylim = range(y), track.height = 0.4)
-circos.updatePlotRegion(sector.index = "c", track.index = 1, bg.border = "black")
-circos.lines(x, y, sector.index = "c", track.index = 1, straight = TRUE)
-circos.text(2, 0, "text", cex = 2)
-circos.rect(5, -1, 7, 1)
-circos.axis(h = "bottom")
-circos.clear()
-box()
-axis(side = 1)
-axis(side = 2)
-arrows(0, 1.5, 0, 1.07, code = 2)
-@
-
+\setkeys{Gin}{width=0.6\textwidth}
 \begin{figure}
 \begin{center}
 <<label=figtransformation, fig = TRUE, echo = FALSE, height=5.64, width=2.5, results=hide>>=
-<<figtransformation>>
+source("src/intro-03-transformation.R")
 @
 \end{center}
 \caption{Transformation between different coordinates. Top: data coordinate; Middle: polar coordinate; Bottom: canvas coordinate.}
 \label{fig:transformation}
 \end{figure}
+\setkeys{Gin}{width=0.8\textwidth}
 
 \section{Details}
 In this section, more details of the package would be explained.
@@ -577,32 +326,11 @@ However, for users, they only need to imagine that each cell is a normal rectang
 which x-lim and y-lim are ranges of data in the category respectively. The {\tt circlize} package would
 know which cell you are drawing in and do the transformation.
 
-<<label=figcoordinate, echo=FALSE, eval=FALSE>>=
-library(circlize)
-par(mar = c(1, 1, 1, 1))
-factors = factor(letters[1:10], levels = sample(letters[1:10], 10))
-circos.par("cell.padding" = c(0, 0, 0, 0), points.overflow.warning = FALSE)
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
-for(l in letters[1:10]) {
-    circos.rect(0,0,10,10,sector.index = l, track.index = 2, col = "#FF000040")
-}
-
-for(l in 1:4) {
-    circos.rect(0,0,10,10,sector.index = "a", track.index = l, col = "#0000FF40")
-}
-show.index()
-circos.clear()
-
-@
 
 \begin{figure}
 \begin{center}
 <<label=figcoordinate, fig = TRUE, echo = FALSE, results=hide>>=
-<<figcoordinate>>
+source("src/intro-04-coordinate.R")
 @
 \end{center}
 \caption{Coordinate in circos layout}
@@ -642,32 +370,17 @@ of the sectors, just change of the level of the {\tt factors} variable. The foll
 \end{Sinput}
 \end{Schunk}
 
+\setkeys{Gin}{width=\textwidth}
 \begin{figure}
 \begin{center}
 <<label=figfactor, fig = TRUE, echo = FALSE, width=8, height=4, results=hide>>=
-library(circlize)
-par(mar = c(1, 1, 1, 1), mfrow = c(1, 2))
-fa = c("d", "f", "e", "c", "g", "b", "a")
-f1 = factor(fa)
-circos.initialize(factors = f1, xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1))
-show.index()
-text(0, 0, "factor(fa)", adj = c(0.5, 0.5), cex = 1.3)
-circos.clear()
-
-f2 = factor(fa, levels = fa)
-circos.initialize(factors = f2, xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1))
-show.index()
-text(0, 0, "factor(fa,\nlevels = fa)", adj = c(0.5, 0.5), cex = 1.3)
-circos.clear()
-
+source("src/intro-05-factor.R")
 @
 \end{center}
 \caption{Different {\tt factor} order in the initialization step.}
 \label{fig:factor}
 \end{figure}
-
+\setkeys{Gin}{width=0.8\textwidth}
 
 If {\tt x} which is the x-values corresponding
 to {\tt factors} is specified, the range for x-values in different category would be calculated according to {\tt factors}
@@ -695,161 +408,27 @@ would be converted to factor automatically. And finally if users just create cel
 unspecified sectors would also be created, but with no borders (pretending they are not created).
 
 
-<<label=figregion, echo=FALSE, eval=FALSE>>=
-library(circlize)
-par(mar = c(1, 1, 1, 1), "xaxs" = "i", "yaxs" = "i")
-factors = letters[1:8]
-circos.par("canvas.xlim" = c(0, 1), "canvas.ylim" = c(0, 1), "gap.degree" = 3, "start.degree" = 20, "track.margin" = c(0.05, 0.05), "clock.wise" = FALSE)
-circos.initialize(factors = factors, xlim = c(0, 10))
-
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.1, bg.border = NA, bg.col = "#E41A1C", panel.fun = function(x, y) {
-    xlim = get.cell.meta.data("xlim")
-    ylim = get.cell.meta.data("ylim")
-    cell.xlim = get.cell.meta.data("cell.xlim")
-    cell.ylim = get.cell.meta.data("cell.ylim")
-    circos.rect(xlim[1], ylim[1], xlim[2], ylim[2], col = "#377EB8", border = "black", lwd = 1)
-    circos.rect(cell.xlim[1], cell.ylim[2], cell.xlim[2], cell.ylim[2]+(cell.ylim[2]-cell.ylim[1])/2, col = "#984EA3", border = NA)
-    circos.rect(cell.xlim[1], cell.ylim[1]-(cell.ylim[2]-cell.ylim[1])/2, cell.xlim[2], cell.ylim[1], col = "#984EA3", border = NA)
-    circos.lines(0:10, runif(11)*10)
-    circos.rect(cell.xlim[1], cell.ylim[1], cell.xlim[2], cell.ylim[2], lwd = 2)
-})
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.3, bg.border = NA, bg.col = "#E41A1C", panel.fun = function(x, y) {
-    xlim = get.cell.meta.data("xlim")
-    ylim = get.cell.meta.data("ylim")
-    cell.xlim = get.cell.meta.data("cell.xlim")
-    cell.ylim = get.cell.meta.data("cell.ylim")
-    circos.rect(xlim[1], ylim[1], xlim[2], ylim[2], col = "#377EB8", border = "black", lwd = 1)
-    circos.rect(cell.xlim[1], cell.ylim[2], cell.xlim[2], cell.ylim[2]+(cell.ylim[2]-cell.ylim[1])/6, col = "#984EA3", border = NA)
-    circos.rect(cell.xlim[1], cell.ylim[1]-(cell.ylim[2]-cell.ylim[1])/6, cell.xlim[2], cell.ylim[1], col = "#984EA3", border = NA)
-    circos.lines(0:10, runif(11)*10)
-    circos.rect(cell.xlim[1], cell.ylim[1], cell.xlim[2], cell.ylim[2], lwd = 2)
-})
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.1, bg.border = NA, bg.col = "#E41A1C", panel.fun = function(x, y) {
-    xlim = get.cell.meta.data("xlim")
-    ylim = get.cell.meta.data("ylim")
-    cell.xlim = get.cell.meta.data("cell.xlim")
-    cell.ylim = get.cell.meta.data("cell.ylim")
-    circos.rect(xlim[1], ylim[1], xlim[2], ylim[2], col = "#377EB8", border = "black", lwd = 1)
-    circos.rect(cell.xlim[1], cell.ylim[2], cell.xlim[2], cell.ylim[2]+(cell.ylim[2]-cell.ylim[1])/2, col = "#984EA3", border = NA)
-    circos.rect(cell.xlim[1], cell.ylim[1]-(cell.ylim[2]-cell.ylim[1])/2, cell.xlim[2], cell.ylim[1], col = "#984EA3", border = NA)
-    circos.lines(0:10, runif(11)*10)
-    circos.rect(cell.xlim[1], cell.ylim[1], cell.xlim[2], cell.ylim[2], lwd = 2)
-})
-
-x = seq(0, 1, length = 1000)
-y = sqrt(1^2 - x^2)
-lines(x, y, lty = 3, lwd = 2)
-
-x = seq(0, 0.8, length = 1000)
-y = sqrt(0.8^2 - x^2)
-lines(x, y, lty = 3, lwd = 2)
-
-x = seq(0, 0.4, length = 1000)
-y = sqrt(0.4^2 - x^2)
-lines(x, y, lty = 3, lwd = 2)
-
-x = seq(0, 0.2, length = 1000)
-y = sqrt(0.2^2 - x^2)
-lines(x, y, lty = 3, lwd = 2)
-
-draw.sector(center = c(0, 0), start = 17, end = 20, rou1 = 1, rou2 = 0.2, col = "#4DAF4A")
-draw.sector(center = c(0, 0), start = 62, end = 65, rou1 = 1, rou2 = 0.2, col = "#4DAF4A")
-
-circos.text(5, 5, "plotting region", sector.index = "a", track.index = 2)
-circos.text(5, 10.5, "cell.padding[3]", sector.index = "a", track.index = 2)
-circos.text(5, -0.5, "cell.padding[1]", sector.index = "a", track.index = 2)
-circos.text(-0.5, 5, "cell.padding[2]", direction = "vertical_right", sector.index = "a", track.index = 2)
-circos.text(10.5, 5, "cell.padding[4]", direction = "vertical_right", sector.index = "a", track.index = 2)
-circos.text(5, -2, "track.margin[1]", sector.index = "a", track.index = 2)
-circos.text(5, 12, "track.margin[2]", sector.index = "a", track.index = 2)
-circos.text(-1.5, 5, "gap.degree", direction = "vertical_right", sector.index = "a", track.index = 2)
-circos.text(11.5, 5, "gap.degree", direction = "vertical_right", sector.index = "a", track.index = 2)
-circos.clear()
-@
-
 \begin{figure}
 \begin{center}
 <<label=figregion, fig = TRUE, echo = FALSE, results=hide>>=
-<<figregion>>
+source("src/intro-06-region.R")
 @
 \caption{Regions for a cell}
 \label{fig:region}
 \end{center}
 \end{figure}
 
-<<label=figdirection, echo=FALSE, eval=FALSE>>=
-par(mfrow = c(2, 1))
-par(mar = c(1, 1, 1, 1))
-factors = letters[1:8]
-circos.par("track.margin" = c(0.1, 0.1), "clock.wise" = FALSE, start.degree = 30,
-    "gap.degree" = rep(c(2, 10), 4))
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.4, panel.fun = function(x, y) {
-    circos.text(5, 5, get.cell.meta.data("sector.index"))
-    xlim = get.cell.meta.data("xlim")
-    ylim = get.cell.meta.data("ylim")
-    circos.lines(xlim, c(0, 0))
-    circos.lines(c(9, 10), c(0.5, 0))
-    circos.lines(c(9, 10), c(-0.5, 0))
-    circos.lines(c(0, 0), xlim)
-    circos.lines(c(0.5, 0), c(9, 10))
-    circos.lines(c(-0.5, 0), c(9, 10))
-})
-circos.clear()
-
-x = seq(-0.7, 0.7, length = 100)
-d = cbind(x, sqrt(1 - x^2))
-lines(d)
-arrows(d[2,1], d[2,2], d[1,1], d[1,2])
-
-x = seq(-0.7, 0.7, length = 100)
-d = cbind(x, -sqrt(1 - x^2))
-lines(d)
-arrows(d[99,1], d[99,2], d[100,1], d[100,2])
-
-text(0, 0, 'circos.par("clock.wise" = FALSE,\nstart.degree = 30)', cex = 0.6)
-
-par(mar = c(1, 1, 1, 1))
-factors = letters[1:8]
-circos.par("track.margin" = c(0.1, 0.1), "clock.wise" = TRUE, start.degree = -30,
-    "gap.degree" = rep(c(2, 10), 4))
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.4, panel.fun = function(x, y) {
-    circos.text(5, 5, get.cell.meta.data("sector.index"))
-    xlim = get.cell.meta.data("xlim")
-    ylim = get.cell.meta.data("ylim")
-    circos.lines(xlim, c(0, 0))
-    circos.lines(c(9, 10), c(0.5, 0))
-    circos.lines(c(9, 10), c(-0.5, 0))
-    circos.lines(c(0, 0), xlim)
-    circos.lines(c(0.5, 0), c(9, 10))
-    circos.lines(c(-0.5, 0), c(9, 10))
-})
-circos.clear()
-
-x = seq(-0.7, 0.7, length = 100)
-d = cbind(x, sqrt(1 - x^2))
-lines(d)
-arrows(d[99,1], d[99,2], d[100,1], d[100,2])
-
-
-x = seq(-0.7, 0.7, length = 100)
-d = cbind(x, -sqrt(1 - x^2))
-lines(d)
-arrows(d[2,1], d[2,2], d[1,1], d[1,2])
-text(0, 0, 'circos.par("clock.wise" = TRUE,\nstart.degree = -30)', cex = 0.6)
-@
-
+\setkeys{Gin}{width=0.6\textwidth}
 \begin{figure}
 \begin{center}
 <<label=figdirection, fig = TRUE, echo = FALSE, width=4, height=8, results=hide>>=
-<<figdirection>>
+source("src/intro-07-direction.R")
 @
 \end{center}
 \caption{Sector directions. Sector orders are {\tt a}, ..., {\tt h}.}
 \label{fig:direction}
 \end{figure}
-
+\setkeys{Gin}{width=0.8\textwidth}
 
 \subsection{Circos parameters}
 Some basic parameters for the circos layout can be set through {\tt circos.par}. The paramters
@@ -897,37 +476,10 @@ So {\tt start.degree}, {\tt gap.degree}, {\tt canvas.xlim}, {\tt canvas.ylim} an
 be modified before {\tt circos.initialize}. The second and the fourth element of {\tt cell.padding} (left and right paddings) can not
 be modified either or the modification is effectiveless.
 
-<<label=figlines, echo=FALSE, eval=FALSE>>=
-library(circlize)
-par(mar = c(1, 1, 1, 1), cex = 0.8)
-factors = letters[1:8]
-circos.par(points.overflow.warning = FALSE)
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.5)
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "a")
-circos.text(5, 9, "type = 'l'", sector.index = "a", direction = "default2")
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "b", type = "o")
-circos.text(5, 9, "type = 'o'", sector.index = "b", direction = "default2")
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "c", type = "h")
-circos.text(5, 9, "type = 'h'", sector.index = "c", direction = "default2")
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "d", type = "s")
-circos.text(5, 9, "type = 's'", sector.index = "d", direction = "default2")
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "e", area = TRUE)
-circos.text(5, 9, "type = 'l', area = TRUE", sector.index = "e")
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "f", type = "o", area = TRUE)
-circos.text(5, 9, "type = 'o', area = TRUE", sector.index = "f")
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "g", type = "s", area = TRUE)
-circos.text(5, 9, "type = 's', area = TRUE", sector.index = "g")
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "h", area = TRUE, area.baseline = "top")
-circos.text(5, 1, "type = 'l', area = TRUE\narea.baseline = 'top'", sector.index = "h")
-circos.clear()
-par(cex = 1)
-@
-
 \begin{figure}
 \begin{center}
 <<label=figlines, fig = TRUE, echo = FALSE, results=hide>>=
-<<figlines>>
+source("src/intro-08-lines.R")
 @
 \end{center}
 \caption{Line style settings}
@@ -960,13 +512,23 @@ as illustrated in figure \ref{fig:lines}. One additional feature is that the are
 specified by {\tt area} argument which can help you identifying the direction of y-axis. Also the base line for the area can be set by {\tt area.baseline}.
 {\tt area.baseline} can be pre-defined string of {\tt bottom} or {\tt top}, or numeric values.
 
-Straight lines will be transformed to curves when mapping to the circos layout. Normally, 
+Straight lines will be transformed to curves when mapping to the circos layout (figure \ref{fig:linecurve}). Normally, 
 curves can be approximated by a series of segmentations of straight lines. With more segmentations,
 there would be better approximations, but with larger size if you generate the graph as pdf format, especially
 for huge genomic data. So, in this package, the number of the segmentation can be controlled by {\tt circos.par("unit.circle.segments")}.
 The length of minimal segment is the length of the unit circle divided by 
 {\tt circos.par("unit.circle.segments")}. If you do not want such curve-transformations (such as
 radical lines), you can set {\tt straight} argument to {\tt TRUE}. 
+
+\begin{figure}
+\begin{center}
+<<label=figlinecurve, fig = TRUE, echo = FALSE, results=hide>>=
+source("src/intro-08-linescurve.R")
+@
+\end{center}
+\caption{Straight lines will be transformed into curves in the circle}
+\label{fig:linecurve}
+\end{figure}
 
 Possible usage for {\tt circos.lines} is:
 
@@ -983,27 +545,10 @@ Similar as {\tt circos.points}, if no {\tt sector.index} or {\tt track.index} is
 specified, 'current' index would be used. Also, there is a {\tt circos.trackLines}
 which is identical to {\tt circos.lines} in a {\tt for} loop.
 
-<<label=figtext, echo=FALSE, eval=FALSE>>=
-library(circlize)
-par(mar = c(1, 1, 1, 1))
-factors = letters[1:4]
-circos.par(points.overflow.warning = FALSE)
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.5, panel.fun = function(x, y) {
-    circos.text(3, 9, "default", direction = "default")
-    circos.text(7, 9, "default2", direction = "default2")
-    circos.text(0, 5, "vertical_left", direction = "vertical_left")
-    circos.text(10, 5, "vertical_right", direction = "vertical_right")
-    circos.text(5, 5, "horizontal", direction = "horizontal")
-    circos.text(5, 1, "arc_arc_arc_arc_arc", direction = "arc")
-})
-circos.clear()
-@
-
 \begin{figure}
 \begin{center}
 <<label=figtext, fig = TRUE, echo = FALSE, results=hide>>=
-<<figtext>>
+source("src/intro-09-text.R")
 @
 \end{center}
 \caption{Text direction settings}
@@ -1071,25 +616,7 @@ help page.)
 \begin{figure}
 \begin{center}
 <<label=figerrorline, fig = TRUE, echo = FALSE, results=hide>>=
-library(circlize)
-par(mar = c(1, 1, 1, 1))
-factors = letters[1:4]
-circos.initialize(factors, xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(-3, 3), track.height = 0.4, panel.fun = function(x, y) {
-    x1 = runif(20)
-    y1 = x1 + rnorm(20)
-    or = order(x1)
-    x1 = x1[or]
-    y1 = y1[or]
-    loess.fit = loess(y1 ~ x1)
-    loess.predict = predict(loess.fit, x1, se = TRUE)
-    d1 = c(x1, rev(x1))
-    d2 = c(loess.predict$fit + loess.predict$se.fit, rev(loess.predict$fit - loess.predict$se.fit))
-    circos.polygon(d1, d2, col = "#CCCCCC", border = NA)
-    circos.points(x1, y1, cex = 0.5)
-    circos.lines(x1, loess.predict$fit)
-})
-circos.clear()
+source("src/intro-10-smooth.R")
 @
 \end{center}
 \caption{Area of standard deviation of the smooth line}
@@ -1097,33 +624,10 @@ circos.clear()
 \end{figure}
 
 
-<<label=figaxis, echo=FALSE, eval=FALSE>>=
-library(circlize)
-
-par(mar = c(1, 1, 1, 1))
-factors = letters[1:8]
-circos.par(points.overflow.warning = FALSE)
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.1, bg.border = NA, panel.fun = function(x, y) {
-    circos.text(5, 10, get.cell.meta.data("sector.index"))
-})
-
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
-circos.axis(sector.index = "a")
-circos.axis(sector.index = "b", direction = "inside", labels.direction = "default2")
-circos.axis(sector.index = "c", h = "bottom")
-circos.axis(sector.index = "d", h = "bottom", direction = "inside", labels.direction = "vertical_left")
-circos.axis(sector.index = "e", h = 5, major.at = c(1, 3, 5, 7, 9))
-circos.axis(sector.index = "f", h = 5, major.at = c(1, 3, 5, 7, 9), labels = c("a", "c", "e", "g", "f"), minor.ticks = 0)
-circos.axis(sector.index = "g", h = 5, major.at = c(1, 3, 5, 7, 9), labels = c("a1", "c1", "e1", "g1", "f1"), major.tick = FALSE, labels.direction = "vertical_left")
-circos.axis(sector.index = "h", h = 2, major.at = c(1, 3, 5, 7, 9), labels = c("a1", "c1", "e1", "g1", "f1"), major.tick.percentage = 0.3, labels.away.percentage = 0.2, minor.ticks = 2, labels.direction = "vertical_right")
-circos.clear()
-@
-
 \begin{figure}
 \begin{center}
 <<label=figaxis, fig = TRUE, echo = FALSE, results=hide>>=
-<<figaxis>>
+source("src/intro-11-axis.R")
 @
 \end{center}
 \caption{Axis settings}
@@ -1165,164 +669,17 @@ For {\tt circos.axis}, possible usage is as follows. {\tt h} can be pre-defined 
 \end{Sinput}
 \end{Schunk}
 
-<<label=figlink, echo=FALSE, eval=FALSE>>=
-library(circlize)
-par(mar = c(1, 1, 1, 1), mfrow = c(2, 2))
-factors = letters[1:8]
-circos.par(points.overflow.warning = FALSE)
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", bg.border = NA, track.height = 0.05)
-
-circos.link("a", 5, "c", 5)
-circos.link("b", 5, "d", c(4, 6))
-circos.link("a", c(2, 3), "f", c(4, 6))
-
-circos.clear()
-
-
-degree.minus = function(to, from, min.zero = TRUE) {
-    if(min.zero) {
-        return((to - from) %% 360)
-    } else {
-        if((to - from) %% 360 == 0) {
-            return(360)
-        } else {
-            return((to - from) %% 360)
-        }
-    }
-}
-rotate.parabola = function(theta1, theta2, rou1, rou2 = rou1, theta = (theta1+theta2)/2, 
-    rou = rou1 * abs(cos(degree.minus(theta1, theta2)/2/180*pi))*rou.ratio, rou.ratio = 0.5,
-    n = 1001) {
-    
-    while(theta2 < theta1) {
-        theta2 = theta2 + 360
-    }
-    
-    delta_theta = degree.minus(theta2, theta1)
-    
-    flag = 0
-    if(delta_theta > 180) {
-        theta = theta + 180
-        flag = 1
-    }
-    
-    # y^2 = kx, y = +-sqrt(kx)
-    b = rou1 * abs(sin(degree.minus(theta2, theta1)/2/180*pi))
-    a = rou1 * abs(cos(degree.minus(theta2, theta1)/2/180*pi)) - rou
-    k = b^2/a
-    
-    if(n %% 2 == 0) {
-        n = n + 1
-    }
-    n.half = (n - 1) / 2
-    x = numeric(n)
-    y = numeric(n)
-    x = c(n.half:1/n.half, 0, 1:n.half/n.half)*a
-    y[1:n.half] = sqrt(k*x[1:n.half])
-    y[n.half + 1] = 0
-    y[1:n.half + n.half + 1] = -sqrt(k*x[1:n.half + n.half + 1])
-    
-    alpha = numeric(n)
-    
-    alpha[1:n.half] = atan(y[1:n.half]/x[1:n.half])*180/pi
-    alpha[1:n.half + n.half + 1] = atan(y[1:n.half + n.half + 1]/x[1:n.half + n.half + 1])*180/pi
-    alpha[n.half + 1] = 90
-    
-    d = sqrt(x^2 + y^2)
-    x = d*cos((alpha + theta)/180*pi)
-    y = d*sin((alpha + theta)/180*pi)
-    
-    center.x = rou*cos(theta/180*pi)
-    center.y = rou*sin(theta/180*pi)
-    
-    x = x + center.x
-    y = y + center.y
-    
-    if(!flag) {
-        x = rev(x)
-        y = rev(y)
-    }
-
-    return(cbind(x, y))
-}
-
-polar2Cartesian = function(d) {
-    theta = d[, 1]/360 * 2 *pi
-    rou = d[, 2]
-    x = rou * cos(theta)
-    y = rou * sin(theta)
-    return(cbind(x, y))
-}
-par(mar = c(1, 1, 1, 1))
-plot(c(-1, 1), c(-1, 1), axes = FALSE, ann = FALSE ,type = "n")
-draw.sector(center = c(0, 0), start.degree = 0, end.degree = 360, rou1 = 1, col = "white", border = "black")
-d= rotate.parabola(theta1 = 270, theta2 = 330, rou1 = 1, rou.ratio = 0.5)
-lines(rbind(d, d[1, ]))
-lines(c(cos(300/180*pi), cos(120/180*pi)), c(sin(300/180*pi), sin(120/180*pi)))
-points(0, 0, pch = 16)
-lines(c(0, sqrt(3)/4)+0.01, c(0, -3/4)+0.01, lwd = 4, col = "red")
-lines(c(0, sqrt(3)/4/2)-0.01, c(0, -3/4/2)-0.01, lwd = 4, col = "blue")
-
-
-par(mar = c(1, 1, 1, 1))
-factors = letters[1:8]
-circos.par(points.overflow.warning = FALSE)
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.par(track.margin = c(0.1, 0))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", bg.border = NA, track.height = 0.05)
-
-circos.link("a", c(2, 3), "f", c(4, 6), border = "black")
-
-# the following codes calculate the position for the 'little rectangle'
-cell.ylim = get.cell.meta.data("cell.ylim", "a")
-d1 = circlize(2, cell.ylim[1], "a")
-theta1 = d1[1, 1]
-rou1 = d1[1, 2]
-
-d2 = circlize(3, cell.ylim[1], "a")
-theta2 = d2[1, 1]
-rou2 = d2[1, 2] - circos.par("track.margin")[1]
-
-# draw the 'little rectangle'
-draw.sector(start.degree = theta1, end.degree = theta2, rou1 = rou1, rou2 = rou2, col = "black", border = "black")
-circos.clear()
-
-par(mar = c(1, 1, 1, 1))
-factors = letters[1:8]
-circos.par(points.overflow.warning = FALSE)
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.par(track.margin = c(0.1, 0))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", bg.border = NA, track.height = 0.05)
-
-circos.link("a", c(2, 3), "f", c(4, 6), border = "black")
-
-# the following codes calculate the position for the 'little rectangle'
-cell.ylim = get.cell.meta.data("cell.ylim", "a")
-d1 = circlize(2, cell.ylim[1], "a")
-theta1 = d1[1, 1]
-rou1 = d1[1, 2]
-
-d2 = circlize(3, cell.ylim[1], "a")
-theta2 = d2[1, 1]
-rou2 = d2[1, 2] - circos.par("track.margin")[1]
-
-# draw the 'little rectangle'
-draw.sector(start.degree = theta1, end.degree = theta2, rou1 = rou1, rou2 = rou2, col = "red", border = "red")
-circos.clear()
-
-@
-
+\setkeys{Gin}{width=\textwidth}
 \begin{figure}
 \begin{center}
 <<label=figlink, fig = TRUE, echo = FALSE, width=8, height=8, results=hide>>=
-<<figlink>>
+source("src/intro-12-link.R")
 @
 \end{center}
 \caption{Drawing links}
 \label{fig:link}
 \end{figure}
-
+\setkeys{Gin}{width=0.8\textwidth}
 
 \subsection{Links}
 Links can be drawn by {\tt circos.link} from points and intervals (figure \ref{fig:link}, top). If both ends are points, then the link is represented
@@ -1408,17 +765,7 @@ The design of the function is not friendly and I am sorry for that. I would try 
 \begin{figure}
 \begin{center}
 <<label=figadjlink, fig = TRUE, echo = FALSE, results=hide>>=
-library(circlize)
-par(mar = c(1, 1, 1, 1))
-factors = letters[1:8]
-circos.initialize(factors = factors, xlim = c(0, 10))
-
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", bg.border = NA, track.height = 0.05)
-
-circos.link("b", 1, "b", c(2, 8), top.ratio = 0.5)
-circos.link("c", 1, "c", c(2, 8), top.ratio = 0.5, top.ratio.low = 0.8)
-
-circos.clear()
+source("src/intro-13-adjlink.R")
 @
 \end{center}
 \caption{Adjust the links: right link is under default settings and the height of the low border of left link is adjusted by hand.}
@@ -1468,25 +815,10 @@ The third and the fourth tracks are density distributions in which ylims
 are forced same or not.
 
 
-<<label=fighist, echo=FALSE, eval=FALSE>>=
-library(circlize)
-par(mar = c(1, 1, 1, 1))
-x = rnorm(2600)
-factors = sample(letters, 2600, replace = TRUE)
-circos.initialize(factors = factors, x = x)
-circos.trackHist(factors = factors, x = x, track.height = 0.1, col = "#999999", border = "#999999")
-circos.trackHist(factors = factors, x = x, force.ylim = FALSE, track.height = 0.1, col = "#999999", border = "#999999")
-circos.trackHist(factors = factors, x = x, draw.density = TRUE, track.height = 0.1, col = "#999999", border = "#999999")
-circos.trackHist(factors = factors, x = x, draw.density = TRUE, force.ylim = FALSE, track.height = 0.1, col = "#999999", border = "#999999")
-
-circos.clear()
-
-@
-
 \begin{figure}
 \begin{center}
 <<label=fighist, fig = TRUE, echo = FALSE, results=hide>>=
-<<fighist>>
+source("src/intro-14-hist.R")
 @
 \end{center}
 \caption{Histograms}
@@ -1507,131 +839,7 @@ chunk of ``figheatmap".)
 \begin{figure}
 \begin{center}
 <<label=figheatmap, fig = TRUE, echo = FALSE, results=hide>>=
-
-circos.dendrogram = function(dend, maxy) {
-  labels = as.character(labels(dend))
-    x = seq_along(labels) - 0.5
-    names(x) = labels
-
-    is.leaf = function(object) (is.logical(L <- attr(object, "leaf"))) && L
-
-    draw.d = function(dend, maxy) {
-        leaf = attr(dend, "leaf")
-        d1 = dend[[1]]
-        d2 = dend[[2]]
-        height = attr(dend, 'height')
-        midpoint = attr(dend, 'midpoint')
-
-        if(is.leaf(d1)) {
-            x1 = x[as.character(attr(d1, "label"))]
-        } else {
-            x1 = attr(d1, "midpoint") + x[as.character(labels(d1))[1]]
-        }
-        y1 = attr(d1, "height")
-
-        if(is.leaf(d2)) {
-            x2 = x[as.character(attr(d2, "label"))]
-        } else {
-            x2 = attr(d2, "midpoint") + x[as.character(labels(d2))[1]]
-        }
-        y2 = attr(d2, "height")
-
-        circos.lines(c(x1, x1), maxy - c(y1, height), straight = TRUE)
-        circos.lines(c(x1, x2), maxy - c(height, height))
-        circos.lines(c(x2, x2), maxy - c(y2, height), straight = TRUE)
-
-        if(!is.leaf(d1)) {
-            draw.d(d1, maxy)
-        }
-        if(!is.leaf(d2)) {
-            draw.d(d2, maxy)
-        }
-    }
-    
-    draw.d(dend, maxy)
-}
-
-
-get_color = function(x,
-                     colors = c("green", "black", "red"), # color points
-                     fc = c(-5, 0, 5),                    # data points
-                     gradient = function(x)x) {
-
-    # change colors represented as strings to RGB space
-    col_section = sapply(colors, function(x) as.vector(col2rgb(x)))
-    col_section = t(col_section)
-
-    x[x >= max(fc)] = max(fc)
-    x[x <= min(fc)] = min(fc)
-
-    fc = sign(fc)*gradient(abs(fc))
-
-    color = character(length(x))
-    for(i in 1:length(x)) {
-        # NA values, grey color
-        if(!is.numeric(x[i])) {
-            color[i] = rgb(128, 128, 128, maxColorValue = 255)
-            next
-        }
-        value = sign(x[i])*(gradient(abs(x[i])))
-
-        # find which interval the value belongs to
-        interval = which(fc >= x[i])[1]
-        if(length(interval) == 0) {
-            interval = length(interval)
-        }
-        if(interval == 1) {
-            interval = 2
-        }
-
-        # linear interpolation
-        col_num = (value - fc[interval])*(col_section[interval, ] - col_section[interval - 1, ]) / (fc[interval] - fc[interval - 1]) + col_section[interval, ]
-
-        col_num = ifelse(col_num > 255, 255, col_num)
-        col_num = ifelse(col_num < 0, 0, col_num)
-
-        color[i] = rgb(col_num[1], col_num[2], col_num[3], maxColorValue = 255)
-    }
-
-    return(color)
-}
-
-library(circlize)
-mat = matrix(rnorm(100*10), nrow = 10, ncol = 100)
-factors = rep(letters[1:2], 50)
-par(mar = c(1, 1, 1, 1))
-circos.par(cell.padding = c(0, 0, 0, 0), gap.degree = 5)
-circos.initialize(factors, xlim = c(0, 50))
-maxy = 0
-circos.trackPlotRegion(ylim = c(0, 10), bg.border = NA, panel.fun = function(x, y) {
-  sector.index = get.cell.meta.data("sector.index")
-    m = mat[, factors == sector.index]
-    
-    dend.col = as.dendrogram(hclust(dist(t(m))))
-
-    maxy = ifelse(maxy > attr(dend.col, "height"), maxy, attr(dend.col, "height"))
-    assign("maxy", maxy, envir = .GlobalEnv)
-
-    m2 = m[, labels(dend.col)]
-    nr = nrow(m2)
-    nc = ncol(m2)
-    for(i in 1:nr) {
-        for(j in 1:nc) {
-            circos.rect(j-1, nr-i, j, nr-i+1, border = get_color(m2[i, j], fc = c(-2, 0, 2)), col = get_color(m2[i, j], fc = c(-2, 0, 2)))
-        }
-    }
-    
-})
-circos.trackPlotRegion(ylim = c(0, maxy), bg.border = NA, track.height = 0.3, panel.fun = function(x, y) {
-    sector.index = get.cell.meta.data("sector.index")
-    m = mat[, factors == sector.index]
-    
-    dend.col = as.dendrogram(hclust(dist(t(m))))
-
-    circos.dendrogram(dend.col, maxy)
-    
-})
-circos.clear()
+source("src/intro-15-heatmap.R")
 @
 \end{center}
 \caption{Heatmap with clustering}
@@ -1705,59 +913,11 @@ Items that can be extracted by {\tt get.cell.meta.data} are:
   \item {\tt cell.padding}: Paddings for the cell
 \end{itemize}
 
-<<label=sectorhighlight, echo=FALSE, eval=FALSE>>=
-library(circlize)
-
-factors = letters[1:8]
-
-par(mar = c(1, 1, 1, 1))
-circos.initialize(factors = factors, xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1))
-
-#start.a1 = get.cell.meta.data("cell.start.degree", "a", 1)
-start.a1 = circlize(0.2, 1.2, "a", 1)[1, 1]
-#end.a1 = get.cell.meta.data("cell.end.degree", "a", 1)
-end.a1 = circlize(0.8, 1.2, "a", 1)[1, 1]
-top.a1 = get.cell.meta.data("cell.top.radius", "a", 1)
-draw.sector(start.degree = start.a1, end.degree = end.a1, rou1 = top.a1, border = NA, col = "#FF000040")
-
-start.b2 = get.cell.meta.data("cell.start.degree", "b", 2)
-end.b2 = get.cell.meta.data("cell.end.degree", "b", 2)
-top.b2 = get.cell.meta.data("cell.top.radius", "b", 2)
-draw.sector(start.degree = start.b2, end.degree = end.b2, rou1 = top.b2, border = NA, col = "#FF00FF40")
-
-bottom.a1 = get.cell.meta.data("cell.bottom.radius", "a", 1)
-draw.sector(start.degree = 0, end.degree = 360, rou1 = top.a1, rou2 = bottom.a1, border = NA, col = "#00FF0040")
-
-start.c2 = get.cell.meta.data("cell.start.degree", "c", 2)
-end.d2 = get.cell.meta.data("cell.end.degree", "d", 2)
-top.c2 = get.cell.meta.data("cell.top.radius", "c", 2)
-bottom.c2 = get.cell.meta.data("cell.bottom.radius", "c", 2)
-draw.sector(start.degree = start.c2, end.degree = end.d2, rou1 = top.c2, rou2 = bottom.c2, border = NA, col = "#0000FF40")
-
-
-start.g2 = get.cell.meta.data("cell.start.degree", "g", 2)
-end.g2 = get.cell.meta.data("cell.end.degree", "g", 2)
-top.g2 = get.cell.meta.data("cell.top.radius", "g", 2)
-bottom.g3 = get.cell.meta.data("cell.bottom.radius", "g", 3)
-draw.sector(start.degree = start.g2, end.degree = end.g2, rou1 = top.g2, rou2 = bottom.g3, border = NA, col = "#00FFFF40")
-
-
-start.e2 = get.cell.meta.data("cell.start.degree", "e", 2)
-end.f2 = get.cell.meta.data("cell.end.degree", "f", 2)
-top.e2 = get.cell.meta.data("cell.top.radius", "e", 2)
-bottom.e3 = get.cell.meta.data("cell.bottom.radius", "e", 3)
-draw.sector(start.degree = start.e2, end.degree = end.f2, rou1 = top.e2, rou2 = bottom.e3, border = NA, col = "#FFFF0040")
-show.index()
-circos.clear()
-@
 
 \begin{figure}
 \begin{center}
 <<label=sectorhighlight, fig = TRUE, echo = FALSE, results=hide>>=
-<<sectorhighlight>>
+source("src/intro-16-highlight.R")
 @
 \end{center}
 \caption{Hightlight sectors}
@@ -1796,96 +956,35 @@ circos.updatePlotRegion(sector.index = "a", bg.border = "black")
 circos.lines(1:100/100, y1, pch = 16, cex = 0.5)
 @
 
-
-<<label=figpart, echo=FALSE, eval=FALSE>>=
-library(circlize)
-par(mfrow = c(2, 1))
-par(mar = c(1, 1, 1, 1))
-circos.par("clock.wise" = FALSE, "gap.degree" = 0)
-factors = letters[1:4]
-circos.initialize(factors = factors, xlim = c(0, 1))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1))
-circos.updatePlotRegion(sector.index = "a", bg.border = "black")
-x1 = runif(100)
-y1 = runif(100)
-circos.points(x1, y1, pch = 16, cex = 0.5)
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.border = NA)
-circos.updatePlotRegion(sector.index = "a", bg.border = "black")
-circos.lines(1:100/100, y1, pch = 16, cex = 0.5)
-circos.clear()
-
-rect(0, 0, 1, 1)
-text(0, 0, 0, adj = c(0.5, 1))
-text(1, 0, 1, adj = c(0.5, 1))
-text(0, 1, 1, adj = c(0.5, 0))
-
-
-par(mar = c(1, 1, 1, 1))
-circos.par("canvas.xlim" = c(0, 1), "canvas.ylim" = c(0, 1),"clock.wise" = FALSE, "gap.degree" = 0, points.overflow.warning = FALSE)
-factors = letters[1:4]
-circos.initialize(factors = factors, xlim = c(0, 1))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.border = NA)
-circos.updatePlotRegion(sector.index = "a", bg.border = "black")
-circos.points(x1, y1, pch = 16, cex = 0.5)
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.border = NA)
-circos.updatePlotRegion(sector.index = "a", bg.border = "black")
-circos.lines(1:100/100, y1, pch = 16, cex = 0.5)
-circos.clear()
-box()
-par(xpd = NA)
-text(0, 0, 0, adj = c(0.5, 1))
-text(1, 0, 1, adj = c(0.5, 1))
-text(0, 1, 1, adj = c(0.5, 0))
-@
-
+\setkeys{Gin}{width=0.6\textwidth}
 \begin{figure}
 \begin{center}
 <<label=figpart, fig = TRUE, echo = FALSE, height=8, width=4, results=hide>>=
-<<figpart>>
+source("src/intro-17-part.R")
 @
 \end{center}
 \caption{Part of the circos layout}
 \label{fig:part}
 \end{figure}
+\setkeys{Gin}{width=0.8\textwidth}
 
 In the second situation, you don't need some sectors or cells but still you need to draw the whole circle.
 Remember when you are creating new track with {\tt circos.trackPlotRegion} and set {\tt bg.col} and {\tt bg.border}
 to {\tt NA}, it means create the new track and draw nothing. After that, you can use {\tt circos.updatePlotRegion} to update
 these invisible cells of interest to add graphs on it (figure \ref{fig:part2}).
 
-<<label=figpart2, echo=TRUE, eval=FALSE>>=
-library(circlize)
-par(mar = c(1, 1, 1, 1))
-factors = letters[1:4]
-circos.initialize(factors = factors, xlim = c(0, 1))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1),
-    bg.col = NA, bg.border = NA)
-circos.updatePlotRegion(sector.index = "a", bg.border = "black")
-x1 = runif(100)
-y1 = runif(100)
-circos.points(x1, y1, pch = 16, cex = 0.5)
-
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1),
-    bg.col = NA, bg.border = NA)
-circos.updatePlotRegion(sector.index = "a", bg.border = "black")
-x1 = runif(100)
-y1 = runif(100)
-circos.points(x1, y1, pch = 16, cex = 0.5)
-
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1))
-circos.clear()
-@
-
+\setkeys{Gin}{width=\textwidth}
 \begin{figure}
 \begin{center}
 <<label=figpart2, fig = TRUE, height=4, width=4, results=hide>>=
-<<figpart2>>
+source("src/intro-18-part2.R")
 @
 \end{center}
 \caption{Part of the circos layout, situation 2.}
 \label{fig:part2}
 \end{figure}
+\setkeys{Gin}{width=0.8\textwidth}
+
 
 \subsection{Combine several parts of circos layouts}
 Since the circos layout by {\tt circlize} is finally plotted in an ordinary R plotting system.
@@ -1916,58 +1015,17 @@ circos.clear()
 @
 
 
-<<label=fignested, echo=FALSE, eval=FALSE>>=
-library(circlize)
-
-layout(rbind(c(1,1,2,2), c(0, 3, 3,0)))
-par(mar = c(2, 2, 2, 2))
-factors = letters[1:4]
-circos.initialize(factors = factors, xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
-    circos.text(0.5, 0.5, "outer circos")
-})
-circos.clear()
-box()
-axis(side = 1)
-axis(side = 2)
-
-circos.par("canvas.xlim" = c(-2, 2), "canvas.ylim" = c(-2, 2))
-factors = letters[1:3]
-circos.initialize(factors = factors, xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
-    circos.text(0.5, 0.5, "inner circos")
-})
-circos.clear()
-box()
-axis(side = 1)
-axis(side = 2)
-
-factors = letters[1:4]
-circos.initialize(factors = factors, xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
-    circos.text(0.5, 0.5, "outer circos")
-})
-circos.clear()
-
-par(new = TRUE)
-circos.par("canvas.xlim" = c(-2, 2), "canvas.ylim" = c(-2, 2))
-factors = letters[1:3]
-circos.initialize(factors = factors, xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
-    circos.text(0.5, 0.5, "inner circos")
-})
-circos.clear()
-@
-
+\setkeys{Gin}{width=\textwidth}
 \begin{figure}
 \begin{center}
 <<label=fignested, fig = TRUE, echo = FALSE, height=6, width=6, results=hide>>=
-<<fignested>>
+source("src/intro-19-nested.R")
 @
 \end{center}
 \caption{An outer and an inner circos layout}
 \label{fig:nested}
 \end{figure}
+\setkeys{Gin}{width=0.8\textwidth}
 
 The second example is drawing two seperated circos layouts in which every
 circos only contains a half (figure \ref{fig:twoseperate}).
@@ -2000,73 +1058,17 @@ circos.text(0.5, 0.5, "second one")
 circos.clear()
 @
 
-<<label=figseperated, echo=FALSE, eval=FALSE>>=
-library(circlize)
-layout(rbind(c(1,1,2,2), c(0, 3, 3,0)))
-par(mar = c(2, 2, 2, 2))
-
-
-factors = letters[1:4]
-circos.par("canvas.xlim" = c(-1, 1.5), "canvas.ylim" = c(-1, 1.5),
-    start.degree = -45)
-circos.initialize(factors = factors, xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1), bg.col = NA, bg.border = NA)
-circos.updatePlotRegion(sector.index = "a")
-circos.text(0.5, 0.5, "first one")
-circos.updatePlotRegion(sector.index = "b")
-circos.text(0.5, 0.5, "first one")
-
-circos.clear()
-box()
-axis(side = 1)
-axis(side = 2)
-
-circos.par("canvas.xlim" = c(-1.5, 1), "canvas.ylim" = c(-1.5, 1), start.degree = -45)
-circos.initialize(factors = factors, xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1), bg.col = NA, bg.border = NA)
-circos.updatePlotRegion(sector.index = "d")
-circos.text(0.5, 0.5, "second one")
-circos.updatePlotRegion(sector.index = "c")
-circos.text(0.5, 0.5, "second one")
-
-circos.clear()
-box()
-axis(side = 1)
-axis(side = 2)
-
-factors = letters[1:4]
-circos.par("canvas.xlim" = c(-1, 1.5), "canvas.ylim" = c(-1, 1.5), start.degree = -45, points.overflow.warning = FALSE)
-circos.initialize(factors = factors, xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1), bg.col = NA, bg.border = NA)
-circos.updatePlotRegion(sector.index = "a")
-circos.text(0.5, 0.5, "first one")
-circos.updatePlotRegion(sector.index = "b")
-circos.text(0.5, 0.5, "first one")
-
-circos.clear()
-
-par(new = TRUE)
-circos.par("canvas.xlim" = c(-1.5, 1), "canvas.ylim" = c(-1.5, 1), start.degree = -45)
-circos.initialize(factors = factors, xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1), bg.col = NA, bg.border = NA)
-circos.updatePlotRegion(sector.index = "d")
-circos.text(0.5, 0.5, "second one")
-circos.updatePlotRegion(sector.index = "c")
-circos.text(0.5, 0.5, "second one")
-
-circos.clear()
-
-@
-
+\setkeys{Gin}{width=\textwidth}
 \begin{figure}
 \begin{center}
 <<label=figseperated, fig = TRUE, echo = FALSE, height=6, width=6, results=hide>>=
-<<figseperated>>
+source("src/intro-20-seperated.R")
 @
 \end{center}
 \caption{Two seperated circos layouts}
 \label{fig:twoseperate}
 \end{figure}
+\setkeys{Gin}{width=0.8\textwidth}
 
 The third example is to draw sectors with different radius (figure \ref{fig:difrad}). In fact,
 it draws four circos graphs in which only one sector of each graphs is plotted. Note links
@@ -2078,30 +1080,11 @@ cells both visible and invisible are all in a same track and they are in a same 
 should have same radius. But here, cells have different radius to the center of the circle and they
 belong to different circos plot (although only part of each circos plot is visible).
 
-<<label=figdifrad, echo=TRUE, eval=FALSE>>=
-library(circlize)
-par(mar = c(1, 1, 1, 1))
-factors = letters[1:4]
-lim = c(1, 1.1, 1.2, 1.3)
-for(i in 1:4) {
-    circos.par("canvas.xlim" = c(-lim[i], lim[i]),
-        "canvas.ylim" = c(-lim[i], lim[i]),
-        "default.track.height" = 0.4)
-    circos.initialize(factors = factors, xlim = c(0, 1))
-    circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA)
-    circos.updatePlotRegion(sector.index = factors[i],
-        bg.border = "black")
-    circos.points(runif(10), runif(10), pch = 16)
-    circos.clear()
-    par(new = TRUE)
-}
-par(new = FALSE)
-@
 
 \begin{figure}
 \begin{center}
 <<label=figdifrad, fig = TRUE, echo = FALSE, results=hide>>=
-<<figdifrad>>
+source("src/intro-21-diffradius.R")
 @
 \end{center}
 \caption{Sectors with different radius}
@@ -2117,33 +1100,11 @@ example to illustrate such circumstance (figure \ref{fig:outside}). The text is 
 Since the finnal graph is drawn in an ordinary canvas plotting region, we can add additional graphs through
 the traditional way. You can also see how {\tt text} and {\tt legend} work in the example code.
 
-<<label=figoutside, echo=TRUE, eval=FALSE>>=
-library(circlize)
-set.seed(12345)
-par(mar = c(1, 1, 1, 1))
-factors = letters[1:4]
-circos.par("canvas.xlim" = c(-1.5, 1.5), "canvas.ylim" = c(-1.5, 1.5),
-    "gap.degree" = 10)
-circos.initialize(factors = factors, xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
-    circos.points(1:20/20, 1:20/20)
-})
-circos.lines(c(1/20, 0.5), c(1/20, 3), sector.index = "d",
-    straight = TRUE)
-circos.text(0.5, 3, "mark", sector.index = "d", adj = c(0.5, 0))
-
-circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
-    circos.points(1:20/20, 1:20/20)
-})
-text(0, 0, "this is\nthe center", cex = 1.5)
-legend("bottomleft", pch = 1, legend = "this is the legend")
-circos.clear()
-@
 
 \begin{figure}
 \begin{center}
 <<label=figoutside, fig = TRUE, echo = FALSE, results=hide>>=
-<<figoutside>>
+source("src/intro-22-outside.R")
 @
 \end{center}
 \caption{Draw outside the cell and combine with canvas coordinate}
@@ -2154,37 +1115,10 @@ circos.clear()
 You can use {\tt layout} to arrange multiple figures together (also it is available from {\tt par(mfrow)}
 or {\tt par(mfcol)}) (figure \ref{fig:layout}). 
 
-<<label=figlayout, echo=TRUE, eval=FALSE>>=
-library(circlize)
-
-set.seed(12345)
-rand_color = function() {
-    return(rgb(runif(1), runif(1), runif(1)))
-}
-
-layout(matrix(1:9, 3, 3))
-for(i in 1:9) {
-    factors = 1:8
-    par(mar = c(0.5, 0.5, 0.5, 0.5))
-    circos.par(cell.padding = c(0, 0, 0, 0))
-    circos.initialize(factors, xlim = c(0, 1))
-    circos.trackPlotRegion(ylim = c(0, 1), track.height = 0.05,
-        bg.col = sapply(1:8, function(x) rand_color()),
-        bg.border = NA)
-    for(i in 1:20) {
-        se = sample(1:8, 2)
-        col = rand_color()
-        col = paste(col, "40", sep = "")
-        circos.link(se[1], runif(2), se[2], runif(2), col = col)
-    }
-    circos.clear()
-}
-@
-
 \begin{figure}
 \begin{center}
 <<label=figlayout, fig = TRUE, echo = FALSE, results=hide>>=
-<<figlayout>>
+source("src/intro-23-layout.R")
 @
 \end{center}
 \caption{Draw multiple figures by {\tt layout}}

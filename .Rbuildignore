@@ -1,8 +1,7 @@
 ^\..*
 README.*
-example
-lib
-test
+lib/
+test/
 to-do.txt
 circlize_.*\.tar\.gz
 check.bat

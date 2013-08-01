@@ -5,11 +5,13 @@
 % \VignetteKeywords{circlize}
 % \VignettePackage{circlize}
 
+
 \documentclass{article}
 
 \title{An introduction to {\tt circlize} package}
 
 \author{Zuguang Gu {\tt <z.gu@dkfz.de>}\\ German Cancer Research Center,\\ Heidelberg, Germany}
+\usepackage[margin=1.5in]{geometry}
 
 \usepackage{Sweave}
 \usepackage{hyperref}

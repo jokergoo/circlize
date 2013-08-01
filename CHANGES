@@ -25,3 +25,6 @@
 - track.margin now is in correct order
 - links are optimized (although not so perfect)
 - no point overflow warnings when drawing axes
+
+== 0.0.5
+- change margins of vignettes

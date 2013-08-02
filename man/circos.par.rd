@@ -34,7 +34,7 @@ circos.par(...)
 }
   Similar to \code{\link[graphics]{par}}, you can get the values of the parameters by specifying the names of the parameters and you can set the values of the parameters by specifying anamed list which contains the new values.
 
-  \code{gap.degree}, \code{start.degree}, \code{canvas.xlim}, \code{canvas.ylim} and \code{clock.wise} only be set before the initialization of circos layout(i.e. before calling \code{\link{circos.initialize}}) because these values will not be changed afterthe layout of the sectors. The left and right padding for \code{cell.padding} will also beeffectiveless after the initialization because all cells in a sector would share the sameleft and right paddings. 
+  \code{gap.degree}, \code{start.degree}, \code{canvas.xlim}, \code{canvas.ylim} and \code{clock.wise} only be set before the initialization of circos layout(i.e. before calling \code{\link{circos.initialize}}) because these values will not be changed after the layout of the sectors. The left and right padding for \code{cell.padding} will also be effectiveless after the initialization because all cells in a sector would share the same left and right paddings. 
 
 
 }

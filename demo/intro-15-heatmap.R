@@ -1,3 +1,6 @@
+
+# dend: dendrogram object, usually returned by hclust
+# maxy: height of the dendrogram tree
 circos.dendrogram = function(dend, maxy) {
   labels = as.character(labels(dend))
     x = seq_along(labels) - 0.5

@@ -2,7 +2,7 @@ par(mfrow = c(2, 1))
 par(mar = c(1, 1, 1, 1))
 factors = letters[1:8]
 circos.par("track.margin" = c(0.1, 0.1), "clock.wise" = FALSE, start.degree = 30,
-    "gap.degree" = rep(c(2, 10), 4))
+    "gap.degree" = rep(c(2, 10), 4), "cell.padding" = c(0.05, 3, 0.05, 3))
 circos.initialize(factors = factors, xlim = c(0, 10))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.4, panel.fun = function(x, y) {
     circos.text(5, 5, get.cell.meta.data("sector.index"))
@@ -32,7 +32,7 @@ text(0, 0, 'circos.par("clock.wise" = FALSE,\nstart.degree = 30)', cex = 0.6)
 par(mar = c(1, 1, 1, 1))
 factors = letters[1:8]
 circos.par("track.margin" = c(0.1, 0.1), "clock.wise" = TRUE, start.degree = -30,
-    "gap.degree" = rep(c(2, 10), 4))
+    "gap.degree" = rep(c(2, 10), 4), "cell.padding" = c(0.05, 3, 0.05, 3))
 circos.initialize(factors = factors, xlim = c(0, 10))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.4, panel.fun = function(x, y) {
     circos.text(5, 5, get.cell.meta.data("sector.index"))

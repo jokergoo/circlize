@@ -65,7 +65,7 @@ circos.clear()
 
 d = read.table(file = paste(system.file(package = "circlize"),
     "/extdata/cytoBand.txt", sep=""),
-    colClasses = c("factor", "numeric", "numeric", "factor", "factor"))
+    colClasses = c("character", "numeric", "numeric", "character", "character"))
 
 chromosome = c("chr1")
     

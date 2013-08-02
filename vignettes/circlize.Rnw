@@ -752,8 +752,7 @@ Possible usage for {\tt circos.link} is:
 > circos.link(sector.index1, c(0, 1), sector.index2, 0)
 > circos.link(sector.index1, c(0, 1), sector.index2, c(1, 2))
 > circos.link(sector.index1, 0, sector.index2, 0, rou, top.ratio)
-> circos.link(sector.index1, c(0, 1), sector.index2, 0,
-+             col, lwd, lty, border)
+> circos.link(sector.index1, c(0, 1), sector.index2, 0, col, lwd, lty, border)
 \end{Sinput}
 \end{Schunk}
 
@@ -805,8 +804,7 @@ can control the height of the low border such as:
 
 \begin{Schunk}
 \begin{Sinput}
-> circos.link("c", 1, "c", c(2, 8),
-+     top.ratio = 0.5, top.ratio.low = 0.8)
+> circos.link("c", 1, "c", c(2, 8), top.ratio = 0.5, top.ratio.low = 0.8)
 \end{Sinput}
 \end{Schunk}
 
@@ -933,8 +931,7 @@ Remember the color should be semi-transparent in the highlighted area. Usage for
 \begin{Sinput}
 > draw.sector(center, start.degree, end.degree, rou1)
 > draw.sector(center, start.degree, end.degree, rou1, rou2)
-> draw.sector(center, start.degree, end.degree, rou1, rou2,
-+             col, border, lwd, lty)
+> draw.sector(center, start.degree, end.degree, rou1, rou2, col, border, lwd, lty)
 \end{Sinput}
 \end{Schunk}
 

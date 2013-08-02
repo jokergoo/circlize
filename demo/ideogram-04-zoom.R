@@ -19,7 +19,7 @@ circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.2)
 for(chr in chromosome) {
     d2 = d[d[[1]] == chr, ]
     n = nrow(d2)
-    col = cytoband.col(d2$V5)
+    col = cytoband.col(d2[[5]])
     for(i in seq_len(n)) {
         circos.rect(d2[i, 2], 0, d2[i, 3], 0.4, sector.index = chr,
             col = col[i], border = NA)

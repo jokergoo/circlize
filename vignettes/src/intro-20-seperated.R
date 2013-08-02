@@ -4,8 +4,7 @@ par(mar = c(2, 2, 2, 2))
 
 
 factors = letters[1:4]
-circos.par("canvas.xlim" = c(-1, 1.5), "canvas.ylim" = c(-1, 1.5),
-    start.degree = -45)
+circos.par("canvas.xlim" = c(-1, 1.5), "canvas.ylim" = c(-1, 1.5), start.degree = -45)
 circos.initialize(factors = factors, xlim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1), bg.col = NA, bg.border = NA)
 circos.updatePlotRegion(sector.index = "a")

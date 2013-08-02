@@ -23,6 +23,7 @@ degree.minus = function(to, from, min.zero = TRUE) {
         }
     }
 }
+
 rotate.parabola = function(theta1, theta2, rou1, rou2 = rou1, theta = (theta1+theta2)/2, 
     rou = rou1 * abs(cos(degree.minus(theta1, theta2)/2/180*pi))*rou.ratio, rou.ratio = 0.5,
     n = 1001) {

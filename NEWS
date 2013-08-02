@@ -1,0 +1,36 @@
+NEWS/Changelog
+
+== 0.0.5
+- support self-define width of sectors when initializing sectors
+- add simple functions to read and manuplate cytoband file
+- add several new figures in the vignettes and vignettes have been improved.
+- ``cell.padding`` in `circos.par` now using degree as its measurement.
+- ``track.margin`` in `circos.par` now using percentage of radius as its measurement.
+
+== 0.0.4
+- number of points to simulate quadratic curves decreased
+- labels on axis in `circos.initializeWithIdeogram` is now 'vertical_right' by default
+- size of the vignettes reduced
+- add example of drawing heatmap and cluster dendrogram in the main vignette
+- add example of drawing error area of lines by `circos.polygon`
+- vignette improved
+- ``gap.degree`` in `circos.par` can be a vector which means different degrees for gaps can be set
+- export core function `circlize` now
+- track.margin now is in correct order
+- links are optimized (although not so perfect)
+- no point overflow warnings when drawing axes
+
+== 0.0.3
+- vignettes has been improved
+- ``xplot`` in `get.cell.meta.data` is now corresponding to the data direction in the cell
+- number of points to draw links decreased.
+- `get.cell.meta.data` can provide more meta data for a cell
+- start degree and end degree now consistent with the data axis.
+- the first sector is drawn first now.
+- add `draw.sector`
+
+== 0.0.2
+- add `draw.sector` so it would be more straightforward to highlight sectors
+- add ``track.margin``, ``cell.padding``, ``cell.xlim`` and ``cell.ylim`` in `get.cell.meta.data` function
+- figures in vignettes are all generated automatically
+- vignettes have been imporved

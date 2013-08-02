@@ -1,4 +1,7 @@
 library(circlize)
+x1 = runif(100)
+y1 = runif(100)
+
 par(mar = c(1, 1, 1, 1))
 circos.par("canvas.xlim" = c(0, 1), "canvas.ylim" = c(0, 1),"clock.wise" = FALSE, "gap.degree" = 0, points.overflow.warning = FALSE)
 factors = letters[1:4]

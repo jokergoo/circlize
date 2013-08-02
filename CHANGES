@@ -27,7 +27,7 @@
 - no point overflow warnings when drawing axes
 
 == 0.0.5
-- support self-define width of sectors when initializing
+- support self-define width of sectors when initializing sectors
 - add simple functions to read and manuplate cytoband file
 - add several new figures in the vignettes and vignettes have been improved.
 - ``cell.padding`` in `circos.par` now using degree as its measurement.

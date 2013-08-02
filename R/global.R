@@ -144,7 +144,8 @@ is.circos.initialized = function() {
 #          all sectors are having same width or as same as the number of sectors. The value for
 #          the vector is the relative value, and they will be scaled by dividing their summation.
 #          By defautl, it is ``NULL`` which means the width of sectors correspond to the data
-#          range in sectors.
+#          range in sectors. If you set the value, you need to notice the width for the sector here
+#          includes its right gap.
 #
 # == details
 # The function allocates the sectors according to the values on x-axis.
@@ -270,7 +271,11 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 		}
 		
 		sector.width.percentage = sector.width / sum(sector.width)
-		degree.per.sector = (360 - sum(gap.degree)) * sector.width.percentage
+		degree.per.sector = 360 * sector.width.percentage - gap.degree
+		
+		if(any(degree.per.sector <= 0)) {
+			stop("Detect some gaps are too large.\n")
+		}
 		
 		for(i in seq_len(n.sector)) {
 			

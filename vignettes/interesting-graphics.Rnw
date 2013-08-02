@@ -190,20 +190,16 @@ circos.clear()
 \end{figure}
 
 
-Figure \ref{fig:painting} is a circular style of a long painting (\url{https://en.wikipedia.org/wiki/Along_the_River_During_the_Qingming_Festival}). The masterpiece is
-drawn about one thousand years ago. The width of the original painting is 528 cm
-and the height is 24.8 cm (about a ratio of 20:1). There are two parts in the painting,
-one is the countryside and the other is the city. Totally about 800 people, 60 animals,
-28 ships, 30 buldings, 20 cars, and 170 trees are in it.
-
+Figure \ref{fig:painting} is a circular layout of Keith Haring's doodles. 
 The circular transformation is as follows: 1. use {\tt jpeg} package to read RGB
 information for each pixel in the figure; 2. use {\tt circos.rect} to draw
-every pixel into the circle.
+every pixel into the circle. Source code for generating the figure can be found
+in the demo code of the package.
 
 \begin{figure}[h!]
 \centering
-\includegraphics{painting.jpeg}
-\caption{A painting}
+\includegraphics{doodle.jpeg}
+\caption{Keith Haring's Doodle}
 \label{fig:painting}
 \end{figure}
 

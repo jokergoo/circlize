@@ -41,12 +41,13 @@ assign(".CIRCOS.PAR", .CIRCOS.PAR.DEFAULT, envir = .CIRCOS.ENV)
 # -unit.circle.segments    Since curves are simulated by a series of straight lines,
 #     this parameter controls the amout of segments to represent a curve. The minimal length
 #     of the line segmentation is the length of the unit circle (``2pi``) / ``unit.circoe.segments``.
+#     More segments means better approximation for the curves while larger size if you generate figures as PDF format.
 # -cell.padding            Padding of the cell. Like ``padding`` in Cascading Style Sheets
 #    (CSS), it is the blank area around the plotting regions, but within the borders.
 #     The paramter has four values, which controls the bottom, left, top and right padding
-#     respectively. The four values are all percentages in which the first and the third padding
-#     values are the percentages according to the range of values on y-axis and the second and
-#     fourth values are the percentages according to the range of values on x-axis.
+#     respectively. The first and the third padding
+#     values are the percentages according to the radius of the unit circle and the second and
+#     fourth values are degrees.
 # -default.track.height    The default height of tracks. It is the percentage according to the radius
 #     of the unit circle. The height includes the top and bottom cell paddings but not the margins.
 # -points.overflow.warning Since each cell is in fact not a real plotting region but only

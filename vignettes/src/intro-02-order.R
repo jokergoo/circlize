@@ -24,7 +24,7 @@ circos.trackPlotRegion(ylim = c(0, 1))
 circos.clear()
 
 plot(c(0, 1), c(0, 1), type = "n", ann = FALSE, axes = FALSE)
-text(0.5, 0.5, "circos.points", adj = c(0.5, 0.5), cex = 1.2)
+text(0.5, 0.5, "circos.points\ncircos.lines\ncircos.text\n...", adj = c(0.5, 0.5), cex = 1.2)
 
 circos.par(gap.degree = 5)
 circos.initialize(1:4, xlim = rbind(c(0, 1), c(0, 2), c(0, 3), c(0, 4)))
@@ -47,7 +47,7 @@ circos.trackPlotRegion(ylim = c(0, 1))
 circos.clear()
 
 plot(c(0, 1), c(0, 1), type = "n", ann = FALSE, axes = FALSE)
-text(0.5, 0.5, "circos.points", adj = c(0.5, 0.5), cex = 1.2)
+text(0.5, 0.5, "circos.points\ncircos.lines\ncircos.text\n...", adj = c(0.5, 0.5), cex = 1.2)
 
 circos.par(gap.degree = 5)
 circos.initialize(1:4, xlim = rbind(c(0, 1), c(0, 2), c(0, 3), c(0, 4)))

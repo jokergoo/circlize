@@ -26,7 +26,7 @@ circos.initialize(factors, x = NULL, xlim = NULL, sector.width = NULL)
 \details{
   The function allocates the sectors according to the values on x-axis.The number of sectors are determined by the \code{factors} and the order of sectors are determined by the order of levels of factors. In this function,the start and end position  for each sector on the circle (measured by degree) are calculated according to the values on x-axis.
 
-  If \code{x} is set, the length of \code{x} must be equal to the length of \code{factor}.Then the data range for each sector are calculated from \code{x} and \code{factor}.
+  If \code{x} is set, the length of \code{x} must be equal to the length of \code{factors}.Then the data range for each sector are calculated from \code{x} and \code{factors}.
 
   If \code{xlim} is set, it should be a vector containing two numbers or a matrix with 2 columns.If \code{xlim} is a vector, it means all sectors share the same \code{xlim}.If \code{xlim} is a matrix, the number of rows should be equal to the number of categories (number of levels) identified by \code{factors}, then each row of \code{xlim} corresponds to the data range for each sector and the order of rows is corresponding to the order of levels of \code{factors}.
 

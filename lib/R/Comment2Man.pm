@@ -74,17 +74,14 @@ sub parse {
 		
 		# documented item start with # ## title or something like that
 		if($line =~/^#\s+[=@#*\-+$%&]{2}\s*title\s*$/) {
-			print "$line\n";
 			$item = R::Comment2Man::Item->read(\@lines, $i, is_function => 1);
 			push(@items, $item);
 		} elsif($line =~/^#\s+[=@#*\-+$%&]{2}\s*title\s*\(\s*data:\s*(\S+)\s*\)/) {
-			print "$line\n";
 			$item = R::Comment2Man::Item->read(\@lines, $i, is_function => 0);
 			$item->{_function_name} = $1;
 			$item->{_function_args} = "data($1)";
 			push(@items, $item);
 		} elsif($line =~/^#\s+[=@#*\-+$%&]{2}\s*title\s*\(\s*package:\s*(\S+)\s*\)/) {
-			print "$line\n";
 			$item = R::Comment2Man::Item->read(\@lines, $i, is_function => 0);
 			$item->{_function_name} = "$1-package";
 			$item->{_function_args} = "package($1)";
@@ -530,7 +527,7 @@ sub read_paragraph {
 	for(my $i = $index; $i < scalar(@$lines_ref); $i ++) {
 		my $line = $lines_ref->[$i];
 		chomp $line;
-		$paragraph .= $line;
+		$paragraph .= "$line ";
 		if($i == $#$lines_ref or $lines_ref->[$i] eq "") {
 			return ($paragraph, $i);
 		}

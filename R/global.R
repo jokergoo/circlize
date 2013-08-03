@@ -155,8 +155,8 @@ is.circos.initialized = function() {
 # the start and end position  for each sector on the circle (measured by degree)
 # are calculated according to the values on x-axis.
 #
-# If ``x`` is set, the length of ``x`` must be equal to the length of ``factor``.
-# Then the data range for each sector are calculated from ``x`` and ``factor``.
+# If ``x`` is set, the length of ``x`` must be equal to the length of ``factors``.
+# Then the data range for each sector are calculated from ``x`` and ``factors``.
 #
 # If ``xlim`` is set, it should be a vector containing two numbers or a matrix with 2 columns.
 # If ``xlim`` is a vector, it means all sector share the same ``xlim``.

@@ -47,7 +47,7 @@ circos.trackPlotRegion(factors = NULL, x = NULL, y = NULL, ylim = NULL,
 
   If \code{factors} does not cover all sectors which is going to be initialized, the cells in remaining unselectedsectors would also be created but without drawing anything. The \code{ylim} for these cellsare the same as that in the latest created cell.
 
-  Second, it can update a already-created track if the index for the trackis specified. If the index is one bigger than the largest current track index. It in factcreates the new track. If updating an existed track, those parameters related to the positionof the plotting region can not be changed.
+  Second, it can update a already-created track if the index for the trackis specified. If the index is one bigger than the largest current track index, it in factcreates the new track. If updating an existed track, those parameters related to the positionof the plotting region can not be changed.
 
 
 }

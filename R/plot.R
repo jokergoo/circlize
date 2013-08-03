@@ -53,7 +53,7 @@
 # are the same as that in the latest created cell.
 #
 # Second, it can update a already-created track if the index for the track
-# is specified. If the index is one bigger than the largest current track index. It in fact
+# is specified. If the index is one larger than the largest current track index, it in fact
 # creates the new track. If updating an existed track, those parameters related to the position
 # of the plotting region can not be changed.
 circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NULL, force.ylim = TRUE,
@@ -1128,7 +1128,7 @@ circos.trackHist = function(factors, x, track.height = circos.par("default.track
 # -track.height     height for the track
 #
 # == details
-# This is not a full functional function. It jus provides a way to show how to
+# This is not a full functional function. It just provides a way to show how to
 # draw genomics ideogram by this package. How to embed the ideogram into the
 # circos layout is really subjective and should be applied according to specific situation.
 #

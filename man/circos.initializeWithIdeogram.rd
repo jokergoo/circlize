@@ -22,7 +22,7 @@ circos.initializeWithIdeogram(file = paste(system.file(package = "circlize"),
 
 }
 \details{
-  This is not a full functional function. It jus provides a way to show how todraw genomics ideogram by this package. How to embed the ideogram into thecircos layout is really subjective and should be applied according to specific situation.
+  This is not a full functional function. It just provides a way to show how todraw genomics ideogram by this package. How to embed the ideogram into thecircos layout is really subjective and should be applied according to specific situation.
 
   In fact, drawing ideogram with this package is really simple, you can look at the source codeof this function to get a clue.
 

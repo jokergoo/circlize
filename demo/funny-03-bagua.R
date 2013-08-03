@@ -1,7 +1,7 @@
 library(circlize)
 factors = letters[1:8]
 par(mar = c(1, 1, 1, 1))
-circos.par("default.track.height" = 0.15, "start.degree" = 22.5)
+circos.par("default.track.height" = 0.15, "start.degree" = 22.5, "gap.degree" = 6)
 circos.initialize(factors = factors, xlim = c(0, 1))
 
 circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA,

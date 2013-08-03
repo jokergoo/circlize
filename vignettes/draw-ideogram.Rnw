@@ -9,7 +9,7 @@
 
 \title{How to draw ideogram}
 
-\author{Zuguang Gu {\tt <z.gu@dkfz.de>}\\ German Cancer Research Center,\\ Heidelberg, Germany}
+\author{Zuguang Gu {\tt <z.gu@dkfz.de>}}
 \usepackage[margin=1in, a4paper]{geometry}
 
 \usepackage{Sweave}

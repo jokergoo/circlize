@@ -74,14 +74,17 @@ sub parse {
 		
 		# documented item start with # ## title or something like that
 		if($line =~/^#\s+[=@#*\-+$%&]{2}\s*title\s*$/) {
+			print "$line\n";
 			$item = R::Comment2Man::Item->read(\@lines, $i, is_function => 1);
 			push(@items, $item);
 		} elsif($line =~/^#\s+[=@#*\-+$%&]{2}\s*title\s*\(\s*data:\s*(\S+)\s*\)/) {
+			print "$line\n";
 			$item = R::Comment2Man::Item->read(\@lines, $i, is_function => 0);
 			$item->{_function_name} = $1;
 			$item->{_function_args} = "data($1)";
 			push(@items, $item);
 		} elsif($line =~/^#\s+[=@#*\-+$%&]{2}\s*title\s*\(\s*package:\s*(\S+)\s*\)/) {
+			print "$line\n";
 			$item = R::Comment2Man::Item->read(\@lines, $i, is_function => 0);
 			$item->{_function_name} = "$1-package";
 			$item->{_function_args} = "package($1)";
@@ -196,16 +199,14 @@ sub read_manfile_section {
 
 	my @a = $text =~ /\\(\w+)\s*($m)/gms;
 	close F;
-	my %a = @a;
-	foreach (values %a) {
-		s/^\{|}$//g;
-	}
 	
 	my $section_name = [];
 	my $section_value = [];
 	for(my $i = 0; $i < scalar(@a); $i += 2) {
 		push(@$section_name, $a[$i]);
-		push(@$section_value, $a[$i+1]);
+		
+		$a[$i + 1] =~s/^\{|\}$//g;
+		push(@$section_value, $a[$i+1]);;
 	}
 	
 	return($section_name, $section_value);

@@ -25,7 +25,7 @@ get.cell.meta.data(name, sector.index = get.current.sector.index(),
 
 \describe{
   \item{sector.index}{The name (label) for the sector}
-  \item{sector.numeric.index}{Numeric index for the sector}
+  \item{sector.numeric.index}{Numeric index for the sector. It is the numeric order of levels of \code{factors} in initialization step}
   \item{track.index}{Numeric index for the track}
   \item{xlim}{Minimal and maximal values on the x-axis}
   \item{ylim}{Minimal and maximal values on the y-axis}

@@ -527,6 +527,11 @@ So {\tt start.degree}, {\tt gap.degree}, {\tt canvas.xlim}, {\tt canvas.ylim} an
 be modified before {\tt circos.initialize}. The second and the fourth element of {\tt cell.padding} (left and right paddings) can not
 be modified either.
 
+\subsection{Create plotting region}
+As described above, only after creating the plotting region can you add low level graphics on it. The minimal set
+of arguments for this function is to set either {\tt y} or {\tt ylim} which will assign range of y-values for the
+track. {\tt circos.trackPlotRegion} create tracks for all sectors although in some case only part of them is visible.
+
 \begin{figure}
 \begin{center}
 <<label=figlines, fig = TRUE, echo = FALSE, results=hide>>=

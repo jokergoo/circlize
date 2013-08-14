@@ -25,4 +25,5 @@ intro-20-seperated           Two seperated circos plot
 intro-21-diffradius          combining several parts of circos plots
 intro-22-outside             Draw graphics outside the cell and integration with traditional graphic engine
 intro-23-layout              Draw multiple circos plots
-relation-01-example          Tabular visualization of correlation matrix
+relation-01-example          Circular visualization of correlation matrix
+relation-02-table            CIrcular visualizatio of a table

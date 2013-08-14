@@ -71,8 +71,8 @@ The cytoband data also provides the range of each chromosome. This can be set as
 In the following code, we calculate the start position and the end position of each chromosome and store them
 in a matrix in which order of rows of {\tt xlim} correspond to the order of elements in {\tt chromosome}.
 
-By the way, if you don't want to draw ideogram, reading the cytoband file is also useful because it can help you
-to allocate chromosomes in the circle.
+By the way, if you don't want to draw ideogram, reading the cytoband file is also useful because it tells you the
+range of the choromosome and help you to allocate chromosomes in the circle.
 
 <<echo=TRUE, eval=FALSE>>=
 xlim = matrix(nrow = 0, ncol = 2)
@@ -94,7 +94,7 @@ xlim = cbind(rep(0, length(chromosome)), cytoband$chr.len)
 @
 
 Before we draw the circular layout, we need to set some graphic parameters. Here we do not need any cell paddings
-and we also do not need the line to be too thick because genomic graph is a huge graph.
+and we do not need the line to be too thick because genomic graphic is huge.
 
 <<echo=TRUE, eval=FALSE>>=
 par(mar = c(1, 1, 1, 1), lwd = 0.5)
@@ -105,10 +105,10 @@ Initialize the circular layout with ranges of chromosomes. In the initialization
 each sector would correspond to the length of each chromosome. Also the order of sectors would
 be determined in this step. Here we must explicitly
 set the levels of the factors to ensure the order of chromosomes is ``chr1, chr2,
-chr3, ...'' or else the order would be the character order which is ``chr1, chr11, ...''.
+chr3, ...'' or else the order would be the alphabetical which is ``chr1, chr11, ...''.
 After the initialization step, the position of each chromosome as well as the order are stored
 in an internal variable. So in the later step, as long as the chromosome is specified, graphics
-would be put in the sector which corresponds to the selected chromosome.
+would be put in the right sector which corresponds to the selected chromosome.
 
 In the initialization step, order of the {\tt xim} matrix should correspond to the order 
 of {\tt levels} of the {\tt factors}, so do not be confused here.
@@ -117,10 +117,10 @@ of {\tt levels} of the {\tt factors}, so do not be confused here.
 circos.initialize(factors = factor(chromosome, levels = chromosome), xlim = xlim)
 @
 
-After the range of each chromosome has been allocated in the circle, we can draw the ideogram.
+After each chromosome has been allocated in the circle, we can draw the ideogram.
 Besides that, we also want to draw additional information such as the axis for chromosomes and names of chromosomes. 
 Here we would draw ideogram, axis and the chromosome names in one track 
-(It is just an option, also you can draw ideogram, axis and names of chromosomes in different tracks). 
+(It is just an option, also you can draw ideogram, axis and names of chromosomes in different tracks as you like). 
 in the following code, we create the first track in which there are 24 cells and each cell corresponds to 
 a chromosome. The x-range of each cell is the range of the chromosome and the y-range of
 each cell is from 0 to 1.
@@ -137,7 +137,9 @@ argument would make your code more clear for reading. And the value for {\tt fac
 need to be a real factor. If it is not a factor, it would be converted to a factor internally.
 If the value for {\tt factors} is already a factor, the level of the factor also does not need
 to be specified because the cells are positioned with the order of chromosomes which is already defined in the 
-initialization step.
+initialization step. (But to be rigorous, order of {\tt factors} matters if graphics arguments like {\tt bg.border}
+or {\tt bg.col} is a vector with length larger than 1. However, in most circumstance, we do not need to set {\tt bg.border} or
+{\tt bg.col} as a vector, so you don't need to worry about it and just ignore this note).
 
 Now in each cell, we draw the ideogram for each chromosome. Code is simple. The steps are: 
 for each chromosome:
@@ -232,23 +234,27 @@ source("src/ideogram-01-simple.R")
 \label{fig:ideogram}
 \end{figure}
 
+For other tracks of genomic graphics, the genomic coordiate (positions on chromosomes) are x-values and measurements on
+genomic positions are taken as y-values.
+
+
 The finnal figure looks like figure \ref{fig:ideogram}.
 
 
 In the {\tt circlize} package, there is already a {\tt circos.initializeWithIdeogram}
 function to initialize circular layout with an ideogram. However, how to embed the ideogram into the
-circos layout is really subjective, such as the position and colors of the ideogram, 
+circular layout is really subjective, such as the position and colors of the ideogram, 
 or maybe only subset of chromosomes are going to be plotted, or maybe there are some zoomings for certain chromosomes
 (see \url{http://circos.ca/intro/features/}. `GLOBAL AND LOCAL ZOOMING' section). So the {\tt circos.initializeWithIdeogram}
 is not a full functional function, it is only an example function to show how to allocate sectors for chromosomes and how
-to draw ideogram. Thus users can draw their style of ideogram according
-the above example codes. All you need to remember is that {\bf complicated graphs are assembled by simple graphs}.
+to draw ideogram. Thus users can draw their style of ideogram according the above example codes. 
+With such low level circos graphics functions provided in {\it circlize}, there would be no difficulty for users to implement their own genomic graphics.
+All you need to remember is that {\bf complicated graphics are assembled by simple graphics}.
 
-For other tracks of genomic graphics, the genomic coordiate (positions on chromosomes) are x-values and measurements on
-genomic positions are taken as y-values.
 
-Finally, more informative and specialized genomic graphs are figure \ref{fig:genomic} and figure \ref{fig:twochr}. Figure
-\ref{fig:twochr} in fact combines two independent circos plots, users can refer to the main vignette to find out how to realize it.
+Finally, more informative and specialized genomic graphics are figure \ref{fig:genomic}, figure \ref{fig:twochr} and figure \ref{fig:zoom}. Figure
+\ref{fig:twochr} in fact combines two independent circos plots, and figure \ref{fig:zoom} re-defined sector width to put two zoomed chromosomes
+in half part of the circle. Users can refer to the main vignette to find out how to implement.
 
 \begin{figure}[h!]
 \begin{center}

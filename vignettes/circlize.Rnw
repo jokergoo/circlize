@@ -964,7 +964,7 @@ Items that can be extracted by {\tt get.cell.meta.data} are:
 
 \begin{itemize}
   \item {\tt sector.index}: The name (label) for the sector
-  \item {\tt sector.numeric}.index: Numeric index for the sector
+  \item {\tt sector.numeric}.index: Numeric index for the sector. It is the numeric order of levels of \{tt factors} in initialization step.
   \item {\tt track.index}: Numeric index for the track
   \item {\tt xlim}: Minimal and maximal values on the x-axis
   \item {\tt ylim}: Minimal and maximal values on the y-axis

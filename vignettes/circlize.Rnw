@@ -425,6 +425,42 @@ The width of sectors can be set by {\tt sector.width} argument in {\tt circos.in
 with length of either one or as same as the number of categories. {\tt sector.width} is some kind of ratio or relative values, and the values
 will be scaled to percentage later (e.g. if you set {\tt sector.width} to {\tt c(1, 3)}, it will be scaled as {\tt c(0.25, 0.75)}).
 
+Example codes for sector zoomings look like:
+
+<<echo=TRUE, eval=FALSE>>=
+factors = sample(letters[1:6], 100, replace = TRUE)
+x = rnorm(100)
+y = rnorm(100)
+zoomed_factor = factors[factors %in% c("a", "b")]
+zoomed_factor[zoomed_factor == "a"] = "a_zoomed"
+zoomed_factor[zoomed_factor == "b"] = "b_zoomed"
+zoomed_x = x[factors %in% c("a", "b")]
+zoomed_y = y[factors %in% c("a", "b")]
+
+# attached to the origin data
+factors = c(factors, zoomed_factor)
+factors = factor(factors, levels = c(letters[1:6], "a_zoomed", "b_zoomed"))
+x = c(x, zoomed_x)
+y = c(y, zoomed_y)
+xrange = tapply(x, factors, function(x) max(x) - min(x))
+
+circos.initialize(factors, x = x, sector.width = c(xrange[1:6]/sum(xrange[1:6]), xrange[7:8]/sum(xrange[7:8])))
+circos.trackPlotRegion(factors, x = x, y = y, panel.fun = function(x, y) {
+    circos.points(x, y)
+    xlim = get.cell.meta.data("xlim")
+    ylim = get.cell.meta.data("ylim")
+    sector.index = get.cell.meta.data("sector.index")
+    circos.text(mean(xlim), ylim[2] + 0.2*(ylim[2] - ylim[1]), 
+        sector.index, adj = c(0.5, 0), cex = 2)
+})
+
+# if you want to add links from unzoomed sectors to zoomed sectors
+circos.link("a", get.cell.meta.data("cell.xlim", sector.index = "a"),
+    "a_zoomed", get.cell.meta.data("cell.xlim", sector.index = "a_zoomed"),
+    border = NA, col = "#00000010")
+circos.clear()
+@
+
 \begin{figure}
 \begin{center}
 <<label=figsectorwidth, fig = TRUE, echo = FALSE, results=hide>>=

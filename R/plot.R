@@ -64,6 +64,7 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 	# if there is no factors, default are all the available factors
 	if(is.null(factors)) {
 		factors = get.all.sector.index()
+		factors = factor(factors, levels = factors)
 	}
 	
     # although ``x`` and ``y`` are not necessary, but once they are set, they must

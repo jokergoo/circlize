@@ -1,5 +1,4 @@
 
-
 mat = matrix(sample(1:100, 18, replace = TRUE), 3, 6)
 rownames(mat) = letters[1:3]
 colnames(mat) = LETTERS[1:6]
@@ -19,7 +18,7 @@ circos.par(cell.padding = c(0, 0, 0, 0), clock.wise = FALSE,
     gap.degree = c(2, 2, 10, 2, 2, 2, 2, 2, 10), start.degree = 5)
 circos.initialize(factors = factors, xlim = xlim, 
     sector.width = c(row_sum/sum(row_sum), col_sum/sum(col_sum)))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.border = NA, 
+circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, 
     bg.col = c("red", "green", "blue", rep("grey", 6)), track.height = 0.05, 
     panel.fun = function(x, y) {
 		sector.name = get.cell.meta.data("sector.index")

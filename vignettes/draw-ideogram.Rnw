@@ -19,7 +19,7 @@
 
 \maketitle 
 
-The most widely use for the circular layout is to display genomic information.
+The most widely use of the circular layout is to display genomic information.
 In most circumstances, figures contain an ideogram. Drawing ideogram by {\tt circlize} 
 package is rather simple.
 
@@ -43,7 +43,7 @@ In the data frame, the second column and the third column are intervals for cyto
 
 Here, setting the {\tt colClasses} argument when reading the cytoband file is very important,
 because the positions on chromosomes are large integers (the second column and third column),
-{\tt read.table} would store such data as {\tt integer} mode. The sumation of such large integers
+by default {\tt read.table} would store such data as {\tt integer} mode. The sumation of such large integers
 would throw error of data overflow. So you must set the data mode to floating point ({\tt numeric}).
 
 Since chromosomes are sorted by their names which are as mode of {\tt character}, the order would look
@@ -71,8 +71,8 @@ The cytoband data also provides the range of each chromosome. This can be set as
 In the following code, we calculate the start position and the end position of each chromosome and store them
 in a matrix in which order of rows of {\tt xlim} correspond to the order of elements in {\tt chromosome}.
 
-By the way, if you don't want to draw ideogram, reading the cytoband file is also useful because it tells you the
-range of the choromosome and help you to allocate chromosomes in the circle.
+By the way, if you don't want to draw ideogram, reading the cytoband file is also useful because it tells you 
+ranges of chromosomes and help you to allocate chromosomes in the circle.
 
 <<echo=TRUE, eval=FALSE>>=
 xlim = matrix(nrow = 0, ncol = 2)
@@ -94,7 +94,7 @@ xlim = cbind(rep(0, length(chromosome)), cytoband$chr.len)
 @
 
 Before we draw the circular layout, we need to set some graphic parameters. Here we do not need any cell paddings
-and we do not need the line to be too thick because genomic graphic is huge.
+and we do not need the line to be too thick because genomic graphic is always huge.
 
 <<echo=TRUE, eval=FALSE>>=
 par(mar = c(1, 1, 1, 1), lwd = 0.5)
@@ -248,7 +248,7 @@ or maybe only subset of chromosomes are going to be plotted, or maybe there are 
 (see \url{http://circos.ca/intro/features/}. `GLOBAL AND LOCAL ZOOMING' section). So the {\tt circos.initializeWithIdeogram}
 is not a full functional function, it is only an example function to show how to allocate sectors for chromosomes and how
 to draw ideogram. Thus users can draw their style of ideogram according the above example codes. 
-With such low level circos graphics functions provided in {\it circlize}, there would be no difficulty for users to implement their own genomic graphics.
+With such low level circos graphic functions provided in {\it circlize}, there would be no difficulty for users to implement their own genomic graphics.
 All you need to remember is that {\bf complicated graphics are assembled by simple graphics}.
 
 

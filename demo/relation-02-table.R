@@ -44,7 +44,7 @@ for(i in seq_len(nrow(mat))) {
 	for(j in seq_len(ncol(mat))) {
 		circos.link(rn[i], c(sum(mat[i, seq_len(j-1)]), sum(mat[i, seq_len(j)])),
                     cn[j], c(sum(mat[seq_len(i-1), j]), sum(mat[seq_len(i), j])), 
-                    col = col[i], border = NA)
+                    col = col[i], border = "white")
 	}
 }
 

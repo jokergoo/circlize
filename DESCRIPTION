@@ -8,7 +8,7 @@ Maintainer: Zuguang Gu <z.gu@dkfz.de>
 Depends: R (>= 2.10.0)
 Description: circlize is an R package which implements circos layout
     (http://circos.ca/) in R. Due to the natural born feature of drawing statistical
-    graphics in R, this package can provide a more flexible way to
+    graphics in R, this package can provide a more general and flexible way to
     visualize huge information in a circular style.
 LazyLoad: yes
 URL: https://github.com/jokergoo/circlize

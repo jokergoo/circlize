@@ -599,9 +599,9 @@ sectors which is determined in the initialization step) which will assign range 
 track. {\tt circos.trackPlotRegion} create tracks for all sectors although in some case only part of them is visible.
 If you only want to create the plotting regions but do not draw anything, you do not need to specify {\tt factors} and {\tt x}.
 While if you want to draw something by {\tt panel.fun} as soon as you create the plotting region, then you need to specify {\tt factors}
-and {\tt x} to pass the categories and values to {\tt panel.fun}. Graphic arguments such as {\tt bg.color} and {\tt bg.col}
+and {\tt x} to pass the categories and values to {\tt panel.fun}. Graphic arguments such as {\tt bg.border} and {\tt bg.col}
 can either be a scalar or a vector. If it is a vector, the length must be equal to the length of levels of {\tt factors}
-and the order of these graphics arguments is also as same as the order of {\tt factors}. So you can create plot regions 
+and the order of these graphics arguments is also as same as the order of levels of {\tt factors}. With setting these graphics arguments you can create plot regions 
 with different styles of borders and background colors. If you are confused with the {\tt factors} orders, you can also
 customize the borders and background colors for the plotting region in {\tt panel.fun} (using {\tt get.cell.meta.data("cell.xlim")}
 and {\tt get.cell.meta.data("cell.ylim")} to get the position of the plotting region).
@@ -639,10 +639,10 @@ However, it is the same if you use {\tt circos.points} in a {\tt for} loop.
 \subsection{Lines}
 Parameters for drawing lines by {\tt circos.lines} are similar to {\tt lines} function, 
 as illustrated in figure \ref{fig:lines}. One additional feature is that the areas under/above lines can be 
-specified by {\tt area} argument which can help you identifying the direction of y-axis. Also the base line for the area can be set by {\tt area.baseline}.
+specified by {\tt area} argument which can help you identifying the direction of y-axes. Also the base line for the area can be set by {\tt area.baseline}.
 {\tt area.baseline} can be pre-defined string of {\tt bottom} or {\tt top}, or numeric values.
 
-Straight lines will be transformed to curves when mapping to the circos layout (figure \ref{fig:linecurve}). Normally, 
+Straight lines will be transformed to curves when mapping to circular layout (figure \ref{fig:linecurve}). Normally, 
 curves can be approximated by a series of segmentations of straight lines. With more segmentations,
 there would be better approximations, but with larger size if you generate the graph as pdf format, especially
 for huge genomic data. So, in this package, the number of the segmentation can be controlled by {\tt circos.par("unit.circle.segments")}.
@@ -715,7 +715,8 @@ There is also a {\tt circos.trackText} in the package.
 
 \subsection{Rectangle}
 If you imagin the plotting region in a cell as Cartesian coordinate, then it draws rectangles.
-In the circle, the up and bottom edge become two arcs. Usage is similar as {\tt rect}:
+In the circle, the up and bottom edge become two arcs. Usage is similar as {\tt rect}, but it
+can only draw one rectangle at a time.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -747,7 +748,7 @@ help page.)
 source("src/intro-10-smooth.R")
 @
 \end{center}
-\caption{Area of standard deviation of the smooth line}
+\caption{Area of standard deviation of the smoothed line}
 \label{fig:errorline}
 \end{figure}
 
@@ -802,7 +803,7 @@ of lines and text by using {\tt circos.lines} and {\tt circos.text}
 
 \subsection{Links}
 Links can be drawn by {\tt circos.link} from points and intervals (figure \ref{fig:link}, top). If both ends are points, then the link is represented
-as a line. If one of the ends is an interval, the link would be a belt/ribbon. The link is in fact a quadratic curve. Links do not hold any position of track.
+as a line. If one of the ends is an interval, the link would be a belt/ribbon. The link is in fact a quadratic curve. Links do not hold any position as tracks.
 So links can be overlapping with tracks.
 
 \setkeys{Gin}{width=\textwidth}
@@ -838,7 +839,7 @@ Possible usage for {\tt circos.link} is:
 {\tt circlize} draws links as quadratic curves of which the symmetry axes pass through the center of the circle, 
 so the two ends of the link must locate in a same circle. But sometimes drawing ends of links with different height
 is useful to represent the direction of links. Anyway, if the difference of the height of two ends are not too large,
-there is a way to approximate. The solution is add a rectangle at one end of a link (see figure \ref{fig:link}). Following is 
+there is a way to approximate. The solution is add a circular-style rectangle at one end of a link (see figure \ref{fig:link}, bottom). Following is 
 the code:
 
 \begin{Schunk}
@@ -876,7 +877,7 @@ represents as a belt/ribbon (i.e. link from point to interval or from interval t
 It can not ensure that one border is always below or above the other. Which means, in 
 some cases, the two borders would intersect and it would make the link so ugly. It happens
 especially when position of the two ends are too close or the width of one end is extremely large while
-the width of the other end is too small. I did some optimization to control such circumstance but
+the width of the other end is too small. I did some optimization to control such situation but
 it is not valid for all cases. However, I think such situation will not happen too often in real applications,
 but users can adjust the height of the low border by hand if they really meet it. The not-so-good argument {\tt top.ratio.low}
 can control the height of the low border such as:

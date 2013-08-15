@@ -1000,7 +1000,7 @@ source("src/intro-16-highlight.R")
 
 
 Degrees and radius for any points in a given cell can be obtained by the core function {\tt circlize},
-so you can highlight any region in the circos layout. Note {\tt circlize} always returns a matrix with two
+so you can highlight any region in the circular layout. Note {\tt circlize} always returns a matrix with two
 columns in which the first column are degrees and the second column are radius for the points.
 
 \begin{Schunk}
@@ -1021,7 +1021,7 @@ Remember the color should be semi-transparent in the highlighted area. Usage for
 \end{Schunk}
 
 {\tt get.cell.meta.cell} can provide detailed information for a cell. It needs the index
-of sector and track as arguments. As usually, it would use `current' index by default.
+of sector and track as arguments. As usual, it would use `current' index by default.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -1355,7 +1355,7 @@ circos.clear()
 @
 
 Since the final graphic is drawn in an ordinary canvas plotting region, we can add additional graphics through
-the traditional way. It is useful to add some legends or marks on the figure. You can also see how {\tt text} and {\tt legend} work in the example code.
+the traditional way. It is useful to add some legends or marks on the figure. You can see how {\tt text} and {\tt legend} work in the example code.
 
 
 \begin{figure}

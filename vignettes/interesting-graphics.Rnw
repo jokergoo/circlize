@@ -26,17 +26,6 @@ The whole circle only contains one sector in which major tick at 0 is overlappin
 The two arrows are drawn in the canvas coordinate. An example of the real-time clock is in the {\tt Examples} section of
 the help page of {\tt circos.axis}.
 
-\begin{figure}
-\begin{center}
-<<label=figclock, fig = TRUE, echo=FALSE, results=hide>>=
-<<figclock>>
-@
-\end{center}
-\caption{A clock}
-\label{fig:clock}
-\end{figure}
-
-
 <<label=figclock, echo=TRUE, eval=FALSE>>=
 library(circlize)
 factors = letters[1]
@@ -53,6 +42,15 @@ arrows(0, 0, 0.4, 0)
 circos.clear()
 @
 
+\begin{figure}
+\begin{center}
+<<label=figclock, fig = TRUE, echo=FALSE, results=hide>>=
+<<figclock>>
+@
+\end{center}
+\caption{A clock}
+\label{fig:clock}
+\end{figure}
 
 
 The second example is a dartboard. In the figure, tracks are assigned with different height and each cell is initialized with

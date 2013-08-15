@@ -568,7 +568,7 @@ Default values for graphic paramters are in table \ref{table:gp}.
 \centering
 \begin{tabular}{ll}
   \hline
- & parameter & default value \\ 
+parameter & default value \\ 
   \hline
 {\tt start.degree} &     {\tt 0} \\ 
 {\tt gap.degree} &    {\tt 1} \\ 

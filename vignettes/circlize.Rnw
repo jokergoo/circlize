@@ -927,6 +927,9 @@ Remember that when applying {\tt circos.trackPlotRegion}, cells in the track are
 and track index of the cell as the `current' index for the sector and track. When the cell is created, {\tt panel.fun} would be exceeded afterward immediately. Without specifying
 {\tt sector.index} and {\tt track.index}, the `current' one would be used and that's exactly what you need.
 
+The advantage of {\tt panel.fun} is that it makes you feel you are using graphics functions in traditional graphics engine (You can see it is the same of using {\tt circos.points(x, y)} and {\tt points(x, y)}).
+And you just pretend to draw in regular plotting regions. It will be much easier for users to understand and customize new graphics. 
+
 Inside {\tt panel.fun}, more information of the `current' cell would be obtained through
 {\tt get.cell.meta.data}. Also this funciton takes the `current' sector and `current' track by default,
 Explaination of {\tt get.cell.meta.data} can be found in following section.
@@ -937,7 +940,9 @@ With those low-level function such as {\tt circos.points}, {\tt circos.lines},
 more high level functions can be easily implemented. The package provides a high level 
 function {\tt circos.trackHist} which draws histograms or the density
 distributions of data (figure \ref{fig:hist}). So users would know how to implement other
-high-level function to support graphs such as barplot, heatmap, ... accroding to the source code of {\tt circos.trackHist}.
+high-level function to support graphs such as barplot, heatmap, ... according to the source code of {\tt circos.trackHist}.
+In {\tt circos.trackHist}, first call {\tt hist} or {\tt density} to calculate the distribution, then
+use {\tt circos.rect} or {\tt circos.lines} to draw histgrames or density distributions.
 
 In figure \ref{fig:hist}, the first track is histograms in which all the {\tt ylim} are the same.
 The second track is histograms in which {\tt force.ylim} is {\tt FALSE}.

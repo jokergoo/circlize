@@ -966,8 +966,8 @@ by {\tt circos.lines}. However, x-values for heatmaps and dendrograms are not re
 the grid/leaf (i.e., 1, 2, ... for grid/leaf 1, 2, ...), so it would be hard (or not proper) to make them
 as general functions for circos plotting. Thus we do not provide such {\tt circos.heatmap} or {\tt circos.dendrogram}
 in the package for public use. Anyway, we still wrote a not-full-functional {\tt circos.dendrogram} in the
-demo code of the package. If you want to draw heatmap or dendrogram (like evolution tree) by your own, this may be 
-helpful for you.
+demo code of the package. If you want to draw heatmap or dendrogram by your own, this may be 
+helpful for you, especially when you want to customize a complecated phylogenic tree.
 
 \begin{figure}
 \begin{center}

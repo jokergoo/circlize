@@ -8,7 +8,7 @@
 
 \documentclass{article}
 
-\title{An introduction to {\tt circlize} package}
+\title{An introduction to {\it circlize} package}
 
 \author{Zuguang Gu {\tt <z.gu@dkfz.de>}}
 \usepackage[margin=1in, a4paper]{geometry}
@@ -28,7 +28,7 @@ it is effective to visuallize relations between elements.
 {\it Circos} (\url{http://circos.ca}) is an extraordinarily cool software to draw such circular layout which is broadly used in real applications, not just
 popular in Genomic but in a lot of other areas as well. It is not only a way to visualize data, 
 but enhances the representation of scientific results into a level of aesthetics. Therefore, most people call figures with circular layout as `circos plot'.
-Here the {\tt circlize} package aims to implement {\it Circos} in R. One advantage for the implementation in R is that R is an ideal
+Here the {\it circlize} package aims to implement {\it Circos} in R. One advantage for the implementation in R is that R is an ideal
 enrivonment which provides seamless connectioin between data analysis and data visualization. This package is not a front-end wrapper
 to generate configuration files for {\it Circos}, but completely coded in R style by using R's elegant statistical and graphic eigine.  
 We aim to keep the flexibility and configurability of {\it Circos}, also make the package more straightforward to use and enhance it to support more types of graphics. 
@@ -164,7 +164,7 @@ circos.trackHist(a$factor, a$x, bg.col = bgcol, col = NA)
 @
 
 Draw the third track (figure \ref{fig:example}, middle left). Different background colors for cells can be assigned. So it may highlight some
-features of the {\tt circlize} package. Here some meta data for a cell can be obtained by {\tt get.cell.meta.data}. This function needs
+features of the {\it circlize} package. Here some meta data for a cell can be obtained by {\tt get.cell.meta.data}. This function needs
 {\tt sector.index} and {\tt track.index} arguments, and if they are not specified, it means
 it is the current sector index and the current track index.
 
@@ -218,7 +218,7 @@ circos.clear()
 source("src/intro-01-glance.R")
 @
 \end{center}
-\caption{A step-by-step example by {\tt circlize}}
+\caption{A step-by-step example by {\it circlize}}
 \label{fig:example}
 \end{figure}
 
@@ -836,7 +836,7 @@ Possible usage for {\tt circos.link} is:
 \end{Sinput}
 \end{Schunk}
 
-{\tt circlize} draws links as quadratic curves of which the symmetry axes pass through the center of the circle, 
+{\it circlize} draws links as quadratic curves of which the symmetry axes pass through the center of the circle, 
 so the two ends of the link must locate in a same circle. But sometimes drawing ends of links with different height
 is useful to represent the direction of links. Anyway, if the difference of the height of two ends are not too large,
 there is a way to approximate. The solution is add a circular-style rectangle at one end of a link (see figure \ref{fig:link}, bottom). Following is 
@@ -999,8 +999,8 @@ source("src/intro-16-highlight.R")
 \end{figure}
 
 
-Degrees and radius for any points in a given cell can be obtained by the core function {\tt circlize},
-so you can highlight any region in the circular layout. Note {\tt circlize} always returns a matrix with two
+Degrees and radius for any points in a given cell can be obtained by the core function {\it circlize},
+so you can highlight any region in the circular layout. Note {\it circlize} always returns a matrix with two
 columns in which the first column are degrees and the second column are radius for the points.
 
 \begin{Schunk}
@@ -1208,7 +1208,7 @@ source("src/intro-18-part2.R")
 
 
 \subsection{Combine several parts of circular layouts}
-Since circular layout by {\tt circlize} is finally plotted in an ordinary R plotting system.
+Since circular layout by {\it circlize} is finally plotted in an ordinary R plotting system.
 Two seperated circular layouts can be plotted together by some tricks. Here the key is 
 {\tt par(new = TRUE)} which allows to draw a new figure on the previous canvas region.
 {\bf Just remember the radius of the circos is always 1.}

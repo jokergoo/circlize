@@ -13,13 +13,12 @@
 
 \usepackage{Sweave}
 \usepackage{hyperref}
-\setkeys{Gin}{width=0.7\textwidth}
 \begin{document}
 
 \maketitle 
 
-We would show you how to use {\tt circlize} package to draw some rather interesting
-graphcis.
+We would show you how to use {\it circlize} package to draw some rather interesting
+graphics.
 
 The first one is a clock. The key function here is {\tt circos.axis} (figure \ref{fig:clock}).
 The whole circle only contains one sector in which major tick at 0 is overlapping with major tick at 12.
@@ -102,7 +101,7 @@ circos.clear()
 The third example is Ba-gua (\url{https://en.wikipedia.org/wiki/Ba_gua}). The
 key functions are {\tt circos.rect} and {\tt draw.sector} (figure \ref{fig:bagua}). 
 
-Ba-gua origined about several thousands years ago in China. It is the source of almost all ancient
+Ba-gua is originated from about several thousands years ago in China. It is the source of almost all ancient
 Chinese philosophy. It abstracts the rule of universe into base signs (i.e. - - which is called Yang and {\tt -} which is called Ying).
 And combination of the two basic signs generates the whole system of the universe.
 

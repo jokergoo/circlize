@@ -20,7 +20,7 @@
 \maketitle 
 
 The most widely use of the circular layout is to display genomic information.
-In most circumstances, figures contain an ideogram. Drawing ideogram by {\tt circlize} 
+In most circumstances, figures contain an ideogram. Drawing ideogram by {\it circlize} 
 package is rather simple.
 
 An ideogram is, in fact, a series of rectangles with different colors.
@@ -29,7 +29,7 @@ In the following example we are going to draw the ideogram for human.
 The cytoband data for human can be download from \\
 \url{http://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz} or
 from UCSC Table Browser (\url{http://genome-euro.ucsc.edu/cgi-bin/hgTables}).
-Uncompress the file and read it into R. Here {\tt circlize} package already contains such file.
+Uncompress the file and read it into R. Here {\it circlize} package already contains such file.
 
 <<include=TRUE, echo=TRUE>>=
 library(circlize)
@@ -104,7 +104,7 @@ circos.par("cell.padding" = c(0, 0, 0, 0))
 Initialize the circular layout with ranges of chromosomes. In the initialization step, width of 
 each sector would correspond to the length of each chromosome. Also the order of sectors would
 be determined in this step. Here we must explicitly
-set the levels of the factors to ensure the order of chromosomes is ``chr1, chr2,
+set the levels of the factors to make sure the order of chromosomes is ``chr1, chr2,
 chr3, ...'' or else the order would be the alphabetical which is ``chr1, chr11, ...''.
 After the initialization step, the position of each chromosome as well as the order are stored
 in an internal variable. So in the later step, as long as the chromosome is specified, graphics
@@ -147,7 +147,7 @@ for each chromosome:
 \begin{enumerate}
  \item assign different colors for different cytogenetic bands;
  \item draw rectangle for different bands;
- \item add axis;
+ \item add axes;
  \item add chromosome names. 
 \end{enumerate}
 
@@ -197,7 +197,7 @@ for(chr in chromosome) {
 In the above code, you can find the {\tt ylim} for the cells in the first track is {\tt c(0, 1)}
 and the y-value in {\tt circos.text} is {\tt 1.2} which exceeds the {\tt ylim}. 
 There may be some warnings saying some points are out of the plotting region. But in fact it is OK
-to draw something outside the plotting regions. You just need to ensure the final figure looks good.
+to draw something outside the plotting regions. You just need to make sure the final figure looks good.
 
 If you do not want to draw ideogram in the most outside of the circos layout. You can draw it in other tracks as you wish.
 
@@ -230,7 +230,7 @@ circos.lines(c(88888888, 88888888), c(0.3, 1), sector.index = "chr6", straight =
 source("src/ideogram-01-simple.R")
 @
 \end{center}
-\caption{Ideogram in circos layout}
+\caption{Ideogram in circular layout}
 \label{fig:ideogram}
 \end{figure}
 
@@ -241,7 +241,7 @@ genomic positions are taken as y-values.
 The finnal figure looks like figure \ref{fig:ideogram}.
 
 
-In the {\tt circlize} package, there is already a {\tt circos.initializeWithIdeogram}
+In the {\it circlize} package, there is already a {\tt circos.initializeWithIdeogram}
 function to initialize circular layout with an ideogram. However, how to embed the ideogram into the
 circular layout is really subjective, such as the position and colors of the ideogram, 
 or maybe only subset of chromosomes are going to be plotted, or maybe there are some zoomings for certain chromosomes

@@ -999,8 +999,8 @@ source("src/intro-16-highlight.R")
 \end{figure}
 
 
-Degrees and radius for any points in a given cell can be obtained by the core function {\it circlize},
-so you can highlight any region in the circular layout. Note {\it circlize} always returns a matrix with two
+Degrees and radius for any points in a given cell can be obtained by the core function {\tt circlize},
+so you can highlight any region in the circular layout. Note {\tt circlize} always returns a matrix with two
 columns in which the first column are degrees and the second column are radius for the points.
 
 \begin{Schunk}

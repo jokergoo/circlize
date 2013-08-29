@@ -13,7 +13,7 @@
 # -chromosome sorted chromosome names
 # -chr.len length of chromosomes. Order are same as ``chromosome``
 read.cytoband = function(file = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep="")) {
-	d = read.table(file, colClasses = c("character", "numeric", "numeric", "character", "character"))
+	d = read.table(file, colClasses = c("character", "numeric", "numeric", "character", "character"), sep = "\t")
 	
 	chromosome = unique(d[[1]])
 	chromosome.ind = gsub("chr", "", chromosome)

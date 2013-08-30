@@ -11,15 +11,16 @@
 
 }
 \usage{
-read.cytoband(file = paste(system.file(package = "circlize"), 
-    "/extdata/cytoBand.txt", sep=""))
+read.cytoband(file = paste(system.file(package = "circlize"),
+    "/extdata/cytoBand.txt", sep=""), species = NULL)
 }
 \arguments{
   \item{file}{path of the uncompressed cytoband file
 }
+  \item{species}{abbrevations of species. e.g. hg19 for human, mm10 for mouse. If this value is specified, the function will download cytoBand.txt.gz from UCSC website automatically.}
 }
 \details{
-  The function read the cytoband data, sort the chromosome names and calculate the length of each chromosome.
+  The function read the cytoband data, sort the chromosome names and calculate the length of each chromosome. By default, it is human hg19 cytoband data.
 
 
 }

@@ -88,6 +88,7 @@ length of chromosomes.
 
 <<echo=TRUE, eval=FALSE>>=
 cytoband = read.cytoband()  # by default, it reads human cytoband data
+cytoband = read.cytoband(species = "hg19")  # or download from UCSC
 d = cytoband$df
 chromosome = cytoband$chromosome
 xlim = cbind(rep(0, length(chromosome)), cytoband$chr.len)

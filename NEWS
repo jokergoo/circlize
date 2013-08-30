@@ -4,6 +4,7 @@ NEWS/Changelog
 - order will not change in `circos.trackPlotRegion` when not specifying `factors`, bug fixed
 - add an example in 'draw relation' vignette
 - add a new vignette focusing on phylogenetic tree
+- support directly downloading cytoBand file from UCSC 
 
 == 0.0.5
 - support self-define width of sectors when initializing sectors

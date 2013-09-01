@@ -1,4 +1,4 @@
-% \VignetteIndexEntry{Draw relations}
+% \VignetteIndexEntry{Draw phylogenetic tree}
 % \VignetteDepends{circlize}
 % \VignetteKeywords{circos R}
 % \VignetteKeywords{Phylogenetic tree}

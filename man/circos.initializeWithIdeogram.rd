@@ -12,11 +12,12 @@
 }
 \usage{
 circos.initializeWithIdeogram(file = paste(system.file(package = "circlize"),
-    "/extdata/cytoBand.txt", sep=""),
+    "/extdata/cytoBand.txt", sep=""), species = NULL,
     chromosome.index = NULL, track.height = 0.1)
 }
 \arguments{
   \item{file}{cytoband file. By default it is the cytoband data for human}
+\item{species}{abbrevations of species. e.g. hg19 for human, mm10 for mouse. If this value is specified, the function will download cytoBand.txt.gz from UCSC website automatically.}
   \item{chromosome.index}{index for chromosome. The index is used only for subsetting, not for re-ordering. The value should be 1, 2, ... or chr1, chr2, ...}
   \item{track.height}{height for the track}
 
@@ -25,9 +26,6 @@ circos.initializeWithIdeogram(file = paste(system.file(package = "circlize"),
   This is not a full functional function. It just provides a way to show how todraw genomics ideogram by this package. How to embed the ideogram into thecircos layout is really subjective and should be applied according to specific situation.
 
   In fact, drawing ideogram with this package is really simple, you can look at the source codeof this function to get a clue.
-
-  The cytoband data for human is downloaded from UCSC ftp site (\url{http://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz),}it should be uncompressed.
-
 
 }
 \examples{

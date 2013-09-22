@@ -20,11 +20,11 @@ for(i in 1:5) {
             cell.ylim = get.cell.meta.data("cell.ylim")
             for(j in 1:4) {
                 x = cell.xlim[1] + (cell.xlim[2]-cell.xlim[1])/5*j
-                circos.lines(c(x, x), cell.ylim, col = "#FFFFFF", lwd = 0.8)
+                circos.lines(c(x, x), cell.ylim, col = "#FFFFFF", lwd = 0.3)
             }
             for(j in 1:9) {
                 y = cell.ylim[1] + (cell.ylim[2]-cell.ylim[1])/10*j
-                circos.lines(cell.xlim, c(y, y), col = "#FFFFFF", lwd = 0.8)
+                circos.lines(cell.xlim, c(y, y), col = "#FFFFFF", lwd = 0.3)
             }
         })
 }

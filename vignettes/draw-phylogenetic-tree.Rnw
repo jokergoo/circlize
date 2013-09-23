@@ -28,7 +28,7 @@ example, we will show how to draw the tree from the {\tt dendrogram} class. Neve
 can be converted to {\tt dendrogram} with not too much difficulty.
 
 The data we are using here is from {\tt ape} package. The {\tt bird.orders} data set is some kind related to species of birds.
-We also calcualte some other values such as the label for each bird (which is its name.). We split the tree into six categories by {\tt cutree}
+We also extract some other values such as the label for each bird (which is its name.). We split the tree into six categories by {\tt cutree}
 and finally we convert the data into a {\tt dendrogram} object.
 
 <<eval=FALSE>>==
@@ -36,7 +36,7 @@ library(ape)
 data(bird.orders)
 hc = as.hclust(bird.orders)
 labels = hc$labels
-ct = cutree(hc, 6)
+ct = cutree(hc, 6)  # cut tree into 6 pieces
 n = length(labels)
 hc = as.dendrogram(hc)
 @
@@ -45,7 +45,7 @@ The {\tt dendrogram} class stores data recursively which means, a {\tt dendrogra
 are also {\tt dendrogram} objects. Thus, we can implement drawing dendrogram tree in a recursive way as well.
 
 For each node in the dendrogram, there are several attributes which are {\tt members}, {\tt midpoint}, {\tt height}, and if
-the node is the leaf of the tree (i.e. the end of the tree), there would be an attribute called {\tt leaf}. Here what shoud
+the node is the leaf of the tree (i.e. the end of the tree), there would be an binary attribute called {\tt leaf}. Here what shoud
 be noted is that {\tt midpoint} is the distance to its two children nodes while not the coordinate of the point.
 
 As we mentioned in the main vignette, the x-value for the phylogenetic tree is in fact index. Thus, the x-lim is just the minimum

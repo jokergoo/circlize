@@ -22,7 +22,7 @@ graphics.
 
 The first one is a clock. The key function here is {\tt circos.axis} (figure \ref{fig:clock}).
 The whole circle only contains one sector in which major tick at 0 is overlapping with major tick at 12.
-The two arrows are drawn in the canvas coordinate. An example of the real-time clock is in the {\tt Examples} section of
+The two arrows are drawn in the canvas coordinate. An example of a real-time clock is in {\tt Examples} section of
 the help page of {\tt circos.axis}.
 
 <<label=figclock, echo=TRUE, eval=FALSE>>=
@@ -112,7 +112,8 @@ and created ground. The upper world is called Yang and the bottom world is calle
 And that is Tai-ji.
 
 So look at Tai-ji, you can see there are two states interacting with each other. The
-white one and the black one gradually transformed into each other at the end. In real world,
+white one and the black one gradually transformed into each other at the end. And in the center
+of white and black, the opposite color is generated. In real world,
 Tai-ji can represent all phenomenon that is of dualism. Such as male and female, correct and
 wrong. However things would change, good thing would become bad thing as time goes by, and bad
 thing also would turn good according how you look at the world. So when you are upset, dont't worry,

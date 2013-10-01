@@ -4,6 +4,7 @@ library(png)
 library(jpeg)
 library(RCurl)
 
+op = par(no.readonly = FALSE)
 par(mar = c(1, 1, 1, 1))
 circos.par("cell.padding" = c(0, 0, 0, 0))
 circos.initialize(factors = letters[1:16], xlim = c(0, 1))
@@ -55,4 +56,5 @@ for(fi in 1:4) {
 }	
 
 circos.clear()
- 
+par(op)
+

@@ -2,7 +2,7 @@ library(circlize)
 factors = sample(letters[1:6], 100, replace = TRUE)
 x = rnorm(100)
 y = rnorm(100)
-
+op = par(no.readonly = FALSE)
 par(mar = c(1, 1, 1, 1))
 circos.initialize(factors = factors, x = x)
 circos.trackPlotRegion(factors = factors, x = x, y = y, bg.col = "#EEEEEE",
@@ -29,3 +29,4 @@ circos.trackPlotRegion(factors = factors, x = x, y = y, bg.col = "#EEEEEE",
 })
 
 circos.clear()
+par(op)

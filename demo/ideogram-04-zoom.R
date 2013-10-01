@@ -1,3 +1,4 @@
+op = par(no.readonly = FALSE)
 cytoband = read.cytoband()
 d = cytoband$df
 chromosome = cytoband$chromosome
@@ -37,4 +38,4 @@ for(chr in chromosome) {
 circos.link("chr7", c(0, chr.len[7]), "chr7_zoom", c(0, chr.len[7]), col = "#0000FF10", border = NA)
 circos.link("chr8", c(0, chr.len[8]), "chr8_zoom", c(0, chr.len[8]), col = "#FF000010", border = NA)
 circos.clear()       
-     
+par(op)

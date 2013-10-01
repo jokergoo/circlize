@@ -1,4 +1,5 @@
 library(circlize)
+op = par(no.readonly = FALSE)
 factors = letters[1:8]
 par(mar = c(1, 1, 1, 1))
 circos.par("default.track.height" = 0.15, "start.degree" = 22.5, "gap.degree" = 6)
@@ -52,3 +53,4 @@ draw.sector(center = c(0, -0.2), start.degree = 0, end.degree = 360,
     rou1 = 0.05, col = "white", border = "white")
 
 circos.clear()
+par(op)

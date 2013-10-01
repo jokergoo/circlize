@@ -1,4 +1,5 @@
 library(circlize)
+op = par(no.readonly = FALSE)
 par(mar = c(1, 1, 1, 1))
 factors = letters[1:4]
 circos.initialize(factors = factors, xlim = c(0, 1))
@@ -17,3 +18,4 @@ circos.points(x1, y1, pch = 16, cex = 0.5)
 circos.trackPlotRegion(factors = factors, ylim = c(0, 1))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 1))
 circos.clear()
+par(op)

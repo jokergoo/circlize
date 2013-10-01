@@ -1,4 +1,4 @@
-
+op = par(no.readonly = FALSE)
 mat = matrix(sample(1:100, 18, replace = TRUE), 3, 6)
 rownames(mat) = letters[1:3]
 colnames(mat) = LETTERS[1:6]
@@ -49,3 +49,4 @@ for(i in seq_len(nrow(mat))) {
 }
 
 circos.clear()
+par(op)

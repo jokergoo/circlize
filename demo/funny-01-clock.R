@@ -1,4 +1,6 @@
 library(circlize)
+
+op = par(no.readonly = FALSE)
 factors = letters[1]
 par(mar = c(1, 1, 1, 1))
 
@@ -27,3 +29,4 @@ while(1) {
     circos.clear()
     Sys.sleep(1)
 }
+par(op)

@@ -1,4 +1,6 @@
 library(circlize)
+
+op = par(no.readonly = FALSE)
 factors = 1:20
 par(mar = c(1, 1, 1, 1))
 circos.par("gap.degree" = 0, "cell.padding" = c(0, 0, 0, 0),
@@ -28,3 +30,4 @@ draw.sector(center = c(0, 0), start.degree = 0, end.degree = 360,
     rou1 = 0.05, col = "#E41A1C", border = "#EEEEEE")
 
 circos.clear()
+par(op)

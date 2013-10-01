@@ -1,5 +1,5 @@
 library(circlize)
-
+op = par(no.readonly = FALSE)
 par(bg = "black", mar = c(1, 1, 1, 1))
 
 factors = 1:36
@@ -42,3 +42,4 @@ for(i in seq_along(r)) {
 text(0, 1.02, "cz.IiII", adj = c(0.5, 0), col = "#FFFFFF")
 
 circos.clear()
+par(op)

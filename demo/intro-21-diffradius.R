@@ -1,4 +1,5 @@
 library(circlize)
+op = par(no.readonly = FALSE)
 par(mar = c(1, 1, 1, 1))
 factors = letters[1:4]
 lim = c(1, 1.1, 1.2, 1.3)
@@ -12,3 +13,4 @@ for(i in 1:4) {
     par(new = TRUE)
 }
 par(new = FALSE)
+par(op)

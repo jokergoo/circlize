@@ -1,4 +1,5 @@
 library(circlize)
+op = par(no.readonly = FALSE)
 par(mar = c(1, 1, 1, 1))
 factors = letters[1:4]
 circos.initialize(factors, xlim = c(0, 1))
@@ -17,3 +18,4 @@ circos.trackPlotRegion(ylim = c(-3, 3), track.height = 0.4, panel.fun = function
     circos.lines(x1, loess.predict$fit)
 })
 circos.clear()
+par(op)

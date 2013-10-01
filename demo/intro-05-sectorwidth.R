@@ -1,4 +1,5 @@
 library(circlize)
+op = par(no.readonly = FALSE)
 factor = sample(letters[1:8], 100, replace = TRUE)
 x = rnorm(100)
 range = tapply(x, factor(factor), function(x) max(x) - min(x))
@@ -25,3 +26,4 @@ circos.link("a", get.cell.meta.data("cell.xlim", "a", 1), "a_zoom", get.cell.met
 circos.link("b", get.cell.meta.data("cell.xlim", "b", 1), "b_zoom", get.cell.meta.data("cell.xlim", "b_zoom", 1), col = "#FF000020", border = NA)
 show.index()
 circos.clear()
+par(op)

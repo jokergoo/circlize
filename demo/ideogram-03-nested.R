@@ -1,3 +1,4 @@
+op = par(no.readonly = FALSE)
 cytoband = read.cytoband()
 d = cytoband$df
 chromosome = cytoband$chromosome
@@ -102,4 +103,4 @@ for(chr in chromosome) {
     circos.link("chr1", 22222222, "chr1", 99999999)
 }
 circos.clear()       
-     
+par(op)

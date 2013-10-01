@@ -1,6 +1,6 @@
 library(circlize)
 set.seed(12345)
-
+op = par(no.readonly = FALSE)
 circos.initializeWithIdeogram()
 
 circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.2,
@@ -102,3 +102,4 @@ rou2 = get.cell.meta.data("yplot", sector.index = "chr1", track.index = 5)[1]
 draw.sector(center = c(0, 0), start.degree = start.degree, end.degree = end.degree,
             rou1 = rou1+0.05, rou2 = rou2-0.01, col = "#FF000020", border = NA)
 circos.clear()
+par(op)

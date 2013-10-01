@@ -1,7 +1,7 @@
 library(circlize)
 x1 = runif(100)
 y1 = runif(100)
-
+op = par(no.readonly = FALSE)
 par(mar = c(1, 1, 1, 1))
 circos.par("canvas.xlim" = c(0, 1), "canvas.ylim" = c(0, 1),"clock.wise" = FALSE, "gap.degree" = 0, points.overflow.warning = FALSE)
 factors = letters[1:4]
@@ -18,3 +18,4 @@ par(xpd = NA)
 text(0, 0, 0, adj = c(0.5, 1))
 text(1, 0, 1, adj = c(0.5, 1))
 text(0, 1, 1, adj = c(0.5, 0))
+par(op)

@@ -1,5 +1,5 @@
 library(circlize)
-
+op = par(no.readonly = FALSE)
 par(mar = c(1, 1, 1, 1))
 factors = letters[1:8]
 circos.par(points.overflow.warning = FALSE)
@@ -22,3 +22,4 @@ rou2 = d2[1, 2] - circos.par("track.margin")[1]
 # draw the 'little rectangle'
 draw.sector(start.degree = theta1, end.degree = theta2, rou1 = rou1, rou2 = rou2, col = "black", border = "black")
 circos.clear()
+par(op)

@@ -1,4 +1,5 @@
 library(circlize)
+op = par(no.readonly = FALSE)
 par(mar = c(1, 1, 1, 1))
 x = rnorm(2600)
 factors = sample(letters, 2600, replace = TRUE)
@@ -9,3 +10,4 @@ circos.trackHist(factors = factors, x = x, draw.density = TRUE, track.height = 0
 circos.trackHist(factors = factors, x = x, draw.density = TRUE, force.ylim = FALSE, track.height = 0.1, col = "#999999", border = "#999999")
 
 circos.clear()
+par(op)

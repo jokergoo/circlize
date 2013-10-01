@@ -1,5 +1,5 @@
 library(circlize)
-
+op = par(no.readonly = FALSE)
 par(mar = c(1, 1, 1, 1))
 factors = letters[1:8]
 circos.par(points.overflow.warning = FALSE)
@@ -18,3 +18,4 @@ circos.axis(sector.index = "f", h = 5, major.at = c(1, 3, 5, 7, 9), labels = c("
 circos.axis(sector.index = "g", h = 5, major.at = c(1, 3, 5, 7, 9), labels = c("a1", "c1", "e1", "g1", "f1"), major.tick = FALSE, labels.direction = "vertical_left")
 circos.axis(sector.index = "h", h = 2, major.at = c(1, 3, 5, 7, 9), labels = c("a1", "c1", "e1", "g1", "f1"), major.tick.percentage = 0.3, labels.away.percentage = 0.2, minor.ticks = 2, labels.direction = "vertical_right")
 circos.clear()
+par(op)

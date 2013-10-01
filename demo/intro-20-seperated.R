@@ -1,4 +1,5 @@
 library(circlize)
+op = par(no.readonly = FALSE)
 par(mar = c(2, 2, 2, 2))
 
 factors = letters[1:4]
@@ -22,3 +23,4 @@ circos.updatePlotRegion(sector.index = "c")
 circos.text(0.5, 0.5, "second one")
 
 circos.clear()
+par(op)

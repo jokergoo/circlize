@@ -1,4 +1,5 @@
 library(circlize)
+op = par(no.readonly = FALSE)
 par(mar = c(1, 1, 1, 1), cex = 0.8)
 factors = letters[1:8]
 circos.par(points.overflow.warning = FALSE)
@@ -21,4 +22,4 @@ circos.text(5, 9, "type = 's', area = TRUE", sector.index = "g")
 circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "h", area = TRUE, area.baseline = "top")
 circos.text(5, 1, "type = 'l', area = TRUE\narea.baseline = 'top'", sector.index = "h")
 circos.clear()
-par(cex = 1)
+par(op)

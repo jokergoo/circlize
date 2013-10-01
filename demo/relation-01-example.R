@@ -40,7 +40,7 @@ color.pal = function(x, col = c("green", "black", "red"), breaks = c(-5, 0, 5)) 
     
     return(color)
 }
-
+op = par(no.readonly = FALSE)
 par(mfrow = c(1, 2))
 
 set.seed(12345)
@@ -116,3 +116,4 @@ for(i in 2:n) {
 }
 
 circos.clear()
+par(op)

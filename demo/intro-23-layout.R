@@ -4,7 +4,7 @@ set.seed(12345)
 rand_color = function() {
     return(rgb(runif(1), runif(1), runif(1)))
 }
-
+op = par(no.readonly = FALSE)
 layout(matrix(1:9, 3, 3))
 for(i in 1:9) {
     factors = 1:8
@@ -22,3 +22,5 @@ for(i in 1:9) {
     }
     circos.clear()
 }
+layout(cbind(1))
+par(op)

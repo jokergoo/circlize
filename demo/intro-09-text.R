@@ -1,4 +1,5 @@
 library(circlize)
+op = par(no.readonly = FALSE)
 par(mar = c(1, 1, 1, 1))
 factors = letters[1:4]
 circos.par(points.overflow.warning = FALSE)
@@ -12,3 +13,4 @@ circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.5, p
     circos.text(5, 1, "arc_arc_arc_arc_arc", direction = "arc")
 })
 circos.clear()
+par(op)

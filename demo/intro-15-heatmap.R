@@ -89,6 +89,7 @@ color.pal = function(x, col = c("green", "black", "red"), breaks = c(-5, 0, 5)) 
 }
 
 library(circlize)
+op = par(no.readonly = FALSE)
 mat = matrix(rnorm(100*10), nrow = 10, ncol = 100)
 factors = rep(letters[1:2], 50)
 par(mar = c(1, 1, 1, 1))
@@ -124,3 +125,4 @@ circos.trackPlotRegion(ylim = c(0, maxy), bg.border = NA, track.height = 0.3, pa
     
 })
 circos.clear()
+par(op)

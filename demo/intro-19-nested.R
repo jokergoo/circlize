@@ -1,5 +1,6 @@
 library(circlize)
-
+op = par(no.readonly = FALSE)
+par(mar = c(1, 1, 1, 1))
 factors = letters[1:4]
 circos.initialize(factors = factors, xlim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
@@ -15,3 +16,4 @@ circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
     circos.text(0.5, 0.5, "inner circos")
 })
 circos.clear()
+par(op)

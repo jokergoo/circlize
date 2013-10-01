@@ -88,11 +88,14 @@ length of chromosomes.
 
 <<echo=TRUE, eval=FALSE>>=
 cytoband = read.cytoband()  # by default, it reads human cytoband data
-cytoband = read.cytoband(species = "hg19")  # or download from UCSC
+cytoband = read.cytoband(species = "mm10")  # or download from UCSC by specifying species version
 d = cytoband$df
 chromosome = cytoband$chromosome
 xlim = cbind(rep(0, length(chromosome)), cytoband$chr.len)
 @
+
+Note that chromosome name in UCSC has prefix of 'chr', so if you are using chromosomes form 1000 Genome project which
+have not 'chr' prefix, remember to add it.
 
 Before we draw the circular layout, we need to set some graphic parameters. Here we do not need any cell paddings
 and we do not need the line to be too thick because genomic graphic is always huge.

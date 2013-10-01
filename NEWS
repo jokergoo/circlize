@@ -1,5 +1,9 @@
 NEWS/Changelog
 
+== 0.0.7
+- add an example in demo codes
+- improved vignettes
+
 == 0.0.6
 - order will not change in `circos.trackPlotRegion` when not specifying `factors`, bug fixed
 - add an example in 'draw relation' vignette

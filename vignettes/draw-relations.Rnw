@@ -108,23 +108,25 @@ source("src/relation-01-example.R")
 
 The second example is circular layout for a table in which rows and columns are different
 measurements. E.g. a table in which rows are countries of Nobel Prize winners and the columns
-are the areas.
+are the research areas.
 
 As usual, we first generate an example data. In the example data, letters in upper case is
 one measurement and letters in lower case is another measurement. The number in the table is the amount
 of observations in the intersection of two measurements.
 
-<<echo=TRUE, eval=FALSE>>=
+<<echo=TRUE, eval=TRUE, include=TRUE>>=
 mat = matrix(sample(1:100, 18, replace = TRUE), 3, 6)
 rownames(mat) = letters[1:3]
 colnames(mat) = LETTERS[1:6]
 
 rn = rownames(mat)
 cn = colnames(mat)
+
+mat
 @
 
 Construct the {\tt factors} variable and calculate {\tt xlim}. The {\tt factors} are combined
-with rownames and colnames of the table or matrix.
+with rownames and colnames of the table.
 
 <<echo=TRUE, eval=FALSE>>=
 factors = c(letters[1:3], LETTERS[1:6])

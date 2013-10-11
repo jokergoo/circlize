@@ -1,5 +1,8 @@
 NEWS/Changelog
 
+== 0.0.8
+- axes labels will not draw when setting labels = FALSE
+
 == 0.0.7
 - add an example in demo codes
 - improved vignettes

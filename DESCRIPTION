@@ -1,7 +1,7 @@
 Package: circlize
 Type: Package
 Title: Circular layout in R
-Version: 0.0.7
+Version: 0.0.8
 Date: 2013-10-01
 Author: Zuguang Gu
 Maintainer: Zuguang Gu <z.gu@dkfz.de>

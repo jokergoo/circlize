@@ -103,7 +103,7 @@ circos.par = function (...) {
 			
 			if(name[i] %in% c("start.degree", "gap.degree", "canvas.xlim", "canvas.ylim", "clock.wise") &&
 			   is.circos.initialized()) {
-				warning(paste("'", name[i], "' can only be modified before `circos.initialize`.\n", sep = ""))
+				warning(paste("'", name[i], "' can only be modified before `circos.initialize`, or maybe you forgot to call `circos.clear` in your last plot.\n", sep = ""))
                 next
 			}
 

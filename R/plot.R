@@ -963,19 +963,20 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 			}
 		}
 		
-		if(labels) {
-			if(is.logical(labels) && labels) {
-				circos.text(major.at[i], h + (major.tick.length+yrange*labels.away.percentage)*ifelse(direction == "outside", 1, -1),
-							labels = major.at[i], adj = labels.adj,
-							font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
-							direction = labels.direction)
-			} else if(length(labels)) {
-				circos.text(major.at[i], h + (major.tick.length+yrange*labels.away.percentage)*ifelse(direction == "outside", 1, -1),
-							labels = labels[i], adj = labels.adj,
-							font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
-							direction = labels.direction)
-			}				
-		}
+		if(is.logical(labels) && labels) {
+			circos.text(major.at[i], h + (major.tick.length+yrange*labels.away.percentage)*ifelse(direction == "outside", 1, -1),
+			           labels = major.at[i], adj = labels.adj,
+			           font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
+			           direction = labels.direction)
+		} else if(is.logical(labels) && !labels) {
+                          
+                } else if(length(labels)) {
+			circos.text(major.at[i], h + (major.tick.length+yrange*labels.away.percentage)*ifelse(direction == "outside", 1, -1),
+			            labels = labels[i], adj = labels.adj,
+			            font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
+				    direction = labels.direction)
+		}				
+		
 	}
 	if(major.tick) {
 		for(i in seq_along(minor.at)) {

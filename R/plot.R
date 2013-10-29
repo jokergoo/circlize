@@ -970,11 +970,11 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 			           direction = labels.direction)
 		} else if(is.logical(labels) && !labels) {
                           
-                } else if(length(labels)) {
+        } else if(length(labels)) {
 			circos.text(major.at[i], h + (major.tick.length+yrange*labels.away.percentage)*ifelse(direction == "outside", 1, -1),
 			            labels = labels[i], adj = labels.adj,
 			            font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
-				    direction = labels.direction)
+				        direction = labels.direction)
 		}				
 		
 	}

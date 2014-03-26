@@ -1,2 +1,1 @@
 - testing code
-- add `major.by` in `circos.initializeWithIdeogram`

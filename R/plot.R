@@ -1133,6 +1133,7 @@ circos.trackHist = function(factors, x, track.height = circos.par("default.track
 # -chromosome.index index for chromosome. The index is used only for subsetting, not for re-ordering.
 #                   The value should be 1, 2, ... or chr1, chr2, ...
 # -track.height     height for the track
+# -major.by         increment of major ticks
 #
 # == details
 # This is not a full functional function. It just provides a way to show how to
@@ -1142,7 +1143,7 @@ circos.trackHist = function(factors, x, track.height = circos.par("default.track
 # In fact, drawing ideogram with this package is really simple, you can look at the source code
 # of this function to get a clue.
 circos.initializeWithIdeogram = function(file = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""), species = NULL,
-    chromosome.index = NULL, track.height = 0.1) {
+    chromosome.index = NULL, track.height = 0.1, major.by = 50000000) {
 	
 	cytoband = read.cytoband(file, species = species)
 	d = cytoband$df
@@ -1173,7 +1174,7 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 			circos.rect(d2[i, 2], 0, d2[i, 3], 0.4, sector.index = chr, col = col[i], border = NA)
 		}
 		circos.rect(d2[1, 2], 0, d2[n, 3], 0.4, sector.index = chr, border = "black")
-		major.at = seq(0, 10^nchar(max(xlim[, 2])), by = 50000000)
+		major.at = seq(0, 10^nchar(max(xlim[, 2])), by = major.by)
 		circos.axis(h = 0.5, major.at = major.at, labels = paste(major.at/1000000, "MB", sep = ""), sector.index = chr, labels.cex = 0.3, labels.direction = "vertical_right")
 		cell.xlim = get.cell.meta.data("xlim", sector.index = chr)
 		circos.text(mean(cell.xlim), 1.3, labels = gsub("chr", "", chr), sector.index = chr, cex = 1)

@@ -23,7 +23,7 @@ read.cytoband = function(file = paste(system.file(package = "circlize"), "/extda
 		file = paste(tempdir(), "/cytoBand.txt.gz", sep = "")
 		e = try(download.file(url, destfile = file, quiet = TRUE), silent = TRUE)
 		if(class(e) == "try-error") {
-			stop("Seems your species name is wrong or you cannot access the internet.\nIf possible, download cytoBand file from\n", url, "\nand use `read.cytoband(file)`.\n")
+			stop("Seems your species name is wrong or UCSC does not provide cytoband data for your species.\nIf possible, download cytoBand file from\n", url, "\nand use `read.cytoband(file)`.\n")
 		}
 	}
 	

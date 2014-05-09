@@ -60,13 +60,13 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 	return(invisible(NULL))
 }
 
-approximate = function(df, window.size = NULL, fun = mean) {
+approximate = function(df, window.size = NULL, numbericColumn.fun = mean) {
 
 }
 
 # data contains column data which can be data frame or matrix
 # data is a list of data frame
-circos.genomicTrackPlotRegion = function(data, matrix = FALSE, panel.fun = function(region, value)  NULL }) {
+circos.genomicTrackPlotRegion = function(data, matrix = FALSE, valueColumns = NULL, panel.fun = function(region, value)  NULL }) {
 	
 	# call circos.trackPlotRegion
 	

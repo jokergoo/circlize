@@ -47,10 +47,10 @@ bed1 = random_bed(nr = 100)
 bed2 = random_bed(nr = 100)
 bed_list = list(bed1, bed2)
 
-circos.genomicTrackPlotRegion(bed_list, panel.fun = function(region, value, ...) {
+circos.genomicTrackPlotRegion(bed_list, by.line = TRUE, panel.fun = function(region, value, ...) {
 	cex = (value[[1]] - min(value[[1]]))/(max(value[[1]]) - min(value[[1]]))
 	i = getI(...)
-	circos.genomicPoints(region, value, cex = cex, pch = 16, col = i,  ...)
+	circos.genomicPoints(region, value, cex = cex, pch = 16, col = i, ...)
 })
 
 bed = random_bed(nr = 100, nc = 4)
@@ -60,77 +60,11 @@ circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
 })
 
 bed = random_bed(nr = 100, nc = 4)
-circos.genomicTrackPlotRegion(bed, containMatrix = TRUE, panel.fun = function(region, value, ...) {
+circos.genomicTrackPlotRegion(bed, by.line = TRUE, panel.fun = function(region, value, ...) {
 	cex = (value[[1]] - min(value[[1]]))/(max(value[[1]]) - min(value[[1]]))
 	i = getI(...)
-	circos.genomicPoints(region, value, cex = cex, col = i, ...)
+	circos.genomicPoints(region, value, cex = cex, pch = 16, col = i, ...)
 })
 
 circos.clear()
 
-
-# test GRanges
-library(GenomicRanges)
-circos.par("default.track.height" = 0.1)
-circos.initializeWithIdeogram()
-
-bed = df2GRanges(random_bed(nr = 100))
-circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
-	circos.genomicPoints(region, value, ...)
-})
-
-bed1 = df2GRanges(random_bed(nr = 100))
-bed2 = df2GRanges(random_bed(nr = 100))
-bed_list = list(bed1, bed2)
-
-circos.genomicTrackPlotRegion(bed_list, panel.fun = function(region, value, ...) {
-	circos.genomicPoints(region, value, ...)
-})
-
-bed = df2GRanges(random_bed(nr = 100, nc = 4))
-circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
-	circos.genomicPoints(region, value, ...)
-})
-
-bed = df2GRanges(random_bed(nr = 100, nc = 4))
-circos.genomicTrackPlotRegion(bed, containMatrix = TRUE, panel.fun = function(region, value, ...) {
-	circos.genomicPoints(region, value, ...)
-})
-
-circos.clear()
-
-
-############ test lines
-### test bed
-circos.par("default.track.height" = 0.1)
-circos.initializeWithIdeogram()
-
-bed = random_bed(nr = 100)
-circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
-	circos.genomicLines(region, value, ...)
-})
-
-bed1 = random_bed(nr = 100)
-bed2 = random_bed(nr = 100)
-bed_list = list(bed1, bed2)
-
-circos.genomicTrackPlotRegion(bed_list, panel.fun = function(region, value, ...) {
-	cex = (value[[1]] - min(value[[1]]))/(max(value[[1]]) - min(value[[1]]))
-	i = getI(...)
-	circos.genomicLines(region, value, col = i,  ...)
-})
-
-bed = random_bed(nr = 100, nc = 4)
-circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
-	cex = (value[[1]] - min(value[[1]]))/(max(value[[1]]) - min(value[[1]]))
-	circos.genomicLines(region, value, col = 1:4, ...)
-})
-
-bed = random_bed(nr = 100, nc = 4)
-circos.genomicTrackPlotRegion(bed, containMatrix = TRUE, panel.fun = function(region, value, ...) {
-	cex = (value[[1]] - min(value[[1]]))/(max(value[[1]]) - min(value[[1]]))
-	i = getI(...)
-	circos.genomicLines(region, value, col = i, ...)
-})
-
-circos.clear()

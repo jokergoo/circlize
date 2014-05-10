@@ -1126,11 +1126,11 @@ circos.trackHist = function(factors, x, track.height = circos.par("default.track
 # Draw sectors or rings in a circle
 #
 # == param
-# -center         Center of the circle
 # -start.degree   start degree for the sector
 # -end.degree     end degree for the sector
 # -rou1           Radius for one of the arc in the sector
 # -rou2           Radius for the other arc in the sector
+# -center         Center of the circle
 # -col            Filled color
 # -border         Border color
 # -lwd            Line width
@@ -1139,7 +1139,7 @@ circos.trackHist = function(factors, x, track.height = circos.par("default.track
 # == details
 # If the interval between ``start`` and ``end`` (larger or equal to 360 or smaller or equal to -360)
 # it would draw a full circle or ring. If ``rou2`` is set, it would draw part of a ring.
-draw.sector = function(center = c(0, 0), start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL, col = NA, border = "black", lwd = par("lwd"), lty = par("lty")) {
+draw.sector = function(start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL, center = c(0, 0), col = NA, border = "black", lwd = par("lwd"), lty = par("lty")) {
 
 	if(end.degree < start.degree) {
 		tmp = end.degree

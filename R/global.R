@@ -454,19 +454,41 @@ has.cell = function(sector.index, track.index) {
 # == details
 # Draw the index of the sector and the track for each cell on the figure.
 # This function can help you to find the coordinates of cells. 
-show.index = function() {
+circos.info = function(plot = TRUE) {
 	sectors = get.all.sector.index()
 	max.track.index = get.max.track.index()
 	if(length(sectors) && max.track.index > 0) {
-		for(i in seq_along(sectors)) {
-			for(j in seq_len(max.track.index)) {
-				cell.xlim = get.cell.meta.data("cell.xlim", sector.index = sectors[i], track.index = j)
-				cell.ylim = get.cell.meta.data("cell.ylim", sector.index = sectors[i], track.index = j)
-				circos.text(mean(cell.xlim), mean(cell.ylim), labels = paste(sectors[i], j, sep = ":"),
-				    sector.index = sectors[i], track.index = j, direction = "horizontal")
+		
+		if(plot) {
+			for(i in seq_along(sectors)) {
+				for(j in seq_len(max.track.index)) {
+					cell.xlim = get.cell.meta.data("cell.xlim", sector.index = sectors[i], track.index = j)
+					cell.ylim = get.cell.meta.data("cell.ylim", sector.index = sectors[i], track.index = j)
+					circos.text(mean(cell.xlim), mean(cell.ylim), labels = paste(sectors[i], j, sep = ":"),
+						sector.index = sectors[i], track.index = j, direction = "horizontal")
+				}
 			}
 		}
+		
+		qqcat("Number of sectors: @{length(sectors)}\n")
+		cat("Sectors:\n")
+		print(sectors)
+		
+		cat("\n")
+		qqcat("Number of tracks: @{max.track.index}\n")
+		
+		cat("\n")
+		qqcat("Current sector: @{get.current.sector.index()}\n")
+		qqcat("Current track: @{get.current.track.index()}\n")
+		
+	} else {
+		cat("Nothing is plotted.\n")
 	}
+}
+
+show.index = function() {
+	circos.info()
+	cat("`show.index` is deprecated, please use `circos.info` instead.\n")
 }
 
 # == title

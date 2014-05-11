@@ -57,7 +57,7 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 	
 	# ideogram
 	if(plot) {
-		circos.genomicTrackPlotRegion(df, by.line = TRUE, bg.border = NA, track.height = 0.05,
+		circos.genomicTrackPlotRegion(df, stack = TRUE, bg.border = NA, track.height = 0.05,
 			panel.fun = function(region, value, ...) {
 				col = cytoband.col(value[[2]])
 				circos.genomicRect(region, value, col = col, border = NA, ...)
@@ -74,28 +74,31 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 
 # data contains column data which can be data frame or matrix
 # data is a list of data frame
-circos.genomicTrackPlotRegion = function(data, ylim = NULL, by.line = FALSE, numeric.columns = NULL, 
+circos.genomicTrackPlotRegion = function(data, ylim = NULL, stack = FALSE, numeric.columns = NULL, 
 	track.height = circos.par("default.track.height"), track.index = NULL,
 	bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"), panel.fun = function(region, value)  {NULL} ) {
-	
-	# call circos.trackPlotRegion
-	
+
 	# re-define panel.fun
 	genomicPanelFun = panel.fun
 
 	# now `data` is either a data frame or a list of data frame
 	data = normalizeToDataFrame(data)
 	
-	if(is.dataFrameList(data)) {
-		args = formals(genomicPanelFun)
-		if(!(length(args) == 3 && names(args)[3] == "...")) {
-			stop("Since your input data is a list of data frame or you are going to plot a data matrix, the `panel.fun` need a third argument `...` to pass specicial settings to graphic functions.\n")
+	if(!is.dataFrameList(data)) {
+		if(!all(sapply(data[-(1:3)], is.numeric))) {
+			stop("Some of your `column.columns` are not numeric.\n")
 		}
 	}
 	
-	if(by.line) {
+	if(stack) {
+		args = formals(genomicPanelFun)
+		if(!(length(args) == 3 && names(args)[3] == "...")) {
+			stop("The `panel.fun` need a third argument `...` to pass specicial settings to graphic functions.\n")
+		}
+	}
 	
-		# transform all data frame as list of data frame
+	if(stack) {
+	
 		if(is.dataFrameList(data)) {
 			n = length(data)
 			
@@ -113,45 +116,79 @@ circos.genomicTrackPlotRegion = function(data, ylim = NULL, by.line = FALSE, num
 
 				})
 		} else {
-			numeric.columns = which(sapply(data[-(1:3)], is.numeric))
-			n = length(numeric.columns)
-			
-			if(is.null(numeric.columns)) {
-				n = 1
-				data = cbind(data, rep(1, nrow(data)))
-				numeric.columns = ncol(data)
-			} else {
-				n = length(numeric.columns)
+			if(is.null(numeric.columns) {
+				numeric.columns = which(as.logical(sapply(data[-(1:3)], is.numeric)))
 			}
+			n = length(numeric.columns)
+			non.numeric.columns = setdiff(seq_along(data)[-(1:3)], numeric.columns)
 			
-			circos.trackPlotRegion(ylim = c(0.5, n + 0.5), bg.col = bg.col, bg.border = bg.border, bg.lwd = bg.lwd, 
-				track.height = track.height, track.index = track.index, panel.fun = function(x, y) {
-						
-					chr = get.cell.meta.data("sector.index")
-					for(i in seq_len(n)) {
+			if(n == 0) {
+				circos.trackPlotRegion(ylim = c(0.5, n + 0.5), bg.col = bg.col, bg.border = bg.border, bg.lwd = bg.lwd, 
+					track.height = track.height, track.index = track.index, panel.fun = function(x, y) {
+							
+						chr = get.current.chromosome()
 						l = data[[1]] == chr
 						df = data[l, , drop = FALSE]
+						i = 1
 						if(nrow(df)) {
-							genomicPanelFun(df[2:3], df[numeric.columns[i]], hline = i+0, i = i+0)
+							genomicPanelFun(df[2:3], df[non.numeric.columns], hline = i+0, i = i+0)
 						}
-					}
 
-				})
+					})
+			} else {
+				circos.trackPlotRegion(ylim = c(0.5, n + 0.5), bg.col = bg.col, bg.border = bg.border, bg.lwd = bg.lwd, 
+					track.height = track.height, track.index = track.index, panel.fun = function(x, y) {
+							
+						chr = get.current.chromosome()
+						for(i in seq_len(n)) {
+							l = data[[1]] == chr
+							df = data[l, , drop = FALSE]
+							if(nrow(df)) {
+								genomicPanelFun(df[2:3], df[c(numeric.columns[i], non.numeric.columns)], hline = i+0, i = i+0)
+							}
+						}
+
+					})
+			}
 		}			
 		
 	} else {
+	
+		# numeric.columns
+		if(is.dataFrameList(data)) {
+			nuc = lapply(data, function(gr) {
+							numeric.columns = which(as.logical(sapply(data[-(1:3)], is.numeric)))
+							if(length(numeric.columns) == 0) {
+								numeric(0)
+							} else {
+								numeric.columns[1]
+							}
+						})
+		} else {
+			if(is.null(numeric.columns)) {
+				numeric.columns = which(as.logical(sapply(data[-(1:3)], is.numeric))
+			}
+			nuc = numeric.columns
+		}
+		
 		# auto calculate ylim
 		if(is.null(ylim)) {
 			if(is.dataFrameList(data)) {
-				ylim = range(unlist(lapply(data, function(gr) {
-						numeric.columns = which(sapply(gr[-(1:3)], is.numeric))[1]   # first numeric column in each data frame
-						range(unlist(lapply(data[-(1:3)][numeric.columns], range)))
-					})))
+				ylim = range(unlist(lapply(seq_along(data), function(i) {
+					gr = data[[i]]
+					if(length(nuc[[i]]) == 0) {
+						stop("There is no numeric column in one of your data frame which calculation of `ylim` depends on. Or you can set `ylim` explicitely.\n")
+					}
+					range(unlist(lapply(data[-(1:3)][ nuc[[i]] ], range)))
+				})))
 			} else {
 				if(is.null(numeric.columns)) {
-					numeric.columns = which(sapply(data[-(1:3)], is.numeric))
+					
+					if(length(nuc) == 0) {
+						stop("There is no numeric column in your data frame which calculation of `ylim` depends on. Or you can set `ylim` explicitely.\n")
+					}
 				}
-				ylim = range(unlist(lapply(data[-(1:3)][numeric.columns], range)))
+				ylim = range(unlist(lapply(data[-(1:3)][nuc], range)))
 			}
 		}
 		
@@ -159,11 +196,12 @@ circos.genomicTrackPlotRegion = function(data, ylim = NULL, by.line = FALSE, num
 			circos.trackPlotRegion(ylim = ylim, bg.col = bg.col, bg.border = bg.border, bg.lwd = bg.lwd,
 				track.height = track.height, track.index = track.index, panel.fun = function(x, y) {
 					
-					chr = get.cell.meta.data("sector.index")
+					chr = get.current.chromosome()
 					for(i in seq_along(data)) {
-						df = data[data[[i]] == chr, , drop = FALSE]
+						l = data[[i]] == chr
+						df = data[[i]][l, , drop = FALSE]
 						if(nrow(df)) {
-							genomicPanelFun(df[2:3], df[-(1:3)], i = i+0)
+							genomicPanelFun(df[2:3], df[-(1:3)], numeric.columns = nuc[[i]])
 						}
 					}
 				})
@@ -171,10 +209,10 @@ circos.genomicTrackPlotRegion = function(data, ylim = NULL, by.line = FALSE, num
 			circos.trackPlotRegion(ylim = ylim, bg.col = bg.col, bg.border = bg.border, bg.lwd = bg.lwd,
 				track.height = track.height, track.index = track.index, panel.fun = function(x, y) {
 					
-					chr = get.cell.meta.data("sector.index")
+					chr = get.current.chromosome()
 					df = data[data[[1]] == chr, , drop = FALSE]
 					if(nrow(df)) {
-						genomicPanelFun(df[2:3], df[-(1:3)])
+						genomicPanelFun(df[2:3], df[-(1:3)], numeric.columns = nuc)
 					}
 				})
 		}
@@ -182,9 +220,14 @@ circos.genomicTrackPlotRegion = function(data, ylim = NULL, by.line = FALSE, num
 	
 }
 
-# ==param
+# == title
+# Which stack the graphics are on
+#
+# == param
 # -... invisible arguments that users do not need to care
 #
+# == details
+# The function should only be put inside ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
 getI = function(...) {
 	args = list(...)
 	return(args$i)
@@ -211,10 +254,16 @@ circos.genomicPoints = function(region, value, numeric.columns = NULL, sector.in
 	args = list(...)
 	if(!is.null(args$hline)) {
 		value = data.frame(hline = rep(args$hline, nr))
+		numeric.columns = 1
 	}
-
-	if(!is.data.frame(value)) {
-		value = as.data.frame(value)
+	
+	if(is.vector(value) && !is.list(value) && length(value) == 1) {
+		value = data.frame(value = rep(value, nr))
+		numeric.columns = 1
+	}
+	if(is.vector(value) && !is.list(value) && length(value) == nr) {
+		value = data.frame(value = value)
+		numeric.columns = 1
 	}
 
 	if(!is.null(posTransform)) {
@@ -222,7 +271,10 @@ circos.genomicPoints = function(region, value, numeric.columns = NULL, sector.in
 	}
 
 	if(is.null(numeric.columns)) {
-		numeric.columns = which(sapply(value, is.numeric))
+		numeric.columns = which(as.logical(sapply(data[-(1:3)], is.numeric))
+		if(length(numeric.columns) == 0) {
+			stop("Cannot find numeric columns.\n")
+		}
 	}
 
 	nc = length(numeric.columns)
@@ -500,6 +552,10 @@ posTransform.default = function(pos) {
 	return(data.frame(start = segment[-length(segment)], end = segment[-1]))
 }
 
+highlight.chromosome = function(chromosome, track.index, col, border, lwd, lty) {
+
+}
+
 continuousIndexSegment = function(x) {
 	if(length(x) == 1) {
 		return(list(x))
@@ -513,6 +569,12 @@ continuousIndexSegment = function(x) {
 	}
 }
 
+# == title
+# get current chromosome name
+#
+# == details
+# The function is a simple wrapper of ``get.cell.meta.data("sector.index")`` and
+# should only be put inside ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
 get.current.chromosome = function() {
 	get.cell.meta.data("sector.index")
 }
@@ -526,26 +588,32 @@ is.dataFrameList = function(data) {
 
 
 normalizeToDataFrame = function(data) {
+
+	all.chr = get.all.sector.index()
+	
 	if(is.data.frame(data)) {
 		if(ncol(data) < 3) {
 			stop("Your data frame is less than 3 columns!.\n")
 		}
+		data = data[data[[1]] %in% all.chr, , drop = FALSE]
 		return(data)
 	} else if(class(data) == "GRanges") {
 		data = cbind(as.data.frame(data)[1:3], as.data.frame(mcols(data)))
+		data = data[data[[1]] %in% all.chr, , drop = FALSE]
 		return(data)
 	} else if(class(data) == "GRangesList") {
 		df = lapply(data, function(gr) {
 			value = as.data.frame(mcols(gr))
 			if(ncol(value) == 0) {
-				as.data.frame(gr)[1:3]
+				res = as.data.frame(gr)[1:3]
 			} else {
 				numeric.columns = which(sapply(value, is.numeric))
 				if(length(numeric.columns) > 1) {
 					warning("You have more than one numeric columns, only take the first one.\n")
 				}
-				cbind(as.data.frame(gr)[1:3], value[numeric.columns[1]])
+				res = cbind(as.data.frame(gr)[1:3], value[numeric.columns[1]])
 			}
+			res = res[res[[1]] %in% all.chr, , drop = FALSE]
 		})
 		return(df)
 	} else if(is.list(data) && all(sapply(data, function(x) is.data.frame(x) || class(x) == "GRanges"))) {
@@ -559,14 +627,15 @@ normalizeToDataFrame = function(data) {
 			}
 			value = gr[-(1:3)]
 			if(ncol(value) == 0) {
-				gr[1:3]
+				res = gr[1:3]
 			} else {
 				numeric.columns = which(sapply(value, is.numeric))
 				if(length(numeric.columns) > 1) {
 					warning("You have more than one numeric columns, only take the first one.\n")
 				}
-				cbind(gr[1:3], value[numeric.columns[1]])
+				res = cbind(gr[1:3], value[numeric.columns[1]])
 			}
+			res = res[res[[1]] %in% all.chr, , drop = FALSE]
 		})
 		return(df)
 	} else {

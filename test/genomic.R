@@ -47,10 +47,10 @@ bed1 = random_bed(nr = 100)
 bed2 = random_bed(nr = 100)
 bed_list = list(bed1, bed2)
 
-circos.genomicTrackPlotRegion(bed_list, by.line = TRUE, panel.fun = function(region, value, ...) {
+circos.genomicTrackPlotRegion(bed_list, stack = TRUE, panel.fun = function(region, value, ...) {
 	cex = (value[[1]] - min(value[[1]]))/(max(value[[1]]) - min(value[[1]]))
-	i = getI(...)
-	circos.genomicPoints(region, value, cex = cex, pch = 16, col = i, ...)
+	iStack = getIStack(...)
+	circos.genomicPoints(region, value, cex = cex, pch = 16, col = iStack, ...)
 })
 
 bed = random_bed(nr = 100, nc = 4)
@@ -60,10 +60,10 @@ circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
 })
 
 bed = random_bed(nr = 100, nc = 4)
-circos.genomicTrackPlotRegion(bed, by.line = TRUE, panel.fun = function(region, value, ...) {
+circos.genomicTrackPlotRegion(bed, stack = TRUE, panel.fun = function(region, value, ...) {
 	cex = (value[[1]] - min(value[[1]]))/(max(value[[1]]) - min(value[[1]]))
-	i = getI(...)
-	circos.genomicPoints(region, value, cex = cex, pch = 16, col = i, ...)
+	iStack = getIStack(...)
+	circos.genomicPoints(region, value, cex = cex, pch = 16, col = iStack, ...)
 })
 
 circos.clear()

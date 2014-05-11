@@ -57,13 +57,12 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 	
 	# ideogram
 	if(plotIdeogram) {
-		circos.genomicTrackPlotRegion(df, stack = TRUE, bg.border = NA, track.height = 0.05,
+		circos.genomicTrackPlotRegion(df, ylim = c(0, 1), bg.border = NA, track.height = 0.05,
 			panel.fun = function(region, value, ...) {
 				col = cytoband.col(value[[2]])
-				circos.genomicRect(region, value, col = col, border = NA, ...)
+				circos.genomicRect(region, value, ybottom = 0, ytop = 1, col = col, border = NA, ...)
 				xlim = get.cell.meta.data("xlim")
-				iStack = getIStack(...)
-				circos.rect(xlim[1], iStack-0.5, xlim[2], iStack+0.5, border = "black")
+				circos.rect(xlim[1], 0, xlim[2], 1, border = "black")
 			}
 		)
 	}

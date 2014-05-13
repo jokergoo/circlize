@@ -32,34 +32,48 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 		chromosome = chromosome[chromosome %in% chromosome.index]
 	}
 	
-	xlim = matrix(nrow = 0, ncol = 2)
-	for(chr in chromosome) {
-		i = which(cytoband$chromosome == chr)
-		xlim = rbind(xlim,c(0, cytoband$chr.len[i]))
-	}
+	df = df[df[[1]] %in% chromosome, , drop = FALSE]
 	
-	major.at = seq(0, 10^nchar(max(xlim[, 2])), by = major.by)
+	circos.genomicInitialize(df, major.by = major.by plotRect = plotIdeogram, colorMappingColumn = 2, colorMappingFun = function(x) cytoband.col(x))
+}
+
+circos.genomicInitialize = function(data, major.by = 50000000, plotRect = TRUE, colorMappingColumn = NULL, colorMappingFun = function(x) "grey") {
+	
+	data = normalizeToDataFrame(data)
+	
+	fa = unique(data[[1]])
+	x1 = tapply(data[[2]], data[[1]], min)[fa]
+	x2 = tapply(data[[3]], data[[1]], max)[fa]
 	
 	par(mar = c(1, 1, 1, 1), lwd = 0.5)
 	o.cell.padding = circos.par("cell.padding")
 	circos.par(cell.padding = c(0, 0, 0, 0), points.overflow.warning = FALSE)
-	circos.initialize(factor(chromosome, levels = chromosome), xlim = xlim)
+	circos.initialize(factor(fa, levels = fa), xlim = cbind(x1, x2))
+	
+	major.at = seq(0, 10^nchar(max(xlim[, 2])), by = major.by)
+	if(major.by > 1e6) {
+		major.tick.labels = paste(major.at/1000000, "MB", sep = "")
+	} else if(major.by > 1e3) {
+		major.tick.labels = paste(major.at/100, "KB", sep = "")
+	} else {
+		major.tick.labels = paste(major.at, "bp", sep = "")
+	}
 	
 	# axis and chromosome names
 	circos.genomicTrackPlotRegion(df, ylim = c(0, 1), bg.border = NA, track.height = 0.05,
 		panel.fun = function(region, value, ...) {
-			chr = get.current.chromosome()
-			circos.axis(h = 0, major.at = major.at, labels = paste(major.at/1000000, "MB", sep = ""), labels.cex = 0.3, labels.direction = "vertical_right")
+			sector.index = get.cell.meta.data("sector.index")
+			circos.axis(h = 0, major.at = major.at, labels = major.tick.labels, labels.cex = 0.3, labels.direction = "vertical_right")
 			xlim = get.cell.meta.data("xlim")
-			circos.text(mean(xlim), 1.2, labels = gsub("chr", "", chr), cex = 1, adj = c(0.5, 0))
+			circos.text(mean(xlim), 1.2, labels = sector.index, cex = 1, adj = c(0.5, 0))
 		}
 	)
 	
 	# ideogram
-	if(plotIdeogram) {
+	if(plotRect) {
 		circos.genomicTrackPlotRegion(df, ylim = c(0, 1), bg.border = NA, track.height = 0.05,
 			panel.fun = function(region, value, ...) {
-				col = cytoband.col(value[[2]])
+				col = colorMappingFun(value[[colorMappingColumn]])
 				circos.genomicRect(region, value, ybottom = 0, ytop = 1, col = col, border = NA, ...)
 				xlim = get.cell.meta.data("xlim")
 				circos.rect(xlim[1], 0, xlim[2], 1, border = "black")
@@ -69,6 +83,7 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 	
 	circos.par("cell.padding" = o.cell.padding, "points.overflow.warning" = TRUE)
 	return(invisible(NULL))
+	
 }
 
 # == title
@@ -397,8 +412,8 @@ circos.genomicRect = function(region, value,
 	
 	args = list(...)
 	if(!is.null(args$hline)) {
-		ytop = args$hline + 0.5
-		ybottom = args$hline - 0.5
+		if(is.null(ytop)) ytop = args$hline + 0.5
+		if(is.null(ybottom)) ybottom = args$hline - 0.5
 	}
 	
 	if(is.vector(value) && !is.list(value) && length(value) == 1) {
@@ -674,8 +689,38 @@ posTransform.default = function(pos) {
 	return(data.frame(start = segment[-length(segment)], end = segment[-1]))
 }
 
-highlight.chromosome = function(chromosome, track.index, col, border, lwd, lty) {
-
+highlight.chromosome = function(chr, track.index = seq_len(get.max.track.index()), 
+	col = "#FF000040", border = NA, lwd = par("lwd"), lty = par("lty"), padding = c(0, 0, 0, 0)) {
+	
+	if(length(chr) != 1) {
+		stop("`chr` can only be length 1.\n")
+	}
+	
+	max.track.index = get.max.track.index()
+	if(!all(track.index %in% seq_len(max.track.index)) {
+		stop("`track.index` contains index that does not belong to available sectors.\n")
+	}
+	
+	track.index = seq_len(max.track.index)[track.index %in% seq_len(max.track.index)]
+	ts = continuousIndexSegment(track.index)
+	
+	for(i in seq_along(ts)) {
+		track.index.vector = ts[[i]]
+		start.degree = get.cell.meta.data("cell.start.degree", 1)
+		end.degree = get.cell.meta.data("cell.end.degree", 1)
+		rou1 = get.cell.meta.data("cell.top.radius", chr, track.index.vector[1])
+		rou2 = get.cell.meta.data("cell.bottom.radius", chr, track.index.vector[length(track.index.vector)])
+		
+		d1 = end.degree - start.degree
+		d2 = rou1 - rou2
+		start.degree = start.degree - d1*padding[2]
+		end.degree = end.degree + d1*padding[4]
+		rou1 = rou1 + d2*padding[3]
+		rou2 = rou2 + d2*padding[1]
+		
+		draw.sector(start.degree = start.degree, end.degree = end.degree, rou1 = rou1, rou2 = rou2, col = col, border = border, lwd = lwd, lty = lty)
+	}
+	
 }
 
 continuousIndexSegment = function(x) {
@@ -805,29 +850,43 @@ circos.genomicRainfall = function(data, col = "black", pch = par("pch"), cex = p
 	}
 	
 	circos.genomicTrackPlotRegion(data, ylim = c(0, 9), panel.fun = function(region, value, ...) {
-		ir = IRanges(start = region[[1]], end = region[[2]])
-		ir = as.data.frame(sort(ir))
-		n = nrow(ir)
-		dist = numeric(n)
-		
-		if(n < 2) {
-			return(NULL)
-		}
-		
-		dist[1] = ir[2, 1] - ir[1, 2]
-		dist[n] = ir[n, 1] - ir[n-1, 2]
-			
-		if(n > 2) {
-			d1 = ir[3:n, 1] - ir[2:(n-1), 2]
-			d2 = ir[2:(n-1), 1] - ir[1:(n-2), 2]
-			dist[2:(n-1)] = pmin(d1, d2)
-		}
-		
-		dist = ifelse(dist < 0, 0, dist)
-		dist = log10(dist + 1)
-		
+		df = rainfallTransform(region)
 		i = getIStack(...)
-		circos.genomicPoints(ir, dist, col = col[i], cex = cex[i], pch = pch[i], ...)
+		circos.genomicPoints(df[1:2], df[3], col = col[i], cex = cex[i], pch = pch[i], ...)
 	})
 	
+}
+
+rainfallTransform = function(ir, mode = c("min", "max", "mean")) {
+	
+	mode = match.arg(mode)
+	
+	ir = IRanges(start = region[[1]], end = region[[2]])
+	ir = as.data.frame(sort(ir))
+	n = nrow(ir)
+	dist = numeric(n)
+		
+	if(n < 2) {
+		return(data.frame(start = numeric(0), end = numeric(0), dist = numeric(0)))
+	}
+		
+	dist[1] = ir[2, 1] - ir[1, 2]
+	dist[n] = ir[n, 1] - ir[n-1, 2]
+			
+	if(n > 2) {
+		d1 = ir[3:n, 1] - ir[2:(n-1), 2]
+		d2 = ir[2:(n-1), 1] - ir[1:(n-2), 2]
+		if(mode == "min") {
+			dist[2:(n-1)] = pmin(d1, d2)
+		} else if(mode == "max") {
+			dist[2:(n-1)] = pmax(d1, d2)
+		} else {
+			dist[2:(n-1)] = apply(cbind(d1, d2), 1, mean)
+		}
+	}
+		
+	dist = ifelse(dist < 0, 0, dist)
+	dist = log10(dist + 1)
+	
+	return(data.frame(start = ir[, 1], end = ir[, 2], dist = dist))
 }

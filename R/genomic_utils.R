@@ -57,7 +57,7 @@ read.cytoband = function(file = paste(system.file(package = "circlize"), "/extda
 
 
 # == title
-# Assign colors to cytogenetic band according to the Giemsa stain results
+# Assign colors to cytogenetic band (hg19) according to the Giemsa stain results
 #
 # == param
 # -x a vector containing the Giemsa stain results
@@ -86,13 +86,13 @@ cytoband.col = function(x) {
 # generate random genomic data
 #
 # == param
-# -nr number of rows
-# -nc number of numeric columns
+# -nr  number of rows
+# -nc  number of numeric columns
 # -fun function to generate random data
 #
 # == details
-# The function will sample positions form human genome and chromosome names start with "chr".
-# Positions are sorted
+# The function will sample positions from human genome. Chromosome names start with "chr"
+# and positions are sorted. The final number of rows may not be exactly as same as ``nr``.
 generateRandomBed = function(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0.5)) {
 	cyto = read.cytoband()
 	chr.len = cyto$chr.len

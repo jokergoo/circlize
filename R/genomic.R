@@ -40,7 +40,9 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 	circos.genomicInitialize(df, sector.names = sn, major.by = major.by, plotRect = plotIdeogram, colorMappingColumn = 2, colorMappingFun = function(x) cytoband.col(x))
 }
 
-circos.genomicInitialize = function(data, sector.names = NULL, major.by = 50000000, plotRect = TRUE, colorMappingColumn = NULL, colorMappingFun = function(x) "grey") {
+# == title
+# Initialize circos plot with genomic data
+circos.genomicInitialize = function(data, sector.names = NULL, major.by = 50000000, plotRect = TRUE, colorMappingColumn = NULL, colorMappingFun = function(x) rep("grey", length(x))) {
 	
 	if(is.factor(data[[1]])) {
 		fa = levels(data[[1]])
@@ -282,6 +284,9 @@ getIStack = function(...) {
 }
 
 
+# == title
+# Add points to 
+#
 # ==param
 # -region a data frame contains 2 column
 # -value  a data frame contains values and other stuff
@@ -345,7 +350,8 @@ circos.genomicPoints = function(region, value, numeric.column = NULL,
 	}
 }
 
-
+# == title
+# add lines
 circos.genomicLines = function(region, value, numeric.column = NULL, 
 	sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
@@ -434,7 +440,8 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 	}
 }	
 
-
+# == title
+# Draw rectangle-like grid
 circos.genomicRect = function(region, value, 
 	ytop = NULL, ybottom = NULL, ybottom.column = NULL, ytop.column = NULL, 
 	sector.index = get.cell.meta.data("sector.index"),
@@ -513,6 +520,8 @@ circos.genomicRect = function(region, value,
 
 }
 
+# == title
+# add link from two set of genomic positions
 circos.genomicLink = function(region1, region2, 
 	rou = get.track.end.position(get.current.track.index()), top.ratio = 0.5,
     col = "black", lwd = par("lwd"), lty = par("lty"), border = NA,
@@ -551,6 +560,8 @@ circos.genomicLink = function(region1, region2,
 	}
 }
 
+# == title
+# add text
 circos.genomicText = function(region, value, labels = NULL, labels.column = NULL, numeric.column = NULL, 
 	sector.index = get.cell.meta.data("sector.index"), 
 	track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
@@ -619,7 +630,8 @@ circos.genomicText = function(region, value, labels = NULL, labels.column = NULL
 
 }
 
-# high-level
+# == title
+# add genomic position transformation lines
 circos.genomicPosTransformLine = function(region, track.height = 0.1, posTransform = NULL, 
 	horizontalLine = FALSE, track.margin = c(0, 0),
 	type = c("default", "reverse"), col = "black", lwd = par("lwd"), lty = par("lty")) {
@@ -676,6 +688,8 @@ circos.genomicPosTransformLine = function(region, track.height = 0.1, posTransfo
 	circos.par(track.margin = o.track.margin)
 }
 
+# == title
+# calculate and add genomic density
 circos.genomicDensity = function(data, window.size = 10000000, overlap = TRUE, area = TRUE, area.baseline = 0, ...) {
 	data = normalizeToDataFrame(data)
 	
@@ -691,6 +705,8 @@ circos.genomicDensity = function(data, window.size = 10000000, overlap = TRUE, a
 	}
 }
 
+# == title
+# calculate genomic density
 genomicDensity = function(ir, window.size = 10000000, overlap = TRUE) {
 	
 	if(class(ir) != "IRanges") {
@@ -730,12 +746,16 @@ genomicDensity = function(ir, window.size = 10000000, overlap = TRUE) {
 	return(data.frame(start = s, end = e, pct = y))
 }
 
+# == title
+# position transformation function
 posTransform.default = function(pos) {
 	xlim = get.cell.meta.data("xlim")
 	segment = seq(xlim[1], xlim[2], length.out = nrow(pos) + 1)
 	return(data.frame(start = segment[-length(segment)], end = segment[-1]))
 }
 
+# == title
+# highlight a chromosome on a circos plot
 highlight.chromosome = function(chr, track.index = seq_len(get.max.track.index()), 
 	col = "#FF000040", border = NA, lwd = par("lwd"), lty = par("lty"), padding = c(0, 0, 0, 0)) {
 	
@@ -875,7 +895,8 @@ normalizeToDataFrame = function(data) {
 	return(x)
 }
 
-
+# == title
+# genomic rainfall plot
 circos.genomicRainfall = function(data, col = "black", pch = par("pch"), cex = par("cex"), 
 	track.height = circos.par("default.track.height"), track.index = NULL,
 	bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd")) {
@@ -904,6 +925,8 @@ circos.genomicRainfall = function(data, col = "black", pch = par("pch"), cex = p
 	
 }
 
+# == title
+# calculate inter-distance of regions
 rainfallTransform = function(ir, mode = c("min", "max", "mean")) {
 	
 	mode = match.arg(mode)

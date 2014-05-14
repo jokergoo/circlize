@@ -34,14 +34,30 @@ circos.initializeWithIdeogram = function(file = paste(system.file(package = "cir
 	
 	df = df[df[[1]] %in% chromosome, , drop = FALSE]
 	
-	circos.genomicInitialize(df, major.by = major.by plotRect = plotIdeogram, colorMappingColumn = 2, colorMappingFun = function(x) cytoband.col(x))
+	sn = unique(df[[1]])
+	sn = gsub("chr", "", sn)
+	
+	circos.genomicInitialize(df, sector.names = sn, major.by = major.by, plotRect = plotIdeogram, colorMappingColumn = 2, colorMappingFun = function(x) cytoband.col(x))
 }
 
-circos.genomicInitialize = function(data, major.by = 50000000, plotRect = TRUE, colorMappingColumn = NULL, colorMappingFun = function(x) "grey") {
+circos.genomicInitialize = function(data, sector.names = NULL, major.by = 50000000, plotRect = TRUE, colorMappingColumn = NULL, colorMappingFun = function(x) "grey") {
 	
-	data = normalizeToDataFrame(data)
+	if(is.factor(data[[1]])) {
+		fa = levels(data[[1]])
+	} else {
+		fa = unique(data[[1]])
+	}
 	
-	fa = unique(data[[1]])
+	if(!is.null(sector.names)) {
+		if(length(sector.names) != length(fa)) {
+			stop("length of `sector.names` and length of sectors differ.\n")
+		}
+	} else {
+		sector.names = fa
+	}
+	
+	names(sector.names) = fa
+	
 	x1 = tapply(data[[2]], data[[1]], min)[fa]
 	x2 = tapply(data[[3]], data[[1]], max)[fa]
 	
@@ -50,7 +66,7 @@ circos.genomicInitialize = function(data, major.by = 50000000, plotRect = TRUE, 
 	circos.par(cell.padding = c(0, 0, 0, 0), points.overflow.warning = FALSE)
 	circos.initialize(factor(fa, levels = fa), xlim = cbind(x1, x2))
 	
-	major.at = seq(0, 10^nchar(max(xlim[, 2])), by = major.by)
+	major.at = seq(0, 10^nchar(max(x2)), by = major.by)
 	if(major.by > 1e6) {
 		major.tick.labels = paste(major.at/1000000, "MB", sep = "")
 	} else if(major.by > 1e3) {
@@ -65,7 +81,7 @@ circos.genomicInitialize = function(data, major.by = 50000000, plotRect = TRUE, 
 			sector.index = get.cell.meta.data("sector.index")
 			circos.axis(h = 0, major.at = major.at, labels = major.tick.labels, labels.cex = 0.3, labels.direction = "vertical_right")
 			xlim = get.cell.meta.data("xlim")
-			circos.text(mean(xlim), 1.2, labels = sector.index, cex = 1, adj = c(0.5, 0))
+			circos.text(mean(xlim), 1.2, labels = sector.names[sector.index], cex = 1, adj = c(0.5, 0))
 		}
 	)
 	
@@ -259,6 +275,9 @@ circos.genomicTrackPlotRegion = function(data, ylim = NULL, stack = FALSE, numer
 # The function should only be put inside ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
 getIStack = function(...) {
 	args = list(...)
+	if(is.null(args$iStack)) {
+		stop("Maybe you are not in 'stack' mode or you should call like `getIStach(...)`\n")
+	}
 	return(args$iStack)
 }
 
@@ -379,24 +398,38 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 	if(!is.null(args$hline)) {
 		for(i in seq_len(nr)) {
 			circos.lines( c(region[i, 1], region[i, 2]), c(value[i, numeric.column], value[i, numeric.column]), 
+				col = col, lwd = lwd, lty = lty, type = "l",
+				sector.index = sector.index, track.index = track.index )
+		}
+	} else if(nc == 1) {
+		if(type == "segment") {
+			for(i in seq_len(nr)) {
+				circos.lines( c(region[i, 1], region[i, 2]), c(value[i, numeric.column], value[i, numeric.column]), 
+					col = col, lwd = lwd, lty = lty, type = "l",
+					sector.index = sector.index, track.index = track.index )
+			}
+		} else {
+			circos.lines( (region[[1]] + region[[2]])/2, value[[ numeric.column ]], 
 				col = col, lwd = lwd, lty = lty, type = type, 
 				area = area, area.baseline = area.baseline, 
 				border = border, pt.col = pt.col, cex = cex, pch = pch,
 				sector.index = sector.index, track.index = track.index )
 		}
-	} else if(nc == 1) {
-		circos.lines( (region[[1]] + region[[2]])/2, value[[ numeric.column ]], 
-			col = col, lwd = lwd, lty = lty, type = type, 
-			area = area, area.baseline = area.baseline, 
-			border = border, pt.col = pt.col, cex = cex, pch = pch,
-			sector.index = sector.index, track.index = track.index )
 	} else {
 		for(i in seq_len(nc)) {
-			circos.lines( (region[[1]] + region[[2]])/2, value[[ numeric.column[i] ]], 
-				col = col[i], lwd = lwd[i], lty = lty[i], type = type[i], 
-				area = area[i], area.baseline = area.baseline[i], 
-				border = border[i], pt.col = pt.col[i], cex = cex[i], pch = pch[i],
-				sector.index = sector.index, track.index = track.index )
+			if(type[i] == "segment") {
+				for(k in seq_len(nr)) {
+					circos.lines( c(region[k, 1], region[k, 2]), c(value[k, numeric.column[i] ], value[k, numeric.column[i] ]), 
+						col = col[i], lwd = lwd[i], lty = lty[i], type = "l",
+						sector.index = sector.index, track.index = track.index )
+				}
+			} else {
+				circos.lines( (region[[1]] + region[[2]])/2, value[[ numeric.column[i] ]], 
+					col = col[i], lwd = lwd[i], lty = lty[i], type = type[i], 
+					area = area[i], area.baseline = area.baseline[i], 
+					border = border[i], pt.col = pt.col[i], cex = cex[i], pch = pch[i],
+					sector.index = sector.index, track.index = track.index )
+			}
 		}
 	}
 }	
@@ -588,45 +621,59 @@ circos.genomicText = function(region, value, labels = NULL, labels.column = NULL
 
 # high-level
 circos.genomicPosTransformLine = function(region, track.height = 0.1, posTransform = NULL, 
-	type = c("in", "out"), col = "black", lwd = par("lwd"), lty = par("lty")) {
+	horizontalLine = FALSE, track.margin = c(0, 0),
+	type = c("default", "reverse"), col = "black", lwd = par("lwd"), lty = par("lty")) {
 	
 	region = normalizeToDataFrame(region)
 	
+	o.track.margin = circos.par("track.margin")
+	circos.par(track.margin = track.margin)
+	
 	type = match.arg(type)
 	
-	if(is.null(posTransform)) {
-		region_new = region
-	} else {
-		region_new = cbind(region[[1]], posTransform(region[2:3]))
-	}
-	
-	if(type == "in") {
-		circos.trackPlotRegion(region[[1]], ylim = c(0, 1), border = NA, panel.fun = function(x, y) {
-			chr = get.chromosome()
+	if(type == "default") {
+		circos.trackPlotRegion(region[[1]], ylim = c(0, 1), bg.border = NA, panel.fun = function(x, y) {
+			chr = get.current.chromosome()
 			region_subset = region[region[[1]] == chr, , drop = FALSE]
-			region_new_subset = region_new[region_new[[1]] == chr, , drop = FALSE]
+			if(is.null(posTransform)) {
+				region_new_subset = region_subset
+			} else {
+				region_new_subset = cbind(region_subset[[1]], posTransform(region_subset[2:3]))
+			}
+			
 			for(i in seq_len(nrow(region_subset))) {
-				circos.lines(c(region_subset[i, 2], region_subset[i, 3]), c(1, 1), col = col, lwd = lwd, lty = lty)
-				circos.lines(c(region_new_subset[i, 2], region_new_subset[i, 3]), c(0, 0), col = col, lwd = lwd, lty = lty)
+				if(horizontalLine) {
+					circos.lines(c(region_subset[i, 2], region_subset[i, 3]), c(1, 1), col = col, lwd = lwd, lty = lty)
+					circos.lines(c(region_new_subset[i, 2], region_new_subset[i, 3]), c(0, 0), col = col, lwd = lwd, lty = lty)
+				}
 				mid = (region_subset[i, 2] + region_subset[i, 3])/2
 				mid_new = (region_new_subset[i, 2] + region_new_subset[i, 3])/2
 				circos.lines(c(mid, mid, mid_new, mid_new), c(1, 2/3, 1/3, 0), col = col, lwd = lwd, lty = lty)
 			}
 		})
 	} else {
-		circos.trackPlotRegion(region[[1]], ylim = c(0, 1), border = NA, panel.fun = function(x, y) {
-			chr = get.chromosome()
+		circos.trackPlotRegion(region[[1]], ylim = c(0, 1), bg.border = NA, panel.fun = function(x, y) {
+			chr = get.current.chromosome()
 			region_subset = region[region[[1]] == chr, , drop = FALSE]
-			region_new_subset = region_new[region_new[[1]] == chr, , drop = FALSE]
+			if(is.null(posTransform)) {
+				region_new_subset = region_subset
+			} else {
+				region_new_subset = cbind(region_subset[[1]], posTransform(region_subset[2:3]))
+			}
+			
 			for(i in seq_len(nrow(region_subset))) {
-				circos.lines(c(region_subset[i, 2], region_subset[i, 3]), c(0, 0), col = col, lwd = lwd, lty = lty)
-				circos.lines(c(region_new_subset[i, 2], region_new_subset[i, 3]), c(1, 1), col = col, lwd = lwd, lty = lty)
+				if(horizontalLine) {
+					circos.lines(c(region_subset[i, 2], region_subset[i, 3]), c(0, 0), col = col, lwd = lwd, lty = lty)
+					circos.lines(c(region_new_subset[i, 2], region_new_subset[i, 3]), c(1, 1), col = col, lwd = lwd, lty = lty)
+				}
 				mid = (region_subset[i, 2] + region_subset[i, 3])/2
 				mid_new = (region_new_subset[i, 2] + region_new_subset[i, 3])/2
 				circos.lines(c(mid, mid, mid_new, mid_new), c(0, 1/3, 2/3, 1), col = col, lwd = lwd, lty = lty)
 			}
 		})
 	}
+	
+	circos.par(track.margin = o.track.margin)
 }
 
 circos.genomicDensity = function(data, window.size = 10000000, overlap = TRUE, area = TRUE, area.baseline = 0, ...) {
@@ -685,7 +732,7 @@ genomicDensity = function(ir, window.size = 10000000, overlap = TRUE) {
 
 posTransform.default = function(pos) {
 	xlim = get.cell.meta.data("xlim")
-	segment = seq(xlim[1], xlim[2], by = nrow(pos) + 1)
+	segment = seq(xlim[1], xlim[2], length.out = nrow(pos) + 1)
 	return(data.frame(start = segment[-length(segment)], end = segment[-1]))
 }
 
@@ -697,7 +744,7 @@ highlight.chromosome = function(chr, track.index = seq_len(get.max.track.index()
 	}
 	
 	max.track.index = get.max.track.index()
-	if(!all(track.index %in% seq_len(max.track.index)) {
+	if(!all(track.index %in% seq_len(max.track.index))) {
 		stop("`track.index` contains index that does not belong to available sectors.\n")
 	}
 	

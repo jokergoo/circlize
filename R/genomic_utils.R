@@ -45,12 +45,14 @@ read.cytoband = function(file = paste(system.file(package = "circlize"), "/extda
 	chromosome = c(chromosome.num, chromosome.letter)
 	
 	chr.len = NULL
+	dnew = NULL
 	for(chr in chromosome) {
 		d2 = d[d[[1]] == chr, ]
 		chr.len = c(chr.len, max(d2[, 3]))
+		dnew = rbind(dnew, d2)
 	}
 	
-	return(list(df = d, chromosome = chromosome, chr.len = chr.len))
+	return(list(df = dnew, chromosome = chromosome, chr.len = chr.len))
 }
 
 
@@ -78,4 +80,40 @@ cytoband.col = function(x) {
     col = col.panel[x]
     col[is.na(col)] = "#FFFFFF"
     return(col)
+}
+
+# == title
+# generate random genomic data
+#
+# == param
+# -nr number of rows
+# -nc number of numeric columns
+# -fun function to generate random data
+#
+# == details
+# The function will sample positions form human genome and chromosome names start with "chr".
+# Positions are sorted
+generateRandomBed = function(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0.5)) {
+	cyto = read.cytoband()
+	chr.len = cyto$chr.len
+	chromosome = cyto$chromosome
+	dl = lapply(seq_along(chr.len), function(i) {
+		k = round(nr*2 * chr.len[i] / sum(chr.len))
+		k = ifelse(k %% 2, k + 1, k)
+		breaks = sort(sample(chr.len[i], k))
+		res = data.frame(chr = rep(chromosome[i], length(breaks)/2),
+						  start = breaks[seq_along(breaks) %% 2 == 1],
+						  start = breaks[seq_along(breaks) %% 2 == 0],
+						  stringsAsFactors = FALSE)
+		for(k in seq_len(nc)) {
+			res = cbind(res, value = fun(length(breaks)/2))
+		}
+		res
+	})
+
+	df = NULL
+	for(i in seq_along(dl)) {
+		df = rbind(df, dl[[i]])
+	}
+	return(df)
 }

@@ -1,5 +1,5 @@
-\name{circos.link}
-\alias{circos.link}
+\name{circos.link2}
+\alias{circos.link2}
 \title{
   Draw links between points or intervals  
 
@@ -11,10 +11,10 @@
 
 }
 \usage{
-circos.link(sector.index1, point1, sector.index2, point2,
-    rou = get.track.end.position(get.current.track.index()), top.ratio = 0.5,
-    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA, n = 101,
-    top.ratio.low = NULL)
+circos.link2(sector.index1, point1, sector.index2, point2,
+    rou1 = get.track.end.position(get.current.track.index()),
+    rou2 = get.track.end.position(get.current.track.index()), height = 0.5,
+    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA, n = 101)
 }
 \arguments{
   \item{sector.index1}{Sector index for one sector}
@@ -28,7 +28,6 @@ circos.link(sector.index1, point1, sector.index2, point2,
   \item{lty}{Line (or border) style}
   \item{border}{If the link is a belt, then it is the color for the belt border.}
   \item{n}{Number of points to represent a quadratic curve. Because currently I don't know how to  calculate the length of a quadratic curve, the number of segmentation of the quadratic curve cannot be calculated now. It should be an odd value because we need the point for the vertex.}
-  \item{top.ratio.low}{Adjust the height of the lower border of a link (if it is like a belt)}
 
 }
 \details{
@@ -37,29 +36,6 @@ circos.link(sector.index1, point1, sector.index2, point2,
   Drawing links does not create any track. So you can think it is independent of the tracks  
 
   By default you only need to set \code{sector.index1}, \code{point1}, \code{sector.index2} and \code{point2}. The link would look nice. However you can also set the position and the height of links by specifying \code{rou} and \code{top.ratio}. See vignette for detailed explaination. 
-
-
-}
-\examples{
-
-
-
-
-library(circlize)
-par(mar = c(1, 1, 1, 1))
-factors = letters[1:8]
-circos.par(points.overflow.warning = FALSE)
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey",
-    bg.border = NA, track.height = 0.05)
-
-circos.link("a", 5, "c", 5)
-circos.link("b", 5, "d", c(4, 6))
-circos.link("a", c(2, 3), "f", c(4, 6))
-
-circos.clear()
-
-
 
 
 }

@@ -3,7 +3,7 @@
 # Initialize the circos layout with an ideogram
 #
 # == param
-# -file    cytoband file. By default it is the cytoband data for human
+# -cytoband  a path of the uncompressed cytoband file or a data frame that already contains cytoband. By default it is cytoband for hg19.
 # -species abbrevations of species. e.g. hg19 for human, mm10 for mouse. If this
 #          value is specified, the function will download cytoBand.txt.gz from
 #          UCSC website automatically.
@@ -14,10 +14,10 @@
 #
 # == details
 # The functions calls `circos.genomicInitialize`.
-circos.initializeWithIdeogram = function(file = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""), 
+circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""), 
 	species = NULL, chromosome.index = NULL, major.by = 50000000, plotType = c("rect", "axis", "labels")) {
 	
-	cytoband = read.cytoband(file, species = species)
+	cytoband = read.cytoband(cytoband, species = species)
 	df = cytoband$df
 	chromosome = cytoband$chromosome
 	
@@ -63,7 +63,9 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = 500000
 		colorMappingColumn = colorMappingColumn - 3
 	}
 	
-	data = normalizeToDataFrame(data)
+	if(class(data) == "GRanges") {
+		data = cbind(as.data.frame(data)[1:3], as.data.frame(mcols(data)))
+	}
 	
 	if(is.factor(data[[1]])) {
 		fa = levels(data[[1]])
@@ -100,20 +102,24 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = 500000
 	}
 	
 	# axis and chromosome names
-	if(plotType %in% c("axis", "labels")) {
-		circos.genomicTrackPlotRegion(df, ylim = c(0, 1), bg.border = NA, track.height = 0.05,
+	if(any(plotType %in% c("axis", "labels"))) {
+		circos.genomicTrackPlotRegion(data, ylim = c(0, 1), bg.border = NA, track.height = 0.05,
 			panel.fun = function(region, value, ...) {
 				sector.index = get.cell.meta.data("sector.index")
-				circos.axis(h = 0, major.at = major.at, labels = major.tick.labels, labels.cex = 0.3, labels.direction = "vertical_right")
-				xlim = get.cell.meta.data("xlim")
-				circos.text(mean(xlim), 1.2, labels = sector.names[sector.index], cex = 1, adj = c(0.5, 0))
+				if(any(plotType %in% "axis")) {
+					circos.axis(h = 0, major.at = major.at, labels = major.tick.labels, labels.cex = 0.3, labels.direction = "vertical_right")
+				}
+				if(any(plotType %in% "labels")) {
+					xlim = get.cell.meta.data("xlim")
+					circos.text(mean(xlim), 1.2, labels = sector.names[sector.index], cex = 1, adj = c(0.5, 0))
+				}
 			}
 		)
 	}
 	
 	# ideogram
-	if(plotType %in% c("rect")) {
-		circos.genomicTrackPlotRegion(df, ylim = c(0, 1), bg.border = NA, track.height = 0.05,
+	if(any(plotType %in% c("rect"))) {
+		circos.genomicTrackPlotRegion(data, ylim = c(0, 1), bg.border = NA, track.height = 0.05,
 			panel.fun = function(region, value, ...) {
 				col = colorMappingFun(value[[colorMappingColumn]])
 				circos.genomicRect(region, value, ybottom = 0, ytop = 1, col = col, border = NA, ...)
@@ -129,7 +135,7 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = 500000
 }
 
 # == title
-# Create or update a track plotting genomic graphics
+# Create or update a track with genomic graphics
 #
 # == param
 # -data A bed-file-like data frame or a ``GRanges`` object. It can also be a list
@@ -138,7 +144,6 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = 500000
 # -stack If ``data`` is a list of data frames or contains numeric columns more than one,
 #        whether to plot in a "stack" mode
 # -numeric.column Columns of numeric values in ``data`` that will be used for plotting. 
-#                 If it is from a data frame, its value start from the first column.
 #                 If it is from a ``GRanges`` object, its value start from meta-columns.
 # -panel.fun self-defined function which will be applied on each sector. Please not it is different
 #            from that in `circos.trackPlotRegion`. In this function, there are two arguments (``region`` and ``value``) plus ``...``.
@@ -148,7 +153,26 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = 500000
 # -... pass to `circos.trackPlotRegion`.
 #
 # == details
-# The behavior would change depending on users' input data.
+# Similar as `circos.trackPlotRegion`, users can add customized graphics by ``panel.fun``, but the behavior of ``panel.fun``
+# would change depending on users' input data and ``stack`` setting.
+#
+# When ``data`` is a single data frame, ``region`` in ``panel.fun`` is a data frame containing the second and third column in ``data`` in 'current` chromosome.
+# ``value`` is also a data frame containing columns in ``data`` excluding the first three columns.
+#
+# When ``data`` is a list containing data frames and/or ``GRanges`` objects, ``panel.fun`` will be applied iteratively on each data frame, thus, 
+# ``region`` is extracted from the data frame which is in current iteration.
+#
+# If ``stack`` is set, ``ylim`` in argument list will be re-defined. in ``stack`` mode, the y-axis will be splitted into several part
+# with equal height and graphics will be drawn on each 'horizontal' lines. In this case:
+#
+# When ``data`` is a single data frame, each numeric column defined in ``numeric.column`` will be treated as a single unit. If low-level genomic
+# graphical function such `circos.genomicPoints` is applied, the y-axis will be re-defined to the index of current numeric column.
+#
+# When ``data`` is a list containing data frames and/or ``GRanges`` objects, each data frame will be treated as a single unit, and will be drawn
+# on horizontal lines.
+#
+# Being different from ``panel.fun`` in `circos.trackPlotRegion`, there should be an additional argument ``...`` in ``panel.fun``. This additional
+# argument is used to pass values to low-level functions.
 circos.genomicTrackPlotRegion = function(data, ylim = NULL, stack = FALSE, numeric.column = NULL, 
 	panel.fun = function(region, value, ...)  {NULL}, ... ) {
 
@@ -229,7 +253,7 @@ circos.genomicTrackPlotRegion = function(data, ylim = NULL, stack = FALSE, numer
 	
 		# numeric.column
 		if(is.dataFrameList(data)) {
-			if(is.null(numeric.column)) {
+			if(!is.null(numeric.column)) {
 				if(length(numeric.column) == 1) {
 					nuc = rep(list(numeric.column), length(data))
 				} else if(length(numeric.column) == length(data)) {
@@ -238,8 +262,9 @@ circos.genomicTrackPlotRegion = function(data, ylim = NULL, stack = FALSE, numer
 					stop("Length of `numeric.column` should only be one or length of ``data`` if it is a region list.")
 				}
 			} else {
+				
 				nuc = lapply(data, function(gr) {
-								numeric.column = which(as.logical(sapply(data[-(1:3)], is.numeric)))
+								numeric.column = which(as.logical(sapply(gr[-(1:3)], is.numeric)))
 								if(length(numeric.column) == 0) {
 									numeric(0)
 								} else {
@@ -328,14 +353,19 @@ getI = function(...) {
 # ==param
 # -region a data frame contains 2 column
 # -value  a data frame contains values and other stuff
-# -numeric.column
-# -sector.index
-# -track.index
-# -posTransfrom
-# -pch
-# -col
-# -cex
-# -...
+# -numeric.column which column in ``value`` data frame should be taken as y-value.
+#                 If it is not defined, the whole numeric columns in ``value`` will be taken.
+# -sector.index pass to `circos.points`
+# -track.index pass to `circos.points`
+# -posTransfrom self-defined functions to transform genomic positions
+# -col color of points. If there is only one numeric column, the length of ``col`` can be either one or number of rows of ``region``.
+#      If there are more than one numeric column, the length of ``col`` can be either one or number of numeric columns.
+# -pch type of points. Settings are similar as ``col``
+# -cex size of points. Settings are similar as ``col``
+# -... mysterious parameters
+#
+# == details
+# sth
 circos.genomicPoints = function(region, value, numeric.column = NULL, 
 	sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
@@ -363,7 +393,7 @@ circos.genomicPoints = function(region, value, numeric.column = NULL,
 	}
 
 	if(is.null(numeric.column)) {
-		numeric.column = which(as.logical(sapply(data[-(1:3)], is.numeric)))
+		numeric.column = which(as.logical(sapply(value, is.numeric)))
 		if(length(numeric.column) == 0) {
 			stop("Cannot find numeric column.\n")
 		}
@@ -392,23 +422,27 @@ circos.genomicPoints = function(region, value, numeric.column = NULL,
 # add lines
 #
 # == param
-# -region a data frame with two columns: start position and end position
-# -value values corresponding to each genomic positions
-# -numeric.column
-# -sector.index
-# -track.index
-# -posTransform
-# -col
-# -lwd
-# -lty
-# -type
-# -area
-# -area.baseline
-# -border
-# -pt.col
-# -cex
-# -pch
+# -region a data frame contains 2 column
+# -value  a data frame contains values and other stuff
+# -numeric.column which column in ``value`` data frame should be taken as y-value.
+#                 If it is not defined, the whole numeric columns in ``value`` will be taken.
+# -sector.index pass to `circos.lines`
+# -track.index pass to `circos.lines`
+# -posTransfrom self-defined functions to transform genomic positions
+# -col col of lines. pass to `circos.lines`
+# -lwd pass to `circos.lines`
+# -lty pass to `circos.lines`
+# -type pass to `circos.lines`. There is an additional option ``segment``.
+# -area pass to `circos.lines`
+# -area.baseline pass to `circos.lines`
+# -border pass to `circos.lines`
+# -pt.col pass to `circos.lines`
+# -cex pass to `circos.lines`
+# -pch pass to `circos.lines`
 # -... mysterious parameters
+#
+# == details
+# sth
 circos.genomicLines = function(region, value, numeric.column = NULL, 
 	sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
@@ -439,7 +473,7 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 	}
 
 	if(is.null(numeric.column)) {
-		numeric.column = which(as.logical(sapply(data[-(1:3)], is.numeric)))
+		numeric.column = which(as.logical(sapply(value, is.numeric)))
 		if(length(numeric.column) == 0) {
 			stop("Cannot find numeric column.\n")
 		}
@@ -501,20 +535,23 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 # Draw rectangle-like grid
 #
 # == param
-# -region a data frame with two columns: start position and end position
-# -value values corresponding to each genomic positions
-# -ytop
-# -ybottom
-# -ytop.column
-# -ybottom.column
-# -sector.index which sector to add text
-# -track.index which track to add text
+# -region a data frame contains 2 column
+# -value  a data frame contains values and other stuff
+# -ytop a vector of ytop
+# -ybottom a vector of ybottom
+# -ytop.column if ``ytop`` is in ``value``, the index of the column
+# -ybottom.column if `ybottom`` is in ``value``, the index of the column
+# -sector.index pass to `circos.rect`
+# -track.index pass to `circos.rect`
 # -posTransform whether to do position transformation
 # -col pass to `circos.rect`
 # -border pass to `circos.rect`
 # -lty pass to `circos.rect`
 # -lwd pass to `circos.rect`
 # -... mysterious parameters
+#
+# == details
+# sth
 circos.genomicRect = function(region, value, 
 	ytop = NULL, ybottom = NULL, ytop.column = NULL, ybottom.column = NULL,
 	sector.index = get.cell.meta.data("sector.index"),
@@ -602,8 +639,8 @@ circos.genomicRect = function(region, value,
 # -labels labels of text corresponding to each genomic positions
 # -labels.column index of column of the labels in ``value``
 # -numeric.column index of column of the values in ``value``
-# -sector.index which sector to add text
-# -track.index which track to add text
+# -sector.index pass to `circos.rect`
+# -track.index pass to `circos.rect`
 # -posTransform whether to do position transformation
 # -direction passing to `circos.text`
 # -adj pass to `circos.text`
@@ -611,6 +648,9 @@ circos.genomicRect = function(region, value,
 # -col pass to `circos.text`
 # -font pass to `circos.font`
 # -... mysterious parameters
+#
+# == details
+# sth
 circos.genomicText = function(region, value, labels = NULL, labels.column = NULL, numeric.column = NULL, 
 	sector.index = get.cell.meta.data("sector.index"), 
 	track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
@@ -881,10 +921,20 @@ circos.genomicDensity = function(data, window.size = 10000000, overlap = TRUE,
 		border = rep(border, length(data))
 	}
 	
-	circos.genomicTrackPlotRegion(data, ylim = c(0, 1), panel.fun = function(region, value) {
-		den = genomicDensity(region, window.size = window.size, overlap = overlap)
-		i = getIStack(...)
-		circos.genomicLines(den[1:2], den[3], col = col[i], lwd = lwd[i], lty = lty[i], type = type[i], 
+	df = vector("list", length = length(data))
+	for(i in seq_along(data)) {
+		all.chr = unique(data[[i]][[1]])
+		for(chr in all.chr) {
+			region = data[[i]][data[[i]][[1]] == chr, 2:3, drop = FALSE]
+			dn = genomicDensity(region, window.size = window.size, overlap = overlap)
+			dn = cbind(rep(chr, nrow(dn)), dn)
+			df[[i]] = rbind(df[[i]], dn)
+		}
+	}
+	
+	circos.genomicTrackPlotRegion(df, panel.fun = function(region, value, ...) {
+		i = getI(...)
+		circos.genomicLines(region, value, col = col[i], lwd = lwd[i], lty = lty[i], type = type[i], 
 			border = border[i], area = area[i], area.baseline = area.baseline[i]) 
 	}, ...)
 }
@@ -893,8 +943,8 @@ circos.genomicDensity = function(data, window.size = 10000000, overlap = TRUE,
 # Calculate genomic region density
 #
 # == param
-# -region Genomic positions at a single chromosome. It can be a data frame with two
-#     columns which are start position and end position or an ``IRanges`` object.
+# -region Genomic positions at a single chromosome. It is a data frame with two
+#     columns which are start position and end position
 # -window.size window size to calculate genomic density
 # -overlap whether two neighbouring windows have half overlap
 #
@@ -908,18 +958,17 @@ genomicDensity = function(region, window.size = 10000000, overlap = TRUE) {
 	if(class(region) != "IRanges") {
 		region = IRanges(start = region[[1]], end = region[[2]])
 	}
-	
-	region = Reduce(sort(region))
+	region = reduce(sort(region))
 
 	# make a segmentation
 	if(overlap) {
-		b = seq(1, max(end(gr)), by = window.size/2)
+		b = seq(1, max(end(region)), by = window.size/2)
 		s = b[-length(b)]
 		s = s[-length(s)]
 		e = s + window.size - 1
 		
 	} else {
-		b = seq(1, max(end(gr)), by = window.size)
+		b = seq(1, max(end(region)), by = window.size)
 		s = b[-length(b)]
 		e = s + window.size - 1
 	}
@@ -932,22 +981,24 @@ genomicDensity = function(region, window.size = 10000000, overlap = TRUE) {
 	
 	windows = IRanges(start = s, end = e)
 	
-	ol = findOverlap(windows, region)
+	o = as.matrix(findOverlaps(windows, region))
 	intersect = pintersect(windows[o[, 1]], region[o[, 2]])
 	pct = (end(intersect) - start(intersect) + 1) / (end(windows[o[, 1]]) - start(windows[o[, 1]]) + 1)
 	fn = paste(start(windows[o[, 1]]), end(windows[o[, 1]]), sep = ",")
 	unified_pct = tapply(pct, fn, sum)
 	y[names(unified_pct)] = unified_pct
 
-	return(data.frame(start = s, end = e, pct = y))
+	res = data.frame(start = s, end = e, pct = y)
+	rownames(res) = NULL
+	return(res)
 }
 
 # == title
 # position transformation function
 #
 # == param
-# -region Genomic positions at a single chromosome. It can be a data frame with two
-#     columns which are start position and end position or an ``IRanges`` object.
+# -region Genomic positions at a single chromosome. It is a data frame with two
+#     columns which are start position and end position.
 #
 # == details
 # The default position transformation functions transforms position to be equally distributed
@@ -1158,7 +1209,7 @@ circos.genomicRainfall = function(data, col = "black", pch = par("pch"), cex = p
 	
 	circos.genomicTrackPlotRegion(data, ylim = c(0, 9), panel.fun = function(region, value, ...) {
 		df = rainfallTransform(region)
-		i = getIStack(...)
+		i = getI(...)
 		circos.genomicPoints(df[1:2], log10(df[3]+1), col = col[i], cex = cex[i], pch = pch[i], ...)
 	}, ...)
 	

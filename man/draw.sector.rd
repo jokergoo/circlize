@@ -1,37 +1,40 @@
 \name{draw.sector}
 \alias{draw.sector}
 \title{
-  Draw sectors or rings in a circle
+  Draw sectors or rings in a circle  
 
 
 }
 \description{
-  Draw sectors or rings in a circle
+  Draw sectors or rings in a circle  
 
 
 }
 \usage{
-draw.sector(center = c(0, 0), start.degree = 0, end.degree = 360, rou1 = 1,
-    rou2 = NULL, col = NA, border = "black", lwd = par("lwd"), lty = par("lty"))
+draw.sector(start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL, center = c(0, 0), col = NA, border = "black", lwd = par("lwd"), lty = par("lty"))
 }
 \arguments{
-  \item{center}{Center of the circle}
-  \item{start.degree}{start degree for the sector}
-  \item{end.degree}{end degree for the sector}
-  \item{rou1}{Radius for one of the arc in the sector}
-  \item{rou2}{Radius for the other arc in the sector}
-  \item{col}{Filled color}
-  \item{border}{Border color}
-  \item{lwd}{Line width}
-  \item{lty}{Line style}
+  \item{start.degree}{start degree for the sector}
+  \item{end.degree}{end degree for the sector}
+  \item{rou1}{Radius for one of the arc in the sector}
+  \item{rou2}{Radius for the other arc in the sector}
+  \item{center}{Center of the circle}
+  \item{col}{Filled color}
+  \item{border}{Border color}
+  \item{lwd}{Line width}
+  \item{lty}{Line style}
 
 }
 \details{
-  If the interval between \code{start} and \code{end} (larger or equal to 360 or smaller or equal to -360)it would draw a full circle or ring. If \code{rou2} is set, it would draw part of a ring.
+  If the interval between \code{start} and \code{end} (larger or equal to 360 or smaller or equal to -360) it would draw a full circle or ring. If \code{rou2} is set, it would draw part of a ring. 
 
 
 }
 \examples{
+
+
+
+
 library(circlize)
 
 factors = letters[1:8]
@@ -82,4 +85,8 @@ draw.sector(start.degree = start.e2, end.degree = end.f2, rou1 = top.e2,
     rou2 = bottom.e3, border = NA, col = "#FFFF0040")
 show.index()
 circos.clear()
+
+
+
+
 }

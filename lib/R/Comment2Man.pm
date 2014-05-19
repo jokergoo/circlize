@@ -90,6 +90,8 @@ sub parse {
 		
 	}
 	
+	@items = sort { $a->{_function_name} cmp $b->{_function_name} } @items;
+	
 	my @parsed_items;
 	open NAMESPACE, ">NAMESPACE";
 	print NAMESPACE "export(\n";

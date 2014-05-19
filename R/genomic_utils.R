@@ -2,7 +2,7 @@
 # Read cytoband data
 #
 # == param
-# -file path of the uncompressed cytoband file
+# -cytoband a path of the uncompressed cytoband file or a data frame that already contains cytoband data
 # -species abbrevations of species. e.g. hg19 for human, mm10 for mouse. If this
 #          value is specified, the function will download cytoBand.txt.gz from
 #          UCSC website automatically.
@@ -12,26 +12,30 @@
 # By default, it is human hg19 cytoband data.
 #
 # == values
-#
 # -df Original data frame for cytoband data
 # -chromosome sorted chromosome names
 # -chr.len length of chromosomes. Order are same as ``chromosome``
-read.cytoband = function(file = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""), species = NULL) {
+#
+read.cytoband = function(cytoband = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""), species = NULL) {
 	
 	if(!is.null(species)) {
 		url = paste("http://hgdownload.cse.ucsc.edu/goldenPath/", species, "/database/cytoBand.txt.gz", sep = "")
-		file = paste(tempdir(), "/cytoBand.txt.gz", sep = "")
-		e = try(download.file(url, destfile = file, quiet = TRUE), silent = TRUE)
+		cytoband = paste(tempdir(), "/cytoBand.txt.gz", sep = "")
+		e = try(download.file(url, destfile = cytoband, quiet = TRUE), silent = TRUE)
 		if(class(e) == "try-error") {
 			stop("Seems your species name is wrong or UCSC does not provide cytoband data for your species.\nIf possible, download cytoBand file from\n", url, "\nand use `read.cytoband(file)`.\n")
 		}
 	}
 	
-	if(grepl("\\.gz$", file)) {
-		file = gzfile(file)
+	if(is.data.frame(cytoband)) {
+		d = cytoband
+	} else {
+		if(grepl("\\.gz$", cytoband)) {
+			cytoband = gzfile(cytoband)
+		}
+		
+		d = read.table(cytoband, colClasses = c("character", "numeric", "numeric", "character", "character"), sep = "\t")
 	}
-	
-	d = read.table(file, colClasses = c("character", "numeric", "numeric", "character", "character"), sep = "\t")
 	
 	chromosome = unique(d[[1]])
 	chromosome.ind = gsub("chr", "", chromosome)

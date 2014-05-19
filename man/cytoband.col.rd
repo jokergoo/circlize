@@ -1,12 +1,12 @@
 \name{cytoband.col}
 \alias{cytoband.col}
 \title{
- Assign colors to cytogenetic band according to the Giemsa stain results
+  Assign colors to cytogenetic band (hg19) according to the Giemsa stain results  
 
 
 }
 \description{
-  Assign colors to cytogenetic band according to the Giemsa stain results
+  Assign colors to cytogenetic band (hg19) according to the Giemsa stain results  
 
 
 }
@@ -14,11 +14,11 @@
 cytoband.col(x)
 }
 \arguments{
-  \item{x}{a vector containing the Giemsa stain results
-}
+  \item{x}{a vector containing the Giemsa stain results}
+
 }
 \details{
-  The color theme is from \url{http://circos.ca/tutorials/course/slides/session-2.pdf}, page 42.
+  The color theme is from \url{http://circos.ca/tutorials/course/slides/session-2.pdf,} page 42. 
 
 
 }

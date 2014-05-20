@@ -9,26 +9,26 @@
 # == param
 # -sector.index1 Sector index for one sector
 # -point1        A single value or a numeric vector of length 2. If it is a 2-elements vector, then
-#                the link would be a belt.
+#                the link would be a belt/ribbon.
 # -sector.index2 Sector index for the other sector
 # -point2        A single value or a numeric vector of length 2. If it is a 2-elements vector, then
-#                the link would be a belt.
+#                the link would be a belt/ribbon.
 # -rou           The position of the 'root' of the link. It is the percentage of the radius of the unit circle.
 #                By default it is the end (bottom) of the most recent track.
-# -top.ratio     Set the height of the quadratic curve.
-# -col           Color of the link. If the link is a belt, then it is the filled color for the belt.
+# -top.ratio     Set the height of the quadratic curve. For the exact definition, please refer to the main vignette.
+# -col           Color of the link. If the link is a ribbon, then it is the filled color for the ribbon.
 # -lwd           Line (or border) width
 # -lty           Line (or border) style
-# -border        If the link is a belt, then it is the color for the belt border.
+# -border        If the link is a ribbon, then it is the color for the ribbon border.
 # -n             Number of points to represent a quadratic curve. Because currently I don't know how to 
 #                calculate the length of a quadratic curve, the number of segmentation of the quadratic curve
 #                cannot be calculated now. It should be an odd value because we need the point for the vertex.
-# -top.ratio.low Adjust the height of the lower border of a link (if it is like a belt)
+# -top.ratio.low Adjust the height of the lower border of a link (if it is like a ribbon)
 #
 # == details
 # The link is in fact a quadratic curve.
 #
-# Drawing links does not create any track. So you can think it is independent of the tracks
+# Drawing links does not create any track. So you can think it is independent of the tracks.
 #
 # By default you only need to set ``sector.index1``, ``point1``, ``sector.index2`` and ``point2``. The
 # link would look nice. However you can also set the position and the height of links by specifying

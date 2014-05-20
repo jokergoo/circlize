@@ -38,9 +38,30 @@
 #
 # Theoretically, you are able to draw most kinds of circos figures by the above functions.
 #
-# For specific use in genomics, a function which draws the ideogram and initializes sectors 
-# for chromosomes is supported: `circos.initializeWithIdeogram`.
+# For specific use in genomics, we also implement functions which add graphics in genome scale.
 #
-# Refer to the vignettes to find out how to draw basic and advanced circos figure by this package.
+# Functions to initialize circos plot with genomic coordinates:
+# 
+# - `circos.initializeWithIdeogram`
+# - `circos.genomicInitialize`
+#
+# Functions to arrange genomic circos layout
+#
+# - `circos.genomicTrackPlotRegion`
+#
+# Functions to add basic genomic graphics
+#
+# - `circos.genomicPoints`
+# - `circos.genomicLines`
+# - `circos.genomicText`
+# - `circos.genomicRect`
+# - `circos.genomicLink`
+#
+# Functions with specific purpose
+#
+# - `circos.genomicDensity`
+# - `circos.genomicRainfall`
+#
+# Please refer to the vignettes to find out how to draw basic and advanced circos figures by this package.
 #
 

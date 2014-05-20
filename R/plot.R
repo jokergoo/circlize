@@ -218,8 +218,9 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 #
 # == details
 # You can update an existed cell by this function by erasing the contents in the plotting regions.
-# But the ``xlim`` and ``ylim`` inside the cell still remains unchanged. Note if you use `circos.trackPlotRegion`
-# to update an already created track, you can re-define ``ylim`` in these cells.
+# But the ``xlim`` and ``ylim`` inside the cell still remains unchanged. 
+#
+# Note if you use `circos.trackPlotRegion` to update an already created track, you can re-define ``ylim`` in these cells.
 circos.updatePlotRegion = function(sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd")) {
     

@@ -1,5 +1,5 @@
 # == circlize
-# Return the coordinate in polar coordinate system in a specified cell
+# Return the coordinate in polar coordinate system
 #
 # == param
 # -x            Data points on x-axis
@@ -8,7 +8,7 @@
 # -track.index  Index for the track
 #
 # == details
-# Return the coordinate in polar coordinate system in a specified cell
+# This is the core function in the package. It transform data points from data coordinate system to polar coordinate system.
 #
 # == values
 # A matrix with two columns (``theta`` and ``rou``)

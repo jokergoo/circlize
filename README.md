@@ -2,10 +2,11 @@
 
 This package aims to implement circos layout in R.
 
-Since most of the figures are composed of points, lines and polygon (for filled color),
+Since most of the figures are composed of points, lines and polygon (for filled color), 
 so we just need to implement functions for drawing points, lines and polygon.
 
-Current there are following functions that can be used for plotting:
+Current there are following functions that can be used for plotting: 
+
 - `circos.points`
 - `circos.lines`
 - `circos.rect`
@@ -13,25 +14,52 @@ Current there are following functions that can be used for plotting:
 - `circos.text`
 - `circos.axis`
 - `circos.link`, This maybe the unique feature for circos layout to represent relationships between elements.
+ 
+For drawing points, lines and text through the whole track (among several sectors), the following 
+functions are available:
 
-For drawing points, lines and text through the whole track (among several sectors), the following functions are available:
 - `circos.trackPoints`
 - `circos.trackLines`
 - `circos.trackText`
 
 Also, the function drawing histograms in the whole track is available:
+
 - `circos.trackHist`
 
-Functions to arrange the circos layout
+Functions to arrange the circos layout:
+
 - `circos.trackPlotRegion`
-- `circos.updatPlotRegion`
+- `circos.updatePlotRegion`
 - `circos.par`
 - `circos.clear`
 
 Theoretically, you are able to draw most kinds of circos figures by the above functions.
 
-For specific use in genomics, a function which draws the ideogram and initializes sectors for chromosomes is supported:
+For specific use in genomics, we also implement functions which add graphics in genome scale.
+
+Functions to initialize circos plot with genomic coordinates:
+ 
 - `circos.initializeWithIdeogram`
+- `circos.genomicInitialize`
+
+Functions to arrange genomic circos layout
+
+- `circos.genomicTrackPlotRegion`
+
+Functions to add basic genomic graphics
+
+- `circos.genomicPoints`
+- `circos.genomicLines`
+- `circos.genomicText`
+- `circos.genomicRect`
+- `circos.genomicLink`
+
+Functions with specific purpose
+
+- `circos.genomicDensity`
+- `circos.genomicRainfall`
+
+Please refer to the vignettes to find out how to draw basic and advanced circos figures by this package.
 
 More tests will be added.
 
@@ -41,7 +69,7 @@ The package has been submitted to CRAN, so you can install it through:
 
     install.packages("circlize")
 
-Together with the package are four vignettes which provide detailed descriptions and examples.
+Together with the package there are four vignettes which provide detailed description and examples.
 
 ## the Perl module
 

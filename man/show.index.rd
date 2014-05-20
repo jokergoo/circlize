@@ -1,12 +1,12 @@
 \name{show.index}
 \alias{show.index}
 \title{
-  Label the sector index and the track index of each cell
+  Label the sector index and the track index on each cell  
 
 
 }
 \description{
-  Label the sector index and the track index of each cell
+  Label the sector index and the track index on each cell  
 
 
 }
@@ -14,11 +14,14 @@
 show.index()
 }
 \details{
-  Draw the index of the sector and the track for each cell on the figure.This function can help you to find the coordinates of cells. 
+  This function is deprecated, please use \code{\link{circos.info}} instead. 
 
 
 }
 \examples{
+
+
+
 library(circlize)
 par(mar = c(1, 1, 1, 1))
 factors = factor(letters[1:10], levels = sample(letters[1:10], 10))
@@ -30,4 +33,7 @@ circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
 show.index()
 circos.clear()
+
+
+
 }

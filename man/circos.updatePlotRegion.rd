@@ -24,7 +24,9 @@ circos.updatePlotRegion(sector.index = get.cell.meta.data("sector.index"), track
 
 }
 \details{
-  You can update an existed cell by this function by erasing the contents in the plotting regions. But the \code{xlim} and \code{ylim} inside the cell still remains unchanged. Note if you use \code{\link{circos.trackPlotRegion}} to update an already created track, you can re-define \code{ylim} in these cells. 
+  You can update an existed cell by this function by erasing the contents in the plotting regions. But the \code{xlim} and \code{ylim} inside the cell still remains unchanged.   
+
+  Note if you use \code{\link{circos.trackPlotRegion}} to update an already created track, you can re-define \code{ylim} in these cells. 
 
 
 }

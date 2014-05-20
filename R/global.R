@@ -485,56 +485,56 @@ circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 		if(is.null(sector.index) && is.null(track.index)) {
 			all.sector.index = get.all.sector.index()
 			max.track.index = get.max.track.index()
-			qqcat("All your sectors:\n")
+			cat("All your sectors:\n")
 			print(all.sector.index)
-			qqcat("\n")
-			qqcat("All your tracks:\n")
+			cat("\n")
+			cat("All your tracks:\n")
 			print(seq_len(get.max.track.index()))
-			qqcat("\n")
+			cat("\n")
 
 		} else if(is.null(track.index)) {
 			track.index = seq_len(get.max.track.index())
 			for(i in seq_along(sector.index)) {
 				for(j in seq_along(track.index)) {
-					qqcat("sector index: @{sector.index[i]}\n")
-					qqcat("track index: @{track.index[j]}\n")
+					cat("sector index: ", sector.index[i], "\n", sep = "")
+					cat("track index: ", track.index[j], "\n", sep = "")
 					xlim = get.cell.meta.data('xlim', sector.index[i], track.index[j])
 					ylim = get.cell.meta.data('ylim', sector.index[i], track.index[j])
-					qqcat("xlim: [@{xlim[1]}, @{xlim[2]}]\n")
-					qqcat("ylim: [@{ylim[1]}, @{ylim[2]}]\n")
-					qqcat("\n")
+					cat("xlim: [", xlim[1], ", ", xlim[2], "]\n", sep = "")
+					cat("ylim: [", ylim[1], ", ", ylim[2], "]\n", sep = "")
+					cat("\n")
 				}
 			}
 		} else if(is.null(sector.index)) {
 			sector.index = get.all.sector.index()
 			for(i in seq_along(sector.index)) {
 				for(j in seq_along(track.index)) {
-					qqcat("sector index: @{sector.index[i]}\n")
-					qqcat("track index: @{track.index[j]}\n")
+					cat("sector index: ", sector.index[i], "\n", sep = "")
+					cat("track index: ", track.index[j], "\n", sep = "")
 					xlim = get.cell.meta.data('xlim', sector.index[i], track.index[j])
 					ylim = get.cell.meta.data('ylim', sector.index[i], track.index[j])
-					qqcat("xlim: [@{xlim[1]}, @{xlim[2]}]\n")
-					qqcat("ylim: [@{ylim[1]}, @{ylim[2]}]\n")
-					qqcat("\n")
+					cat("xlim: [", xlim[1], ", ", xlim[2], "]\n", sep = "")
+					cat("ylim: [", ylim[1], ", ", ylim[2], "]\n", sep = "")
+					cat("\n")
 				}
 			}
 		} else {
 			for(i in seq_along(sector.index)) {
 				for(j in seq_along(track.index)) {
-					qqcat("sector index: @{sector.index[i]}\n")
-					qqcat("track index: @{track.index[j]}\n")
+					cat("sector index: ", sector.index[i], "}\n", sep = "")
+					cat("track index: ", track.index[j], "\n", sep = "")
 					xlim = get.cell.meta.data('xlim', sector.index[i], track.index[j])
 					ylim = get.cell.meta.data('ylim', sector.index[i], track.index[j])
-					qqcat("xlim: [@{xlim[1]}, @{xlim[2]}]\n")
-					qqcat("ylim: [@{ylim[1]}, @{ylim[2]}]\n")
-					qqcat("\n")
+					cat("xlim: [", xlim[1], ", ", xlim[2], "]\n", sep = "")
+					cat("ylim: [", ylim[1], ", ", ylim[2], "]\n", sep = "")
+					cat("\n")
 				}
 			}
 				
 		}
 
-		qqcat("Your current sector.index is @{get.current.sector.index()}\n")
-		qqcat("Your current track.index is @{get.current.track.index()}\n")
+		cat("Your current sector.index is ", get.current.sector.index(), "}\n", sep = "")
+		cat("Your current track.index is ", get.current.track.index(), "}\n", sep = "")
 	}
 		
 

@@ -12,22 +12,26 @@
 }
 \usage{
 circos.initializeWithIdeogram(cytoband = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""),
-    species = NULL, chromosome.index = NULL, major.by = 50000000, plotType = c("rect", "axis", "labels"))
+    species = NULL, sort.chr = TRUE, chromosome.index = NULL, major.by = 50000000, plotType = c("ideogram", "axis", "labels"))
 }
 \arguments{
-  \item{cytoband}{a path of the uncompressed cytoband file or a data frame that already contains cytoband. By default it is cytoband for hg19.}
-  \item{species}{abbrevations of species. e.g. hg19 for human, mm10 for mouse. If this value is specified, the function will download cytoBand.txt.gz from UCSC website automatically.}
-  \item{chromosome.index}{index for chromosome. The index is used only for subsetting, not for re-ordering. The value should be 1, 2, ... or chr1, chr2, ...}
+  \item{cytoband}{A path of the cytoband file or a data frame that already contains cytoband. By default it is cytoband for hg19. Pass to \code{\link{read.cytoband}}.}
+  \item{species}{abbrevations of species. e.g. hg19 for human, mm10 for mouse. If this value is specified, the function will download cytoBand.txt.gz from UCSC website automatically. Pass to \code{\link{read.cytoband}}.}
+  \item{sort.chr}{whether chromosome names should be sorted (first sort by numbers then by letters) when reading cytoband data. Pass to \code{\link{read.cytoband}}.}
+  \item{chromosome.index}{index for chromosome. The index is used only for subsetting, not for re-ordering.}
   \item{major.by}{increment of major ticks}
-  \item{plotType}{which part should be drawn. \code{rect} for ideogram rectangle, \code{axis} for genomic axis and \code{labels} for chromosome names}
+  \item{plotType}{which part should be drawn. \code{rect} for ideogram rectangle, \code{axis} for genomic axis and \code{labels} for chromosome names. If it is set to \code{NULL}, the function just initialize the plot but draw nothing.}
 
 }
 \details{
-  The functions calls \code{\link{circos.genomicInitialize}}. 
+  The function will initialize the circos plot in which each sector corresponds a chromosome. You can control the order of  chromosomes by set a special format of \code{cytoband} (please refer to \code{\link{read.cytoband}} to find out how to set a proper \code{cytoband} value). 
 
 
 }
 \examples{
+
+
+
 
 
 
@@ -201,6 +205,9 @@ for(chr in chromosome) {
 circos.clear()    
 
 }
+
+
+
 
 
 

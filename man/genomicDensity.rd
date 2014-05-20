@@ -20,7 +20,7 @@ genomicDensity(region, window.size = 10000000, overlap = TRUE)
 
 }
 \details{
-  It calculate the percent of each genomic windows that is covered by the input region.  
+  It calculate the percent of each genomic windows that is covered by the input regions.  
 
 
 }

@@ -49,9 +49,35 @@
   }
   Theoretically, you are able to draw most kinds of circos figures by the above functions.  
 
-  For specific use in genomics, a function which draws the ideogram and initializes sectors  for chromosomes is supported: \code{\link{circos.initializeWithIdeogram}}.  
+  For specific use in genomics, we also implement functions which add graphics in genome scale.  
 
-  Refer to the vignettes to find out how to draw basic and advanced circos figure by this package.  
+  Functions to initialize circos plot with genomic coordinates:  
+
+  \itemize{
+    \item \code{\link{circos.initializeWithIdeogram}}
+    \item \code{\link{circos.genomicInitialize}}
+  }
+  Functions to arrange genomic circos layout  
+
+  \itemize{
+    \item \code{\link{circos.genomicTrackPlotRegion}}
+  }
+  Functions to add basic genomic graphics  
+
+  \itemize{
+    \item \code{\link{circos.genomicPoints}}
+    \item \code{\link{circos.genomicLines}}
+    \item \code{\link{circos.genomicText}}
+    \item \code{\link{circos.genomicRect}}
+    \item \code{\link{circos.genomicLink}}
+  }
+  Functions with specific purpose  
+
+  \itemize{
+    \item \code{\link{circos.genomicDensity}}
+    \item \code{\link{circos.genomicRainfall}}
+  }
+  Please refer to the vignettes to find out how to draw basic and advanced circos figures by this package.  
 
 
 }

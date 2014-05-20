@@ -1,12 +1,12 @@
 \name{circos.genomicDensity}
 \alias{circos.genomicDensity}
 \title{
-  calculate and add genomic density  
+  Calculate and add genomic density track  
 
 
 }
 \description{
-  calculate and add genomic density  
+  Calculate and add genomic density track  
 
 
 }
@@ -19,7 +19,7 @@ circos.genomicDensity(data, window.size = 10000000, overlap = TRUE,
   \item{data}{A bed-file-like data frame or a \code{GRanges} object. It can also be a list containing data frames and \code{GRanges} objects.}
   \item{window.size}{pass to \code{\link{genomicDensity}}}
   \item{overlap}{pass to \code{\link{genomicDensity}}}
-  \item{col}{colors. It should be length of one. If \code{data} is a list, the length of \code{col} can also be the length of the list.}
+  \item{col}{colors. It should be length of one. If \code{data} is a list of data frames, the length of \code{col} can also be the length of the list.}
   \item{lwd}{width of lines}
   \item{lty}{style of lines}
   \item{type}{type of lines, see \code{\link{circos.lines}}}

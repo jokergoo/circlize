@@ -35,6 +35,9 @@ circos.polygon(x, y, sector.index = get.cell.meta.data("sector.index"), track.in
 
 
 
+
+
+
 library(circlize)
 par(mar = c(1, 1, 1, 1))
 factors = letters[1:4]
@@ -56,6 +59,9 @@ circos.trackPlotRegion(ylim = c(-3, 3), track.height = 0.4,
     circos.lines(x1, loess.predict$fit)
 })
 circos.clear()
+
+
+
 
 
 

@@ -21,7 +21,7 @@ circos.par(...)
   Global parameters for the circos layout. Currently supported parameters are:  
 
 \describe{
-  \item{start.degree}{The starting degree from which the circle begin to draw. Note this degree is measured in the standard polar coordinate which means it is reverse-clockwise.}
+  \item{start.degree}{The starting degree from which the circle begins to draw. Note this degree is measured in the standard polar coordinate which means it is reverse-clockwise.}
   \item{gap.degree}{Gap between two neighbour sectors. It can be a single value or a vector.}
   \item{track.margin}{Like \code{margin} in Cascading Style Sheets (CSS), it is the blank area out of the plotting region, also outside of the borders. Since left and right margin are controlled by \code{gap.degree}, only bottom and top margin need to be set. And all cells in a same track share the same margins, and that's why this parameter is called \code{track.margin}. The value for the \code{track.margin} is the percentage according to the radius of the unit circle.}
   \item{unit.circle.segments}{Since curves are simulated by a series of straight lines, this parameter controls the amout of segments to represent a curve. The minimal length of the line segmentation is the length of the unit circle (\code{2pi}) / \code{unit.circoe.segments}. More segments means better approximation for the curves while larger size if you generate figures as PDF format.}

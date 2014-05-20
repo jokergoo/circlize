@@ -3,7 +3,7 @@
 # it may be improved later.
 
 
-# == title
+# title
 # Draw links between points or intervals
 #
 # == param

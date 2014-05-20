@@ -1,12 +1,12 @@
 \name{posTransform.default}
 \alias{posTransform.default}
 \title{
-  position transformation function  
+  Genomic position transformation function  
 
 
 }
 \description{
-  position transformation function  
+  Genomic position transformation function  
 
 
 }

@@ -15,7 +15,7 @@ generateRandomBed(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0.5))
 }
 \arguments{
   \item{nr}{number of rows}
-  \item{nc}{number of numeric columns}
+  \item{nc}{number of numeric columns / value columns}
   \item{fun}{function to generate random data}
 
 }

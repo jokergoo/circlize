@@ -28,7 +28,7 @@ circos.genomicPosTransformLines(data, track.height = 0.1, posTransform = NULL,
 
 }
 \details{
-  There is one representative circumstances when such position transformation needs to be applied.  For example, there are two set of regions in a chromosome in which regions in one set are quite densely to each other and regions in other set are far from others. Heatmap or text is going to be drawn on the next track. If there is no position transformtion, heatmap or text for those dense regions would be overlapped and hard to identify, also ugly to visualize. Thus, a solution to transform original positions to new positions would help for the visualization.  
+  There is one representative situation when such position transformation needs to be applied.  For example, there are two sets of regions in a chromosome in which regions in one set regions are quite densely to each other and regions in other set are far from others. Heatmap or text is going to be drawn on the next track. If there is no position transformtion, heatmap or text for those dense regions would be overlapped and hard to identify, also ugly to visualize. Thus, a way to transform original positions to new positions would help for the visualization.  
 
 
 }

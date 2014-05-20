@@ -64,7 +64,7 @@ circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = 
 # Initialize circos plot with any genomic data
 #
 # == param
-# -data a data frame containing genomic data or a ``GRanges`` object.
+# -data a data frame containing genomic data.
 # -sector.names names for each sectors which will be drawn along each sector
 # -major.by increment of major ticks
 # -plotType which part should be drawn. ``axis`` for genomic axis and ``labels`` for chromosome names
@@ -74,17 +74,10 @@ circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = 
 # create a new track.
 #
 # The order of sectors related to data structure of ``data``. If it is a data frame and the first column is a factor, the order of sectors
-# is ``levels(data[[1]])``; If it is a data frame and the first column is just a simple vector, the order of sectors is ``unique(data[[1]]``;
-# If ``data`` is a ``GRanges`` object, the order of sectors is ``seqlevels(data)``.
+# is ``levels(data[[1]])``; If it is a data frame and the first column is just a simple vector, the order of sectors is ``unique(data[[1]]``.
 #
 # For more details on initializing genomic plot, please refer to the vignettes.
 circos.genomicInitialize = function(data, sector.names = NULL, major.by = 50000000, plotType = c("axis", "labels")) {
-	
-	if(class(data) == "GRanges") {
-		sl = seqlevels(data)
-		data = cbind(as.data.frame(data)[1:3], as.data.frame(mcols(data)))
-		data[[1]] = factor(data[[1]], levels = sl)
-	}
 	
 	if(is.factor(data[[1]])) {
 		fa = levels(data[[1]])
@@ -145,13 +138,11 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = 500000
 # Create a track for genomic graphics
 #
 # == param
-# -data A bed-file-like data frame or a ``GRanges`` object. It can also be a list
-#       containing data frames and/or ``GRanges`` objects.
+# -data A bed-file-like data frame or a list of data frames
 # -ylim If it is ``NULL``, the value will be calculated from data. If ``stack`` is set to ``TRUE``, the value is ignored.
 # -stack If ``data`` is a list of data frames or a data frame containing more than one numeric columns,
 #        whether to plot in a "stack" mode.
 # -numeric.column Columns of numeric values in ``data`` that will be used for plotting. 
-#                 If it is from a ``GRanges`` object, its value start from meta-columns.
 #                 If ``data`` is a data frame list, ``numeric.column`` should be either length of one or length of ``data``.
 #                 If value of ``numeric.column`` is not set, its value will be inferred from ``data``.
 # -panel.fun Self-defined function which will be applied on each sector. Please not it is different
@@ -169,7 +160,7 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = 500000
 # When ``data`` is a single data frame, ``region`` in ``panel.fun`` is a data frame containing the second and third column in ``data`` in 'current` genomic category (e.g. current chromosome).
 # ``value`` is also a data frame containing columns in ``data`` excluding the first three columns.
 #
-# When ``data`` is a list containing data frames and/or ``GRanges`` objects, ``panel.fun`` will be applied iteratively on each data frame, thus, 
+# When ``data`` is a list containing data frames, ``panel.fun`` will be applied iteratively on each data frame, thus, 
 # ``region`` is extracted from the data frame which is in the current iteration. For example, if ``data`` contains two data frames, ``panel.fun``
 # will be applied with the first data frame in current chromosome and then applied with the second data frame in the same chromosome.
 #
@@ -182,7 +173,7 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = 500000
 # Under ``stack`` mode, in ``panel.fun``, all low-level genomic graphical functions will draw on the 'horizontal line' ``y = i`` in which ``i`` is the index of current numeric column 
 # and the value of ``i`` can be obtained by `getI`.
 #
-# When ``data`` is a list containing data frames and/or ``GRanges`` objects, each data frame will be treated as a single unit. The situation is quite similar as described in previous paragraph.
+# When ``data`` is a list containing data frames, each data frame will be treated as a single unit. The situation is quite similar as described in previous paragraph.
 # ``ylim`` is re-defined to ``c(0.5, n+0.5)`` in which ``n`` is number of data frames. ``panel.fun`` will be applied iteratively on each data frame. In each
 # iteration, in ``panel.fun``, ``region`` is still the genomic regions in current genomic category, and ``value`` contains columns in current data frame excluding the first three columns.
 # Under ``stack`` mode, in ``panel.fun``, all low-level genomic graphical functions will draw on the 'horizontal line' ``y = i`` in which ``i`` is the index of current data frame.
@@ -198,6 +189,9 @@ circos.genomicTrackPlotRegion = function(data, ylim = NULL, stack = FALSE, numer
 
 	# now `data` is either a data frame or a list of data frame
 	data = normalizeToDataFrame(data)
+	
+	# excluding the first three columns
+	numeric.column = numeric.column - 3
 	
 	if(!is.dataFrameList(data)) {
 		# check numeric.column
@@ -559,7 +553,7 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 # -ytop a vector or a single value indicating top position of rectangles
 # -ybottom a vector or a single value indicating bottom position of rectangles
 # -ytop.column if ``ytop`` is in ``value``, the index of the column
-# -ybottom.column if `ybottom`` is in ``value``, the index of the column
+# -ybottom.column if ``ybottom`` is in ``value``, the index of the column
 # -sector.index pass to `circos.rect`
 # -track.index pass to `circos.rect`
 # -posTransform self-defined functions to transform genomic positions, see `posTransform.default` for explaination
@@ -667,7 +661,7 @@ circos.genomicRect = function(region, value,
 # -adj pass to `circos.text`. Settings are similar as ``col``
 # -cex pass to `circos.text`. Settings are similar as ``col``
 # -col pass to `circos.text`. The length of ``col`` can be either one or number of rows of ``region``.
-# -font pass to `circos.font`. Settings are similar as ``col``
+# -font pass to `circos.text`. Settings are similar as ``col``
 # -... mysterious parameters
 #
 # == details
@@ -754,8 +748,8 @@ circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.col
 # Add links from two sets of genomic positions
 #
 # == param
-# -region1 a genomic data frame / an ``GRanges`` object
-# -region2 a genomic data frame / an ``GRanges`` object
+# -region1 a genomic data frame
+# -region2 a genomic data frame
 # -rou pass to `circos.link`
 # -top.ratio pass to `circos.link`
 # -col pass to `circos.link`, length can be either one or nrow of ``region1``
@@ -808,7 +802,7 @@ circos.genomicLink = function(region1, region2,
 # Add genomic position transformation lines between tracks
 #
 # == param
-# -data a data frame or a ``GRanges`` object
+# -data a data frame containing genomic data
 # -track.height height of the track
 # -posTransform genomic position transformation function, see `posTransform.default` for an example.
 # -horizontalLine whether to draw horizontal lines which indicate width of each region
@@ -903,8 +897,7 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 # Calculate and add genomic density track
 #
 # == param
-# -data A bed-file-like data frame or a ``GRanges`` object. It can also be a list
-#       containing data frames and ``GRanges`` objects.
+# -data A bed-file-like data frame or a list of data frames
 # -window.size pass to `genomicDensity`
 # -overlap pass to `genomicDensity`
 # -col  colors. It should be length of one. If ``data`` is a list of data frames, the length of ``col``
@@ -985,24 +978,18 @@ circos.genomicDensity = function(data, window.size = 10000000, overlap = TRUE,
 # a data frame with three columns: start position, end position and percent of overlapping.
 genomicDensity = function(region, window.size = 10000000, overlap = TRUE) {
 	
-	if(!suppressPackageStartupMessages(require(IRanges))) {
-		stop("Cannot find `IRanges` package. Maybe you need to install it from Bioconductor first.\n")
-	}
-
-	if(class(region) != "IRanges") {
-		region = IRanges(start = region[[1]], end = region[[2]])
-	}
-	region = reduce(sort(region))
+	region = sort_region(region)
+	region = reduce_region(region)
 
 	# make a segmentation
 	if(overlap) {
-		b = seq(1, max(end(region)), by = window.size/2)
+		b = seq(1, max(region[[2]]), by = window.size/2)
 		s = b[-length(b)]
 		s = s[-length(s)]
 		e = s + window.size - 1
 		
 	} else {
-		b = seq(1, max(end(region)), by = window.size)
+		b = seq(1, max(region[[2]]), by = window.size)
 		s = b[-length(b)]
 		e = s + window.size - 1
 	}
@@ -1013,17 +1000,11 @@ genomicDensity = function(region, window.size = 10000000, overlap = TRUE) {
 	y = rep(0, length(s))
 	names(y) = paste(s, e, sep = ",")
 	
-	windows = IRanges(start = s, end = e)
+	windows = data.frame(start = s, end = e)
 	
-	o = as.matrix(findOverlaps(windows, region))
-	intersect = pintersect(windows[o[, 1]], region[o[, 2]])
-	pct = (end(intersect) - start(intersect) + 1) / (end(windows[o[, 1]]) - start(windows[o[, 1]]) + 1)
-	fn = paste(start(windows[o[, 1]]), end(windows[o[, 1]]), sep = ",")
-	unified_pct = tapply(pct, fn, sum)
-	y[names(unified_pct)] = unified_pct
-
-	res = data.frame(start = s, end = e, pct = y)
-	rownames(res) = NULL
+	op = overlap_region(windows, region)
+	
+	res = data.frame(start = s, end = e, pct = op)
 	return(res)
 }
 
@@ -1139,49 +1120,16 @@ normalizeToDataFrame = function(data) {
 		}
 		data = data[data[[1]] %in% all.chr, , drop = FALSE]
 		return(data)
-	} else if(class(data) == "GRanges") {
-		data = cbind(as.data.frame(data)[1:3], as.data.frame(mcols(data)))
-		data = data[data[[1]] %in% all.chr, , drop = FALSE]
-		return(data)
-	} else if(class(data) == "GRangesList") {
+	} else if(is.list(data) && all(sapply(data, is.data.frame))) {
 		df = lapply(data, function(gr) {
-			value = as.data.frame(mcols(gr))
-			if(ncol(value) == 0) {
-				res = as.data.frame(gr)[1:3]
-			} else {
-				numeric.column = which(sapply(value, is.numeric))
-				if(length(numeric.column) > 1) {
-					warning("You have more than one numeric column, only take the first one.\n")
-				}
-				res = cbind(as.data.frame(gr)[1:3], value[numeric.column[1]])
+			if(ncol(gr) < 3) {
+				stop("Your data frame is less than 3 column!.\n")
 			}
-			res = res[res[[1]] %in% all.chr, , drop = FALSE]
-		})
-		return(df)
-	} else if(is.list(data) && all(sapply(data, function(x) is.data.frame(x) || class(x) == "GRanges"))) {
-		df = lapply(data, function(gr) {
-			if(class(gr) == "GRanges") {
-				gr = cbind(as.data.frame(gr)[1:3], as.data.frame(mcols(gr)))
-			} else {
-				if(ncol(gr) < 3) {
-					stop("Your data frame is less than 3 column!.\n")
-				}
-			}
-			value = gr[-(1:3)]
-			if(ncol(value) == 0) {
-				res = gr[1:3]
-			} else {
-				numeric.column = which(sapply(value, is.numeric))
-				if(length(numeric.column) > 1) {
-					warning("You have more than one numeric column, only take the first one.\n")
-				}
-				res = cbind(gr[1:3], value[numeric.column[1]])
-			}
-			res = res[res[[1]] %in% all.chr, , drop = FALSE]
+			gr[gr[[1]] %in% all.chr, , drop = FALSE]
 		})
 		return(df)
 	} else {
-		stop("wrong")
+		stop("The format of `data` should only be a data frame or a list of data frames.\n")
 	}
 }
 
@@ -1189,13 +1137,13 @@ normalizeToDataFrame = function(data) {
 .normalizeGraphicalParam = function(x, nc, nr, name) {
 	if(nc == 1) {
 		if(!(length(x) == 1 || length(x) == nr)) {
-			stop(qq("The length of `@{name}` (@{length(x)}) should be equal to 1 or the number of your regions (@{nr}).\n"))
+			stop(paste0("The length of `", name, "` (", length(x), ") should be equal to 1 or the number of your regions (", nr, ").\n"))
 		} else if(length(x) == 1) {
 			x = rep(x, nr)
 		}
 	} else {
 		if(!(length(x) == 1 || length(x) == nc)) {
-			stop(qq("The length of `@{name}` (@{length(x)}) should be equal to 1 or the number of your data column (@{nc}).\n"))
+			stop(paste0("The length of `", name, "` (", length(x), ") should be equal to 1 or the number of your data column (", nc, ").\n"))
 		} else if(length(x) == 1) {
 			x = rep(x, nc)
 		}
@@ -1207,8 +1155,7 @@ normalizeToDataFrame = function(data) {
 # Genomic rainfall plot
 #
 # == param
-# -data A bed-file-like data frame or a ``GRanges`` object. It can also be a list
-#       containing data frames and ``GRanges`` objects.
+# -data A bed-file-like data frame or a list of data frames
 # -col  color of points. It should be length of one. If ``data`` is a list, the length of ``col``
 #       can also be the length of the list.
 # -pch  style of points
@@ -1254,7 +1201,7 @@ circos.genomicRainfall = function(data, col = "black", pch = par("pch"), cex = p
 #
 # == param
 # -region Genomic positions at a single chromosome. It can be a data frame with two
-#     columns which are start positions and end positions or an ``IRanges`` object.
+#     columns which are start positions and end positions.
 # -mode How to calculate inter-distance. For a region, there is a distance to the 
 #       prevous region and also there is a distance to the next region. ``mode``
 #       controls how to merge these two distances into one value.
@@ -1265,8 +1212,7 @@ rainfallTransform = function(region, mode = c("min", "max", "mean")) {
 	
 	mode = match.arg(mode)[1]
 	
-	region = IRanges(start = region[[1]], end = region[[2]])
-	region = as.data.frame(sort(region))
+	region = as.data.frame(sort_region(region[1:2]))
 	n = nrow(region)
 	dist = numeric(n)
 		

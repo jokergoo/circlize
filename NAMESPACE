@@ -1,4 +1,5 @@
 export(
+	circlize,
 	circos.axis,
 	circos.clear,
 	circos.genomicDensity,
@@ -16,7 +17,6 @@ export(
 	circos.initializeWithIdeogram,
 	circos.lines,
 	circos.link,
-	circos.link2,
 	circos.par,
 	circos.points,
 	circos.polygon,
@@ -38,5 +38,6 @@ export(
 	highlight.chromosome,
 	posTransform.default,
 	rainfallTransform,
-	read.cytoband
+	read.cytoband,
+	show.index
 )

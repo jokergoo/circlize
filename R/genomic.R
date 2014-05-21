@@ -19,7 +19,7 @@
 # The function will initialize the circos plot in which each sector corresponds a chromosome. You can control the order of 
 # chromosomes by set a special format of ``cytoband`` (please refer to `read.cytoband` to find out how to set a proper ``cytoband`` value).
 circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""), 
-	species = NULL, sort.chr = TRUE, chromosome.index = NULL, major.by = 50000000, plotType = c("ideogram", "axis", "labels")) {
+	species = NULL, sort.chr = TRUE, chromosome.index = NULL, major.by = NULL, plotType = c("ideogram", "axis", "labels")) {
 	
 	cytoband = read.cytoband(cytoband, species = species, sort.chr = sort.chr)
 	df = cytoband$df
@@ -77,7 +77,7 @@ circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = 
 # is ``levels(data[[1]])``; If it is a data frame and the first column is just a simple vector, the order of sectors is ``unique(data[[1]]``.
 #
 # For more details on initializing genomic plot, please refer to the vignettes.
-circos.genomicInitialize = function(data, sector.names = NULL, major.by = 50000000, plotType = c("axis", "labels")) {
+circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL, plotType = c("axis", "labels")) {
 	
 	if(is.factor(data[[1]])) {
 		fa = levels(data[[1]])
@@ -104,7 +104,11 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = 500000
 	circos.par(cell.padding = c(0, 0, 0, 0), points.overflow.warning = FALSE)
 	circos.initialize(factor(fa, levels = fa), xlim = cbind(x1, x2))
 	
-	major.at = seq(0, 10^nchar(round(max(x2))), by = major.by)
+	if(is.null(major.by)) {
+		major.by = 10^nchar(sum(x2 - x1 + 1))/100  # around 100 major ticks
+	}
+
+	major.at = seq(0, 10^nchar(round(max(x2 - x1 + 1))), by = major.by)
 	if(major.by > 1e6) {
 		major.tick.labels = paste(major.at/1000000, "MB", sep = "")
 	} else if(major.by > 1e3) {
@@ -118,11 +122,12 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = 500000
 		circos.genomicTrackPlotRegion(data, ylim = c(0, 1), bg.border = NA, track.height = 0.05,
 			panel.fun = function(region, value, ...) {
 				sector.index = get.cell.meta.data("sector.index")
+				xlim = get.cell.meta.data("xlim")
+					
 				if(any(plotType %in% "axis")) {
-					circos.axis(h = 0, major.at = major.at, labels = major.tick.labels, labels.cex = 0.3, labels.direction = "vertical_right")
+					circos.axis(h = 0, major.at = major.at + xlim[1], labels = major.tick.labels, labels.cex = 0.3, labels.direction = "vertical_right")
 				}
 				if(any(plotType %in% "labels")) {
-					xlim = get.cell.meta.data("xlim")
 					circos.text(mean(xlim), 1.2, labels = sector.names[sector.index], cex = 1, adj = c(0.5, 0))
 				}
 			}
@@ -191,8 +196,10 @@ circos.genomicTrackPlotRegion = function(data, ylim = NULL, stack = FALSE, numer
 	data = normalizeToDataFrame(data)
 	
 	# excluding the first three columns
-	numeric.column = numeric.column - 3
-	
+	if(!is.null(numeric.column)) {
+		numeric.column = numeric.column - 3
+	}
+
 	if(!is.dataFrameList(data)) {
 		# check numeric.column
 		if(!is.null(numeric.column)) {
@@ -301,11 +308,8 @@ circos.genomicTrackPlotRegion = function(data, ylim = NULL, stack = FALSE, numer
 					range(unlist(lapply(gr[-(1:3)][ nuc[[i]] ], range)))
 				})))
 			} else {
-				if(is.null(numeric.column)) {
-					
-					if(length(nuc) == 0) {
-						stop("There is no numeric column in your data frame which calculation of `ylim` depends on. Or you can set `ylim` explicitely.\n")
-					}
+				if(length(nuc) == 0) {
+					stop("There is no numeric column in your data frame which calculation of `ylim` depends on. Or you can set `ylim` explicitely.\n")
 				}
 				ylim = range(unlist(lapply(data[-(1:3)][nuc], range)))
 			}
@@ -821,9 +825,11 @@ circos.genomicLink = function(region1, region2,
 # dense regions would be overlapped and hard to identify, also ugly to visualize. Thus, a way
 # to transform original positions to new positions would help for the visualization. 
 circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransform = NULL, 
-	horizontalLine = FALSE, track.margin = c(0, 0),
+	horizontalLine = c("none", "top", "bottom", "both"), track.margin = c(0, 0),
 	type = c("default", "reverse"), col = "black", lwd = par("lwd"), lty = par("lty")) {
 	
+	horizontalLine = match.arg(type)[1]
+
 	data = normalizeToDataFrame(data)
 	
 	if(is.dataFrameList(data)) {
@@ -858,8 +864,10 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 			}
 			
 			for(i in seq_len(nrow(region_subset))) {
-				if(horizontalLine) {
+				if(horizontalLine == "both" || horizontalLine == "top") {
 					circos.lines(c(region_subset[i, 2], region_subset[i, 3]), c(1, 1), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
+				}
+				if(horizontalLine == "both" || horizontalLine == "bottom") {
 					circos.lines(c(region_new_subset[i, 2], region_new_subset[i, 3]), c(0, 0), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
 				}
 				mid = (region_subset[i, 2] + region_subset[i, 3])/2
@@ -879,8 +887,10 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 			}
 			
 			for(i in seq_len(nrow(region_subset))) {
-				if(horizontalLine) {
+				if(horizontalLine == "both" || horizontalLine == "bottom") {
 					circos.lines(c(region_subset[i, 2], region_subset[i, 3]), c(0, 0), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
+				}
+				if(horizontalLine == "both" || horizontalLine == "top") {
 					circos.lines(c(region_new_subset[i, 2], region_new_subset[i, 3]), c(1, 1), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
 				}
 				mid = (region_subset[i, 2] + region_subset[i, 3])/2

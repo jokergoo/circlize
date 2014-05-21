@@ -1,1 +1,2 @@
 - testing code
+- automatically calculate `major.by` in genomicInitialize

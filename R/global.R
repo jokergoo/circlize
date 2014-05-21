@@ -397,6 +397,9 @@ get.current.sector.index = function() {
 
 set.current.sector.index = function(x) {
 	.CURRENT.SECTOR.INDEX = get(".CURRENT.SECTOR.INDEX", envir = .CIRCOS.ENV)
+	if(!x %in% get.all.sector.index()) {
+		stop(paste0("Cannot find ", x, " in all available sector names.\n"))
+	}
     .CURRENT.SECTOR.INDEX = x
 	assign(".CURRENT.SECTOR.INDEX", .CURRENT.SECTOR.INDEX, envir = .CIRCOS.ENV)
     return(invisible(NULL))
@@ -533,8 +536,8 @@ circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 				
 		}
 
-		cat("Your current sector.index is ", get.current.sector.index(), "}\n", sep = "")
-		cat("Your current track.index is ", get.current.track.index(), "}\n", sep = "")
+		cat("Your current sector.index is ", get.current.sector.index(), "\n", sep = "")
+		cat("Your current track.index is ", get.current.track.index(), "\n", sep = "")
 	}
 		
 

@@ -599,10 +599,10 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 		stop("Length of `track.index` should only be 1.\n")
 	}
 	if(!any(sector.index %in% get.all.sector.index())) {
-		stop("Cannot find sector: @{sector.index}.\n")
+		stop(paste0("Cannot find sector: ", sector.index, ".\n"))
 	}
 	if(!any(track.index %in% seq_len(get.max.track.index()))) {
-		stop("Cannot find track: @{track.index}.\n")
+		stop(paste0("Cannot find track: ", track.index, ".\n"))
 	}
 
 	current.sector.data = get.sector.data(sector.index)

@@ -175,7 +175,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
     assign(".SECTOR.DATA", NULL, envir = .CIRCOS.ENV)
 	assign(".TRACK.END.POSITION", 1, envir = .CIRCOS.ENV)
 	assign(".CELL.DATA", NULL, envir = .CIRCOS.ENV)
-	assign(".CURRENT.TRACK.INDEX", 1, envir = .CIRCOS.ENV)
+	assign(".CURRENT.TRACK.INDEX", 0, envir = .CIRCOS.ENV)
 	assign(".CURRENT.SECTOR.INDEX", NULL, envir = .CIRCOS.ENV)
 	
 	.SECTOR.DATA = get(".SECTOR.DATA", envir = .CIRCOS.ENV)

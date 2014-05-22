@@ -125,7 +125,7 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL, 
 				xlim = get.cell.meta.data("xlim")
 					
 				if(any(plotType %in% "axis")) {
-					circos.axis(h = 0, major.at = major.at + xlim[1], labels = major.tick.labels, labels.cex = 0.3, labels.direction = "vertical_right")
+					circos.axis(h = 0, major.at = major.at + xlim[1], labels = major.tick.labels, labels.cex = 0.3, labels.direction = "vertical_right", major.tick.percentage = 0.2)
 				}
 				if(any(plotType %in% "labels")) {
 					circos.text(mean(xlim), 1.2, labels = sector.names[sector.index], cex = 1, adj = c(0.5, 0))
@@ -186,9 +186,16 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL, 
 # Being different from ``panel.fun`` in `circos.trackPlotRegion`, there should be an additional argument ``...`` in ``panel.fun``. This additional
 # argument is used to pass hidden values to low-level graphical functions. So if you are using functions like ``circos.genomicPoints``, you should also
 # add ``...`` as an additional argument into ``circos.genomicPoints``.
-circos.genomicTrackPlotRegion = function(data, ylim = NULL, stack = FALSE, numeric.column = NULL, 
+circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE, numeric.column = NULL, 
 	panel.fun = function(region, value, ...)  {NULL}, ... ) {
-
+	
+	if(is.null(data)) {
+		all.sector.index = get.all.sector.index()
+		data = data.frame(all.sector.index,
+		           rep(0, length(all.sector.index)),
+				   rep(0, length(all.sector.index)))
+	}
+	
 	# re-define panel.fun
 	genomicPanelFun = panel.fun
 
@@ -507,6 +514,7 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 			if(.param$stack && is.null(numeric.column)) {
 				value = data.frame(hline = rep(.param$i, nr))
 				numeric.column = 1
+				type = rep("segment", length(type))
 			}
 		} else if(!is.null(.param$numeric.column) && is.null(numeric.column)) {
 			numeric.column = .param$numeric.column
@@ -606,7 +614,7 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 #
 # == details
 # The function is usually put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
-circos.genomicRect = function(region, value, 
+circos.genomicRect = function(region, value = NULL, 
 	ytop = NULL, ybottom = NULL, ytop.column = NULL, ybottom.column = NULL,
 	sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
@@ -786,7 +794,6 @@ circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.col
 	direction = .normalizeGraphicalParam(direction, nc, nr, "direction")
 	col = .normalizeGraphicalParam(col, nc, nr, "col")
 	cex = .normalizeGraphicalParam(cex, nc, nr, "cex")
-	adj = .normalizeGraphicalParam(adj, nc, nr, "adj")
 	font = .normalizeGraphicalParam(font, nc, nr, "font")
 
 	circos.text( (region[[1]] + region[[2]])/2, value[[ numeric.column ]], value[[labels.column]],
@@ -876,7 +883,7 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 	horizontalLine = c("none", "top", "bottom", "both"), track.margin = c(0, 0),
 	type = c("default", "reverse"), col = "black", lwd = par("lwd"), lty = par("lty")) {
 	
-	horizontalLine = match.arg(type)[1]
+	horizontalLine = match.arg(horizontalLine)[1]
 
 	data = normalizeToDataFrame(data)
 	
@@ -901,7 +908,7 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 	type = match.arg(type)[1]
 	
 	if(type == "default") {
-		circos.trackPlotRegion(data[[1]], ylim = c(0, 1), bg.border = NA, panel.fun = function(x, y) {
+		circos.trackPlotRegion(data[[1]], ylim = c(0, 1), bg.border = NA, track.height = track.height, panel.fun = function(x, y) {
 			chr = get.current.chromosome()
 			l = data[[1]] == chr
 			region_subset = data[l, , drop = FALSE]
@@ -924,7 +931,7 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 			}
 		})
 	} else {
-		circos.trackPlotRegion(data[[1]], ylim = c(0, 1), bg.border = NA, panel.fun = function(x, y) {
+		circos.trackPlotRegion(data[[1]], ylim = c(0, 1), bg.border = NA, track.height = track.height, panel.fun = function(x, y) {
 			chr = get.current.chromosome()
 			l = data[[1]] == chr
 			region_subset = data[l, , drop = FALSE]
@@ -1141,7 +1148,7 @@ highlight.chromosome = function(chr, track.index = seq_len(get.max.track.index()
 		start.degree = start.degree - d1*padding[2]
 		end.degree = end.degree + d1*padding[4]
 		rou1 = rou1 + d2*padding[3]
-		rou2 = rou2 + d2*padding[1]
+		rou2 = rou2 - d2*padding[1]
 		
 		draw.sector(start.degree = start.degree, end.degree = end.degree, rou1 = rou1, rou2 = rou2, col = col, border = border, lwd = lwd, lty = lty)
 	}

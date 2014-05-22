@@ -19,6 +19,10 @@
 
 \maketitle 
 
+\bf{There is a new and more comprehensive vignette in this package which is focusing on plotting genomic figures.
+Nevertheless, this vignette is still useful for users to get a clue on how to draw genomic graphics by very basic 
+low-level graphical functions.}
+
 The most widely use of the circular layout is to display genomic information.
 In most circumstances, figures contain an ideogram. Drawing ideogram by {\it circlize} 
 package is rather simple.
@@ -243,55 +247,6 @@ genomic positions are taken as y-values.
 
 
 The finnal figure looks like figure \ref{fig:ideogram}.
-
-
-In the {\it circlize} package, there is already a {\tt circos.initializeWithIdeogram}
-function to initialize circular layout with an ideogram. However, how to embed the ideogram into the
-circular layout is really subjective, such as the position and colors of the ideogram, 
-or maybe only subset of chromosomes are going to be plotted, or maybe there are some zoomings for certain chromosomes
-(see \url{http://circos.ca/intro/features/}. `GLOBAL AND LOCAL ZOOMING' section). So the {\tt circos.initializeWithIdeogram}
-is not a full functional function, it is only an example function to show how to allocate sectors for chromosomes and how
-to draw ideogram. Thus users can draw their style of ideogram according the above example codes. 
-With such low level circos graphic functions provided in {\it circlize}, there would be no difficulty for users to implement their own genomic graphics.
-All you need to remember is that {\bf complicated graphics are assembled by simple graphics}.
-
-
-Finally, more informative and specialized genomic graphics are figure \ref{fig:genomic}, figure \ref{fig:twochr} and figure \ref{fig:zoom}. Figure
-\ref{fig:twochr} in fact combines two independent circos plots, and figure \ref{fig:zoom} re-defined sector width to put two zoomed chromosomes
-in half part of the circle. Users can refer to the main vignette to find out how to implement.
-
-\begin{figure}[h!]
-\begin{center}
-<<label=figgenomic, fig = TRUE, echo = FALSE, eval=TRUE, results=hide>>=
-source("src/ideogram-02-genomic.R")
-@
-\end{center}
-\caption{Detailed genomic graphic}
-\label{fig:genomic}
-\end{figure}
-
-
-\begin{figure}[h!]
-\begin{center}
-<<label=figtwo, fig = TRUE, echo = FALSE, eval=TRUE, results=hide>>=
-source("src/ideogram-03-nested.R")
-@
-\end{center}
-\caption{Two tracks of chromosomes in which the inner one zooms in chromosome 1 from the outer one.}
-\label{fig:twochr}
-\end{figure}
-
-
-\begin{figure}[h!]
-\begin{center}
-<<label=figzoom, fig = TRUE, echo = FALSE, eval=TRUE, results=hide>>=
-source("src/ideogram-04-zoom.R")
-@
-\end{center}
-\caption{Chromosome 7 and 8 are zoomed in at the half of the circle}
-\label{fig:zoom}
-\end{figure}
-
 
 
 \end{document}

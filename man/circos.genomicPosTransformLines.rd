@@ -12,11 +12,11 @@
 }
 \usage{
 circos.genomicPosTransformLines(data, track.height = 0.1, posTransform = NULL,
-    horizontalLine = FALSE, track.margin = c(0, 0),
+    horizontalLine = c("none", "top", "bottom", "both"), track.margin = c(0, 0),
     type = c("default", "reverse"), col = "black", lwd = par("lwd"), lty = par("lty"))
 }
 \arguments{
-  \item{data}{a data frame or a \code{GRanges} object}
+  \item{data}{a data frame containing genomic data}
   \item{track.height}{height of the track}
   \item{posTransform}{genomic position transformation function, see \code{\link{posTransform.default}} for an example.}
   \item{horizontalLine}{whether to draw horizontal lines which indicate width of each region}

@@ -8,6 +8,10 @@ df = read.cytoband()$df
 circos.initializeWithIdeogram(df)
 circos.clear()
 
+df[[1]] = qsub("chr", "", df[[1]])
+circos.initializeWithIdeogram(df)
+circos.clear()
+
 circos.initializeWithIdeogram(species = "hg19")
 circos.clear()
 
@@ -26,6 +30,10 @@ circos.clear()
 
 ########################
 # general genomic initialize
+
+df = read.cytoband()$df
+circos.genomicInitialize(df)
+
 df = data.frame (name = c("TP53", "TP63", "TP73"),
 	             start = c(7565097, 189349205, 3569084),
 	             end = c(7590856, 189615068, 3652765),
@@ -36,12 +44,15 @@ circos.clear()
 circos.genomicInitialize(df, major.by = 10000)
 circos.clear()
 
-circos.genomicInitialize(df, major.by = 10000, plotType = "labels")
+circos.genomicInitialize(df, plotType = "labels")
 circos.clear()
 
-circos.genomicInitialize(df, major.by = 10000, sector.names = c("tp53", "tp63", "tp73"))
+circos.genomicInitialize(df, sector.names = c("tp53", "tp63", "tp73"))
+circos.clear()
+
+circos.genomicInitialize(df, sector.names = c("tp53x", "tp63x", "tp73"))
 circos.clear()
 
 df[[1]] = factor(df[[1]], levels = c("TP73", "TP63", "TP53"))
-circos.genomicInitialize(df, major.by = 10000)
+circos.genomicInitialize(df)
 circos.clear()

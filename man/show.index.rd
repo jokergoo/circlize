@@ -22,6 +22,7 @@ show.index()
 
 
 
+
 library(circlize)
 par(mar = c(1, 1, 1, 1))
 factors = factor(letters[1:10], levels = sample(letters[1:10], 10))
@@ -33,6 +34,7 @@ circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
 show.index()
 circos.clear()
+
 
 
 

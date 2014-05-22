@@ -38,6 +38,7 @@ draw.sector(start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL, center = 
 
 
 
+
 library(circlize)
 
 factors = letters[1:8]
@@ -88,6 +89,7 @@ draw.sector(start.degree = start.e2, end.degree = end.f2, rou1 = top.e2,
     rou2 = bottom.e3, border = NA, col = "#FFFF0040")
 show.index()
 circos.clear()
+
 
 
 

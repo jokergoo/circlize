@@ -14,8 +14,7 @@
 circos.genomicText(region, value, y = NULL, labels = NULL, labels.column = NULL, numeric.column = NULL,
     sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), posTransform = NULL,
-    direction = c("default", "default2", "vertical_left",
-    "vertical_right", "horizontal", "arc"),
+    direction = "default",
     adj = par("adj"), cex = 1, col = "black", font = par("font"), ...)
 }
 \arguments{

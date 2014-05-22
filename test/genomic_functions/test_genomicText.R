@@ -8,4 +8,9 @@ circos.genomicTrackPlotRegion(bed, ylim = c(0, 1), panel.fun = function(region, 
 	circos.genomicText(region, value, y = 0.5, labels = "text", ...)
 })
 
+bed = cbind(bed, sample(letters, nrow(bed), replace = TRUE))
+circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
+	circos.genomicText(region, value, labels.column = 2, ...)
+})
+
 circos.clear()

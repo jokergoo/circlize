@@ -66,7 +66,7 @@ circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = 
 # == param
 # -data a data frame containing genomic data.
 # -sector.names names for each sectors which will be drawn along each sector
-# -major.by increment of major ticks
+# -major.by increment of major ticks. It is calculated automatically if the value is not set.
 # -plotType which part should be drawn. ``axis`` for genomic axis and ``labels`` for chromosome names
 #
 # == details
@@ -421,6 +421,8 @@ circos.genomicPoints = function(region, value, numeric.column = NULL,
 				value = data.frame(hline = rep(.param$i, nr))
 				numeric.column = 1
 			}
+		} else if(!is.null(.param$numeric.column) && is.null(numeric.column)) {
+			numeric.column = .param$numeric.column
 		}
 	}
 	
@@ -506,6 +508,8 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 				value = data.frame(hline = rep(.param$i, nr))
 				numeric.column = 1
 			}
+		} else if(!is.null(.param$numeric.column) && is.null(numeric.column)) {
+			numeric.column = .param$numeric.column
 		}
 	}
 	
@@ -724,6 +728,8 @@ circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.col
 				value = data.frame(hline = rep(.param$i, nr))
 				numeric.column = 1
 			}
+		} else if(!is.null(.param$numeric.column) && is.null(numeric.column)) {
+			numeric.column = .param$numeric.column
 		}
 	}
 	
@@ -764,7 +770,7 @@ circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.col
 	}
 
 	if(is.null(numeric.column)) {
-		numeric.column = which(as.logical(sapply(data[-(1:3)], is.numeric)))
+		numeric.column = which(as.logical(sapply(value, is.numeric)))
 		if(length(numeric.column) == 0) {
 			stop("Cannot find numeric column.\n")
 		}
@@ -950,7 +956,7 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 #
 # == param
 # -data A bed-file-like data frame or a list of data frames
-# -ylim.force.one whether to force upper bound of ``ylim`` to be 1.
+# -ylim.force whether to force upper bound of ``ylim`` to be 1.
 # -window.size pass to `genomicDensity`
 # -overlap pass to `genomicDensity`
 # -col  colors. It should be length of one. If ``data`` is a list of data frames, the length of ``col``
@@ -965,7 +971,7 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 #
 # == details
 # This function is a high-level graphical function, and it will create a new track.
-circos.genomicDensity = function(data, ylim.force.one = FALSE, window.size = 10000000, overlap = TRUE, 
+circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, overlap = TRUE, 
 	col = ifelse(area, "grey", "black"), lwd = par("lwd"),
     lty = par("lty"), type = "l", area = TRUE, area.baseline = 0, border = NA, ...) {
 	
@@ -996,6 +1002,12 @@ circos.genomicDensity = function(data, ylim.force.one = FALSE, window.size = 100
 	if(length(border) == 1) {
 		border = rep(border, length(data))
 	}
+
+	s = sapply(get.all.sector.index(), function(si) get.cell.meta.data("xrange", sector.index = si))
+	if(is.null(window.size)) {
+		window.size = 10^nchar(sum(s))/1000  # around 100 major ticks
+		cat(window.size, "is choosen as the window size.\n")
+	}
 	
 	df = vector("list", length = length(data))
 	for(i in seq_along(data)) {
@@ -1007,7 +1019,7 @@ circos.genomicDensity = function(data, ylim.force.one = FALSE, window.size = 100
 			df[[i]] = rbind(df[[i]], dn)
 		}
 	}
-	if(ylim.force.one) {
+	if(ylim.force) {
 		ymax = 1
 	} else {
 		ymax = max(sapply(df, function(gr) max(gr[[4]])))
@@ -1114,13 +1126,13 @@ highlight.chromosome = function(chr, track.index = seq_len(get.max.track.index()
 		stop("`track.index` contains index that does not belong to available sectors.\n")
 	}
 	
-	track.index = seq_len(max.track.index)[track.index %in% seq_len(max.track.index)]
+	track.index = sort(unique(track.index))
 	ts = continuousIndexSegment(track.index)
 	
 	for(i in seq_along(ts)) {
 		track.index.vector = ts[[i]]
-		start.degree = get.cell.meta.data("cell.start.degree", track.index = 1)
-		end.degree = get.cell.meta.data("cell.end.degree", track.index = 1)
+		start.degree = get.cell.meta.data("cell.start.degree", chr, track.index = 1)
+		end.degree = get.cell.meta.data("cell.end.degree", chr, track.index = 1)
 		rou1 = get.cell.meta.data("cell.top.radius", chr, track.index.vector[1])
 		rou2 = get.cell.meta.data("cell.bottom.radius", chr, track.index.vector[length(track.index.vector)])
 		
@@ -1145,7 +1157,7 @@ continuousIndexSegment = function(x) {
 		for(i in seq_along(k)[-length(k)]) {
 			lt[[i]] = x[(k[i] + 1):(k[i+1])]
 		}
-		return(x)
+		return(lt)
 	}
 }
 
@@ -1213,7 +1225,7 @@ normalizeToDataFrame = function(data) {
 #
 # == param
 # -data A bed-file-like data frame or a list of data frames
-# -ylim ylim for rainfall plot track. It's value is log10(inter-distance+1)
+# -ylim ylim for rainfall plot track. It's value should be log10(inter-distance+1)
 # -col  color of points. It should be length of one. If ``data`` is a list, the length of ``col``
 #       can also be the length of the list.
 # -pch  style of points

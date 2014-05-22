@@ -17,8 +17,8 @@ circos.genomicLink(region1, region2,
     top.ratio.low = NULL)
 }
 \arguments{
-  \item{region1}{a genomic data frame / an \code{GRanges} object}
-  \item{region2}{a genomic data frame / an \code{GRanges} object}
+  \item{region1}{a genomic data frame}
+  \item{region2}{a genomic data frame}
   \item{rou}{pass to \code{\link{circos.link}}}
   \item{top.ratio}{pass to \code{\link{circos.link}}}
   \item{col}{pass to \code{\link{circos.link}}, length can be either one or nrow of \code{region1}}

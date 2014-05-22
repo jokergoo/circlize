@@ -11,10 +11,11 @@
 
 }
 \usage{
-circos.genomicRainfall(data, col = "black", pch = par("pch"), cex = par("cex"), ...)
+circos.genomicRainfall(data, ylim = c(0, 9), col = "black", pch = par("pch"), cex = par("cex"), ...)
 }
 \arguments{
-  \item{data}{A bed-file-like data frame or a \code{GRanges} object. It can also be a list containing data frames and \code{GRanges} objects.}
+  \item{data}{A bed-file-like data frame or a list of data frames}
+  \item{ylim}{ylim for rainfall plot track. It's value should be log10(inter-distance+1)}
   \item{col}{color of points. It should be length of one. If \code{data} is a list, the length of \code{col} can also be the length of the list.}
   \item{pch}{style of points}
   \item{cex}{size of points}

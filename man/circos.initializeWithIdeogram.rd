@@ -12,7 +12,7 @@
 }
 \usage{
 circos.initializeWithIdeogram(cytoband = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""),
-    species = NULL, sort.chr = TRUE, chromosome.index = NULL, major.by = 50000000, plotType = c("ideogram", "axis", "labels"))
+    species = NULL, sort.chr = TRUE, chromosome.index = NULL, major.by = NULL, plotType = c("ideogram", "axis", "labels"))
 }
 \arguments{
   \item{cytoband}{A path of the cytoband file or a data frame that already contains cytoband. By default it is cytoband for hg19. Pass to \code{\link{read.cytoband}}.}
@@ -29,6 +29,7 @@ circos.initializeWithIdeogram(cytoband = paste(system.file(package = "circlize")
 
 }
 \examples{
+
 
 
 
@@ -205,6 +206,7 @@ for(chr in chromosome) {
 circos.clear()    
 
 }
+
 
 
 

@@ -32,6 +32,7 @@ reduce_region = function(region) {
 
 # to calculate how much region in gr1 are covered by gr2
 # here gr1 and gr2 are all sorted
+# gr2 are reduced
 overlap_region = function(gr1, gr2, percent = TRUE) {
 	nr1 = nrow(gr1)
 	nr2 = nrow(gr2)
@@ -69,7 +70,7 @@ overlap_interval = function(it1, it2) {
 	end = it1[2]
 	it2_start = it2[1]
 	it2_end = it2[2]
-	
+
 	if(end < it2_start) {
 		return(0)
 	} else if(start <= it2_start & end >= it2_start & end <= it2_end) {
@@ -78,8 +79,8 @@ overlap_interval = function(it1, it2) {
 		return(end - start + 1)
 	} else if(start <= it2_start & end >= it2_end) {
 		return(it2_end - it2_start + 1)
-	} else if(it2_start >= start & start <= it2_end & it2_end <= end) {
-		return(it2_end - end + 1)
+	} else if(it2_start <= start & start <= it2_end & it2_end <= end) {
+		return(it2_end - start + 1)
 	} else if(it2_end < start) {
 		return(0)
 	} else {

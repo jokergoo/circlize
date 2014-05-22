@@ -28,6 +28,7 @@ export(
 	circos.trackPoints,
 	circos.trackText,
 	circos.updatePlotRegion,
+	colorRamp2,
 	cytoband.col,
 	draw.sector,
 	generateRandomBed,

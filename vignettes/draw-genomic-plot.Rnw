@@ -25,29 +25,37 @@ specifically provides functions which are focusing on genomic plots. These funct
 are synonymous to the basic circos graphical functions but expecting special format of input data:
 
 \begin{itemize}
-  \item {\tt circos.genomicTrackPlotRegion}: create a new track.
-  \item {\tt circos.genomicPoints}: add points
-  \item {\tt circos.genomicLines}: add lines
-  \item {\tt circos.genomicRect}: add rectangles
-  \item {\tt circos.genomicText}: add text
+  \item {\tt circos.genomicTrackPlotRegion}: create a new track and add graphics.
+  \item {\tt circos.genomicPoints}: low-level function, add points
+  \item {\tt circos.genomicLines}: low-level function, add lines
+  \item {\tt circos.genomicRect}: low-level function, add rectangles
+  \item {\tt circos.genomicText}: low-level function, add text
   \item {\tt circos.genomicLink}: add links
 \end{itemize}
 
-The genomic functions are implemented by basic circos functions (e.g. {\it circos.points}),
+The genomic functions are implemented by basic circos functions (e.g. {\tt circos.trackPlotRegion}, {\tt circos.points}),
 thus, you can customize your own plots by both genomic functions and basic circos functions.
 
-\section{Input data type}
+\section{Input data}
 
-{\it circlize} expects input data as a data frame or a list of data frames in which there are at least three columns in it.
+{\it circlize} expects input data as a data frame or a list of data frames in which there are at least three columns.
 The first column is genomic category (e.g. chromosome), the second column is start position
 on the genome and the third column is the end position. Following columns are optional and some
 numeric values or other related values are stored in. Such data structure is quite broadly used
 in genomic research and can be easily generated.
 
+This package provides a simple function {\tt generateRandomBed} which can generate random genomic data:
+
+<<echo=TRUE, eval=FALSE>>=
+bed = generateRandomBed()
+bed = generateRandomBed(nr = 200, nc = 4)
+bed = generateRandomBed(fun = function(k) runif(k))
+@
+
 \section{Initialize with cytoband data}
 
 Similar as general circos plots, the first step is to initialize the plot with genomic categories.
-Normally, the genomic categories is measured by chromosomes. The easiest way is to used
+Normally, genomic categories are measured by chromosomes. The easiest way is to used
 {\tt circos.initializeWithIdeogram}:
 
 <<echo=TRUE, eval=FALSE>>=
@@ -150,13 +158,14 @@ circos.genomicInitialize(df, sector.names = c("tp53", "tp63", "tp73"))
 \subsection{links}
 \subsection{other functions}
 
-
 \section{Other high-level genomic functions}
 \subsection{Position transformation}
 
 \subsection{Genomic density}
 
 \subsection{Rainfall plot}
+
+\subsection{combine general circos functions}
 
 \section{Organize complex genomic plots}
 

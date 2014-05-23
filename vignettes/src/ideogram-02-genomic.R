@@ -1,23 +1,29 @@
 library(circlize)
-set.seed(12345)
 
 circos.initializeWithIdeogram()
 
-circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.2,
-    panel.fun = function(x, y) {
-        xlim = get.cell.meta.data("xlim")
-        xrange = get.cell.meta.data("xrange")
+bed = generateRandomBed(nr = 40)
+circos.genomicPosTransformLines(bed, posTransform = posTransform.default)
+circos.par("cell.padding" = c(0, 0, 0, 0), track.margin = c(0, 0))
+circos.genomicTrackPlotRegion(bed, ylim = c(0, 1), bg.border = NA, panel.fun = function(region, value, ...) {
+	circos.genomicText(region, value, y = 1, adj = c(0, 0.5), labels = "gene", direction = "vertical_left", cex = 0.6, posTransform = posTransform.default, ...)
+}, track.height = 0.1)
+circos.par(track.margin = c(0.01, 0.01))
 
-        x1 = xlim[1] + runif(5)*xrange
-        x1 = sort(x1)
-        x2 = seq(xlim[1], xlim[2], length.out = 5)
-        for(i in 1:5) {
-            circos.lines(c(x1[i], x2[i]), c(1, 0.5), straight = TRUE)
-            circos.text(x2[i], 0.4, labels = "gene", adj = c(0, 0.5),
-                cex = 0.4, direction = "vertical_left")
-        }
-    })
+bed = generateRandomBed(nr = 500, fun = function(k) runif(k)*sample(c(-1, 1), k, replace = TRUE))
+circos.genomicTrackPlotRegion(bed, ylim = c(-1, 1), panel.fun = function(region, value, ...) {
+	col = ifelse(value[[1]] > 0, "red", "green")
+	circos.genomicPoints(region, value, col = col, cex = 0.25, pch = 16)
+	cell.xlim = get.cell.meta.data("cell.xlim")
+	for(h in c(-1, -0.5, 0, 0.5, 1)) {
+		circos.lines(cell.xlim, c(h, h), col = "#00000040")
+	}
+}, track.height = 0.1)
 
+bed = generateRandomBed(nr = 500)
+circos.genomicTrackPlotRegion(bed, ylim = c(-1, 1), panel.fun = function(region, value, ...) {
+	l = value[[1]] > 0
+}, track.height = 0.1)
 
 circos.trackPlotRegion(ylim = c(-1, 1), bg.border = NA, bg.col ="#EEEEEE",
     track.height = 0.1, panel.fun = function(x, y) {

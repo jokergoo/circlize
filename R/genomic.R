@@ -14,12 +14,13 @@
 # -major.by     increment of major ticks
 # -plotType     which part should be drawn. ``rect`` for ideogram rectangle, ``axis`` for genomic axis and ``labels`` for chromosome names.
 #               If it is set to ``NULL``, the function just initialize the plot but draw nothing.
+# -...    pass to `circos.initialize`
 #
 # == details
 # The function will initialize the circos plot in which each sector corresponds a chromosome. You can control the order of 
 # chromosomes by set a special format of ``cytoband`` (please refer to `read.cytoband` to find out how to set a proper ``cytoband`` value).
 circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""), 
-	species = NULL, sort.chr = TRUE, chromosome.index = NULL, major.by = NULL, plotType = c("ideogram", "axis", "labels")) {
+	species = NULL, sort.chr = TRUE, chromosome.index = NULL, major.by = NULL, plotType = c("ideogram", "axis", "labels"), ...) {
 	
 	cytoband = read.cytoband(cytoband, species = species, sort.chr = sort.chr)
 	df = cytoband$df
@@ -42,7 +43,7 @@ circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = 
 	# we do not need 'chr' prefix if it exits, it holds too much space.
 	sn = gsub("chr", "", sn)
 	
-	circos.genomicInitialize(df, sector.names = sn, major.by = major.by, plotType = plotType)
+	circos.genomicInitialize(df, sector.names = sn, major.by = major.by, plotType = plotType, ...)
 
 	if(any(plotType %in% "ideogram")) {
 		o.cell.padding = circos.par("cell.padding")
@@ -68,6 +69,7 @@ circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = 
 # -sector.names names for each sectors which will be drawn along each sector
 # -major.by increment of major ticks. It is calculated automatically if the value is not set.
 # -plotType which part should be drawn. ``axis`` for genomic axis and ``labels`` for chromosome names
+# -... pass to `circos.initialize`
 #
 # == details
 # The function will initialize circos plot from genomic data provided. If ``plotType`` is set with value in ``axis`` or ``labels``, there will
@@ -77,7 +79,7 @@ circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = 
 # is ``levels(data[[1]])``; If it is a data frame and the first column is just a simple vector, the order of sectors is ``unique(data[[1]]``.
 #
 # For more details on initializing genomic plot, please refer to the vignettes.
-circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL, plotType = c("axis", "labels")) {
+circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL, plotType = c("axis", "labels"), ...) {
 	
 	if(is.factor(data[[1]])) {
 		fa = levels(data[[1]])
@@ -102,7 +104,7 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL, 
 	op = circos.par("cell.padding")
 	ow = circos.par("points.overflow.warning")
 	circos.par(cell.padding = c(0, 0, 0, 0), points.overflow.warning = FALSE)
-	circos.initialize(factor(fa, levels = fa), xlim = cbind(x1, x2))
+	circos.initialize(factor(fa, levels = fa), xlim = cbind(x1, x2), ...)
 	
 	if(is.null(major.by)) {
 		major.by = 10^nchar(sum(x2 - x1 + 1))/100  # around 100 major ticks
@@ -848,11 +850,21 @@ circos.genomicLink = function(region1, region2,
 	border = .normalizeGraphicalParam(border, 1, nr, "border")
 	#top.ratio.low = .normalizeGraphicalParam(top.ratio.low, 1, nr, "top.ratio.low")
 	
-	for(i in seq_len(nrow(region1))) {
-		circos.link(region1[i, 1], c(region1[i, 2], region1[i, 3]),
-		            region2[i, 1], c(region2[i, 2], region2[i, 3]),
+	for(i in seq_len(nr)) {
+		if(region1[i, 2] == region1[i, 3]) {
+			point1 = region1[i, 2]
+		} else {
+			point1 = c(region1[i, 2], region1[i, 3])
+		}
+		if(region2[i, 2] == region2[i, 3]) {
+			point2 = region2[i, 2]
+		} else {
+			point2 = c(region2[i, 2], region2[i, 3])
+		}
+		circos.link(region1[i, 1], point1,
+		            region2[i, 1], point2,
 					rou = rou, top.ratio = top.ratio[i], col = col[i], lwd = lwd[i],
-					lty = lty[i], border = border[i], top.ratio.low = top.ratio.low[i])
+					lty = lty[i], border = border[i], top.ratio.low = top.ratio.low)
 	}
 }
 

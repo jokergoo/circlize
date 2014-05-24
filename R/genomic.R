@@ -233,7 +233,7 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 								if(length(nc) == 0) {
 									NA
 								} else {
-									nc
+									nc[1]
 								}
 							})
 		}
@@ -488,7 +488,7 @@ circos.genomicPoints = function(region, value, numeric.column = NULL,
 #      pass to `circos.lines`
 # -lwd Settings are similar as ``col``. Pass to `circos.lines`
 # -lty Settings are similar as ``col``. Pass to `circos.lines`
-# -type There is an additional option ``segment`` which plot segmetn lines from start position to end position. Settings are similar as ``col``. Pass to `circos.lines`. 
+# -type There is an additional option ``segment`` which plot segment lines from start position to end position. Settings are similar as ``col``. Pass to `circos.lines`. 
 # -area Settings are similar as ``col``. Pass to `circos.lines`
 # -area.baseline Settings are similar as ``col``. Pass to `circos.lines`
 # -border Settings are similar as ``col``. Pass to `circos.lines`

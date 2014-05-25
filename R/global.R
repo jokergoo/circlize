@@ -524,7 +524,7 @@ circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 		} else {
 			for(i in seq_along(sector.index)) {
 				for(j in seq_along(track.index)) {
-					cat("sector index: ", sector.index[i], "}\n", sep = "")
+					cat("sector index: ", sector.index[i], "\n", sep = "")
 					cat("track index: ", track.index[j], "\n", sep = "")
 					xlim = get.cell.meta.data('xlim', sector.index[i], track.index[j])
 					ylim = get.cell.meta.data('ylim', sector.index[i], track.index[j])

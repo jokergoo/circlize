@@ -51,6 +51,7 @@ circos.trackHist(factors, x, track.height = circos.par("default.track.height"),
 
 
 
+
 \dontrun{
 library(circlize)
 par(mar = c(1, 1, 1, 1))
@@ -69,6 +70,7 @@ circos.trackHist(factors = factors, x = x, draw.density = TRUE,
 
 circos.clear()
 }
+
 
 
 

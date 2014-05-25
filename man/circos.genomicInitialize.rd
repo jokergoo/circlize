@@ -11,13 +11,14 @@
 
 }
 \usage{
-circos.genomicInitialize(data, sector.names = NULL, major.by = NULL, plotType = c("axis", "labels"))
+circos.genomicInitialize(data, sector.names = NULL, major.by = NULL, plotType = c("axis", "labels"), ...)
 }
 \arguments{
   \item{data}{a data frame containing genomic data.}
   \item{sector.names}{names for each sectors which will be drawn along each sector}
   \item{major.by}{increment of major ticks. It is calculated automatically if the value is not set.}
   \item{plotType}{which part should be drawn. \code{axis} for genomic axis and \code{labels} for chromosome names}
+  \item{...}{pass to \code{\link{circos.initialize}}}
 
 }
 \details{

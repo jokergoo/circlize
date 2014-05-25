@@ -50,6 +50,7 @@ circos.lines(x, y, sector.index = get.cell.meta.data("sector.index"), track.inde
 
 
 
+
 library(circlize)
 par(mar = c(1, 1, 1, 1), cex = 0.8)
 factors = letters[1:8]
@@ -78,6 +79,7 @@ circos.text(5, 1, "type = 'l', area = TRUE\narea.baseline = 'top'",
     sector.index = "h")
 circos.clear()
 par(cex = 1)
+
 
 
 

@@ -29,7 +29,7 @@ circos.genomicLines(region, value, numeric.column = NULL,
   \item{col}{col of lines/areas. If there are more than one numeric column, the length of \code{col} can be either one or number of numeric columns. pass to \code{\link{circos.lines}}}
   \item{lwd}{Settings are similar as \code{col}. Pass to \code{\link{circos.lines}}}
   \item{lty}{Settings are similar as \code{col}. Pass to \code{\link{circos.lines}}}
-  \item{type}{There is an additional option \code{segment} which plot segmetn lines from start position to end position. Settings are similar as \code{col}. Pass to \code{\link{circos.lines}}. }
+  \item{type}{There is an additional option \code{segment} which plot segment lines from start position to end position. Settings are similar as \code{col}. Pass to \code{\link{circos.lines}}. }
   \item{area}{Settings are similar as \code{col}. Pass to \code{\link{circos.lines}}}
   \item{area.baseline}{Settings are similar as \code{col}. Pass to \code{\link{circos.lines}}}
   \item{border}{Settings are similar as \code{col}. Pass to \code{\link{circos.lines}}}

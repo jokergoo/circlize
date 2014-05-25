@@ -1086,7 +1086,7 @@ The function can be applied at any time.
 > circos.initialize(factors = factors, xlim = c(1, 2))
 > circos.info()
 \end{Sinput}
-\bedin{Soutput}
+\begin{Soutput}
 All your sectors:
 [1] "a" "b" "c"
 
@@ -1100,8 +1100,8 @@ Your current track.index is 0
 > circos.trackPlotRegion(ylim = c(0, 1))
 > circos.info(sector.index = "a", track.index = 1
 \end{Sinput}
-\bedin{Soutput}
-sector index: a}
+\begin{Soutput}
+sector index: a
 track index: 1
 xlim: [1, 2]
 ylim: [0, 1]

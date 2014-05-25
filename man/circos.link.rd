@@ -49,6 +49,7 @@ circos.link(sector.index1, point1, sector.index2, point2,
 
 
 
+
 library(circlize)
 par(mar = c(1, 1, 1, 1))
 factors = letters[1:8]
@@ -62,6 +63,7 @@ circos.link("b", 5, "d", c(4, 6))
 circos.link("a", c(2, 3), "f", c(4, 6))
 
 circos.clear()
+
 
 
 

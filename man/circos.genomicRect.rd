@@ -11,7 +11,7 @@
 
 }
 \usage{
-circos.genomicRect(region, value,
+circos.genomicRect(region, value = NULL,
     ytop = NULL, ybottom = NULL, ytop.column = NULL, ybottom.column = NULL,
     sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), posTransform = NULL,

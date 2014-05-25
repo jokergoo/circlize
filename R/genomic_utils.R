@@ -24,7 +24,8 @@
 # is set as a data frame and the first column is a factor, the order of chromosomes is ``levels(chromosome)``; If ``cytoband`` is a data frame
 # and the first column is just a character vector, the order of chromosomes is ``unique(chromosome)``. Please not this concept is really
 # important since the order of chromosomes will be used to control the order of sectors when initializing the circos plot.
-read.cytoband = function(cytoband = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""), species = NULL, sort.chr = TRUE) {
+read.cytoband = function(cytoband = paste(system.file(package = "circlize"),
+    "/extdata/cytoBand.txt", sep=""), species = NULL, sort.chr = TRUE) {
 	
 	if(!is.null(species)) {
 		url = paste("http://hgdownload.cse.ucsc.edu/goldenPath/", species, "/database/cytoBand.txt.gz", sep = "")

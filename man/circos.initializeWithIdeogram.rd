@@ -12,7 +12,7 @@
 }
 \usage{
 circos.initializeWithIdeogram(cytoband = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""),
-    species = NULL, sort.chr = TRUE, chromosome.index = NULL, major.by = NULL, plotType = c("ideogram", "axis", "labels"))
+    species = NULL, sort.chr = TRUE, chromosome.index = NULL, major.by = NULL, plotType = c("ideogram", "axis", "labels"), ...)
 }
 \arguments{
   \item{cytoband}{A path of the cytoband file or a data frame that already contains cytoband. By default it is cytoband for hg19. Pass to \code{\link{read.cytoband}}.}
@@ -21,6 +21,7 @@ circos.initializeWithIdeogram(cytoband = paste(system.file(package = "circlize")
   \item{chromosome.index}{index for chromosome. The index is used only for subsetting, not for re-ordering.}
   \item{major.by}{increment of major ticks}
   \item{plotType}{which part should be drawn. \code{rect} for ideogram rectangle, \code{axis} for genomic axis and \code{labels} for chromosome names. If it is set to \code{NULL}, the function just initialize the plot but draw nothing.}
+  \item{...}{pass to \code{\link{circos.initialize}}}
 
 }
 \details{
@@ -29,6 +30,7 @@ circos.initializeWithIdeogram(cytoband = paste(system.file(package = "circlize")
 
 }
 \examples{
+
 
 
 
@@ -206,6 +208,7 @@ for(chr in chromosome) {
 circos.clear()    
 
 }
+
 
 
 

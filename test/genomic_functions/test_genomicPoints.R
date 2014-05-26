@@ -93,7 +93,7 @@ circos.genomicTrackPlotRegion(bed, numeric.column = 4, panel.fun = function(regi
 })
 
 bed1 = generateRandomBed(nr = 100, nc = 1)
-bed2 = generateRandomBed(nr = 100, nc = 0)
+bed2 = generateRandomBed(nr = 100, nc = 1)
 bed_list = list(bed1, bed2)
 circos.genomicTrackPlotRegion(bed_list, panel.fun = function(region, value, ...) {
 	circos.genomicPoints(region, value, pch = 16, cex = 0.5, ...)

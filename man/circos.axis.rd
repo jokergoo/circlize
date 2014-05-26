@@ -12,7 +12,8 @@
 }
 \usage{
 circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
-    sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"),
+    sector.index = get.cell.meta.data("sector.index"),
+    track.index = get.cell.meta.data("track.index"),
     labels.font = par("font"), labels.cex = par("cex"), labels.direction = "default",
     direction = c("outside", "inside"), minor.ticks = 4,
     major.tick.percentage = 0.1, labels.away.percentage = 0.05, lwd = par("lwd"))

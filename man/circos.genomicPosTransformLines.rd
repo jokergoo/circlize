@@ -13,7 +13,8 @@
 \usage{
 circos.genomicPosTransformLines(data, track.height = 0.1, posTransform = NULL,
     horizontalLine = c("none", "top", "bottom", "both"), track.margin = c(0, 0),
-    type = c("default", "reverse"), col = "black", lwd = par("lwd"), lty = par("lty"))
+    type = c("default", "reverse"), col = "black", lwd = par("lwd"),
+    lty = par("lty"))
 }
 \arguments{
   \item{data}{a data frame containing genomic data}

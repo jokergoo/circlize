@@ -11,7 +11,8 @@
 
 }
 \usage{
-circos.genomicRainfall(data, ylim = c(0, 9), col = "black", pch = par("pch"), cex = par("cex"), ...)
+circos.genomicRainfall(data, ylim = c(0, 9), col = "black", pch = par("pch"),
+    cex = par("cex"), ...)
 }
 \arguments{
   \item{data}{A bed-file-like data frame or a list of data frames}

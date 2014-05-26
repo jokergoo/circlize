@@ -11,8 +11,9 @@
 
 }
 \usage{
-circos.trackText(factors, x, y, labels, track.index = get.cell.meta.data("track.index"),
-    direction = c("default", "default2", "vertical_left", "vertical_right", "horizontal"),
+circos.trackText(factors, x, y, labels,
+    track.index = get.cell.meta.data("track.index"), direction = c("default",
+    "default2", "vertical_left", "vertical_right", "horizontal"),
     adj = par("adj"), cex = 1, col = "black", font = par("font"))
 }
 \arguments{

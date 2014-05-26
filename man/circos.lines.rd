@@ -11,10 +11,11 @@
 
 }
 \usage{
-circos.lines(x, y, sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"),
-    col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
-    area = FALSE, area.baseline = "bottom", border = "black",
-    pt.col = par("col"), cex = par("cex"), pch = par("pch"))
+circos.lines(x, y, sector.index = get.cell.meta.data("sector.index"),
+    track.index = get.cell.meta.data("track.index"),
+    col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"),
+    type = "l", straight = FALSE, area = FALSE, area.baseline = "bottom",
+    border = "black", pt.col = par("col"), cex = par("cex"), pch = par("pch"))
 }
 \arguments{
   \item{x}{Data points on x-axis}

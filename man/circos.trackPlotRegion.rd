@@ -11,8 +11,9 @@
 
 }
 \usage{
-circos.trackPlotRegion(factors = NULL, x = NULL, y = NULL, ylim = NULL, force.ylim = TRUE,
-    track.index = NULL, track.height = circos.par("default.track.height"),
+circos.trackPlotRegion(factors = NULL, x = NULL, y = NULL, ylim = NULL,
+    force.ylim = TRUE, track.index = NULL,
+    track.height = circos.par("default.track.height"),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
     panel.fun = function(x, y) {NULL})
 }

@@ -11,8 +11,9 @@
 
 }
 \usage{
-circos.text(x, y, labels, sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"),
-    direction = c("default", "default2", "vertical_left", "vertical_right", "horizontal", "arc"),
+circos.text(x, y, labels, sector.index = get.cell.meta.data("sector.index"),
+    track.index = get.cell.meta.data("track.index"), direction = c("default",
+    "default2", "vertical_left", "vertical_right", "horizontal", "arc"),
     adj = par("adj"), cex = 1, col = "black", font = par("font"), ...)
 }
 \arguments{

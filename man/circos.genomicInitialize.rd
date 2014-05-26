@@ -11,7 +11,8 @@
 
 }
 \usage{
-circos.genomicInitialize(data, sector.names = NULL, major.by = NULL, plotType = c("axis", "labels"), ...)
+circos.genomicInitialize(data, sector.names = NULL, major.by = NULL,
+    plotType = c("axis", "labels"), ...)
 }
 \arguments{
   \item{data}{a data frame containing genomic data.}

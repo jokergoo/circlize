@@ -11,7 +11,8 @@
 
 }
 \usage{
-circlize(x, y, sector.index = get.current.sector.index(), track.index = get.current.track.index())
+circlize(x, y, sector.index = get.current.sector.index(), 
+    track.index = get.current.track.index())
 }
 \arguments{
   \item{x}{Data points on x-axis}

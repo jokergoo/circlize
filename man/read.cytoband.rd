@@ -11,7 +11,8 @@
 
 }
 \usage{
-read.cytoband(cytoband = paste(system.file(package = "circlize"), "/extdata/cytoBand.txt", sep=""), species = NULL, sort.chr = TRUE)
+read.cytoband(cytoband = paste(system.file(package = "circlize"),
+    "/extdata/cytoBand.txt", sep=""), species = NULL, sort.chr = TRUE)
 }
 \arguments{
   \item{cytoband}{a path of the cytoband file or a data frame that already contains cytoband data}

@@ -11,7 +11,9 @@
 
 }
 \usage{
-draw.sector(start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL, center = c(0, 0), col = NA, border = "black", lwd = par("lwd"), lty = par("lty"))
+draw.sector(start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL,
+    center = c(0, 0), col = NA, border = "black", lwd = par("lwd"),
+    lty = par("lty"))
 }
 \arguments{
   \item{start.degree}{start degree for the sector}

@@ -387,12 +387,12 @@ For example, some horizontal lines and texts need to be added to each cell and a
 circos.genomicTrackPlotRegion(bed, ylim = c(-1, 1),
     panel.fun = function(region, value, ...) {
         circos.genomicPoints(region, value, ...)
-		cell.xlim = get.cell.meta.data("cell.xlim")
-		for(h in c(-1, -0.5, 0, 0.5, 1)) {
-		    circos.lines(cell.xlim, c(0, 0), lty = 2, col = "grey")
-		}
-		circos.text(x, y, labels)
-		circos.axis("top")
+        cell.xlim = get.cell.meta.data("cell.xlim")
+        for(h in c(-1, -0.5, 0, 0.5, 1)) {
+            circos.lines(cell.xlim, c(0, 0), lty = 2, col = "grey")
+        }
+        circos.text(x, y, labels)
+        circos.axis("top")
 })
 @
 

@@ -50,9 +50,7 @@ dev.off()
 
 pdf("genomicInitialize_TP.pdf", width = 8, height = 8)
 par(mar = c(1, 1, 1 ,1))
-gn = sapply(gencode, function(x) x$name)
-l = gn %in% c("TP53", "TP63", "TP73")
-gencode = gencode[l]
+load("gencode_TP_gene.RData")
 df = data.frame( names(gencode),
                  sapply(gencode, function(x) x$start ),
 				 sapply(gencode, function(x) x$end ) )

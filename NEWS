@@ -2,7 +2,9 @@ NEWS/Changelog
 
 == 0.0.8
 - axes labels will not draw when setting labels = FALSE
-- add `major.by` in `circlize.initializeWithIdeogram`
+- add many functions supporting genomic visualization
+- add a new vignette to show how to plot genomic circos plot with new functions
+- add `circos.info`
 
 == 0.0.7
 - add an example in demo codes

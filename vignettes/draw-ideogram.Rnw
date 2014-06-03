@@ -19,7 +19,7 @@
 
 \maketitle 
 
-{\bf There is a new and more comprehensive vignette in this package which is focusing on plotting genomic figures.
+{\it There is a new and more comprehensive vignette in this package which is focusing on plotting genomic figures.
 Nevertheless, this vignette is still useful for users to get a clue on how to draw genomic graphics by very basic 
 low-level graphical functions.}
 

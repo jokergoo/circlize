@@ -33,15 +33,6 @@ circos.initializeWithIdeogram(cytoband = paste(system.file(package = "circlize")
 }
 \examples{
 
-
-
-
-
-
-
-
-
-
 \dontrun{
 library(circlize)
 set.seed(12345)
@@ -210,14 +201,5 @@ for(chr in chromosome) {
 circos.clear()    
 
 }
-
-
-
-
-
-
-
-
-
 
 }

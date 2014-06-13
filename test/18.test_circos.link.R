@@ -106,3 +106,15 @@ for(delta_rou in seq(0, 0.3, by = 0.05)) {
 		dev.off()
 	}
 }
+
+
+mat = matrix(rnorm(100), 10)
+mat = cor(mat)
+chordDiagram.symmetric(mat)
+chordDiagram.symmetric(mat, colFun = colorRamp2(c(-1, 0, 1), c("green", "white", "red")))
+chordDiagram.symmetric(mat, grid.col = "grey")
+chordDiagram.symmetric(mat, text.direction = "vertical_right", text.adj = c(0, 0.5))
+
+mat = matrix(sample(1:100, 18, replace = TRUE), 3, 6)
+chordDiagram.bicategorical(mat)
+

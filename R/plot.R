@@ -259,7 +259,7 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("defau
 	xlim[2] = cell.xlim[2] - (cell.xlim[2] - cell.xlim[1]) / (sector.data["start.degree"] - sector.data["end.degree"]) *cell.padding[4]
 	
 	if(cell.padding[1] + cell.padding[3] >= track.height) {
-		stop("Sumation of cell padding on y-direction are larger than the width of the cells.\n")
+		stop("Sumation of cell padding on y-direction are larger than the height of the cells.\n")
 	}
 	
 	yl = numeric(2)

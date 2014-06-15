@@ -22,7 +22,7 @@ circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.05,
 bed = generateRandomBed(nr = 200, fun = function(k) runif(k))
 circos.genomicTrackPlotRegion(bed, bg.border = NA, panel.fun = function(region, value, ...) {
 	i = get.cell.meta.data("sector.numeric.index")
-	circos.genomicLines(region, value, area = TRUE, border = NA, area.baseline = 0, col = col[i])
+	circos.genomicLines(region, value, area = TRUE, border = NA, baseline = 0, col = col[i])
 }, track.height = 0.1)
 
 circos.trackPlotRegion(ylim = c(0, 1), bg.border = col, bg.col = col, panel.fun = function(x, y) {

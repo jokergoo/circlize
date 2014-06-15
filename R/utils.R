@@ -136,16 +136,9 @@ check.track.position = function(trace.index, track.start, track.height) {
     }
 }
 
-check.points.position = function(x, y, sector.index = NULL, track.index = NULL) {
-    
-    if(is.null(sector.index)) {
-        sector.index = get.current.sector.index()   
-    }
-
-    if(is.null(track.index)) {
-        track.index = get.current.track.index()
-    }
-    
+check.points.position = function(x, y, sector.index = get.cell.meta.data("sector.index"),
+	track.index = get.cell.meta.data("track.index")) {
+        
     cell.xlim = get.cell.meta.data("cell.xlim", sector.index, track.index)
     cell.ylim = get.cell.meta.data("cell.ylim", sector.index, track.index)
     
@@ -197,4 +190,35 @@ colorRamp2 = function(breaks, colors, ...) {
                     ))
         rgb(f(x), maxColorValue = 255)
     }
+}
+
+circos.approx = function(x, y, resolution = 0.1, sector.index = get.cell.meta.data("sector.index"),
+	track.index = get.cell.meta.data("track.index"), approxFun = function(x) sample(x, 1)) {
+	
+	od = order(x)
+	x = x[od]
+	y = y[od]
+	
+	xplot = get.cell.meta.data("xplot", sector.index = sector.index, track.index = track.index)
+	cell.xlim = get.cell.meta.data("cell.xlim", sector.index = sector.index, track.index = track.index)
+	
+	window.size = resolution/(xplot[1] - xplot[2])*(cell.xlim[2] - cell.xlim[1])
+	window = seq(cell.xlim[1], cell.xlim[2], by = window.size)
+	
+	newx = rep(NA, length(x))
+	newy = rep(NA, length(y))
+	
+	for(i in seq_along(window)[-1]) {
+		l = x >= window[i-1] & x < window[i]
+		# if there are points in current window
+		if(sum(l)) {
+			newx[i] = (window[i-1] + window[i])/2
+			newy[i] = approxFun(y[l])
+		}
+	}
+	
+	newx = newx[!is.na(newx)]
+	newy = newy[!is.na(newy)]
+	
+	return(list(x = newx, y = newy))
 }

@@ -51,9 +51,9 @@ circos.trackPlotRegion(ylim = c(-1, 1), bg.border = NA, track.height = 0.1,
         xrange = get.cell.meta.data("xrange")
         x = seq(xlim[1], xlim[2], by = 10000000)
         y = runif(length(x))
-        circos.lines(x, y, area = TRUE, area.baseline = 0, border = NA, col = "#FF7F00")
+        circos.lines(x, y, area = TRUE, baseline = 0, border = NA, col = "#FF7F00")
         y = -runif(length(x))
-        circos.lines(x, y, area = TRUE, area.baseline = 0, border = NA, col = "#FFFF33")
+        circos.lines(x, y, area = TRUE, baseline = 0, border = NA, col = "#FFFF33")
     })
 
 

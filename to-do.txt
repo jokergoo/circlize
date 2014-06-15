@@ -1,2 +1,3 @@
 - testing code
 - for circos.genomicTrackPlotRegion, data can also be NULL, but need to check more things.
+- for circos.lines, area.baseline -> baseline, support self-defining baseline if type == "h"

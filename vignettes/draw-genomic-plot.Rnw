@@ -269,7 +269,7 @@ is similar as {\tt circos.genomicPoints}.
 circos.genomicLines(region, value, ...)
 circos.genomicLines(region, value, numeric.column = c(1, 2))
 circos.genomicLines(region, value, lwd, lty = "segment")
-circos.genomicLines(region, value, area, area.baseline, border)
+circos.genomicLines(region, value, area, baseline, border)
 circos.genomicLines(region, value, sector.index, track.index)
 @
 

@@ -341,29 +341,74 @@ quadratic.minus.degree = function(theta1, theta2) {
 }
 
 
-chordDiagram.symmetric = function(mat, colFun = NULL, grid.col = seq_len(nrow(mat)),
-	text.direction = NULL, text.adj = NULL, transparency = 0.5, ...) {
+chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
+	col = NULL, row.col = NULL, column.col = NULL, directional = FALSE,
+	symmetric = FALSE, order = NULL) {
 	
-	if(nrow(mat) != ncol(mat)) {
-		stop("`mat` should be a symmetric matrix.\n")
+	if(symmetric) {
+		mat[lower.tri(mat, diag = TRUE)] = 0
 	}
 	
-    n = nrow(mat)
-    xlim = cbind(rep(0, n), rowSums(abs(mat)) - diag(abs(mat)))
+	ri = apply(mat, 1, function(x) all(abs(x) < 1e-6))
+	ci = apply(mat, 2, function(x) all(abs(x) < 1e-6))
+	#if(any(ri)) {
+	#	stop("Some rows do not have non-zero values.\n")
+	#}
+	#if(any(ci)) {
+	#	stop("Some columns do not have non-zero values.\n")
+	#}
 	
-	if(length(grid.col) == 1) grid.col = rep(grid.col, n)
+	mat = mat[ri, ci]
 	
-    factors = rownames(mat)
-    if(is.null(factors)) {
-        factors = paste0("R", seq_len(nrow(mat)))
-        factors = factor(factors, levels = factors)
-    }
-    
-    if(is.null(colFun)) {
-        colFun = colorRamp2(quantile(mat[lower.tri(mat)], seq(0, 1, length = 7)), rev(rainbow(7)))
-    }
-	colFun2 = function(x) paste0(colFun(x), as.hexmode(round((1-transparency)*255)))
+	if(is.null(rownames(mat))) {
+		rownames(mat) = paste0("R", seq_len(nrow(mat)))
+	}
+	if(is.null(colnames(mat))) {
+		colnames(mat) = paste0("C", seq_len(ncol(mat)))
+	}
+
+	rs = rowSums(abs(mat))
+	cs = colSums(abs(mat))
+
+	nn = union(names(rs), names(cs))
+	xlim = numeric(length(nn))
+	names(xlim) = nn
+	xlim[names(rs)] = xlim[names(rs)] + rs
+	xlim[names(cs)] = xlim[names(cs)] + cs
+
+	factors = names(xlim)
+	factors = factor(factors, levels = factors)
+	xlim = cbind(rep(0, length(factors)), xlim)
 	
+	n = length(factors)
+	if(is.null(grid.col)) {
+		grid.col = rgb(cbind(runif(n), runif(n), runif(n)))
+		names(grid.col) = factors
+	}
+	
+	## make a color matrix based on settings
+	if(!is.null(col)) {
+		if(is.function(col)) {
+			col = col(mat)
+		} else if(is.matrix(col)) {
+		
+		} else if(length(col) == 1) {
+			col = rep(col, length(mat))
+		}
+	} else if(!is.null(row.col)) {
+		col = rep(row.col, ncol(mat))
+	} else if(!is.null(column.col)) {
+		col = rep(column.col, each = nrow(mat))
+	} else {
+		col = rep(seq_len(nrow(mat)), ncol(mat))
+	}
+	
+	col = rgb(t(col2rgb(col)), maxColorValue = 255, alpha = (1 - transparency)*255)
+	
+	dim(col) = dim(mat)
+	colnames(col) = colnames(col)
+	rownames(col) = rownames(col)
+
 	circos.par(cell.padding = c(0, 0, 0, 0))
     circos.initialize(factors = factors, xlim = xlim)
 	circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA,
@@ -387,103 +432,35 @@ chordDiagram.symmetric = function(mat, colFun = NULL, grid.col = seq_len(nrow(ma
     circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA, 
 		track.height = 0.05, panel.fun = function(x, y) {
 			xlim = get.cell.meta.data("xlim")
-			i = get.cell.meta.data("sector.numeric.index")
-			circos.rect(xlim[1], 0, xlim[2], 1, col = grid.col[i], border = grid.col[i])
+			current.sector.index = get.cell.meta.data("sector.index")
+			circos.rect(xlim[1], 0, xlim[2], 1, col = grid.col[current.sector.index], border = grid.col[current.sector.index])
 		})
     # links
-    rn = factors
-    sector.sum = numeric(length(rn))
-    for(i in 2:n) {
-        for(j in 1:(i-1)) {
-            sector.index1 = rn[i]
-            sector.index2 = rn[j]
-            circos.link(sector.index1, c(sector.sum[i],sector.sum[i] + abs(mat[i, j])),
-                sector.index2, c(sector.sum[j], sector.sum[j] + abs(mat[i, j])),
-                col = colFun2(mat[i, j]), ...)
-            sector.sum[i] = sector.sum[i] + abs(mat[i, j])
-            sector.sum[j] = sector.sum[j] + abs(mat[i, j])
-        }
-    }
-}
-
-chordDiagram.directional = function(mat) {
-
-
-}
-
-.col2rgb = function(col) {
-	
-}
-
-chordDiagram.bicategorical = function(mat, grid.col = c(rep(1, nrow(mat)), rep(2, ncol(mat))),
-	text.direction = NULL, text.adj = NULL, transparency = 0.5, 
-	inter.gap = 10, intra.gap = 2, col = NULL, ...) {
-    
-	if(is.null(col)) {
-		col = rep(seq_len(nrow(mat)), ncol(mat))
-	}
-	col = rgb(t(col2rgb(col)), max = 255, alpha = (1 - transparency)*255)
-	dim(col) = dim(mat)
-
     rn = rownames(mat)
-    cn = colnames(mat)
-	
-	if(is.null(rn)) {
-		rn = paste0("R", seq_len(nrow(mat)))
-		rownames(mat) = rn
-	}
-	if(is.null(cn)) {
-		cn = paste0("C", seq_len(ncol(mat)))
-		colnames(mat) = cn
-	}
-	
-    factors = c(rn, cn)
-    factors = factor(factors, levels = factors)
-
-    col_sum = apply(mat, 2, sum)
-    row_sum = apply(mat, 1, sum)
-    xlim = cbind(rep(0, length(factors)), c(row_sum, col_sum))
-	
-	circos.par(gap.degree = c(rep(intra.gap, nrow(mat) - 1),
-	                          inter.gap,
-							  rep(intra.gap, ncol(mat) - 1),
-							  inter.gap),
-			   cell.padding = c(0, 0, 0, 0))
-    circos.initialize(factors = factors, xlim = xlim, 
-        sector.width = c(row_sum/sum(row_sum), col_sum/sum(col_sum)))
-    circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA,
-		panel.fun = function(x, y) {
-			xlim = get.cell.meta.data("xlim")
-			current.sector.index = get.cell.meta.data("sector.index")
-			i = get.cell.meta.data("sector.numeric.index")
-			if(is.null(text.direction)) {
-				theta = mean(get.cell.meta.data("xplot")) %% 360
-				if(theta < 90 || theta > 270) {
-					text.direction = "vertical_right"
-					text.adj = c(0, 0.5)
-				} else {
-					text.direction = "vertical_left"
-					text.adj = c(1, 0.5)
-				}
+	cn = colnames(mat)
+    sector.sum.row = numeric(length(factors))
+    sector.sum.col = numeric(length(factors))
+	names(sector.sum.row) = factors
+	names(sector.sum.col) = factors
+	sector.sum.col[ names(rs) ] = rs
+    for(i in seq_along(rn)) {
+		for(j in rev(seq_along(cn))) {
+			if(abs(mat[i, j]) < 1e-6) {
+				next
 			}
-			circos.text(mean(xlim), 0.5, labels = current.sector.index,
-				direction = text.direction, adj = text.adj)
-		}, track.height = 0.05)
-    circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA, 
-		track.height = 0.05, panel.fun = function(x, y) {
-			xlim = get.cell.meta.data("xlim")
-			i = get.cell.meta.data("sector.numeric.index")
-			circos.rect(xlim[1], 0, xlim[2], 1, col = grid.col[i], border = grid.col[i])
-		})
-
-
-    for(i in seq_len(nrow(mat))) {
-        for(j in seq_len(ncol(mat))) {
-            circos.link(rn[i], c(sum(mat[i, seq_len(j-1)]), sum(mat[i, seq_len(j)])),
-                        cn[j], c(sum(mat[seq_len(i-1), j]), sum(mat[seq_len(i), j])), 
-                        col = col[i, j], ...)
+			rou = circlize:::get.track.end.position(circlize:::get.current.track.index())
+            sector.index1 = rn[i]
+            sector.index2 = cn[j]
+            circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[i, j])),
+                        sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[i, j])),
+                        col = col[i, j], rou = ifelse(directional, rou - 0.02, rou), border = NA)
+			if(directional) {
+				d1 = circlize(c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[i, j])), c(0, 0), sector.index = sector.index1)
+				draw.sector(start.degree = d1[1, 1], end.degree = d1[2, 1], rou1 = rou, rou2 = rou - 0.02, col = col[i, j])
+			}
+            sector.sum.row[ rn[i] ] = sector.sum.row[ rn[i] ] + abs(mat[i, j])
+			sector.sum.col[ cn[j] ] = sector.sum.col[ cn[j] ] + abs(mat[i, j])
         }
     }
-
 }
-
+	

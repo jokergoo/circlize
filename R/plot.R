@@ -408,7 +408,8 @@ circos.trackPoints = function(factors = NULL, x, y, track.index = get.cell.meta.
 # -straight     whether draw straight lines between points
 # -area         whether to fill the area below the lines. If it is set to ``TRUE``, ``col`` controls the filled color
 #               in the area and ``border`` controls the color of the line.
-# -area.baseline the base line to draw area below lines, default is the minimal of y-range (most bottom). It can be a string or number.
+# -area.baseline deprecated, use ``baseline`` instead.
+# -baseline     the base line to draw area below lines, default is the minimal of y-range (most bottom). It can be a string or number.
 #               If a string, it should be one of ``bottom`` and ``top``.
 # -border       color for border of the area
 # -pt.col       if ``type`` is "o", points color
@@ -424,17 +425,22 @@ circos.trackPoints = function(factors = NULL, x, y, track.index = get.cell.meta.
 # ``area`` to ``TURE``.
 circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"),
     col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
-	area = FALSE, area.baseline = "bottom", border = "black",
+	area = FALSE, area.baseline = NULL, border = "black", baseline = "bottom",
     pt.col = par("col"), cex = par("cex"), pch = par("pch")) {
     
+	if(!is.null(area.baseline)) {
+		baseline = area.baseline
+		warning("`area.baseline` is deprecated, please use `baseline` instead.\n")
+	}
+	
 	if(length(x) != length(y)) {
 		stop("length of x and y differ.\n")
 	}
 	
-	if(area.baseline == "bottom") {
-		area.baseline = get.cell.meta.data("ylim", sector.index, track.index)[1]
-	} else if(area.baseline == "top") {
-		area.baseline = get.cell.meta.data("ylim", sector.index, track.index)[2]
+	if(baseline == "bottom") {
+		baseline = get.cell.meta.data("ylim", sector.index, track.index)[1]
+	} else if(baseline == "top") {
+		baseline = get.cell.meta.data("ylim", sector.index, track.index)[2]
 	}
 	
     if(type == "l") {
@@ -446,9 +452,8 @@ circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
                      col = col, lwd = lwd, lty = lty, area = area, border = border)
         return(invisible(NULL))
     } else if(type == "h") {
-        ylim = get.cell.meta.data("ylim", sector.index, track.index)
         for(i in seq_along(x)) {
-            circos.lines(c(x[i], x[i]), c(ylim[1], y[i]),
+            circos.lines(c(x[i], x[i]), c(baseline, y[i]),
                          sector.index = sector.index, track.index = track.index, 
                          col = col, lwd = lwd, lty = lty, straight = TRUE)    
         }
@@ -465,8 +470,8 @@ circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
 		
 		if(area) {
 			ylim = get.cell.meta.data("ylim", sector.index, track.index)
-			d = rbind(d, c(d[nrow(d), 1], area.baseline))
-			d = rbind(d, c(d[1, 1], area.baseline))
+			d = rbind(d, c(d[nrow(d), 1], baseline))
+			d = rbind(d, c(d[1, 1], baseline))
 			circos.polygon(d[, 1], d[, 2], sector.index = sector.index, track.index = track.index, 
 				   col = col, border = border, lwd = lwd, lty = lty)
 		} else {
@@ -491,8 +496,8 @@ circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
 	
 	if(area) {
 		ylim = get.cell.meta.data("ylim", sector.index, track.index)
-		d = rbind(d, c(d[nrow(d), 1], area.baseline))
-		d = rbind(d, c(d[1, 1], area.baseline))
+		d = rbind(d, c(d[nrow(d), 1], baseline))
+		d = rbind(d, c(d[1, 1], baseline))
 		circos.polygon(d[, 1], d[, 2], sector.index = sector.index, track.index = track.index, 
 		       col = col, border = border, lwd = lwd, lty = lty)
 		return(invisible(NULL))
@@ -519,7 +524,8 @@ circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
 # -straight     whether draw straight lines between points
 # -area         whether to fill the area below the lines. If it is set to ``TRUE``, ``col`` controls the filled color
 #               in the area and ``border`` controls the color of the line.
-# -area.baseline the base line to draw area under lines, default is ``NA`` which means the baseline for each cell would be calculated seperately
+# -area.baseline deprecated, use ``baseline`` instead.
+# -baseline the base line to draw area under lines, default is ``NA`` which means the baseline for each cell would be calculated seperately
 # -border       color for border of the area
 # -pt.col       if ``type`` is "o", points color
 # -cex          if ``type`` is "o", points size
@@ -533,9 +539,14 @@ circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
 # This function can be replaced by a ``for`` loop containing `circos.lines`.
 circos.trackLines = function(factors, x, y, track.index = get.cell.meta.data("track.index"),
     col = "black", lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
-	area = FALSE, area.baseline = NA, border = "black",
+	area = FALSE, area.baseline = NULL, border = "black", baseline = NA,
     pt.col = par("col"), cex = par("cex"), pch = par("pch")) {
     
+	if(!is.null(area.baseline)) {
+		baseline = area.baseline
+		warning("`area.baseline` is deprecated, please use `baseline` instead.\n")
+	}
+	
     # basic check here
     if(length(x) != length(factors) || length(y) != length(factors)) {
         stop("Length of data and length of factors differ.\n")
@@ -562,7 +573,7 @@ circos.trackLines = function(factors, x, y, track.index = get.cell.meta.data("tr
     pch = recycle.with.factors(pch, factors)
 	
 	area = recycle.with.levels(area, le)
-	area.baseline = recycle.with.levels(area.baseline, le)
+	baseline = recycle.with.levels(baseline, le)
 	border = recycle.with.levels(border, le)
     
     for(i in seq_along(le)) {
@@ -578,7 +589,7 @@ circos.trackLines = function(factors, x, y, track.index = get.cell.meta.data("tr
         circos.lines(nx, ny, sector.index = le[i],
                       track.index = track.index,
                       col = ncol, lwd = nlwd, lty = nlty, area = area[i], border = border[i],
-					  area.baseline = ifelse(is.na(area.baseline[i]), get.cell.meta.data("ylim", le[i], track.index)[1], area.baseline[i]),
+					  baseline = ifelse(is.na(baseline[i]), get.cell.meta.data("ylim", le[i], track.index)[1], baseline[i]),
                       pt.col = npt.col, cex = ncex, pch = npch, type = type, straight = straight)
             
     }

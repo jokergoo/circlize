@@ -550,7 +550,7 @@ circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 # This function is deprecated, please use `circos.info` instead.
 show.index = function() {
 	circos.info(plot = TRUE)
-	cat("`show.index` is deprecated, please use `circos.info` instead.\n")
+	warning("`show.index` is deprecated, please use `circos.info` instead.\n")
 }
 
 # == title

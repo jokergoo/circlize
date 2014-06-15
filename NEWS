@@ -1,5 +1,10 @@
 NEWS/Changelog
 
+== 0.0.9
+- baseline can be set when ``type == "h"`` `in circos.lines`
+- chordDiagram
+- circos.approx
+
 == 0.0.8
 - axes labels will not draw when setting labels = FALSE
 - add many functions supporting genomic visualization

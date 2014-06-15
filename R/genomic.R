@@ -490,7 +490,8 @@ circos.genomicPoints = function(region, value, numeric.column = NULL,
 # -lty Settings are similar as ``col``. Pass to `circos.lines`
 # -type There is an additional option ``segment`` which plot segment lines from start position to end position. Settings are similar as ``col``. Pass to `circos.lines`. 
 # -area Settings are similar as ``col``. Pass to `circos.lines`
-# -area.baseline Settings are similar as ``col``. Pass to `circos.lines`
+# -area.baseline deprecated, use ``baseline`` instead.
+# -baseline Settings are similar as ``col``. Pass to `circos.lines`
 # -border Settings are similar as ``col``. Pass to `circos.lines`
 # -pt.col Settings are similar as ``col``. Pass to `circos.lines`
 # -cex Settings are similar as ``col``. Pass to `circos.lines`
@@ -504,8 +505,13 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
     track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
 	col = ifelse(area, "grey", "black"), lwd = par("lwd"),
     lty = par("lty"), type = "l",
-    area = FALSE, area.baseline = "bottom", border = "black",
+    area = FALSE, area.baseline = NULL, border = "black", baseline = "bottom",
     pt.col = par("col"), cex = par("cex"), pch = par("pch"), ...) {
+	
+	if(!is.null(area.baseline)) {
+		baseline = area.baseline
+		warning("`area.baseline` is deprecated, please use `baseline` instead.\n")
+	}
 	
 	nr = nrow(region)
 	
@@ -550,7 +556,7 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 	lty = .normalizeGraphicalParam(lty, nc, 1, "col")
 	type = .normalizeGraphicalParam(type, nc, 1, "col")
 	area = .normalizeGraphicalParam(area, nc, 1, "col")
-	area.baseline = .normalizeGraphicalParam(area.baseline, nc, 1, "col")
+	baseline = .normalizeGraphicalParam(baseline, nc, 1, "col")
 	border = .normalizeGraphicalParam(border, nc, 1, "col")
 	pt.col = .normalizeGraphicalParam(pt.col, nc, 1, "col")
 	cex = .normalizeGraphicalParam(cex, nc, 1, "col")
@@ -572,7 +578,7 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 		} else {
 			circos.lines( (region[[1]] + region[[2]])/2, value[[ numeric.column ]], 
 				col = col, lwd = lwd, lty = lty, type = type, 
-				area = area, area.baseline = area.baseline, 
+				area = area, baseline = baseline, 
 				border = border, pt.col = pt.col, cex = cex, pch = pch,
 				sector.index = sector.index, track.index = track.index )
 		}
@@ -587,7 +593,7 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 			} else {
 				circos.lines( (region[[1]] + region[[2]])/2, value[[ numeric.column[i] ]], 
 					col = col[i], lwd = lwd[i], lty = lty[i], type = type[i], 
-					area = area[i], area.baseline = area.baseline[i], 
+					area = area[i], baseline = baseline[i], 
 					border = border[i], pt.col = pt.col[i], cex = cex[i], pch = pch[i],
 					sector.index = sector.index, track.index = track.index )
 			}

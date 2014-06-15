@@ -37,7 +37,7 @@ circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.05,
 		i = get.cell.meta.data("sector.numeric.index")
         x = seq(xlim[1], xlim[2], by = 10000000)
         y = runif(length(x))
-        circos.lines(x, y, area = TRUE, area.baseline = 0, col=col[i], border = NA)
+        circos.lines(x, y, area = TRUE, baseline = 0, col=col[i], border = NA)
     })
 	
 circos.trackPlotRegion(factors = chromosome, ylim = c(0, 1),

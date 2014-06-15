@@ -639,8 +639,8 @@ However, it is the same if you use {\tt circos.points} in a {\tt for} loop.
 \subsection{Lines}
 Parameters for drawing lines by {\tt circos.lines} are similar to {\tt lines} function, 
 as illustrated in figure \ref{fig:lines}. One additional feature is that the areas under/above lines can be 
-specified by {\tt area} argument which can help you identifying the direction of y-axes. Also the base line for the area can be set by {\tt area.baseline}.
-{\tt area.baseline} can be pre-defined string of {\tt bottom} or {\tt top}, or numeric values.
+specified by {\tt area} argument which can help you identifying the direction of y-axes. Also the base line for the area can be set by {\tt baseline}.
+{\tt baseline} can be pre-defined string of {\tt bottom} or {\tt top}, or numeric values.
 
 Straight lines will be transformed to curves when mapping to circular layout (figure \ref{fig:linecurve}). Normally, 
 curves can be approximated by a series of segmentations of straight lines. With more segmentations,
@@ -667,7 +667,7 @@ Possible usage for {\tt circos.lines} is:
 > circos.lines(x, y)
 > circos.lines(x, y, sector.index, track.index)
 > circos.lines(x, y, col, lwd, lty, type, straight)
-> circos.lines(x, y, col, area, area.baseline, border)
+> circos.lines(x, y, col, area, baseline, border)
 \end{Sinput}
 \end{Schunk}
 

@@ -349,14 +349,17 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 		mat[lower.tri(mat, diag = TRUE)] = 0
 	}
 	
+	if(!is.null(order)) {
+		if(is.null(rownames(mat)) || is.null(colnames(mat))) {
+			stop("Since you specified `order`, your matrix should have rowname and colname.\n")
+		}
+		if(length(intersect(order, c(rownames(mat), colnames(mat))))) {
+			stop("Elements in `order` should be same as in `mat` rownames/colnames.\n")
+		}
+	}
+	
 	ri = apply(mat, 1, function(x) all(abs(x) < 1e-6))
 	ci = apply(mat, 2, function(x) all(abs(x) < 1e-6))
-	#if(any(ri)) {
-	#	stop("Some rows do not have non-zero values.\n")
-	#}
-	#if(any(ci)) {
-	#	stop("Some columns do not have non-zero values.\n")
-	#}
 	
 	mat = mat[ri, ci]
 	if(is.matrix(col)) {
@@ -375,6 +378,10 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	if(is.null(colnames(mat))) {
 		colnames(mat) = paste0("C", seq_len(ncol(mat)))
 	}
+	
+	if(!is.null(order)) {
+		order = order[order %in% c(rownames(mat), colnames(mat))]
+	}
 
 	rs = rowSums(abs(mat))
 	cs = colSums(abs(mat))
@@ -382,9 +389,14 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	nn = union(names(rs), names(cs))
 	xlim = numeric(length(nn))
 	names(xlim) = nn
+	
+	if(!is.null(order)) {
+		xlim = xlim[order]
+	}
+	
 	xlim[names(rs)] = xlim[names(rs)] + rs
 	xlim[names(cs)] = xlim[names(cs)] + cs
-
+	
 	factors = names(xlim)
 	factors = factor(factors, levels = factors)
 	xlim = cbind(rep(0, length(factors)), xlim)

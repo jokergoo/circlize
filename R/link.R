@@ -359,6 +359,15 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	#}
 	
 	mat = mat[ri, ci]
+	if(is.matrix(col)) {
+		col = col[ri, ci]
+	}
+	if(length(row.col) > 1) {
+		row.col = row.col[ri]
+	}
+	if(length(column.col) > 1) {
+		column.col = column.col[ci]
+	}
 	
 	if(is.null(rownames(mat))) {
 		rownames(mat) = paste0("R", seq_len(nrow(mat)))
@@ -400,7 +409,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	} else if(!is.null(column.col)) {
 		col = rep(column.col, each = nrow(mat))
 	} else {
-		col = rep(seq_len(nrow(mat)), ncol(mat))
+		col = rep(grid.col[rownames(mat)], ncol(mat))
 	}
 	
 	col = rgb(t(col2rgb(col)), maxColorValue = 255, alpha = (1 - transparency)*255)

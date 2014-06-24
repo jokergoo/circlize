@@ -991,6 +991,7 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 # -type type of lines, see `circos.lines`
 # -area see `circos.lines`
 # -area.baseline see `circos.lines`
+# -baseline see `circos.lines`
 # -border see `circos.lines`
 # -... pass to `circos.trackPlotRegion`
 #
@@ -998,7 +999,12 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 # This function is a high-level graphical function, and it will create a new track.
 circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, overlap = TRUE, 
 	col = ifelse(area, "grey", "black"), lwd = par("lwd"),
-    lty = par("lty"), type = "l", area = TRUE, area.baseline = 0, border = NA, ...) {
+    lty = par("lty"), type = "l", area = TRUE, area.baseline = NULL, baseline = 0, border = NA, ...) {
+	
+	if(!is.null(area.baseline)) {
+		baseline = area.baseline
+		warning("`area.baseline` is deprecated, please use `baseline` instead.\n")
+	}
 	
 	data = normalizeToDataFrame(data)
 	
@@ -1021,8 +1027,8 @@ circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, o
 	if(length(area) == 1) {
 		area = rep(area, length(data))
 	}
-	if(length(area.baseline) == 1) {
-		area.baseline = rep(area.baseline, length(data))
+	if(length(baseline) == 1) {
+		baseline = rep(baseline, length(data))
 	}
 	if(length(border) == 1) {
 		border = rep(border, length(data))
@@ -1052,7 +1058,7 @@ circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, o
 	circos.genomicTrackPlotRegion(df, ylim = c(0, ymax), panel.fun = function(region, value, ...) {
 		i = getI(...)
 		circos.genomicLines(region, value, col = col[i], lwd = lwd[i], lty = lty[i], type = type[i], 
-			border = border[i], area = area[i], area.baseline = area.baseline[i]) 
+			border = border[i], area = area[i], baseline = baseline[i]) 
 	}, ...)
 }
 

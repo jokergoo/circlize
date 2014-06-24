@@ -196,5 +196,38 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 
 # returns a list, each list containing settings for each new track
 parsePreAllocateTracksValue = function(preAllocateTracks) {
-
+	lt = list(ylim = c(0, 1),
+		      track.height = circos.par("default.track.height"),
+			  bg.col = NA,
+			  bg.border = "black",
+			  bg.lty = par("lty"),
+			  bg.lwd = par("lwd"))
+	if(length(preAllocateTracks) && is.numeric(preAllocateTracks)) {
+		res = vector("list", length = preAllocateTracks)
+		for(i in seq_len(preAllocateTracks)) {
+			res[[i]] = lt
+		}
+		return(res)
+	} else if(is.list(preAllocateTracks)) {
+		# list of list
+		if(all(sapply(preAllocateTracks, is.list))) {
+			res = vector("list", length = length(preAllocateTracks))
+			for(i in seq_along(preAllocateTracks)) {
+				lt2 = lt
+				for(nm in intersect(names(lt), names(preAllocateTracks[[i]]))) {
+					lt2[[nm]] = preAllocateTracks[[i]][[nm]]
+				}
+				res[[i]] = lt2
+			}
+			return(res)
+		} else {
+			lt2 = lt
+			for(nm in intersect(names(lt), names(preAllocateTracks))) {
+				lt2[[nm]] = preAllocateTracks[[nm]]
+			}
+			return(list(lt2))
+		}
+	} else {
+		stop("Wrong `preAllocateTracks` value.\n")
+	}
 }

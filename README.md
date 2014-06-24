@@ -135,12 +135,4 @@ would be converted to
 
 ### Examples
 
-![clock](https://f.cloud.github.com/assets/449218/857241/70e4d6d4-f54d-11e2-89e8-8fa9afadc2a1.png)
-![figbagua](https://f.cloud.github.com/assets/449218/857242/71020830-f54d-11e2-9c1e-d551a805f9cb.png)
-![figcompare](https://f.cloud.github.com/assets/449218/857243/711becb4-f54d-11e2-8b3f-1bcd9427a2ae.png)
-![figcorrelation](https://f.cloud.github.com/assets/449218/857244/7128114c-f54d-11e2-92f3-8f0fcb5817e2.png)
-![figdartboard](https://f.cloud.github.com/assets/449218/857245/712aa5b0-f54d-11e2-9e2a-1dccd55a6e91.png)
-![figgenomic](https://f.cloud.github.com/assets/449218/857246/713499f8-f54d-11e2-8064-921250bfb95a.png)
-![figtwo](https://f.cloud.github.com/assets/449218/857247/7138e328-f54d-11e2-87a6-5da3a52a52f1.png)
-![figheatmap](https://f.cloud.github.com/assets/449218/857248/71381010-f54d-11e2-850d-c9bae7ae70de.png)
-![test1](https://f.cloud.github.com/assets/449218/857249/713ceacc-f54d-11e2-9721-23eddda06374.jpeg)
+For examples, please go to http://jokergoo.github.io/circlize

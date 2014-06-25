@@ -2,8 +2,10 @@ NEWS/Changelog
 
 == 0.0.9
 - baseline can be set when ``type == "h"`` `in circos.lines`
-- chordDiagram
-- circos.approx
+- add a new function `chordDiagram` which support chord diagram
+- add `facing` argument to replace `direction` in `circos.text`
+- `circos.trackPlotRegion` can be used to update a track without resetting ylim
+- move demo to http://jokergoo.github.io/circlize
 
 == 0.0.8
 - axes labels will not draw when setting labels = FALSE

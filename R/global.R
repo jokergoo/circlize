@@ -356,6 +356,11 @@ circos.clear = function() {
     return(invisible(NULL))
 }
 
+# == title
+# Get index for all sectors
+#
+# == details
+# Simple function returning a vector of all sector index.
 get.all.sector.index = function() {
 	.SECTOR.DATA = get(".SECTOR.DATA", envir = .CIRCOS.ENV)
     return(as.vector(.SECTOR.DATA$factor))
@@ -480,7 +485,7 @@ circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 				cell.xlim = get.cell.meta.data("cell.xlim", sector.index = sectors[i], track.index = j)
 				cell.ylim = get.cell.meta.data("cell.ylim", sector.index = sectors[i], track.index = j)
 				circos.text(mean(cell.xlim), mean(cell.ylim), labels = paste(sectors[i], j, sep = ":"),
-					sector.index = sectors[i], track.index = j, direction = "horizontal")
+					sector.index = sectors[i], track.index = j, facing = "downward")
 			}
 		}
 	} else {
@@ -655,6 +660,14 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 		return(current.cell.data$track.start - current.cell.data$track.height)
 	} else if(name == "cell.top.radius") {
 		return(current.cell.data$track.start)
+	} else if(name == "bg.col") {
+		return(current.cell.data$bg.col)
+	} else if(name == "bg.border") {
+		return(current.cell.data$bg.border)
+	} else if(name == "bg.lty") {
+		return(current.cell.data$bg.lty)
+	} else if(name == "bg.lwd") {
+		return(current.cell.data$bg.lwd)
 	} else {
 		stop("Wrong cell meta name.\n")
 	}

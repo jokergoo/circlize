@@ -731,9 +731,14 @@ circos.genomicRect = function(region, value = NULL,
 circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.column = NULL, numeric.column = NULL, 
 	sector.index = get.cell.meta.data("sector.index"), 
 	track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
-	direction = "default",
+	direction = NULL, facing = "inside",
 	adj = par("adj"), cex = 1, col = "black", font = par("font"), ...) {
 	
+	if(!is.null(direction)) {
+		facing = direction
+		warning("`direction` is deprecated, please use `facing` instead.\n")
+	}
+
 	nr = nrow(region)
 	
 	args = list(...)
@@ -799,13 +804,13 @@ circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.col
 
 	nc = length(numeric.column)
 
-	direction = .normalizeGraphicalParam(direction, nc, nr, "direction")
+	facing = .normalizeGraphicalParam(facing, nc, nr, "facing")
 	col = .normalizeGraphicalParam(col, nc, nr, "col")
 	cex = .normalizeGraphicalParam(cex, nc, nr, "cex")
 	font = .normalizeGraphicalParam(font, nc, nr, "font")
 
 	circos.text( (region[[1]] + region[[2]])/2, value[[ numeric.column ]], value[[labels.column]],
-		direction = direction, adj = adj, cex = cex, col = col, font = font,
+		facing = facing, adj = adj, cex = cex, col = col, font = font,
 		sector.index = sector.index, track.index = track.index )
 
 }

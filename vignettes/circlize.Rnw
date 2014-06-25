@@ -677,29 +677,19 @@ which is identical to {\tt circos.lines} in a {\tt for} loop.
 
 \begin{figure}
 \begin{center}
-<<label=figtext, fig = TRUE, echo = FALSE, results=hide>>=
+<<label=figtext, fig = TRUE, echo = FALSE, width = 8, height = 4, results=hide>>=
 source("src/intro-09-text.R")
 @
 \end{center}
-\caption{Text direction settings}
+\caption{Text facing settings}
 \label{fig:text}
 \end{figure}
 
 
 \subsection{Text}
-Only the direction of text by {\tt circos.text} should be noted, as illustrated in figure \ref{fig:text}.
-{\tt srt} in {\tt text} has been degenerated as {\tt direction} in {\tt circos.text} which  
-support only six types of rotation pre-defined in {\tt c("default", "default2", "vertical\_left", "vertical\_right", "horizontal", "arc")}.
-
-\begin{itemize}
-    \item {\tt default}: direction of the tangent, facing bottom at $90^\circ$ position.
-    \item {\tt default2}: direction of the tangent, facing bottom at $-90^\circ$ position.
-    \item {\tt vertical\_left}: direction of radius, facing left at $90^\circ$ position.
-    \item {\tt vertical\_right}: direction of radius, facing right at $90^\circ$ position.
-    \item {\tt horizontal}: horizontal direction in the canvas coordinate.
-    \item {\tt arc}: direction of the arc (not straight, parallel to the circle).
-\end{itemize}
-
+Only the facing of text by {\tt circos.text} should be noted, as illustrated in figure \ref{fig:text}.
+{\tt srt} in {\tt text} has been degenerated as {\tt facing} in {\tt circos.text} which  
+support only six types of rotation pre-defined in {\tt c("inside", "outside", "reverse.clockwise", "clockwise", "downward", "bending")}.
 
 But {\tt adj} argument is still applicable in {\tt circos.text}. Possible usage for {\tt circos.text} is:
 
@@ -710,6 +700,33 @@ But {\tt adj} argument is still applicable in {\tt circos.text}. Possible usage 
 > circos.text(x, y, labels, direction, adj, cex, col, font)
 \end{Sinput}
 \end{Schunk}
+
+In some circumstance, we may want the text facing clockwisely in right half of the circle while
+reverse-closewisely in the left half of the circle. This can be easily done by self-defined codes.
+Following is an example of {\tt panel.fun} and figure can be found in figure \ref{fig:text}. In the example,
+{\tt get.cell.meta.data("xplot")} will return degrees corresponding to left and right margin of the specified cell.
+
+\begin{Schunk}
+\begin{Sinput}
+panel.fun = function(x, y) {
+    xlim = get.cell.meta.data("xlim")
+    ylim = get.cell.meta.data("ylim")
+    theta = mean(get.cell.meta.data("xplot")) %% 360
+    sector.index = get.cell.meta.data("sector.index")
+    if(theta < 90 || theta > 270) {
+        text.facing = "clockwise"
+        text.adj = c(0, 0.5)
+    } else {
+        text.facing = "reverse.clockwise"
+        text.adj = c(1, 0.5)
+    }
+    circos.text(mean(xlim), ylim[1], labels,
+        facing = text.facing, adj = text.adj)
+}
+\end{Sinput}
+\end{Schunk}
+
+
 
 There is also a {\tt circos.trackText} in the package.
 

@@ -147,14 +147,14 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 				i = get.cell.meta.data("sector.numeric.index")
 				theta = mean(get.cell.meta.data("xplot")) %% 360
 				if(theta < 90 || theta > 270) {
-					text.direction = "vertical_right"
+					text.facing = "clockwise"
 					text.adj = c(0, 0.5)
 				} else {
-					text.direction = "vertical_left"
+					text.facing = "reverse.clockwise"
 					text.adj = c(1, 0.5)
 				}
 				circos.text(mean(xlim), 0.5, labels = current.sector.index,
-					direction = text.direction, adj = text.adj)
+					facing = text.facing, adj = text.adj)
 			}, track.height = 0.05)
     }
 	if(any(annotationTrack %in% "grid")) {
@@ -178,7 +178,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 			if(abs(mat[i, j]) < 1e-8) {
 				next
 			}
-			rou = circlize:::get.track.end.position(circlize:::get.current.track.index())
+			rou = get.track.end.position(get.current.track.index())
             sector.index1 = rn[i]
             sector.index2 = cn[j]
             circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[i, j])),
@@ -186,7 +186,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
                         col = col[i, j], rou = ifelse(directional, rou - 0.02, rou), border = NA)
 			if(directional) {
 				d1 = circlize(c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[i, j])), c(0, 0), sector.index = sector.index1)
-				draw.sector(start.degree = d1[1, 1], end.degree = d1[2, 1], rou1 = rou, rou2 = rou - 0.02, col = col[i, j], border = "white", lwd = 0.2)
+				draw.sector(start.degree = d1[1, 1], end.degree = d1[2, 1], rou1 = rou, rou2 = rou - 0.02, col = col[i, j], border = "white", lwd = 0.5)
 			}
             sector.sum.row[ rn[i] ] = sector.sum.row[ rn[i] ] + abs(mat[i, j])
 			sector.sum.col[ cn[j] ] = sector.sum.col[ cn[j] ] + abs(mat[i, j])
@@ -199,7 +199,7 @@ parsePreAllocateTracksValue = function(preAllocateTracks) {
 	lt = list(ylim = c(0, 1),
 		      track.height = circos.par("default.track.height"),
 			  bg.col = NA,
-			  bg.border = "black",
+			  bg.border = NA,
 			  bg.lty = par("lty"),
 			  bg.lwd = par("lwd"))
 	if(length(preAllocateTracks) && is.numeric(preAllocateTracks)) {

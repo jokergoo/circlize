@@ -95,11 +95,16 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 			stop(paste("Wrong track index: it should be no more than ", get.max.track.index(), "\n", sep = ""))
 		}
 		if(track.index <= get.max.track.index()) {
-			if(! is.null(track.height)) {
-				warning("You are updating an existed track, the `track.height` is not used.\n")
-			}
+			#if(! is.null(track.height)) {
+			#	warning("You are updating an existed track, the `track.height` is not used.\n")
+			#}
 			track.height = get.cell.data(factors[1], track.index)$track.height
 		}
+        if(is.null(ylim) && is.null(y)) {
+            for(sid in get.all.sector.index()) {
+                ylim = rbind(ylim, get.cell.meta.data("ylim", sector.index = sid, track.index = track.index))
+            }
+        }
         set.current.track.index(track.index)
     }
         
@@ -235,8 +240,9 @@ circos.updatePlotRegion = function(sector.index = get.cell.meta.data("sector.ind
     set.current.track.index(track.index)
     
     # cover the exsited region by fill with white
+    lwd = get.cell.meta.data("lwd", sector.index = sector.index, track.index = track.index)
     circos.rect(cell.xlim[1], cell.ylim[1], cell.xlim[2], cell.ylim[2], 
-        col = "white", border = "white", lty = 1, lwd = 1)
+        col = "white", border = "white", lty = 1, lwd = lwd)
     circos.rect(cell.xlim[1], cell.ylim[1], cell.xlim[2], cell.ylim[2], 
         col = bg.col, border = bg.border, lty = bg.lty, lwd = bg.lwd)
     return(invisible(NULL))
@@ -275,7 +281,11 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("defau
         track.start = track.start,
         track.height = track.height,
 		track.margin = circos.par("track.margin"),
-		cell.padding = circos.par("cell.padding"))
+		cell.padding = circos.par("cell.padding"),
+        bg.col = bg.col,
+        bg.border = bg.border,
+        bg.lty = bg.lty,
+        bg.lwd = bg.lwd)
     
     set.current.sector.index(sector.index)
     
@@ -711,8 +721,9 @@ circos.polygon = function(x, y, sector.index = get.cell.meta.data("sector.index"
 #
 # == details
 # The function is similar to `graphics::text`. All you need to note is the ``direction`` settings.
-circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"), 
-    direction = c("default", "default2", "vertical_left", "vertical_right", "horizontal", "arc"),
+circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.index"),
+    track.index = get.cell.meta.data("track.index"), direction = NULL,
+    facing = c("inside", "outside", "reverse.clockwise", "clockwise", "downward", "bending"),
     adj = par("adj"), cex = 1, col = "black", font = par("font"), ...) {
     
 	if(length(x) != length(y)) {
@@ -741,12 +752,24 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
     
     d = circlize(x, y, sector.index, track.index)
     
-    direction = direction[1]
-    if(! direction %in% c("default", "default2", "vertical_left", "vertical_right", "horizontal", "arc")) {
-        stop("direction can only be choosen from 'default', 'default2', 'vertical_left', 'vertical_right', 'horizontal' and 'arc'\n.")
+    ## check direction or facing
+    if(!is.null(direction))
+        warning("`direction` is deprecated, please use `facing` instead.\n")
+        facing = switch(direction[1], 
+                        default = "inside",
+                        default2 = "outside",
+                        vertical_left = "reverse.clockwise",
+                        vertical_right = "clockwise",
+                        horizontal = "downward",
+                        arc = "bending")
+        if(is.null(facing)) {
+            stop("Wrong `direction` value, please use `facing` instead.\n")
+        }
     }
+    facing = match.arg(facing)[1]
+    
 	
-	if(direction == "arc") {
+	if(facing == "bending") {
 		
 		chars = strsplit(labels, "")
 		nlabel = length(labels)
@@ -775,13 +798,13 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
         
         srt = d[,1]-90    #srt = ifelse(srt > 0, srt, 360 + srt)
         
-        if(direction == "vertical_left") {           # pointing to the circle center, but facing left at 90 degree
+        if(facing == "reverse.clockwise") {           # pointing to the circle center, but facing left at 90 degree
             srt = srt - 90
-        } else if(direction == "vertical_right") {   # pointing to the circle center, but facing right at 90 degree
+        } else if(facing == "clockwise") {   # pointing to the circle center, but facing right at 90 degree
             srt = srt + 90
-        } else if(direction == "horizontal") {       # horizontal at the finnal graph
+        } else if(facing == "downward") {       # horizontal at the finnal graph
             srt = rep(0, length(srt))
-        } else if(direction == "default2") {
+        } else if(facing == "outside") {
 			srt = srt + 180
 		}
     
@@ -818,7 +841,8 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 #
 # This function can be replaced by a ``for`` loop containing `circos.text`.
 circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.data("track.index"),
-                       direction = c("default", "default2", "vertical_left", "vertical_right", "horizontal"),
+                       direction = NULL,
+                       facing = c("inside", "outside", "reverse.clockwise", "clockwise", "downward", "bending"),
                        adj = par("adj"), cex = 1, col = "black", font = par("font")) {
     
     # basic check here
@@ -854,7 +878,7 @@ circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.d
         nfont = font[l]
         circos.text(nx, ny, sector.index = le[i],
                       track.index = track.index, labels = nlabels,
-                      direction = direction, adj = adj,
+                      direction = direction, facing = facing, adj = adj,
                       cex = ncex, col = ncol, font = nfont)
             
     }
@@ -887,10 +911,15 @@ circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.d
 # It can only draw axis on x-direction.
 circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
 	sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"),
-	labels.font = par("font"), labels.cex = par("cex"), labels.direction = "default",
+	labels.font = par("font"), labels.cex = par("cex"), labels.facing = "inside", labels.direction = NULL,
 	direction = c("outside", "inside"), minor.ticks = 4,
 	major.tick.percentage = 0.1, labels.away.percentage = 0.05, lwd = par("lwd")) {
 	
+    if(!is.null(labels.direction)) {
+        labels.facing = labels.direction
+        warning("`labels.direction` is deprecated, please use `labels.facing` instead.\n")
+    }
+
 	direction = direction[1]
 	if(! direction %in% c("outside", "inside")) {
 		stop("Direction should be in 'outside' and 'inside'.\n")
@@ -946,29 +975,29 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 		
 		labels.adj = NULL
 		if(direction == "outside") {
-			if(labels.direction == "default") {
+			if(labels.facing == "inside") {
 				labels.adj = c(0.5, 0)
-			} else if(labels.direction == "default2") {
+			} else if(labels.facing == "outside") {
 				labels.adj = c(0.5, 1)
-			} else if(labels.direction == "vertical_left") {
+			} else if(labels.facing == "reverse.clockwise") {
 				labels.adj = c(1, 0.5)
-			} else if(labels.direction == "vertical_right") {
+			} else if(labels.facing == "clockwise") {
 				labels.adj = c(0, 0.5)
-			} else if(labels.direction == "horizontal") {
+			} else if(labels.facing == "downward") {
 				labels.adj = c(0.5, 0.5)
 			} else {
 				labels.adj = c(0.5, 0)
 			}
 		} else {
-			if(labels.direction == "default") {
+			if(labels.facing == "inside") {
 				labels.adj = c(0.5, 1)
-			} else if(labels.direction == "default2") {
+			} else if(labels.facing == "outside") {
 				labels.adj = c(0.5, 0)
-			} else if(labels.direction == "vertical_left") {
+			} else if(labels.facing == "reverse.clockwise") {
 				labels.adj = c(0, 0.5)
-			} else if(labels.direction == "vertical_right") {
+			} else if(labels.facing == "clockwise") {
 				labels.adj = c(1, 0.5)
-			} else if(labels.direction == "horizontal") {
+			} else if(labels.facing == "downward") {
 				labels.adj = c(0.5, 0.5)
 			} else {
 				labels.adj = c(0.5, 1)
@@ -979,14 +1008,14 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 			circos.text(major.at[i], h + (major.tick.length+yrange*labels.away.percentage)*ifelse(direction == "outside", 1, -1),
 			           labels = major.at[i], adj = labels.adj,
 			           font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
-			           direction = labels.direction)
+			           facing = labels.facing)
 		} else if(is.logical(labels) && !labels) {
                           
         } else if(length(labels)) {
 			circos.text(major.at[i], h + (major.tick.length+yrange*labels.away.percentage)*ifelse(direction == "outside", 1, -1),
 			            labels = labels[i], adj = labels.adj,
 			            font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
-				        direction = labels.direction)
+				        facing = labels.facing)
 		}				
 		
 	}

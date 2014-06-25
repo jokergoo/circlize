@@ -56,8 +56,9 @@
 # is specified. If the index is one larger than the largest current track index, it in fact
 # creates the new track. If updating an existed track, those parameters related to the position
 # of the plotting region can not be changed.
-circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NULL, force.ylim = TRUE,
-    track.index = NULL, track.height = circos.par("default.track.height"),
+circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NULL,
+    force.ylim = TRUE, track.index = NULL,
+	track.height = circos.par("default.track.height"),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
     panel.fun = function(x, y) {NULL}) {
     
@@ -226,7 +227,8 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 # But the ``xlim`` and ``ylim`` inside the cell still remains unchanged. 
 #
 # Note if you use `circos.trackPlotRegion` to update an already created track, you can re-define ``ylim`` in these cells.
-circos.updatePlotRegion = function(sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"),
+circos.updatePlotRegion = function(sector.index = get.cell.meta.data("sector.index"),
+    track.index = get.cell.meta.data("track.index"),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd")) {
     
     if(!has.cell(sector.index, track.index)) {
@@ -321,8 +323,9 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("defau
 #
 # Other graphics parameters which are available in the function are ``pch``, ``col``
 # and ``cex`` which have same meaning as those in the `graphics::par`.
-circos.points = function(x, y, sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"),
-                         pch = par("pch"), col = par("col"), cex = par("cex")) {
+circos.points = function(x, y, sector.index = get.cell.meta.data("sector.index"),
+    track.index = get.cell.meta.data("track.index"),
+    pch = par("pch"), col = par("col"), cex = par("cex")) {
     
     if(!has.cell(sector.index, track.index)) {
         stop("'circos.points' can only be used after the plotting region been created\n")
@@ -363,7 +366,7 @@ circos.points = function(x, y, sector.index = get.cell.meta.data("sector.index")
 #
 # This function can be replaced by a ``for`` loop containing `circos.points`.
 circos.trackPoints = function(factors = NULL, x, y, track.index = get.cell.meta.data("track.index"),
-                         pch = par("pch"), col = par("col"), cex = par("cex")) {
+    pch = par("pch"), col = par("col"), cex = par("cex")) {
     
     # basic check here
     if(length(x) != length(factors) || length(y) != length(factors)) {
@@ -433,10 +436,11 @@ circos.trackPoints = function(factors = NULL, x, y, track.index = get.cell.meta.
 #
 # Draw areas below lines can help to identify the direction of y-axis in cells (since it is a circle). This can be fullfilled by specifying
 # ``area`` to ``TURE``.
-circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"),
-    col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
-	area = FALSE, area.baseline = NULL, border = "black", baseline = "bottom",
-    pt.col = par("col"), cex = par("cex"), pch = par("pch")) {
+circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
+    track.index = get.cell.meta.data("track.index"),
+    col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l",
+	straight = FALSE, area = FALSE, area.baseline = NULL, border = "black",
+	baseline = "bottom", pt.col = par("col"), cex = par("cex"), pch = par("pch")) {
     
 	if(!is.null(area.baseline)) {
 		baseline = area.baseline
@@ -630,8 +634,10 @@ circos.trackLines = function(factors, x, y, track.index = get.cell.meta.data("tr
 #
 # You just need to specify the coordinates of two diagonal points just similar as 
 # `graphics::rect` does.
-circos.rect = function(xleft, ybottom, xright, ytop, sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"),
-                       col = NA, border = "black", lty = par("lty"), lwd = par("lwd")) {
+circos.rect = function(xleft, ybottom, xright, ytop,
+	sector.index = get.cell.meta.data("sector.index"), 
+	track.index = get.cell.meta.data("track.index"),
+    col = NA, border = "black", lty = par("lty"), lwd = par("lwd")) {
     if(! (length(xleft) == 1 &&
           length(ybottom) == 1 &&
           length(xright) == 1 &&
@@ -685,7 +691,8 @@ circos.rect = function(xleft, ybottom, xright, ytop, sector.index = get.cell.met
 #
 # == details
 # similar as `graphics::polygon`
-circos.polygon = function(x, y, sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"),
+circos.polygon = function(x, y, sector.index = get.cell.meta.data("sector.index"),
+	track.index = get.cell.meta.data("track.index"),
     col = NA, border = "black", lty = par("lty"), lwd = par("lwd")) {
     
     if(!has.cell(sector.index, track.index)) {
@@ -711,9 +718,9 @@ circos.polygon = function(x, y, sector.index = get.cell.meta.data("sector.index"
 # -labels       Labels for each points
 # -sector.index Index for the sector
 # -track.index  Index for the track
-# -direction    Direction of the text, should be one of (``default``, ``default2``, ``vertical_left``, ``vertical_right``, ``horizontal``, ``arc``).
-#               How to choose text direction can be found in the vignette.
-# -adj          Adjustment for texts
+# -direction    deprecated, use ``facing`` instead.
+# -facing       Facing of text
+# -adj          Adjustment for text
 # -cex          Font size
 # -col          Font color
 # -font         Font style
@@ -723,8 +730,9 @@ circos.polygon = function(x, y, sector.index = get.cell.meta.data("sector.index"
 # The function is similar to `graphics::text`. All you need to note is the ``direction`` settings.
 circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), direction = NULL,
-    facing = c("inside", "outside", "reverse.clockwise", "clockwise", "downward", "bending"),
-    adj = par("adj"), cex = 1, col = "black", font = par("font"), ...) {
+    facing = c("inside", "outside", "reverse.clockwise", "clockwise",
+	"downward", "bending"), adj = par("adj"), cex = 1, col = "black",
+	font = par("font"), ...) {
     
 	if(length(x) != length(y)) {
 		stop("length of x and y differ.\n")
@@ -828,8 +836,9 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 # -y            Data points on y-axis
 # -labels       Labels
 # -track.index  Index for the track
-# -direction    Text directions, see `circos.text`
-# -adj          Adjustment for texts
+# -direction    deprecated, use ``facing`` instead.
+# -facing       Facing of text
+# -adj          Adjustment for text
 # -cex          Font size
 # -col          Font color
 # -font         Font style
@@ -841,9 +850,8 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 #
 # This function can be replaced by a ``for`` loop containing `circos.text`.
 circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.data("track.index"),
-                       direction = NULL,
-                       facing = c("inside", "outside", "reverse.clockwise", "clockwise", "downward", "bending"),
-                       adj = par("adj"), cex = 1, col = "black", font = par("font")) {
+    direction = NULL, facing = c("inside", "outside", "reverse.clockwise", "clockwise",
+	"downward", "bending"), adj = par("adj"), cex = 1, col = "black", font = par("font")) {
     
     # basic check here
     if(length(x) != length(factors) || length(y) != length(factors)) {
@@ -900,7 +908,8 @@ circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.d
 # -track.index      Index for the track
 # -labels.font      font style for the axis labels
 # -labels.cex       font size for the axis labels
-# -labels.direction font direction for the axis labels, shoud be in (``default``, ``default2``, ``vertical_left``, ``vertical_right``, ``horizontal``, ``arc``)
+# -labels.direction deprecated, use ``facing`` instead.
+# -labels.facing    facing of labels on axis
 # -direction        whether the axis ticks point to the outside or inside of the circle.
 # -minor.ticks      Number of minor ticks between two close major ticks.
 # -major.tick.percentage Length of the major ticks. It is the percentage to the height of the cell.
@@ -910,8 +919,10 @@ circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.d
 # == details
 # It can only draw axis on x-direction.
 circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
-	sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"),
-	labels.font = par("font"), labels.cex = par("cex"), labels.facing = "inside", labels.direction = NULL,
+	sector.index = get.cell.meta.data("sector.index"),
+	track.index = get.cell.meta.data("track.index"),
+	labels.font = par("font"), labels.cex = par("cex"),
+	labels.facing = "inside", labels.direction = NULL,
 	direction = c("outside", "inside"), minor.ticks = 4,
 	major.tick.percentage = 0.1, labels.away.percentage = 0.05, lwd = par("lwd")) {
 	
@@ -1074,8 +1085,8 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 # It draw histogram in cells among a whole track. It is also an example to show how to draw self-defined
 # figures by this package.
 circos.trackHist = function(factors, x, track.height = circos.par("default.track.height"),
-    track.index = NULL, force.ylim = TRUE,
-    col = ifelse(draw.density, "black", NA), border = "black", lty = par("lty"), lwd = par("lwd"),
+    track.index = NULL, force.ylim = TRUE, col = ifelse(draw.density, "black", NA),
+	border = "black", lty = par("lty"), lwd = par("lwd"),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
     breaks = "Sturges", include.lowest = TRUE, right = TRUE, draw.density = FALSE) {
     
@@ -1186,7 +1197,8 @@ circos.trackHist = function(factors, x, track.height = circos.par("default.track
 # == details
 # If the interval between ``start`` and ``end`` (larger or equal to 360 or smaller or equal to -360)
 # it would draw a full circle or ring. If ``rou2`` is set, it would draw part of a ring.
-draw.sector = function(start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL, center = c(0, 0), col = NA, border = "black", lwd = par("lwd"), lty = par("lty")) {
+draw.sector = function(start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL,
+	center = c(0, 0), col = NA, border = "black", lwd = par("lwd"), lty = par("lty")) {
 
 	if(end.degree < start.degree) {
 		tmp = end.degree

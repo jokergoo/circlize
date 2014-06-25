@@ -205,6 +205,7 @@ sub read_manfile_section {
 		push(@$section_name, $a[$i]);
 		
 		$a[$i + 1] =~s/^\{|\}$//g;
+		$a[$i + 1] =~s/^\s*|\s*$//gs; # removing leading/tracing white space characters
 		push(@$section_value, $a[$i+1]);;
 	}
 	

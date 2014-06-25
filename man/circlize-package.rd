@@ -12,7 +12,7 @@
 
 }
 \details{
-  This package aims to implement circos layout in R.  
+  This package aims to implement circos layout( \url{http://circos.ca} ) in R.  
 
   Since most of the figures are composed of points, lines and polygon (for filled color),  so we just need to implement functions for drawing points, lines and polygon.  
 
@@ -45,6 +45,7 @@
     \item \code{\link{circos.trackPlotRegion}}
     \item \code{\link{circos.updatePlotRegion}}
     \item \code{\link{circos.par}}
+    \item \code{\link{circos.info}}
     \item \code{\link{circos.clear}}
   }
   Theoretically, you are able to draw most kinds of circos figures by the above functions.  

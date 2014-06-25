@@ -1,12 +1,12 @@
 \name{rainfallTransform}
 \alias{rainfallTransform}
 \title{
-  calculate inter-distance of genomic regions  
+  Calculate inter-distance of genomic regions  
 
 
 }
 \description{
-  calculate inter-distance of genomic regions  
+  Calculate inter-distance of genomic regions  
 
 
 }

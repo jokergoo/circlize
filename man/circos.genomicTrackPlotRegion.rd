@@ -11,8 +11,8 @@
 
 }
 \usage{
-circos.genomicTrackPlotRegion(data = NULL, ylim = NULL, stack = FALSE, numeric.column = NULL,
-    panel.fun = function(region, value, ...)  {NULL}, ...)
+circos.genomicTrackPlotRegion(data = NULL, ylim = NULL, stack = FALSE,
+    numeric.column = NULL, panel.fun = function(region, value, ...)  {NULL}, ...)
 }
 \arguments{
   \item{data}{A bed-file-like data frame or a list of data frames}
@@ -20,7 +20,7 @@ circos.genomicTrackPlotRegion(data = NULL, ylim = NULL, stack = FALSE, numeric.c
   \item{stack}{If \code{data} is a list of data frames or a data frame containing more than one numeric columns, whether to plot in a "stack" mode.}
   \item{numeric.column}{Columns of numeric values in \code{data} that will be used for plotting.  If \code{data} is a data frame list, \code{numeric.column} should be either length of one or length of \code{data}. If value of \code{numeric.column} is not set, its value will be inferred from \code{data}.}
   \item{panel.fun}{Self-defined function which will be applied on each sector. Please not it is different from that in \code{\link{circos.trackPlotRegion}}. In this function, there are two arguments (\code{region} and \code{value}) plus \code{...}. In them, \code{region} is a two-column data frame with start positions and end positions in current genomic category (e.g. chromosome).  \code{value} is a data frame which is derived from \code{data} but excluding the first three columns. Rows in \code{value} correspond to  rows in \code{region}. \code{...} is mandatory and is used to pass internal parameters to other functions. The definition of \code{value} will be different according to different input data and different settings, please refer to 'details' section and vignettes to detailed explaination.}
-  \item{...}{pass to \code{\link{circos.trackPlotRegion}}.}
+  \item{...}{Pass to \code{\link{circos.trackPlotRegion}}.}
 
 }
 \details{

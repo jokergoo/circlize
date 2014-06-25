@@ -1,30 +1,40 @@
 
 # == title
-# plot Chord Diagram
+# Plot Chord Diagram
 #
 # == param
-# -mat a table which represents as a numeric matrix
-# -grid.col colors of grids for elements
-# -transparency transparency of link/ribbon colors, 0 means no transparency and 1 means complete transparency.
+# -mat A table which represents as a numeric matrix
+# -grid.col Colors of grids for elements. The length should be either 1 or ``length(union(rownames(mat), colnames(mat)))``.
+#           It is better that ``grid.col`` is a named vector of which names correspond to sectors. 
+#           If it is not a named vector, the order of ``grid.col`` corresponds to order of sectors.
+# -transparency Transparency of link/ribbon colors, 0 means no transparency and 1 means complete transparency.
 # -col colors for links. It can be a matrix which corresponds to ``mat``, or a function which generate colors 
 #      according to values in ``mat``, or a single value which means colors for all links are the same. You
 #      may use `colorRamp2` to generate a function which maps values to colors.
-# -row.col colors for links. If ``col`` is not set, colors for rownames
-# -column.col if ``col`` is not set, colors correspond to rownames
-# -directional whether links have direction. The direction is from rows to columns. If you
+# -row.col colors for links. Length should be same as number of rows in ``mat``. This argument only works when ``col`` is set to ``NULL``.
+# -column.col colors for links. Length should be same as number of columns in ``mat``. This argument only works when ``col`` and ``row.col`` is set to ``NULL``.
+# -directional Whether links have directions. The direction is from rows to columns. If you
 #              want the direction from columns to rows, just transpose your ``mat``.
-# -symmetric whether the matrix is symmetric. If the value is set to ``TRUE``, only
+# -symmetric Whether the matrix is symmetric. If the value is set to ``TRUE``, only
 #            lower triangular matrix without the diagonal will be used.
-# -order order of sectors
-# -preAllocateTracks pre allocate empty tracks before drawing chord diagram
-# -annotationTrack which annotation track should be plotted?
+# -order Order of sectors
+# -preAllocateTracks Pre-allocate empty tracks before drawing chord diagram. Please refer to vignette for details.
+# -annotationTrack Which annotation track should be plotted?
 #
 # == details
-# http://circos.ca/intro/tabular_visualization/
+# Chord diagram is a way to visualize numeric tables ( http://circos.ca/intro/tabular_visualization/ ). This function
+# visualize tables in a circular way.
+#
+# Sectors of the plot is ``union(rownames(mat), colnames(mat))``. If there is no rowname or colname, the function will
+# assign some names for it.
+#
+# This function contains some settings that may be a little difficult to understand. Please refer to vignette for better explanation.
 chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	col = NULL, row.col = NULL, column.col = NULL, directional = FALSE,
 	symmetric = FALSE, order = NULL, preAllocateTracks = NULL,
 	annotationTrack = c("name", "grid")) {
+	
+	transparency = ifelse(transparency < 0, 0, ifelse(transparency > 1, 1, transparency))
 	
 	if(symmetric) {
 		if(nrow(mat) != ncol(mat)) {
@@ -98,6 +108,21 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	if(is.null(grid.col)) {
 		grid.col = rgb(cbind(runif(n), runif(n), runif(n)))
 		names(grid.col) = factors
+	} else {
+		if(length(grid.col) == 1) {
+			grid.col = rep(grid.col, length(factors))
+			names(grid.col) = factors
+		} else if(length(grid.col) == length(factors)) {
+			if(is.null(names(grid.col))) {
+				names(grid.col) = factors
+			} else {
+				if(!setequal(names(grid.col), factors)) {
+					stop("Since your ``grid.col`` is a named vector, all names should be sector names.\n")
+				}
+			}
+		} else {
+			stop("Since you set ``grid.col``, the length should be either 1 or number of sectors.\n")
+		}
 	}
 	
 	## make a color matrix based on settings

@@ -17,15 +17,15 @@ circos.genomicLink(region1, region2,
     top.ratio.low = NULL)
 }
 \arguments{
-  \item{region1}{a genomic data frame}
-  \item{region2}{a genomic data frame}
-  \item{rou}{pass to \code{\link{circos.link}}}
-  \item{top.ratio}{pass to \code{\link{circos.link}}}
-  \item{col}{pass to \code{\link{circos.link}}, length can be either one or nrow of \code{region1}}
-  \item{lwd}{pass to \code{\link{circos.link}}, length can be either one or nrow of \code{region1}}
-  \item{lty}{pass to \code{\link{circos.link}}, length can be either one or nrow of \code{region1}}
-  \item{border}{pass to \code{\link{circos.link}}, length can be either one or nrow of \code{region1}}
-  \item{top.ratio.low}{pass to \code{\link{circos.link}}}
+  \item{region1}{A genomic data frame}
+  \item{region2}{A genomic data frame}
+  \item{rou}{Pass to \code{\link{circos.link}}}
+  \item{top.ratio}{Pass to \code{\link{circos.link}}}
+  \item{col}{Pass to \code{\link{circos.link}}, length can be either one or nrow of \code{region1}}
+  \item{lwd}{Pass to \code{\link{circos.link}}, length can be either one or nrow of \code{region1}}
+  \item{lty}{Pass to \code{\link{circos.link}}, length can be either one or nrow of \code{region1}}
+  \item{border}{Pass to \code{\link{circos.link}}, length can be either one or nrow of \code{region1}}
+  \item{top.ratio.low}{Pass to \code{\link{circos.link}}}
 
 }
 \details{

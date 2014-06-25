@@ -195,7 +195,8 @@ colorRamp2 = function(breaks, colors, ...) {
 
 # will be considerred in the future
 circos.approx = function(x, y, resolution = 0.1, sector.index = get.cell.meta.data("sector.index"),
-	track.index = get.cell.meta.data("track.index"), approxFun = function(x) sample(x, 1)) {
+	track.index = get.cell.meta.data("track.index"),
+	approxFun = function(x) sample(x, 1)) {
 	
 	od = order(x)
 	x = x[od]

@@ -15,7 +15,7 @@ colorRamp2(breaks, colors, ...)
 }
 \arguments{
   \item{breaks}{a vector indicating breaks of your data}
-  \item{colors}{a vector of colors which corresponds to value in \code{breaks}.}
+  \item{colors}{a vector of colors which corresponds to values in \code{breaks}}
   \item{...}{pass to \code{\link[grDevices]{colorRamp}}}
 
 }
@@ -30,10 +30,7 @@ colorRamp2(breaks, colors, ...)
 
 }
 \examples{
-
-
 library(circlize)
 col_fun = colorRamp2(c(-1, 0, 1), c("green", "black", "red"))
 col_fun(seq(-2, 2, by = 0.5))
-
 }

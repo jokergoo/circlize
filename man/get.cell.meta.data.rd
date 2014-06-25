@@ -16,8 +16,8 @@ get.cell.meta.data(name, sector.index = get.current.sector.index(),
 }
 \arguments{
   \item{name}{Only support one name at a time, see "details" section}
-  \item{sector.index}{index for the sector}
-  \item{track.index}{index for the track}
+  \item{sector.index}{Index of the sector}
+  \item{track.index}{Index of the track}
 
 }
 \details{

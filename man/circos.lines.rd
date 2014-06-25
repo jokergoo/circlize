@@ -11,10 +11,11 @@
 
 }
 \usage{
-circos.lines(x, y, sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"),
-    col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
-    area = FALSE, area.baseline = NULL, border = "black", baseline = "bottom",
-    pt.col = par("col"), cex = par("cex"), pch = par("pch"))
+circos.lines(x, y, sector.index = get.cell.meta.data("sector.index"),
+    track.index = get.cell.meta.data("track.index"),
+    col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l",
+    straight = FALSE, area = FALSE, area.baseline = NULL, border = "black",
+    baseline = "bottom", pt.col = par("col"), cex = par("cex"), pch = par("pch"))
 }
 \arguments{
   \item{x}{Data points on x-axis}
@@ -39,40 +40,6 @@ circos.lines(x, y, sector.index = get.cell.meta.data("sector.index"), track.inde
   Normally, straight lines in the Cartesian coordinate have to be transformed into curves in the circos layout. But if you do not want to do such transformation you can use this function just drawing straight lines between points by setting \code{straight} to \code{TRUE}.  
 
   Draw areas below lines can help to identify the direction of y-axis in cells (since it is a circle). This can be fullfilled by specifying \code{area} to \code{TURE}. 
-
-
-}
-\examples{
-
-
-library(circlize)
-par(mar = c(1, 1, 1, 1), cex = 0.8)
-factors = letters[1:8]
-circos.par(points.overflow.warning = FALSE)
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.5)
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "a")
-circos.text(5, 9, "type = 'l'", sector.index = "a")
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "b", type = "o")
-circos.text(5, 9, "type = 'o'", sector.index = "b")
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "c", type = "h")
-circos.text(5, 9, "type = 'h'", sector.index = "c")
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "d", type = "s")
-circos.text(5, 9, "type = 's'", sector.index = "d")
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "e", area = TRUE)
-circos.text(5, 9, "type = 'l', area = TRUE", sector.index = "e")
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "f",
-    type = "o", area = TRUE)
-circos.text(5, 9, "type = 'o', area = TRUE", sector.index = "f")
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "g",
-    type = "s", area = TRUE)
-circos.text(5, 9, "type = 's', area = TRUE", sector.index = "g")
-circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "h",
-    area = TRUE, area.baseline = "top")
-circos.text(5, 1, "type = 'l', area = TRUE\narea.baseline = 'top'",
-    sector.index = "h")
-circos.clear()
-par(cex = 1)
 
 
 }

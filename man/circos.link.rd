@@ -21,7 +21,7 @@ circos.link(sector.index1, point1, sector.index2, point2,
   \item{point1}{A single value or a numeric vector of length 2. If it is a 2-elements vector, then the link would be a belt/ribbon.}
   \item{sector.index2}{Sector index for the other sector}
   \item{point2}{A single value or a numeric vector of length 2. If it is a 2-elements vector, then the link would be a belt/ribbon.}
-  \item{rou}{The position of the 'root' of the link. It is the percentage of the radius of the unit circle. By default it is the end (bottom) of the most recent track.}
+  \item{rou}{The position of the 'root' of the link. It is the percentage of the radius of the unit circle. By default it is from the bottom of the most recent track.}
   \item{top.ratio}{Set the height of the quadratic curve. For the exact definition, please refer to the main vignette.}
   \item{col}{Color of the link. If the link is a ribbon, then it is the filled color for the ribbon.}
   \item{lwd}{Line (or border) width}
@@ -36,26 +36,7 @@ circos.link(sector.index1, point1, sector.index2, point2,
 
   Drawing links does not create any track. So you can think it is independent of the tracks.  
 
-  By default you only need to set \code{sector.index1}, \code{point1}, \code{sector.index2} and \code{point2}. The link would look nice. However you can also set the position and the height of links by specifying \code{rou} and \code{top.ratio}. See vignette for detailed explaination. 
-
-
-}
-\examples{
-
-
-library(circlize)
-par(mar = c(1, 1, 1, 1))
-factors = letters[1:8]
-circos.par(points.overflow.warning = FALSE)
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey",
-    bg.border = NA, track.height = 0.05)
-
-circos.link("a", 5, "c", 5)
-circos.link("b", 5, "d", c(4, 6))
-circos.link("a", c(2, 3), "f", c(4, 6))
-
-circos.clear()
+  By default you only need to set \code{sector.index1}, \code{point1}, \code{sector.index2} and \code{point2}. The link would look nice. However you can also set the position and the height of links by specifying \code{rou} and \code{top.ratio}. See vignette for detailed explanation. 
 
 
 }

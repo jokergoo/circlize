@@ -12,9 +12,8 @@
 }
 \usage{
 circos.trackText(factors, x, y, labels, track.index = get.cell.meta.data("track.index"),
-    direction = NULL,
-    facing = c("inside", "outside", "reverse.clockwise", "clockwise", "downward", "bending"),
-    adj = par("adj"), cex = 1, col = "black", font = par("font"))
+    direction = NULL, facing = c("inside", "outside", "reverse.clockwise", "clockwise",
+    "downward", "bending"), adj = par("adj"), cex = 1, col = "black", font = par("font"))
 }
 \arguments{
   \item{factors}{Factors which represent the categories of data}
@@ -22,8 +21,9 @@ circos.trackText(factors, x, y, labels, track.index = get.cell.meta.data("track.
   \item{y}{Data points on y-axis}
   \item{labels}{Labels}
   \item{track.index}{Index for the track}
-  \item{direction}{Text directions, see \code{\link{circos.text}}}
-  \item{adj}{Adjustment for texts}
+  \item{direction}{deprecated, use \code{facing} instead.}
+  \item{facing}{Facing of text}
+  \item{adj}{Adjustment for text}
   \item{cex}{Font size}
   \item{col}{Font color}
   \item{font}{Font style}

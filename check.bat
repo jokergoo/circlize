@@ -1,3 +1,4 @@
+perl -Ilib -MR::Comment2Man -e "R::Comment2Man->draft('R')"
 cd ..
 R CMD REMOVE circlize
 R CMD build --compact-vignettes=gs+qpdf circlize

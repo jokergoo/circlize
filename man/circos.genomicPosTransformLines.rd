@@ -16,15 +16,15 @@ circos.genomicPosTransformLines(data, track.height = 0.1, posTransform = NULL,
     type = c("default", "reverse"), col = "black", lwd = par("lwd"), lty = par("lty"))
 }
 \arguments{
-  \item{data}{a data frame containing genomic data}
-  \item{track.height}{height of the track}
-  \item{posTransform}{genomic position transformation function, see \code{\link{posTransform.default}} for an example.}
-  \item{horizontalLine}{whether to draw horizontal lines which indicate width of each region}
-  \item{track.margin}{margin of tracks}
-  \item{type}{type of the transformation. \code{default} means position transformed track are located inside  and \code{reverse} means position transformed track are located outside.}
-  \item{col}{color of lines, can be length of one or length of nrow of \code{data}}
-  \item{lwd}{width of lines}
-  \item{lty}{style of lines}
+  \item{data}{A data frame containing genomic data}
+  \item{track.height}{Height of the track}
+  \item{posTransform}{Genomic position transformation function, see \code{\link{posTransform.default}} for an example.}
+  \item{horizontalLine}{Whether to draw horizontal lines which indicate width of each region}
+  \item{track.margin}{Margin of tracks}
+  \item{type}{Type of the transformation. \code{default} means position transformed track are located inside  and \code{reverse} means position transformed track are located outside.}
+  \item{col}{Color of lines, can be length of one or length of nrow of \code{data}}
+  \item{lwd}{Width of lines}
+  \item{lty}{Style of lines}
 
 }
 \details{

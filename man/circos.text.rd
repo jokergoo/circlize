@@ -12,8 +12,8 @@
 }
 \usage{
 circos.text(x, y, labels, sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"), direction = c("default",
-    "default2", "vertical_left", "vertical_right", "horizontal", "arc"),
+    track.index = get.cell.meta.data("track.index"), direction = NULL,
+    facing = c("inside", "outside", "reverse.clockwise", "clockwise", "downward", "bending"),
     adj = par("adj"), cex = 1, col = "black", font = par("font"), ...)
 }
 \arguments{
@@ -36,6 +36,7 @@ circos.text(x, y, labels, sector.index = get.cell.meta.data("sector.index"),
 
 }
 \examples{
+
 library(circlize)
 par(mar = c(1, 1, 1, 1))
 factors = letters[1:4]
@@ -51,5 +52,6 @@ circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.5,
         circos.text(5, 1, "arc_arc_arc_arc_arc", direction = "arc")
     })
 circos.clear()
+
 
 }

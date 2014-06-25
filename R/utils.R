@@ -12,7 +12,8 @@
 #
 # == values
 # A matrix with two columns (``theta`` and ``rou``)
-circlize = function(x, y, sector.index = get.current.sector.index(), track.index = get.current.track.index()) {
+circlize = function(x, y, sector.index = get.current.sector.index(),
+	track.index = get.current.track.index()) {
     
     sector.data = get.sector.data(sector.index)
     cell.data = get.cell.data(sector.index, track.index)
@@ -166,7 +167,7 @@ as.degree = function(radian) {
 #
 # == param
 # -breaks a vector indicating breaks of your data
-# -colors a vector of colors which corresponds to value in ``breaks``.
+# -colors a vector of colors which corresponds to values in ``breaks``
 # -... pass to `grDevices::colorRamp`
 #
 # == details
@@ -192,6 +193,7 @@ colorRamp2 = function(breaks, colors, ...) {
     }
 }
 
+# will be considerred in the future
 circos.approx = function(x, y, resolution = 0.1, sector.index = get.cell.meta.data("sector.index"),
 	track.index = get.cell.meta.data("track.index"), approxFun = function(x) sample(x, 1)) {
 	

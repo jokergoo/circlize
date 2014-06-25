@@ -1,5 +1,5 @@
 library(circlize)
-par(mar = c(1, 1, 1, 1), mfrow = c(1, 2))
+par(mar = c(1, 1, 1, 1), mfrow = c(2, 1))
 factors = letters[1:4]
 circos.par(points.overflow.warning = FALSE)
 circos.initialize(factors = factors, xlim = c(0, 10))

@@ -1,5 +1,5 @@
 # functions to draw links are not so nice,
-# a little inconsistant to the other functions and a little hard to understand
+# a little inconsistent to the other functions and a little hard to understand
 # it may be improved later.
 
 
@@ -14,7 +14,7 @@
 # -point2        A single value or a numeric vector of length 2. If it is a 2-elements vector, then
 #                the link would be a belt/ribbon.
 # -rou           The position of the 'root' of the link. It is the percentage of the radius of the unit circle.
-#                By default it is the end (bottom) of the most recent track.
+#                By default it is from the bottom of the most recent track.
 # -top.ratio     Set the height of the quadratic curve. For the exact definition, please refer to the main vignette.
 # -col           Color of the link. If the link is a ribbon, then it is the filled color for the ribbon.
 # -lwd           Line (or border) width
@@ -32,7 +32,7 @@
 #
 # By default you only need to set ``sector.index1``, ``point1``, ``sector.index2`` and ``point2``. The
 # link would look nice. However you can also set the position and the height of links by specifying
-# ``rou`` and ``top.ratio``. See vignette for detailed explaination.
+# ``rou`` and ``top.ratio``. See vignette for detailed explanation.
 circos.link = function(sector.index1, point1, sector.index2, point2,
     rou = get.track.end.position(get.current.track.index()), top.ratio = 0.5,
     col = "black", lwd = par("lwd"), lty = par("lty"), border = NA, n = 101,

@@ -11,8 +11,7 @@
 
 }
 \usage{
-circos.genomicTrackPlotRegion(data = NULL, ylim = NULL, stack = FALSE,
-    numeric.column = NULL,
+circos.genomicTrackPlotRegion(data = NULL, ylim = NULL, stack = FALSE, numeric.column = NULL,
     panel.fun = function(region, value, ...)  {NULL}, ...)
 }
 \arguments{

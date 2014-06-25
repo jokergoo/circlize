@@ -11,10 +11,9 @@
 
 }
 \usage{
-circos.genomicDensity(data, ylim.force = FALSE, window.size = NULL,
-    overlap = TRUE, col = ifelse(area, "grey", "black"), lwd = par("lwd"),
-    lty = par("lty"), type = "l", area = TRUE, area.baseline = 0, border = NA,
-    ...)
+circos.genomicDensity(data, ylim.force = FALSE, window.size = NULL, overlap = TRUE,
+    col = ifelse(area, "grey", "black"), lwd = par("lwd"),
+    lty = par("lty"), type = "l", area = TRUE, area.baseline = NULL, baseline = 0, border = NA, ...)
 }
 \arguments{
   \item{data}{A bed-file-like data frame or a list of data frames}
@@ -27,6 +26,7 @@ circos.genomicDensity(data, ylim.force = FALSE, window.size = NULL,
   \item{type}{type of lines, see \code{\link{circos.lines}}}
   \item{area}{see \code{\link{circos.lines}}}
   \item{area.baseline}{see \code{\link{circos.lines}}}
+  \item{baseline}{see \code{\link{circos.lines}}}
   \item{border}{see \code{\link{circos.lines}}}
   \item{...}{pass to \code{\link{circos.trackPlotRegion}}}
 

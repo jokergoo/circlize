@@ -11,8 +11,7 @@
 
 }
 \usage{
-circos.points(x, y, sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"),
+circos.points(x, y, sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"),
     pch = par("pch"), col = par("col"), cex = par("cex"))
 }
 \arguments{

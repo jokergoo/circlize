@@ -22,3 +22,6 @@ cytoband.col(x)
 
 
 }
+\examples{
+cytoband.col("gpos100")
+}

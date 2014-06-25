@@ -12,8 +12,8 @@
 }
 \usage{
 circos.trackLines(factors, x, y, track.index = get.cell.meta.data("track.index"),
-    col = "black", lwd = par("lwd"), lty = par("lty"), type = "l",
-    straight = FALSE, area = FALSE, area.baseline = NA, border = "black",
+    col = "black", lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
+    area = FALSE, area.baseline = NULL, border = "black", baseline = NA,
     pt.col = par("col"), cex = par("cex"), pch = par("pch"))
 }
 \arguments{
@@ -27,7 +27,8 @@ circos.trackLines(factors, x, y, track.index = get.cell.meta.data("track.index")
   \item{type}{line type, similar as \code{type} argument in \code{\link[graphics]{lines}}, but only in \code{c("l", "o", "h", "s")}}
   \item{straight}{whether draw straight lines between points}
   \item{area}{whether to fill the area below the lines. If it is set to \code{TRUE}, \code{col} controls the filled color in the area and \code{border} controls the color of the line.}
-  \item{area.baseline}{the base line to draw area under lines, default is \code{NA} which means the baseline for each cell would be calculated seperately}
+  \item{area.baseline}{deprecated, use \code{baseline} instead.}
+  \item{baseline}{the base line to draw area under lines, default is \code{NA} which means the baseline for each cell would be calculated seperately}
   \item{border}{color for border of the area}
   \item{pt.col}{if \code{type} is "o", points color}
   \item{cex}{if \code{type} is "o", points size}

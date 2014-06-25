@@ -11,9 +11,7 @@
 
 }
 \usage{
-circos.rect(xleft, ybottom, xright, ytop,
-    sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"),
+circos.rect(xleft, ybottom, xright, ytop, sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"),
     col = NA, border = "black", lty = par("lty"), lwd = par("lwd"))
 }
 \arguments{

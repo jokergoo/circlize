@@ -12,8 +12,7 @@
 }
 \usage{
 highlight.chromosome(chr, track.index = seq_len(get.max.track.index()),
-    col = "#FF000040", border = NA, lwd = par("lwd"), lty = par("lty"), 
-    padding = c(0, 0, 0, 0))
+    col = "#FF000040", border = NA, lwd = par("lwd"), lty = par("lty"), padding = c(0, 0, 0, 0))
 }
 \arguments{
   \item{chr}{chromosome name. Only allow single chromosome. It should be consistent with the sector index.}

@@ -1,12 +1,12 @@
 # == title
-# Read cytoband data
+# Read/parse cytoband data from a data frame / a file / UCSC database
 #
 # == param
-# -cytoband a path of the cytoband file or a data frame that already contains cytoband data
-# -species abbrevations of species. e.g. hg19 for human, mm10 for mouse. If this
-#          value is specified, the function will download cytoBand.txt.gz from
+# -cytoband A path of the cytoband file or a data frame that already contains cytoband data
+# -species  Abbrevations of species. e.g. hg19 for human, mm10 for mouse. If this
+#          value is specified, the function will download ``cytoBand.txt.gz`` from
 #          UCSC website automatically.
-# -sort.chr whether chromosome names should be sorted (first sort by numbers then by letters).
+# -sort.chr Whether chromosome names should be sorted (first sort by numbers then by letters).
 #
 # == details
 # The function read the cytoband data, sort the chromosome names and calculate the length of each chromosome. 
@@ -15,12 +15,14 @@
 # You can find the data struture for the cytoband data from http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/cytoBand.txt.gz
 #
 # == values
-# -df Original data frame for cytoband data
-# -chromosome sorted chromosome names
-# -chr.len length of chromosomes. Order are same as ``chromosome``
+# -df         Original data frame for cytoband data
+# -chromosome Sorted chromosome names
+# -chr.len    Length of chromosomes. Order are same as ``chromosome``
 #
-# There are several cirsumtances when determine the order of chromosomes. Assuming ``chromosome`` is the first clumn in the cytoband data frame,
-# then, if ``cytoband`` is defined as a file path, or ``species`` is set, the order of chromosomes is ``unique(chromosome)`` (with or without sorted depending on ``sort.chr``); If ``cytoband``
+# If ``sort.chr`` is not set, there would be several circumstances when determining the order of chromosomes. 
+# Assuming ``chromosome`` is the first column in the cytoband data frame,
+# then, if ``cytoband`` is defined as a file path, or ``species`` is set, the order of chromosomes is ``unique(chromosome)`` 
+# which is read from the file; If ``cytoband``
 # is set as a data frame and the first column is a factor, the order of chromosomes is ``levels(chromosome)``; If ``cytoband`` is a data frame
 # and the first column is just a character vector, the order of chromosomes is ``unique(chromosome)``. Please not this concept is really
 # important since the order of chromosomes will be used to control the order of sectors when initializing the circos plot.
@@ -74,7 +76,7 @@ read.cytoband = function(cytoband = paste(system.file(package = "circlize"),
 # Assign colors to cytogenetic band (hg19) according to the Giemsa stain results
 #
 # == param
-# -x a vector containing the Giemsa stain results
+# -x A vector containing the Giemsa stain results
 #
 # == details
 # The color theme is from http://circos.ca/tutorials/course/slides/session-2.pdf, page 42.
@@ -97,15 +99,15 @@ cytoband.col = function(x) {
 }
 
 # == title
-# generate random genomic data
+# Generate random genomic data
 #
 # == param
-# -nr  number of rows
-# -nc  number of numeric columns / value columns
-# -fun function to generate random data
+# -nr  Number of rows
+# -nc  Number of numeric columns / value columns
+# -fun Function for generating random values
 #
 # == details
-# The function will sample positions from human genome. Chromosome names start with "chr"
+# The function will uniformly sample positions from human genome. Chromosome names start with "chr"
 # and positions are sorted. The final number of rows may not be exactly as same as ``nr``.
 generateRandomBed = function(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0.5)) {
 	cyto = read.cytoband()

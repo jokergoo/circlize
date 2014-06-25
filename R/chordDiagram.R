@@ -4,18 +4,20 @@
 #
 # == param
 # -mat a table which represents as a numeric matrix
-# -grid.col colors for grids
-# -transparency Transparency of link/ribbon colors, 0 means no transparency and 1 means complete transparency.
+# -grid.col colors of grids for elements
+# -transparency transparency of link/ribbon colors, 0 means no transparency and 1 means complete transparency.
 # -col colors for links. It can be a matrix which corresponds to ``mat``, or a function which generate colors 
-#      according to values in ``mat``, or a single value which means colors for all links are the same.
-# -row.col if ``col`` is not set, colors correspond to rownames
+#      according to values in ``mat``, or a single value which means colors for all links are the same. You
+#      may use `colorRamp2` to generate a function which maps values to colors.
+# -row.col colors for links. If ``col`` is not set, colors for rownames
 # -column.col if ``col`` is not set, colors correspond to rownames
-# -directional whether links have direction. The direction is from rows to columns
-# -symmetric whether the matrix is symmetric. If the value is set to ``TRUE1``, only
+# -directional whether links have direction. The direction is from rows to columns. If you
+#              want the direction from columns to rows, just transpose your ``mat``.
+# -symmetric whether the matrix is symmetric. If the value is set to ``TRUE``, only
 #            lower triangular matrix without the diagonal will be used.
 # -order order of sectors
-# -preAllocateTracks
-# -annotationTrack
+# -preAllocateTracks pre allocate empty tracks before drawing chord diagram
+# -annotationTrack which annotation track should be plotted?
 #
 # == details
 # http://circos.ca/intro/tabular_visualization/

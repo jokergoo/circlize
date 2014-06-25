@@ -3,7 +3,7 @@
 # circos layout in R
 #
 # == details
-# This package aims to implement circos layout in R.
+# This package aims to implement circos layout( http://circos.ca ) in R.
 #
 # Since most of the figures are composed of points, lines and polygon (for filled color), 
 # so we just need to implement functions for drawing points, lines and polygon.
@@ -34,6 +34,7 @@
 # - `circos.trackPlotRegion`
 # - `circos.updatePlotRegion`
 # - `circos.par`
+# - `circos.info`
 # - `circos.clear`
 #
 # Theoretically, you are able to draw most kinds of circos figures by the above functions.

@@ -11,5 +11,5 @@ while(1) {
 	}
 	cat(str)
 	Sys.sleep(0.2)
+	flush.console()
 }
-flush.console()

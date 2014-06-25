@@ -11,11 +11,10 @@
 
 }
 \usage{
-circos.lines(x, y, sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"),
-    col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"),
-    type = "l", straight = FALSE, area = FALSE, area.baseline = "bottom",
-    border = "black", pt.col = par("col"), cex = par("cex"), pch = par("pch"))
+circos.lines(x, y, sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"),
+    col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
+    area = FALSE, area.baseline = NULL, border = "black", baseline = "bottom",
+    pt.col = par("col"), cex = par("cex"), pch = par("pch"))
 }
 \arguments{
   \item{x}{Data points on x-axis}
@@ -28,7 +27,8 @@ circos.lines(x, y, sector.index = get.cell.meta.data("sector.index"),
   \item{type}{line type, similar as \code{type} argument in \code{\link[graphics]{lines}}, but only in \code{c("l", "o", "h", "s")}}
   \item{straight}{whether draw straight lines between points}
   \item{area}{whether to fill the area below the lines. If it is set to \code{TRUE}, \code{col} controls the filled color in the area and \code{border} controls the color of the line.}
-  \item{area.baseline}{the base line to draw area below lines, default is the minimal of y-range (most bottom). It can be a string or number. If a string, it should be one of \code{bottom} and \code{top}.}
+  \item{area.baseline}{deprecated, use \code{baseline} instead.}
+  \item{baseline}{the base line to draw area below lines, default is the minimal of y-range (most bottom). It can be a string or number. If a string, it should be one of \code{bottom} and \code{top}.}
   \item{border}{color for border of the area}
   \item{pt.col}{if \code{type} is "o", points color}
   \item{cex}{if \code{type} is "o", points size}
@@ -43,6 +43,7 @@ circos.lines(x, y, sector.index = get.cell.meta.data("sector.index"),
 
 }
 \examples{
+
 
 library(circlize)
 par(mar = c(1, 1, 1, 1), cex = 0.8)
@@ -72,5 +73,6 @@ circos.text(5, 1, "type = 'l', area = TRUE\narea.baseline = 'top'",
     sector.index = "h")
 circos.clear()
 par(cex = 1)
+
 
 }

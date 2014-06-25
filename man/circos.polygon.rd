@@ -11,8 +11,7 @@
 
 }
 \usage{
-circos.polygon(x, y, sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"),
+circos.polygon(x, y, sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"),
     col = NA, border = "black", lty = par("lty"), lwd = par("lwd"))
 }
 \arguments{
@@ -32,6 +31,7 @@ circos.polygon(x, y, sector.index = get.cell.meta.data("sector.index"),
 
 }
 \examples{
+
 
 library(circlize)
 par(mar = c(1, 1, 1, 1))
@@ -54,5 +54,6 @@ circos.trackPlotRegion(ylim = c(-3, 3), track.height = 0.4,
     circos.lines(x1, loess.predict$fit)
 })
 circos.clear()
+
 
 }

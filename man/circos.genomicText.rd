@@ -11,11 +11,11 @@
 
 }
 \usage{
-circos.genomicText(region, value, y = NULL, labels = NULL, labels.column = NULL,
-    numeric.column = NULL, sector.index = get.cell.meta.data("sector.index"),
+circos.genomicText(region, value, y = NULL, labels = NULL, labels.column = NULL, numeric.column = NULL,
+    sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), posTransform = NULL,
-    direction = "default", adj = par("adj"), cex = 1, col = "black",
-    font = par("font"), ...)
+    direction = NULL, facing = "inside",
+    adj = par("adj"), cex = 1, col = "black", font = par("font"), ...)
 }
 \arguments{
   \item{region}{a data frame contains 2 column which is start position and end position}

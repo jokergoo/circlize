@@ -677,7 +677,7 @@ which is identical to {\tt circos.lines} in a {\tt for} loop.
 
 \begin{figure}
 \begin{center}
-<<label=figtext, fig = TRUE, echo = FALSE, width = 8, height = 4, results=hide>>=
+<<label=figtext, fig = TRUE, echo = FALSE, width = 4, height = 8, results=hide>>=
 source("src/intro-09-text.R")
 @
 \end{center}
@@ -697,7 +697,7 @@ But {\tt adj} argument is still applicable in {\tt circos.text}. Possible usage 
 \begin{Sinput}
 > circos.text(x, y, labels)
 > circos.text(x, y, labels, sector.index, track.index)
-> circos.text(x, y, labels, direction, adj, cex, col, font)
+> circos.text(x, y, labels, facing, adj, cex, col, font)
 \end{Sinput}
 \end{Schunk}
 

@@ -1,4 +1,5 @@
 export(
+	chordDiagram,
 	circlize,
 	circos.axis,
 	circos.clear,
@@ -33,6 +34,7 @@ export(
 	draw.sector,
 	generateRandomBed,
 	genomicDensity,
+	get.all.sector.index,
 	get.cell.meta.data,
 	get.current.chromosome,
 	getI,

@@ -240,7 +240,7 @@ circos.updatePlotRegion = function(sector.index = get.cell.meta.data("sector.ind
     set.current.track.index(track.index)
     
     # cover the exsited region by fill with white
-    lwd = get.cell.meta.data("lwd", sector.index = sector.index, track.index = track.index)
+    lwd = get.cell.meta.data("bg.lwd", sector.index = sector.index, track.index = track.index)
     circos.rect(cell.xlim[1], cell.ylim[1], cell.xlim[2], cell.ylim[2], 
         col = "white", border = "white", lty = 1, lwd = lwd)
     circos.rect(cell.xlim[1], cell.ylim[1], cell.xlim[2], cell.ylim[2], 
@@ -753,7 +753,7 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
     d = circlize(x, y, sector.index, track.index)
     
     ## check direction or facing
-    if(!is.null(direction))
+    if(!is.null(direction)) {
         warning("`direction` is deprecated, please use `facing` instead.\n")
         facing = switch(direction[1], 
                         default = "inside",
@@ -916,7 +916,13 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	major.tick.percentage = 0.1, labels.away.percentage = 0.05, lwd = par("lwd")) {
 	
     if(!is.null(labels.direction)) {
-        labels.facing = labels.direction
+        labels.facing = switch(labels.direction[1], 
+                        default = "inside",
+                        default2 = "outside",
+                        vertical_left = "reverse.clockwise",
+                        vertical_right = "clockwise",
+                        horizontal = "downward",
+                        arc = "bending")
         warning("`labels.direction` is deprecated, please use `labels.facing` instead.\n")
     }
 

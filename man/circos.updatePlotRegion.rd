@@ -11,8 +11,7 @@
 
 }
 \usage{
-circos.updatePlotRegion(sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"),
+circos.updatePlotRegion(sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"))
 }
 \arguments{

@@ -16,7 +16,7 @@ circos.genomicLines(region, value, numeric.column = NULL,
     track.index = get.cell.meta.data("track.index"), posTransform = NULL,
     col = ifelse(area, "grey", "black"), lwd = par("lwd"),
     lty = par("lty"), type = "l",
-    area = FALSE, area.baseline = "bottom", border = "black",
+    area = FALSE, area.baseline = NULL, border = "black", baseline = "bottom",
     pt.col = par("col"), cex = par("cex"), pch = par("pch"), ...)
 }
 \arguments{
@@ -31,7 +31,8 @@ circos.genomicLines(region, value, numeric.column = NULL,
   \item{lty}{Settings are similar as \code{col}. Pass to \code{\link{circos.lines}}}
   \item{type}{There is an additional option \code{segment} which plot segment lines from start position to end position. Settings are similar as \code{col}. Pass to \code{\link{circos.lines}}. }
   \item{area}{Settings are similar as \code{col}. Pass to \code{\link{circos.lines}}}
-  \item{area.baseline}{Settings are similar as \code{col}. Pass to \code{\link{circos.lines}}}
+  \item{area.baseline}{deprecated, use \code{baseline} instead.}
+  \item{baseline}{Settings are similar as \code{col}. Pass to \code{\link{circos.lines}}}
   \item{border}{Settings are similar as \code{col}. Pass to \code{\link{circos.lines}}}
   \item{pt.col}{Settings are similar as \code{col}. Pass to \code{\link{circos.lines}}}
   \item{cex}{Settings are similar as \code{col}. Pass to \code{\link{circos.lines}}}

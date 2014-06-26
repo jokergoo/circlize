@@ -10,6 +10,9 @@ chordDiagram(mat)
 chordDiagram(mat, symmetric = TRUE)
 chordDiagram(cor(mat), symmetric = TRUE)
 chordDiagram(cor(mat), symmetric = TRUE, col = colorRamp2(c(-1, 0, 1), c("green", "white", "red")))
+chordDiagram(cor(mat), symmetric = TRUE, col = colorRamp2(c(-1, 0, 1), c("green", "white", "red")), transparency = 0.5)
+chordDiagram(cor(mat), symmetric = TRUE, col = colorRamp2(c(-1, 0, 1), c("green", "white", "red"), alpha = 0.1), transparency = 0.9)
+
 
 mat = matrix(sample(1:100, 18, replace = TRUE), 3, 6)
 rownames(mat) = LETTERS[1:3]

@@ -168,6 +168,7 @@ as.degree = function(radian) {
 # == param
 # -breaks a vector indicating breaks of your data
 # -colors a vector of colors which corresponds to values in ``breaks``
+# -transparency a single value in [0, 1]. 0 refers to no transparency and 1 refers to complete transparency
 # -... pass to `grDevices::colorRamp`
 #
 # == details
@@ -175,7 +176,7 @@ as.degree = function(radian) {
 #
 # == values
 # It returns a function which accepts a vector of numbers and returns interpolated colors.
-colorRamp2 = function(breaks, colors, ...) {
+colorRamp2 = function(breaks, colors, transparency = 0, ...) {
     if(length(breaks) != length(colors)) {
         stop("Length of `breaks` should be equal to `colors`.\n")
     }
@@ -183,13 +184,14 @@ colorRamp2 = function(breaks, colors, ...) {
     breaks = sort(breaks)
 
     f = colorRamp(colors, ...)
+    transparency = ifelse(transparency > 1, 1, ifelse(transparency < 0, 0, transparency))
 
     function(x) {
         x = ifelse(x < breaks[1], 0,
                   ifelse(x > breaks[length(breaks)], 1,
                         (x - breaks[1])/(breaks[length(breaks)] - breaks[1])
                     ))
-        rgb(f(x), maxColorValue = 255)
+        rgb(f(x)/255, alpha = transparency)
     }
 }
 

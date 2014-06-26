@@ -29,18 +29,18 @@
 # assign some names for it.
 #
 # This function contains some settings that may be a little difficult to understand. Please refer to vignette for better explanation.
-chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
+chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 	col = NULL, row.col = NULL, column.col = NULL, directional = FALSE,
 	symmetric = FALSE, order = NULL, preAllocateTracks = NULL,
 	annotationTrack = c("name", "grid")) {
-	
+
 	transparency = ifelse(transparency < 0, 0, ifelse(transparency > 1, 1, transparency))
-	
+
 	if(symmetric) {
 		if(nrow(mat) != ncol(mat)) {
 			stop("`mat` should be a square matrix.\n")
 		}
-		
+
 		for(i in 1:10) {
 			n = sample(nrow(mat), 2)
 			ir = n[1]
@@ -51,7 +51,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 		}
 		mat[upper.tri(mat, diag = TRUE)] = 0
 	}
-	
+
 	if(!is.null(order)) {
 		if(is.null(rownames(mat)) || is.null(colnames(mat))) {
 			stop("Since you specified `order`, your matrix should have rowname and colname.\n")
@@ -60,10 +60,10 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 			stop("Elements in `order` should be same as in `union(rownames(mat), colnames(mat))`.\n")
 		}
 	}
-	
+
 	ri = apply(mat, 1, function(x) any(abs(x) > 1e-8))
 	ci = apply(mat, 2, function(x) any(abs(x) > 1e-8))
-	
+
 	mat = mat[ri, ci]
 	if(is.matrix(col)) {
 		col = col[ri, ci]
@@ -74,14 +74,14 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	if(length(column.col) > 1) {
 		column.col = column.col[ci]
 	}
-	
+
 	if(is.null(rownames(mat))) {
 		rownames(mat) = paste0("R", seq_len(nrow(mat)))
 	}
 	if(is.null(colnames(mat))) {
 		colnames(mat) = paste0("C", seq_len(ncol(mat)))
 	}
-	
+
 	if(!is.null(order)) {
 		order = order[order %in% union(rownames(mat), colnames(mat))]
 	}
@@ -92,18 +92,18 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	nn = union(names(rs), names(cs))
 	xlim = numeric(length(nn))
 	names(xlim) = nn
-	
+
 	if(!is.null(order)) {
 		xlim = xlim[order]
 	}
-	
+
 	xlim[names(rs)] = xlim[names(rs)] + rs
 	xlim[names(cs)] = xlim[names(cs)] + cs
-	
+
 	factors = names(xlim)
 	factors = factor(factors, levels = factors)
 	xlim = cbind(rep(0, length(factors)), xlim)
-	
+
 	n = length(factors)
 	if(is.null(grid.col)) {
 		grid.col = rgb(cbind(runif(n), runif(n), runif(n)))
@@ -124,13 +124,13 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 			stop("Since you set ``grid.col``, the length should be either 1 or number of sectors.\n")
 		}
 	}
-	
+
 	## make a color matrix based on settings
 	if(!is.null(col)) {
 		if(is.function(col)) {
 			col = col(mat)
 		} else if(is.matrix(col)) {
-		
+
 		} else if(length(col) == 1) {
 			col = rep(col, length(mat))
 		}
@@ -147,16 +147,22 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	} else {
 		col = rep(grid.col[rownames(mat)], ncol(mat))
 	}
+
+	rgb_mat = t(col2rgb(col, alpha = TRUE))
+	if(all(rgb_mat[, 4] == 0)) {
+		col = rgb(rgb_mat, maxColorValue = 255, alpha = transparency*255)
+	} else {
+		col = rgb(rgb_mat, maxColorValue = 255, alpha = rgb_mat[, 4])
+	}
 	
-	col = rgb(t(col2rgb(col)), maxColorValue = 255, alpha = (1 - transparency)*255)
-	
+
 	dim(col) = dim(mat)
 	colnames(col) = colnames(col)
 	rownames(col) = rownames(col)
 
 	circos.par(cell.padding = c(0, 0, 0, 0))
     circos.initialize(factors = factors, xlim = xlim)
-	
+
 	# pre allocate track
 	if(!is.null(preAllocateTracks)) {
 		pa = parsePreAllocateTracksValue(preAllocateTracks)

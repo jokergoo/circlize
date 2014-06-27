@@ -14,5 +14,5 @@ for(l in letters[1:10]) {
 for(l in 1:4) {
     circos.rect(0,0,10,10,sector.index = "a", track.index = l, col = "#0000FF40")
 }
-show.index()
+circos.info(plot = TRUE)
 circos.clear()

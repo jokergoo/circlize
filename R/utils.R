@@ -181,18 +181,39 @@ colorRamp2 = function(breaks, colors, transparency = 0, ...) {
         stop("Length of `breaks` should be equal to `colors`.\n")
     }
     colors = colors[order(breaks)]
+	colors = col2rgb(colors)
     breaks = sort(breaks)
 
-    f = colorRamp(colors, ...)
     transparency = ifelse(transparency > 1, 1, ifelse(transparency < 0, 0, transparency))
 
     function(x) {
-        x = ifelse(x < breaks[1], 0,
-                  ifelse(x > breaks[length(breaks)], 1,
-                        (x - breaks[1])/(breaks[length(breaks)] - breaks[1])
+		att = attributes(x)
+        x = ifelse(x < breaks[1], breaks[1],
+                  ifelse(x > breaks[length(breaks)], breaks[length(breaks)],
+                        x
                     ))
-        rgb(f(x)/255, alpha = transparency)
+		ibin = .bincode(x, breaks, right = TRUE, include.lowest = TRUE)
+		res_col = character(length(x))
+		for(i in unique(ibin)) {
+			l = ibin == i
+			res_col[l] = .get_color(x[l], breaks[i], breaks[i+1], colors[, i], colors[, i+1], transparency)
+		}
+		attributes(res_col) = att
+		return(res_col)
     }
+}
+
+# x: vector
+# break1 single value
+# break2 single value
+# rgb1 vector with 3 elements
+# rgb2 vector with 3 elements
+.get_color = function(x, break1, break2, rgb1, rgb2, transparency) {
+	res_rgb = NULL
+	for(i in seq_along(x)) {
+		res_rgb = cbind(res_rgb, (x[i] - break2)*(rgb2 - rgb1) / (break2 - break1) + rgb2)
+	}
+	return(rgb(t(res_rgb)/255, alpha = 1-transparency))
 }
 
 # will be considerred in the future

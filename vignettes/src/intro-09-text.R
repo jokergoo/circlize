@@ -4,16 +4,16 @@ factors = letters[1:4]
 circos.par(points.overflow.warning = FALSE)
 circos.initialize(factors = factors, xlim = c(0, 10))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.5, panel.fun = function(x, y) {
-    circos.text(3, 9, "inside", facing = "inside")
-    circos.text(7, 9, "outside", facing = "outside")
-    circos.text(0, 5, "reverse.clockwise", facing = "reverse.clockwise", adj = c(0.5, 0))
-    circos.text(10, 5, "clockwise", facing = "clockwise", adj = c(0.5, 0))
-    circos.text(5, 5, "downward", facing = "downward")
-    circos.text(5, 1, "bending", facing = "bending")
+    circos.text(3, 9, "inside", facing = "inside", cex = 0.8)
+    circos.text(7, 9, "outside", facing = "outside", cex = 0.8)
+    circos.text(0, 5, "reverse.clockwise", facing = "reverse.clockwise", adj = c(0.5, 0), cex = 0.8)
+    circos.text(10, 5, "clockwise", facing = "clockwise", adj = c(0.5, 0), cex = 0.8)
+    circos.text(5, 5, "downward", facing = "downward", cex = 0.8)
+    circos.text(5, 1, "bending", facing = "bending", cex = 0.8)
 })
 circos.clear()
 
-factors = letters[1:20]
+factors = LETTERS[1:20]
 circos.par(points.overflow.warning = FALSE)
 circos.initialize(factors = factors, xlim = c(0, 1))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 1), track.height = 0.5, 
@@ -30,6 +30,6 @@ circos.trackPlotRegion(factors = factors, ylim = c(0, 1), track.height = 0.5,
 			text.adj = c(1, 0.5)
 		}
 		circos.text(mean(xlim), ylim[1], labels = paste(rep(sector.index, 8), collapse = ""),
-			facing = text.facing, adj = text.adj)
+			facing = text.facing, adj = text.adj, cex = 0.8)
 })
 circos.clear()

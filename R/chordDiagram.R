@@ -4,10 +4,11 @@
 #
 # == param
 # -mat A table which represents as a numeric matrix
-# -grid.col Colors of grids for elements. The length should be either 1 or ``length(union(rownames(mat), colnames(mat)))``.
+# -grid.col Colors of grids corresponding to rownames/colnames. The length of the vector should be either 1 or ``length(union(rownames(mat), colnames(mat)))``.
 #           It is better that ``grid.col`` is a named vector of which names correspond to sectors. 
 #           If it is not a named vector, the order of ``grid.col`` corresponds to order of sectors.
 # -transparency Transparency of link/ribbon colors, 0 means no transparency and 1 means complete transparency.
+#               If transparency is already set in ``col`` or ``row.col`` or ``column.col``, this argument would be disabled.
 # -col colors for links. It can be a matrix which corresponds to ``mat``, or a function which generate colors 
 #      according to values in ``mat``, or a single value which means colors for all links are the same. You
 #      may use `colorRamp2` to generate a function which maps values to colors.
@@ -150,7 +151,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 
 	rgb_mat = t(col2rgb(col, alpha = TRUE))
 	if(all(rgb_mat[, 4] == 0)) {
-		col = rgb(rgb_mat, maxColorValue = 255, alpha = transparency*255)
+		col = rgb(rgb_mat, maxColorValue = 255, alpha = (1-transparency)*255)
 	} else {
 		col = rgb(rgb_mat, maxColorValue = 255, alpha = rgb_mat[, 4])
 	}

@@ -1,45 +1,3 @@
-color.pal = function(x, col = c("green", "black", "red"), breaks = c(-5, 0, 5)) {
-    
-    if(length(col) != length(breaks)) {
-		stop("Length of col should be equal to the length of breaks.\n")
-	}
-	
-    # change col represented as strings to RGB space
-    col_section = sapply(col, function(x) as.vector(col2rgb(x)))
-    col_section = t(col_section)
-    
-    x[x >= max(breaks)] = max(breaks)
-    x[x <= min(breaks)] = min(breaks)
-    
-    color = character(length(x))
-    for(i in 1:length(x)) {
-        # NA values, grey color
-        if(!is.numeric(x[i])) {
-            color[i] = rgb(128, 128, 128, maxColorValue = 255)
-            next
-        }
-        value = x[i]
-        
-        # find which interval the value belongs to 
-        interval = which(breaks >= x[i])[1]
-        if(length(interval) == 0) {
-            interval = length(interval)
-        }
-        if(interval == 1) {
-            interval = 2
-        }
-        
-        # linear interpolation
-        col_num = (value - breaks[interval])*(col_section[interval, ] - col_section[interval - 1, ]) / (breaks[interval] - breaks[interval - 1]) + col_section[interval, ]
-        
-        col_num = ifelse(col_num > 255, 255, col_num)
-        col_num = ifelse(col_num < 0, 0, col_num)
-        
-        color[i] = rgb(col_num[1], col_num[2], col_num[3], maxColorValue = 255)
-    }
-    
-    return(color)
-}
 
 par(mfrow = c(1, 2))
 
@@ -102,13 +60,14 @@ circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA, panel.
 
 rn = rownames(m2)
 sector.sum = numeric(length(rn))
+col_fun = colorRamp2(breaks = seq(-1, 1, length=5), col = c("#1A9641", "#A6D96A", "#FFFFBF", "#FDAE61", "#D7191C"))
 for(i in 2:n) {
     for(j in 1:(i-1)) {
         sector.index1 = rn[i]
         sector.index2 = rn[j]
         circos.link(sector.index1, c(sector.sum[i], sector.sum[i] + abs(m2[i, j])),
                     sector.index2, c(sector.sum[j], sector.sum[j] + abs(m2[i, j])),
-                    col = color.pal(m2[i, j], col = c("#1A9641", "#A6D96A", "#FFFFBF", "#FDAE61", "#D7191C"), breaks = seq(-1, 1, length=5)), 
+                    col = col_fun(m2[i, j]), 
                     border = "grey", lwd = 0.5)
         sector.sum[i] = sector.sum[i] + abs(m2[i, j])
         sector.sum[j] = sector.sum[j] + abs(m2[i, j])

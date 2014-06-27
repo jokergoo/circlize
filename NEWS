@@ -6,6 +6,7 @@ NEWS/Changelog
 - add `facing` argument to replace `direction` in `circos.text`
 - `circos.trackPlotRegion` can be used to update a track without resetting ylim
 - move demo to http://jokergoo.github.io/circlize
+- fixed bug of `colorRamp2`
 
 == 0.0.8
 - axes labels will not draw when setting labels = FALSE

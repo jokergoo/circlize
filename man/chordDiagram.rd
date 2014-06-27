@@ -11,7 +11,7 @@
 
 }
 \usage{
-chordDiagram(mat, grid.col = NULL, transparency = 0.5,
+chordDiagram(mat, grid.col = NULL, transparency = 0,
     col = NULL, row.col = NULL, column.col = NULL, directional = FALSE,
     symmetric = FALSE, order = NULL, preAllocateTracks = NULL,
     annotationTrack = c("name", "grid"))
@@ -19,7 +19,7 @@ chordDiagram(mat, grid.col = NULL, transparency = 0.5,
 \arguments{
   \item{mat}{A table which represents as a numeric matrix}
   \item{grid.col}{Colors of grids for elements. The length should be either 1 or \code{length(union(rownames(mat), colnames(mat)))}. It is better that \code{grid.col} is a named vector of which names correspond to sectors.  If it is not a named vector, the order of \code{grid.col} corresponds to order of sectors.}
-  \item{transparency}{Transparency of link/ribbon colors, 0 means no transparency and 1 means complete transparency.}
+  \item{transparency}{Transparency of link/ribbon colors, 0 means no transparency and 1 means complete transparency. If transparency is already set in \code{col} or \code{row.col} or \code{column.col}, this argument would be disabled.}
   \item{col}{colors for links. It can be a matrix which corresponds to \code{mat}, or a function which generate colors  according to values in \code{mat}, or a single value which means colors for all links are the same. You may use \code{\link{colorRamp2}} to generate a function which maps values to colors.}
   \item{row.col}{colors for links. Length should be same as number of rows in \code{mat}. This argument only works when \code{col} is set to \code{NULL}.}
   \item{column.col}{colors for links. Length should be same as number of columns in \code{mat}. This argument only works when \code{col} and \code{row.col} is set to \code{NULL}.}

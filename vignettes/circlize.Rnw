@@ -809,7 +809,7 @@ For {\tt circos.axis}, possible usage is as follows. {\tt h} can be pre-defined 
 > circos.axis(h, sector.index, track.index)
 > circos.axis(h, major.at, labels, major.tick)
 > circos.axis(h, major.at, labels, major.tick, labels.font, labels.cex,
-+             labels.direction, labels.away.percentage)
++             labels.facing, labels.away.percentage)
 > circos.axis(h, major.at, labels, major.tick, minor.ticks,
 +             major.tick.percentage, lwd)
 \end{Sinput}

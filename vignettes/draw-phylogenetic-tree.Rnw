@@ -193,7 +193,7 @@ bars, lines, points, or even highlighting some parts on the tree.
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.7\textwidth]{phylogenetic-tree.pdf}
-\caption{A simple phylogenetic tree}
+\caption{A simple phylogenetic tree.}
 \label{fig:phylogenetic}
 \end{figure}
 

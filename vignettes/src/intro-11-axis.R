@@ -10,9 +10,9 @@ circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.1, b
 
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
 circos.axis(sector.index = "a")
-circos.axis(sector.index = "b", direction = "inside", labels.direction = "default2")
+circos.axis(sector.index = "b", direction = "inside", labels.facing = "outside")
 circos.axis(sector.index = "c", h = "bottom")
-circos.axis(sector.index = "d", h = "bottom", direction = "inside", labels.direction = "vertical_left")
+circos.axis(sector.index = "d", h = "bottom", direction = "inside", labels.facing = "reverse.clockwise")
 circos.axis(sector.index = "e", h = 5, major.at = c(1, 3, 5, 7, 9))
 circos.axis(sector.index = "f", h = 5, major.at = c(1, 3, 5, 7, 9), labels = c("a", "c", "e", "g", "f"), minor.ticks = 0)
 circos.axis(sector.index = "g", h = 5, major.at = c(1, 3, 5, 7, 9), labels = c("a1", "c1", "e1", "g1", "f1"), major.tick = FALSE, labels.facing = "reverse.clockwise")

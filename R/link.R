@@ -73,7 +73,7 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
         }
 		
 		if(sector.index1 == sector.index2) {
-			if(max(c(point1, point2)) - min(c(point1, point2)) < max(point2) - min(point2) + max(point1) - min(point1)) {
+			if(max(c(point1, point2)) - min(c(point1, point2)) <= max(point2) - min(point2) + max(point1) - min(point1)) {
 				stop("Two intervals in a same sector, but they should not be intersected.\n")
 			}
 		}

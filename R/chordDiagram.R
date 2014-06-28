@@ -21,6 +21,11 @@
 # -order Order of sectors
 # -preAllocateTracks Pre-allocate empty tracks before drawing chord diagram. Please refer to vignette for details.
 # -annotationTrack Which annotation track should be plotted?
+# -link.border border for links
+# -grid.border border for grids. If it is ``NA``, the border is same as grid color
+# -directionGridHeight if ``directional`` is set to ``TRUE``, there would be a grid at the one end
+#                      of the link representing the direction. This argument controls the height of these little grids.
+# -... pass to `circos.link`
 #
 # == details
 # Chord diagram is a way to visualize numeric tables ( http://circos.ca/intro/tabular_visualization/ ). This function
@@ -33,7 +38,8 @@
 chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 	col = NULL, row.col = NULL, column.col = NULL, directional = FALSE,
 	symmetric = FALSE, order = NULL, preAllocateTracks = NULL,
-	annotationTrack = c("name", "grid")) {
+	annotationTrack = c("name", "grid"), link.border = NA, grid.border = NULL, 
+	directionGridHeight = 0.03, ...) {
 
 	transparency = ifelse(transparency < 0, 0, ifelse(transparency > 1, 1, transparency))
 
@@ -150,7 +156,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 	}
 
 	rgb_mat = t(col2rgb(col, alpha = TRUE))
-	if(all(rgb_mat[, 4] == 0)) {
+	if(all(rgb_mat[, 4] == 255)) {
 		col = rgb(rgb_mat, maxColorValue = 255, alpha = (1-transparency)*255)
 	} else {
 		col = rgb(rgb_mat, maxColorValue = 255, alpha = rgb_mat[, 4])
@@ -158,8 +164,8 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 	
 
 	dim(col) = dim(mat)
-	colnames(col) = colnames(col)
-	rownames(col) = rownames(col)
+	colnames(col) = colnames(mat)
+	rownames(col) = rownames(mat)
 
 	circos.par(cell.padding = c(0, 0, 0, 0))
     circos.initialize(factors = factors, xlim = xlim)
@@ -196,7 +202,12 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 			track.height = 0.05, panel.fun = function(x, y) {
 				xlim = get.cell.meta.data("xlim")
 				current.sector.index = get.cell.meta.data("sector.index")
-				circos.rect(xlim[1], 0, xlim[2], 1, col = grid.col[current.sector.index], border = grid.col[current.sector.index])
+				if(is.null(grid.border)) {
+					border.col = grid.col[current.sector.index]
+				} else {
+					border.col = grid.border
+				}
+				circos.rect(xlim[1], 0, xlim[2], 1, col = grid.col[current.sector.index], border = border.col)
 			})
 	}
     # links
@@ -208,23 +219,33 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 	names(sector.sum.col) = factors
 	sector.sum.col[ names(rs) ] = rs
     for(i in seq_along(rn)) {
-		for(j in rev(seq_along(cn))) {
-			if(abs(mat[i, j]) < 1e-8) {
+		# if one name exists in both rows and columns, put it 
+		cn_index = rev(seq_along(cn))
+		if(rn[i] %in% cn) {
+			is = which(cn == rn[i])
+			cn_index = c(is, cn_index[cn_index != is])
+		}
+		
+		for(j in cn_index) {
+			if(abs(mat[rn[i], cn[j]]) < 1e-8) {
 				next
 			}
 			rou = get.track.end.position(get.current.track.index())
             sector.index1 = rn[i]
             sector.index2 = cn[j]
-            circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[i, j])),
-                        sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[i, j])),
-                        col = col[i, j], rou = ifelse(directional, rou - 0.02, rou), border = NA)
-			if(directional) {
-				d1 = circlize(c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[i, j])), c(0, 0), sector.index = sector.index1)
-				draw.sector(start.degree = d1[1, 1], end.degree = d1[2, 1], rou1 = rou, rou2 = rou - 0.02, col = col[i, j], border = "white", lwd = 0.5)
-			}
-            sector.sum.row[ rn[i] ] = sector.sum.row[ rn[i] ] + abs(mat[i, j])
-			sector.sum.col[ cn[j] ] = sector.sum.col[ cn[j] ] + abs(mat[i, j])
+            circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
+                        sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
+                        col = col[rn[i], cn[j]], rou = ifelse(directional, rou - directionGridHeight, rou), border = link.border, ...)
+			
+            sector.sum.row[ rn[i] ] = sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])
+			sector.sum.col[ cn[j] ] = sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])
         }
+		
+		if(directional) {
+			d1 = circlize(c(0, sector.sum.row[ rn[i] ]), c(0, 0), sector.index = rn[i])
+			draw.sector(start.degree = d1[1, 1], end.degree = d1[2, 1], rou1 = rou, rou2 = rou - directionGridHeight, col = col[rn[i], cn[j]], border = NA)
+			
+		}
     }
 }
 

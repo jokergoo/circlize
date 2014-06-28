@@ -2,13 +2,13 @@
 % \VignetteDepends{circlize}
 % \VignetteKeywords{circos R}
 % \VignetteKeywords{relation}
-% \VignetteKeywords{correlation}
+% \VignetteKeywords{chord diagram}
 % \VignetteKeywords{circlize}
 % \VignettePackage{circlize}
 
 \documentclass{article}
 
-\title{How to draw relations}
+\title{How to draw Chord diagram}
 
 \author{Zuguang Gu {\tt <z.gu@dkfz.de>}}
 \usepackage[margin=1in, a4paper]{geometry}
@@ -23,94 +23,15 @@
 \maketitle 
 
 One feature of circular layout is the link (or connector) to represent relations
-between elements (\url{http://circos.ca/intro/tabular_visualization/}). Normally,
+between elements (\url{http://circos.ca/intro/tabular_visualization/}). The name
+of such plot is sometimes called Chord diagram. In {\tt circlize}, it is easy to 
+plot it in a straightforward or customized way.
+
+\section{Start from ground}
+Normally,
 the relationship can be represented as a matrix in which value in $i^{th}$ row and $j^{th}$ column
 is kind of strength for the relationship.
-
-We would show how to represent a correlation matrix. First, we need a correlation matrix.
-
-
-<<echo=TRUE, eval=FALSE>>=
-set.seed(12345)
-n = 9
-m = matrix(rnorm(n^2), n, n)
-colnames(m) = letters[1:n]
-m2 = cor(m)
-@
-
-Then the range for each element, which is the summation of correlations with other elements.
-
-<<echo=TRUE, eval=FALSE>>=
-xlim = cbind(rep(0, n), apply(m2, 2, function(x) sum(abs(x)) - 1))
-@
-
-Initialize the layout and add names of elements around each sector. The size of each sector
-is determined by the range of each element. Here we create the first track by {\tt circos.trackPlotRegion}.
-In this track, we only want to draw one rectangle and add the name for the element. This is
-done by {\tt panel.fun} argument to add graphics in the cell as soon as the corresponding cell has
-been created.
-
-<<echo=TRUE, eval=FALSE>>=
-library(circlize)
-factors = rownames(m2)
-colors = 1:n
-
-par(mar = c(1, 1, 1, 1))
-circos.initialize(factors = factors, xlim = xlim)
-circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA,
-    panel.fun = function(x, y) {
-        xlim = get.cell.meta.data("xlim")
-        current.sector.index = get.cell.meta.data("sector.index")
-        circos.text(mean(xlim), 0.75, labels = current.sector.index,
-            direction = "horizontal")
-        i = get.cell.meta.data("sector.numeric.index")
-        circos.rect(min(xlim), 0, max(xlim), 0.25, col = colors[i])
-    })
-@
-
-Finnally we use {\tt circos.link} to draw links from elements to elements, in which red represents positive correlation and green
-represents negative correlation.
-
-<<echo=TRUE, eval=FALSE>>=
-rn = rownames(m2)
-sector.sum = numeric(length(rn))
-for(i in 2:n) {
-    for(j in 1:(i-1)) {
-        sector.index1 = rn[i]
-        sector.index2 = rn[j]
-        circos.link(sector.index1,
-            c(sector.sum[i],sector.sum[i] + abs(m2[i, j])), 
-            sector.index2,
-            c(sector.sum[j], sector.sum[j] + abs(m2[i, j])),
-            col = ifelse(m2[i, j] > 0, "#FF0000A0", "#00FF00A0"),
-            border = "grey")
-        sector.sum[i] = sector.sum[i] + abs(m2[i, j])
-        sector.sum[j] = sector.sum[j] + abs(m2[i, j])
-    }
-}
-
-circos.clear()
-@
-
-The finnal figure looks like figure \ref{fig:correlation} (left part) and a more pretty
-figure is on the right part of figure \ref{fig:correlation} in which correlatioins are
-measured by continuous colors.
-
-\begin{figure}[h!]
-\begin{center}
-<<label=figcorrelation, fig = TRUE, echo = FALSE, width=8, height=4, results=hide>>=
-source("src/relation-01-example.R")
-@
-\end{center}
-\caption{Correlations represented in circular layout}
-\label{fig:correlation}
-\end{figure}
-
-The second example is circular layout for a table in which rows and columns are different
-measurements. E.g. a table in which rows are countries of Nobel Prize winners and the columns
-are the research areas.
-
-As usual, we first generate an example data. In the example data, letters in upper case is
+We first generate an example data. In the example data, letters in upper case is
 one measurement and letters in lower case is another measurement. The number in the table is the amount
 of observations in the intersection of two measurements.
 
@@ -125,8 +46,8 @@ cn = colnames(mat)
 mat
 @
 
-Construct the {\tt factors} variable and calculate {\tt xlim}. The {\tt factors} are combined
-with rownames and colnames of the table.
+Sector names correspond to the union of row names and column names of the matrix. First construct the {\tt factors} variable and calculate {\tt xlim}.
+Since row names and columns are different, the data range is simply summation of rows or columns respectively.
 
 <<echo=TRUE, eval=FALSE>>=
 factors = c(letters[1:3], LETTERS[1:6])
@@ -137,11 +58,7 @@ row_sum = apply(mat, 1, sum)
 xlim = cbind(rep(0, 9), c(row_sum, col_sum))
 @
 
-Draw the circular layout of this table (figure \ref{fig:table}). In the following code, the sectors with their names in
-lower case are located in the top half of the circle. This is by specifying {\tt sector.width}
-in {\tt circos.initialize}. The sum of width of sectors with lower case name is scaled into 1 and so
-is for sectors with upper case name. As a result, sectors with lower case name will hold half of the circle
-and sectors of upper case name will hold another half of the circle. We also specify the width of gaps
+Draw the circular layout of this table (figure \ref{fig:table}). We specify the width of gaps
 between two measurements by {\tt gap.degree} in {\tt circos.par}. The colors for different measurements
 are specified by {\tt bg.col} in {\tt circos.trackPlotRegion}.
 
@@ -149,43 +66,41 @@ are specified by {\tt bg.col} in {\tt circos.trackPlotRegion}.
 par(mar = c(1, 1, 1, 1))
 circos.par(cell.padding = c(0, 0, 0, 0), clock.wise = FALSE, 
     gap.degree = c(2, 2, 10, 2, 2, 2, 2, 2, 10), start.degree = 5)
-circos.initialize(factors = factors, xlim = xlim, 
-    sector.width = c(row_sum/sum(row_sum), col_sum/sum(col_sum)))
+circos.initialize(factors = factors, xlim = xlim)
 circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.border = NA, 
     bg.col = c("red", "green", "blue", rep("grey", 6)), track.height = 0.05, 
     panel.fun = function(x, y) {
         sector.name = get.cell.meta.data("sector.index")
         xlim = get.cell.meta.data("xlim")
         circos.text(mean(xlim), 1.5, sector.name, adj = c(0.5, 0))
-
+        
+        # plot white border in the grids
         if(sector.name %in% rn) {
             for(i in seq_len(ncol(mat))) {
                 circos.lines(rep(sum(mat[sector.name, seq_len(i)]), 2), c(0, 1), 
                     col = "white")
             }
         } else if(sector.name %in% cn) {
-            for(i in seq_len(nrow(mat))) {
-                circos.lines(rep(sum(mat[ seq_len(i), sector.name]), 2), c(0, 1), 
+            for(i in rev(seq_len(nrow(mat)))) {
+                circos.lines(rep(sum(mat[seq_len(i), sector.name]), 2), c(0, 1), 
                    col = "white")
             }
         }
-    })
-
+})
 
 col = c("#FF000020", "#00FF0020", "#0000FF20")
 for(i in seq_len(nrow(mat))) {
     for(j in seq_len(ncol(mat))) {
-        circos.link(rn[i],
-                    c(sum(mat[i, seq_len(j-1)]), sum(mat[i, seq_len(j)])),
-                    cn[j],
-                    c(sum(mat[seq_len(i-1), j]), sum(mat[seq_len(i), j])), 
-                    col = col[i], border = "white")
+        circos.link(rn[i], c(sum(mat[i, seq_len(j-1)]), sum(mat[i, seq_len(j)])),
+            cn[j], c(sum(mat[seq_len(i-1), j]), sum(mat[seq_len(i), j])), 
+            col = col[i], border = "white")
     }
 }
 
 circos.clear()
 @
 
+\setkeys{Gin}{width=0.8\textwidth}
 \begin{figure}[h!]
 \begin{center}
 <<label=figtable, fig = TRUE, echo = FALSE, results=hide>>=
@@ -195,5 +110,262 @@ source("src/relation-02-table.R")
 \caption{Table in circular layout}
 \label{fig:table}
 \end{figure}
+\setkeys{Gin}{width=\textwidth}
+
+\section{The pre-defined {\tt chordDiagram} function}
+
+We already defined a function {\tt chordDiagram} in the package which is quite general.
+
+\subsection{Basic usage}
+We will still use {\tt mat} object in previous section to demonstrate usage of {\tt chordDiagram}.
+The most simple usage is just calling {\tt chordDiagram} with {\tt mat}.
+
+<<echo=TRUE, eval=FALSE>>=
+chordDiagram(mat)
+circos.clear()
+@
+
+The default Chord diagram consists with a track of labels, a track of grids and links.
+Under default settings, the grid colors are randomly generated. The link colors are same
+as colors for grid which correspond to rows. The order of sectors is the order of 
+{\tt union(rownames(mat), colnames(mat))}.
+
+The gaps between sectors can be set through {\tt circos.par}. It is useful when rows
+and columns are different measurements (as in {\tt mat}). 
+
+<<echo=TRUE, eval=FALSE>>=
+circos.par(gap.degree = c(rep(2, nrow(mat)-1), 10, rep(2, ncol(mat)-1), 10))
+chordDiagram(mat)
+circos.clear()
+@
+
+Similarly, the start degree of the plot can also be set through {\tt circos.par}.
+
+<<echo=TRUE, eval=FALSE>>=
+circos.par(start.degree = 90)
+chordDiagram(mat)
+circos.clear()
+@
+
+In some cases, rows and columns represent information of direction. Argument {\tt directional}
+can be set to illustrate such direction. If {\tt directional} is set to {\tt TRUE}, the
+links will have unequal height of root.
+
+<<echo=TRUE, eval=FALSE>>=
+chordDiagram(mat, directional = TRUE)
+@
+
+The order of sectors can also be controlled by {\tt order} argument.
+
+<<echo=TRUE, eval=FALSE>>=
+chordDiagram(mat, order = c("A", "B", "a", "C", "D", "b", "E", "F", "c"))
+@
+
+For figures by different settings, please refer to figure \ref{fig:chordbasic}.
+ 
+\begin{figure}[h!]
+\begin{center}
+<<label=figchordbasic, fig = TRUE, echo = FALSE, width=6, height=9, results=hide>>=
+source("src/chordDiagram-01-basic.R")
+@
+\end{center}
+\caption{Basic settings for plotting Chord diagram}
+\label{fig:chordbasic}
+\end{figure}
+
+\subsection{Color settings}
+
+Setting colors is also flexible. First, colors for grids can be set through {\tt grid.col}.
+Values of {\tt grid.col} must be a named vector of which names correspond to sector names.
+As explained before, the default link colors are same
+as colors for grid which correspond to rows.
+
+<<echo=TRUE, eval=FALSE>>=
+grid.col = NULL
+grid.col[letters[1:3]] = c("red", "green", "blue")
+grid.col[LETTERS[1:6]] = "grey"
+chordDiagram(mat, grid.col = grid.col)
+@
+
+Transparency of link colors can be set through {\tt transparency}. The value should between 0 to 1
+in which 0 means no transparency and 1 means complete transparency.
+
+<<echo=TRUE, eval=FALSE>>=
+chordDiagram(mat, grid.col = grid.col, transparency = 0.5)
+@
+
+Colors for links can be customized by providing a matrix of colors which correspond to {\tt mat}.
+In the following example, {\tt col\_mat} already contains transparency, {\tt transparency} will be
+disabled if it is set.
+
+<<echo=TRUE, eval=FALSE>>=
+rand_color = function(n, alpha = 1) {
+    return(rgb(runif(n), runif(n), runif(n), alpha = alpha))
+}
+col_mat = rand_color(length(mat), alpha = 0.5)
+dim(col_mat) = dim(mat)
+chordDiagram(mat, grid.col = grid.col, col = col_mat)
+@
+
+{\tt col} argument can also be a self-defined function which maps values to colors.
+Here we use {\tt colorRamp2} which is available in this package to generate a function
+with a list of break points and corresponding colors.
+
+<<echo=TRUE, eval=FALSE>>=
+chordDiagram(mat, grid.col = grid.col,
+    col = colorRamp2(quantile(mat, seq(0, 1, by = 0.1)), rev(heat.colors(11))),
+    transparency = 0.5)
+@
+
+Sometimes you don't need to generate the whole color matrix. You can just provide
+colors which correspond to rows or columns so that links from a same row/column will
+have the same color.
+
+<<echo=TRUE, eval=FALSE>>=
+chordDiagram(mat, grid.col = grid.col, row.col = 1:3, transparency = 0.5)
+chordDiagram(mat, grid.col = grid.col, column.col = 1:6, transparency = 0.5)
+@
+
+With setting {\tt row.col} for example, we can highlight links from one specific sector.
+
+<<echo=TRUE, eval=FALSE>>=
+chordDiagram(mat, grid.col = grid.col, row.col = c("#FF000080", "#00FF0010", "#0000FF10"))
+@
+
+Again, if transparency is already set in {\tt col} or {\tt row.col} or {\tt column.col},
+{\tt transparency} argument will be disabled.
+
+For figures by different settings, please refer to figure \ref{fig:chordcolor}.
+ 
+\begin{figure}[h!]
+\begin{center}
+<<label=figchordcolor, fig = TRUE, echo = FALSE, results=hide>>=
+source("src/chordDiagram-02-color.R")
+@
+\end{center}
+\caption{Color settings for plotting Chord diagram}
+\label{fig:chordcolor}
+\end{figure}
+
+\subsection{Advanced usage}
+
+Although {\tt chordDiagram} provides default style which is enough for most visualization task.
+But still you can have more fine-tune of the plot. 
+
+By default, there is a track for labels and a track for grids. These two tracks can
+be controlled by {\tt annotationTrack}. Available values for this argument are {\tt grid}
+and {\tt name}.
+
+<<echo=TRUE, eval=FALSE>>=
+chordDiagram(mat, grid.col = grid.col, annotationTrack = "grid")
+@
+
+Several blank tracks can be allocated before Chord diagram is plotted. Then self-defined graphics can
+be added to these blank tracks later. The number of pre-allocated tracks can be set through {\tt preAllocateTracks}.
+
+<<echo=TRUE, eval=FALSE>>=
+chordDiagram(mat, annotationTrack = NULL, preAllocateTracks = 2)
+@
+
+The default settings for pre-allocated tracks are:
+
+<<echo=TRUE, eval=FALSE>>=
+list(ylim = c(0, 1),
+    track.height = circos.par("default.track.height"),
+    bg.col = NA,
+    bg.border = NA,
+    bg.lty = par("lty"),
+    bg.lwd = par("lwd"))
+@
+
+The default settings for pre-allocated tracks can be overwritten by specifying {\tt preAllocateTracks}
+as a list.
+
+<<echo=TRUE, eval=FALSE>>=
+chordDiagram(mat, annotationTrack = NULL,
+    preAllocateTracks = list(track.height = 0.3))
+@
+
+If more than one tracks need to be pre-allocated, just specify {\tt preAllocateTracks}
+as a list which contains settings for each track:
+
+<<echo=TRUE, eval=FALSE>>=
+chordDiagram(mat, annotationTrack = NULL,
+    preAllocateTracks = list(list(track.height = 0.1),
+                             list(bg.border = "black")))
+@
+
+The settings of labels are disabled in {\tt chordDiagram}, but you can first pre-allocate
+a blank track and customize the labels in it later. In the following example, one track is
+firstly allocated and a Chord diagram is plotted without label track. Later, the first track
+is updated with setting facing of labels.
+
+<<echo=TRUE, eval=FALSE>>=
+chordDiagram(mat, annotationTrack = "grid",
+    preAllocateTracks = list(track.height = 0.3))
+circos.trackPlotRegion(track.index = 1, panel.fun = function(x, y) {
+    xlim = get.cell.meta.data("xlim")
+    ylim = get.cell.meta.data("ylim")
+    sector.name = get.cell.meta.data("sector.index")
+    if(sector.name %in% rn) {
+        label = paste0(rep(sector.name, 5), collapse="")
+        circos.text(mean(xlim), ylim[1], label, facing = "bending", adj = c(0.5, 0))
+    }
+    if(sector.name %in% cn) {
+        label = paste0(rep(sector.name, 5), collapse="")
+        circos.text(mean(xlim), ylim[1], label, facing = "clockwise", adj = c(0, 0.5))
+    }
+}, bg.border = NA)
+@
+
+For figures by different settings, please refer to figure \ref{fig:chordadvanced}.
+ 
+\begin{figure}[h!]
+\begin{center}
+<<label=figchordadvanced, fig = TRUE, echo = FALSE, results=hide>>=
+source("src/chordDiagram-03-advanced.R")
+@
+\end{center}
+\caption{Advanced Chord diagram plotting}
+\label{fig:chordadvanced}
+\end{figure}
+
+\subsection{Visualization of other matrix}
+
+Rows and columns in {\tt mat} can also overlap. In this case, direction of the link is 
+quite important in visualization.
+
+<<echo=TRUE, eval=TRUE>>=
+mat = matrix(sample(100, 25), 5)
+rownames(mat) = letters[1:5]
+colnames(mat) = letters[1:5]
+mat
+@
+
+<<echo=TRUE, eval=FALSE>>=
+chordDiagram(mat, directional = TRUE)
+@
+
+{\tt chordDiagram} can also be used to visualize symmetric matrix. If {\tt symmetric}
+is set to {\tt TRUE}, only lower triangular matrix without the diagonal will be used.
+
+<<echo=TRUE, eval=FALSE>>=
+chordDiagram(cor(mat), symmetric = TRUE,
+    col = colorRamp2(c(-1, 0, 1), c("green", "white", "red"), transparency = 0.5))
+@
+
+For figures by different settings, please refer to figure \ref{fig:chordother}.
+
+\setkeys{Gin}{width=0.6\textwidth}
+\begin{figure}[h!]
+\begin{center}
+<<label=figchordother, fig = TRUE, echo = FALSE, width = 4, height = 8, results=hide>>=
+source("src/chordDiagram-04-other.R")
+@
+\end{center}
+\caption{Chord diagram for other matrix}
+\label{fig:chordother}
+\end{figure}
+\setkeys{Gin}{width=\textwidth}
 
 \end{document}

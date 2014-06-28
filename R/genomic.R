@@ -109,26 +109,30 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 	circos.par(cell.padding = c(0, 0, 0, 0), points.overflow.warning = FALSE)
 	circos.initialize(factor(fa, levels = fa), xlim = cbind(x1, x2), ...)
 	
-	if(is.null(major.by)) {
-		major.by = 10^nchar(sum(x2 - x1 + 1))/100  # around 100 major ticks
-	}
-
-	major.at = seq(0, 10^nchar(round(max(x2 - x1 + 1))), by = major.by)
-	if(major.by > 1e6) {
-		major.tick.labels = paste(major.at/1000000, "MB", sep = "")
-	} else if(major.by > 1e3) {
-		major.tick.labels = paste(major.at/1000, "KB", sep = "")
-	} else {
-		major.tick.labels = paste(major.at, "bp", sep = "")
-	}
-	
 	# axis and chromosome names
 	if(any(plotType %in% c("axis", "labels"))) {
 		circos.genomicTrackPlotRegion(data, ylim = c(0, 1), bg.border = NA, track.height = 0.05,
 			panel.fun = function(region, value, ...) {
 				sector.index = get.cell.meta.data("sector.index")
 				xlim = get.cell.meta.data("xlim")
-					
+				if(is.null(major.by)) {
+					xplot = get.cell.meta.data("xplot")
+					cell.xlim = get.cell.meta.data("cell.xlim")
+					n = round((cell.xlim[2] - cell.xlim[1])/5)
+					major.at = pretty(xlim, n)
+					major.by = major.at[2] - major.at[1]
+				} else {
+					major.at = seq(0, 10^nchar(round(max(x2 - x1 + 1))), by = major.by)
+				}
+				
+				if(major.by > 1e6) {
+					major.tick.labels = paste(major.at/1000000, "MB", sep = "")
+				} else if(major.by > 1e3) {
+					major.tick.labels = paste(major.at/1000, "KB", sep = "")
+				} else {
+					major.tick.labels = paste(major.at, "bp", sep = "")
+				}
+			
 				if(any(plotType %in% "axis")) {
 					circos.axis(h = 0, major.at = major.at + xlim[1], labels = major.tick.labels, labels.cex = 0.3, labels.direction = "vertical_right", major.tick.percentage = 0.2)
 				}

@@ -640,7 +640,8 @@ However, it is the same if you use {\tt circos.points} in a {\tt for} loop.
 Parameters for drawing lines by {\tt circos.lines} are similar to {\tt lines} function, 
 as illustrated in figure \ref{fig:lines}. One additional feature is that the areas under/above lines can be 
 specified by {\tt area} argument which can help you identifying the direction of y-axes. Also the base line for the area can be set by {\tt baseline}.
-{\tt baseline} can be pre-defined string of {\tt bottom} or {\tt top}, or numeric values.
+{\tt baseline} can be pre-defined string of {\tt bottom} or {\tt top}, or numeric values. {\tt baseline} is also workable
+when {\tt lty} is set to {\tt h}.
 
 Straight lines will be transformed to curves when mapping to circular layout (figure \ref{fig:linecurve}). Normally, 
 curves can be approximated by a series of segmentations of straight lines. With more segmentations,

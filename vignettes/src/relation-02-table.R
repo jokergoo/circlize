@@ -17,7 +17,7 @@ xlim = cbind(rep(0, 9), c(row_sum, col_sum))
 
 par(mar = c(1, 1, 1, 1))
 circos.clear()
-circos.par(cell.padding = c(0, 0, 0, 0), clock.wise = FALSE, 
+circos.par(cell.padding = c(0, 0, 0, 0),
     gap.degree = c(2, 2, 10, 2, 2, 2, 2, 2, 10), start.degree = 5)
 circos.initialize(factors = factors, xlim = xlim)
 circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, 

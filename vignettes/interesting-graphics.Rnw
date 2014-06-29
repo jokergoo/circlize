@@ -211,7 +211,7 @@ It is cool, isn't it?
 
 \begin{figure}[h!]
 \centering
-\includegraphics{doodle.jpeg}
+\includegraphics{figures/doodle.jpeg}
 \caption{Keith Haring's Doodle}
 \label{fig:painting}
 \end{figure}

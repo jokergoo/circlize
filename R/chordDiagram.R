@@ -89,17 +89,13 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 		colnames(mat) = paste0("C", seq_len(ncol(mat)))
 	}
 
-	if(!is.null(order)) {
-		order = order[order %in% union(rownames(mat), colnames(mat))]
-	}
-
 	rs = rowSums(abs(mat))
 	cs = colSums(abs(mat))
 
 	nn = union(names(rs), names(cs))
 	xlim = numeric(length(nn))
 	names(xlim) = nn
-
+	
 	if(!is.null(order)) {
 		xlim = xlim[order]
 	}

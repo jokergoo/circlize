@@ -186,13 +186,13 @@ circos.trackPlotRegion(ylim = c(0, maxy), bg.border = NA,
 circos.clear()
 @
 
-Final figure is figure \ref{fig:phylogenetic}. Once you know the basic rule for drawing such circular
+Final figure is figure \ref{fig:phylogenetic} (top). Once you know the basic rule for drawing such circular
 dendrogram, it would be flexible to customize your figures such as adding 
 bars, lines, points, or even highlighting some parts on the tree.
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=0.7\textwidth]{phylogenetic-tree.pdf}
+\includegraphics[width=0.7\textwidth]{figures/phylogenetic-tree.pdf}
 \caption{A simple phylogenetic tree.}
 \label{fig:phylogenetic}
 \end{figure}

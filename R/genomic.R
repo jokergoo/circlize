@@ -71,6 +71,7 @@ circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = 
 # -sector.names Names for each sectors which will be drawn along each sector
 # -major.by     Increment of major ticks. It is calculated automatically if the value is not set.
 # -plotType     Which part should be drawn. ``axis`` for genomic axis and ``labels`` for chromosome names
+# -tickLabelsStartFromZero whether axis tick labels start from 0? This will not affect x-values in cells.
 # -...          Pass to `circos.initialize`
 #
 # == details
@@ -82,7 +83,7 @@ circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = 
 #
 # For more details on initializing genomic plot, please refer to the vignettes.
 circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
-	plotType = c("axis", "labels"), ...) {
+	plotType = c("axis", "labels"), tickLabelsStartFromZero = TRUE, ...) {
 	
 	if(is.factor(data[[1]])) {
 		fa = levels(data[[1]])
@@ -115,29 +116,34 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 			panel.fun = function(region, value, ...) {
 				sector.index = get.cell.meta.data("sector.index")
 				xlim = get.cell.meta.data("xlim")
+				
+				if(tickLabelsStartFromZero) {
+					offset = xlim[1]
+				} else {
+					offset = 0
+				}
 				if(is.null(major.by)) {
 					xplot = get.cell.meta.data("xplot")
-					cell.xlim = get.cell.meta.data("cell.xlim")
-					n = round((cell.xlim[2] - cell.xlim[1])/5)
-					major.at = pretty(xlim, n)
+					n = round(abs(xplot[2] - xplot[1])/10)
+					major.at = pretty(xlim - offset, n) + offset
 					major.by = major.at[2] - major.at[1]
 				} else {
-					major.at = seq(0, 10^nchar(round(max(x2 - x1 + 1))), by = major.by)
+					major.at = seq(xlim[1], 10^nchar(round(max(x2 - x1 + 1))), by = major.by)
 				}
 				
 				if(major.by > 1e6) {
-					major.tick.labels = paste(major.at/1000000, "MB", sep = "")
+					major.tick.labels = paste((major.at-offset)/1000000, "MB", sep = "")
 				} else if(major.by > 1e3) {
-					major.tick.labels = paste(major.at/1000, "KB", sep = "")
+					major.tick.labels = paste((major.at-offset)/1000, "KB", sep = "")
 				} else {
-					major.tick.labels = paste(major.at, "bp", sep = "")
+					major.tick.labels = paste((major.at-offset), "bp", sep = "")
 				}
 			
 				if(any(plotType %in% "axis")) {
-					circos.axis(h = 0, major.at = major.at + xlim[1], labels = major.tick.labels, labels.cex = 0.3, labels.direction = "vertical_right", major.tick.percentage = 0.2)
+					circos.axis(h = 0, major.at = major.at, labels = major.tick.labels, labels.cex = 0.3*par("cex"), labels.facing = "clockwise", major.tick.percentage = 0.2)
 				}
 				if(any(plotType %in% "labels")) {
-					circos.text(mean(xlim), 1.2, labels = sector.names[sector.index], cex = 1, adj = c(0.5, 0))
+					circos.text(mean(xlim), 1.2, labels = sector.names[sector.index], cex = par("cex"), adj = c(0.5, 0))
 				}
 			}
 		)
@@ -812,7 +818,6 @@ circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.col
 
 	nc = length(numeric.column)
 
-	facing = .normalizeGraphicalParam(facing, nc, nr, "facing")
 	col = .normalizeGraphicalParam(col, nc, nr, "col")
 	cex = .normalizeGraphicalParam(cex, nc, nr, "cex")
 	font = .normalizeGraphicalParam(font, nc, nr, "font")

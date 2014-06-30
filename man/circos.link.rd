@@ -40,3 +40,6 @@ circos.link(sector.index1, point1, sector.index2, point2,
 
 
 }
+\references{
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+}

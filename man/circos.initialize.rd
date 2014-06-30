@@ -33,3 +33,6 @@ circos.initialize(factors, x = NULL, xlim = NULL, sector.width = NULL)
 
 
 }
+\references{
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+}

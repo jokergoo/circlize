@@ -180,18 +180,35 @@ colorRamp2 = function(breaks, colors, transparency = 0, ...) {
     if(length(breaks) != length(colors)) {
         stop("Length of `breaks` should be equal to `colors`.\n")
     }
+    if(length(breaks) <= 1) {
+        stop("Length of `breaks` should be larger than 1.\n")
+    }
     colors = colors[order(breaks)]
     breaks = sort(breaks)
 
-    f = colorRamp(colors, ...)
+
+
+    breaks = (breaks - min(breaks))/(max(breaks) - min(breaks))
+
     transparency = ifelse(transparency > 1, 1, ifelse(transparency < 0, 0, transparency))
+    fun_list = vector("list", length(breaks) - 1)
+
+    for(i in seq_len(length(breaks)-1)) {
+        fun_list[[i]] = colorRamp(color[c(i, i+1)], ...)
+    }
 
     function(x) {
+
+
+
         x = ifelse(x < breaks[1], 0,
                   ifelse(x > breaks[length(breaks)], 1,
                         (x - breaks[1])/(breaks[length(breaks)] - breaks[1])
                     ))
-        rgb(f(x)/255, alpha = transparency)
+        
+        
+
+        rgb(fun_list[[i]](x)/255, alpha = transparency)
     }
 }
 

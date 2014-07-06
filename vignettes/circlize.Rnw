@@ -606,6 +606,27 @@ with different styles of borders and background colors. If you are confused with
 customize the borders and background colors for the plotting region in {\tt panel.fun} (using {\tt get.cell.meta.data("cell.xlim")}
 and {\tt get.cell.meta.data("cell.ylim")} to get the position of the plotting region).
 
+\subsection{Update plotting region}
+If {\tt track.index} is specified in {\tt circos.trackPlotRegion} and the specified track is already created,
+the track will be updated with new graphics. In this case, settings related to the positions of the track such as the height of the track
+can not be modified.
+
+\begin{Schunk}
+\begin{Sinput}
+> circos.trackPlotRegion(data, ylim = c(0, 1), track.index = 1, ...)
+\end{Sinput}
+\end{Schunk}
+
+For single cell, {\tt circos.updatePlotRegion} can be used to erase all graphics that have been already plotted in the cell.
+
+\begin{Schunk}
+\begin{Sinput}
+> circos.updatePlotRegion(sector.index, track.index)
+> circos.points(x, y, sector.index, track.index)
+\end{Sinput}
+\end{Schunk}
+
+
 \begin{figure}
 \begin{center}
 <<label=figlines, fig = TRUE, echo = FALSE, results=hide>>=

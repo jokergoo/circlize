@@ -9,4 +9,4 @@ R/link-bezier.R
 example/
 index.html
 make_index.pl
-gencode_TP_gene.RData
+generate_genomic_figures/

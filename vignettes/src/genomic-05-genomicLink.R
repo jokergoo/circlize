@@ -1,4 +1,6 @@
-pdf("genomic_link.pdf", width = 6, height = 6)
+
+library(circlize)
+
 par(mar = c(1, 1, 1, 1))
 bed1 = generateRandomBed(nr = 100)
 bed1 = bed1[sample(nrow(bed1), 20), ]
@@ -9,5 +11,3 @@ circos.initializeWithIdeogram()
 
 circos.genomicLink(bed1, bed2, col = sample(1:5, 20, replace = TRUE), border = NA)
 circos.clear()
-
-dev.off()

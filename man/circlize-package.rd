@@ -78,6 +78,11 @@
     \item \code{\link{circos.genomicDensity}}
     \item \code{\link{circos.genomicRainfall}}
   }
+  Finally, function that draws chord diagram:  
+
+  \itemize{
+    \item \code{\link{chordDiagram}}
+  }
   Please refer to the vignettes to find out how to draw basic and advanced circos figures by this package.  
 
 

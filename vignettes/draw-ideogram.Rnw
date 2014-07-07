@@ -23,6 +23,8 @@
 Nevertheless, this vignette is still useful for users to get a clue on how to draw genomic graphics by very basic 
 low-level graphical functions.}
 
+\vbox{}
+
 The most widely use of the circular layout is to display genomic information.
 In most circumstances, figures contain an ideogram. Drawing ideogram by {\it circlize} 
 package is rather simple.
@@ -47,7 +49,7 @@ In the data frame, the second column and the third column are intervals for cyto
 
 Here, setting the {\tt colClasses} argument when reading the cytoband file is very important,
 because the positions on chromosomes are large integers (the second column and third column),
-by default {\tt read.table} would store such data as {\tt integer} mode. The sumation of such large integers
+by default {\tt read.table} would store such data as {\tt integer} mode. The summation of such large integers
 would throw error of data overflow. So you must set the data mode to floating point ({\tt numeric}).
 
 Since chromosomes are sorted by their names which are as mode of {\tt character}, the order would look
@@ -55,7 +57,7 @@ like ``chr1, chr10, chr11, ..., chr2, chr20, ...''. We need to sort chromosomes 
 the numeric index first.
 
 The process is simple. Extract the number part (1, 2, ..., 22) and the letter part ({\tt X}, {\tt Y}) of chromosome names.
-Sorted them seperately and finally combine them.
+Sorted them separately and finally combine them.
 
 <<include=TRUE, echo=TRUE>>=
 chromosome = unique(d[[1]])
@@ -242,11 +244,11 @@ source("src/ideogram-01-simple.R")
 \label{fig:ideogram}
 \end{figure}
 
-For other tracks of genomic graphics, the genomic coordiate (positions on chromosomes) are x-values and measurements on
+For other tracks of genomic graphics, the genomic coordinate (positions on chromosomes) are x-values and measurements on
 genomic positions are taken as y-values.
 
 
-The finnal figure looks like figure \ref{fig:ideogram}.
+The final figure looks like figure \ref{fig:ideogram}.
 
 
 \end{document}

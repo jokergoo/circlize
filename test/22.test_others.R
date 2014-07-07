@@ -17,3 +17,12 @@ circos.trackPlotRegion(chr, x, y, panel.fun = function(x, y) {
 	lt = circos.approx(x, y, resolution = 0.01)
 	circos.points(lt$x, lt$y, pch = ".")
 })
+
+
+f = colorRamp2(c(-2, 0, 1), c("green", "white", "red"))
+y = rnorm(100)
+plot(1:100, y, pch = 16, col = f(y))
+
+f = colorRamp2(0:5, c("red", "orange", "yellow", "green", "blue", "purple"))
+y = runif(100)*5
+plot(1:100, y, pch = 16, col = f(y))

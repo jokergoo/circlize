@@ -26,3 +26,6 @@ circos.info(sector.index = NULL, track.index = NULL, plot = FALSE)
 
 
 }
+\references{
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+}

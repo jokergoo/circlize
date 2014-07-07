@@ -42,3 +42,6 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
 
 
 }
+\references{
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+}

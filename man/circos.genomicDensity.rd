@@ -36,3 +36,6 @@ circos.genomicDensity(data, ylim.force = FALSE, window.size = NULL, overlap = TR
 
 
 }
+\references{
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+}

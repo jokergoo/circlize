@@ -104,7 +104,7 @@ circos.par = function (...) {
 			
 			if(name[i] %in% c("start.degree", "gap.degree", "canvas.xlim", "canvas.ylim", "clock.wise") &&
 			   is.circos.initialized()) {
-				warning(paste("'", name[i], "' can only be modified before `circos.initialize`, or maybe you forgot to call `circos.clear` in your last plot.\n", sep = ""))
+				warning(paste("'", name[i], "' can only be modified before `circos.initialize`,\nor maybe you forgot to call `circos.clear` in your last plot.\n", sep = ""))
                 next
 			}
 
@@ -330,6 +330,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 	assign(".CELL.DATA", .CELL.DATA, envir = .CIRCOS.ENV)
     
     # draw everything in a unit circle
+	par(lend = "square", ljoin = "mitre")
     plot(circos.par("canvas.xlim"), circos.par("canvas.ylim"), type = "n", ann = FALSE, axes = FALSE)
     
 	# all the information of cells would be visited through `get.cell.meta.data`

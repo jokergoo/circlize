@@ -20,8 +20,8 @@
 
 \section{Introduction}
 
-Since circos plots are mostly used in genomics research, the {\it circlize} package 
-especially provides functions which focus on genomic plots. These functions 
+Since circos plots are mostly used in genomic research, the {\it circlize} package 
+particularly provides functions which focus on genomic plots. These functions 
 are synonymous to the basic circos graphical functions but expect special format of input data:
 
 \begin{itemize}
@@ -38,14 +38,14 @@ thus, you can customize your own plots by both genomic functions and basic circo
 
 \section{Input data}
 
-{\it circlize} expects input data as a data frame or a list of data frames in which there are at least three columns.
+Genomic circos functions expect input data as a data frame or a list of data frames in which there are at least three columns.
 The first column is genomic category (e.g. chromosome), the second column is the start position
 in the genomic category and the third column is the end position. Following columns are optional where
 numeric values or other related values are stored. Such data structure is known as {\it BED} format and is broadly used
 in genomic research.
 
 {\it circlize} provides a simple function {\tt generateRandomBed} which can generate random genomic data. Positions are uniformly
-generated from human geonme. In the function, {\tt nr} and {\tt nc} are number of rows and numeric columns that users want. Please note {\tt nr}
+generated from human genome. In the function, {\tt nr} and {\tt nc} are number of rows and numeric columns that users want. Please note {\tt nr}
 are not always equal to the number of rows which are returned by the function. {\tt fun} is a self-defined function to generate 
 random values.
 
@@ -83,7 +83,7 @@ treat those numbers as {\tt integer} by default. In initialization of circos plo
 all chromosome lengths. The sumation of such large integers would throw error of data overflow.
 
 For simple use, users can also specify abbreviation of the species and the function will download cytoband file from UCSC server
-automatically.
+automatically (If it exists in UCSC).
 
 <<echo=TRUE, eval=FALSE>>=
 circos.initializeWithIdeogram(species = "hg18")
@@ -103,14 +103,16 @@ which is going to be shown on the circle. There are several ways to control the 
 is provided as a data frame, and if the first column is a factor, the order of chromosomes
 would be {\tt levels(cytoband[[1]])}. If the first column is not a factor, the order of 
 chromosomes would be {\tt unique(cytoband[[1]])}. If {\tt sort.chr} is set to {\tt TRUE},
-chromosomes will be sorted.
+chromosomes will be sorted (first by numbers then by letters).
 
 <<echo=TRUE, eval=FALSE>>=
-cytoband = read.table(cytoband.file)
+cytoband = read.table(cytoband.file, colClasses = c("character", "numeric",
+    "numeric", "character", "character"), sep = "\t")
 circos.initializeWithIdeogram(cytoband, sort.chr = FALSE)
 cytoband[[1]] = factor(cytoband[[1]], levels = paste("chr", c(22:1, "X", "Y")))
 circos.initializeWithIdeogram(cytoband, sort.chr = FALSE)
-cytoband = read.table(cytoband.file)
+cytoband = read.table(cytoband.file, colClasses = c("character", "numeric",
+    "numeric", "character", "character"), sep = "\t")
 circos.initializeWithIdeogram(cytoband, sort.chr = TRUE)
 @
 
@@ -150,8 +152,11 @@ circos.initializeWithIdeogram()
 
 \setkeys{Gin}{width=\textwidth}
 \begin{figure}[h!]
-\centering
-\includegraphics{figures/circos_initializeWithIdeogram_example.pdf}
+\begin{center}
+<<label=figinitializewithideogram, fig = TRUE, echo = FALSE, results=hide>>=
+source("src/genomic-01-circos.initializeWithIdeogram.R")
+@
+\end{center}
 \caption{Different ways to initialize genomic circos plot}
 \label{fig:initializewithideogram}
 \end{figure}
@@ -160,6 +165,37 @@ Please refer to figure \ref{fig:initializewithideogram} for examples of differen
 to initialize genomic circos plot.
 
 \setkeys{Gin}{width=0.8\textwidth}
+
+\section{Customize ideogram}
+
+The default style of ideogram can be changed. If {\tt plotType} is set to {\tt NULL},
+circos layout is only initialized but nothing is plotted. Then several new tracks can be 
+created and new style of ideogram can be added by users. In the following example, we
+use different colors to represent chromosomes and change the style of chromosome names (figure \ref{fig:customizeideogram}).
+
+<<echo=TRUE, eval=FALSE>>=
+circos.initializeWithIdeogram(plotType = NULL)
+circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
+    chr = get.cell.meta.data("sector.index")
+    xlim = get.cell.meta.data("xlim")
+    ylim = get.cell.meta.data("ylim")
+    circos.rect(xlim[1], 0, xlim[2], 0.5,
+        col = rgb(runif(1), runif(1), runif(1)))
+    circos.text(mean(xlim), 0.9, chr, cex = 0.5, facing = "clockwise")
+}, bg.border = NA)
+@
+
+\setkeys{Gin}{width=\textwidth}
+\begin{figure}[h!]
+\begin{center}
+<<label=figcustomizeideogram, fig = TRUE, echo = FALSE, results=hide>>=
+source("src/genomic-02-customize_ideogram.R")
+@
+\end{center}
+\caption{Customize ideogram}
+\label{fig:customizeideogram}
+\end{figure}
+
 
 \section{Initialize with general genomic category}
 
@@ -185,13 +221,21 @@ which depends whether it is a factor or a simple vector. Alternative names can b
 and the order of names correspond to the order of genomic categories.
 
 <<echo=TRUE, eval=FALSE>>=
+circos.genomicInitialize(df)
 circos.genomicInitialize(df, sector.names = c("tp53", "tp63", "tp73"))
+circos.genomicInitialize(df, plotType)
+
+circos.par(gap.degree = 2)
+circos.genomicInitialize(df)
 @
 
 
 \begin{figure}[h!]
-\centering
-\includegraphics{figures/genomicInitialize_TP.pdf}
+\begin{center}
+<<label=figgenomicinitialize, fig = TRUE, echo = FALSE, results=hide>>=
+source("src/genomic-03-TPgenemodel.R")
+@
+\end{center}
 \caption{A circos plot with three genes}
 \label{fig:genomicinitialize}
 \end{figure}
@@ -224,7 +268,7 @@ to inner functions.
 Since {\tt circos.genomicTrackPlotRegion} will create a new track, it needs values to
 calculate range of y-values to arrange data points. Users can either specify the index of numeric columns in {\tt data} by {\tt numeric.column}
 or set {\tt ylim}. If none of them are set, the function will try to look for all numeric columns
-in {\tt data} (of cource, excluding the first three columns), and set them as {\tt numeric.column}.
+in {\tt data} (of course, excluding the first three columns), and set them as {\tt numeric.column}.
 
 <<echo=TRUE, eval=FALSE>>=
 circos.genomicTrackPlotRegion(data, ylim = c(0, 1),
@@ -245,7 +289,7 @@ plotting should be indicated by {\tt numeric.column}. If the function is called
 inside {\tt circos.genomicTrackPlotRegion} and users have been already set {\tt numeric.column}
 in {\tt circos.genomicTrackPlotRegion}, proper value of {\tt numeric.column} will be
 passed to {\tt circos.genomicPoints} through {\tt ...} in {\tt panel.fun}. Which means, you need
-to add {\tt ...} as the final argument in {\tt circos.genomicPoints} to pass such informatioin into it.
+to add {\tt ...} as the final argument in {\tt circos.genomicPoints} to pass such information into it.
 If {\tt numeric.column} is not set, {\tt circos.genomicPoints} will use all numeric columns detected in {\tt value}.
 
 <<echo=TRUE, eval=FALSE>>=
@@ -262,7 +306,7 @@ and the graphical parameters should be either length one or number of numeric co
 
 \subsection{Lines}
 
-{\tt circos.genomicLines} is similar as {\tt circos.lines}. The setting of graphical paramters
+{\tt circos.genomicLines} is similar as {\tt circos.lines}. The setting of graphical parameters
 is similar as {\tt circos.genomicPoints}. 
 
 <<echo=TRUE, eval=FALSE>>=
@@ -279,7 +323,7 @@ interval will represent as a 'horizontal' line at corresponding value in {\tt va
 \subsection{Text}
 
 For {\tt circos.genomicText}, the position of text can be specified either by {\tt numeric.column}
-or a seperated vector {\tt y}. The labels of text can be specified either by {\tt labels.column}
+or a separated vector {\tt y}. The labels of text can be specified either by {\tt labels.column}
 or a vector {\tt labels}.
 
 <<echo=TRUE, eval=FALSE>>=
@@ -303,7 +347,7 @@ circos.genomicRect(region, value, col, border)
 One of the usage of {\tt circos.genomicRect} is to plot heatmap on the circle.
 {\it circlize} provides a simple function {\tt colorRamp2} which wraps {\tt colorRamp}
 to interpolate colors. The arguments of {\tt colorRamp2} are break points and colors
-which correspond to the the break points. {\tt colorRamp2} returnes a new function
+which correspond to the the break points. {\tt colorRamp2} returns a new function
 which can be used to generate new colors. 
 
 <<echo=FALSE, eval=TRUE, incude = FALSE>>=
@@ -396,12 +440,15 @@ for examples of using different settings in {\tt circos.genomicTrackPlotRegion}.
 
 \setkeys{Gin}{width=\textwidth}
 \begin{figure}[h!]
-\centering
-\includegraphics{figures/circos_genomictrackplotregion.pdf}
+\begin{center}
+<<label=figgenomicpoints, fig = TRUE, echo = FALSE, results=hide>>=
+source("src/genomic-04-genomicTrackPlotRegion.R")
+@
+\end{center}
 \caption{Topleft: Plotting points from A) a data frame with one numeric column;
 B) a data frame with one numeric column and under {\tt stack} mode; C) a list of two data frames D) a list
 of two data frames under {\tt stack} mode; E) a data frame with four numeric column; F) a data frame with
-four numeric column and under {\tt stack} mode. Topright: Plotting lines in differnet ways. Plotting lines from A) a data frame with one numeric column;
+four numeric column and under {\tt stack} mode. Topright: Plotting lines in different ways. Plotting lines from A) a data frame with one numeric column;
 B) a list of two data frames C) a list of two data frames under {\tt stack} mode; D) a data frame with four numeric column; 
 E) a data frame with four numeric column and under {\tt stack} mode. F) a data frame with one numeric column and {\tt lty}
 is set to {\tt segment}. Bottomleft: Plotting rectangles in differnet ways. Plotting lines from A) a data frame with four numeric column and under {\tt stack} mode.
@@ -440,8 +487,11 @@ circos.genomicLink(bed1, bed2, col)
 @
 
 \begin{figure}[h!]
-\centering
-\includegraphics{figures/genomic_link.pdf}
+\begin{center}
+<<label=figgenomiclink, fig = TRUE, echo = FALSE, results=hide>>=
+source("src/genomic-05-genomicLink.R")
+@
+\end{center}
 \caption{Add links from two sets of regions.}
 \label{fig:genomiclink}
 \end{figure}
@@ -460,8 +510,11 @@ highlight.chromosome("chr1", padding = c(0.1, 0.1, 0.1, 0.1))
 @
 
 \begin{figure}[h!]
-\centering
-\includegraphics{figures/genomic_highlight.pdf}
+\begin{center}
+<<label=fighighlight, fig = TRUE, echo = FALSE, results=hide>>=
+source("src/genomic-06-highlight.chromosome.R")
+@
+\end{center}
 \caption{Highlight chromosomes.}
 \label{fig:highlight}
 \end{figure}
@@ -505,13 +558,17 @@ circos.genomicPosTransformLines(data, posTransform = posTransform.default,
     type = "reverse")
 @
 
-
+\setkeys{Gin}{width=0.6\textwidth}
 \begin{figure}[h!]
-\centering
-\includegraphics{figures/position_transformation_line.pdf}
+\begin{center}
+<<label=figpostransform, fig = TRUE, echo = FALSE, width = 8, height = 16, results=hide>>=
+source("src/genomic-07-posTransformLines.R")
+@
+\end{center}
 \caption{Transformation of genomic positions}
 \label{fig:postransform}
 \end{figure}
+\setkeys{Gin}{width=\textwidth}
 
 Please see figure \ref{fig:postransform} for examples.
 
@@ -537,8 +594,11 @@ circos.genoimcRainfall(bedlist, col = c("red", "green"))
 @
 
 \begin{figure}[h!]
-\centering
-\includegraphics{figures/rainfall_plot.pdf}
+\begin{center}
+<<label=figrainfall, fig = TRUE, echo = FALSE, results=hide>>=
+source("src/genomic-08-rainfallplot.R")
+@
+\end{center}
 \caption{Rainfall plot and genomic density}
 \label{fig:rainfall}
 \end{figure}

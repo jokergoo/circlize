@@ -31,3 +31,6 @@ draw.sector(start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL,
 
 
 }
+\references{
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+}

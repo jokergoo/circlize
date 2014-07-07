@@ -17,6 +17,8 @@ chordDiagram(cor(mat), symmetric = TRUE, col = colorRamp2(c(-1, 0, 1), c("green"
 mat = matrix(sample(1:100, 18, replace = TRUE), 3, 6)
 rownames(mat) = LETTERS[1:3]
 colnames(mat) = letters[1:6]
+
+par(mfrow = c(3, 3))
 chordDiagram(mat)
 circos.par(gap.degree = c(rep(2, nrow(mat)-1), 10, rep(2, ncol(mat)-1), 10))
 chordDiagram(mat)
@@ -37,7 +39,7 @@ circos.trackPlotRegion(track.index = 1, panel.fun = function(x, y) {
 	ylim = get.cell.meta.data("ylim")
 	sector.name = get.cell.meta.data("sector.index")
 	sector.name = paste0(rep(sector.name, 8), collapse = "")
-	circos.text(mean(xlim), mean(ylim), sector.name, direction = "arc")
+	circos.text(mean(xlim), mean(ylim), sector.name, facing = "bending")
 }, bg.border = NA)
 	
 chordDiagram(mat, annotationTrack = "grid", transparency = 0,

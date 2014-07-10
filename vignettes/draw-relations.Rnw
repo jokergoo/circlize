@@ -374,7 +374,8 @@ mat
 @
 
 <<echo=TRUE, eval=FALSE>>=
-chordDiagram(mat, directional = TRUE)
+chordDiagram(mat, directional = TRUE, 
+    row.col = 1:5, transparency = 0.5)
 @
 
 {\tt chordDiagram} can also be used to visualize symmetric matrix. If {\tt symmetric}
@@ -385,10 +386,24 @@ chordDiagram(cor(mat), symmetric = TRUE,
     col = colorRamp2(c(-1, 0, 1), c("green", "white", "red"), transparency = 0.5))
 @
 
-\setkeys{Gin}{width=0.6\textwidth}
+If you don't need self-loop for which two roots of a link is in a same sector, just set corresponding values to 0 in {\tt mat}.
+
+<<echo=TRUE, eval=TRUE>>=
+for(cn in intersect(rownames(mat), colnames(mat))) {
+	mat[cn, cn] = 0
+}
+mat
+@
+
+<<echo=TRUE, eval=FALSE>>=
+chordDiagram(mat, directional = TRUE, 
+    row.col = 1:5, transparency = 0.5)
+@
+
+\setkeys{Gin}{width=\textwidth}
 \begin{figure}[h!]
 \begin{center}
-<<label=figchordother, fig = TRUE, echo = FALSE, width = 4, height = 8, results=hide>>=
+<<label=figchordother, fig = TRUE, echo = FALSE, results=hide>>=
 source("src/chordDiagram-04-other.R")
 @
 \end{center}

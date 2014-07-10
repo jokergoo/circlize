@@ -857,7 +857,7 @@ source("src/intro-12-link.R")
 \end{figure}
 \setkeys{Gin}{width=0.8\textwidth}
 
-The position of the `root' of the link is controlled by {\tt rou} argument. By default, it is the end position of the most recently created track.
+The position of the `root' of the link is controlled by {\tt rou1} and {\tt rou2} arguments. By default, it is the end position of the most recently created track.
 So normally, you don't need to care about this setting.
 
 The height of the link can be controlled by {\tt top.ratio} argument in {\tt circos.link} which is the ratio between the length of blue line and 
@@ -870,44 +870,8 @@ Possible usage for {\tt circos.link} is:
 > circos.link(sector.index1, 0, sector.index2, 0)
 > circos.link(sector.index1, c(0, 1), sector.index2, 0)
 > circos.link(sector.index1, c(0, 1), sector.index2, c(1, 2))
-> circos.link(sector.index1, 0, sector.index2, 0, rou, top.ratio)
+> circos.link(sector.index1, 0, sector.index2, 0, rou1, rou2, top.ratio)
 > circos.link(sector.index1, c(0, 1), sector.index2, 0, col, lwd, lty, border)
-\end{Sinput}
-\end{Schunk}
-
-{\it circlize} draws links as quadratic curves of which the symmetry axes pass through the center of the circle, 
-so the two ends of the link must locate in a same circle. But sometimes drawing ends of links with different height
-is useful to represent the direction of links. Anyway, if the difference of the height of two ends are not too large,
-there is a way to approximate. The solution is add a circular-style rectangle at one end of a link (see figure \ref{fig:link}, bottom). Following is 
-the code:
-
-\begin{Schunk}
-\begin{Sinput}
-> par(mar = c(1, 1, 1, 1))
-> factors = letters[1:8]
-> circos.initialize(factors = factors, xlim = c(0, 10))
->
-> circos.par(track.margin = c(0.1, 0))
-> circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey",
-+    bg.border = NA, track.height = 0.05)
-+
-> circos.link("a", c(2, 3), "f", c(4, 6), border = "black")
->
-> # the following codes calculate the position for the 'little rectangle'
-> cell.ylim = get.cell.meta.data("cell.ylim", "a")
-> d1 = circlize(2, cell.ylim[1], "a")
-> theta1 = d1[1, 1]
-> rou1 = d1[1, 2]
-> 
-> d2 = circlize(3, cell.ylim[1], "a")
-> theta2 = d2[1, 1]
-> rou2 = d2[1, 2] - circos.par("track.margin")[1]
->
-> # draw the 'little rectangle'
-> draw.sector(start.degree = theta1, end.degree = theta2, rou1 = rou1,
-+    rou2 = rou2, col = "black", border = "black")
->
-> circos.clear()
 \end{Sinput}
 \end{Schunk}
 

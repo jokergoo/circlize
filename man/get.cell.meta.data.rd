@@ -31,6 +31,8 @@ get.cell.meta.data(name, sector.index = get.current.sector.index(),
   \item{ylim}{Minimal and maximal values on the y-axis}
   \item{xrange}{Range of \code{xlim}. It equals to \code{xlim[2] - xlim[1]} }
   \item{yrange}{Range of \code{ylim}}
+  \item{xcenter}{Center of x-axis. It equals to \code{(xlim[2] + xlim[1])/2} }
+  \item{ycenter}{Center of y-axis}
   \item{cell.xlim}{Minimal and maximal values on the x-axis extended by cell paddings}
   \item{cell.ylim}{Minimal and maximal values on the y-axis extended by cell paddings}
   \item{xplot}{Right and left edge degree for the plotting region which are measured in polar coordinate. The first element corresponds to the start point of values on x-axis (\code{cell.xlm[1]}) and the second element corresponds to the end point of values on x-axis (\code{cell.xlim[2]}) Since x-axis in data coordinate in cells are always clockwise, \code{xplot[1]} is larger than \code{xplot[2]}.}

@@ -1,4 +1,6 @@
 
+set.seed(123)
+
 library(circlize)
 
 par(mar = c(1, 1, 1, 1))

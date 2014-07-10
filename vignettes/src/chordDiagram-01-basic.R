@@ -24,6 +24,6 @@ circos.clear()
 chordDiagram(mat, order = c("A", "B", "a", "C", "D", "b", "E", "F", "c"))
 
 chordDiagram(mat, directional = TRUE)
-chordDiagram(mat, directional = TRUE, directionGridHeight = 0.06)
+chordDiagram(mat, directional = TRUE, diffHeight = 0.06)
 
 circos.clear()

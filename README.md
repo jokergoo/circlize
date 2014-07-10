@@ -59,6 +59,10 @@ Functions with specific purpose
 - `circos.genomicDensity`
 - `circos.genomicRainfall`
 
+Finally, function that draws chord diagram:
+
+- `chordDiagram`
+
 Please refer to the vignettes to find out how to draw basic and advanced circos figures by this package.
 
 More tests will be added.

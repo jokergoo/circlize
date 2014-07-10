@@ -120,7 +120,7 @@ circos.link2 = function(sector.index1, point1, sector.index2, point2,
     return(invisible(NULL))
 }
 
-quadratic.bezier = function(p0, p1, p2, n = 100) {
+quadratic.bezier = function(p0, p1, p2, n = 100, w = 1) {
 	
 	col = sample(1:10, 1)
 	
@@ -129,8 +129,8 @@ quadratic.bezier = function(p0, p1, p2, n = 100) {
 	points(p2[1], p2[2], pch = 16, col = col)
 	
 	t = seq(0, 1, length.out = n)
-	x = (1-t)^2 * p0[1] + 2*t*(1-t)*p1[1] + t^2*p2[1]
-	y = (1-t)^2 * p0[2] + 2*t*(1-t)*p1[2] + t^2*p2[2]
+	x = ((1-t)^2 * p0[1] + 2*t*(1-t)*p1[1] + t^2*p2[1]) / ((1-t)^2 + 2*t*(1-t)*w + t^2)
+	y = ((1-t)^2 * p0[2] + 2*t*(1-t)*p1[2] + t^2*p2[2]) / ((1-t)^2 + 2*t*(1-t)*w + t^2)
 	return(cbind(x, y))
 
 }

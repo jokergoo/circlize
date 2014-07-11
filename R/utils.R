@@ -181,25 +181,25 @@ colorRamp2 = function(breaks, colors, transparency = 0, ...) {
         stop("Length of `breaks` should be equal to `colors`.\n")
     }
     colors = colors[order(breaks)]
-    colors = col2rgb(colors)
+	colors = col2rgb(colors)
     breaks = sort(breaks)
 
     transparency = ifelse(transparency > 1, 1, ifelse(transparency < 0, 0, transparency))
 
     function(x) {
-        att = attributes(x)
+		att = attributes(x)
         x = ifelse(x < breaks[1], breaks[1],
                   ifelse(x > breaks[length(breaks)], breaks[length(breaks)],
                         x
                     ))
-        ibin = .bincode(x, breaks, right = TRUE, include.lowest = TRUE)
-        res_col = character(length(x))
-        for(i in unique(ibin)) {
-            l = ibin == i
-            res_col[l] = .get_color(x[l], breaks[i], breaks[i+1], colors[, i], colors[, i+1], transparency)
-        }
-        attributes(res_col) = att
-        return(res_col)
+		ibin = .bincode(x, breaks, right = TRUE, include.lowest = TRUE)
+		res_col = character(length(x))
+		for(i in unique(ibin)) {
+			l = ibin == i
+			res_col[l] = .get_color(x[l], breaks[i], breaks[i+1], colors[, i], colors[, i+1], transparency)
+		}
+		attributes(res_col) = att
+		return(res_col)
     }
 }
 

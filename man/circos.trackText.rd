@@ -36,3 +36,6 @@ circos.trackText(factors, x, y, labels, track.index = get.cell.meta.data("track.
 
 
 }
+\references{
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+}

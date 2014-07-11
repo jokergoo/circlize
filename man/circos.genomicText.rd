@@ -41,3 +41,6 @@ circos.genomicText(region, value, y = NULL, labels = NULL, labels.column = NULL,
 
 
 }
+\references{
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+}

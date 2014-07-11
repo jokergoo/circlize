@@ -32,3 +32,6 @@ circos.genomicRainfall(data, ylim = c(0, 9), col = "black", pch = par("pch"),
 
 
 }
+\references{
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+}

@@ -144,9 +144,9 @@ circos.updatePlotRegion(sector.index = "d", track.index = 2)
 circos.points(x = -2:2, y = rep(0, 5))
 circos.trackPlotRegion(factors = a$factor, y = a$y)
 circos.trackLines(a$factor[1:100], a$x[1:100], a$y[1:100], type = "h")
-circos.link("a", 0, "b", 0, top.ratio = 0.9)
+circos.link("a", 0, "b", 0, h = 0.4)
 circos.link("c", c(-0.5, 0.5), "d", c(-0.5,0.5), col = "red",
-    border = "blue", top.ratio = 0.2)
+    border = "blue", h = 0.2)
 circos.link("e", 0, "g", c(-1,1), col = "green", lwd = 2, lty = 2)
 circos.clear()
 

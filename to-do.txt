@@ -1,1 +1,4 @@
 - testing code
+- remove ``.TRACK.END.POSITION``
+- ``w`` in `circos.link` (bezier curve)
+- set a straightforward value for default root of links

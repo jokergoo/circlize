@@ -836,19 +836,19 @@ circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.col
 # -region1 A genomic data frame
 # -region2 A genomic data frame
 # -rou Pass to `circos.link`
-# -top.ratio Pass to `circos.link`
+# -rou1 Pass to `circos.link`
+# -rou2 Pass to `circos.link`
 # -col Pass to `circos.link`, length can be either one or nrow of ``region1``
 # -lwd Pass to `circos.link`, length can be either one or nrow of ``region1``
 # -lty Pass to `circos.link`, length can be either one or nrow of ``region1``
 # -border Pass to `circos.link`, length can be either one or nrow of ``region1``
-# -top.ratio.low Pass to `circos.link`
+# -... Pass to `circos.link`
 #
 # == details
 # Of course, number of rows should be same in ``region1`` and ``region2``.
 circos.genomicLink = function(region1, region2, 
-	rou = get.track.end.position(get.current.track.index()), top.ratio = 0.5,
-    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA,
-    top.ratio.low = NULL) {
+	rou = get.track.end.position(get.current.track.index()), rou1 = rou, rou2 = rou,
+    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA, ...) {
 	
 	region1 = normalizeToDataFrame(region1)
 	region2 = normalizeToDataFrame(region2)
@@ -867,12 +867,12 @@ circos.genomicLink = function(region1, region2,
 	
 	nr = nrow(region1)
 	
-	top.ratio = .normalizeGraphicalParam(top.ratio, 1, nr, "top.ratio")
+	rou1 = .normalizeGraphicalParam(rou1, 1, nr, "rou")
+	rou2 = .normalizeGraphicalParam(rou2, 1, nr, "rou")
 	col = .normalizeGraphicalParam(col, 1, nr, "col")
 	lwd = .normalizeGraphicalParam(lwd, 1, nr, "lwd")
 	lty = .normalizeGraphicalParam(lty, 1, nr, "lty")
 	border = .normalizeGraphicalParam(border, 1, nr, "border")
-	#top.ratio.low = .normalizeGraphicalParam(top.ratio.low, 1, nr, "top.ratio.low")
 	
 	for(i in seq_len(nr)) {
 		if(region1[i, 2] == region1[i, 3]) {
@@ -887,8 +887,8 @@ circos.genomicLink = function(region1, region2,
 		}
 		circos.link(region1[i, 1], point1,
 		            region2[i, 1], point2,
-					rou = rou, top.ratio = top.ratio[i], col = col[i], lwd = lwd[i],
-					lty = lty[i], border = border[i], top.ratio.low = top.ratio.low)
+					rou1 = rou1[i], rou2 = rou2[i], col = col[i], lwd = lwd[i],
+					lty = lty[i], border = border[i], ...)
 	}
 }
 

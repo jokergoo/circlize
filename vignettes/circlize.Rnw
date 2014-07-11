@@ -200,9 +200,9 @@ Draw links (figure \ref{fig:example}, bottom right). Links can be from point to 
 Some of the arguments would be explained in the following sections.
 
 <<echo=TRUE, eval=FALSE>>=
-circos.link("a", 0, "b", 0, top.ratio = 0.9)
+circos.link("a", 0, "b", 0, h = 0.4)
 circos.link("c", c(-0.5, 0.5), "d", c(-0.5,0.5), col = "red",
-    border = "blue", top.ratio = 0.2)
+    border = "blue", h = 0.2)
 circos.link("e", 0, "g", c(-1,1), col = "green", lwd = 2, lty = 2)
 @
 
@@ -697,6 +697,7 @@ Similar as {\tt circos.points}, if no {\tt sector.index} or {\tt track.index} is
 specified, `current' index would be used. Also, there is a {\tt circos.trackLines}
 which is identical to {\tt circos.lines} in a {\tt for} loop.
 
+\setkeys{Gin}{width=0.6\textwidth}
 \begin{figure}
 \begin{center}
 <<label=figtext, fig = TRUE, echo = FALSE, width = 4, height = 8, results=hide>>=
@@ -706,7 +707,7 @@ source("src/intro-09-text.R")
 \caption{Text facing settings}
 \label{fig:text}
 \end{figure}
-
+\setkeys{Gin}{width=0.8\textwidth}
 
 \subsection{Text}
 Only the facing of text by {\tt circos.text} should be noted, as illustrated in figure \ref{fig:text}.
@@ -852,7 +853,7 @@ So links can be overlapping with tracks.
 source("src/intro-12-link.R")
 @
 \end{center}
-\caption{Drawing links}
+\caption{Drawing links. Top right: set different positions of roots; Bottom left: set different height of two borders.}
 \label{fig:link}
 \end{figure}
 \setkeys{Gin}{width=0.8\textwidth}
@@ -860,8 +861,7 @@ source("src/intro-12-link.R")
 The position of the `root' of the link is controlled by {\tt rou1} and {\tt rou2} arguments. By default, it is the end position of the most recently created track.
 So normally, you don't need to care about this setting.
 
-The height of the link can be controlled by {\tt top.ratio} argument in {\tt circos.link} which is the ratio between the length of blue line and 
-the red line, see figure \ref{fig:link}, bottom. The default height looks well from my view point, so you don't need to change this value.
+The height of the link can be controlled by {\tt h} argument in {\tt circos.link}. The default height looks well from my view point, so you don't need to change this value.
 
 Possible usage for {\tt circos.link} is:
 
@@ -870,41 +870,17 @@ Possible usage for {\tt circos.link} is:
 > circos.link(sector.index1, 0, sector.index2, 0)
 > circos.link(sector.index1, c(0, 1), sector.index2, 0)
 > circos.link(sector.index1, c(0, 1), sector.index2, c(1, 2))
-> circos.link(sector.index1, 0, sector.index2, 0, rou1, rou2, top.ratio)
+> circos.link(sector.index1, 0, sector.index2, 0, rou1, rou2, h, h2)
 > circos.link(sector.index1, c(0, 1), sector.index2, 0, col, lwd, lty, border)
 \end{Sinput}
 \end{Schunk}
 
-Anyway, there are always some problems when implementing the link function. When the link
-represents as a belt/ribbon (i.e. link from point to interval or from interval to interval),
+When the link represents as a belt/ribbon (i.e. link from point to interval or from interval to interval),
 It can not ensure that one border is always below or above the other. Which means, in 
 some cases, the two borders would intersect and it would make the link so ugly. It happens
 especially when position of the two ends are too close or the width of one end is extremely large while
-the width of the other end is too small. I did some optimization to control such situation but
-it is not valid for all cases. However, I think such situation will not happen too often in real applications,
-but users can adjust the height of the low border by hand if they really meet it. The not-so-good argument {\tt top.ratio.low}
-can control the height of the low border such as:
-
-\begin{Schunk}
-\begin{Sinput}
-> circos.link("c", 1, "c", c(2, 8), top.ratio = 0.5, top.ratio.low = 0.8)
-\end{Sinput}
-\end{Schunk}
-
-The value of {\tt top.ratio.low} must be larger than {\tt top.ratio}. Example can be found in figure \ref{fig:adjlink}.
-The design of the function is not so friendly and I am sorry for that. I would try to figure out a better solution in the future.
-
-
-\begin{figure}
-\begin{center}
-<<label=figadjlink, fig = TRUE, echo = FALSE, results=hide>>=
-source("src/intro-13-adjlink.R")
-@
-\end{center}
-\caption{Adjust the links: right link is under default settings and the height of the low border of left link is adjusted by hand.}
-\label{fig:adjlink}
-\end{figure}
-
+the width of the other end is too small. In that case, users can manually set height of the top
+and bottom border by {\tt h} and {\tt h2}.
 
 \subsection{The {\tt panel.fun} argument in {\tt circos.trackPlotRegion}}
 {\tt panel.fun} argument in {\tt circos.trackPlotRegion} is useful to apply plottings as soon as the cell has been created. This self-defined

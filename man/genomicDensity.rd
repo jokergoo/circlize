@@ -29,3 +29,6 @@ genomicDensity(region, window.size = 10000000, overlap = TRUE)
 
 
 }
+\references{
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+}

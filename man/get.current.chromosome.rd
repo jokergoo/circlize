@@ -18,3 +18,6 @@ get.current.chromosome()
 
 
 }
+\references{
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+}

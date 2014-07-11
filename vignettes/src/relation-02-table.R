@@ -1,6 +1,7 @@
 
 library(circlize)
 
+set.seed(123)
 mat = matrix(sample(1:100, 18, replace = TRUE), 3, 6)
 rownames(mat) = letters[1:3]
 colnames(mat) = LETTERS[1:6]

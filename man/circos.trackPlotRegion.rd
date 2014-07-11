@@ -51,3 +51,6 @@ circos.trackPlotRegion(factors = NULL, x = NULL, y = NULL, ylim = NULL,
 
 
 }
+\references{
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+}

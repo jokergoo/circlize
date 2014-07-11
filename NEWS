@@ -1,10 +1,11 @@
 NEWS/Changelog
 
 == 0.0.9
+- links are now implemented by Bezier curve
 - baseline can be set when ``type == "h"`` `in circos.lines`
 - add a new function `chordDiagram` which support chord diagram
 - add `facing` argument to replace `direction` in `circos.text`
-- `circos.trackPlotRegion` can be used to update a track without resetting ylim
+- `circos.trackPlotRegion` can be used to update a track without re-setting ylim
 - move demo to http://jokergoo.github.io/circlize
 - re-implement `colorRamp2`
 

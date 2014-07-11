@@ -42,3 +42,6 @@ circos.trackHist(factors, x, track.height = circos.par("default.track.height"),
 
 
 }
+\references{
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+}

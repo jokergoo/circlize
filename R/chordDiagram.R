@@ -4,27 +4,30 @@
 #
 # == param
 # -mat A table which represents as a numeric matrix
-# -grid.col Colors of grids corresponding to rownames/colnames. The length of the vector should be either 1 or ``length(union(rownames(mat), colnames(mat)))``.
-#           It is better that ``grid.col`` is a named vector of which names correspond to sectors. 
+# -grid.col Colors of grids corresponding to rows/columns. The length of the vector should be either 1 or ``length(union(rownames(mat), colnames(mat)))``.
+#           It's preferred that ``grid.col`` is a named vector of which names correspond to sectors. 
 #           If it is not a named vector, the order of ``grid.col`` corresponds to order of sectors.
-# -transparency Transparency of link/ribbon colors, 0 means no transparency and 1 means complete transparency.
-#               If transparency is already set in ``col`` or ``row.col`` or ``column.col``, this argument would be disabled.
-# -col colors for links. It can be a matrix which corresponds to ``mat``, or a function which generate colors 
+# -transparency Transparency of link colors, 0 means no transparency and 1 means full transparency.
+#               If transparency is already set in ``col`` or ``row.col`` or ``column.col``, this argument will be ignored.
+# -col Colors for links. It can be a matrix which corresponds to ``mat``, or a function which generate colors 
 #      according to values in ``mat``, or a single value which means colors for all links are the same. You
 #      may use `colorRamp2` to generate a function which maps values to colors.
-# -row.col colors for links. Length should be same as number of rows in ``mat``. This argument only works when ``col`` is set to ``NULL``.
-# -column.col colors for links. Length should be same as number of columns in ``mat``. This argument only works when ``col`` and ``row.col`` is set to ``NULL``.
+# -row.col Colors for links. Links from the same row will have the same color.
+#          Length should be same as number of rows in ``mat``. This argument only works when ``col`` is set to ``NULL``.
+# -column.col Colors for links. Links from the same column will have the same color.
+#             Length should be same as number of columns in ``mat``. This argument only works when ``col`` and ``row.col`` is set to ``NULL``.
 # -directional Whether links have directions. The direction is from rows to columns. If you
 #              want the direction from columns to rows, just transpose your ``mat``.
 # -symmetric Whether the matrix is symmetric. If the value is set to ``TRUE``, only
 #            lower triangular matrix without the diagonal will be used.
-# -order Order of sectors
-# -preAllocateTracks Pre-allocate empty tracks before drawing chord diagram. Please refer to vignette for details.
+# -order Order of sectors. Default order is ``union(rownames(mat), colnames(mat))``
+# -preAllocateTracks Pre-allocate empty tracks before drawing chord diagram. It can be a single number indicating
+#                    how many empty tracks that are needed to be created or a list containing settings for empty
+#                    tracks. Please refer to vignette for details.
 # -annotationTrack Which annotation track should be plotted?
 # -link.border border for links
-# -grid.border border for grids. If it is ``NA``, the border is same as grid color
-# -directionGridHeight if ``directional`` is set to ``TRUE``, there would be a grid at the one end
-#                      of the link representing the direction. This argument controls the height of these little grids.
+# -grid.border border for grids. If it is ``NA``, the border color is same as grid color
+# -diffHeight The height difference between two 'root' if ``directional`` is set to ``TRUE``. 
 # -... pass to `circos.link`
 #
 # == details
@@ -32,14 +35,14 @@
 # visualize tables in a circular way.
 #
 # Sectors of the plot is ``union(rownames(mat), colnames(mat))``. If there is no rowname or colname, the function will
-# assign some names for it.
+# assign names for it.
 #
 # This function contains some settings that may be a little difficult to understand. Please refer to vignette for better explanation.
 chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 	col = NULL, row.col = NULL, column.col = NULL, directional = FALSE,
 	symmetric = FALSE, order = NULL, preAllocateTracks = NULL,
 	annotationTrack = c("name", "grid"), link.border = NA, grid.border = NULL, 
-	directionGridHeight = 0.03, ...) {
+	diffHeight = 0.04, ...) {
 
 	transparency = ifelse(transparency < 0, 0, ifelse(transparency > 1, 1, transparency))
 
@@ -229,19 +232,21 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 			rou = get.track.end.position(get.current.track.index())
             sector.index1 = rn[i]
             sector.index2 = cn[j]
-            circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
-                        sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-                        col = col[rn[i], cn[j]], rou = ifelse(directional, rou - directionGridHeight, rou), border = link.border, ...)
+			
+			if(directional) {
+				circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
+							sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
+							col = col[rn[i], cn[j]], rou1 = rou - diffHeight, rou2 = rou, border = link.border, ...)
+			} else {
+				circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
+							sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
+							col = col[rn[i], cn[j]], rou1 = rou, border = link.border, ...)
+			}
 			
             sector.sum.row[ rn[i] ] = sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])
 			sector.sum.col[ cn[j] ] = sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])
         }
 		
-		if(directional) {
-			d1 = circlize(c(0, sector.sum.row[ rn[i] ]), c(0, 0), sector.index = rn[i])
-			draw.sector(start.degree = d1[1, 1], end.degree = d1[2, 1], rou1 = rou, rou2 = rou - directionGridHeight, col = col[rn[i], cn[j]], border = NA)
-			
-		}
     }
 }
 

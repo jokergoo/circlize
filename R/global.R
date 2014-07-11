@@ -578,6 +578,8 @@ show.index = function() {
 # -ylim                 Minimal and maximal values on the y-axis
 # -xrange               Range of ``xlim``. It equals to ``xlim[2] - xlim[1]`` 
 # -yrange               Range of ``ylim``
+# -xcenter              Center of x-axis. It equals to ``(xlim[2] + xlim[1])/2`` 
+# -ycenter              Center of y-axis
 # -cell.xlim            Minimal and maximal values on the x-axis extended by cell paddings
 # -cell.ylim            Minimal and maximal values on the y-axis extended by cell paddings
 # -xplot                Right and left edge degree for the plotting region which are measured in polar coordinate.
@@ -617,7 +619,7 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 	cell.padding = current.cell.data$cell.padding
 	
 	if(length(name) != 1) {
-		stop("``name`` only should have length of 1.\n")
+		stop("``name`` should only have length of 1.\n")
 	}
 	
 	if(name == "xlim") {
@@ -630,6 +632,12 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 	} else if(name == "yrange") {
 		ylim = current.cell.data$ylim
 		return(ylim[2] - ylim[1])
+	} else if(name == "xcenter") {
+		xlim = current.cell.data$xlim
+		return((xlim[2] + xlim[1])/2)
+	} else if(name == "ycenter") {
+		ylim = current.cell.data$ylim
+		return((ylim[2] + ylim[1])/2)
 	} else if(name == "cell.xlim") {
 		return(current.cell.data$cell.xlim)
 	} else if(name == "cell.ylim") {

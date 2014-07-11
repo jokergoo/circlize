@@ -11,12 +11,12 @@ par(mar = c(1, 1, 1, 1))
 factors = letters[1:8]
 circos.initialize(factors = factors, xlim = c(0, 10))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", bg.border = NA, track.height = 0.05)
-
-circos.link2("a", 5, "c", 5, col = "#00000040")
-circos.link2("a", 5, "g", 5, col = "#00000040")
-circos.link2("c", 10, "d", c(1, 4), col = "#00000040")
-circos.link2("a", c(2, 8), "g", c(4, 4.5), height = 0.9, rou1 = 0.9, rou2 = 0.8, col = "#00000040")
-circos.link2("b", c(1, 10), "f", c(1, 10), col = "#00000040")
+circos.info(plot = TRUE)
+#circos.link("a", 5, "c", 5, rou1 = 0.4, rou2 = 0.6, col = "black")
+circos.link("a", 5, "g", 5, col = "black", h = 0.5, w = -0.25)
+circos.link("c", 10, "d", c(1, 4), col = "#00000040", border = "black")
+circos.link("a", c(2, 8), "g", c(4, 4.5), rou1 = 0.9, rou2 = 0.8, col = "#00000040", border = "black")
+circos.link("b", c(1, 10), "a", c(1, 10), rou1 = 0.9, rou2 = 0.4,  col = "#00000040", border = "black")
 
 circos.clear()
 
@@ -107,4 +107,33 @@ for(delta_rou in seq(0, 0.3, by = 0.05)) {
 	}
 }
 
+#######################################
+### test getQuadraticPoints
+par(mar = c(1, 1, 1, 1))
+plot(NULL, xlim = c(-1, 1), ylim = c(-1, 1))
+for(degree in seq(0, 360, by = 60)) {
+	d = getQuadraticPoints(degree, degree + 60, 1, 1)
+	lines(d)
+	arrows(d[49, 1], d[49, 2], d[51, 1], d[51, 2], length = 0.1)
+}
+plot(NULL, xlim = c(-1, 1), ylim = c(-1, 1))
+for(degree in seq(30, 360, by = 60)) {
+	d = getQuadraticPoints(degree, degree - 60, 1, 1)
+	lines(d)
+	arrows(d[49, 1], d[49, 2], d[51, 1], d[51, 2], length = 0.1)
+}
 
+plot(NULL, xlim = c(-1, 1), ylim = c(-1, 1))
+for(degree in sample(360, 60)) {
+	d1 = degree
+	d2 = degree + (runif(1)-0.5)*2*360
+	d = getQuadraticPoints(d1, d2, 1, 1)
+	points(c(cos(as.radian(d1))), c(sin(as.radian(d1))), pch = 16, col = "blue")
+	text(c(cos(as.radian(d1))), c(sin(as.radian(d1))), "F")
+	text(c(cos(as.radian(d2))), c(sin(as.radian(d2))), "T")
+}
+
+
+par(mar = c(1, 1, 1, 1))
+plot(NULL, xlim = c(-1, 1), ylim = c(-1, 1))
+d = getQuadraticPoints(338+90, 68+90, 1, 1)

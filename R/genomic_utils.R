@@ -14,11 +14,6 @@
 #
 # You can find the data struture for the cytoband data from http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/cytoBand.txt.gz
 #
-# == values
-# -df         Original data frame for cytoband data
-# -chromosome Sorted chromosome names
-# -chr.len    Length of chromosomes. Order are same as ``chromosome``
-#
 # If ``sort.chr`` is not set, there would be several circumstances when determining the order of chromosomes. 
 # Assuming ``chromosome`` is the first column in the cytoband data frame,
 # then, if ``cytoband`` is defined as a file path, or ``species`` is set, the order of chromosomes is ``unique(chromosome)`` 
@@ -26,6 +21,12 @@
 # is set as a data frame and the first column is a factor, the order of chromosomes is ``levels(chromosome)``; If ``cytoband`` is a data frame
 # and the first column is just a character vector, the order of chromosomes is ``unique(chromosome)``. Please not this concept is really
 # important since the order of chromosomes will be used to control the order of sectors when initializing the circos plot.
+#
+# == values
+# -df         Original data frame for cytoband data
+# -chromosome Sorted chromosome names
+# -chr.len    Length of chromosomes. Order are same as ``chromosome``
+#
 read.cytoband = function(cytoband = paste(system.file(package = "circlize"),
     "/extdata/cytoBand.txt", sep=""), species = NULL, sort.chr = TRUE) {
 	
@@ -95,6 +96,7 @@ cytoband.col = function(x) {
                   "stalk"   = rgb(100, 127, 164, maxColorValue = 255) )
     col = col.panel[x]
     col[is.na(col)] = "#FFFFFF"
+	names(col) = NULL
     return(col)
 }
 

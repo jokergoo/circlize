@@ -25,6 +25,8 @@ read.cytoband(cytoband = paste(system.file(package = "circlize"),
 
   You can find the data struture for the cytoband data from \url{http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/cytoBand.txt.gz}  
 
+  If \code{sort.chr} is not set, there would be several circumstances when determining the order of chromosomes.  Assuming \code{chromosome} is the first column in the cytoband data frame, then, if \code{cytoband} is defined as a file path, or \code{species} is set, the order of chromosomes is \code{unique(chromosome)}  which is read from the file; If \code{cytoband} is set as a data frame and the first column is a factor, the order of chromosomes is \code{levels(chromosome)}; If \code{cytoband} is a data frame and the first column is just a character vector, the order of chromosomes is \code{unique(chromosome)}. Please not this concept is really important since the order of chromosomes will be used to control the order of sectors when initializing the circos plot.  
+
 
 }
 \value{
@@ -33,7 +35,5 @@ read.cytoband(cytoband = paste(system.file(package = "circlize"),
   \item{chromosome}{Sorted chromosome names}
   \item{chr.len}{Length of chromosomes. Order are same as \code{chromosome}}
 }
-  If \code{sort.chr} is not set, there would be several circumstances when determining the order of chromosomes.  Assuming \code{chromosome} is the first column in the cytoband data frame, then, if \code{cytoband} is defined as a file path, or \code{species} is set, the order of chromosomes is \code{unique(chromosome)}  which is read from the file; If \code{cytoband} is set as a data frame and the first column is a factor, the order of chromosomes is \code{levels(chromosome)}; If \code{cytoband} is a data frame and the first column is just a character vector, the order of chromosomes is \code{unique(chromosome)}. Please not this concept is really important since the order of chromosomes will be used to control the order of sectors when initializing the circos plot. 
-
 
 }

@@ -15,6 +15,8 @@
 #                the link would be a belt/ribbon.
 # -rou           The position of the 'root' of the link. It is the percentage of the radius of the unit circle.
 #                By default it is from the bottom of the most recent track.
+# -rou1          The position of root 1 of the link. 
+# -rou2          The position of root 2 of the link.
 # -top.ratio     Set the height of the quadratic curve. For the exact definition, please refer to the main vignette.
 # -col           Color of the link. If the link is a ribbon, then it is the filled color for the ribbon.
 # -lwd           Line (or border) width
@@ -34,309 +36,249 @@
 # link would look nice. However you can also set the position and the height of links by specifying
 # ``rou`` and ``top.ratio``. See vignette for detailed explanation.
 circos.link = function(sector.index1, point1, sector.index2, point2,
-    rou = get.track.end.position(get.current.track.index()), top.ratio = 0.5,
-    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA, n = 101,
-	top.ratio.low = NULL) {
+    rou = get.track.end.position(get.current.track.index()),
+    rou1 = rou, rou2 = rou, h = NULL, w = 1, h2 = h, w2 = w,
+    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA) {
     
     sector.data1 = get.sector.data(sector.index1)
     sector.data2 = get.sector.data(sector.index2)
+	
+	point1 = sort(point1)
+	point2 = sort(point2)
     
     if(length(point1) == 1 && length(point2) == 1) {
-        theta1 = sector.data1["start.degree"] - (point1 - sector.data1["min.value"]) / (sector.data1["max.value"] - sector.data1["min.value"]) *
-                 abs(sector.data1["start.degree"] - sector.data1["end.degree"])
+        theta1 = circlize(point1, 0, sector.index = sector.index1, track.index = 1)[1, "theta"]
+        theta2 = circlize(point2, 0, sector.index = sector.index2, track.index = 1)[1, "theta"]
         
-        theta2 = sector.data2["start.degree"] - (point2 - sector.data2["min.value"]) / (sector.data2["max.value"] - sector.data2["min.value"]) *
-                 abs(sector.data2["start.degree"] - sector.data2["end.degree"])
-        
-        d = rotate.parabola(theta1, theta2, rou1 = rou, rou.ratio = top.ratio, n = n)
+		d = getQuadraticPoints(theta1, theta2, rou1, rou2, h = h, w = w)
         lines(d, col = col, lwd = lwd, lty = lty)
-    } else {
-        if(length(point1) == 1) {
-			current.cell.xrange = get.cell.meta.data("xrange", sector.index1, 1)
-			if(sector.index1 == sector.index2 && point1 > max(point2)) {
-				point1 = c(point1, point1 + current.cell.xrange/100)
-			} else if(sector.index1 == sector.index2 && point1 < min(point2)) {
-				point1 = c(point1, point1 - current.cell.xrange/100)
-			} else {
-				point1 = c(point1, point1 + current.cell.xrange/100)
-			}
-        }
-        if(length(point2) == 1) {
-			current.cell.xrange = get.cell.meta.data("xrange", sector.index2, 1)
-			if(sector.index1 == sector.index2 && point2 > max(point1)) {
-				point2 = c(point2, point2 + current.cell.xrange/100)
-			} else if(sector.index1 == sector.index2 && point2 < min(point1)) {
-				point2 = c(point2, point2 - current.cell.xrange/100)
-			} else {
-				point2 = c(point2, point2 + current.cell.xrange/100)
-			}
-        }
+    } else if(length(point1) == 1) {
+		theta1 = circlize(point1, 0, sector.index = sector.index1, track.index = 1)[1, "theta"]
+		theta21 = circlize(point2[1], 0, sector.index = sector.index2, track.index = 1)[1, "theta"]
+        theta22 = circlize(point2[2], 0, sector.index = sector.index2, track.index = 1)[1, "theta"]
+        
+        if(degreeDiff(theta1, theta21) > degreeDiff(theta1, theta22)) {
+        	d1 = getQuadraticPoints(theta1, theta21, rou1, rou2, h = h, w = w)
+        	d2 = getQuadraticPoints(theta1, theta22, rou1, rou2, h = h2, w = w2)
+        } else {
+	        d1 = getQuadraticPoints(theta1, theta21, rou1, rou2, h = h2, w = w2)
+	        d2 = getQuadraticPoints(theta1, theta22, rou1, rou2, h = h, w = w)
+	    }
+		r2 = arc.points(theta21, theta22, rou2)
+		d = rbind(d1, r2)
+		d = rbind(d, revMat(d2))
+		polygon(d, col = col, lty = lty, lwd = lwd, border = border)
+	} else if(length(point2) == 1) {
+		theta2 = circlize(point2, 0, sector.index = sector.index2, track.index = 1)[1, "theta"]
+		theta11 = circlize(point1[1], 0, sector.index = sector.index1, track.index = 1)[1, "theta"]
+        theta12 = circlize(point1[2], 0, sector.index = sector.index1, track.index = 1)[1, "theta"]
+        
+        if(degreeDiff(theta2, theta11) > degreeDiff(theta2, theta12)) {
+	        d1 = getQuadraticPoints(theta11, theta2, rou1, rou2, h = h, w = w)
+	        d2 = getQuadraticPoints(theta12, theta2, rou1, rou2, h = h2, w = w2)
+	    } else {
+	    	d1 = getQuadraticPoints(theta11, theta2, rou1, rou2, h = h2, w = w2)
+	        d2 = getQuadraticPoints(theta12, theta2, rou1, rou2, h = h, w = w)
+	    }
+		r1 = arc.points(theta11, theta12, rou1)
+		d = rbind(revMat(d1), r1)
+		d = rbind(d, d2)
+		polygon(d, col = col, lty = lty, lwd = lwd, border = border)
+	} else {
 		
-		if(sector.index1 == sector.index2) {
-			if(max(c(point1, point2)) - min(c(point1, point2)) <= max(point2) - min(point2) + max(point1) - min(point1)) {
-				stop("Two intervals in a same sector, but they should not be intersected.\n")
-			}
-		}
+		theta11 = circlize(point1[1], 0, sector.index = sector.index1, track.index = 1)[1, "theta"]
+        theta12 = circlize(point1[2], 0, sector.index = sector.index1, track.index = 1)[1, "theta"]
+		theta21 = circlize(point2[1], 0, sector.index = sector.index2, track.index = 1)[1, "theta"]
+        theta22 = circlize(point2[2], 0, sector.index = sector.index2, track.index = 1)[1, "theta"]
 		
-		point1 = sort(point1)
-		point2 = sort(point2)
-        
-        theta11 = sector.data1["start.degree"] - (point1[1] - sector.data1["min.value"]) / (sector.data1["max.value"] - sector.data1["min.value"]) *
-            abs(sector.data1["start.degree"] - sector.data1["end.degree"])
-        theta12 = sector.data1["start.degree"] - (point1[2] - sector.data1["min.value"]) / (sector.data1["max.value"] - sector.data1["min.value"]) *
-            abs(sector.data1["start.degree"] - sector.data1["end.degree"])
-        
-        theta21 = sector.data2["start.degree"] - (point2[1] - sector.data2["min.value"]) / (sector.data2["max.value"] - sector.data2["min.value"]) *
-            abs(sector.data2["start.degree"] - sector.data2["end.degree"])
-        theta22 = sector.data2["start.degree"] - (point2[2] - sector.data2["min.value"]) / (sector.data2["max.value"] - sector.data2["min.value"]) *
-            abs(sector.data2["start.degree"] - sector.data2["end.degree"])
-        
-        # line from theta11, theta21 and line from theta12, theta22
-        # uint circle
-        k1 = (sin(as.radian(theta11)) - sin(as.radian(theta21)))/(cos(as.radian(theta11)) - cos(as.radian(theta21)))
-        b1 = sin(as.radian(theta11)) - k1*cos(as.radian(theta11))
-        k2 = (sin(as.radian(theta12)) - sin(as.radian(theta22)))/(cos(as.radian(theta12)) - cos(as.radian(theta22)))
-        b2 = sin(as.radian(theta12)) - k2*cos(as.radian(theta12))
-        
-        if(k1 != k2) {
-            # cross of the two lines
-            cross.x = -(b1 - b2)/(k1 - k2)
-            cross.y = (k1*b2 - k2*b1)/(k1 - k2)
-            r = sqrt(cross.x^2 + cross.y^2)
-            # cross in the circle, swap theta21 and theta22
-            if(r < 1) {
-                t = theta21
-                theta21 = theta22
-                theta22 = t
-            }
-        }
-        
-        d1 = rotate.parabola(theta1 = theta11, theta2 = theta21, rou1 = rou, rou.ratio = top.ratio, n = n)
-        d2 = rotate.parabola(theta1 = theta12, theta2 = theta22, rou1 = rou, rou.ratio = top.ratio, n = n)
-		
-		if(!is.null(top.ratio.low)) {
-			if(top.ratio.low < top.ratio) {
-				stop("'top.ratio.low' should be larger than 'top.ratio'.\n")
-			}
-			if(quadratic.minus.degree(theta11, theta21) > quadratic.minus.degree(theta12, theta22)) {
-				d2 = rotate.parabola(theta1 = theta12, theta2 = theta22, rou1 = rou, rou.ratio = top.ratio.low, n = n)
-			} else {
-				d1 = rotate.parabola(theta1 = theta11, theta2 = theta21, rou1 = rou, rou.ratio = top.ratio.low, n = n)
-			}
-		} else {
-			al = min(quadratic.minus.degree(theta11, theta12), quadratic.minus.degree(theta21, theta22))
-			th2 = max(quadratic.minus.degree(theta11, theta21), quadratic.minus.degree(theta12, theta22))
-			th1 = min(quadratic.minus.degree(theta11, theta21), quadratic.minus.degree(theta12, theta22))
-			if(quadratic.minus.degree(th2, th1) < 90 &&
-			   al < 5 &&  #alpha
-			   th2 < 45 && th2 < 180 - th1 &&
-			   top.ratio <= 1- 0.05) {
-				
-				if(quadratic.minus.degree(theta11, theta21) > quadratic.minus.degree(theta12, theta22)) {
-					d2 = rotate.parabola(theta1 = theta12, theta2 = theta22, rou1 = rou, rou.ratio = top.ratio+0.05, n = n)
-				} else {
-					d1 = rotate.parabola(theta1 = theta11, theta2 = theta21, rou1 = rou, rou.ratio = top.ratio+0.05, n = n)
-				}		
-			}
-		}
-		
-        if(is.points.ordered.on.circle(c(theta11, theta21, theta22, theta12))) {
-            d2 = d2[rev(seq_len(nrow(d2))), ]
-            r1 = arc.points(theta21, theta22, rou)
-            r2 = arc.points(theta12, theta11, rou)
-        } else if(is.points.ordered.on.circle(c(theta11, theta21, theta22, theta12), clock.wise = TRUE)) {
-            d2 = d2[rev(seq_len(nrow(d2))), ]
-            r1 = arc.points(theta21, theta22, rou, clock.wise = TRUE)
-            r2 = arc.points(theta12, theta11, rou, clock.wise = TRUE)
-        } else if(is.points.ordered.on.circle(c(theta21, theta11, theta12, theta22))) {
-            d2 = d2[rev(seq_len(nrow(d2))), ]
-            r1 = arc.points(theta21, theta22, rou, clock.wise = TRUE)
-            r2 = arc.points(theta12, theta11, rou ,clock.wise = TRUE)
-        } else if(is.points.ordered.on.circle(c(theta21, theta11, theta12, theta22), clock.wise = TRUE)) {
-            d2 = d2[rev(seq_len(nrow(d2))), ]
-            r1 = arc.points(theta21, theta22, rou)
-            r2 = arc.points(theta12, theta11, rou)
-        } else if(is.points.ordered.on.circle(c(theta11, theta12, theta21, theta22))) {
-            r1 = arc.points(theta12, theta21, rou)
-            r2 = arc.points(theta22, theta11, rou)
-        } else if(is.points.ordered.on.circle(c(theta11, theta12, theta21, theta22), clock.wise = TRUE)) {
-            r1 = arc.points(theta12, theta21, rou, clock.wise = TRUE)
-            r2 = arc.points(theta22, theta11, rou, clock.wise = TRUE)
-        }
-        
-        d = rbind(d1, r1)
-        d = rbind(d, d2)
-        d = rbind(d, r2)
-        polygon(d, col = col, lty = lty, lwd = lwd, border = border)
+		if(degreeDiff(theta11, theta22) > degreeDiff(theta12, theta21)) {
+			d1 = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h, w = w)
+	        d2 = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h2, w = w2)
+	    } else {
+	    	d1 = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h2, w = w2)
+	        d2 = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h, w = w)
+	    }
+		r2 = arc.points(theta21, theta22, rou2)
+		r1 = arc.points(theta11, theta12, rou1)
+
+        d = rbind(d1, revMat(r2))
+        d = rbind(d, revMat(d2))
+        d = rbind(d, revMat(r1))
+       	polygon(d, col = col, lty = lty, lwd = lwd, border = border)
     }
 	
-	# link is the last track in the current version
-	#set.track.end.position(0)
     return(invisible(NULL))
 }
 
-
-# parabola intersects with the UNIT circle
-# theta1 is the start point and theta2 is the end point
-rotate.parabola = function(theta1, theta2, rou1, rou2 = rou1, theta = (theta1+theta2)/2, 
-    rou = rou1 * abs(cos(degree.minus(theta1, theta2)/2/180*pi))*rou.ratio, rou.ratio = 0.5,
-    n = 101) {
+# points from theta1 to theta2
+arc.points = function(theta1, theta2, rou) {
+	theta1 = theta1 %% 360
+	theta2 = theta2 %% 360
+	theta_diff = (theta1 - theta2) %% 360
+	l = as.radian(theta_diff)*rou
+	ncut = l/ (2*pi/circos.par("unit.circle.segments"))
+	ncut = floor(ncut)
+	ncut = ifelse(ncut < 2, 2, ncut)
     
-    while(theta2 < theta1) {
-        theta2 = theta2 + 360
-    }
-    
-    delta_theta = degree.minus(theta2, theta1)
-    
-    flag = 0
-    if(delta_theta > 180) {
-        theta = theta + 180
-        flag = 1
-    }
-    
-    # y^2 = kx, y = +-sqrt(kx)
-    b = rou1 * abs(sin(degree.minus(theta2, theta1)/2/180*pi))
-    a = rou1 * abs(cos(degree.minus(theta2, theta1)/2/180*pi)) - rou
-    k = b^2/a
-    
-    if(n %% 2 == 0) {
-        n = n + 1
-    }
-    n.half = (n - 1) / 2
-    x = numeric(n)
-    y = numeric(n)
-    # x points should be more thick near the vertex
-    x = c((n.half:1)^2/n.half^2, 0, (1:n.half)^2/n.half^2)*a
-    y[1:n.half] = sqrt(k*x[1:n.half])
-    y[n.half + 1] = 0
-    y[1:n.half + n.half + 1] = -sqrt(k*x[1:n.half + n.half + 1])
-    
-    alpha = numeric(n)
-    
-    alpha[1:n.half] = atan(y[1:n.half]/x[1:n.half])*180/pi
-    alpha[1:n.half + n.half + 1] = atan(y[1:n.half + n.half + 1]/x[1:n.half + n.half + 1])*180/pi
-    alpha[n.half + 1] = 90
-    
-    d = sqrt(x^2 + y^2)
-    x = d*cos((alpha + theta)/180*pi)
-    y = d*sin((alpha + theta)/180*pi)
-    
-    center.x = rou*cos(theta/180*pi)
-    center.y = rou*sin(theta/180*pi)
-    
-    x = x + center.x
-    y = y + center.y
-    
-    if(!flag) {
-        x = rev(x)
-        y = rev(y)
-    }
-
-    return(cbind(x, y))
-}
-
-# this is not a perfect function because it assumes all theta are different
-# but it is ok in this package since the former step can ensure the values
-# are different
-is.points.ordered.on.circle = function(theta, clock.wise = FALSE) {
-    if(clock.wise) {
-        theta = rev(theta)
-    }
-    theta = theta %% 360
-    theta = theta - min(theta)
-    min_index = which(theta == 0)
-    if(min_index > 2) {
-        theta2 = c(theta[min_index:length(theta)], c(theta[1:(min_index - 1)]))
-    } else {
-        theta2 = theta
-    }
-    
-    return(identical(order(theta2), 1:length(theta2)))
-}
-
-arc.points = function(theta1, theta2, rou, clock.wise = FALSE) {
-    
-    if(clock.wise) {
-		l = as.radian(theta1 - theta2)*rou
-		ncut = l/ (2*pi/circos.par("unit.circle.segments"))
-		ncut = floor(ncut)
-		ncut = ifelse(ncut < 2, 2, ncut)
-        theta = degree.seq(from = theta2, to = theta1, length.out = ncut)
-    } else {
-		l = as.radian(theta2 - theta1)*rou
-		ncut = l/ (2*pi/circos.par("unit.circle.segments"))
-		ncut = floor(ncut)
-		ncut = ifelse(ncut < 2, 2, ncut)
-        theta = degree.seq(from = theta1, to = theta2, length.out = ncut)
-     }
-    x = rou * cos(as.radian(theta))
-    y = rou * sin(as.radian(theta))
-    if(clock.wise) {
-        x = rev(x)
-        y = rev(y)
-    }
-    return(cbind(x, y))
-}
-
-
-# if restrict is TRUE, then value should belong to [0, 360)
-degree.add = function(theta1, theta2, restrict = FALSE) {
-	if(restrict) {
-		return((theta1 + theta2) %% 360)
-	} else {
-		return(theta1 + theta2)
+	x = numeric(ncut)
+	y = numeric(ncut)
+	for(i in seq_len(ncut)) {
+		t = (theta1 - (i-1)*theta_diff/(ncut-1)) %% 360
+		x[i] = rou * cos(as.radian(t))
+		y[i] = rou * sin(as.radian(t))
 	}
+	d = cbind(x, y)
+	#linesWithArrows(d)
+	return(d)
 }
 
-degree.minus = function(to, from, restrict = FALSE) {
-	if(restrict) {
-		return((to - from) %% 360)
-	} else {
-		return(to - from)
+# points from theta1 to theta2
+# first calcualte bezier curve of which two end points are located at (-d, 0), (d, 0)
+# and the summit is located at (0, 2h)
+getQuadraticPoints = function(theta1, theta2, rou1, rou2, h = NULL, w = 1) {
+
+	# enforce theta1 is always less than theta 2 (reverse-clockwise)
+	theta1 = theta1 %% 360
+	theta2 = theta2 %% 360
+
+    if (abs(theta2 - theta1) > 180) {
+        theta_mid = (theta2 + theta1)/2 - 180
+    } else {
+        theta_mid = (theta2 + theta1)/2
+    }
+
+    theta_mid  = theta_mid %% 360
+
+
+	rou_min = min(rou1, rou2)
+	x1 = rou_min*cos(as.radian(theta1))
+	y1 = rou_min*sin(as.radian(theta1))
+	
+	x2 = rou_min*cos(as.radian(theta2))
+	y2 = rou_min*sin(as.radian(theta2))
+	
+	if(is.null(h)) {
+		beta = (theta1 - theta2) %% 360
+		if(beta > 180) beta = 360 - beta
+		h = cos(as.radian(beta/2))*rou_min/2
 	}
+	
+	dis = 1/2 * sqrt((x1 - x2)^2 + (y1 - y2)^2)
+	p0 = c(-dis, 0)
+	p2 = c(dis, 0)
+	p1 = c(0, 2*h)
+	
+	d = quadratic.bezier(p0, p1, p2, w = w)
+
+	# shit, I don't know why!
+	col = "red"
+	alpha = - 90 + (360 - (theta1 + theta2)/2 %% 360)
+	if((theta_mid > 270 || theta_mid < 90) &&
+	   ( (theta1 - 180)*(theta2 - 180) < 0 )) {
+		alpha = alpha + 180
+		col = "green"
+	}
+	
+	mat = matrix(c(cos(as.radian(alpha)), sin(as.radian(alpha)), -sin(as.radian(alpha)), cos(as.radian(alpha))), nrow = 2)
+	d = d %*% mat
+	
+	x0 = (x1+x2)/2
+	y0 = (y1+y2)/2
+	
+	d[, 1] = d[, 1] + x0
+	d[, 2] = d[, 2] + y0
+
+	if((theta1 - theta2) %% 360 < 180) {
+		d = revMat(d)
+	}
+
+	#points(rou_min*cos(as.radian(theta1)), rou_min*sin(as.radian(theta1)), pch = 16, col = "blue")
+	
+	if(rou1 > rou2) {
+		d = rbind(c(rou1*cos(as.radian(theta1)), rou1*sin(as.radian(theta1))), d)
+	} else if(rou1 < rou2) {
+		d = rbind(d, c(rou2*cos(as.radian(theta2)), rou2*sin(as.radian(theta2))))
+	}
+	#linesWithArrows(d, col = col)
+	return(d)
 }
 
-degree.seq = function(from, to, length.out = 2, restrict = FALSE) {
-	if(length.out == 2) {
-		return(c(from, to))
-	} else if(length.out > 2) {
-		per = degree.minus(to, from, restrict = FALSE) / (length.out - 1)
-		s = numeric(length.out)
-		s[1] = degree.add(from, 0, restrict)
-		for(i in seq_along(s)) {
-			if(i == 1) {
-				next
+# 'Rational bezier curve', from wikipedia
+# w: w1
+quadratic.bezier = function(p0, p1, p2, n = 100, w = 1) {
+	
+	t = seq(0, 1, length.out = n)
+	x = ((1-t)^2 * p0[1] + 2*t*(1-t)*p1[1]*w + t^2*p2[1]) / ((1-t)^2 + 2*t*(1-t)*w + t^2)
+	y = ((1-t)^2 * p0[2] + 2*t*(1-t)*p1[2]*w + t^2*p2[2]) / ((1-t)^2 + 2*t*(1-t)*w + t^2)
+	return(cbind(x, y))
+
+}
+
+are.lines.intersected = function(x1, y1, x2, y2) {
+	n1 = length(x1)
+	n2 = length(x2)
+	
+	for(i in seq_len(n1)) {
+		if(i == 1) next
+		
+		a_1x = x1[i-1]
+		a_1y = y1[i-1]
+		a_2x = x1[i]
+		a_2y = y1[i]
+			
+		k1 = (a_1y - a_2y)/(a_1x - a_2x)
+		b1 = a_1y - k1*a_1x	
+						
+		for(j in seq_len(n2)) {
+			if(j == 1) next
+
+			b_1x = x2[j-1]
+			b_1y = y2[j-1]
+			b_2x = x2[j]
+			b_2y = y2[j]
+			
+			
+			k2 = (b_1y - b_2y)/(b_1x - b_2x)
+			b2 = b_1y - k2*b_1x
+				
+			i_x = - (b2 - b1)/(k2 - k1)
+			i_y = k1*i_x + b1
+			
+			a_minx = min(c(a_1x, a_2x))
+			a_maxx = max(c(a_1x, a_2x))
+			b_minx = min(c(b_1x, b_2x))
+			b_maxx = max(c(b_1x, b_2x))
+			if(i_x >= a_minx && i_x <= a_maxx && i_x >= b_minx && i_x <= b_maxx) {
+				return(TRUE)
 			}
-			s[i] = degree.add(s[i - 1], per, restrict)
 		}
-		return(s)
 	}
+	return(FALSE)
+}
+
+revMat = function(mat) {
+	return(mat[rev(seq_len(nrow(mat))), , drop = FALSE])
 }
 
 
-quadratic.mean.degree = function(theta1, theta2) {
-	theta1 = theta1 %% 360
-	theta2 = theta2 %% 360
-	
-	if(abs(theta2 - theta1) > 180) {
-		return((theta2 + theta1)/2 - 180)
+linesWithArrows = function(d, sep = 6, col = "red") {
+	lines(d, col = col)
+	if(nrow(d) > sep) {
+		for(i in seq(sep, nrow(d)-sep, by = sep)) {
+			arrows(d[i-sep/2, 1], d[i-sep/2, 2], d[i+sep/2, 1], d[i+sep/2, 2], length = 0.05, col = col)
+		}
 	} else {
-		return((theta2 + theta1)/2)
+		arrows(d[1, 1], d[1, 2], d[2, 1], d[2, 2], length = 0.05, col = col)
 	}
-
 }
 
-
-
-quadratic.minus.degree = function(theta1, theta2) {
-	theta1 = theta1 %% 360
-	theta2 = theta2 %% 360
-	
-	if(abs(theta2 - theta1) > 180) {
-		return(abs(theta2 - theta1) - 180)
-	} else {
-		return(abs(theta2 - theta1))
-	}
-
+degreeDiff = function (theta1, theta2) {
+    theta1 = theta1 %% 360
+    theta2 = theta2 %% 360
+    if (abs(theta2 - theta1) > 180) {
+        return(abs(theta2 - theta1) - 180)
+    }
+    else {
+        return(abs(theta2 - theta1))
+    }
 }
-

@@ -847,7 +847,16 @@ circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.col
 # == details
 # Of course, number of rows should be same in ``region1`` and ``region2``.
 circos.genomicLink = function(region1, region2, 
-	rou = get.track.end.position(get.current.track.index()), rou1 = rou, rou2 = rou,
+	rou = {tracks = get.all.track.index()
+	       if(length(tracks) == 0) {
+		       1
+		   } else {
+		       n = length(tracks)
+		       get.cell.meta.data("cell.bottom.radius", track.index = tracks[n]) - 
+			     get.cell.meta.data("track.margin", track.index = tracks[n])[1] - 
+			     circos.par("track.margin")[2]
+		   }
+    }, rou1 = rou, rou2 = rou,
     col = "black", lwd = par("lwd"), lty = par("lty"), border = NA, ...) {
 	
 	region1 = normalizeToDataFrame(region1)
@@ -1163,7 +1172,7 @@ posTransform.default = function(region) {
 # You may use `circos.info` to find out index for all tracks.
 #
 # The function calls `draw.sector`.
-highlight.chromosome = function(chr, track.index = seq_len(get.max.track.index()), 
+highlight.chromosome = function(chr, track.index = get.all.track.index(), 
 	col = "#FF000040", border = NA, lwd = par("lwd"), lty = par("lty"),
 	padding = c(0, 0, 0, 0)) {
 	
@@ -1171,8 +1180,8 @@ highlight.chromosome = function(chr, track.index = seq_len(get.max.track.index()
 		stop("`chr` can only be length 1.\n")
 	}
 	
-	max.track.index = get.max.track.index()
-	if(!all(track.index %in% seq_len(max.track.index))) {
+	tracks = get.all.track.index()
+	if(!all(track.index %in% tracks)) {
 		stop("`track.index` contains index that does not belong to available sectors.\n")
 	}
 	

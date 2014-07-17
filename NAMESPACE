@@ -35,6 +35,7 @@ export(
 	generateRandomBed,
 	genomicDensity,
 	get.all.sector.index,
+	get.all.track.index,
 	get.cell.meta.data,
 	get.current.chromosome,
 	getI,

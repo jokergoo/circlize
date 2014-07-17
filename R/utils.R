@@ -117,21 +117,21 @@ recycle.with.levels = function(x, levels) {
     return(x)
 }
 
-check.track.position = function(trace.index, track.start, track.height) {
+check.track.position = function(track.index, track.start, track.height) {
 
     track.margin = circos.par("track.margin")
     if(track.start - track.height - track.margin[2] < 0 ||
        track.start - track.height < 0 ||
        track.start < 0) {
-        stop(paste("not enough space for plotting region of track index '", trace.index, "'.\n", sep = ""))
+        stop(paste("not enough space for plotting region of track index '", track.index, "'.\n", sep = ""))
     }
     if(track.start - track.margin[1] - track.height - track.margin[2] < 0) {
-        stop(paste("not enough space for bottom margin of track index '", trace.index, "'.\n", sep = ""))
+        stop(paste("not enough space for bottom margin of track index '", track.index, "'.\n", sep = ""))
     }
     
-    if(trace.index > 1) {
+    if(track.index > 1) {
         
-        if(track.start > get.track.end.position(trace.index - 1)) {
+        if(track.start > get.cell.meta.data("cell.bottom.radius", track.index = track.index - 1)) {
             stop("Plotting region overlaps with previous track.\n")
         }
     }

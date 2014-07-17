@@ -86,19 +86,26 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
         stop(paste("Cannot find these categories in existed sectors:", paste(setdiff.factors, collapse = ", "), ".\n", sep = ""))
     }
     
+	tracks = get.all.track.index()
+	last.track.index = ifelse(length(tracks), tracks[length(tracks)], 0)
+	flag_createNewTrack = 0
     if(is.null(track.index)) {
         # new track should inside the most recently created track
-        last.track.index = get.max.track.index()
         set.current.track.index(last.track.index + 1)
         track.index = get.current.track.index()
-    } else {   # update an existed track
-		if(track.index > get.max.track.index() + 1) {
-			stop(paste("Wrong track index: it should be no more than ", get.max.track.index(), "\n", sep = ""))
+		flag_createNewTrack = 1
+    } else if(track.index == last.track.index + 1) {
+		# if the track.index is next to the most recently created track
+		set.current.track.index(track.index)
+        track.index = get.current.track.index()
+		flag_createNewTrack = 1
+	} else {   
+		if(track.index > last.track.index + 1) {
+			stop(paste("Wrong track index: it should be no more than ", last.track.index + 1, "\n", sep = ""))
 		}
-		if(track.index <= get.max.track.index()) {
-			#if(! is.null(track.height)) {
-			#	warning("You are updating an existed track, the `track.height` is not used.\n")
-			#}
+		# update an existed track
+		if(track.index <= tracks[length(tracks)]) {
+			# ignore track.height from args
 			track.height = get.cell.data(factors[1], track.index)$track.height
 		}
         if(is.null(ylim) && is.null(y)) {
@@ -132,15 +139,21 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 		}
 	}
 	
-	if(track.index <= get.max.track.index()) {  # if just update a whole track
-		track.start = get.cell.data(factors[1], track.index)$track.start
-	} else {
-		track.start = get.track.end.position(track.index - 1) - circos.par("track.margin")[2]
-    }
+	if(flag_createNewTrack) {
+		if(track.index == 1) {
+			track.start = 1 - circos.par("track.margin")[2]
+		} else {
+			track.start = get.cell.meta.data("cell.bottom.radius", track.index = track.index - 1) - 
+			              get.cell.meta.data("track.margin", track.index = track.index - 1)[1] -
+						  circos.par("track.margin")[2]
+		}
+    } else {
+		track.start = get.cell.meta.data("cell.top.radius", track.index = track.index)
+	}
 	
     # check whether there is enough space for the new track and whether the new space
     # overlap with other tracks. Only for creatation mode.
-	if(track.index > get.max.track.index()) {
+	if(flag_createNewTrack) {
 		check.track.position(track.index, track.start, track.height)
     }
 	
@@ -204,9 +217,6 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 		}
 	}
 	
-    # After the track has been created, the default tract starting position is set
-    # just next to the most recently created track
-    set.track.end.position(track.index, track.start - track.height - circos.par("track.margin")[1])
     return(invisible(NULL))
 
 }

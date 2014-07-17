@@ -34,7 +34,16 @@
 # By default you only need to set ``sector.index1``, ``point1``, ``sector.index2`` and ``point2``. The
 # link would look nice. See vignette for detailed explanation.
 circos.link = function(sector.index1, point1, sector.index2, point2,
-    rou = get.track.end.position(get.current.track.index()),
+    rou = {tracks = get.all.track.index()
+	       if(length(tracks) == 0) {
+		       1
+		   } else {
+		       n = length(tracks)
+		       get.cell.meta.data("cell.bottom.radius", track.index = tracks[n]) - 
+			     get.cell.meta.data("track.margin", track.index = tracks[n])[1] - 
+			     circos.par("track.margin")[2]
+		   }
+    },
     rou1 = rou, rou2 = rou, h = NULL, w = 1, h2 = h, w2 = w,
     col = "black", lwd = par("lwd"), lty = par("lty"), border = NA) {
     
@@ -158,13 +167,19 @@ getQuadraticPoints = function(theta1, theta2, rou1, rou2, h = NULL, w = 1) {
 	if(is.null(h)) {
 		beta = (theta1 - theta2) %% 360
 		if(beta > 180) beta = 360 - beta
-		h = cos(as.radian(beta/2))*rou_min/((1+w)/w)
+		h = cos(as.radian(beta/2))*rou_min/2
 	}
+	
+	if(w < 0) h = -h
 	
 	dis = 1/2 * sqrt((x1 - x2)^2 + (y1 - y2)^2)
 	p0 = c(-dis, 0)
 	p2 = c(dis, 0)
-	p1 = c(0, (1+w)/w*h)
+	if(w == 0) {
+		p1 = c(0, 0)
+	} else {
+		p1 = c(0, (1+w)/w*h)
+	}
 	
 	d = quadratic.bezier(p0, p1, p2, w = w)
 

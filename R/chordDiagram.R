@@ -229,7 +229,16 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 			if(abs(mat[rn[i], cn[j]]) < 1e-8) {
 				next
 			}
-			rou = get.track.end.position(get.current.track.index())
+			rou = {tracks = get.all.track.index()
+				   if(length(tracks) == 0) {
+					   1
+				   } else {
+					   n = length(tracks)
+					   get.cell.meta.data("cell.bottom.radius", track.index = tracks[n]) - 
+						 get.cell.meta.data("track.margin", track.index = tracks[n])[1] - 
+						 circos.par("track.margin")[2]
+				   }
+				}
             sector.index1 = rn[i]
             sector.index2 = cn[j]
 			

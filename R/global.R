@@ -4,7 +4,6 @@
 .CIRCOS.ENV = new.env()
 
 assign(".SECTOR.DATA", NULL, envir = .CIRCOS.ENV)
-assign(".TRACK.END.POSITION", 1, envir = .CIRCOS.ENV)
 assign(".CELL.DATA", NULL, envir = .CIRCOS.ENV)
 assign(".CURRENT.TRACK.INDEX", 0, envir = .CIRCOS.ENV)
 assign(".CURRENT.SECTOR.INDEX", NULL, envir = .CIRCOS.ENV)
@@ -174,7 +173,6 @@ is.circos.initialized = function() {
 circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL) {
 
     assign(".SECTOR.DATA", NULL, envir = .CIRCOS.ENV)
-	assign(".TRACK.END.POSITION", 1, envir = .CIRCOS.ENV)
 	assign(".CELL.DATA", NULL, envir = .CIRCOS.ENV)
 	assign(".CURRENT.TRACK.INDEX", 0, envir = .CIRCOS.ENV)
 	assign(".CURRENT.SECTOR.INDEX", NULL, envir = .CIRCOS.ENV)
@@ -349,7 +347,6 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 circos.clear = function() {
     
 	assign(".SECTOR.DATA", NULL, envir = .CIRCOS.ENV)
-	assign(".TRACK.END.POSITION", 1, envir = .CIRCOS.ENV)
 	assign(".CELL.DATA", NULL, envir = .CIRCOS.ENV)
 	assign(".CURRENT.TRACK.INDEX", 0, envir = .CIRCOS.ENV)
 	assign(".CURRENT.SECTOR.INDEX", NULL, envir = .CIRCOS.ENV)
@@ -365,7 +362,25 @@ circos.clear = function() {
 # Simple function returning a vector of all sector index.
 get.all.sector.index = function() {
 	.SECTOR.DATA = get(".SECTOR.DATA", envir = .CIRCOS.ENV)
-    return(as.vector(.SECTOR.DATA$factor))
+	if(is.null(.SECTOR.DATA)) {
+		return(character(0))
+	} else {
+		return(as.vector(.SECTOR.DATA$factor))
+	}
+}
+
+# == title
+# Get index for all tracks
+#
+# == details
+# Simple function returning a vector of all track index.
+get.all.track.index = function() {
+	.CELL.DATA = get(".CELL.DATA", envir = .CIRCOS.ENV)
+	if(is.null(.CELL.DATA)) {
+		return(integer(0))
+	} else {
+		return(seq_along(.CELL.DATA[[1]]))
+	}
 }
 
 get.sector.data = function(sector.index = get.current.sector.index()) {
@@ -387,15 +402,6 @@ set.current.track.index = function(x) {
     return(invisible(NULL))
 }
 
-get.max.track.index = function() {
-    if(get.current.track.index() == 0) {
-        return(0)
-    } else {
-		.CELL.DATA = get(".CELL.DATA", envir = .CIRCOS.ENV)
-        return(length(.CELL.DATA[[1]]))
-    }
-}
-
 # factors name, note it is not numeric index
 get.current.sector.index = function() {
 	.CURRENT.SECTOR.INDEX = get(".CURRENT.SECTOR.INDEX", envir = .CIRCOS.ENV)
@@ -412,28 +418,6 @@ set.current.sector.index = function(x) {
     return(invisible(NULL))
 }
 
-# Position where the current track ends (position of the bottom edge - bottom margin)
-# If no track has been created, the position is 1
-# Note there would be a little inconsistence for the definition of track.
-# In the package, the track is the height of cells
-# but in this funciton, track includes the margins. However, it is an internal function
-# and the definition of track would be unified
-get.track.end.position = function(track.index = get.current.track.index()) {
-    
-    if(track.index == 0) {
-        return(1)
-    } else {
-		.TRACK.END.POSITION = get(".TRACK.END.POSITION", envir = .CIRCOS.ENV)
-        return(.TRACK.END.POSITION[track.index])
-    }
-}
-
-set.track.end.position = function(track.index = get.current.track.index(), y) {
-    .TRACK.END.POSITION = get(".TRACK.END.POSITION", envir = .CIRCOS.ENV)
-    .TRACK.END.POSITION[track.index] = y
-	assign(".TRACK.END.POSITION", .TRACK.END.POSITION, envir = .CIRCOS.ENV)
-    return(invisible(NULL))
-}
 
 get.cell.data = function(sector.index = get.current.sector.index(), track.index = get.current.track.index()) {
 	.CELL.DATA = get(".CELL.DATA", envir = .CIRCOS.ENV)
@@ -479,11 +463,11 @@ has.cell = function(sector.index, track.index) {
 # for each cell on the plot.
 circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 	sectors = get.all.sector.index()
-	max.track.index = get.max.track.index()
+	tracks = get.all.track.index
 		
 	if(plot) {
 		for(i in seq_along(sectors)) {
-			for(j in seq_len(max.track.index)) {
+			for(j in seq_along(tracks)) {
 				cell.xlim = get.cell.meta.data("cell.xlim", sector.index = sectors[i], track.index = j)
 				cell.ylim = get.cell.meta.data("cell.ylim", sector.index = sectors[i], track.index = j)
 				circos.text(mean(cell.xlim), mean(cell.ylim), labels = paste(sectors[i], j, sep = ":"),
@@ -493,17 +477,15 @@ circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 	} else {
 		# just print the name and xlim for each sector
 		if(is.null(sector.index) && is.null(track.index)) {
-			all.sector.index = get.all.sector.index()
-			max.track.index = get.max.track.index()
 			cat("All your sectors:\n")
-			print(all.sector.index)
+			print(sectors)
 			cat("\n")
 			cat("All your tracks:\n")
-			print(seq_len(get.max.track.index()))
+			print(tracks)
 			cat("\n")
 
 		} else if(is.null(track.index)) {
-			track.index = seq_len(get.max.track.index())
+			track.index = tracks
 			for(i in seq_along(sector.index)) {
 				for(j in seq_along(track.index)) {
 					cat("sector index: ", sector.index[i], "\n", sep = "")
@@ -516,7 +498,7 @@ circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 				}
 			}
 		} else if(is.null(sector.index)) {
-			sector.index = get.all.sector.index()
+			sector.index = sectors
 			for(i in seq_along(sector.index)) {
 				for(j in seq_along(track.index)) {
 					cat("sector index: ", sector.index[i], "\n", sep = "")
@@ -610,7 +592,7 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 	if(!any(sector.index %in% get.all.sector.index())) {
 		stop(paste0("Cannot find sector: ", sector.index, ".\n"))
 	}
-	if(!any(track.index %in% seq_len(get.max.track.index()))) {
+	if(!any(track.index %in% get.all.track.index())) {
 		stop(paste0("Cannot find track: ", track.index, ".\n"))
 	}
 

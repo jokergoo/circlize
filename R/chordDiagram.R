@@ -16,7 +16,7 @@
 #          Length should be same as number of rows in ``mat``. This argument only works when ``col`` is set to ``NULL``.
 # -column.col Colors for links. Links from the same column will have the same color.
 #             Length should be same as number of columns in ``mat``. This argument only works when ``col`` and ``row.col`` is set to ``NULL``.
-# -directional Whether links have directions. The direction is from rows to columns. If you
+# -directional Whether links have directions. The directions are from rows to columns. If you
 #              want the direction from columns to rows, just transpose your ``mat``.
 # -symmetric Whether the matrix is symmetric. If the value is set to ``TRUE``, only
 #            lower triangular matrix without the diagonal will be used.
@@ -37,7 +37,8 @@
 # Sectors of the plot is ``union(rownames(mat), colnames(mat))``. If there is no rowname or colname, the function will
 # assign names for it.
 #
-# This function contains some settings that may be a little difficult to understand. Please refer to vignette for better explanation.
+# This function is flexible and contains some settings that may be a little difficult to understand. 
+# Please refer to vignette for better explanation.
 chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 	col = NULL, row.col = NULL, column.col = NULL, directional = FALSE,
 	symmetric = FALSE, order = NULL, preAllocateTracks = NULL,
@@ -229,16 +230,17 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 			if(abs(mat[rn[i], cn[j]]) < 1e-8) {
 				next
 			}
-			rou = {tracks = get.all.track.index()
-				   if(length(tracks) == 0) {
-					   1
-				   } else {
-					   n = length(tracks)
-					   get.cell.meta.data("cell.bottom.radius", track.index = tracks[n]) - 
-						 get.cell.meta.data("track.margin", track.index = tracks[n])[1] - 
-						 circos.par("track.margin")[2]
-				   }
-				}
+			rou = {
+				tracks = get.all.track.index()
+				if(length(tracks) == 0) {
+					1
+				} else {
+					n = length(tracks)
+					get.cell.meta.data("cell.bottom.radius", track.index = tracks[n]) - 
+					get.cell.meta.data("track.margin", track.index = tracks[n])[1] - 
+					circos.par("track.margin")[2]
+			    }
+			}
             sector.index1 = rn[i]
             sector.index2 = cn[j]
 			

@@ -3,10 +3,15 @@
 
 .CIRCOS.ENV = new.env()
 
-assign(".SECTOR.DATA", NULL, envir = .CIRCOS.ENV)
-assign(".CELL.DATA", NULL, envir = .CIRCOS.ENV)
-assign(".CURRENT.TRACK.INDEX", 0, envir = .CIRCOS.ENV)
-assign(".CURRENT.SECTOR.INDEX", NULL, envir = .CIRCOS.ENV)
+resetGlobalVariable = function() {
+	assign(".SECTOR.DATA", NULL, envir = .CIRCOS.ENV)
+	assign(".CELL.DATA", NULL, envir = .CIRCOS.ENV)
+	assign(".CURRENT.TRACK.INDEX", 0, envir = .CIRCOS.ENV)
+	assign(".CURRENT.SECTOR.INDEX", NULL, envir = .CIRCOS.ENV)
+}
+
+resetGlobalVariable()
+
 .CIRCOS.PAR.DEFAULT = list(
     start.degree = 0,
 	gap.degree = 1,
@@ -135,7 +140,7 @@ is.circos.initialized = function() {
 }
 
 # == title
-# Initialize the circos sectors
+# Initialize the circos plot
 #
 # == param
 # -factors Factors which represent data categories
@@ -172,10 +177,7 @@ is.circos.initialized = function() {
 # The function finally call `graphics::plot` and be ready for adding graphics.
 circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL) {
 
-    assign(".SECTOR.DATA", NULL, envir = .CIRCOS.ENV)
-	assign(".CELL.DATA", NULL, envir = .CIRCOS.ENV)
-	assign(".CURRENT.TRACK.INDEX", 0, envir = .CIRCOS.ENV)
-	assign(".CURRENT.SECTOR.INDEX", NULL, envir = .CIRCOS.ENV)
+    resetGlobalVariable()
 	
 	.SECTOR.DATA = get(".SECTOR.DATA", envir = .CIRCOS.ENV)
 	.CELL.DATA = get(".CELL.DATA", envir = .CIRCOS.ENV)
@@ -343,13 +345,10 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 # parameters for circos plot which can only be set before `circos.initialize`. So before you draw the next
 # circos plot, you need to reset these parameters.
 #
-# If you meet some errors when re-drawing the circos plot, try running this function and it will solve part of the problems.
+# If you meet some errors when re-drawing the circos plot, try running this function and it will solve most of the problems.
 circos.clear = function() {
     
-	assign(".SECTOR.DATA", NULL, envir = .CIRCOS.ENV)
-	assign(".CELL.DATA", NULL, envir = .CIRCOS.ENV)
-	assign(".CURRENT.TRACK.INDEX", 0, envir = .CIRCOS.ENV)
-	assign(".CURRENT.SECTOR.INDEX", NULL, envir = .CIRCOS.ENV)
+	resetGlobalVariable()
 	assign(".CIRCOS.PAR", .CIRCOS.PAR.DEFAULT, envir = .CIRCOS.ENV)
     
     return(invisible(NULL))
@@ -448,19 +447,20 @@ has.cell = function(sector.index, track.index) {
 # Get information of the circos plot
 #
 # == param
-# -sector.index Which sectors you want to look at
-# -track.index  Which tracks you want to look at
+# -sector.index Which sectors you want to look at? It can be a vector.
+# -track.index  Which tracks you want to look at? It can be a vector.
 # -plot         Whether to add information on the plot
 #
 # == details
 # It tells you the basic parameters for sectors/tracks/cells. If both ``sector.index``
 # and ``track.index`` are set to ``NULL``, the function would print index for 
 # all sectors and all tracks. If ``sector.index`` and/or ``track.index`` are set,
-# the function would print xlim and ylim in the data coordinate for every cell in specified sectors and tracks.
+# the function would print ``xlim``, ``ylim``, ``cell.xlim``, ``cell.ylim``,
+# ``xplot``, ``yplot``, ``track.margin`` and ``cell.padding`` for every cell in specified sectors and tracks.
 # Also, the function will print index for your current sector and current track.
 #
 # If ``plot`` is set to ``TRUE``, the function will draw the index of the sector and the track 
-# for each cell on the plot.
+# for each cell on the figure.
 circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 	sectors = get.all.sector.index()
 	tracks = get.all.track.index
@@ -484,41 +484,32 @@ circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 			print(tracks)
 			cat("\n")
 
-		} else if(is.null(track.index)) {
-			track.index = tracks
-			for(i in seq_along(sector.index)) {
-				for(j in seq_along(track.index)) {
-					cat("sector index: ", sector.index[i], "\n", sep = "")
-					cat("track index: ", track.index[j], "\n", sep = "")
-					xlim = get.cell.meta.data('xlim', sector.index[i], track.index[j])
-					ylim = get.cell.meta.data('ylim', sector.index[i], track.index[j])
-					cat("xlim: [", xlim[1], ", ", xlim[2], "]\n", sep = "")
-					cat("ylim: [", ylim[1], ", ", ylim[2], "]\n", sep = "")
-					cat("\n")
-				}
-			}
-		} else if(is.null(sector.index)) {
-			sector.index = sectors
-			for(i in seq_along(sector.index)) {
-				for(j in seq_along(track.index)) {
-					cat("sector index: ", sector.index[i], "\n", sep = "")
-					cat("track index: ", track.index[j], "\n", sep = "")
-					xlim = get.cell.meta.data('xlim', sector.index[i], track.index[j])
-					ylim = get.cell.meta.data('ylim', sector.index[i], track.index[j])
-					cat("xlim: [", xlim[1], ", ", xlim[2], "]\n", sep = "")
-					cat("ylim: [", ylim[1], ", ", ylim[2], "]\n", sep = "")
-					cat("\n")
-				}
-			}
 		} else {
+			if(is.null(track.index)) {
+				track.index = tracks
+			} else if(is.null(sector.index)) {
+				sector.index = sectors
+			}
 			for(i in seq_along(sector.index)) {
 				for(j in seq_along(track.index)) {
 					cat("sector index: ", sector.index[i], "\n", sep = "")
 					cat("track index: ", track.index[j], "\n", sep = "")
 					xlim = get.cell.meta.data('xlim', sector.index[i], track.index[j])
 					ylim = get.cell.meta.data('ylim', sector.index[i], track.index[j])
+					cell.xlim = get.cell.meta.data("cell.xlim", sector.index[i], track.index[j])
+					cell.ylim = get.cell.meta.data("cell.ylim", sector.index[i], track.index[j])
+					xplot = get.cell.meta.data("xplot", sector.index[i], track.index[j])
+					yplot = get.cell.meta.data("yplot", sector.index[i], track.index[j])
+				    track.margin = get.cell.meta.data("track.margin", sector.index[i], track.index[j])
+				    cell.padding = get.cell.meta.data("cell.padding", sector.index[i], track.index[j])
 					cat("xlim: [", xlim[1], ", ", xlim[2], "]\n", sep = "")
 					cat("ylim: [", ylim[1], ", ", ylim[2], "]\n", sep = "")
+					cat("cell.ylim: [", cell.ylim[1], ", ", cell.ylim[2], "]\n", sep = "")
+					cat("cell.ylim: [", cell.ylim[1], ", ", cell.ylim[2], "]\n", sep = "")
+					cat("xplot (degree): [", xplot[1], ", ", xplot[2], "]\n", sep = "")
+					cat("yplot (radius): [", yplot[1], ", ", yplot[2], "]\n", sep = "")
+					cat("track.margin: c(", track.margin[1], ", ", track.margin[2], ")\n", sep = "")
+					cat("cell.padding: c(", cell.padding[1], ", ", cell.padding[2], ", ", cell.padding[3], ", ", cell.padding[4], ")\n", sep = "")
 					cat("\n")
 				}
 			}
@@ -528,9 +519,9 @@ circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 		cat("Your current sector.index is ", get.current.sector.index(), "\n", sep = "")
 		cat("Your current track.index is ", get.current.track.index(), "\n", sep = "")
 	}
-		
-
+	
 }
+
 
 # == title
 # Label the sector index and the track index on each cell
@@ -554,7 +545,7 @@ show.index = function() {
 # The following meta information for a cell can be obtained:
 #
 # -sector.index         The name (index) for the sector
-# -sector.numeric.index Numeric index for the sector. It is the numeric order of levels of ``factors`` in initialization step
+# -sector.numeric.index Numeric index for the sector
 # -track.index          Numeric index for the track
 # -xlim                 Minimal and maximal values on the x-axis
 # -ylim                 Minimal and maximal values on the y-axis

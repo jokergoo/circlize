@@ -33,8 +33,22 @@ circlize = function(x, y, sector.index = get.current.sector.index(),
     return(m)
 }
 
-# reverse function of circlize
-reverse.circlize = function(theta, rou, sector.index, track.index) {
+# == title
+# Return the coordinate in data coordinate system
+#
+# == param
+# -theta        measured by degree
+# -rou          distance to the origin
+# -sector.index Index for the sector
+# -track.index  Index for the track
+#
+# == details
+# This is the reverse function of `circlize`. It transform data points from polar coordinate system to data coordinate system.
+#
+# == values
+# A matrix with two columns (``x`` and ``y``)
+reverse.circlize = function(theta, rou, sector.index = get.current.sector.index(),
+    track.index = get.current.track.index()) {
 	sector.data = get.sector.data(sector.index)
     cell.data = get.cell.data(sector.index, track.index)
 	cell.ylim = get.cell.meta.data("cell.ylim", sector.index, track.index)
@@ -167,11 +181,11 @@ as.degree = function(radian) {
 #
 # == param
 # -breaks A vector indicating numeric breaks
-# -colors A vector of colors which corresponds to values in ``breaks``
-# -transparency a single value in [0, 1]. 0 refers to no transparency and 1 refers to full transparency
+# -colors A vector of colors which correspond to values in ``breaks``
+# -transparency A single value in [0, 1]. 0 refers to no transparency and 1 refers to full transparency
 #
 # == details
-# Colors are interpolated according to break values and corresponding colors. Values exceeds breaks will be assigned with maximum or minimum color.
+# Colors are interpolated according to break values and corresponding colors. Values exceeding breaks will be assigned with maximum or minimum color.
 #
 # == values
 # It returns a function which accepts a vector of numbers and returns interpolated colors.

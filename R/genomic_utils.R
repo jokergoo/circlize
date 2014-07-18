@@ -1,5 +1,5 @@
 # == title
-# Read/parse cytoband data from a data frame / a file / UCSC database
+# Read/parse cytoband data from a data frame / file / UCSC database
 #
 # == param
 # -cytoband A path of the cytoband file or a data frame that already contains cytoband data
@@ -23,7 +23,7 @@
 # important since the order of chromosomes will be used to control the order of sectors when initializing the circos plot.
 #
 # == values
-# -df         Original data frame for cytoband data
+# -df         Data frame for cytoband data (rows are sorted if ``sort.chr`` is set to ``TRUE``)
 # -chromosome Sorted chromosome names
 # -chr.len    Length of chromosomes. Order are same as ``chromosome``
 #

@@ -31,6 +31,7 @@ Functions to arrange the circos layout:
 - `circos.trackPlotRegion`
 - `circos.updatePlotRegion`
 - `circos.par`
+- `circos.info`
 - `circos.clear`
 
 Theoretically, you are able to draw most kinds of circos figures by the above functions.
@@ -65,7 +66,6 @@ Finally, function that draws chord diagram:
 
 Please refer to the vignettes to find out how to draw basic and advanced circos figures by this package.
 
-More tests will be added.
 
 ### Install
 
@@ -73,13 +73,14 @@ The package has been submitted to CRAN, so you can install it through:
 
     install.packages("circlize")
 
-Together with the package there are four vignettes which provide detailed description and examples.
+Together with the package there are several vignettes which provide detailed description and examples.
+
 
 ## the Perl module
 
 There is also a Perl module `R::Comment2Man` to convert comments to documentary files.
 
-Comments are marked as the Markdown-style and it looks more clear than that under the `Roxygen` package (personal point of view).
+Comments are marked as the Markdown-style.
 
 It still has a lot of bugs, but it at least works.
 

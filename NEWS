@@ -1,5 +1,8 @@
 NEWS/Changelog
 
+== 0.1.0
+- height(h) and shape(w) can be set in Bezier curve
+
 == 0.0.9
 - links are now implemented by Bezier curve
 - baseline can be set when ``type == "h"`` `in circos.lines`

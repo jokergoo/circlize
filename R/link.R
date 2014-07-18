@@ -1,20 +1,16 @@
-# functions to draw links are not so nice,
-# a little inconsistent to the other functions and a little hard to understand
-# it may be improved later.
-
 
 # == title
 # Draw links between points or intervals
 #
 # == param
-# -sector.index1 Sector index for one sector
+# -sector.index1 Index for sector one
 # -point1        A single value or a numeric vector of length 2. If it is a 2-elements vector, then
 #                the link would be a belt/ribbon.
-# -sector.index2 Sector index for the other sector
+# -sector.index2 Index for the other sector
 # -point2        A single value or a numeric vector of length 2. If it is a 2-elements vector, then
 #                the link would be a belt/ribbon.
 # -rou           The position of the 'root' of the link. It is the percentage of the radius of the unit circle.
-#                By default it is from the bottom of the most recent track.
+#                By default it is from the bottom of the most inner track.
 # -rou1          The position of root 1 of the link. 
 # -rou2          The position of root 2 of the link.
 # -h             Height of the link. 
@@ -192,6 +188,7 @@ getQuadraticPoints = function(theta1, theta2, rou1, rou2, h = NULL, w = 1) {
 		col = "green"
 	}
 	
+	# rotate coordinate
 	mat = matrix(c(cos(as.radian(alpha)), sin(as.radian(alpha)), -sin(as.radian(alpha)), cos(as.radian(alpha))), nrow = 2)
 	d = d %*% mat
 	

@@ -59,6 +59,7 @@ reverse.circlize = function(theta, rou, sector.index = get.current.sector.index(
 	
 	m = cbind(x, y)
 	colnames(m) = c("x", "y")
+	rownames(m) = NULL
 	return(m)
 }
 

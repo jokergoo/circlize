@@ -34,7 +34,7 @@ circos.clear()
 df = read.cytoband()$df
 circos.genomicInitialize(df)
 
-df = data.frame (name = c("TP53", "TP63", "TP73"),
+df = data.frame(name = c("TP53", "TP63", "TP73"),
 	             start = c(7565097, 189349205, 3569084),
 	             end = c(7590856, 189615068, 3652765),
 	             stringsAsFactors = FALSE)

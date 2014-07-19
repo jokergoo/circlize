@@ -58,7 +58,7 @@ sub draft {
     print "Remove temp files ($r_merge_filename)\n";
     unlink($r_merge_filename);
     
-    print "Done, you doc drafts are in /man dir.\n";
+    print "Done, you doc drafts are in /man dir.\n\n";
 }
 
 
@@ -110,7 +110,7 @@ sub parse {
 		} else {
 			print NAMESPACE "\t$items[$i]->{_function_name}".($i == $#items ? "" : ",")."\n";
 		}
-		print "man/$items[$i]->{_function_name}.rd... done.\n";
+		print "man/$items[$i]->{_function_name}.rd... done.\n\n";
 	}
 	print NAMESPACE ")\n";
 	close NAMESPACE;

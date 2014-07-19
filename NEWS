@@ -1,7 +1,8 @@
 NEWS/Changelog
 
 == 0.1.0
-- height(h) and shape(w) can be set in Bezier curve
+- height(h) and shape(w) can be set for Bezier curve
+- add examples in man/
 
 == 0.0.9
 - links are now implemented by Bezier curve

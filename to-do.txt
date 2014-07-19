@@ -1,4 +1,3 @@
 - testing code
 - test whether two lines are intersected
-- example code in man/
 - revise vignettes

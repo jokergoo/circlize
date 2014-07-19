@@ -9,12 +9,12 @@ colnames(mat) = LETTERS[1:6]
 rn = rownames(mat)
 cn = colnames(mat)
 
-factors = c(letters[1:3], LETTERS[1:6])
+factors = c(letters[1:3], rev(LETTERS[1:6]))
 factors = factor(factors, levels = factors)
 
 col_sum = apply(mat, 2, sum)
 row_sum = apply(mat, 1, sum)
-xlim = cbind(rep(0, 9), c(row_sum, col_sum))
+xlim = cbind(rep(0, 9), c(row_sum, rev(col_sum)))
 
 par(mar = c(1, 1, 1, 1))
 circos.clear()
@@ -27,18 +27,6 @@ circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA,
 		sector.name = get.cell.meta.data("sector.index")
 		xlim = get.cell.meta.data("xlim")
 		circos.text(mean(xlim), 1.5, sector.name, adj = c(0.5, 0))
-
-		if(sector.name %in% rn) {
-			for(i in seq_len(ncol(mat))) {
-				circos.lines(rep(sum(mat[sector.name, seq_len(i)]), 2), c(0, 1), 
-                    col = "white")
-			}
-		} else if(sector.name %in% cn) {
-			for(i in seq_len(nrow(mat))) {
-				circos.lines(rep(sum(mat[ seq_len(i), sector.name]), 2), c(0, 1), 
-                   col = "white")
-			}
-		}
 	})
 
 

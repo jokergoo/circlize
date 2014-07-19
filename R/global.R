@@ -463,7 +463,7 @@ has.cell = function(sector.index, track.index) {
 # for each cell on the figure.
 circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 	sectors = get.all.sector.index()
-	tracks = get.all.track.index
+	tracks = get.all.track.index()
 		
 	if(plot) {
 		for(i in seq_along(sectors)) {

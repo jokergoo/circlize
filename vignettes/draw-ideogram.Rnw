@@ -88,18 +88,6 @@ for(chr in chromosome) {
 }
 @
 
-Since reading cytoband file is a general task, we embed the above code into a simple function {\tt read.cytoband}.
-The function would return a list which includes a data frame with all cytoband data, sorted chromosome names and 
-length of chromosomes.
-
-<<echo=TRUE, eval=FALSE>>=
-cytoband = read.cytoband()  # by default, it reads human cytoband data
-cytoband = read.cytoband(species = "mm10")  # or download from UCSC by specifying species version
-d = cytoband$df
-chromosome = cytoband$chromosome
-xlim = cbind(rep(0, length(chromosome)), cytoband$chr.len)
-@
-
 Note that chromosome name in UCSC has prefix of 'chr', so if you are using chromosomes form 1000 Genome project which
 have not 'chr' prefix, remember to add it.
 
@@ -111,7 +99,7 @@ par(mar = c(1, 1, 1, 1), lwd = 0.5)
 circos.par("cell.padding" = c(0, 0, 0, 0))
 @
 
-Initialize the circular layout with ranges of chromosomes. In the initialization step, width of 
+Next we initialize the circular layout with ranges of chromosomes. In the initialization step, width of 
 each sector would correspond to the length of each chromosome. Also the order of sectors would
 be determined in this step. Here we must explicitly
 set the levels of the factors to make sure the order of chromosomes is ``chr1, chr2,
@@ -142,14 +130,7 @@ circos.trackPlotRegion(factors = chromosome, ylim = c(0, 1), bg.border = NA,
 
 In the above codes, it is not necessary to set the {\tt factors} argument. If {\tt factors}
 is not set, {\tt circos.trackPlotRegion} will automatically create plotting regions for all available sectors
-which have already been initialized. But explicitly specifying the {\tt factors}
-argument would make your code more clear for reading. And the value for {\tt factors} does not
-need to be a real factor. If it is not a factor, it would be converted to a factor internally.
-If the value for {\tt factors} is already a factor, the level of the factor also does not need
-to be specified because the cells are positioned with the order of chromosomes which is already defined in the 
-initialization step. (But to be rigorous, order of {\tt factors} matters if graphics arguments like {\tt bg.border}
-or {\tt bg.col} is a vector with length larger than 1. However, in most circumstance, we do not need to set {\tt bg.border} or
-{\tt bg.col} as a vector, so you don't need to worry about it and just ignore this note).
+which have already been initialized. 
 
 Now in each cell, we draw the ideogram for each chromosome. Code is simple. The steps are: 
 for each chromosome:
@@ -222,10 +203,8 @@ circos.link(sector.index1 = "chr2", point1 = 111111111, sector.index2 = "chr16",
     point2 = 55555555)
 @
 
-If position 88888888 in chromosome 6 is important and we want to mark it, we can use following codes. First create
-a new track. Here there is no specifying of {\tt factors}, thus the new track would create plotting regions for all available
-sectors (but with no borders. You would not see these cells but they really exist.). Note you can not create plotting region for a single cell, however you can write so, but in fact plotting region for cells in 
-all sectors would be created.
+If position 88888888 in chromosome 6 is important and we want to mark it, we can first create
+a new track and add lines and text in the specified cell.
 
 <<echo=TRUE, eval=FALSE>>=
 # create a new track

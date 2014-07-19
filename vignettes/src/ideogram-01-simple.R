@@ -78,3 +78,5 @@ circos.text(88888888, 0.2, labels = "site", sector.index = "chr6",
     adj = c(0.5, 1))
 circos.lines(c(88888888, 88888888), c(0.3, 1), sector.index = "chr6",
     straight = TRUE)
+
+circos.clear()

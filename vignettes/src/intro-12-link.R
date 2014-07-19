@@ -22,7 +22,6 @@ circos.link("a", c(2, 3), "f", c(4, 6), rou2 = 0.5, border = 1)
 circos.clear()
 
 
-
 circos.initialize(factors = factors, xlim = c(0, 10))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", bg.border = NA, track.height = 0.05)
 

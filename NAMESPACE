@@ -43,5 +43,6 @@ export(
 	posTransform.default,
 	rainfallTransform,
 	read.cytoband,
+	reverse.circlize,
 	show.index
 )

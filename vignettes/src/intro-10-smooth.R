@@ -1,4 +1,5 @@
 library(circlize)
+set.seed(123)
 par(mar = c(1, 1, 1, 1))
 factors = letters[1:4]
 circos.initialize(factors, xlim = c(0, 1))

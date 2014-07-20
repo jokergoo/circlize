@@ -1,0 +1,233 @@
+% \VignetteIndexEntry{Draw ideogram}
+% \VignetteDepends{circlize}
+% \VignetteKeywords{circos R}
+% \VignetteKeywords{ideogram}
+% \VignetteKeywords{circlize}
+% \VignettePackage{circlize}
+
+\documentclass{article}
+
+\title{How to draw ideogram}
+
+\author{Zuguang Gu {\tt <z.gu@dkfz.de>}}
+\usepackage[margin=1in, a4paper]{geometry}
+
+\usepackage{Sweave}
+\usepackage{hyperref}
+
+\begin{document}
+
+\maketitle 
+
+{\it There is a new and more comprehensive vignette in this package which is focusing on plotting genomic figures.
+Nevertheless, this vignette is still useful for users to get a clue on how to draw genomic graphics by very basic 
+low-level graphical functions.}
+
+\vbox{}
+
+The most widely use of the circular layout is to display genomic information.
+In most circumstances, figures contain an ideogram. Drawing ideogram by {\it circlize} 
+package is rather simple.
+
+An ideogram is, in fact, a series of rectangles with different colors.
+In the following example we are going to draw the ideogram for human.
+
+The cytoband data for human can be download from \\
+\url{http://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz} or
+from UCSC Table Browser (\url{http://genome-euro.ucsc.edu/cgi-bin/hgTables}).
+Uncompress the file and read it into R. Here {\it circlize} package already contains such file.
+
+<<include=TRUE, echo=TRUE>>=
+library(circlize)
+d = read.table(file = paste(system.file(package = "circlize"),
+        "/extdata/cytoBand.txt", sep=""),
+    colClasses = c("character", "numeric", "numeric", "character", "character"))
+head(d)
+@
+
+In the data frame, the second column and the third column are intervals for cytogenetic bands.
+
+Here, setting the {\tt colClasses} argument when reading the cytoband file is very important,
+because the positions on chromosomes are large integers (the second column and third column),
+by default {\tt read.table} would store such data as {\tt integer} mode. The summation of such large integers
+would throw error of data overflow. So you must set the data mode to floating point ({\tt numeric}).
+
+Since chromosomes are sorted by their names which are as mode of {\tt character}, the order would look
+like ``chr1, chr10, chr11, ..., chr2, chr20, ...''. We need to sort chromosomes by 
+the numeric index first.
+
+The process is simple. Extract the number part (1, 2, ..., 22) and the letter part ({\tt X}, {\tt Y}) of chromosome names.
+Sorted them separately and finally combine them.
+
+<<include=TRUE, echo=TRUE>>=
+chromosome = unique(d[[1]])
+chromosome.ind = gsub("chr", "", chromosome)
+chromosome.num = grep("^\\d+$", chromosome.ind, value = TRUE)
+chromosome.letter = chromosome.ind[!grepl("^\\d+$", chromosome.ind)]
+chromosome.num = sort(as.numeric(chromosome.num))
+chromosome.letter = sort(chromosome.letter)
+chromosome.num = paste("chr", chromosome.num, sep = "")
+chromosome.letter = paste("chr", chromosome.letter, sep = "")
+
+chromosome = c(chromosome.num, chromosome.letter)
+chromosome
+@
+
+The cytoband data also provides the range of each chromosome. This can be set as the {\tt xlim} of each chromosome.
+In the following code, we calculate the start position and the end position of each chromosome and store them
+in a matrix in which order of rows of {\tt xlim} correspond to the order of elements in {\tt chromosome}.
+
+By the way, if you don't want to draw ideogram, reading the cytoband file is also useful because it tells you 
+ranges of chromosomes and help you to allocate chromosomes in the circle.
+
+<<echo=TRUE, eval=FALSE>>=
+xlim = matrix(nrow = 0, ncol = 2)
+for(chr in chromosome) {
+    d2 = d[d[[1]] == chr, ]
+    xlim = rbind(xlim,c(min(d2[[2]]), max(d2[[3]])))
+}
+@
+
+Note that chromosome name in UCSC has prefix of 'chr', so if you are using chromosomes form 1000 Genome project which
+have not 'chr' prefix, remember to add it.
+
+Before we draw the circular layout, we need to set some graphic parameters. Here we do not need any cell paddings
+and we do not need the line to be too thick because genomic graphic is always huge.
+
+<<echo=TRUE, eval=FALSE>>=
+par(mar = c(1, 1, 1, 1), lwd = 0.5)
+circos.par("cell.padding" = c(0, 0, 0, 0))
+@
+
+Next we initialize the circular layout with ranges of chromosomes. In the initialization step, width of 
+each sector would correspond to the length of each chromosome. Also the order of sectors would
+be determined in this step. Here we must explicitly
+set the levels of the factors to make sure the order of chromosomes is ``chr1, chr2,
+chr3, ...'' or else the order would be the alphabetical which is ``chr1, chr11, ...''.
+After the initialization step, the position of each chromosome as well as the order are stored
+in an internal variable. So in the later step, as long as the chromosome is specified, graphics
+would be put in the right sector which corresponds to the selected chromosome.
+
+In the initialization step, order of the {\tt xim} matrix should correspond to the order 
+of {\tt levels} of the {\tt factors}, so do not be confused here.
+
+<<echo=TRUE, eval=FALSE>>=
+circos.initialize(factors = factor(chromosome, levels = chromosome), xlim = xlim)
+@
+
+After each chromosome has been allocated in the circle, we can draw the ideogram.
+Besides that, we also want to draw additional information such as the axis for chromosomes and names of chromosomes. 
+Here we would draw ideogram, axis and the chromosome names in one track 
+(It is just an option, also you can draw ideogram, axis and names of chromosomes in different tracks as you like). 
+in the following code, we create the first track in which there are 24 cells and each cell corresponds to 
+a chromosome. The x-range of each cell is the range of the chromosome and the y-range of
+each cell is from 0 to 1.
+
+<<echo=TRUE, eval=FALSE>>=
+circos.trackPlotRegion(factors = chromosome, ylim = c(0, 1), bg.border = NA, 
+    track.height = 0.1)
+@
+
+In the above codes, it is not necessary to set the {\tt factors} argument. If {\tt factors}
+is not set, {\tt circos.trackPlotRegion} will automatically create plotting regions for all available sectors
+which have already been initialized. 
+
+Now in each cell, we draw the ideogram for each chromosome. Code is simple. The steps are: 
+for each chromosome:
+
+\begin{enumerate}
+ \item assign different colors for different cytogenetic bands;
+ \item draw rectangle for different bands;
+ \item add axes;
+ \item add chromosome names. 
+\end{enumerate}
+
+Here the color theme is from \url{http://circos.ca/tutorials/course/slides/session-2.pdf}, page 42.
+
+<<echo=TRUE, eval=FALSE>>=
+for(chr in chromosome) {
+    # data in `chr`
+    d2 = d[d[[1]] == chr, ]
+    n = nrow(d2)
+    
+    # assign colors
+    col = rep("#FFFFFF", n)
+    col[d2[[5]] == "gpos100"] = rgb(0, 0, 0, maxColorValue = 255)
+    col[d2[[5]] == "gpos"]    = rgb(0, 0, 0, maxColorValue = 255)
+    col[d2[[5]] == "gpos75"]  = rgb(130, 130, 130, maxColorValue = 255)
+    col[d2[[5]] == "gpos66"]  = rgb(160, 160, 160, maxColorValue = 255)
+    col[d2[[5]] == "gpos50"]  = rgb(200, 200, 200, maxColorValue = 255)
+    col[d2[[5]] == "gpos33"]  = rgb(210, 210, 210, maxColorValue = 255)
+    col[d2[[5]] == "gpos25"]  = rgb(200, 200, 200, maxColorValue = 255)
+    col[d2[[5]] == "gvar"]    = rgb(220, 220, 220, maxColorValue = 255)
+    col[d2[[5]] == "gneg"]    = rgb(255, 255, 255, maxColorValue = 255)
+    col[d2[[5]] == "acen"]    = rgb(217, 47, 39, maxColorValue = 255)
+    col[d2[[5]] == "stalk"]   = rgb(100, 127, 164, maxColorValue = 255)
+    
+    # rectangles for different locus
+    for(i in seq_len(n)) {
+        circos.rect(d2[i, 2], 0, d2[i, 3], 0.4, sector.index = chr,
+            col = col[i], border = NA)
+    }
+    # rectangle that cover the whole chromosome
+    circos.rect(d2[1, 2], 0, d2[n, 3], 0.4, sector.index = chr, border = "black")
+        
+    # axis
+    major.at = seq(0, 10^nchar(max(xlim[, 2])), by = 50000000)
+    circos.axis(h = 0.5, major.at = major.at,
+        labels = paste(major.at/1000000, "MB", sep = ""),
+        sector.index = chr, labels.cex = 0.3)
+    chr.xlim = get.cell.meta.data("xlim", sector.index = chr)
+    
+    # chromosome names, only the number part or the letter part
+    circos.text(mean(chr.xlim), 1.2, labels = gsub("chr", "", chr),
+        sector.index = chr, cex = 0.8)
+}
+@
+
+In the above code, you can find the {\tt ylim} for the cells in the first track is {\tt c(0, 1)}
+and the y-value in {\tt circos.text} is {\tt 1.2} which exceeds the {\tt ylim}. 
+There may be some warnings saying some points are out of the plotting region. But in fact it is OK
+to draw something outside the plotting regions. You just need to make sure the final figure looks good.
+
+If you do not want to draw ideogram in the most outside of the circos layout. You can draw it in other tracks as you wish.
+
+Also, the step of assigning colors to cytogenetic bands can be embed for repetitive use. Here a function called
+{\tt cytoband.col} is provided in the package which can do such things.
+
+If there is a translocation from position 111111111 in chromosome 2 to position 55555555 in chromosome 16. It can represent
+as a link in the circos layout.
+
+<<echo=TRUE, eval=FALSE>>=
+circos.link(sector.index1 = "chr2", point1 = 111111111, sector.index2 = "chr16", 
+    point2 = 55555555)
+@
+
+If position 88888888 in chromosome 6 is important and we want to mark it, we can first create
+a new track and add lines and text in the specified cell.
+
+<<echo=TRUE, eval=FALSE>>=
+# create a new track
+circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA)
+circos.text(88888888, 0.2, labels = "site", sector.index = "chr6", adj = c(0.5, 1))
+circos.lines(c(88888888, 88888888), c(0.3, 1), sector.index = "chr6", straight = TRUE)
+@
+
+\begin{figure}[h!]
+\begin{center}
+<<label=figideogram, fig=TRUE, echo=FALSE, eval=TRUE, results=hide>>=
+source("src/ideogram-01-simple.R")
+@
+\end{center}
+\caption{Ideogram in circular layout}
+\label{fig:ideogram}
+\end{figure}
+
+For other tracks of genomic graphics, the genomic coordinate (positions on chromosomes) are x-values and measurements on
+genomic positions are taken as y-values.
+
+
+The final figure looks like figure \ref{fig:ideogram}.
+
+
+\end{document}

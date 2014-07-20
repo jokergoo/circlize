@@ -160,13 +160,21 @@ getQuadraticPoints = function(theta1, theta2, rou1, rou2, h = NULL, w = 1) {
 	x2 = rou_min*cos(as.radian(theta2))
 	y2 = rou_min*sin(as.radian(theta2))
 	
+	# determin h
+	beta = (theta1 - theta2) %% 360
+	if(beta > 180) beta = 360 - beta
+	h_auto = rou_min*(1-0.5*cos(as.radian(beta/2)))
+	
 	if(is.null(h)) {
-		beta = (theta1 - theta2) %% 360
-		if(beta > 180) beta = 360 - beta
-		h = cos(as.radian(beta/2))*rou_min/2
+		h = h_auto
+	}
+	if(h > rou_min) {
+		h = h_auto
 	}
 	
-	if(w < 0) h = -h
+	h2 = h - rou_min*(1-cos(as.radian(beta/2)))
+	
+	if(w < 0) h2 = -h2
 	
 	dis = 1/2 * sqrt((x1 - x2)^2 + (y1 - y2)^2)
 	p0 = c(-dis, 0)
@@ -174,7 +182,7 @@ getQuadraticPoints = function(theta1, theta2, rou1, rou2, h = NULL, w = 1) {
 	if(w == 0) {
 		p1 = c(0, 0)
 	} else {
-		p1 = c(0, (1+w)/w*h)
+		p1 = c(0, (1+w)/w*h2)
 	}
 	
 	d = quadratic.bezier(p0, p1, p2, w = w)

@@ -21,6 +21,27 @@ circos.clear()
 
 par(mar = c(1, 1, 1, 1))
 factors = letters[1:8]
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", bg.border = NA, track.height = 0.05)
+circos.info(plot = TRUE)
+circos.link("c", 10, "d", c(1, 4), col = "#00000040", border = "black")
+circos.link("d", 10, "e", c(1, 4), h2 = 0.3, col = "#00000040", border = "black")
+circos.clear()
+
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:8]
+circos.initialize(factors = factors, xlim = c(0, 1))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", bg.border = NA, track.height = 0.05)
+circos.info(plot = TRUE)
+for(i in 1:100) {
+	fa = sample(factors, 2)
+	circos.link(fa[1], runif(1), fa[2], runif(1), col = "grey", w = -0.1)
+}
+circos.clear()
+
+
+par(mar = c(1, 1, 1, 1))
+factors = letters[1:8]
 circos.par("canvas.xlim" = c(-2, 2), "canvas.ylim" = c(-2, 2))
 circos.initialize(factors = factors, xlim = c(0, 10))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", bg.border = NA, track.height = 0.05)

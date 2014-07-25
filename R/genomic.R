@@ -125,10 +125,10 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 					offset = 0
 				}
 				if(is.null(major.by)) {
-					xplot = get.cell.meta.data("xplot")
-					n = round(abs(xplot[2] - xplot[1])/10)
-					major.at = pretty(xlim - offset, n) + offset
-					major.by = major.at[2] - major.at[1]
+					xlim = get.cell.meta.data("xlim")
+					major.by = .default.major.by()
+					major.at = seq(xlim[1], xlim[2], by = major.by)
+					major.at = c(major.at, major.at[length(major.at)] + major.by)
 				} else {
 					major.at = seq(xlim[1], 10^nchar(round(max(x2 - x1 + 1))), by = major.by)
 				}

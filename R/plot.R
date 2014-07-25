@@ -273,9 +273,7 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("defau
 	
 	cell.padding = circos.par("cell.padding")
 
-	xlim = numeric(2)
-	xlim[1] = cell.xlim[1] + (cell.xlim[2] - cell.xlim[1]) / (sector.data["start.degree"] - sector.data["end.degree"]) *cell.padding[2]
-	xlim[2] = cell.xlim[2] - (cell.xlim[2] - cell.xlim[1]) / (sector.data["start.degree"] - sector.data["end.degree"]) *cell.padding[4]
+	xlim = c(sector.data["min.data"], sector.data["max.data"])
 	
 	if(cell.padding[1] + cell.padding[3] >= track.height) {
 		stop("Sumation of cell padding on y-direction are larger than the height of the cells.\n")
@@ -967,10 +965,9 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	}
 	
 	if(is.null(major.at)) {
-		# every 10 degrees there is a major tick. This is hard coded.
-		# start.degree - end.degree is always a positive value.
-		n = floor(abs(sector.data["start.degree"] - sector.data["end.degree"]) / 10)
-		major.at = pretty(xlim, n = n)
+		major.by = .default.major.by(sector.index, track.index)
+		major.at = seq(xlim[1], xlim[2], by = major.by)
+		major.at = c(major.at, major.at[length(major.at)] + major.by)
 	}
 	
 	minor.at = NULL
@@ -1065,6 +1062,18 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	return(invisible(NULL))
 }
 
+.default.major.by = function(sector.index = get.cell.meta.data("sector.index"),
+	track.index = get.cell.meta.data("track.index")) {
+	# start.degree - end.degree is always a positive value.
+	d = circos.par("major.by.degree")
+	cell.start.degre = get.cell.meta.data("cell.start.degree", sector.index, track.index)
+	tm = reverse.circlize(c(cell.start.degre, cell.start.degre-d), rep(get.cell.meta.data("cell.bottom.radius", sector.index, track.index), 2))
+	major.by = abs(tm[1, 1] - tm[2, 1])
+	digits = as.numeric(gsub("^.*e([+-]\\d+)$", "\\1", sprintf("%e", major.by)))
+	major.by = round(major.by, digits = -1*digits)
+	return(major.by)
+}	
+		
 #####################################################################
 #
 # simulate high-level graphic functions such as barplot, hist, boxplot ...

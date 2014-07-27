@@ -1,2 +1,3 @@
 - testing code
 - if two borders intersect in link
+- set a 'human' option in `circos.text` (facing and adj)?

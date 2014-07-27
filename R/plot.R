@@ -63,6 +63,9 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
     panel.fun = function(x, y) {NULL}) {
     
+    if(!is.circos.initialized()) {
+    	stop("Your circos plot has not been initialized yet!\n")
+    }
 	# if there is no factors, default are all the available factors
 	if(is.null(factors)) {
 		factors = get.all.sector.index()

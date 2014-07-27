@@ -972,6 +972,7 @@ circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.d
 # -labels.cex       font size for the axis labels
 # -labels.direction deprecated, use ``facing`` instead.
 # -labels.facing    facing of labels on axis
+# -labels.niceFacing Should facing of axis labels human-easy
 # -direction        whether the axis ticks point to the outside or inside of the circle.
 # -minor.ticks      Number of minor ticks between two close major ticks.
 # -major.tick.percentage Length of the major ticks. It is the percentage to the height of the cell.
@@ -987,7 +988,7 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	sector.index = get.cell.meta.data("sector.index"),
 	track.index = get.cell.meta.data("track.index"),
 	labels.font = par("font"), labels.cex = par("cex"),
-	labels.facing = "inside", labels.direction = NULL,
+	labels.facing = "inside", labels.direction = NULL, labels.niceFacing = TRUE,
 	direction = c("outside", "inside"), minor.ticks = 4,
 	major.tick.percentage = 0.1, labels.away.percentage = 0.05, lwd = par("lwd")) {
 	
@@ -1089,14 +1090,14 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 			circos.text(major.at[i], h + (major.tick.length+yrange*labels.away.percentage)*ifelse(direction == "outside", 1, -1),
 			           labels = major.at[i], adj = labels.adj,
 			           font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
-			           facing = labels.facing, niceFacing = TRUE)
+			           facing = labels.facing, niceFacing = labels.niceFacing)
 		} else if(is.logical(labels) && !labels) {
                           
         } else if(length(labels)) {
 			circos.text(major.at[i], h + (major.tick.length+yrange*labels.away.percentage)*ifelse(direction == "outside", 1, -1),
 			            labels = labels[i], adj = labels.adj,
 			            font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
-				        facing = labels.facing, niceFacing = TRUE)
+				        facing = labels.facing, niceFacing = labels.niceFacing)
 		}				
 		
 	}

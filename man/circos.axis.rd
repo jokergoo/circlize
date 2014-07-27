@@ -15,7 +15,7 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
     sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"),
     labels.font = par("font"), labels.cex = par("cex"),
-    labels.facing = "inside", labels.direction = NULL,
+    labels.facing = "inside", labels.direction = NULL, labels.niceFacing = TRUE,
     direction = c("outside", "inside"), minor.ticks = 4,
     major.tick.percentage = 0.1, labels.away.percentage = 0.05, lwd = par("lwd"))
 }
@@ -30,6 +30,7 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
   \item{labels.cex}{font size for the axis labels}
   \item{labels.direction}{deprecated, use \code{facing} instead.}
   \item{labels.facing}{facing of labels on axis}
+  \item{labels.niceFacing}{Should facing of axis labels human-easy}
   \item{direction}{whether the axis ticks point to the outside or inside of the circle.}
   \item{minor.ticks}{Number of minor ticks between two close major ticks.}
   \item{major.tick.percentage}{Length of the major ticks. It is the percentage to the height of the cell.}

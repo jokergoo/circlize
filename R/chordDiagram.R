@@ -186,16 +186,8 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 				xlim = get.cell.meta.data("xlim")
 				current.sector.index = get.cell.meta.data("sector.index")
 				i = get.cell.meta.data("sector.numeric.index")
-				theta = mean(get.cell.meta.data("xplot")) %% 360
-				if(theta < 90 || theta > 270) {
-					text.facing = "clockwise"
-					text.adj = c(0, 0.5)
-				} else {
-					text.facing = "reverse.clockwise"
-					text.adj = c(1, 0.5)
-				}
 				circos.text(mean(xlim), 0.5, labels = current.sector.index,
-					facing = text.facing, adj = text.adj)
+					facing = "clockwise", adj = c(0, 0.5))
 			}, track.height = 0.05)
     }
 	if(any(annotationTrack %in% "grid")) {

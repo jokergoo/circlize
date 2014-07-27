@@ -57,16 +57,9 @@ maxy = attr(hc, "height")  # maximum height of the tree
 circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.3, 
     panel.fun = function(x, y) {
         for(i in seq_len(n)) {
-			theta = circlize(i-0.5, 0)[1, "theta"]
-			if(theta < 90 || theta > 270) {
-				text.facing = "clockwise"
-				text.adj = c(0, 0.5)
-			} else {
-				text.facing = "reverse.clockwise"
-				text.adj = c(1, 0.5)
-			}
-            circos.text(i-0.5, 0, labels[i], adj = text.adj, 
-                facing = text.facing, col = ct[labels[i]], cex = 0.7)
+			circos.text(i-0.5, 0, labels[i], adj = c(0, 0.5), 
+                facing = "clockwise", niceFacing = TRUE,
+				col = ct[labels[i]], cex = 0.7)
         }
 })
 

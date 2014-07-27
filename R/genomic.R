@@ -132,7 +132,7 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 				if(is.null(major.by)) {
 					xlim = get.cell.meta.data("xlim")
 					major.by = .default.major.by()
-					major.at = seq(floor(xlim[1]/major.by)*major.by, xlim[2], by = major.by)
+					major.at = seq(floor((xlim[1]-offset)/major.by)*major.by+offset, xlim[2], by = major.by)
 					major.at = c(major.at, major.at[length(major.at)] + major.by)
 				} else {
 					major.at = seq(xlim[1], 10^nchar(round(max(x2 - x1 + 1))), by = major.by)
@@ -150,7 +150,7 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 					circos.axis(h = 0, major.at = major.at, labels = major.tick.labels, labels.cex = 0.3*par("cex"), labels.facing = "clockwise", major.tick.percentage = 0.2)
 				}
 				if(any(plotType %in% "labels")) {
-					circos.text(mean(xlim), 1.2, labels = sector.names[sector.index], cex = par("cex"), adj = c(0.5, 0))
+					circos.text(mean(xlim), 1.2, labels = sector.names[sector.index], cex = par("cex"), adj = c(0.5, 0), niceFacing = TRUE)
 				}
 			}
 		)
@@ -745,6 +745,7 @@ circos.genomicRect = function(region, value = NULL,
 # -track.index Pass to `circos.rect`
 # -posTransform Self-defined function to transform genomic positions, see `posTransform.default` for explaination
 # -facing Passing to `circos.text`. Settings are similar as ``col`` 
+# -niceFacing   Should the facing of text be adjusted to fit human eyes?
 # -direction Deprecated, use ``facing`` instead. 
 # -adj Pass to `circos.text`. Settings are similar as ``col``
 # -cex Pass to `circos.text`. Settings are similar as ``col``
@@ -757,7 +758,7 @@ circos.genomicRect = function(region, value = NULL,
 circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.column = NULL,
 	numeric.column = NULL, sector.index = get.cell.meta.data("sector.index"), 
 	track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
-	direction = NULL, facing = "inside",
+	direction = NULL, facing = "inside", niceFacing = FALSE,
 	adj = par("adj"), cex = 1, col = "black", font = par("font"), ...) {
 	
 	if(!is.null(direction)) {
@@ -835,7 +836,7 @@ circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.col
 	font = .normalizeGraphicalParam(font, nc, nr, "font")
 
 	circos.text( (region[[1]] + region[[2]])/2, value[[ numeric.column ]], value[[labels.column]],
-		facing = facing, adj = adj, cex = cex, col = col, font = font,
+		facing = facing, niceFacing = niceFacing, adj = adj, cex = cex, col = col, font = font,
 		sector.index = sector.index, track.index = track.index )
 
 }

@@ -14,7 +14,7 @@
 circos.genomicText(region, value, y = NULL, labels = NULL, labels.column = NULL,
     numeric.column = NULL, sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), posTransform = NULL,
-    direction = NULL, facing = "inside",
+    direction = NULL, facing = "inside", niceFacing = FALSE,
     adj = par("adj"), cex = 1, col = "black", font = par("font"), ...)
 }
 \arguments{
@@ -28,6 +28,7 @@ circos.genomicText(region, value, y = NULL, labels = NULL, labels.column = NULL,
   \item{track.index}{Pass to \code{\link{circos.rect}}}
   \item{posTransform}{Self-defined function to transform genomic positions, see \code{\link{posTransform.default}} for explaination}
   \item{facing}{Passing to \code{\link{circos.text}}. Settings are similar as \code{col} }
+  \item{niceFacing}{Should the facing of text be adjusted to fit human eyes?}
   \item{direction}{Deprecated, use \code{facing} instead. }
   \item{adj}{Pass to \code{\link{circos.text}}. Settings are similar as \code{col}}
   \item{cex}{Pass to \code{\link{circos.text}}. Settings are similar as \code{col}}

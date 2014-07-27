@@ -7,6 +7,10 @@ NEWS/Changelog
 - Now the ``major.by`` are the same in all sectors
 - define ``min.data`` and ``max.data`` in internal variable ``SECTOR.DATA``
 - check that sector names cannot be empty strings ("")
+- check whether circos plot has been initialized when calling `circos.trackPlotRegion`
+- add ``niceFacing`` in `circos.text` to make the facing more human easy
+- height of ideogram and annotation track in `circos.initializeWithIdeogram` and `circos.genomicInitialize` can be set
+- some example code in examples/vignettes has been changed according to changes in the package source code
 
 == 0.0.9
 - links are now implemented by Bezier curve

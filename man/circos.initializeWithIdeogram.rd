@@ -14,7 +14,8 @@
 circos.initializeWithIdeogram(cytoband = paste(system.file(package = "circlize"),
     "/extdata/cytoBand.txt", sep=""), species = NULL, sort.chr = TRUE,
     chromosome.index = NULL, major.by = NULL,
-    plotType = c("ideogram", "axis", "labels"), ...)
+    plotType = c("ideogram", "axis", "labels"),
+    track.height = 0.05, ideogram.height = 0.05, ...)
 }
 \arguments{
   \item{cytoband}{A path of the cytoband file or a data frame that already contains cytoband data. By default it is cytoband for hg19. Pass to \code{\link{read.cytoband}}.}
@@ -23,6 +24,8 @@ circos.initializeWithIdeogram(cytoband = paste(system.file(package = "circlize")
   \item{chromosome.index}{Index of chromosomes. The index is used only for subsetting, not for re-ordering.}
   \item{major.by}{Increment of major ticks.}
   \item{plotType}{Which tracks should be drawn. \code{rect} for ideogram rectangle, \code{axis} for genomic axis and \code{labels} for chromosome names. If it is set to \code{NULL}, the function just initialize the plot but draw nothing.}
+  \item{track.height}{Height of the track which contains "axis" and "labels"}
+  \item{ideogram.height}{Height of the ideogram track}
   \item{...}{Pass to \code{\link{circos.initialize}}}
 
 }

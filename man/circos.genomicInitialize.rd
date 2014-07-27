@@ -12,7 +12,8 @@
 }
 \usage{
 circos.genomicInitialize(data, sector.names = NULL, major.by = NULL,
-    plotType = c("axis", "labels"), tickLabelsStartFromZero = TRUE, ...)
+    plotType = c("axis", "labels"), tickLabelsStartFromZero = TRUE,
+    track.height = 0.05, ...)
 }
 \arguments{
   \item{data}{A data frame containing genomic data.}
@@ -20,6 +21,7 @@ circos.genomicInitialize(data, sector.names = NULL, major.by = NULL,
   \item{major.by}{Increment of major ticks. It is calculated automatically if the value is not set.}
   \item{plotType}{Which part should be drawn. \code{axis} for genomic axis and \code{labels} for chromosome names}
   \item{tickLabelsStartFromZero}{whether axis tick labels start from 0? This will only affect the axis labels while not affect x-values in cells.}
+  \item{track.height}{If \code{PlotType} is not \code{NULL}, height of the annotation track.}
   \item{...}{Pass to \code{\link{circos.initialize}}}
 
 }

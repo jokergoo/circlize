@@ -696,11 +696,11 @@ which is identical to {\tt circos.lines} in a {\tt for} loop.
 \setkeys{Gin}{width=0.6\textwidth}
 \begin{figure}
 \begin{center}
-<<label=figtext, fig = TRUE, echo = FALSE, width = 4, height = 8, results=hide>>=
+<<label=figtext, fig = TRUE, echo = FALSE, width = 6, height = 6, results=hide>>=
 source("src/intro-09-text.R")
 @
 \end{center}
-\caption{Text facing. Top: {\tt facing} settings; Bottom: human-readable facing}
+\caption{Text facing}
 \label{fig:text}
 \end{figure}
 \setkeys{Gin}{width=0.8\textwidth}
@@ -720,31 +720,24 @@ But {\tt adj} argument is still applicable in {\tt circos.text}. Possible usage 
 \end{Schunk}
 
 In some case, we may want to set the text facing more human-easy. For example, we want the text facing
-clockwisely in right half of the circle while reverse-closewisely in the left half of the circle. This can be easily done by self-defined codes.
-Following is an example of {\tt panel.fun} and figure can be found in figure \ref{fig:text} (bottom). In the example,
-{\tt get.cell.meta.data("xplot")} will return degrees corresponding to left and right margin of the 'current' cell.
+clockwise in right half of the circle while reverse-closewise in the left half of the circle. This can be easily done by 
+setting {\tt niceFacing} to {\tt TRUE}. This option only works for {\tt facing} value of {\tt inside},
+{\tt outside}, {\tt clockwise} and {\tt reverse.clockwise}. When {\tt niceFacing} is on, values for internal {\tt facing}
+and {\tt adj} will be re-defined according to the position of the texts in the circle.
+Please refer to figure \ref{fig:texteasy} for examples.
 
-\begin{Schunk}
-\begin{Sinput}
-panel.fun = function(x, y) {
-    xlim = get.cell.meta.data("xlim")
-    ylim = get.cell.meta.data("ylim")
-    theta = mean(get.cell.meta.data("xplot")) %% 360
-    sector.index = get.cell.meta.data("sector.index")
-    if(theta < 90 || theta > 270) {
-        text.facing = "clockwise"
-        text.adj = c(0, 0.5)
-    } else {
-        text.facing = "reverse.clockwise"
-        text.adj = c(1, 0.5)
-    }
-    circos.text(mean(xlim), ylim[1], labels,
-        facing = text.facing, adj = text.adj)
-}
-\end{Sinput}
-\end{Schunk}
-
-
+\setkeys{Gin}{width=0.8\textwidth}
+\begin{figure}
+\begin{center}
+<<label=figtexteasy, fig = TRUE, echo = FALSE, width = 8, height = 8, results=hide>>=
+source("src/intro-09-text-niceFacing.R")
+@
+\end{center}
+\caption{Human easy text facing. When {\tt niceFacing} is on, settings in upper two figures
+are actually identical. Same as the settings in two bottom figures}
+\label{fig:texteasy}
+\end{figure}
+\setkeys{Gin}{width=0.8\textwidth}
 
 There is also a {\tt circos.trackText} in the package.
 

@@ -14,6 +14,8 @@
 # -major.by     Increment of major ticks.
 # -plotType     Which tracks should be drawn. ``rect`` for ideogram rectangle, ``axis`` for genomic axis and ``labels`` for chromosome names.
 #               If it is set to ``NULL``, the function just initialize the plot but draw nothing.
+# -track.height Height of the track which contains "axis" and "labels"
+# -ideogram.height Height of the ideogram track
 # -...    Pass to `circos.initialize`
 #
 # == details
@@ -24,7 +26,8 @@
 circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = "circlize"),
 	"/extdata/cytoBand.txt", sep=""), species = NULL, sort.chr = TRUE,
 	chromosome.index = NULL, major.by = NULL,
-	plotType = c("ideogram", "axis", "labels"), ...) {
+	plotType = c("ideogram", "axis", "labels"), 
+	track.height = 0.05, ideogram.height = 0.05, ...) {
 	
 	cytoband = read.cytoband(cytoband, species = species, sort.chr = sort.chr)
 	df = cytoband$df
@@ -47,13 +50,13 @@ circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = 
 	# we do not need 'chr' prefix if it exits, it holds too much space.
 	sn = gsub("chr", "", sn)
 	
-	circos.genomicInitialize(df, sector.names = sn, major.by = major.by, plotType = plotType, ...)
+	circos.genomicInitialize(df, sector.names = sn, major.by = major.by, plotType = plotType, track.height = track.height, ...)
 
 	if(any(plotType %in% "ideogram")) {
 		o.cell.padding = circos.par("cell.padding")
 		circos.par(cell.padding = c(0, 0, 0, 0))
 	
-		circos.genomicTrackPlotRegion(df, ylim = c(0, 1), bg.border = NA, track.height = 0.05,
+		circos.genomicTrackPlotRegion(df, ylim = c(0, 1), bg.border = NA, track.height = ideogram.height,
 			panel.fun = function(region, value, ...) {
 				col = cytoband.col(value[[2]])
 				circos.genomicRect(region, value, ybottom = 0, ytop = 1, col = col, border = NA, ...)
@@ -74,6 +77,7 @@ circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = 
 # -major.by     Increment of major ticks. It is calculated automatically if the value is not set.
 # -plotType     Which part should be drawn. ``axis`` for genomic axis and ``labels`` for chromosome names
 # -tickLabelsStartFromZero whether axis tick labels start from 0? This will only affect the axis labels while not affect x-values in cells.
+# -track.height If ``PlotType`` is not ``NULL``, height of the annotation track.
 # -...          Pass to `circos.initialize`
 #
 # == details
@@ -85,7 +89,8 @@ circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = 
 #
 # For more details on initializing genomic plot, please refer to the vignettes.
 circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
-	plotType = c("axis", "labels"), tickLabelsStartFromZero = TRUE, ...) {
+	plotType = c("axis", "labels"), tickLabelsStartFromZero = TRUE, 
+	track.height = 0.05, ...) {
 	
 	if(is.factor(data[[1]])) {
 		fa = levels(data[[1]])
@@ -114,7 +119,7 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 	
 	# axis and chromosome names
 	if(any(plotType %in% c("axis", "labels"))) {
-		circos.genomicTrackPlotRegion(data, ylim = c(0, 1), bg.border = NA, track.height = 0.05,
+		circos.genomicTrackPlotRegion(data, ylim = c(0, 1), bg.border = NA, track.height = track.height,
 			panel.fun = function(region, value, ...) {
 				sector.index = get.cell.meta.data("sector.index")
 				xlim = get.cell.meta.data("xlim")
@@ -127,7 +132,7 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 				if(is.null(major.by)) {
 					xlim = get.cell.meta.data("xlim")
 					major.by = .default.major.by()
-					major.at = seq(xlim[1], xlim[2], by = major.by)
+					major.at = seq(floor(xlim[1]/major.by)*major.by, xlim[2], by = major.by)
 					major.at = c(major.at, major.at[length(major.at)] + major.by)
 				} else {
 					major.at = seq(xlim[1], 10^nchar(round(max(x2 - x1 + 1))), by = major.by)

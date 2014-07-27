@@ -1,3 +1,5 @@
 - testing code
 - if two borders intersect in link
 - set a 'human' option in `circos.text` (facing and adj)?
+- set track.height in circos.initializeWithIdeogram and circos.genomicInitialize
+- other circos.text in examples and vignettes

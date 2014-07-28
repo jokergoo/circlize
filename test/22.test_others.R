@@ -26,3 +26,11 @@ plot(1:100, y, pch = 16, col = f(y))
 f = colorRamp2(0:5, c("red", "orange", "yellow", "green", "blue", "purple"))
 y = runif(100)*5
 plot(1:100, y, pch = 16, col = f(y))
+
+f = colorRamp2(c(1e-5, 1e-10), c("white", "green"))
+f(1)
+f(1e-2)
+f(1e-5)
+f(1e-6)
+f(1e-10)
+f(1e-10)

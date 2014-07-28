@@ -26,7 +26,7 @@ bed = generateRandomBed(nr = 20, nc = 4)
 
 circos.genomicTrackPlotRegion(bed, ylim = c(0, 1), panel.fun = function(region, value, ...) {
 	circos.genomicText(region, value, y = 0, adj = c(1, 0.5), labels = "gene", facing = "reverse.clockwise",
-	    posTransform = posTransform.default)
+	    posTransform = posTransform.default, niceFacing = TRUE)
 }, bg.border = NA)
 
 circos.genomicPosTransformLines(bed, posTransform = posTransform.default, horizontalLine = "bottom", type = "reverse", track.height = 0.1)

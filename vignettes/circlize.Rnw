@@ -696,11 +696,11 @@ which is identical to {\tt circos.lines} in a {\tt for} loop.
 \setkeys{Gin}{width=0.6\textwidth}
 \begin{figure}
 \begin{center}
-<<label=figtext, fig = TRUE, echo = FALSE, width = 4, height = 8, results=hide>>=
+<<label=figtext, fig = TRUE, echo = FALSE, width = 6, height = 6, results=hide>>=
 source("src/intro-09-text.R")
 @
 \end{center}
-\caption{Text facing. Top: {\tt facing} settings; Bottom: human-readable facing}
+\caption{Text facing}
 \label{fig:text}
 \end{figure}
 \setkeys{Gin}{width=0.8\textwidth}
@@ -720,31 +720,24 @@ But {\tt adj} argument is still applicable in {\tt circos.text}. Possible usage 
 \end{Schunk}
 
 In some case, we may want to set the text facing more human-easy. For example, we want the text facing
-clockwisely in right half of the circle while reverse-closewisely in the left half of the circle. This can be easily done by self-defined codes.
-Following is an example of {\tt panel.fun} and figure can be found in figure \ref{fig:text} (bottom). In the example,
-{\tt get.cell.meta.data("xplot")} will return degrees corresponding to left and right margin of the 'current' cell.
+clockwise in right half of the circle while reverse-closewise in the left half of the circle. This can be easily done by 
+setting {\tt niceFacing} to {\tt TRUE}. This option only works for {\tt facing} value of {\tt inside},
+{\tt outside}, {\tt clockwise} and {\tt reverse.clockwise}. When {\tt niceFacing} is on, values for internal {\tt facing}
+and {\tt adj} will be re-defined according to the position of the texts in the circle.
+Please refer to figure \ref{fig:texteasy} for examples.
 
-\begin{Schunk}
-\begin{Sinput}
-panel.fun = function(x, y) {
-    xlim = get.cell.meta.data("xlim")
-    ylim = get.cell.meta.data("ylim")
-    theta = mean(get.cell.meta.data("xplot")) %% 360
-    sector.index = get.cell.meta.data("sector.index")
-    if(theta < 90 || theta > 270) {
-        text.facing = "clockwise"
-        text.adj = c(0, 0.5)
-    } else {
-        text.facing = "reverse.clockwise"
-        text.adj = c(1, 0.5)
-    }
-    circos.text(mean(xlim), ylim[1], labels,
-        facing = text.facing, adj = text.adj)
-}
-\end{Sinput}
-\end{Schunk}
-
-
+\setkeys{Gin}{width=0.8\textwidth}
+\begin{figure}
+\begin{center}
+<<label=figtexteasy, fig = TRUE, echo = FALSE, width = 8, height = 8, results=hide>>=
+source("src/intro-09-text-niceFacing.R")
+@
+\end{center}
+\caption{Human easy text facing. When {\tt niceFacing} is on, settings in upper two figures
+are actually identical. Same as the settings in two bottom figures}
+\label{fig:texteasy}
+\end{figure}
+\setkeys{Gin}{width=0.8\textwidth}
 
 There is also a {\tt circos.trackText} in the package.
 
@@ -802,22 +795,22 @@ source("src/intro-11-axis.R")
 Because there may be no space to put y-axis, only adding x-axis for each cell is supported by {\tt circos.axis}, as illustrated in figure \ref{fig:axis}.
 A lot of styles for axis can be set such as the position and length of major ticks, the number of minor ticks,
 the position and direction of the axis labels and the position of the x-axis. Note the adjustment of label strings is defined internally according
-to differnet label directions to ensure the start/end position of the string is located near the major tick.
+to different label directions to ensure the start/end position of the string is located near the major tick.
 
 In figure \ref{fig:axis}, axis styles in different sectors are :
 
 \begin{itemize}
   \item a: Major ticks are calculated automatically, other settings are default.
-  \item b: Ticks are pointing to inside of the circle, facing of tick labels is set to {\tt default2}.
+  \item b: Ticks are pointing to inside of the circle, facing of tick labels is set to {\tt outside}.
   \item c: Position of x-axis is {\tt bottom} of the cell.
-  \item d: Ticks are pointing to inside of the circle, facing of tick labels is set to {\tt vertical\_left}.
+  \item d: Ticks are pointing to inside of the circle, facing of tick labels is set to {\tt reverse.clockwise}.
   \item e: Self-defined major ticks.
   \item f: Self-defined major ticks and tick labels, no minor ticks.
-  \item g: No ticks for both major and minor ones, facing of tick labels is set to {\tt vertical\_left}.
-  \item h: Number of minor ticks between two major ticks is set to 2. Length of ticks is longer and axis labels are more away from ticks. Facing of tick labels is set to {\tt vertical\_right}.
+  \item g: No ticks for both major and minor ones, facing of tick labels is set to {\tt reverse.clockwise}.
+  \item h: Number of minor ticks between two major ticks is set to 2. Length of ticks is longer and axis labels are more away from ticks. Facing of tick labels is set to {\tt clockwise}.
 \end{itemize}
 
-
+The facing of labels text can also be optimized by {\tt labels.niceFacing} (by default it is {\tt TRUE}).
 
 For {\tt circos.axis}, possible usage is as follows. {\tt h} can be pre-defined string of {\tt bottom} or {\tt top}, or numeric values. 
 

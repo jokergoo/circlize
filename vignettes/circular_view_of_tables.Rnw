@@ -1,4 +1,4 @@
-% \VignetteIndexEntry{Circular view of tables}
+% \VignetteIndexEntry{Circular view of tables (Chord Diagram)}
 % \VignetteDepends{circlize}
 % \VignetteKeywords{circos R}
 % \VignetteKeywords{chord diagram}
@@ -7,7 +7,7 @@
 
 \documentclass{article}
 
-\title{How to draw Chord diagram}
+\title{How to draw Chord Diagram}
 
 \author{Zuguang Gu {\tt <z.gu@dkfz.de>}}
 \usepackage[margin=1in, a4paper]{geometry}

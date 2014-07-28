@@ -22,6 +22,7 @@ resetGlobalVariable()
 	points.overflow.warning = TRUE,
 	canvas.xlim = c(-1, 1),
 	canvas.ylim = c(-1, 1),
+	major.by.degree = 10,
 	clock.wise = TRUE)
 assign(".CIRCOS.PAR", .CIRCOS.PAR.DEFAULT, envir = .CIRCOS.ENV)
 
@@ -181,7 +182,11 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 	
 	.SECTOR.DATA = get(".SECTOR.DATA", envir = .CIRCOS.ENV)
 	.CELL.DATA = get(".CELL.DATA", envir = .CIRCOS.ENV)
-
+	
+	if(any(factors == "")) {
+		stop("`factors` cannot contain empty strings.\n")
+	}
+	
     if(! is.factor(factors)) {
         factors = factor(factors)
     }
@@ -224,13 +229,15 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
     sector.range = max.value - min.value
     n.sector = length(le)
     
-    sector = vector("list", 5)
+    sector = vector("list", 7)
 	# for each sector, `start.degree always referto `min.value` and `end.degree` always
 	# refer to `max.value` in a reverse clockwise fasion. So here `start.degree` and 
 	# `end.degree` also correspond to the direction.
 	# So in the polar coordinate, `start.degree` would be larger than `end.degree`
-    names(sector) = c("factor", "min.value", "max.value", "start.degree", "end.degree")
+    names(sector) = c("factor", "min.value", "max.value", "start.degree", "end.degree", "min.data", "max.data")
     sector[["factor"]] = le
+	sector[["min.data"]] = min.value
+	sector[["max.data"]] = max.value
     
     gap.degree = circos.par("gap.degree")
 	if(length(gap.degree) == 1) {
@@ -384,8 +391,8 @@ get.all.track.index = function() {
 
 get.sector.data = function(sector.index = get.current.sector.index()) {
 	.SECTOR.DATA = get(".SECTOR.DATA", envir = .CIRCOS.ENV)
-    sector.data = as.vector(as.matrix(.SECTOR.DATA[.SECTOR.DATA[[1]] == sector.index, 2:5]))
-    names(sector.data) = colnames(.SECTOR.DATA)[2:5]
+    sector.data = as.vector(as.matrix(.SECTOR.DATA[.SECTOR.DATA[[1]] == sector.index, -1]))
+    names(sector.data) = colnames(.SECTOR.DATA)[-1]
     return(sector.data)
 }
 

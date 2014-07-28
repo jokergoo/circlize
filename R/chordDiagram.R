@@ -16,8 +16,9 @@
 #          Length should be same as number of rows in ``mat``. This argument only works when ``col`` is set to ``NULL``.
 # -column.col Colors for links. Links from the same column will have the same color.
 #             Length should be same as number of columns in ``mat``. This argument only works when ``col`` and ``row.col`` is set to ``NULL``.
+# -fromRows If links are directional, whether they start from Rows
 # -directional Whether links have directions. The directions are from rows to columns. If you
-#              want the direction from columns to rows, just transpose your ``mat``.
+#              want the direction from columns to rows, set ``fromRow`` to ``FALSE``.
 # -symmetric Whether the matrix is symmetric. If the value is set to ``TRUE``, only
 #            lower triangular matrix without the diagonal will be used.
 # -order Order of sectors. Default order is ``union(rownames(mat), colnames(mat))``
@@ -40,7 +41,7 @@
 # This function is flexible and contains some settings that may be a little difficult to understand. 
 # Please refer to vignette for better explanation.
 chordDiagram = function(mat, grid.col = NULL, transparency = 0,
-	col = NULL, row.col = NULL, column.col = NULL, directional = FALSE,
+	col = NULL, row.col = NULL, column.col = NULL, directional = FALSE, fromRows = TRUE,
 	symmetric = FALSE, order = NULL, preAllocateTracks = NULL,
 	annotationTrack = c("name", "grid"), link.border = NA, grid.border = NULL, 
 	diffHeight = 0.04, ...) {
@@ -185,16 +186,8 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 				xlim = get.cell.meta.data("xlim")
 				current.sector.index = get.cell.meta.data("sector.index")
 				i = get.cell.meta.data("sector.numeric.index")
-				theta = mean(get.cell.meta.data("xplot")) %% 360
-				if(theta < 90 || theta > 270) {
-					text.facing = "clockwise"
-					text.adj = c(0, 0.5)
-				} else {
-					text.facing = "reverse.clockwise"
-					text.adj = c(1, 0.5)
-				}
 				circos.text(mean(xlim), 0.5, labels = current.sector.index,
-					facing = text.facing, adj = text.adj)
+					facing = "clockwise", adj = c(0, 0.5))
 			}, track.height = 0.05)
     }
 	if(any(annotationTrack %in% "grid")) {
@@ -245,9 +238,15 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
             sector.index2 = cn[j]
 			
 			if(directional) {
-				circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
+				if(fromRows) {
+					circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
+								sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
+								col = col[rn[i], cn[j]], rou1 = rou - diffHeight, rou2 = rou, border = link.border, ...)
+				} else {
+					circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
 							sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-							col = col[rn[i], cn[j]], rou1 = rou - diffHeight, rou2 = rou, border = link.border, ...)
+							col = col[rn[i], cn[j]], rou1 = rou, rou2 = rou - diffHeight, border = link.border, ...)
+				}
 			} else {
 				circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
 							sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),

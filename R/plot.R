@@ -63,6 +63,9 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
     panel.fun = function(x, y) {NULL}) {
     
+    if(!is.circos.initialized()) {
+    	stop("Your circos plot has not been initialized yet!\n")
+    }
 	# if there is no factors, default are all the available factors
 	if(is.null(factors)) {
 		factors = get.all.sector.index()
@@ -273,9 +276,7 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("defau
 	
 	cell.padding = circos.par("cell.padding")
 
-	xlim = numeric(2)
-	xlim[1] = cell.xlim[1] + (cell.xlim[2] - cell.xlim[1]) / (sector.data["start.degree"] - sector.data["end.degree"]) *cell.padding[2]
-	xlim[2] = cell.xlim[2] - (cell.xlim[2] - cell.xlim[1]) / (sector.data["start.degree"] - sector.data["end.degree"]) *cell.padding[4]
+	xlim = c(sector.data["min.data"], sector.data["max.data"])
 	
 	if(cell.padding[1] + cell.padding[3] >= track.height) {
 		stop("Sumation of cell padding on y-direction are larger than the height of the cells.\n")
@@ -731,6 +732,7 @@ circos.polygon = function(x, y, sector.index = get.cell.meta.data("sector.index"
 # -track.index  Index for the track
 # -direction    deprecated, use ``facing`` instead.
 # -facing       Facing of text. Please refer to vignette for different settings 
+# -niceFacing   Should the facing of text be adjusted to fit human eyes?
 # -adj          Adjustment for text
 # -cex          Font size
 # -col          Font color
@@ -742,7 +744,7 @@ circos.polygon = function(x, y, sector.index = get.cell.meta.data("sector.index"
 circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), direction = NULL,
     facing = c("inside", "outside", "reverse.clockwise", "clockwise",
-	"downward", "bending"), adj = par("adj"), cex = 1, col = "black",
+	"downward", "bending"), niceFacing = FALSE, adj = par("adj"), cex = 1, col = "black",
 	font = par("font"), ...) {
     
 	if(length(x) != length(y)) {
@@ -787,6 +789,53 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
     }
     facing = match.arg(facing)[1]
     
+	if(niceFacing && facing %in% c("clockwise", "reverse.clockwise", "inside", "outside")) {
+		if(facing == "clockwise" || facing == "reverse.clockwise") {
+			degree = circlize(x, y, sector.index = sector.index, track.index = track.index)[, 1]
+			degree = degree %% 360
+			l1 = degree >= 90 & degree < 270  # should be reverse.clockwise
+			l2 = !l1  # should be clockwise
+			if(facing == "reverse.clockwise") {
+				adj1 = adj
+				adj2 = 1 - adj
+				facing1 = "reverse.clockwise"
+				facing2 = "clockwise"
+			} else {
+				adj1 = 1- adj
+				adj2 = adj
+				facing1 = "reverse.clockwise"
+				facing2 = "clockwise"
+			}
+		} else if(facing == "inside" || facing == "outside") {
+			degree = circlize(x, y, sector.index = sector.index, track.index = track.index)[, 1]
+			degree = degree %% 360
+			l1 = degree > 0 & degree < 180  # should be inside
+			l2 = !l1   # should be outside
+			if(facing == "inside") {
+				adj1 = adj
+				adj2 = 1 - adj
+				facing1 = "inside"
+				facing2 = "outside"
+			} else {
+				adj1 = 1 - adj
+				adj2 = adj
+				facing1 = "inside"
+				facing2 = "outside"
+			}
+		}
+		if(sum(l1)) {
+			circos.text(x[l1], y[l1], labels[l1], sector.index = sector.index,
+				track.index = track.index, facing = facing1, niceFacing = FALSE, adj = adj1,
+				cex = cex, col = col, ...)
+		}
+		
+		if(sum(l2)) {
+			circos.text(x[l2], y[l2], labels[l2], sector.index = sector.index,
+				track.index = track.index, facing = facing2, niceFacing = FALSE, adj = adj2,
+				cex = cex, col = col, ...)
+		}
+		return(invisible(NULL))
+	}
 	
 	if(facing == "bending") {
 		
@@ -849,6 +898,7 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 # -track.index  Index for the track
 # -direction    deprecated, use ``facing`` instead.
 # -facing       Facing of text
+# -niceFacing   Should the facing of text be adjusted to fit human eyes?
 # -adj          Adjustment for text
 # -cex          Font size
 # -col          Font color
@@ -862,7 +912,8 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 # This function can be replaced by a ``for`` loop containing `circos.text`.
 circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.data("track.index"),
     direction = NULL, facing = c("inside", "outside", "reverse.clockwise", "clockwise",
-	"downward", "bending"), adj = par("adj"), cex = 1, col = "black", font = par("font")) {
+	"downward", "bending"), niceFacing = FALSE, adj = par("adj"), cex = 1, col = "black", 
+	font = par("font")) {
     
     # basic check here
     if(length(x) != length(factors) || length(y) != length(factors)) {
@@ -897,8 +948,8 @@ circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.d
         nfont = font[l]
         circos.text(nx, ny, sector.index = le[i],
                       track.index = track.index, labels = nlabels,
-                      direction = direction, facing = facing, adj = adj,
-                      cex = ncex, col = ncol, font = nfont)
+                      direction = direction, facing = facing, niceFacing = niceFacing,
+					  adj = adj, cex = ncex, col = ncol, font = nfont)
             
     }
     return(invisible(NULL))
@@ -921,6 +972,7 @@ circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.d
 # -labels.cex       font size for the axis labels
 # -labels.direction deprecated, use ``facing`` instead.
 # -labels.facing    facing of labels on axis
+# -labels.niceFacing Should facing of axis labels human-easy
 # -direction        whether the axis ticks point to the outside or inside of the circle.
 # -minor.ticks      Number of minor ticks between two close major ticks.
 # -major.tick.percentage Length of the major ticks. It is the percentage to the height of the cell.
@@ -936,7 +988,7 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	sector.index = get.cell.meta.data("sector.index"),
 	track.index = get.cell.meta.data("track.index"),
 	labels.font = par("font"), labels.cex = par("cex"),
-	labels.facing = "inside", labels.direction = NULL,
+	labels.facing = "inside", labels.direction = NULL, labels.niceFacing = TRUE,
 	direction = c("outside", "inside"), minor.ticks = 4,
 	major.tick.percentage = 0.1, labels.away.percentage = 0.05, lwd = par("lwd")) {
 	
@@ -967,10 +1019,9 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	}
 	
 	if(is.null(major.at)) {
-		# every 10 degrees there is a major tick. This is hard coded.
-		# start.degree - end.degree is always a positive value.
-		n = floor(abs(sector.data["start.degree"] - sector.data["end.degree"]) / 10)
-		major.at = pretty(xlim, n = n)
+		major.by = .default.major.by(sector.index, track.index)
+		major.at = seq(floor(xlim[1]/major.by)*major.by, xlim[2], by = major.by)
+		major.at = c(major.at, major.at[length(major.at)] + major.by)
 	}
 	
 	minor.at = NULL
@@ -1039,14 +1090,14 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 			circos.text(major.at[i], h + (major.tick.length+yrange*labels.away.percentage)*ifelse(direction == "outside", 1, -1),
 			           labels = major.at[i], adj = labels.adj,
 			           font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
-			           facing = labels.facing)
+			           facing = labels.facing, niceFacing = labels.niceFacing)
 		} else if(is.logical(labels) && !labels) {
                           
         } else if(length(labels)) {
 			circos.text(major.at[i], h + (major.tick.length+yrange*labels.away.percentage)*ifelse(direction == "outside", 1, -1),
 			            labels = labels[i], adj = labels.adj,
 			            font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
-				        facing = labels.facing)
+				        facing = labels.facing, niceFacing = labels.niceFacing)
 		}				
 		
 	}
@@ -1065,6 +1116,18 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	return(invisible(NULL))
 }
 
+.default.major.by = function(sector.index = get.cell.meta.data("sector.index"),
+	track.index = get.cell.meta.data("track.index")) {
+	# start.degree - end.degree is always a positive value.
+	d = circos.par("major.by.degree")
+	cell.start.degre = get.cell.meta.data("cell.start.degree", sector.index, track.index)
+	tm = reverse.circlize(c(cell.start.degre, cell.start.degre-d), rep(get.cell.meta.data("cell.bottom.radius", sector.index, track.index), 2))
+	major.by = abs(tm[1, 1] - tm[2, 1])
+	digits = as.numeric(gsub("^.*e([+-]\\d+)$", "\\1", sprintf("%e", major.by)))
+	major.by = round(major.by, digits = -1*digits)
+	return(major.by)
+}	
+		
 #####################################################################
 #
 # simulate high-level graphic functions such as barplot, hist, boxplot ...

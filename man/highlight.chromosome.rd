@@ -1,12 +1,12 @@
 \name{highlight.chromosome}
 \alias{highlight.chromosome}
 \title{
-  Highlight a chromosome  
+  Highlight a chromosome  
 
 
 }
 \description{
-  Highlight a chromosome  
+  Highlight a chromosome  
 
 
 }
@@ -16,19 +16,19 @@ highlight.chromosome(chr, track.index = get.all.track.index(),
     padding = c(0, 0, 0, 0))
 }
 \arguments{
-  \item{chr}{Chromosome name. Only allow single chromosome. It should be consistent with the sector index.}
-  \item{track.index}{A vector of track index that you want to highlight}
-  \item{col}{Color for highlighting. Note the color should be semi-transparent.}
-  \item{border}{Border of the highlighted region}
-  \item{lwd}{Width of borders}
-  \item{lty}{Style of borders}
-  \item{padding}{Padding for the highlighted region. It should contain four values representing ratios of the width or height of the highlighted region}
+  \item{chr}{Chromosome name. Only allow single chromosome. It should be consistent with the sector index.}
+  \item{track.index}{A vector of track index that you want to highlight}
+  \item{col}{Color for highlighting. Note the color should be semi-transparent.}
+  \item{border}{Border of the highlighted region}
+  \item{lwd}{Width of borders}
+  \item{lty}{Style of borders}
+  \item{padding}{Padding for the highlighted region. It should contain four values representing ratios of the width or height of the highlighted region}
 
 }
 \details{
-  You may use \code{\link{circos.info}} to find out index for all tracks.  
+  You may use \code{\link{circos.info}} to find out index for all tracks.  
 
-  The function calls \code{\link{draw.sector}}. 
+  The function calls \code{\link{draw.sector}}. 
 
 
 }

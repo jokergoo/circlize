@@ -734,7 +734,7 @@ source("src/intro-09-text-niceFacing.R")
 @
 \end{center}
 \caption{Human easy text facing. When {\tt niceFacing} is on, settings in upper two figures
-are actually identical. Same as the settings in two bottom figures}
+are actually identical. Same as the settings in two bottom figures. Red dots represent positions of the texts.}
 \label{fig:texteasy}
 \end{figure}
 \setkeys{Gin}{width=0.8\textwidth}

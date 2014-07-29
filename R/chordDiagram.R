@@ -187,7 +187,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 				current.sector.index = get.cell.meta.data("sector.index")
 				i = get.cell.meta.data("sector.numeric.index")
 				circos.text(mean(xlim), 0.5, labels = current.sector.index,
-					facing = "inside", niceFacing = TRUE)
+					facing = "inside", niceFacing = TRUE, adj = c(0.5, 0))
 			}, track.height = 0.05)
     }
 	if(any(annotationTrack %in% "grid")) {

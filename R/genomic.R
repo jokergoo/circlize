@@ -751,6 +751,7 @@ circos.genomicRect = function(region, value = NULL,
 # -cex Pass to `circos.text`. Settings are similar as ``col``
 # -col Pass to `circos.text`. The length of ``col`` can be either one or number of rows of ``region``.
 # -font Pass to `circos.text`. Settings are similar as ``col``
+# -padding pass to ``posTransform`` if it is set as `posTransform.text`
 # -... Mysterious parameters
 #
 # == details
@@ -759,7 +760,7 @@ circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.col
 	numeric.column = NULL, sector.index = get.cell.meta.data("sector.index"), 
 	track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
 	direction = NULL, facing = "inside", niceFacing = FALSE,
-	adj = par("adj"), cex = 1, col = "black", font = par("font"), ...) {
+	adj = par("adj"), cex = 1, col = "black", font = par("font"), padding = 0, ...) {
 	
 	if(!is.null(direction)) {
 		facing = direction
@@ -813,10 +814,6 @@ circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.col
 		}
 	}
 
-	if(!is.null(posTransform)) {
-		region = posTransform(region)
-	}
-
 	if(is.null(numeric.column)) {
 		numeric.column = which(as.logical(sapply(value, is.numeric)))
 		if(length(numeric.column) == 0) {
@@ -828,7 +825,18 @@ circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.col
 	if(length(numeric.column) > 1) {
 		stop("You can only have one numeric column.\n")
 	}
-
+	
+	if(!is.null(posTransform)) {
+	
+		# check settings when it is text-specific transformation
+		if(identical(posTransform, posTransform.text)) {
+			if(! facing %in% c("clockwise", "reverse.clockwise")) {
+				stop("Only support `facing` in c('clockwise', 'reverse.clockwise') if `posTransform` is `posTransform.text`.\n")
+			}
+		}
+		region = posTransform(region, value[[ numeric.column ]], value[[labels.column]], cex, font, padding = padding)
+	}
+	
 	nc = length(numeric.column)
 
 	col = .normalizeGraphicalParam(col, nc, nr, "col")
@@ -931,6 +939,7 @@ circos.genomicLink = function(region1, region2,
 # -col Color of lines, can be length of one or length of nrow of ``data``
 # -lwd Width of lines
 # -lty Style of lines
+# -... pass to `circos.trackPlotRegion`
 #
 # == details
 # There is one representative situation when such position transformation needs to be applied. 
@@ -941,7 +950,7 @@ circos.genomicLink = function(region1, region2,
 # to transform original positions to new positions would help for the visualization. 
 circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransform = NULL, 
 	horizontalLine = c("none", "top", "bottom", "both"), track.margin = c(0, 0),
-	type = c("default", "reverse"), col = "black", lwd = par("lwd"), lty = par("lty")) {
+	direction = c("inside", "outside"), col = "black", lwd = par("lwd"), lty = par("lty"), ...) {
 	
 	horizontalLine = match.arg(horizontalLine)[1]
 
@@ -965,54 +974,63 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 	o.track.margin = circos.par("track.margin")
 	circos.par(track.margin = track.margin)
 	
-	type = match.arg(type)[1]
+	if(direction[1] == "default") direction = "outside"
+	if(direction[1] == "reverse") direction = "inside"
+	direction = match.arg(direction)[1]
 	
-	if(type == "default") {
-		circos.trackPlotRegion(data[[1]], ylim = c(0, 1), bg.border = NA, track.height = track.height, panel.fun = function(x, y) {
+	if(direction == "inside") {
+		circos.genomicTrackPlotRegion(data, ylim = c(0, 1), bg.border = NA, track.height = track.height, panel.fun = function(region, value, ...) {
 			chr = get.current.chromosome()
 			l = data[[1]] == chr
-			region_subset = data[l, , drop = FALSE]
-			if(is.null(posTransform)) {
-				region_new_subset = region_subset
+			if(!is.null(posTransform)) {
+				if(is.function(posTransform)) {
+					region_new = posTransform(region)
+				} else if(is.call(posTransform)) {
+					region_new = eval(posTransform)
+				}
 			} else {
-				region_new_subset = cbind(region_subset[[1]], posTransform(region_subset[2:3]))
+				region_new  = region
 			}
 			
-			for(i in seq_len(nrow(region_subset))) {
+			for(i in seq_len(nrow(region))) {
 				if(horizontalLine == "both" || horizontalLine == "top") {
-					circos.lines(c(region_subset[i, 2], region_subset[i, 3]), c(1, 1), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
+					circos.lines(c(region[i, 1], region[i, 2]), c(1, 1), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
 				}
 				if(horizontalLine == "both" || horizontalLine == "bottom") {
-					circos.lines(c(region_new_subset[i, 2], region_new_subset[i, 3]), c(0, 0), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
+					circos.lines(c(region[i, 1], region[i, 2]), c(0, 0), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
 				}
-				mid = (region_subset[i, 2] + region_subset[i, 3])/2
-				mid_new = (region_new_subset[i, 2] + region_new_subset[i, 3])/2
+				mid = (region[i, 1] + region[i, 2])/2
+				mid_new = (region_new[i, 1] + region_new[i, 2])/2
 				circos.lines(c(mid, mid, mid_new, mid_new), c(1, 2/3, 1/3, 0), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
 			}
-		})
+		}, ...)
 	} else {
-		circos.trackPlotRegion(data[[1]], ylim = c(0, 1), bg.border = NA, track.height = track.height, panel.fun = function(x, y) {
+		circos.genomicTrackPlotRegion(data, ylim = c(0, 1), bg.border = NA, track.height = track.height, panel.fun = function(region, value, ...) {
 			chr = get.current.chromosome()
 			l = data[[1]] == chr
 			region_subset = data[l, , drop = FALSE]
-			if(is.null(posTransform)) {
-				region_new_subset = region_subset
+			if(!is.null(posTransform)) {
+				if(is.function(posTransform)) {
+					region_new = posTransform(region)
+				} else if(is.call(posTransform)) {
+					region_new = eval(posTransform)
+				}
 			} else {
-				region_new_subset = cbind(region_subset[[1]], posTransform(region_subset[2:3]))
+				region_new  = region
 			}
 			
-			for(i in seq_len(nrow(region_subset))) {
+			for(i in seq_len(nrow(region))) {
 				if(horizontalLine == "both" || horizontalLine == "bottom") {
-					circos.lines(c(region_subset[i, 2], region_subset[i, 3]), c(0, 0), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
+					circos.lines(c(region[i, 1], region[i, 2]), c(0, 0), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
 				}
 				if(horizontalLine == "both" || horizontalLine == "top") {
-					circos.lines(c(region_new_subset[i, 2], region_new_subset[i, 3]), c(1, 1), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
+					circos.lines(c(region[i, 1], region[i, 2]), c(1, 1), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
 				}
-				mid = (region_subset[i, 2] + region_subset[i, 3])/2
-				mid_new = (region_new_subset[i, 2] + region_new_subset[i, 3])/2
+				mid = (region[i, 1] + region[i, 2])/2
+				mid_new = (region_new[i, 1] + region_new[i, 2])/2
 				circos.lines(c(mid, mid, mid_new, mid_new), c(0, 1/3, 2/3, 1), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
 			}
-		})
+		}, ...)
 	}
 	
 	circos.par(track.margin = o.track.margin)
@@ -1148,26 +1166,6 @@ genomicDensity = function(region, window.size = 10000000, overlap = TRUE) {
 	
 	res = data.frame(start = s, end = e, pct = op)
 	return(res)
-}
-
-# == title
-# Genomic position transformation function
-#
-# == param
-# -region Genomic positions at a single chromosome. It is a data frame with two
-#     columns which are start position and end position.
-#
-# == details
-# The default position transformation functions transforms position to be equally distributed
-# along the chromosome. If users want to define their own transformation function, the requirement
-# is that the returned value should be a data frame with two columns: transformed start position
-# and transformed end position. The returned value should have same number of rows as the input one.
-#
-# For details why need to use position transformation, please refer to `circos.genomicPosTransformLines`.
-posTransform.default = function(region) {
-	xlim = get.cell.meta.data("xlim")
-	segment = seq(xlim[1], xlim[2], length.out = nrow(region) + 1)
-	return(data.frame(start = segment[-length(segment)], end = segment[-1]))
 }
 
 # == title
@@ -1384,3 +1382,122 @@ rainfallTransform = function(region, mode = c("min", "max", "mean")) {
 	
 	return(data.frame(start = region[, 1], end = region[, 2], dist = dist))
 }
+
+# == title
+# Genomic position transformation function
+#
+# == param
+# -region Genomic positions at a single chromosome. It is a data frame with two
+#     columns which are start position and end position.
+# -... black hole for junk arguments.
+#
+# == details
+# The default position transformation functions transforms position to be equally distributed
+# along the chromosome. If users want to define their own transformation function, the requirement
+# is that the returned value should be a data frame with two columns: transformed start position
+# and transformed end position. The returned value should have same number of rows as the input one.
+#
+# For details why need to use position transformation, please refer to `circos.genomicPosTransformLines`.
+posTransform.default = function(region, ...) {
+	xlim = get.cell.meta.data("xlim")
+	segment = seq(xlim[1], xlim[2], length.out = nrow(region) + 1)
+	return(data.frame(start = segment[-length(segment)], end = segment[-1]))
+}
+
+# == title
+# Genomic position transformation function specifically for text
+#
+# == param
+# -region Genomic positions at a single chromosome. It is a data frame with two
+#     columns which are start position and end position.
+# -y positions of texts
+# -text text labels
+# -cex  text size
+# -font  text font style
+# -sector.index sector index
+# -track.index track index
+# -padding padding of text
+#
+# == details
+# This position transformation function is designed specifically for text.
+# Under the transformation, texts will be as close as possible to the original positions.
+posTransform.text = function(region, y, labels, cex = 1, font = par("font"),
+	sector.index = get.cell.meta.data("sector.index"),
+	track.index = get.cell.meta.data("track.index"), padding = 0) {
+	
+	if(length(y) == 1) y = rep(y, nrow(region))
+	if(length(labels) == 1) labels = rep(labels, nrow(region))
+	
+	od = order(region[[1]])
+	region = region[od, ]
+	y = y[od]
+	labels = labels[od]
+
+	text_height = strheight(labels, cex = cex, font = font)*(1+padding)
+	
+	d = circlize( (region[[1]] + region[[2]])/2, y, sector.index = sector.index, track.index = track.index)
+	alpha1 = d[, "theta"] + as.degree(atan(text_height/2/d[, "rou"]))
+	alpha2 = d[, "theta"] - as.degree(atan(text_height/2/d[, "rou"]))
+	x1 = reverse.circlize(alpha1, d[, "rou"], sector.index = sector.index, track.index = track.index)[, "x"]
+	x2 = reverse.circlize(alpha2, d[, "rou"], sector.index = sector.index, track.index = track.index)[, "x"]
+	
+	xlim = get.cell.meta.data("xlim", sector.index = sector.index, track.index = track.index)
+	
+	x1_new = x1
+	x2_new = x2
+	l = x2 - x1 >= xlim[2] - xlim[1]; x1_new[l] = xlim[1]; x2_new[l] = xlim[2]
+	l = x1 < xlim[1]; x1_new[l] = xlim[1]; x2_new[l] = x2[l] + xlim[1] - x1[l]
+	l = x2 > xlim[2]; x1_new[l] = x1[l] - (x2[l] - xlim[2]); x2_new[l] = xlim[2]
+	return(smartAlign(x1_new, x2_new, xlim = xlim))
+}
+
+# x1 should be sorted
+smartAlign = function(x1, x2, xlim) {
+	
+	ncluster.before = -1
+	ncluster = length(x1)
+	while(ncluster.before != ncluster) {
+		ncluster.before = ncluster
+		cluster = rep(0, length(x1))
+		i_cluster = 1
+		cluster[1] = i_cluster
+		for(i in seq_along(x1)[-1]) {
+			# overlap with previous one
+			if(x1[i] <= x2[i-1]) {
+				cluster[i] = i_cluster
+			} else {
+				i_cluster = i_cluster + 1
+				cluster[i] = i_cluster
+			}
+		}
+		ncluster = length(unique(cluster))
+		
+		if(ncluster.before == ncluster) break
+		
+		# tile intervals in each cluster and re-assign x1 and x2
+		new_x1 = numeric(length(x1))
+		new_x2 = numeric(length(x2))
+		for(i_cluster in unique(cluster)) {
+			index = which(cluster == i_cluster)
+			total_len = sum(x2[index] - x1[index])
+			mid = (min(x1[index]) + max(x2[index]))/2
+			if(total_len > xlim[2] - xlim[1]) {
+				tp = seq(xlim[1], xlim[2], length = length(index) + 1)
+			} else if(mid - total_len/2 < xlim[1]) {
+				tp = seq(xlim[1], xlim[1] + total_len, length = length(index) + 1)
+			} else if(mid + total_len/2 > xlim[2]) {
+				tp = seq(xlim[2] - total_len, xlim[2], length = length(index) + 1)
+			} else {
+				tp = seq(mid - total_len/2, mid + total_len/2, length = length(index)+1)
+			}
+			new_x1[index] = tp[-length(tp)]
+			new_x2[index] = tp[-1]
+		}
+		
+		x1 = new_x1
+		x2 = new_x2
+	}
+	
+	return(data.frame(start = x1, end = x2))
+}
+

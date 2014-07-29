@@ -8,9 +8,9 @@ circos.par("canvas.xlim" = c(-1, 1.5), "canvas.ylim" = c(-1, 1.5), start.degree 
 circos.initialize(factors = factors, xlim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1), bg.col = NA, bg.border = NA)
 circos.updatePlotRegion(sector.index = "a")
-circos.text(0.5, 0.5, "first one")
+circos.text(0.5, 0.5, "first one", niceFacing = TRUE)
 circos.updatePlotRegion(sector.index = "b")
-circos.text(0.5, 0.5, "first one")
+circos.text(0.5, 0.5, "first one", niceFacing = TRUE)
 
 circos.clear()
 box()
@@ -21,9 +21,9 @@ circos.par("canvas.xlim" = c(-1.5, 1), "canvas.ylim" = c(-1.5, 1), start.degree 
 circos.initialize(factors = factors, xlim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1), bg.col = NA, bg.border = NA)
 circos.updatePlotRegion(sector.index = "d")
-circos.text(0.5, 0.5, "second one")
+circos.text(0.5, 0.5, "second one", niceFacing = TRUE)
 circos.updatePlotRegion(sector.index = "c")
-circos.text(0.5, 0.5, "second one")
+circos.text(0.5, 0.5, "second one", niceFacing = TRUE)
 
 circos.clear()
 box()
@@ -35,9 +35,9 @@ circos.par("canvas.xlim" = c(-1, 1.5), "canvas.ylim" = c(-1, 1.5), start.degree 
 circos.initialize(factors = factors, xlim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1), bg.col = NA, bg.border = NA)
 circos.updatePlotRegion(sector.index = "a")
-circos.text(0.5, 0.5, "first one")
+circos.text(0.5, 0.5, "first one", niceFacing = TRUE)
 circos.updatePlotRegion(sector.index = "b")
-circos.text(0.5, 0.5, "first one")
+circos.text(0.5, 0.5, "first one", niceFacing = TRUE)
 
 circos.clear()
 
@@ -46,8 +46,8 @@ circos.par("canvas.xlim" = c(-1.5, 1), "canvas.ylim" = c(-1.5, 1), start.degree 
 circos.initialize(factors = factors, xlim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1), bg.col = NA, bg.border = NA)
 circos.updatePlotRegion(sector.index = "d")
-circos.text(0.5, 0.5, "second one")
+circos.text(0.5, 0.5, "second one", niceFacing = TRUE)
 circos.updatePlotRegion(sector.index = "c")
-circos.text(0.5, 0.5, "second one")
+circos.text(0.5, 0.5, "second one", niceFacing = TRUE)
 
 circos.clear()

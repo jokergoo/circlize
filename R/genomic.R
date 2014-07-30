@@ -743,7 +743,7 @@ circos.genomicRect = function(region, value = NULL,
 #                 If it is not defined, only the first numeric columns in ``value`` will be taken.
 # -sector.index Pass to `circos.rect`
 # -track.index Pass to `circos.rect`
-# -posTransform Self-defined function to transform genomic positions, see `posTransform.default` for explaination
+# -posTransform Self-defined function to transform genomic positions, see `posTransform.default` for explanation
 # -facing Passing to `circos.text`. Settings are similar as ``col`` 
 # -niceFacing   Should the facing of text be adjusted to fit human eyes?
 # -direction Deprecated, use ``facing`` instead. 
@@ -934,9 +934,9 @@ circos.genomicLink = function(region1, region2,
 # -posTransform Genomic position transformation function, see `posTransform.default` for an example.
 # -horizontalLine Whether to draw horizontal lines which indicate width of each region
 # -track.margin Margin of tracks
-# -type Type of the transformation. ``default`` means position transformed track are located inside 
-#       and ``reverse`` means position transformed track are located outside.
-# -col Color of lines, can be length of one or length of nrow of ``data``
+# -direction Type of the transformation. ``inside`` means position transformed track are located inside 
+#       and ``outside`` means position transformed track are located outside.
+# -col Color of lines, can be length of one or nrow of ``data``
 # -lwd Width of lines
 # -lty Style of lines
 # -... pass to `circos.trackPlotRegion`
@@ -950,7 +950,8 @@ circos.genomicLink = function(region1, region2,
 # to transform original positions to new positions would help for the visualization. 
 circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransform = NULL, 
 	horizontalLine = c("none", "top", "bottom", "both"), track.margin = c(0, 0),
-	direction = c("inside", "outside"), col = "black", lwd = par("lwd"), lty = par("lty"), ...) {
+	direction = c("inside", "outside"), col = "black", lwd = par("lwd"),
+    lty = par("lty"), ...) {
 	
 	horizontalLine = match.arg(horizontalLine)[1]
 
@@ -1389,7 +1390,7 @@ rainfallTransform = function(region, mode = c("min", "max", "mean")) {
 # == param
 # -region Genomic positions at a single chromosome. It is a data frame with two
 #     columns which are start position and end position.
-# -... black hole for junk arguments.
+# -... black hole to eat junk arguments.
 #
 # == details
 # The default position transformation functions transforms position to be equally distributed
@@ -1411,19 +1412,20 @@ posTransform.default = function(region, ...) {
 # -region Genomic positions at a single chromosome. It is a data frame with two
 #     columns which are start position and end position.
 # -y positions of texts
-# -text text labels
+# -labels text labels
 # -cex  text size
 # -font  text font style
 # -sector.index sector index
 # -track.index track index
 # -padding padding of text
+# -... black hole to eat junk arguments.
 #
 # == details
 # This position transformation function is designed specifically for text.
 # Under the transformation, texts will be as close as possible to the original positions.
 posTransform.text = function(region, y, labels, cex = 1, font = par("font"),
 	sector.index = get.cell.meta.data("sector.index"),
-	track.index = get.cell.meta.data("track.index"), padding = 0) {
+	track.index = get.cell.meta.data("track.index"), padding = 0, ...) {
 	
 	if(length(y) == 1) y = rep(y, nrow(region))
 	if(length(labels) == 1) labels = rep(labels, nrow(region))

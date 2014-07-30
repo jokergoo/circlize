@@ -11,6 +11,7 @@ NEWS/Changelog
 - add ``niceFacing`` in `circos.text` to make the facing more human easy
 - height of ideogram and annotation track in `circos.initializeWithIdeogram` and `circos.genomicInitialize` can be set
 - some example code in examples/vignettes has been changed according to changes in the package source code
+- add `posTransform.text` which can smartly put text on the circle
 
 == 0.0.9
 - links are now implemented by Bezier curve

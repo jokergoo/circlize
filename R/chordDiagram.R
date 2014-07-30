@@ -26,6 +26,7 @@
 #                    how many empty tracks that are needed to be created or a list containing settings for empty
 #                    tracks. Please refer to vignette for details.
 # -annotationTrack Which annotation track should be plotted?
+# -annotationTrackHeight Track height corresponding to the ``annotationTrack``
 # -link.border border for links
 # -grid.border border for grids. If it is ``NA``, the border color is same as grid color
 # -diffHeight The height difference between two 'root' if ``directional`` is set to ``TRUE``. 
@@ -43,8 +44,8 @@
 chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 	col = NULL, row.col = NULL, column.col = NULL, directional = FALSE, fromRows = TRUE,
 	symmetric = FALSE, order = NULL, preAllocateTracks = NULL,
-	annotationTrack = c("name", "grid"), link.border = NA, grid.border = NULL, 
-	diffHeight = 0.04, ...) {
+	annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
+	link.border = NA, grid.border = NULL, diffHeight = 0.04, ...) {
 
 	transparency = ifelse(transparency < 0, 0, ifelse(transparency > 1, 1, transparency))
 
@@ -188,11 +189,11 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 				i = get.cell.meta.data("sector.numeric.index")
 				circos.text(mean(xlim), 0.5, labels = current.sector.index,
 					facing = "inside", niceFacing = TRUE, adj = c(0.5, 0))
-			}, track.height = 0.05)
+			}, track.height = annotationTrackHeight[which(annotationTrack %in% "name")])
     }
 	if(any(annotationTrack %in% "grid")) {
 		circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA, 
-			track.height = 0.05, panel.fun = function(x, y) {
+			panel.fun = function(x, y) {
 				xlim = get.cell.meta.data("xlim")
 				current.sector.index = get.cell.meta.data("sector.index")
 				if(is.null(grid.border)) {
@@ -201,7 +202,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 					border.col = grid.border
 				}
 				circos.rect(xlim[1], 0, xlim[2], 1, col = grid.col[current.sector.index], border = border.col)
-			})
+			}, track.height = annotationTrackHeight[which(annotationTrack %in% "grid")])
 	}
     # links
     rn = rownames(mat)

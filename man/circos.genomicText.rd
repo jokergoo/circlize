@@ -15,7 +15,7 @@ circos.genomicText(region, value, y = NULL, labels = NULL, labels.column = NULL,
     numeric.column = NULL, sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), posTransform = NULL,
     direction = NULL, facing = "inside", niceFacing = FALSE,
-    adj = par("adj"), cex = 1, col = "black", font = par("font"), ...)
+    adj = par("adj"), cex = 1, col = "black", font = par("font"), padding = 0, ...)
 }
 \arguments{
   \item{region}{A data frame contains 2 column which correspond to start position and end position}
@@ -26,7 +26,7 @@ circos.genomicText(region, value, y = NULL, labels = NULL, labels.column = NULL,
   \item{numeric.column}{Which column in \code{value} data frame should be taken as y-value. If it is not defined, only the first numeric columns in \code{value} will be taken.}
   \item{sector.index}{Pass to \code{\link{circos.rect}}}
   \item{track.index}{Pass to \code{\link{circos.rect}}}
-  \item{posTransform}{Self-defined function to transform genomic positions, see \code{\link{posTransform.default}} for explaination}
+  \item{posTransform}{Self-defined function to transform genomic positions, see \code{\link{posTransform.default}} for explanation}
   \item{facing}{Passing to \code{\link{circos.text}}. Settings are similar as \code{col} }
   \item{niceFacing}{Should the facing of text be adjusted to fit human eyes?}
   \item{direction}{Deprecated, use \code{facing} instead. }
@@ -34,6 +34,7 @@ circos.genomicText(region, value, y = NULL, labels = NULL, labels.column = NULL,
   \item{cex}{Pass to \code{\link{circos.text}}. Settings are similar as \code{col}}
   \item{col}{Pass to \code{\link{circos.text}}. The length of \code{col} can be either one or number of rows of \code{region}.}
   \item{font}{Pass to \code{\link{circos.text}}. Settings are similar as \code{col}}
+  \item{padding}{pass to \code{posTransform} if it is set as \code{\link{posTransform.text}}}
   \item{...}{Mysterious parameters}
 
 }

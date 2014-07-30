@@ -18,23 +18,22 @@ circos.genomicTrackPlotRegion(bed, stack = TRUE, panel.fun = function(region, va
 
 circos.clear()
 
-
 circos.par(cell.padding = c(0, 0, 0, 0))
 circos.initializeWithIdeogram(plotType = NULL)
 
-bed = generateRandomBed(nr = 20, nc = 4)
-
-circos.genomicTrackPlotRegion(bed, ylim = c(0, 1), panel.fun = function(region, value, ...) {
-	circos.genomicText(region, value, y = 0, adj = c(1, 0.5), labels = "gene", facing = "reverse.clockwise",
-	    posTransform = posTransform.default, niceFacing = TRUE)
+circos.genomicTrackPlotRegion(bed, stack = TRUE, panel.fun = function(region, value, ...) {
+	circos.genomicRect(region, value, col = f(value[[1]]), 
+		border = f(value[[1]]), posTransform = posTransform.default, ...)
 }, bg.border = NA)
 
-circos.genomicPosTransformLines(bed, posTransform = posTransform.default, horizontalLine = "bottom", type = "reverse", track.height = 0.1)
+circos.genomicPosTransformLines(bed, posTransform = posTransform.default, direction = "outside", horizontalLine = "bottom", track.height = 0.1)
 
 cytoband = read.cytoband()$df
 circos.genomicTrackPlotRegion(cytoband, stack = TRUE, panel.fun = function(region, value, ...) {
-	circos.genomicRect(region, value, col = cytoband.col(value$V5), border = NA, ...)
-}, track.height = 0.05)
+	circos.genomicRect(region, value, col = cytoband.col(value[[2]]), border = NA)
+	xlim = get.cell.meta.data("xlim")
+	ylim = get.cell.meta.data("ylim")
+	circos.rect(xlim[1], ylim[1], xlim[2], ylim[2], border = "black")
+}, track.height = 0.05, bg.border = NA)
 
 circos.clear()
-

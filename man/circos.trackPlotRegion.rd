@@ -14,6 +14,8 @@
 circos.trackPlotRegion(factors = NULL, x = NULL, y = NULL, ylim = NULL,
     force.ylim = TRUE, track.index = NULL,
     track.height = circos.par("default.track.height"),
+    track.margin = circos.par("track.margin"),
+    cell.padding = circos.par("cell.padding"),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
     panel.fun = function(x, y) {NULL})
 }
@@ -25,6 +27,8 @@ circos.trackPlotRegion(factors = NULL, x = NULL, y = NULL, ylim = NULL,
   \item{force.ylim}{Whether to force all cells in the track to share the same \code{ylim}. Normally, all cells on a same track should have same \code{ylim}.}
   \item{track.index}{Index for the track which is going to be updated. Setting it to \code{NULL} means creating the plotting regions in the next newest track.}
   \item{track.height}{Height of the track. It is the percentage to the radius of the unit circles. If to update a track, this argument is ignored.}
+  \item{track.margin}{only affect current track}
+  \item{cell.padding}{only affect current track}
   \item{bg.col}{Background color for the plotting regions. It can be vector which has the same length of sectors.}
   \item{bg.border}{Color for the border of the plotting regions. It can be vector which has the same length of sectors.}
   \item{bg.lty}{Line style for the border of the plotting regions. It can be vector which has the same length of sectors.}

@@ -41,6 +41,7 @@ export(
 	getI,
 	highlight.chromosome,
 	posTransform.default,
+	posTransform.text,
 	rainfallTransform,
 	read.cytoband,
 	reverse.circlize,

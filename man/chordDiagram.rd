@@ -14,8 +14,8 @@
 chordDiagram(mat, grid.col = NULL, transparency = 0,
     col = NULL, row.col = NULL, column.col = NULL, directional = FALSE, fromRows = TRUE,
     symmetric = FALSE, order = NULL, preAllocateTracks = NULL,
-    annotationTrack = c("name", "grid"), link.border = NA, grid.border = NULL,
-    diffHeight = 0.04, ...)
+    annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
+    link.border = NA, grid.border = NULL, diffHeight = 0.04, ...)
 }
 \arguments{
   \item{mat}{A table which represents as a numeric matrix}
@@ -30,6 +30,7 @@ chordDiagram(mat, grid.col = NULL, transparency = 0,
   \item{order}{Order of sectors. Default order is \code{union(rownames(mat), colnames(mat))}}
   \item{preAllocateTracks}{Pre-allocate empty tracks before drawing chord diagram. It can be a single number indicating how many empty tracks that are needed to be created or a list containing settings for empty tracks. Please refer to vignette for details.}
   \item{annotationTrack}{Which annotation track should be plotted?}
+  \item{annotationTrackHeight}{Track height corresponding to the \code{annotationTrack}}
   \item{link.border}{border for links}
   \item{grid.border}{border for grids. If it is \code{NA}, the border color is same as grid color}
   \item{diffHeight}{The height difference between two 'root' if \code{directional} is set to \code{TRUE}. }

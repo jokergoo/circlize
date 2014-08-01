@@ -21,16 +21,16 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
 }
 \arguments{
   \item{h}{Position of the x-axis, can be "top", "bottom" or a numeric value}
-  \item{major.at}{If it is numeric vector, it identifies the positions of the major ticks. It can exceed \code{xlim} value and the exceeding part would be trimmed automatically. If it is \code{NULL}, it would be calculated by \code{\link[base]{pretty}} (about every 10 degrees there is a major tick).}
+  \item{major.at}{If it is numeric vector, it identifies the positions of the major ticks. It can exceed \code{xlim} value and the exceeding part would be trimmed automatically. If it is \code{NULL}, about every 10 degrees there is a major tick.}
   \item{labels}{labels of the major ticks. Also, the exceeding part would be trimmed automatically.}
-  \item{major.tick}{Whether to draw major tick. If it is set to \code{FALSE}, there would be no minor ticks either. }
+  \item{major.tick}{Whether to draw major tick. If it is set to \code{FALSE}, there would be no minor ticks.}
   \item{sector.index}{Index for the sector}
   \item{track.index}{Index for the track}
   \item{labels.font}{font style for the axis labels}
   \item{labels.cex}{font size for the axis labels}
   \item{labels.direction}{deprecated, use \code{facing} instead.}
-  \item{labels.facing}{facing of labels on axis}
-  \item{labels.niceFacing}{Should facing of axis labels human-easy}
+  \item{labels.facing}{facing of labels on axis, passing to \code{\link{circos.text}}}
+  \item{labels.niceFacing}{Should facing of axis labels be human-easy}
   \item{direction}{whether the axis ticks point to the outside or inside of the circle.}
   \item{minor.ticks}{Number of minor ticks between two close major ticks.}
   \item{major.tick.percentage}{Length of the major ticks. It is the percentage to the height of the cell.}
@@ -97,7 +97,8 @@ while(1) {
     min = current.time$min
     hour = current.time$hour
 	
-	draw.sector(rou1 = 0.8, border = "white", col = "white")
+	# erase the clock hands
+    draw.sector(rou1 = 0.8, border = "white", col = "white")
 
     sec.degree = 90 - sec/60 * 360
     arrows(0, 0, cos(sec.degree/180*pi)*0.8, sin(sec.degree/180*pi)*0.8)

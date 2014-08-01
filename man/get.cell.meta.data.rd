@@ -1,12 +1,12 @@
 \name{get.cell.meta.data}
 \alias{get.cell.meta.data}
 \title{
-  Get the meta data for a cell  
+  Get the meta data of a cell  
 
 
 }
 \description{
-  Get the meta data for a cell  
+  Get the meta data of a cell  
 
 
 }
@@ -35,8 +35,8 @@ get.cell.meta.data(name, sector.index = get.current.sector.index(),
   \item{ycenter}{Center of y-axis}
   \item{cell.xlim}{Minimal and maximal values on the x-axis extended by cell paddings}
   \item{cell.ylim}{Minimal and maximal values on the y-axis extended by cell paddings}
-  \item{xplot}{Right and left edge degree for the plotting region which are measured in polar coordinate. The first element corresponds to the start point of values on x-axis (\code{cell.xlm[1]}) and the second element corresponds to the end point of values on x-axis (\code{cell.xlim[2]}) Since x-axis in data coordinate in cells are always clockwise, \code{xplot[1]} is larger than \code{xplot[2]}.}
-  \item{yplot}{Bottom and top value for the plotting region in polar coordinate. It is the value of radius of arc corresponding to top border or bottom border.}
+  \item{xplot}{Degrees for right and left borders of the cell.}
+  \item{yplot}{Radius for top and bottom borders of the cell.}
   \item{cell.start.degree}{Same as \code{xplot[1]}}
   \item{cell.end.degree}{Same as \code{xplot[2]}}
   \item{cell.bottom.radius}{Same as \code{yplot[1]}}
@@ -44,7 +44,7 @@ get.cell.meta.data(name, sector.index = get.current.sector.index(),
   \item{track.margin}{Margin for the cell}
   \item{cell.padding}{Padding for the cell}
 }
-  The function would be useful when you use \code{panel.fun} in \code{\link{circos.trackPlotRegion}} to get detailed information of the current cell. 
+  The function is useful when using \code{panel.fun} in \code{\link{circos.trackPlotRegion}} to get detailed information of the current cell. 
 
 
 }

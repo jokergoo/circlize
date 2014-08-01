@@ -11,10 +11,10 @@
 # -sort.chr Whether chromosome names should be sorted (first sort by numbers then by letters) when reading cytoband data.
 #           Pass to `read.cytoband`.
 # -chromosome.index Index of chromosomes. The index is used only for subsetting, not for re-ordering.
-# -major.by     Increment of major ticks.
+# -major.by     Increment of major ticks. Pass to `circos.genomicInitialize`.
 # -plotType     Which tracks should be drawn. ``rect`` for ideogram rectangle, ``axis`` for genomic axis and ``labels`` for chromosome names.
 #               If it is set to ``NULL``, the function just initialize the plot but draw nothing.
-# -track.height Height of the track which contains "axis" and "labels"
+# -track.height Height of the track which contains "axis" and "labels".
 # -ideogram.height Height of the ideogram track
 # -...    Pass to `circos.initialize`
 #
@@ -22,7 +22,9 @@
 # The function will initialize the circos plot in which each sector corresponds to a chromosome. You can control the order of 
 # chromosomes by set a special format of ``cytoband`` (please refer to `read.cytoband` to find out how to control a proper ``cytoband``).
 #
-# The function finally pass the data to `circos.genomicInitialize` to initialize the circos plot.
+# The function finally pass data to `circos.genomicInitialize` to initialize the circos plot.
+#
+# The style of ideogram is almost fixed, but you can customize it with your self-sefined code. Refer to vignette for demonstration.
 circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = "circlize"),
 	"/extdata/cytoBand.txt", sep=""), species = NULL, sort.chr = TRUE,
 	chromosome.index = NULL, major.by = NULL,
@@ -36,7 +38,7 @@ circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = 
 	if(! is.null(chromosome.index)) {
 		chromosome = chromosome[chromosome %in% chromosome.index]
 		if(length(chromosome) == 0) {
-			stop("Cannot find any chromosome. It is probably related to whether your chromosome names have 'chr' prefix.\nYou can run `circos.info()` to find out which chromosome names are being used.\n")
+			stop("Cannot find any chromosome. It is probably related with your chromosome names with or without 'chr' prefix.\nYou can run `circos.info()` to find out which type of chromosome names are used.\n")
 		}
 	}
 	
@@ -73,15 +75,16 @@ circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = 
 #
 # == param
 # -data         A data frame containing genomic data.
-# -sector.names Names for each sectors which will be drawn along each sector
-# -major.by     Increment of major ticks. It is calculated automatically if the value is not set.
-# -plotType     Which part should be drawn. ``axis`` for genomic axis and ``labels`` for chromosome names
-# -tickLabelsStartFromZero whether axis tick labels start from 0? This will only affect the axis labels while not affect x-values in cells.
+# -sector.names Labels for each sectors which will be drawn along each sector. It will not modify values of sector index.
+# -major.by     Increment of major ticks. It is calculated automatically if the value is not set (about every 10 degrees there is a major tick).
+# -plotType     If it is not ``NULL``, there will create a new track containing axis and names for sectors.
+#               This argument controls which part should be drawn, ``axis`` for genomic axis and ``labels`` for chromosome names
+# -tickLabelsStartFromZero Whether axis tick labels start from 0? This will only affect the axis labels while not affect x-values in cells.
 # -track.height If ``PlotType`` is not ``NULL``, height of the annotation track.
 # -...          Pass to `circos.initialize`
 #
 # == details
-# The function will initialize circos plot from genomic data provided. If ``plotType`` is set with value in ``axis`` or ``labels``, there will
+# The function will initialize circos plot from genomic data. If ``plotType`` is set with value in ``axis`` or ``labels``, there will
 # create a new track.
 #
 # The order of sectors related to data structure of ``data``. If the first column in ``data`` is a factor, the order of sectors
@@ -166,7 +169,7 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 #
 # == param
 # -data A bed-file-like data frame or a list of data frames
-# -ylim If it is ``NULL``, the value will be calculated from data. If ``stack`` is set to ``TRUE``, the value is ignored.
+# -ylim If it is ``NULL``, the value will be calculated from data. If ``stack`` is set to ``TRUE``, this value is ignored.
 # -stack whether to plot in a "stack" mode.
 # -numeric.column Columns of numeric values in ``data`` that will be used for plotting. 
 #                 If ``data`` is a data frame list, ``numeric.column`` should be either length of one or length of ``data``.
@@ -274,7 +277,7 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 	
 	args = formals(genomicPanelFun)
 	if(!(length(args) == 3 && names(args)[3] == "...")) {
-		stop("The `panel.fun` need a third argument `...` to pass specicial parameters to graphical functions.\n")
+		stop("The `panel.fun` need a third argument `...` to pass special parameters to graphical functions.\n")
 	}
 	
 	if(stack) {
@@ -397,7 +400,7 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 }
 
 # == title
-# Which data that panel.fun is using
+# Which data that ``panel.fun`` is using
 #
 # == param
 # -... Invisible arguments that users do not need to care
@@ -424,7 +427,7 @@ getI = function(...) {
 # Add points to a plotting region, specifically for genomic graphics
 #
 # ==param
-# -region A data frame contains 2 column which correspond to start position and end position
+# -region A data frame contains 2 columns which correspond to start positions and end positions
 # -value  A data frame contains values and other information
 # -numeric.column Which column in ``value`` data frame should be taken as y-value.
 #                 If it is not defined, the whole numeric columns in ``value`` will be taken.
@@ -439,7 +442,7 @@ getI = function(...) {
 # -... Mysterious parameters
 #
 # == details
-# The function is usually put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
+# The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
 circos.genomicPoints = function(region, value, numeric.column = NULL, 
 	sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
@@ -524,7 +527,7 @@ circos.genomicPoints = function(region, value, numeric.column = NULL,
 # -... mysterious parameters
 #
 # == details
-# The function is usually put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
+# The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
 circos.genomicLines = function(region, value, numeric.column = NULL, 
 	sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
@@ -646,7 +649,7 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 # -... Mysterious parameters
 #
 # == details
-# The function is usually put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
+# The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
 circos.genomicRect = function(region, value = NULL, 
 	ytop = NULL, ybottom = NULL, ytop.column = NULL, ybottom.column = NULL,
 	sector.index = get.cell.meta.data("sector.index"),
@@ -755,7 +758,7 @@ circos.genomicRect = function(region, value = NULL,
 # -... Mysterious parameters
 #
 # == details
-# The function is usually put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
+# The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
 circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.column = NULL,
 	numeric.column = NULL, sector.index = get.cell.meta.data("sector.index"), 
 	track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
@@ -932,7 +935,7 @@ circos.genomicLink = function(region1, region2,
 # -data A data frame containing genomic data
 # -track.height Height of the track
 # -posTransform Genomic position transformation function, see `posTransform.default` for an example.
-# -horizontalLine Whether to draw horizontal lines which indicate width of each region
+# -horizontalLine Whether to draw horizontal lines which indicate region width 
 # -track.margin Margin of tracks
 # -direction Type of the transformation. ``inside`` means position transformed track are located inside 
 #       and ``outside`` means position transformed track are located outside.
@@ -1098,7 +1101,7 @@ circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, o
 	s = sapply(get.all.sector.index(), function(si) get.cell.meta.data("xrange", sector.index = si))
 	if(is.null(window.size)) {
 		window.size = 10^nchar(sum(s))/1000  # around 100 major ticks
-		cat(window.size, "is choosen as the window size.\n")
+		#cat(window.size, "is choosen as the window size.\n")
 	}
 	
 	df = vector("list", length = length(data))

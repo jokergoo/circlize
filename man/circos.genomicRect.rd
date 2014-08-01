@@ -35,7 +35,7 @@ circos.genomicRect(region, value = NULL,
 
 }
 \details{
-  The function is usually put in \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}. 
+  The function is a low-level graphical function and usually is put in \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}. 
 
 
 }

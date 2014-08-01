@@ -2,10 +2,10 @@
 
 This package aims to implement circos layout in R.
 
-Since most of the figures are composed of points, lines and polygon (for filled color), 
-so we just need to implement functions for drawing points, lines and polygon.
+Since most of the figures are composed of points, lines and polygons, 
+we just need to implement functions for drawing points, lines and polygons.
 
-Current there are following functions that can be used for plotting: 
+Current there are following low-level graphical functions: 
 
 - `circos.points`
 - `circos.lines`
@@ -22,11 +22,7 @@ functions are available:
 - `circos.trackLines`
 - `circos.trackText`
 
-Also, the function drawing histograms in the whole track is available:
-
-- `circos.trackHist`
-
-Functions to arrange the circos layout:
+Functions to arrange circos layout:
 
 - `circos.trackPlotRegion`
 - `circos.updatePlotRegion`
@@ -43,11 +39,11 @@ Functions to initialize circos plot with genomic coordinates:
 - `circos.initializeWithIdeogram`
 - `circos.genomicInitialize`
 
-Functions to arrange genomic circos layout
+Functions to arrange genomic circos layout:
 
 - `circos.genomicTrackPlotRegion`
 
-Functions to add basic genomic graphics
+Functions to add basic graphics in genomic scale:
 
 - `circos.genomicPoints`
 - `circos.genomicLines`
@@ -55,7 +51,7 @@ Functions to add basic genomic graphics
 - `circos.genomicRect`
 - `circos.genomicLink`
 
-Functions with specific purpose
+Functions with specific purpose:
 
 - `circos.genomicDensity`
 - `circos.genomicRainfall`
@@ -80,11 +76,11 @@ Together with the package there are several vignettes which provide detailed des
 
 There is also a Perl module `R::Comment2Man` to convert comments to documentary files.
 
-Comments are marked as the Markdown-style.
+Comments are marked as Markdown-style.
 
-It still has a lot of bugs, but it at least works.
+It still has a lot of bugs, but at least it works.
 
-The module could be run as:
+The module can be run as:
 
     perl -Ilib -MR::Comment2Man -e "R::Comment2Man->draft('R/')"
 
@@ -140,4 +136,4 @@ would be converted to
 
 ### Examples
 
-For examples, please go to http://jokergoo.github.io/circlize
+For examples of circlize package, please visit http://jokergoo.github.io/circlize .

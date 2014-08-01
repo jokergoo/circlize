@@ -2,21 +2,21 @@
 \alias{circlize-package}
 \docType{package}
 \title{
-  circos layout in R  
+  circular layout in R  
 
 
 }
 \description{
-  circos layout in R  
+  circular layout in R  
 
 
 }
 \details{
-  This package aims to implement circos layout( \url{http://circos.ca} ) in R.  
+  This package aims to implement circos layout in R.  
 
-  Since most of the figures are composed of points, lines and polygon (for filled color),  so we just need to implement functions for drawing points, lines and polygon.  
+  Since most of the figures are composed of points, lines and polygons,  we just need to implement functions for drawing points, lines and polygons.  
 
-  Current there are following functions that can be used for plotting:   
+  Current there are following low-level graphical functions:   
 
   \itemize{
     \item \code{\link{circos.points}}
@@ -34,12 +34,7 @@
     \item \code{\link{circos.trackLines}}
     \item \code{\link{circos.trackText}}
   }
-  Also, the function drawing histograms in the whole track is available:  
-
-  \itemize{
-    \item \code{\link{circos.trackHist}}
-  }
-  Functions to arrange the circos layout:  
+  Functions to arrange circos layout:  
 
   \itemize{
     \item \code{\link{circos.trackPlotRegion}}
@@ -58,12 +53,12 @@
     \item \code{\link{circos.initializeWithIdeogram}}
     \item \code{\link{circos.genomicInitialize}}
   }
-  Functions to arrange genomic circos layout  
+  Functions to arrange genomic circos layout:  
 
   \itemize{
     \item \code{\link{circos.genomicTrackPlotRegion}}
   }
-  Functions to add basic genomic graphics  
+  Functions to add basic graphics in genomic scale:  
 
   \itemize{
     \item \code{\link{circos.genomicPoints}}
@@ -72,7 +67,7 @@
     \item \code{\link{circos.genomicRect}}
     \item \code{\link{circos.genomicLink}}
   }
-  Functions with specific purpose  
+  Functions with specific purpose:  
 
   \itemize{
     \item \code{\link{circos.genomicDensity}}

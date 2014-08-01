@@ -380,6 +380,18 @@ chordDiagram(mat, directional = TRUE,
     row.col = 1:5, transparency = 0.5)
 @
 
+\setkeys{Gin}{width=\textwidth}
+\begin{figure}[h!]
+\begin{center}
+<<label=figchordother, fig = TRUE, echo = FALSE, results=hide>>=
+source("src/chordDiagram-04-other.R")
+@
+\end{center}
+\caption{Chord diagram for other matrix. Top left: with directions; Top right: symmetric correlation matrix; Top bottom: without self-loop}
+\label{fig:chordother}
+\end{figure}
+\setkeys{Gin}{width=0.8\textwidth}
+
 {\tt chordDiagram} can also be used to visualize symmetric matrix. If {\tt symmetric}
 is set to {\tt TRUE}, only lower triangular matrix without the diagonal will be used (figure \ref{fig:chordother}, bottom. Of course, your matrix should be symmetric).
 
@@ -402,15 +414,61 @@ chordDiagram(mat, directional = TRUE,
     row.col = 1:5, transparency = 0.5)
 @
 
-\setkeys{Gin}{width=\textwidth}
+
+\subsection{Compare two Chord Diagram}
+
+Normally, values in {\tt mat} are normalized to the summation, which means the width for each link only
+represents kind of relative value. 
+
+First, plot a Chord Diagram:
+
+<<echo=TRUE, eval=FALSE>>=
+mat1 = matrix(sample(20, 25, replace = TRUE), 5)
+
+gap.degree = c(rep(2, 4), 10, rep(2, 4), 10)
+circos.par(gap.degree = gap.degree, start.degree = -5)
+chordDiagram(mat1, directional = TRUE, grid.col = rep(1:5, 2), , transparency = 0.5)
+for(si in get.all.sector.index()) {
+    circos.axis(labels.cex = 0.5, sector.index = si, track.index = 2)
+}
+circos.clear()
+@
+
+The second matrix only has half the values in {\tt mat1}.
+
+<<echo=TRUE, eval=FALSE>>=
+mat2 = mat1 / 2
+@
+
+Now we calculate the blank area
+
+<<echo=TRUE, eval=FALSE>>=
+percent = sum(mat2) / sum(mat1)
+blank_degree = (360 - 2*8) * (1 - percent)
+@
+
+plot the second Chord Diagram
+
+<<echo=TRUE, eval=FALSE>>=
+
+gap.degree = c(rep(2, 4), blank_degree/2, rep(2, 4), blank_degree/2)
+circos.par(gap.degree = gap.degree, start.degree = -blank_degree/4)
+chordDiagram(mat2, directional = TRUE, grid.col = rep(1:5, 2), transparency = 0.5)
+for(si in get.all.sector.index()) {
+    circos.axis(labels.cex = 0.5, sector.index = si, track.index = 2)
+}
+circos.clear()
+@
+
+\setkeys{Gin}{width=0.6\textwidth}
 \begin{figure}[h!]
 \begin{center}
-<<label=figchordother, fig = TRUE, echo = FALSE, results=hide>>=
-source("src/chordDiagram-04-other.R")
+<<label=figchordcompare, fig = TRUE, echo = FALSE, results=hide, width = 6, height = 12>>=
+source("src/chordDiagram-05-compare.R")
 @
 \end{center}
-\caption{Chord diagram for other matrix. Top left: with directions; Top right: symmetric correlation matrix; Top bottom: without self-loop}
-\label{fig:chordother}
+\caption{Compare two Chord Diagrams and make them same scale}
+\label{fig:chordcompare}
 \end{figure}
 \setkeys{Gin}{width=0.8\textwidth}
 

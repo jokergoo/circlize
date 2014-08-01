@@ -1,9 +1,9 @@
 # == title
-# Read/parse cytoband data from a data frame / file / UCSC database
+# Read/parse cytoband data from a data frame/file/UCSC database
 #
 # == param
-# -cytoband A path of the cytoband file or a data frame that already contains cytoband data
-# -species  Abbrevations of species. e.g. hg19 for human, mm10 for mouse. If this
+# -cytoband Path of the cytoband file or a data frame that already contains cytoband data
+# -species  Abbreviations of species. e.g. hg19 for human, mm10 for mouse. If this
 #          value is specified, the function will download ``cytoBand.txt.gz`` from
 #          UCSC website automatically.
 # -sort.chr Whether chromosome names should be sorted (first sort by numbers then by letters).
@@ -12,7 +12,7 @@
 # The function read the cytoband data, sort the chromosome names and calculate the length of each chromosome. 
 # By default, it is human hg19 cytoband data.
 #
-# You can find the data struture for the cytoband data from http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/cytoBand.txt.gz
+# You can find the data structure for the cytoband data from http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/cytoBand.txt.gz
 #
 # If ``sort.chr`` is not set, there would be several circumstances when determining the order of chromosomes. 
 # Assuming ``chromosome`` is the first column in the cytoband data frame,
@@ -35,7 +35,7 @@ read.cytoband = function(cytoband = paste(system.file(package = "circlize"),
 		cytoband = paste(tempdir(), "/cytoBand.txt.gz", sep = "")
 		e = try(download.file(url, destfile = cytoband, quiet = TRUE), silent = TRUE)
 		if(class(e) == "try-error") {
-			stop("Seems your species name is wrong or UCSC does not provide cytoband data for your species.\nIf possible, download cytoBand file from\n", url, "\nand use `read.cytoband(file)`.\n")
+			stop("Seems your species name is wrong or UCSC does not provide cytoband data for your species or internet connection was interrupted.\nIf possible, download cytoBand file from\n", url, "\nand use `read.cytoband(file)`.\n")
 		}
 	}
 	

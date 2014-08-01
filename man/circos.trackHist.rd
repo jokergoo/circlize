@@ -20,15 +20,15 @@ circos.trackHist(factors, x, track.height = circos.par("default.track.height"),
 \arguments{
   \item{factors}{Factors which represent the categories of data}
   \item{x}{Data on the x-axis}
-  \item{track.index}{Index for the track which is goning to be updated. Setting it to \code{NULL} means creating the plotting regions in the next newest track.}
-  \item{track.height}{Height of the track. It is the percentage to the radius of the unit circls. If to update a track, this argument is disabled.}
+  \item{track.index}{Index for the track which is going to be updated. Setting it to \code{NULL} means creating the plotting regions in the next newest track.}
+  \item{track.height}{Height of the track. It is the percentage to the radius of the unit circle. If to update a track, this argument is disabled.}
   \item{force.ylim}{Whether to force all cells in the track to share the same \code{ylim}. Btw, \code{ylim} is calculated automatically.}
   \item{col}{Filled color for histogram}
   \item{border}{Border color for histogram}
   \item{lty}{Line style for histogram}
   \item{lwd}{Line width for histogram}
   \item{bg.col}{Background color for the plotting regions}
-  \item{bg.border}{Color for the boder of the plotting regions}
+  \item{bg.border}{Color for the border of the plotting regions}
   \item{bg.lty}{Line style for the border of the plotting regions}
   \item{bg.lwd}{Line width for the border of the plotting regions}
   \item{breaks}{see \code{\link[graphics]{hist}}}

@@ -38,7 +38,7 @@ circlize = function(x, y, sector.index = get.current.sector.index(),
 #
 # == param
 # -theta        measured by degree
-# -rou          distance to the origin
+# -rou          distance to the circle center (radius)
 # -sector.index Index for the sector
 # -track.index  Index for the track
 #
@@ -138,16 +138,16 @@ check.track.position = function(track.index, track.start, track.height) {
     if(track.start - track.height - track.margin[2] < 0 ||
        track.start - track.height < 0 ||
        track.start < 0) {
-        stop(paste("not enough space for plotting region of track index '", track.index, "'.\n", sep = ""))
+        stop(paste("not enough space for cells at track index '", track.index, "'.\n", sep = ""))
     }
     if(track.start - track.margin[1] - track.height - track.margin[2] < 0) {
-        stop(paste("not enough space for bottom margin of track index '", track.index, "'.\n", sep = ""))
+        stop(paste("not enough space for bottom margin of cells at track index '", track.index, "'.\n", sep = ""))
     }
     
     if(track.index > 1) {
         
         if(track.start > get.cell.meta.data("cell.bottom.radius", track.index = track.index - 1)) {
-            stop("Plotting region overlaps with previous track.\n")
+            stop("Track overlaps with previous track.\n")
         }
     }
 }
@@ -186,7 +186,7 @@ as.degree = function(radian) {
 # -transparency A single value in [0, 1]. 0 refers to no transparency and 1 refers to full transparency
 #
 # == details
-# Colors are interpolated according to break values and corresponding colors. Values exceeding breaks will be assigned with maximum or minimum color.
+# Colors are interpolated according to break values and corresponding colors. Values exceeding breaks will be assigned with maximum or minimum colors.
 #
 # == values
 # It returns a function which accepts a vector of numbers and returns interpolated colors.
@@ -230,7 +230,7 @@ colorRamp2 = function(breaks, colors, transparency = 0) {
 	return(rgb(t(res_rgb)/255, alpha = 1-transparency))
 }
 
-# will be considerred in the future
+# will be considered in the future
 circos.approx = function(x, y, resolution = 0.1, sector.index = get.cell.meta.data("sector.index"),
 	track.index = get.cell.meta.data("track.index"),
 	approxFun = function(x) sample(x, 1)) {

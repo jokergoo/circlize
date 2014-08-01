@@ -1,2 +1,4 @@
 - testing code
 - if two borders intersect in links
+- check error message
+- add section which compares two chord diagram

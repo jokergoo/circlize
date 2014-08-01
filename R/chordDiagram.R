@@ -3,8 +3,8 @@
 # Plot Chord Diagram
 #
 # == param
-# -mat A table which represents as a numeric matrix
-# -grid.col Colors of grids corresponding to rows/columns. The length of the vector should be either 1 or ``length(union(rownames(mat), colnames(mat)))``.
+# -mat A table which represents as a numeric matrix.
+# -grid.col Grid colors which correspond to matrix rows/columns (or sectors). The length of the vector should be either 1 or ``length(union(rownames(mat), colnames(mat)))``.
 #           It's preferred that ``grid.col`` is a named vector of which names correspond to sectors. 
 #           If it is not a named vector, the order of ``grid.col`` corresponds to order of sectors.
 # -transparency Transparency of link colors, 0 means no transparency and 1 means full transparency.
@@ -12,32 +12,36 @@
 # -col Colors for links. It can be a matrix which corresponds to ``mat``, or a function which generate colors 
 #      according to values in ``mat``, or a single value which means colors for all links are the same. You
 #      may use `colorRamp2` to generate a function which maps values to colors.
-# -row.col Colors for links. Links from the same row will have the same color.
+# -row.col Colors for links. Links from the same row in ``mat`` will have the same color.
 #          Length should be same as number of rows in ``mat``. This argument only works when ``col`` is set to ``NULL``.
-# -column.col Colors for links. Links from the same column will have the same color.
+# -column.col Colors for links. Links from the same column in ``mat`` will have the same color.
 #             Length should be same as number of columns in ``mat``. This argument only works when ``col`` and ``row.col`` is set to ``NULL``.
-# -fromRows If links are directional, whether they start from Rows
-# -directional Whether links have directions. The directions are from rows to columns. If you
+# -fromRows Unequal height of link root is used to represent the link direction.
+#           If links are directional, whether they start from Rows. The starting root is always
+#           more inside to circle centre than the ending root.
+# -directional Whether links have directions. The directions are always from rows to columns. If you
 #              want the direction from columns to rows, set ``fromRow`` to ``FALSE``.
 # -symmetric Whether the matrix is symmetric. If the value is set to ``TRUE``, only
 #            lower triangular matrix without the diagonal will be used.
-# -order Order of sectors. Default order is ``union(rownames(mat), colnames(mat))``
+# -order Order of sectors. Default order is ``union(rownames(mat), colnames(mat))``.
 # -preAllocateTracks Pre-allocate empty tracks before drawing chord diagram. It can be a single number indicating
-#                    how many empty tracks that are needed to be created or a list containing settings for empty
+#                    how many empty tracks needed to be created or a list containing settings for empty
 #                    tracks. Please refer to vignette for details.
-# -annotationTrack Which annotation track should be plotted?
-# -annotationTrackHeight Track height corresponding to the ``annotationTrack``
+# -annotationTrack Which annotation track should be plotted? By default, a track containing sector names and a track
+#                  containing grid will be created.
+# -annotationTrackHeight Track height corresponding to values in ``annotationTrack``.
 # -link.border border for links
 # -grid.border border for grids. If it is ``NA``, the border color is same as grid color
-# -diffHeight The height difference between two 'root' if ``directional`` is set to ``TRUE``. 
+# -diffHeight The difference of height between two 'roots' if ``directional`` is set to ``TRUE``. 
 # -... pass to `circos.link`
 #
 # == details
-# Chord diagram is a way to visualize numeric tables ( http://circos.ca/intro/tabular_visualization/ ). This function
+# Chord diagram is a way to visualize numeric tables ( http://circos.ca/intro/tabular_visualization/ ), especially useful
+# when the table represent information of directional relation. This function
 # visualize tables in a circular way.
 #
-# Sectors of the plot is ``union(rownames(mat), colnames(mat))``. If there is no rowname or colname, the function will
-# assign names for it.
+# Sectors of the circos plot is ``union(rownames(mat), colnames(mat))``. If there is no rowname or colname, the function will
+# assign names for it ("R1", "R2", ... for row names, "C1", "C2", ... for column names).
 #
 # This function is flexible and contains some settings that may be a little difficult to understand. 
 # Please refer to vignette for better explanation.
@@ -46,7 +50,11 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 	symmetric = FALSE, order = NULL, preAllocateTracks = NULL,
 	annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
 	link.border = NA, grid.border = NULL, diffHeight = 0.04, ...) {
-
+	
+	if(!is.matrix(mat)) {
+		stop("`mat` can only be a matrix.\n")
+	}
+	
 	transparency = ifelse(transparency < 0, 0, ifelse(transparency > 1, 1, transparency))
 
 	if(symmetric) {
@@ -73,9 +81,10 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 			stop("Elements in `order` should be same as in `union(rownames(mat), colnames(mat))`.\n")
 		}
 	}
-
-	ri = apply(mat, 1, function(x) any(abs(x) > 1e-8))
-	ci = apply(mat, 2, function(x) any(abs(x) > 1e-8))
+	
+	ignore = max(abs(mat))/1e8
+	ri = apply(mat, 1, function(x) any(abs(x) > ignore))
+	ci = apply(mat, 2, function(x) any(abs(x) > ignore))
 
 	mat = mat[ri, ci]
 	if(is.matrix(col)) {

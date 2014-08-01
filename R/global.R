@@ -46,11 +46,11 @@ assign(".CIRCOS.PAR", .CIRCOS.PAR.DEFAULT, envir = .CIRCOS.ENV)
 #     is the percentage according to the radius of the unit circle.
 # -unit.circle.segments    Since curves are simulated by a series of straight lines,
 #     this parameter controls the amount of segments to represent a curve. The minimal length
-#     of the line segmentation is the length of the unit circle (``2pi``) / ``unit.circoe.segments``.
+#     of the line segmentation is the length of the unit circle (``2pi``) divided by ``unit.circoe.segments``.
 #     More segments means better approximation for the curves while larger size if you generate figures as PDF format.
 # -cell.padding            Padding of the cell. Like ``padding`` in Cascading Style Sheets
 #    (CSS), it is the blank area around the plotting regions, but within the borders.
-#     The parameter has four values, which controls the bottom, left, top and right padding
+#     The parameter has four values, which controls the bottom, left, top and right paddings
 #     respectively. The first and the third padding
 #     values are the percentages according to the radius of the unit circle and the second and
 #     fourth values are degrees.
@@ -58,28 +58,27 @@ assign(".CIRCOS.PAR", .CIRCOS.PAR.DEFAULT, envir = .CIRCOS.ENV)
 #     of the unit circle. The height includes the top and bottom cell paddings but not the margins.
 # -points.overflow.warning Since each cell is in fact not a real plotting region but only
 #     an ordinary rectangle, it does not eliminate points that are plotted out of
-#     the region. So if some points are out of the plotting region, by default, the 
-#     package would continue drawing the points and print warnings. But in some 
-#     circumstances, draw something out of the plotting region is useful, such as draw
+#     the region. So if some points are out of the plotting region, ``circlize`` would continue drawing the points but print warnings. In some 
+#     cases, draw something out of the plotting region is useful, such as draw
 #     some legend or text. Set this value to ``FALSE`` to turn off the warnings.
-# -canvas.xlim              The coordinate for the canvas. Because the package draw everything (or almost everything) inside the unit circle, so
+# -canvas.xlim              The coordinate for the canvas. Because ``circlize`` draws everything (or almost everything) inside the unit circle,
 #     the default ``canvas.xlim`` and ``canvas.ylim`` for the canvas would be all ``c(-1, 1)``. However, you can set it to a more broad
 #     interval if you want to draw other things out of the circle. By choosing proper
 #     ``canvas.xlim`` and ``canvas.ylim``, you can draw part of the circle. E.g. setting
 #     ``canvas.xlim`` to ``c(0, 1)`` and ``canvas.ylim`` to ``c(0, 1)`` would only draw
 #     circle in the region of (0, pi/2).
 # -canvas.ylim              The coordinate for the canvas. By default it is ``c(-1, 1)``
-# -clock.wise               The direction of drawing sectors. Default is ``TRUE``.
+# -clock.wise               The direction for adding sectors. Default is ``TRUE``.
 #
-# Similar to `graphics::par`, you can get the values of the parameters by specifying the 
-# names of the parameters and you can set the values of the parameters by specifying a
+# Similar as `graphics::par`, you can get the parameter values by specifying the 
+# names of parameters and you can set the parameter values by specifying a
 # named list which contains the new values.
 #
 # ``gap.degree``, ``start.degree``, ``canvas.xlim``, ``canvas.ylim`` and ``clock.wise`` 
 # only be set before the initialization of circos layout
 # (i.e. before calling `circos.initialize`) because these values will not be changed after
-# putting sectors on the circle. The left and right padding for ``cell.padding`` will also be
-# effectiveless after the initialization because all cells in a sector would share the same
+# adding sectors on the circle. The left and right padding for ``cell.padding`` will also be
+# ignored after the initialization because all cells in a sector would share the same
 # left and right paddings. 
 circos.par = function (...) {
     args = list(...)
@@ -141,18 +140,17 @@ is.circos.initialized = function() {
 }
 
 # == title
-# Initialize the circos plot
+# Initialize the circos layout
 #
 # == param
 # -factors Factors which represent data categories
 # -x       Data on x-axis, a vector
 # -xlim    Limitations for values on x-axis
 # -sector.width Width for each sector. The length of the vector should be either 1 which means
-#          all sectors are having same width or as same as the number of sectors. The value for
-#          the vector is the relative value, and they will be scaled by dividing their summation.
-#          By defautl, it is ``NULL`` which means the width of sectors correspond to the data
-#          range in sectors. If you set the value, you need to notice the width for the sector here
-#          includes the gap after it.
+#          all sectors have same width or as same as the number of sectors. Values for
+#          the vector are relative, and they will be scaled by dividing their summation.
+#          By default, it is ``NULL`` which means the width of sectors correspond to the data
+#          range in sectors which is calculated internally.
 #
 # == details
 # The function allocates the sectors according to the values on x-axis.
@@ -172,10 +170,10 @@ is.circos.initialized = function() {
 #
 # Normally, width of sectors will be calculated internally according to the data range in sectors. But you can
 # still set the width manually. However, it is not always a good idea to change the default sector width since
-# the width can reflect the range of data in sectors. Anyway, in some circumstances, it is useful to manually set
+# the width can reflect the range of data in sectors. Anyway, in some cases, it is useful to manually set
 # the width such as you want to zoom in some part of the sectors.
 #
-# The function finally call `graphics::plot` and be ready for adding graphics.
+# The function finally calls `graphics::plot` and be ready for adding graphics.
 circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL) {
 
     resetGlobalVariable()
@@ -280,10 +278,10 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 		}
 		
 		sector.width.percentage = sector.width / sum(sector.width)
-		degree.per.sector = 360 * sector.width.percentage - gap.degree
+		degree.per.sector = (360 - sum(gap.degree)) * sector.width.percentage
 		
 		if(any(degree.per.sector <= 0)) {
-			stop("Detect some gaps are too large.\n")
+			stop("Maybe your `gap.degree` is too large so that there is no space to allocate sectors.\n")
 		}
 		
 		for(i in seq_len(n.sector)) {
@@ -313,7 +311,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 	}
 	
 	if(any(cell.padding[2] + cell.padding[4] >= sector[["start.degree"]] - sector[["end.degree"]])) {
-		stop("Sumation of cell padding on x-direction are larger than the width of the sectors.\n")
+		stop("Summation of cell padding on x-direction are larger than the width for some sectors.\n")
 	}
 	
 	min.value = min.value - cell.padding[2]/(sector[["start.degree"]] - sector[["end.degree"]] - cell.padding[2] - cell.padding[4])*sector.range  # real min value
@@ -466,7 +464,7 @@ has.cell = function(sector.index, track.index) {
 # ``xplot``, ``yplot``, ``track.margin`` and ``cell.padding`` for every cell in specified sectors and tracks.
 # Also, the function will print index for your current sector and current track.
 #
-# If ``plot`` is set to ``TRUE``, the function will draw the index of the sector and the track 
+# If ``plot`` is set to ``TRUE``, the function will plot the index of the sector and the track 
 # for each cell on the figure.
 circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 	sectors = get.all.sector.index()
@@ -541,7 +539,7 @@ show.index = function() {
 }
 
 # == title
-# Get the meta data for a cell
+# Get the meta data of a cell
 #
 # == param
 # -name         Only support one name at a time, see "details" section
@@ -562,13 +560,8 @@ show.index = function() {
 # -ycenter              Center of y-axis
 # -cell.xlim            Minimal and maximal values on the x-axis extended by cell paddings
 # -cell.ylim            Minimal and maximal values on the y-axis extended by cell paddings
-# -xplot                Right and left edge degree for the plotting region which are measured in polar coordinate.
-#                       The first element corresponds to the start point of values on x-axis (``cell.xlm[1]``)
-#                       and the second element corresponds to the end point of values on x-axis (``cell.xlim[2]``)
-#                       Since x-axis in data coordinate in cells are always clockwise, ``xplot[1]`` is larger
-#                       than ``xplot[2]``.
-# -yplot                Bottom and top value for the plotting region in polar coordinate. It is the value
-#                       of radius of arc corresponding to top border or bottom border.
+# -xplot                Degrees for right and left borders of the cell.
+# -yplot                Radius for top and bottom borders of the cell.
 # -cell.start.degree    Same as ``xplot[1]``
 # -cell.end.degree      Same as ``xplot[2]``
 # -cell.bottom.radius   Same as ``yplot[1]``
@@ -576,7 +569,7 @@ show.index = function() {
 # -track.margin         Margin for the cell
 # -cell.padding         Padding for the cell
 #
-# The function would be useful when you use ``panel.fun`` in `circos.trackPlotRegion` to
+# The function is useful when using ``panel.fun`` in `circos.trackPlotRegion` to
 # get detailed information of the current cell.
 get.cell.meta.data = function(name, sector.index = get.current.sector.index(), 
                               track.index = get.current.track.index()) {
@@ -658,6 +651,8 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 		return(current.cell.data$bg.lty)
 	} else if(name == "bg.lwd") {
 		return(current.cell.data$bg.lwd)
+	} else if(name == "track.height") {
+		return(current.cell.data$track.height)
 	} else {
 		stop("Wrong cell meta name.\n")
 	}

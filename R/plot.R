@@ -2,17 +2,19 @@
 # Create plotting regions for a whole track
 #
 # == param
-# -factors      Factors which represent the categories of data, if is ``NULL``, 
-#               then it is the whole sector index.
-# -x            Data on the x-axis
-# -y            Data on the y-axis
-# -ylim         Range of data on the y-axis
+# -factors      Factors which represent categories of data, if it is ``NULL``, 
+#               then it uses the whole sector index.
+# -x            Data on x-axis. It is only used if ``panel.fun`` is set.
+# -y            Data on y-axis
+# -ylim         Range of data on y-axis
 # -force.ylim   Whether to force all cells in the track to share the same ``ylim``. Normally,
 #               all cells on a same track should have same ``ylim``.
-# -track.index  Index for the track which is going to be updated. Setting it to ``NULL`` means
-#               creating the plotting regions in the next newest track.
+# -track.index  Index for the track which is going to be created/updated. If the specified track has already
+#               been created, this function just updated corresponding track with new plot. If the specified track
+#               is ``NULL`` or has not been created, this function just created it. Note the value for this
+#               argument should not exceed maximum track index plus 1.
 # -track.height Height of the track. It is the percentage to the radius of the unit circles.
-#               If to update a track, this argument is ignored.
+#               If updating a track (with proper ``track.index`` value), this argument is ignored.
 # -track.margin only affect current track
 # -cell.padding only affect current track
 # -bg.col       Background color for the plotting regions. It can be vector which has the same length of sectors.
@@ -24,7 +26,7 @@
 #
 # == details
 # This function pretends to be a high-level plotting function, which means, 
-# you must first call this function to create a plotting region, then those
+# you must first call this function to create plotting regions, then those
 # low-level graphical function such as `circos.points`, `circos.lines` can be
 # applied.
 #
@@ -33,7 +35,7 @@
 # make the layout disordered, this is the only way to create plotting regions.
 #
 # Currently, all the cells that are created in a same track sharing same height, which means,
-# there is no cell has longer height than others.
+# there is no cell has larger height than others.
 #
 # Since limitation for values on x-axis has already been defined by `circos.initialize`, only
 # limitation for values on y-axis should be specified in this function. The ``x`` argument is only
@@ -48,7 +50,7 @@
 # ``panel.fun`` provides a convenient way to add graphics in each cell when initializing the 
 # tracks. The self-defined function need two arguments: ``x`` and ``y`` which correspond to the data points
 # in the current cell. `circos.trackPlotRegion` creates plotting regions one by one on the track and
-# ``panel.fun`` add graphics in the 'current' cell after the plotting region for a certain cell has been
+# ``panel.fun`` adds graphics in the 'current' cell after the plotting region for a certain cell has been
 # created. See vignette for examples of how to use this feature.
 #
 # If ``factors`` does not cover all sectors, the cells in remaining unselected
@@ -57,7 +59,7 @@
 #
 # Second, it can update a already-created track if the index for the track
 # is specified. If the index is one larger than the largest track index, it in fact
-# creates the new track. If updating an existed track, those parameters related to the position (such as track height)
+# creates the new track. If updating an existed track, those parameters related to the position (such as track height and track margin)
 # of the plotting region can not be changed.
 circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NULL,
     force.ylim = TRUE, track.index = NULL,
@@ -73,6 +75,8 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 	
 	o.track.margin = circos.par("track.margin")
 	o.cell.padding = circos.par("cell.padding")
+	circos.par(track.margin = track.margin)
+	circos.par(cell.padding = cell.padding)
 	
 	# if there is no factors, default are all the available factors
 	if(is.null(factors)) {
@@ -118,7 +122,9 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 		# update an existed track
 		if(track.index <= tracks[length(tracks)]) {
 			# ignore track.height from args
-			track.height = get.cell.data(factors[1], track.index)$track.height
+			track.height = get.cell.meta.data("track.height", sector.index = factors[1], track.index = track.index)
+			# ignore track.margin 
+			circos.par("track.margin" = get.cell.meta.data("track.margin", sector.index = factors[1], track.index = track.index))
 		}
         if(is.null(ylim) && is.null(y)) {
             for(sid in get.all.sector.index()) {
@@ -176,7 +182,7 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 		} else if(is.matrix(ylim) && ncol(ylim) == 2 && nrow(ylim) == length(le)) {
 		
 		} else {
-			stop("Wrong `ylim`.\n")
+			stop("Wrong `ylim` format.\n")
 		}
     } 
         
@@ -243,7 +249,7 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 # -sector.index Index for the sector
 # -track.index  Index for the track
 # -bg.col       Background color for the plotting region
-# -bg.border    Color for the boder of the plotting region
+# -bg.border    Color for the border of the plotting region
 # -bg.lty       Line style for the border of the plotting region
 # -bg.lwd       Line width for the border of the plotting region
 #
@@ -290,7 +296,7 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("defau
 	xlim = c(sector.data["min.data"], sector.data["max.data"])
 	
 	if(cell.padding[1] + cell.padding[3] >= track.height) {
-		stop("Sumation of cell padding on y-direction are larger than the height of the cells.\n")
+		stop("Summation of cell padding on y-direction are larger than the height of the cells.\n")
 	}
 	
 	yl = numeric(2)
@@ -334,15 +340,15 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("defau
 # -cex          Point size
 #
 # == details
-# This function can only add points in a specified cell. Pretending a low-level plotting 
+# This function can only add points in one specified cell. Pretending a low-level plotting 
 # function, it can only be applied in plotting region which has been created.
 #
 # You can think the function as the normal `graphics::points`
 # function, just adding points in the plotting region. The position of
 # plotting region is identified by ``sector.index`` and ``track.index``, if they are not
-# specified, they are in current sector and current track.
+# specified, they are in 'current' sector and 'current' track.
 #
-# Data points out of the plotting region will also be added, but with a warning message.
+# Data points out of the plotting region will also be added, but with warning messages.
 #
 # Other graphics parameters which are available in the function are ``pch``, ``col``
 # and ``cex`` which have same meaning as those in the `graphics::par`.
@@ -351,11 +357,11 @@ circos.points = function(x, y, sector.index = get.cell.meta.data("sector.index")
     pch = par("pch"), col = par("col"), cex = par("cex")) {
     
     if(!has.cell(sector.index, track.index)) {
-        stop("'circos.points' can only be used after the plotting region been created\n")
+        stop("'circos.points' can only be used after the plotting region has been created\n")
     }
 	
 	if(length(x) != length(y)) {
-		stop("length of x and y differ.\n")
+		stop("Length of x and y differ.\n")
 	}
 
     # whether the points that are out of the plotting region.
@@ -381,8 +387,7 @@ circos.points = function(x, y, sector.index = get.cell.meta.data("sector.index")
 #
 # == details
 # The function adds points in multiple cells by first splitting data into several parts in which
-# each part corresponds to one factor (sector index) and then add points in cells corresponding
-# to the part of data by calling `circos.points`.
+# each part corresponds to one factor (sector index) and then adding points in each cell by calling `circos.points`.
 #
 # Length of ``pch``, ``col`` and ``cex`` can be one, length of levels of the factors or length of 
 # factors.
@@ -443,9 +448,9 @@ circos.trackPoints = function(factors = NULL, x, y, track.index = get.cell.meta.
 # -type         line type, similar as ``type`` argument in `graphics::lines`, but only in ``c("l", "o", "h", "s")``
 # -straight     whether draw straight lines between points
 # -area         whether to fill the area below the lines. If it is set to ``TRUE``, ``col`` controls the filled color
-#               in the area and ``border`` controls the color of the line.
+#               in the area and ``border`` controls color of the line.
 # -area.baseline deprecated, use ``baseline`` instead.
-# -baseline     the base line to draw area below lines, default is the minimal of y-range (most bottom). It can be a string or number.
+# -baseline     the base line to draw areas. By default it is the minimal of y-range (bottom). It can be a string or a number.
 #               If a string, it should be one of ``bottom`` and ``top``. This argument also works if ``type`` is set to ``h``.
 # -border       color for border of the area
 # -pt.col       if ``type`` is "o", point color
@@ -457,7 +462,7 @@ circos.trackPoints = function(factors = NULL, x, y, track.index = get.cell.meta.
 # But if you do not want to do such transformation you can use this function just drawing straight
 # lines between points by setting ``straight`` to ``TRUE``.
 #
-# Draw areas below lines can help to identify the direction of y-axis in cells (since it is a circle). This can be fulfilled by specifying
+# Draw areas below lines can help to identify the direction of y-axis in cells (since it is a circle). This can be done by specifying
 # ``area`` to ``TURE``.
 circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"),
@@ -471,7 +476,7 @@ circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
 	}
 	
 	if(length(x) != length(y)) {
-		stop("length of x and y differ.\n")
+		stop("Length of x and y differ.\n")
 	}
 	
 	if(baseline == "bottom") {
@@ -562,7 +567,7 @@ circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
 # -area         whether to fill the area below the lines. If it is set to ``TRUE``, ``col`` controls the filled color
 #               in the area and ``border`` controls the color of the line.
 # -area.baseline deprecated, use ``baseline`` instead.
-# -baseline the base line to draw area under lines, default is ``NA`` which means the baseline for each cell would be calculated separately.
+# -baseline the base line to draw area, pass to `circos.lines`.
 # -border       color for border of the area
 # -pt.col       if ``type`` is "o", points color
 # -cex          if ``type`` is "o", points size
@@ -570,13 +575,12 @@ circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
 #
 # == details
 # The function adds lines in multiple cells by first splitting data into several parts in which
-# each part corresponds to one factor (sector index) and then add lines in cells corresponding
-# to the part of data by calling `circos.lines`.
+# each part corresponds to one factor (sector index) and then add lines in cells by calling `circos.lines`.
 #
 # This function can be replaced by a ``for`` loop containing `circos.lines`.
 circos.trackLines = function(factors, x, y, track.index = get.cell.meta.data("track.index"),
     col = "black", lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
-	area = FALSE, area.baseline = NULL, border = "black", baseline = NA,
+	area = FALSE, area.baseline = NULL, border = "black", baseline = "bottom",
     pt.col = par("col"), cex = par("cex"), pch = par("pch")) {
     
 	if(!is.null(area.baseline)) {
@@ -626,7 +630,7 @@ circos.trackLines = function(factors, x, y, track.index = get.cell.meta.data("tr
         circos.lines(nx, ny, sector.index = le[i],
                       track.index = track.index,
                       col = ncol, lwd = nlwd, lty = nlty, area = area[i], border = border[i],
-					  baseline = ifelse(is.na(baseline[i]), get.cell.meta.data("ylim", le[i], track.index)[1], baseline[i]),
+					  baseline = baseline[i],
                       pt.col = npt.col, cex = ncex, pch = npch, type = type, straight = straight)
             
     }
@@ -759,7 +763,7 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 	font = par("font"), ...) {
     
 	if(length(x) != length(y)) {
-		stop("length of x and y differ.\n")
+		stop("Length of x and y differ.\n")
 	}
 	
     if(!has.cell(sector.index, track.index)) {
@@ -917,8 +921,7 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 #
 # == details
 # The function adds texts in multiple cells by first splitting data into several parts in which
-# each part corresponds to one factor (sector index) and then add texts in cells corresponding
-# to the part of data by calling `circos.text`.
+# each part corresponds to one factor (sector index) and then add texts in cells by calling `circos.text`.
 #
 # This function can be replaced by a ``for`` loop containing `circos.text`.
 circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.data("track.index"),
@@ -973,17 +976,17 @@ circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.d
 # -h                Position of the x-axis, can be "top", "bottom" or a numeric value
 # -major.at         If it is numeric vector, it identifies the positions
 #                   of the major ticks. It can exceed ``xlim`` value and the exceeding part
-#                   would be trimmed automatically. If it is ``NULL``, it would be calculated by `base::pretty` (about every 10 degrees there is a major tick).
+#                   would be trimmed automatically. If it is ``NULL``, about every 10 degrees there is a major tick.
 # -labels           labels of the major ticks. Also, the exceeding part would be trimmed automatically.
 # -major.tick       Whether to draw major tick. If it is set to ``FALSE``, there would be
-#                   no minor ticks either. 
+#                   no minor ticks.
 # -sector.index     Index for the sector
 # -track.index      Index for the track
 # -labels.font      font style for the axis labels
 # -labels.cex       font size for the axis labels
 # -labels.direction deprecated, use ``facing`` instead.
-# -labels.facing    facing of labels on axis
-# -labels.niceFacing Should facing of axis labels human-easy
+# -labels.facing    facing of labels on axis, passing to `circos.text`
+# -labels.niceFacing Should facing of axis labels be human-easy
 # -direction        whether the axis ticks point to the outside or inside of the circle.
 # -minor.ticks      Number of minor ticks between two close major ticks.
 # -major.tick.percentage Length of the major ticks. It is the percentage to the height of the cell.
@@ -1151,9 +1154,9 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 # == param
 # -factors      Factors which represent the categories of data
 # -x            Data on the x-axis
-# -track.index  Index for the track which is goning to be updated. Setting it to ``NULL`` means
+# -track.index  Index for the track which is going to be updated. Setting it to ``NULL`` means
 #               creating the plotting regions in the next newest track.
-# -track.height Height of the track. It is the percentage to the radius of the unit circls.
+# -track.height Height of the track. It is the percentage to the radius of the unit circle.
 #               If to update a track, this argument is disabled.
 # -force.ylim   Whether to force all cells in the track to share the same ``ylim``. Btw, ``ylim`` is calculated automatically.
 # -col          Filled color for histogram
@@ -1161,7 +1164,7 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 # -lty          Line style for histogram
 # -lwd          Line width for histogram
 # -bg.col       Background color for the plotting regions
-# -bg.border    Color for the boder of the plotting regions
+# -bg.border    Color for the border of the plotting regions
 # -bg.lty       Line style for the border of the plotting regions
 # -bg.lwd       Line width for the border of the plotting regions
 # -breaks       see `graphics::hist`

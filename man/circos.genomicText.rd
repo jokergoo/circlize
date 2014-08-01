@@ -39,7 +39,7 @@ circos.genomicText(region, value, y = NULL, labels = NULL, labels.column = NULL,
 
 }
 \details{
-  The function is usually put in \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}. 
+  The function is a low-level graphical function and usually is put in \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}. 
 
 
 }

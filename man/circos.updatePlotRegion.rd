@@ -19,7 +19,7 @@ circos.updatePlotRegion(sector.index = get.cell.meta.data("sector.index"),
   \item{sector.index}{Index for the sector}
   \item{track.index}{Index for the track}
   \item{bg.col}{Background color for the plotting region}
-  \item{bg.border}{Color for the boder of the plotting region}
+  \item{bg.border}{Color for the border of the plotting region}
   \item{bg.lty}{Line style for the border of the plotting region}
   \item{bg.lwd}{Line width for the border of the plotting region}
 

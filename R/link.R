@@ -10,25 +10,27 @@
 # -point2        A single value or a numeric vector of length 2. If it is a 2-elements vector, then
 #                the link would be a belt/ribbon.
 # -rou           The position of the 'root' of the link. It is the percentage of the radius of the unit circle.
-#                By default it is from the bottom of the most inner track.
+#                By default its value is the position of bottom margin of the most inner track.
 # -rou1          The position of root 1 of the link. 
 # -rou2          The position of root 2 of the link.
 # -h             Height of the link. 
-# -w             It controls the shape of Bezier curve
-# -h2            Height of the bottom line of the link if it is a ribbon.
-# -w2            Shape of the bottom line of the link
+# -w             Since the link is a Bezier curve, it controls the shape of Bezier curve.
+# -h2            Height of the bottom edge of the link if it is a ribbon.
+# -w2            Shape of the bottom edge of the link if it is a ribbon.
 # -col           Color of the link. If the link is a ribbon, then it is the filled color for the ribbon.
 # -lwd           Line (or border) width
 # -lty           Line (or border) style
 # -border        If the link is a ribbon, then it is the color for the ribbon border.
 #
 # == details
-# The link is a quadratic Bezier curve.
+# Links are implemented as quadratic Bezier curves.
 #
 # Drawing links does not create any track. So you can think it is independent of the tracks.
 #
 # By default you only need to set ``sector.index1``, ``point1``, ``sector.index2`` and ``point2``. The
-# link would look nice. See vignette for detailed explanation.
+# links would look nice. 
+#
+# See vignette for detailed explanation.
 circos.link = function(sector.index1, point1, sector.index2, point2,
     rou = {tracks = get.all.track.index()
 	       if(length(tracks) == 0) {

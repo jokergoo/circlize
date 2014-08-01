@@ -13,3 +13,4 @@ for(cn in intersect(rownames(mat), colnames(mat))) {
 	mat[cn, cn] = 0
 }
 chordDiagram(mat, directional = TRUE, row.col = 1:5, transparency = 0.5)
+circos.clear()

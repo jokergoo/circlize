@@ -20,7 +20,7 @@ circos.genomicPosTransformLines(data, track.height = 0.1, posTransform = NULL,
   \item{data}{A data frame containing genomic data}
   \item{track.height}{Height of the track}
   \item{posTransform}{Genomic position transformation function, see \code{\link{posTransform.default}} for an example.}
-  \item{horizontalLine}{Whether to draw horizontal lines which indicate width of each region}
+  \item{horizontalLine}{Whether to draw horizontal lines which indicate region width }
   \item{track.margin}{Margin of tracks}
   \item{direction}{Type of the transformation. \code{inside} means position transformed track are located inside  and \code{outside} means position transformed track are located outside.}
   \item{col}{Color of lines, can be length of one or nrow of \code{data}}

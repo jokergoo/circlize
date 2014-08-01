@@ -20,7 +20,7 @@ colorRamp2(breaks, colors, transparency = 0)
 
 }
 \details{
-  Colors are interpolated according to break values and corresponding colors. Values exceeding breaks will be assigned with maximum or minimum color.  
+  Colors are interpolated according to break values and corresponding colors. Values exceeding breaks will be assigned with maximum or minimum colors.  
 
 
 }

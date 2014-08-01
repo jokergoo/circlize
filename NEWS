@@ -1,74 +1,91 @@
-NEWS/Changelog
+Change in version 0.1.0
+------------------------------------------------------------------------------
 
-== 0.1.0
-- height(h) and shape(w) can be set for Bezier curve
-- add examples in man/
-- add ``fromRows`` options in `chordDiagram` to ocntrol the direction of links
-- Now the ``major.by`` are the same in all sectors
-- define ``min.data`` and ``max.data`` in internal variable ``SECTOR.DATA``
-- check that sector names cannot be empty strings ("")
-- check whether circos plot has been initialized when calling `circos.trackPlotRegion`
-- add ``niceFacing`` in `circos.text` to make the facing more human easy
-- height of ideogram and annotation track in `circos.initializeWithIdeogram` and `circos.genomicInitialize` can be set
-- some example code in examples/vignettes has been changed according to changes in the package source code
-- add `posTransform.text` which can smartly put text on the circle
+* height(h) and shape(w) can be set for Bezier curve (in `circos.link`)
+* add examples in man/
+* add ``fromRows`` options in `chordDiagram` to control the direction of links
+* Now the ``major.by`` are the same in all sectors
+* define ``min.data`` and ``max.data`` in internal variable ``SECTOR.DATA``
+* check that sector names cannot be empty strings ("")
+* check whether circos plot has been initialized when calling `circos.trackPlotRegion`
+* add ``niceFacing`` in `circos.text` to make the facing more human easy
+* height of ideogram and annotation track in `circos.initializeWithIdeogram` and `circos.genomicInitialize` can be set
+* some example code in examples/vignettes has been changed according to changes in the package source code
+* add `posTransform.text` which can smartly put text on the circle
+* ``track.margin`` and ``cell.padding`` can be set in `circos.trackPlotRegion` as a local setting
 
-== 0.0.9
-- links are now implemented by Bezier curve
-- baseline can be set when ``type == "h"`` `in circos.lines`
-- add a new function `chordDiagram` which support chord diagram
-- add `facing` argument to replace `direction` in `circos.text`
-- `circos.trackPlotRegion` can be used to update a track without re-setting ylim
-- move demo to http://jokergoo.github.io/circlize
-- re-implement `colorRamp2`
+Change in version 0.0.9
+------------------------------------------------------------------------------
 
-== 0.0.8
-- axes labels will not draw when setting labels = FALSE
-- add many functions supporting genomic visualization
-- add a new vignette to show how to plot genomic circos plot with new functions
-- add `circos.info`
+* links are now implemented by Bezier curve
+* baseline can be set when ``type == "h"`` `in circos.lines`
+* add a new function `chordDiagram` which support chord diagram
+* add `facing` argument to replace `direction` in `circos.text`
+* `circos.trackPlotRegion` can be used to update a track without re-setting ylim
+* move demo to http://jokergoo.github.io/circlize
+* re-implement `colorRamp2`
 
-== 0.0.7
-- add an example in demo codes
-- improved vignettes
+Change in version 0.0.8
+------------------------------------------------------------------------------
 
-== 0.0.6
-- order will not change in `circos.trackPlotRegion` when not specifying `factors`, bug fixed
-- add an example in 'draw relation' vignette
-- add a new vignette focusing on phylogenetic tree
-- support directly downloading cytoBand file from UCSC 
+* axes labels will not draw when setting labels = FALSE
+* add many functions supporting genomic visualization
+* add a new vignette to show how to plot genomic circos plot with new functions
+* add `circos.info`
 
-== 0.0.5
-- support self-define width of sectors when initializing sectors
-- add simple functions to read and manuplate cytoband file
-- add several new figures in the vignettes and vignettes have been improved.
-- ``cell.padding`` in `circos.par` now using degree as its measurement.
-- ``track.margin`` in `circos.par` now using percentage of radius as its measurement.
+Change in version 0.0.7
+------------------------------------------------------------------------------
 
-== 0.0.4
-- number of points to simulate quadratic curves decreased
-- labels on axis in `circos.initializeWithIdeogram` is now 'vertical_right' by default
-- size of the vignettes reduced
-- add example of drawing heatmap and cluster dendrogram in the main vignette
-- add example of drawing error area of lines by `circos.polygon`
-- vignette improved
-- ``gap.degree`` in `circos.par` can be a vector which means different degrees for gaps can be set
-- export core function `circlize` now
-- track.margin now is in correct order
-- links are optimized (although not so perfect)
-- no point overflow warnings when drawing axes
+* add an example in demo codes
+* improved vignettes
 
-== 0.0.3
-- vignettes has been improved
-- ``xplot`` in `get.cell.meta.data` is now corresponding to the data direction in the cell
-- number of points to draw links decreased.
-- `get.cell.meta.data` can provide more meta data for a cell
-- start degree and end degree now consistent with the data axis.
-- the first sector is drawn first now.
-- add `draw.sector`
+Change in version 0.0.6
+------------------------------------------------------------------------------
 
-== 0.0.2
-- add `draw.sector` so it would be more straightforward to highlight sectors
-- add ``track.margin``, ``cell.padding``, ``cell.xlim`` and ``cell.ylim`` in `get.cell.meta.data` function
-- figures in vignettes are all generated automatically
-- vignettes have been imporved
+* order will not change in `circos.trackPlotRegion` when not specifying `factors`, bug fixed
+* add an example in 'draw relation' vignette
+* add a new vignette focusing on phylogenetic tree
+* support directly downloading cytoBand file from UCSC 
+
+Change in version 0.0.5
+------------------------------------------------------------------------------
+
+* support self-define width of sectors when initializing sectors
+* add simple functions to read and manuplate cytoband file
+* add several new figures in the vignettes and vignettes have been improved.
+* ``cell.padding`` in `circos.par` now using degree as its measurement.
+* ``track.margin`` in `circos.par` now using percentage of radius as its measurement.
+
+Change in version 0.0.4
+------------------------------------------------------------------------------
+
+* number of points to simulate quadratic curves decreased
+* labels on axis in `circos.initializeWithIdeogram` is now 'vertical_right' by default
+* size of the vignettes reduced
+* add example of drawing heatmap and cluster dendrogram in the main vignette
+* add example of drawing error area of lines by `circos.polygon`
+* vignette improved
+* ``gap.degree`` in `circos.par` can be a vector which means different degrees for gaps can be set
+* export core function `circlize` now
+* track.margin now is in correct order
+* links are optimized (although not so perfect)
+* no point overflow warnings when drawing axes
+
+Change in version 0.0.3
+------------------------------------------------------------------------------
+
+* vignettes has been improved
+* ``xplot`` in `get.cell.meta.data` is now corresponding to the data direction in the cell
+* number of points to draw links decreased.
+* `get.cell.meta.data` can provide more meta data for a cell
+* start degree and end degree now consistent with the data axis.
+* the first sector is drawn first now.
+* add `draw.sector`
+
+Change in version 0.0.2
+------------------------------------------------------------------------------
+
+* add `draw.sector` so it would be more straightforward to highlight sectors
+* add ``track.margin``, ``cell.padding``, ``cell.xlim`` and ``cell.ylim`` in `get.cell.meta.data` function
+* figures in vignettes are all generated automatically
+* vignettes have been imporved

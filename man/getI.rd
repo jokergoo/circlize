@@ -1,12 +1,12 @@
 \name{getI}
 \alias{getI}
 \title{
-  Which data that panel.fun is using  
+  Which data that \code{panel.fun} is using  
 
 
 }
 \description{
-  Which data that panel.fun is using  
+  Which data that \code{panel.fun} is using  
 
 
 }

@@ -16,7 +16,7 @@ reverse.circlize(theta, rou, sector.index = get.current.sector.index(),
 }
 \arguments{
   \item{theta}{measured by degree}
-  \item{rou}{distance to the origin}
+  \item{rou}{distance to the circle center (radius)}
   \item{sector.index}{Index for the sector}
   \item{track.index}{Index for the track}
 

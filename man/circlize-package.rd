@@ -2,12 +2,12 @@
 \alias{circlize-package}
 \docType{package}
 \title{
-  circular layout in R  
+  Circular layout in R  
 
 
 }
 \description{
-  circular layout in R  
+  Circular layout in R  
 
 
 }

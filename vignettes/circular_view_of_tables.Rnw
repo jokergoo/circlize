@@ -421,9 +421,9 @@ chordDiagram(mat, directional = TRUE, row.col = 1:5, transparency = 0.5)
 
 Normally, values in {\tt mat} are normalized to the summation, and each value is put to the circle according to its percentage, 
 which means the width for each link only represents kind of relative value. However, when comparing two Chord Diagrams, it is necessary that
-unit width of links should represent same scale. This problem can be solved by add more blank gaps to the Chord Diagram which has smaller summation.
+unit width of links should represent same scale. This problem can be solved by adding more blank gaps to the Chord Diagram which has smaller summation.
 
-First, let's plot a Chord Diagram. In this Chord Diagram, we set larger gap between rows
+First, let's plot a Chord Diagram. In this Chord Diagram, we set larger gaps between rows
 and columns for better visualization. Axis on the grid illustrates scale of the values.
 
 <<echo=TRUE, eval=FALSE>>=
@@ -431,7 +431,7 @@ mat1 = matrix(sample(20, 25, replace = TRUE), 5)
 
 gap.degree = c(rep(2, 4), 10, rep(2, 4), 10)
 circos.par(gap.degree = gap.degree, start.degree = -5)
-chordDiagram(mat1, directional = TRUE, grid.col = rep(1:5, 2), , transparency = 0.5)
+chordDiagram(mat1, directional = TRUE, grid.col = rep(1:5, 2), transparency = 0.5)
 for(si in get.all.sector.index()) {
     circos.axis(labels.cex = 0.5, sector.index = si, track.index = 2)
 }

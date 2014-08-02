@@ -1,6 +1,6 @@
 
 # == title (package:circlize)
-# circular layout in R
+# Circular layout in R
 #
 # == details
 #

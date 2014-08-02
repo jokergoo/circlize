@@ -1,3 +1,4 @@
+op = par(no.readonly = TRUE)
 
 set.seed(123458)
 
@@ -94,3 +95,5 @@ circos.genomicPosTransformLines(bed,
 )
 circos.clear()
 text(0, 0.05, "posTransform.text\ndirection = 'inside'\npadding = 0.2", adj = c(0, 0))
+
+par(op)

@@ -1,3 +1,6 @@
+
+op = par(no.readonly = TRUE)
+
 par(mfrow = c(2, 1))
 par(mar = c(1, 1, 1, 1))
 factors = letters[1:8]
@@ -58,3 +61,5 @@ d = cbind(x, -sqrt(1 - x^2))
 lines(d)
 arrows(d[2,1], d[2,2], d[1,1], d[1,2])
 text(0, 0, 'circos.par("clock.wise" = TRUE,\nstart.degree = -30)', cex = 0.6)
+
+par(op)

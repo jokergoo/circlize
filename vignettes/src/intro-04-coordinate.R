@@ -1,3 +1,6 @@
+
+op = par(no.readonly = TRUE)
+
 library(circlize)
 par(mar = c(1, 1, 1, 1))
 factors = factor(letters[1:10], levels = sample(letters[1:10], 10))
@@ -16,3 +19,5 @@ for(l in 1:4) {
 }
 circos.info(plot = TRUE)
 circos.clear()
+
+par(op)

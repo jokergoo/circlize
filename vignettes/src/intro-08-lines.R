@@ -1,3 +1,6 @@
+
+op = par(no.readonly = TRUE)
+
 library(circlize)
 par(mar = c(1, 1, 1, 1), cex = 0.6)
 factors = letters[1:9]
@@ -34,3 +37,5 @@ circos.text(5, 9, "type = 'l', area = TRUE\nbaseline = 'top'", sector.index = "i
 
 circos.clear()
 par(cex = 1)
+
+par(op)

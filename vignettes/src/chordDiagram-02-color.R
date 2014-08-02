@@ -9,6 +9,8 @@ rand_color = function(n, alpha = 1) {
     return(rgb(runif(n), runif(n), runif(n), alpha = alpha))
 }
 
+op = par(no.readonly = TRUE)
+
 par(mfrow = c(3, 3))
 par(mar = c(1, 1, 1, 1))
 grid.col = NULL
@@ -25,3 +27,5 @@ chordDiagram(mat, grid.col = grid.col, row.col = 1:3, transparency = 0.5)
 chordDiagram(mat, grid.col = grid.col, column.col = 1:6, transparency = 0.5)
 chordDiagram(mat, grid.col = grid.col, row.col = c("#FF000080", "#00FF0010", "#0000FF10"))
 circos.clear()
+
+par(op)

@@ -1,3 +1,6 @@
+
+op = par(no.readonly = TRUE)
+
 library(circlize)
 d = read.table(file = paste(system.file(package = "circlize"),
         "/extdata/cytoBand.txt", sep=""),
@@ -80,3 +83,5 @@ circos.lines(c(88888888, 88888888), c(0.3, 1), sector.index = "chr6",
     straight = TRUE)
 
 circos.clear()
+
+par(op)

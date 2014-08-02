@@ -1,3 +1,6 @@
+
+op = par(no.readonly = TRUE)
+
 par(mfrow = c(2, 1))
 
 par(mar = c(0, 1, 1, 1))
@@ -13,3 +16,5 @@ circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
 	circos.points(seq(0, 1, length = 20), seq(0, 1, length = 20), pch = 16)
 }, track.height = 0.4)
 circos.clear()
+
+par(op)

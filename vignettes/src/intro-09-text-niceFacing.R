@@ -1,5 +1,7 @@
-library(circlize)
 
+op = par(no.readonly = TRUE)
+
+library(circlize)
 
 ###################################################################################
 par(mar = c(1, 1, 1, 1), mfrow = c(2, 2), xpd = NA)
@@ -106,3 +108,5 @@ circos.trackPlotRegion(factors = factors, ylim = c(0, 10), panel.fun = function(
 	}
 }, track.height = 0.2)
 circos.clear()
+
+par(op)

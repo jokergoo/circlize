@@ -880,7 +880,7 @@ roots can be assigned with different values by {\tt rou1} and {\tt rou2} (figure
 \end{Sinput}
 \end{Schunk}
 
-The height of the link can be controlled by {\tt h} argument in {\tt circos.link}. The default height looks nice, so you don't need to change it.
+The height of the link can be controlled by {\tt h} argument in {\tt circos.link}.
 
 When the link represents as a belt/ribbon (i.e. link from point to interval or from interval to interval),
 It can not ensure that one border is always below or above the other. Which means, in 
@@ -896,7 +896,7 @@ and bottom border by {\tt h} and {\tt h2} (figure \ref{fig:link}, bottom left).
 \end{Sinput}
 \end{Schunk}
 
-You can also control the shape of the link by {\tt w} and {\tt w2}. Examples are in figure \ref{fig:link}, bottom right.
+You can also control the shape of the link by {\tt w} and {\tt w2} ({\tt w2} controls the shape of bottom border). Examples are in figure \ref{fig:link}, bottom right.
 For more explanation of {\tt w}, please refer to \url{http://en.wikipedia.org/wiki/B%C3%A9zier_curve#Rational_B.C3.A9zier_curves}.
 
 \begin{Schunk}

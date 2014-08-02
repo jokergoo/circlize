@@ -1,4 +1,4 @@
-
+op = par(no.readonly = TRUE)
 library(circlize)
 
 layout(matrix(1:9, 3, 3, byrow = TRUE))
@@ -46,3 +46,4 @@ circos.initializeWithIdeogram()
 circos.clear()
 text(0, 0, "'gap.degree' = rep(c(2, 4), 12)", cex = 0.7)
 
+par(op)

@@ -1,5 +1,7 @@
 library(circlize)
 
+op = par(no.readonly = TRUE)
+
 par(mar = c(1, 1, 1, 1))
 
 load(paste(system.file(package = "circlize"),
@@ -15,3 +17,5 @@ circos.genomicDensity(bed_list[[1]], col = c("#FF000080"), track.height = 0.1)
 circos.genomicDensity(bed_list[[2]], col = c("#0000FF80"), track.height = 0.1)
 
 circos.clear()
+
+par(op)

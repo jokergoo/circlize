@@ -41,6 +41,9 @@ circos.dendrogram = function(dend, maxy=attr(dend, "height")) {
     draw.d(dend, maxy)
 }
 
+
+op = par(no.readonly = TRUE)
+
 library(ape)
 data(bird.orders)
 hc = as.hclust(bird.orders)
@@ -72,4 +75,5 @@ circos.clear()
 
 par(mar = c(8, 4, 4, 1))
 plot(hc)
- 
+
+par(op)

@@ -1,3 +1,6 @@
+
+op = par(no.readonly = TRUE)
+
 library(circlize)
 layout(cbind(c(1, 0, 2, 0, 3)), height = c(1,0.25,1, 0.25, 2))
 par(mar = c(2, 2, 2, 2))
@@ -38,3 +41,5 @@ box()
 axis(side = 1)
 axis(side = 2)
 arrows(0, 1.5, 0, 1.07, code = 2)
+
+par(op)

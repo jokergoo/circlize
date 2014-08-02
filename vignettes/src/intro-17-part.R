@@ -1,3 +1,6 @@
+
+op = par(no.readonly = TRUE)
+
 library(circlize)
 par(mfrow = c(2, 1))
 par(mar = c(1, 1, 1, 1))
@@ -36,3 +39,5 @@ par(xpd = NA)
 text(0, 0, 0, adj = c(0.5, 1))
 text(1, 0, 1, adj = c(0.5, 1))
 text(0, 1, 1, adj = c(0.5, 0))
+
+par(op)

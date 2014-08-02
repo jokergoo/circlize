@@ -1,3 +1,6 @@
+
+op = par(no.readonly = TRUE)
+
 library(circlize)
 layout(rbind(1:4, 5:8, 9:12), width = c(1.5, 2, 1.5, 2))
 par(mar = c(1, 1, 1, 1), xpd = NA)
@@ -66,3 +69,5 @@ text(0.5, 0.5, "...\ncircos.clear", adj = c(0.5, 0.5), cex = 1.2)
 
 layout(rbind(1))
 par(xpd = FALSE)
+
+par(op)

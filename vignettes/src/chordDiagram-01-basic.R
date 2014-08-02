@@ -4,7 +4,7 @@ mat = matrix(sample(1:100, 18, replace = TRUE), 3, 6)
 rownames(mat) = letters[1:3]
 colnames(mat) = LETTERS[1:6]
 
-
+op = par(no.readonly = TRUE)
 
 ### basic settings
 par(mfrow = c(3, 2))
@@ -27,3 +27,5 @@ chordDiagram(mat, directional = TRUE)
 chordDiagram(mat, directional = TRUE, diffHeight = 0.06)
 
 circos.clear()
+
+par(op)

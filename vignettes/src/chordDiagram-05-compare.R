@@ -1,3 +1,6 @@
+
+op = par(no.readonly = TRUE)
+
 library(circlize)
 par(mfrow = c(2, 1), mar = c(1, 1, 1, 1))
 mat1 = matrix(sample(20, 25, replace = TRUE), 5)
@@ -23,3 +26,5 @@ for(si in get.all.sector.index()) {
 	circos.axis(labels.cex = 0.5, sector.index = si, track.index = 2)
 }
 circos.clear()
+
+par(op)

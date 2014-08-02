@@ -1,3 +1,6 @@
+
+op = par(no.readonly = TRUE)
+
 library(circlize)
 par(mar = c(1, 1, 1, 1), "xaxs" = "i", "yaxs" = "i")
 factors = letters[1:8]
@@ -67,3 +70,5 @@ circos.text(5, 12, "track.margin[2]", sector.index = "a", track.index = 2)
 circos.text(-1.2, 5, "gap.degree", facing = "clockwise", sector.index = "a", track.index = 2)
 circos.text(10.8, 5, "gap.degree", facing = "clockwise", sector.index = "a", track.index = 2)
 circos.clear()
+
+par(op)

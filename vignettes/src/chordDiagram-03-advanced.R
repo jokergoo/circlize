@@ -1,4 +1,5 @@
 
+op = par(no.readonly = TRUE)
 
 set.seed(123)
 mat = matrix(sample(1:100, 18, replace = TRUE), 3, 6)
@@ -51,3 +52,5 @@ circos.trackPlotRegion(track.index = 1, panel.fun = function(x, y) {
 	circos.text(mean(xlim), 1.5, sector.name, niceFacing = TRUE)
 }, bg.border = NA)
 circos.clear()
+
+par(op)

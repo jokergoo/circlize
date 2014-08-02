@@ -1,5 +1,7 @@
 library(circlize)
 
+op = par(no.readonly = TRUE)
+
 par(mfrow = c(2, 1))
 par(mar = c(1, 1, 1, 1))
 ### rect matrix
@@ -37,3 +39,5 @@ circos.genomicTrackPlotRegion(cytoband, stack = TRUE, panel.fun = function(regio
 }, track.height = 0.05, bg.border = NA)
 
 circos.clear()
+
+par(op)

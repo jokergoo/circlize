@@ -124,7 +124,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 
 	n = length(factors)
 	if(is.null(grid.col)) {
-		grid.col = rgb(cbind(runif(n), runif(n), runif(n)))
+		grid.col = rand_color(n)
 		names(grid.col) = factors
 	} else {
 		if(length(grid.col) == 1) {

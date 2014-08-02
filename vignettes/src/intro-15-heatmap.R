@@ -41,6 +41,7 @@ circos.dendrogram = function(dend, maxy) {
     draw.d(dend, maxy)
 }
 
+op = par(no.readonly = TRUE)
 
 library(circlize)
 mat = matrix(rnorm(100*10), nrow = 10, ncol = 100)
@@ -80,3 +81,6 @@ circos.trackPlotRegion(ylim = c(0, maxy), bg.border = NA, track.height = 0.3, pa
     
 })
 circos.clear()
+
+
+par(op)

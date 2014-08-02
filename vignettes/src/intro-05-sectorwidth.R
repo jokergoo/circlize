@@ -1,3 +1,6 @@
+
+op = par(no.readonly = TRUE)
+
 library(circlize)
 factor = sample(letters[1:8], 100, replace = TRUE)
 x = rnorm(100)
@@ -23,5 +26,6 @@ circos.trackPlotRegion(factors = factor2, x = x2, y = y2, panel.fun = function(x
 })
 circos.link("a", get.cell.meta.data("cell.xlim", "a", 1), "a_zoom", get.cell.meta.data("cell.xlim", "a_zoom", 1), col = "#0000FF20", border = NA)
 circos.link("b", get.cell.meta.data("cell.xlim", "b", 1), "b_zoom", get.cell.meta.data("cell.xlim", "b_zoom", 1), col = "#FF000020", border = NA)
-circos.info()
 circos.clear()
+
+par(op)

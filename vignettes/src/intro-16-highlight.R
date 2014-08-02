@@ -1,3 +1,6 @@
+
+op = par(no.readonly = TRUE)
+
 library(circlize)
 
 factors = letters[1:8]
@@ -44,3 +47,5 @@ bottom.e3 = get.cell.meta.data("cell.bottom.radius", "e", 3)
 draw.sector(start.degree = start.e2, end.degree = end.f2, rou1 = top.e2, rou2 = bottom.e3, border = NA, col = "#FFFF0040")
 circos.info(plot = TRUE)
 circos.clear()
+
+par(op)

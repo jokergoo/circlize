@@ -1,3 +1,6 @@
+
+op = par(no.readonly = TRUE)
+
 library(circlize)
 set.seed(12345)
 par(mar = c(1, 1, 1, 1))
@@ -17,3 +20,5 @@ circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
 text(0, 0, "this is\nthe center", cex = 1.5)
 legend("bottomleft", pch = 1, legend = "this is the legend")
 circos.clear()
+
+par(op)

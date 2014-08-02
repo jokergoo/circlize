@@ -1,3 +1,6 @@
+
+op = par(no.readonly = TRUE)
+
 library(circlize)
 par(mar = c(1, 1, 1, 1))
 factors = letters[1:4]
@@ -12,3 +15,5 @@ circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.5, p
     circos.text(5, 1, "bending", facing = "bending", cex = 0.8)
 })
 circos.clear()
+
+par(op)

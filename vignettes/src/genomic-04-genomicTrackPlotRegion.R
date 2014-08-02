@@ -1,4 +1,6 @@
 
+op = par(no.readonly = TRUE)
+
 library(circlize)
 
 par(mfrow = c(2, 2))
@@ -167,3 +169,4 @@ text(0, mean(pos), "D", adj = c(1, 0.5))
 
 circos.clear()
 
+par(op)

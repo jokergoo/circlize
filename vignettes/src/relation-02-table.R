@@ -1,4 +1,6 @@
 
+op = par(no.readonly = TRUE)
+
 library(circlize)
 
 set.seed(123)
@@ -40,3 +42,5 @@ for(i in seq_len(nrow(mat))) {
 }
 
 circos.clear()
+
+par(op)

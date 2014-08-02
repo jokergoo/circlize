@@ -1,3 +1,6 @@
+
+op = par(no.readonly = TRUE)
+
 library(circlize)
 layout(rbind(c(1,1,2,2), c(0, 3, 3,0)))
 par(mar = c(2, 2, 2, 2))
@@ -51,3 +54,5 @@ circos.updatePlotRegion(sector.index = "c")
 circos.text(0.5, 0.5, "second one", niceFacing = TRUE)
 
 circos.clear()
+
+par(op)

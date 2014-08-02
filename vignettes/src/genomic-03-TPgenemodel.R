@@ -1,3 +1,6 @@
+
+op = par(no.readonly = TRUE)
+
 library(circlize)
 
 par(mar = c(1, 1, 1 ,1))
@@ -23,3 +26,5 @@ circos.genomicTrackPlotRegion(ylim = c(0.5, n + 0.5), panel.fun = function(regio
 	}
 }, bg.border = NA, track.height = 0.3)
 circos.clear()
+
+par(op)

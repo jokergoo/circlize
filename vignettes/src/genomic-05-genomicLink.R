@@ -1,4 +1,6 @@
 
+op = par(no.readonly = TRUE)
+
 set.seed(123)
 
 library(circlize)
@@ -13,3 +15,5 @@ circos.initializeWithIdeogram()
 
 circos.genomicLink(bed1, bed2, col = sample(1:5, 20, replace = TRUE), border = NA)
 circos.clear()
+
+par(op)

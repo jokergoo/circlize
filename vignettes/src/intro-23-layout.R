@@ -5,6 +5,8 @@ rand_color = function() {
     return(rgb(runif(1), runif(1), runif(1)))
 }
 
+op = par(no.readonly = TRUE)
+
 layout(matrix(1:9, 3, 3))
 for(i in 1:9) {
     factors = 1:8
@@ -22,3 +24,6 @@ for(i in 1:9) {
     }
     circos.clear()
 }
+
+par(op)
+layout(1)

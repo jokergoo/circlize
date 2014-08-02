@@ -1,4 +1,5 @@
 
+op = par(no.readonly = TRUE)
 
 library(circlize)
 
@@ -16,3 +17,5 @@ circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
 }, bg.border = NA)
 
 circos.clear()
+
+par(op)

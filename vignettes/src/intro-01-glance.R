@@ -1,4 +1,6 @@
 
+op = par(no.readonly = TRUE)
+
 set.seed(12345)
 n = 1000
 a = data.frame(factor = sample(letters[1:8], n, replace = TRUE),
@@ -151,3 +153,5 @@ circos.link("e", 0, "g", c(-1,1), col = "green", lwd = 2, lty = 2)
 circos.clear()
 
 layout(rbind(1))
+
+par(op)

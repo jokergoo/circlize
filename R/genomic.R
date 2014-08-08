@@ -129,25 +129,41 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 				
 				if(tickLabelsStartFromZero) {
 					offset = xlim[1]
+					if(is.null(major.by)) {
+						xlim = get.cell.meta.data("xlim")
+						major.by = .default.major.by()
+						major.at = seq(floor((xlim[1]-offset)/major.by)*major.by+offset, xlim[2], by = major.by)
+						major.at = c(major.at, major.at[length(major.at)] + major.by)
+					} else {
+						major.at = seq(xlim[1], xlim[2], by = major.by)
+					}
+					
+					if(major.by > 1e6) {
+						major.tick.labels = paste((major.at-offset)/1000000, "MB", sep = "")
+					} else if(major.by > 1e3) {
+						major.tick.labels = paste((major.at-offset)/1000, "KB", sep = "")
+					} else {
+						major.tick.labels = paste((major.at-offset), "bp", sep = "")
+					}
+					
 				} else {
-					offset = 0
-				}
-				if(is.null(major.by)) {
-					xlim = get.cell.meta.data("xlim")
-					major.by = .default.major.by()
-					major.at = seq(floor((xlim[1]-offset)/major.by)*major.by+offset, xlim[2], by = major.by)
-					major.at = c(major.at, major.at[length(major.at)] + major.by)
-				} else {
-					major.at = seq(xlim[1], 10^nchar(round(max(x2 - x1 + 1))), by = major.by)
+					if(is.null(major.by)) {
+						xlim = get.cell.meta.data("xlim")
+						major.by = .default.major.by()
+					} else {
+						major.at = seq(floor(xlim[1]/major.by)*major.by, xlim[2], by = major.by)
+						major.at = c(major.at, major.at[length(major.at)] + major.by)
+					} 
+					
+					if(major.by > 1e6) {
+						major.tick.labels = paste(major.at/1000000, "MB", sep = "")
+					} else if(major.by > 1e3) {
+						major.tick.labels = paste(major.at/1000, "KB", sep = "")
+					} else {
+						major.tick.labels = paste(major.at, "bp", sep = "")
+					}
 				}
 				
-				if(major.by > 1e6) {
-					major.tick.labels = paste((major.at-offset)/1000000, "MB", sep = "")
-				} else if(major.by > 1e3) {
-					major.tick.labels = paste((major.at-offset)/1000, "KB", sep = "")
-				} else {
-					major.tick.labels = paste((major.at-offset), "bp", sep = "")
-				}
 			
 				if(any(plotType %in% "axis")) {
 					circos.axis(h = 0, major.at = major.at, labels = major.tick.labels, labels.cex = 0.3*par("cex"), labels.facing = "clockwise", major.tick.percentage = 0.2)

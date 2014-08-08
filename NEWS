@@ -1,3 +1,9 @@
+Change in version 0.1.1
+------------------------------------------------------------------------------
+
+* fixed bug that if start position is not zero when calling `circos.genomicIntialize`,
+  ``major.by`` is wrongly calculated.
+
 Change in version 0.1.0
 ------------------------------------------------------------------------------
 

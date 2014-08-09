@@ -132,11 +132,9 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 					if(is.null(major.by)) {
 						xlim = get.cell.meta.data("xlim")
 						major.by = .default.major.by()
-						major.at = seq(floor((xlim[1]-offset)/major.by)*major.by+offset, xlim[2], by = major.by)
-						major.at = c(major.at, major.at[length(major.at)] + major.by)
-					} else {
-						major.at = seq(xlim[1], xlim[2], by = major.by)
 					}
+					major.at = seq(xlim[1], xlim[2], by = major.by)
+					major.at = c(major.at, major.at[length(major.at)] + major.by)
 					
 					if(major.by > 1e6) {
 						major.tick.labels = paste((major.at-offset)/1000000, "MB", sep = "")
@@ -150,10 +148,9 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 					if(is.null(major.by)) {
 						xlim = get.cell.meta.data("xlim")
 						major.by = .default.major.by()
-					} else {
-						major.at = seq(floor(xlim[1]/major.by)*major.by, xlim[2], by = major.by)
-						major.at = c(major.at, major.at[length(major.at)] + major.by)
-					} 
+					}
+					major.at = seq(floor(xlim[1]/major.by)*major.by, xlim[2], by = major.by)
+					major.at = c(major.at, major.at[length(major.at)] + major.by)
 					
 					if(major.by > 1e6) {
 						major.tick.labels = paste(major.at/1000000, "MB", sep = "")

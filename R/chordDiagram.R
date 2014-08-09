@@ -177,7 +177,8 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 	dim(col) = dim(mat)
 	colnames(col) = colnames(mat)
 	rownames(col) = rownames(mat)
-
+	
+	o.cell.padding = circos.par("cell.padding")
 	circos.par(cell.padding = c(0, 0, 0, 0))
     circos.initialize(factors = factors, xlim = xlim)
 
@@ -268,6 +269,8 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
         }
 		
     }
+	
+	circos.par("cell.padding" = o.cell.padding)
 }
 
 # returns a list, each list containing settings for each new track

@@ -66,10 +66,10 @@ The second example is a dartboard. In the figure, tracks are assigned with diffe
 different colors (figure \ref{fig:dartboard}). The most inside green ring and red circle are drawn by {\tt draw.sector}.
 <<label=figdartboard, echo=TRUE, eval=FALSE>>=
 library(circlize)
-factors = 1:20
+factors = 1:20  # just indicate there are 20 sectors
 par(mar = c(1, 1, 1, 1))
 circos.par(gap.degree = 0, cell.padding = c(0, 0, 0, 0),
-    start.degree = 360/40, track.margin = c(0, 0), clock.wise = FALSE)
+    start.degree = 360/20/2, track.margin = c(0, 0), clock.wise = FALSE)
 circos.initialize(factors = factors, xlim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.col = "black",
     track.height = 0.15)
@@ -111,7 +111,7 @@ circos.clear()
 The third example is Ba-gua (\url{https://en.wikipedia.org/wiki/Ba_gua}). The
 key functions are {\tt circos.rect} and {\tt draw.sector} (figure \ref{fig:bagua}). 
 
-Ba-gua is originated from about several thousands years ago in China. It is the source of almost all ancient
+Ba-gua originated several thousands years ago in China. It is the source of almost all ancient
 Chinese philosophy. It abstracts the rule of universe into base signs (i.e. - - which is called Yang and {\tt -} which is called Ying).
 And combination of the two basic signs generates the whole system of the universe.
 

@@ -17,6 +17,10 @@ par(mfrow = c(2, 2))
 par(mar = c(1, 1, 1, 1))
 chordDiagram(mat, grid.col = grid.col, annotationTrack = "grid", transparency = 0.5)
 
+chordDiagram(mat, grid.col = grid.col, annotationTrack = "grid",
+    annotationTrackHeight = 0.01, transparency = 0.5)
+	
+
 chordDiagram(mat, annotationTrack = "grid", transparency = 0.5, 
 	preAllocateTracks = list(track.height = 0.3))
 circos.trackPlotRegion(track.index = 1, panel.fun = function(x, y) {

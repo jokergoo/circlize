@@ -32,7 +32,7 @@ package is rather simple.
 An ideogram is, in fact, a series of rectangles with different colors.
 In the following example we are going to draw the ideogram for human.
 
-The cytoband data for human can be download from \\
+The cytoband data for human can be downloaded from \\
 \url{http://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz} or
 from UCSC Table Browser (\url{http://genome-euro.ucsc.edu/cgi-bin/hgTables}).
 Uncompress the file and read it into R. Here {\it circlize} package already contains such file.
@@ -45,19 +45,20 @@ d = read.table(file = paste(system.file(package = "circlize"),
 head(d)
 @
 
-In the data frame, the second column and the third column are intervals for cytogenetic bands.
+In the data frame, the second column and the third column correspond to the intervals for cytogenetic bands.
 
-Here, setting the {\tt colClasses} argument when reading the cytoband file is very important,
-because the positions on chromosomes are large integers (the second column and third column),
-by default {\tt read.table} would store such data as {\tt integer} mode. The summation of such large integers
-would throw error of data overflow. So you must set the data mode to floating point ({\tt numeric}).
+Here, setting the {\tt colClasses} argument when reading the cytoband file is very important.
+Because positions on chromosomes are represented as large integers (the second column and third column),
+by default {\tt read.table} would store such data as {\tt integer} mode. {\it circlize} will sum up such positions
+to determine the range of chromosomes and summation of such large integers
+would throw error of data overflow, thus you must set the data mode to floating point ({\tt numeric}).
 
-Since chromosomes are sorted by their names which are as mode of {\tt character}, the order would look
+Since chromosomes are sorted by their names which are as mode of {\tt character}, the default order would look
 like ``chr1, chr10, chr11, ..., chr2, chr20, ...''. We need to sort chromosomes by 
 the numeric index first.
 
 The process is simple. Extract the number part (1, 2, ..., 22) and the letter part ({\tt X}, {\tt Y}) of chromosome names.
-Sorted them separately and finally combine them.
+Sorted them separately and finally combine them back.
 
 <<include=TRUE, echo=TRUE>>=
 chromosome = unique(d[[1]])
@@ -77,48 +78,45 @@ The cytoband data also provides the range of each chromosome. This can be set as
 In the following code, we calculate the start position and the end position of each chromosome and store them
 in a matrix in which order of rows of {\tt xlim} correspond to the order of elements in {\tt chromosome}.
 
-By the way, if you don't want to draw ideogram, reading the cytoband file is also useful because it tells you 
-ranges of chromosomes and help you to allocate chromosomes in the circle.
-
 <<echo=TRUE, eval=FALSE>>=
 xlim = matrix(nrow = 0, ncol = 2)
 for(chr in chromosome) {
     d2 = d[d[[1]] == chr, ]
-    xlim = rbind(xlim,c(min(d2[[2]]), max(d2[[3]])))
+    xlim = rbind(xlim, c(min(d2[[2]]), max(d2[[3]])))
 }
 @
 
-Note that chromosome name in UCSC has prefix of 'chr', so if you are using chromosomes form 1000 Genome project which
+Note that chromosome name in UCSC has prefix of `chr', so if you are using chromosomes form 1000 Genome project which
 have not 'chr' prefix, remember to add it.
 
-Before we draw the circular layout, we need to set some graphic parameters. Here we do not need any cell paddings
+Before we initialize the circular layout, we need to set some graphic parameters. Here we do not need any cell paddings
 and we do not need the line to be too thick because genomic graphic is always huge.
 
 <<echo=TRUE, eval=FALSE>>=
 par(mar = c(1, 1, 1, 1), lwd = 0.5)
-circos.par("cell.padding" = c(0, 0, 0, 0))
+circos.par(cell.padding = c(0, 0, 0, 0))
 @
 
-Next we initialize the circular layout with ranges of chromosomes. In the initialization step, width of 
-each sector would correspond to the length of each chromosome. Also the order of sectors would
-be determined in this step. Here we must explicitly
+In the initialization step, width of 
+each sector corresponds to the length of each chromosome. Also the order of sectors is
+determined in this step. Here we must explicitly
 set the levels of the factors to make sure the order of chromosomes is ``chr1, chr2,
 chr3, ...'' or else the order would be the alphabetical which is ``chr1, chr11, ...''.
 After the initialization step, the position of each chromosome as well as the order are stored
 in an internal variable. So in the later step, as long as the chromosome is specified, graphics
-would be put in the right sector which corresponds to the selected chromosome.
+will be put in the right sector.
 
 In the initialization step, order of the {\tt xim} matrix should correspond to the order 
-of {\tt levels} of the {\tt factors}, so do not be confused here.
+of {\tt levels} of variable {\tt factors}, so do not be confused here.
 
 <<echo=TRUE, eval=FALSE>>=
 circos.initialize(factors = factor(chromosome, levels = chromosome), xlim = xlim)
 @
 
 After each chromosome has been allocated in the circle, we can draw the ideogram.
-Besides that, we also want to draw additional information such as the axis for chromosomes and names of chromosomes. 
-Here we would draw ideogram, axis and the chromosome names in one track 
-(It is just an option, also you can draw ideogram, axis and names of chromosomes in different tracks as you like). 
+Besides that, we also want to draw additional information such as axes and names of chromosomes. 
+Here we will draw ideogram, axis and the chromosome names in one track 
+(It is just an option, also you can draw ideogram, axes and names of chromosomes in different tracks as you like). 
 in the following code, we create the first track in which there are 24 cells and each cell corresponds to 
 a chromosome. The x-range of each cell is the range of the chromosome and the y-range of
 each cell is from 0 to 1.
@@ -146,7 +144,7 @@ Here the color theme is from \url{http://circos.ca/tutorials/course/slides/sessi
 
 <<echo=TRUE, eval=FALSE>>=
 for(chr in chromosome) {
-    # data in `chr`
+    # data in current `chr`
     d2 = d[d[[1]] == chr, ]
     n = nrow(d2)
     
@@ -192,9 +190,6 @@ to draw something outside the plotting regions. You just need to make sure the f
 
 If you do not want to draw ideogram in the most outside of the circos layout. You can draw it in other tracks as you wish.
 
-Also, the step of assigning colors to cytogenetic bands can be embed for repetitive use. Here a function called
-{\tt cytoband.col} is provided in the package which can do such things.
-
 If there is a translocation from position 111111111 in chromosome 2 to position 55555555 in chromosome 16. It can represent
 as a link in the circos layout.
 
@@ -204,7 +199,7 @@ circos.link(sector.index1 = "chr2", point1 = 111111111, sector.index2 = "chr16",
 @
 
 If position 88888888 in chromosome 6 is important and we want to mark it, we can first create
-a new track and add lines and text in the specified cell.
+a new track and add line and text in the specified cell.
 
 <<echo=TRUE, eval=FALSE>>=
 # create a new track
@@ -227,7 +222,7 @@ For other tracks of genomic graphics, the genomic coordinate (positions on chrom
 genomic positions are taken as y-values.
 
 
-The final figure looks like figure \ref{fig:ideogram}.
+The final figure is figure \ref{fig:ideogram}.
 
 
 \end{document}

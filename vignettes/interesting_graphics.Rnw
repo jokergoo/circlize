@@ -19,14 +19,14 @@
 
 The first example is a clock. The key function here is {\tt circos.axis} (figure \ref{fig:clock}).
 The whole circle only contains one sector in which major tick at 0 is overlapping with major tick at 12.
-The two arrows are drawn in the canvas coordinate. An example of a real-time clock is in {\tt Examples} section in
+The two arrows are plotted in the canvas coordinate. An example of a real-time clock is in {\tt Examples} section in
 the help page of {\tt circos.axis}.
 
 \begin{figure}
 \begin{center}
 <<label=figclock, fig = TRUE, echo=FALSE, results=hide>>=
 library(circlize)
-factors = "a"  # any name is fine
+factors = "a"  # any name is OK
 par(mar = c(1, 1, 1, 1))
 circos.par(gap.degree = 0, cell.padding = c(0, 0, 0, 0), start.degree = 90)
 circos.initialize(factors = factors, xlim = c(0, 12))
@@ -63,7 +63,7 @@ circos.clear()
 
 
 The second example is a dartboard. In the figure, tracks are assigned with different height and each cell is initialized with
-different colors (figure \ref{fig:dartboard}). The most inside green ring and red circle are drawn by {\tt draw.sector}.
+different colors (figure \ref{fig:dartboard}). The most inside green ring and red circle are plotted by {\tt draw.sector}.
 <<label=figdartboard, echo=TRUE, eval=FALSE>>=
 library(circlize)
 factors = 1:20  # just indicate there are 20 sectors
@@ -198,7 +198,7 @@ circos.clear()
 \end{figure}
 
 
-Figure \ref{fig:painting} is a circular style of Keith Haring's great doodles. 
+Figure \ref{fig:painting} is a circular style of Keith Haring's great doodle. 
 The circular transformation is as follows: 1. use {\tt jpeg} package to read RGB
 information for each pixel in the original figure; 2. use {\tt circos.rect} to draw
 every pixel into the circle. Source code for generating the figure can be found

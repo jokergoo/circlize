@@ -100,7 +100,7 @@ track, we plot the name of each bird, with different colors to represent differe
 library(circlize)
 par(mar = c(1, 1, 1, 1))
 circos.par(cell.padding = c(0, 0, 0, 0))
-circos.initialize("a", xlim = c(0, n))
+circos.initialize(factors = "a", xlim = c(0, n))
 maxy = attr(hc, "height")  # maximum height of the tree
 circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.3, 
     panel.fun = function(x, y) {
@@ -112,21 +112,22 @@ circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.3,
 })
 @
 
-In the second track, we are going to draw the circular dendrogram. Here we implement the code as {\tt circos.dendrogram} in a recursive way. The
+In the second track, we are going to plot the circular dendrogram. Here we implement the code as {\tt circos.dendrogram} in a recursive way. The
 {\tt draw.d} function adds lines to its two children nodes, and once it reaches the leaf of the tree, the recursive
 execution will stop. You can see the advantage of {\it circlize} that if you replace {\tt circos.lines} to {\tt lines} in the function, then you can almost
 use the function to draw dendrogram in the regular Cartesian coordinate system without any error.
 
 <<eval=FALSE>>==
+# == param
 # -dend a `dendogram` object
 # -maxy the maximum height of the tree is a global attribute,
 #       so here it is set as an argument
-circos.dendrogram = function(dend, maxy=attr(dend, "height")) {
+circos.dendrogram = function(dend, maxy = attr(dend, "height")) {
     labels = as.character(labels(dend))
     x = seq_along(labels) - 0.5 # leaves are places at x = 0.5, 1.5, ..., n - 0.5
     names(x) = labels
     
-    is.leaf = function(object) (is.logical(L = attr(object, "leaf"))) && L
+    is.leaf = function(object) (is.logical(L <- attr(object, "leaf"))) && L
     
     draw.d = function(dend, maxy) {
         leaf = attr(dend, "leaf")
@@ -167,7 +168,7 @@ circos.dendrogram = function(dend, maxy=attr(dend, "height")) {
 }
 @
 
-And add the circular dendrogram to the second track:
+Finally add the circular dendrogram to the second track:
 
 <<eval=FALSE>>==
 circos.trackPlotRegion(ylim = c(0, maxy), bg.border = NA, 
@@ -185,7 +186,7 @@ bars, lines, points, or even highlighting some parts on the tree.
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.7\textwidth]{figures/phylogenetic-tree.pdf}
-\caption{A simple phylogenetic tree.}
+\caption{A simple phylogenetic tree. Top: circular style; Bottom: normal style.}
 \label{fig:phylogenetic}
 \end{figure}
 

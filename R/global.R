@@ -573,7 +573,12 @@ show.index = function() {
 # get detailed information of the current cell.
 get.cell.meta.data = function(name, sector.index = get.current.sector.index(), 
                               track.index = get.current.track.index()) {
-
+	if(length(sector.index) == 0) {
+		stop("It seems the circos plot has not been initialized.\n")
+	}
+	if(length(track.index) == 0) {
+		stop("It seems the track has not been created.")
+	}
 	if(length(sector.index) != 1) {
 		stop("Length of `sector.index` should only be 1.\n")
 	}

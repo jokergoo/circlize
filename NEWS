@@ -1,6 +1,11 @@
 Change in version 0.1.1
 ------------------------------------------------------------------------------
 
+* global options are controlled by `GlobalOptions` package
+
+Change in version 0.1.1
+------------------------------------------------------------------------------
+
 * fixed the bug that if start position is not zero when calling `circos.genomicIntialize`,
   ``major.at`` is wrongly calculated.
 

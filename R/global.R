@@ -12,25 +12,13 @@ resetGlobalVariable = function() {
 
 resetGlobalVariable()
 
-.CIRCOS.PAR.DEFAULT = list(
-    start.degree = 0,
-	gap.degree = 1,
-	track.margin = c(0.01, 0.01),  # top margin and bottom margin, percentage
-	unit.circle.segments = 500,   #to simulate smooth curve
-	cell.padding = c(0.02, 1, 0.02, 1),  # percentage
-	default.track.height = 0.2,
-	points.overflow.warning = TRUE,
-	canvas.xlim = c(-1, 1),
-	canvas.ylim = c(-1, 1),
-	major.by.degree = 10,
-	clock.wise = TRUE)
-assign(".CIRCOS.PAR", .CIRCOS.PAR.DEFAULT, envir = .CIRCOS.ENV)
-
 # == title
 # Parameters for circos layout
 #
 # == param
 # -... Arguments for the parameters, see "details" section
+# -RESET reset to default values
+# -READ.ONLY whether only return read-only options
 # 
 # == details
 # Global parameters for the circos layout. Currently supported parameters are:
@@ -80,58 +68,71 @@ assign(".CIRCOS.PAR", .CIRCOS.PAR.DEFAULT, envir = .CIRCOS.ENV)
 # adding sectors on the circle. The left and right padding for ``cell.padding`` will also be
 # ignored after the initialization because all cells in a sector would share the same
 # left and right paddings. 
-circos.par = function (...) {
-    args = list(...)
-    
-	.CIRCOS.PAR = get(".CIRCOS.PAR", envir = .CIRCOS.ENV)
-	par.names = names(.CIRCOS.PAR)
-	
-    if(length(args) == 0) {
-        return(.CIRCOS.PAR)
-    }
-    if(is.null(names(args))) {
-        if(length(args) == 1) {
-            return(.CIRCOS.PAR[[unlist(args)]])
-        } else {
-            return(.CIRCOS.PAR[unlist(args)])
-        }
-    }
-    
-    name = names(args)
-    if(sum(is.null(name)) == 0) {
-		o.cell.padding = .CIRCOS.PAR[["cell.padding"]]
-        for(i in seq_along(args)) {
-			
-			if(sum(name[i] %in% par.names) == 0) {
-				stop(paste("Wrong element: '", name[i], "' in `circos.par()`", sep = ""))
+circos.par = function(..., RESET = FALSE, READ.ONLY = NULL) {}
+circos.par = setGlobalOptions(
+	start.degree = list(
+		.value = 0,
+		.length = 1,
+		.class = "numeric",
+	    .filter = function(x) {
+			if(is.circos.initialized()){
+				warning(paste("'start.degree' can only be modified before `circos.initialize`,\nor maybe you forgot to call `circos.clear` in your last plot.\n", sep = ""))
 			}
-			
-			if(name[i] %in% c("start.degree", "gap.degree", "canvas.xlim", "canvas.ylim", "clock.wise") &&
-			   is.circos.initialized()) {
-				warning(paste("'", name[i], "' can only be modified before `circos.initialize`,\nor maybe you forgot to call `circos.clear` in your last plot.\n", sep = ""))
-                next
+			return(x)
+		}),
+	gap.degree = list(
+		.value = 1,
+		.class = "numeric",
+		.validate = function(x) {
+			all(x >= 0 & x < 360)
+		},
+		.filter = function(x) {
+			if(is.circos.initialized()){
+				warning(paste("'gap.degree' can only be modified before `circos.initialize`,\nor maybe you forgot to call `circos.clear` in your last plot.\n", sep = ""))
 			}
-
-			if(name[i] == "gap.degree") {
-				gap.degree = args[[ name[i] ]]
-				for(k in seq_along(gap.degree)) {
-					if(gap.degree[k] >= 360 || gap.degree[k] < 0) {
-						stop("`gap.degree` should be only in [0, 360).\n")
-					}
-				}
-			}
-
-            .CIRCOS.PAR[[ name[i] ]] = args[[ name[i] ]]
-			
-        }
-		if(is.circos.initialized()) {
-			.CIRCOS.PAR[["cell.padding"]][2] = o.cell.padding[2]
-			.CIRCOS.PAR[["cell.padding"]][4] = o.cell.padding[4]
+			return(x)
 		}
-		assign(".CIRCOS.PAR", .CIRCOS.PAR, envir = .CIRCOS.ENV)
-        return(invisible(.CIRCOS.PAR))
-    }
-}
+		),
+	track.margin = list(
+		.value = c(0.01, 0.01),  # top margin and bottom margin, percentage
+		.length = 2,
+		.class = "numeric"
+		),
+	unit.circle.segments = 500,   #to simulate smooth curve
+	cell.padding = list(
+		.value = c(0.02, 1, 0.02, 1),  # percentage
+		.length = c(2, 4),
+		.class = "numeric",
+		.filter = function(x) {
+			if(length(x) == 2) x = c(x, x)
+			o.cell.padding = circos.par("cell.padding")
+			if(is.circos.initialized()){
+				return(c(x[1], o.cell.padding[2], x[3], o.cell.padding[4]))
+			} else {
+				return(x)
+			}
+		}),
+	default.track.height = 0.2,
+	points.overflow.warning = TRUE,
+	canvas.xlim = list(
+		.value = c(-1, 1),
+	    .filter = function(x) {
+			if(is.circos.initialized()){
+				warning(paste("'canvas.xlim' can only be modified before `circos.initialize`,\nor maybe you forgot to call `circos.clear` in your last plot.\n", sep = ""))
+			}
+			return(x)
+		}),
+	canvas.ylim = list(
+		.value = c(-1, 1),
+	    .filter = function(x) {
+			if(is.circos.initialized()){
+				warning(paste("'canvas.ylim' can only be modified before `circos.initialize`,\nor maybe you forgot to call `circos.clear` in your last plot.\n", sep = ""))
+			}
+			return(x)
+		}),
+	major.by.degree = 10,
+	clock.wise = TRUE
+)
 
 # before initialization, .SECTOR.DATA is NULL
 is.circos.initialized = function() {
@@ -354,7 +355,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 circos.clear = function() {
     
 	resetGlobalVariable()
-	assign(".CIRCOS.PAR", .CIRCOS.PAR.DEFAULT, envir = .CIRCOS.ENV)
+	circos.par(RESET = TRUE)
     
     return(invisible(NULL))
 }

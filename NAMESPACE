@@ -47,3 +47,6 @@ export(
 	reverse.circlize,
 	show.index
 )
+
+importFrom("GlobalOptions", setGlobalOptions)
+

@@ -92,6 +92,17 @@ sub parse {
 	
 	@items = sort { $a->{_function_name} cmp $b->{_function_name} } @items;
 	
+	my @importFrom;
+	if(-e "NAMESPACE") {
+		open NAMESPACE, "NAMESPACE";
+		while(my $line = <NAMESPACE>) {
+			if($line =~/^import/) {
+				push(@importFrom, $line);
+			}
+		}
+		close(NAMESPACE);
+	}
+	
 	my @parsed_items;
 	open NAMESPACE, ">NAMESPACE";
 	print NAMESPACE "export(\n";
@@ -113,7 +124,13 @@ sub parse {
 		print "man/$items[$i]->{_function_name}.rd... done.\n\n";
 	}
 	print NAMESPACE ")\n";
+	
+	print NAMESPACE "\n";
+	print NAMESPACE join "", @importFrom;
+	print NAMESPACE "\n";
+	
 	close NAMESPACE;
+	
 }
 
 # alignment of two vectors of section name

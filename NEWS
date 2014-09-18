@@ -2,6 +2,7 @@ Change in version 0.1.1
 ------------------------------------------------------------------------------
 
 * global options are controlled by `GlobalOptions` package
+* set `par("lend")` and `par("ljoin")` to their default values.
 
 Change in version 0.1.1
 ------------------------------------------------------------------------------

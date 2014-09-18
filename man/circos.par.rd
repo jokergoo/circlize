@@ -11,10 +11,12 @@
 
 }
 \usage{
-circos.par(...)
+circos.par(..., RESET = FALSE, READ.ONLY = NULL)
 }
 \arguments{
   \item{...}{Arguments for the parameters, see "details" section}
+  \item{RESET}{reset to default values}
+  \item{READ.ONLY}{whether only return read-only options}
 
 }
 \details{

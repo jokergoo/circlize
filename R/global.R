@@ -336,8 +336,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 	assign(".CELL.DATA", .CELL.DATA, envir = .CIRCOS.ENV)
     
     # draw everything in a unit circle
-	par(lend = "square", ljoin = "mitre")
-    plot(circos.par("canvas.xlim"), circos.par("canvas.ylim"), type = "n", ann = FALSE, axes = FALSE)
+	plot(circos.par("canvas.xlim"), circos.par("canvas.ylim"), type = "n", ann = FALSE, axes = FALSE)
     
 	# all the information of cells would be visited through `get.cell.meta.data`
 	return(invisible(NULL))

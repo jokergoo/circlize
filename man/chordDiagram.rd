@@ -15,7 +15,7 @@ chordDiagram(mat, grid.col = NULL, transparency = 0,
     col = NULL, row.col = NULL, column.col = NULL, directional = FALSE, fromRows = TRUE,
     symmetric = FALSE, order = NULL, preAllocateTracks = NULL,
     annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
-    link.border = NA, grid.border = NULL, diffHeight = 0.04, ...)
+    link.border = NA, grid.border = NA, diffHeight = 0.04, ...)
 }
 \arguments{
   \item{mat}{A table which represents as a numeric matrix.}
@@ -32,7 +32,7 @@ chordDiagram(mat, grid.col = NULL, transparency = 0,
   \item{annotationTrack}{Which annotation track should be plotted? By default, a track containing sector names and a track containing grid will be created.}
   \item{annotationTrackHeight}{Track height corresponding to values in \code{annotationTrack}.}
   \item{link.border}{border for links}
-  \item{grid.border}{border for grids. If it is \code{NA}, the border color is same as grid color}
+  \item{grid.border}{border for grids. If it is \code{NULL}, the border color is same as grid color}
   \item{diffHeight}{The difference of height between two 'roots' if \code{directional} is set to \code{TRUE}. }
   \item{...}{pass to \code{\link{circos.link}}}
 

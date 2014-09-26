@@ -74,10 +74,10 @@ circos.par = setGlobalOptions(
 		.value = 0,
 		.length = 1,
 		.class = "numeric",
-	    .filter = function(x) {
+		.filter = function(x) {
 			if(is.circos.initialized()){
 				warning(paste("'start.degree' can only be modified before `circos.initialize`,\nor maybe you forgot to call `circos.clear` in your last plot.\n", sep = ""))
-			}
+				}
 			return(x)
 		}),
 	gap.degree = list(
@@ -116,7 +116,7 @@ circos.par = setGlobalOptions(
 	points.overflow.warning = TRUE,
 	canvas.xlim = list(
 		.value = c(-1, 1),
-	    .filter = function(x) {
+		.filter = function(x) {
 			if(is.circos.initialized()){
 				warning(paste("'canvas.xlim' can only be modified before `circos.initialize`,\nor maybe you forgot to call `circos.clear` in your last plot.\n", sep = ""))
 			}
@@ -124,7 +124,7 @@ circos.par = setGlobalOptions(
 		}),
 	canvas.ylim = list(
 		.value = c(-1, 1),
-	    .filter = function(x) {
+		.filter = function(x) {
 			if(is.circos.initialized()){
 				warning(paste("'canvas.ylim' can only be modified before `circos.initialize`,\nor maybe you forgot to call `circos.clear` in your last plot.\n", sep = ""))
 			}
@@ -132,8 +132,14 @@ circos.par = setGlobalOptions(
 		}),
 	major.by.degree = 10,
 	clock.wise = TRUE,
-	lend = NULL,
-	ljoin = NULL
+	lend = list(
+		.value = NULL,
+		.visible = FALSE,
+		.private = TRUE),
+	ljoin = list(
+		.value = NULL,
+		.visible = FALSE,
+		.private = TRUE)
 )
 
 # before initialization, .SECTOR.DATA is NULL
@@ -336,8 +342,6 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 	assign(".SECTOR.DATA", .SECTOR.DATA, envir = .CIRCOS.ENV)
 	assign(".CELL.DATA", .CELL.DATA, envir = .CIRCOS.ENV)
     
-	circos.par(lend = par("lend"), ljoin = par("ljoin"))
-	
 	
     # draw everything in a unit circle
 	plot(circos.par("canvas.xlim"), circos.par("canvas.ylim"), type = "n", ann = FALSE, axes = FALSE)

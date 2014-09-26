@@ -158,7 +158,7 @@ circos.genomicTrackPlotRegion(bed_list, ylim = c(0, 3), panel.fun = function(reg
 pos = get.cell.meta.data("yplot")
 text(0, mean(pos), "C", adj = c(1, 0.5))
 
-bed1= generateRandomBed(nr = 200)
+bed = generateRandomBed(nr = 200)
 circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
 	circos.genomicRect(region, value, ytop.column = 1, ybottom = 0, col = ifelse(value[[1]] > 0, "red", "green"), ...)
 	cell.xlim = get.cell.meta.data("cell.xlim")

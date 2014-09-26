@@ -1,8 +1,9 @@
-Change in version 0.1.1
+Change in version 0.1.2
 ------------------------------------------------------------------------------
 
 * global options are controlled by `GlobalOptions` package
 * set `par("lend")` and `par("ljoin")` to their default values.
+* add more example codes in genomic_plot vignette
 
 Change in version 0.1.1
 ------------------------------------------------------------------------------

@@ -498,10 +498,11 @@ circos.genomicTrackPlotRegion(bed, stack = TRUE,
 bed1 = generateRandomBed(nr = 300)
 bed2 = generateRandomBed(nr = 300)
 bed_list = list(bed1, bed2)
-circos.genomicTrackPlotRegion(bed_list, panel.fun = function(region, value, ...) {
-    cex = (value[[1]] - min(value[[1]]))/(max(value[[1]]) - min(value[[1]]))
-    i = getI(...)
-    circos.genomicPoints(region, value, cex = cex, pch = 16, col = i, ...)
+circos.genomicTrackPlotRegion(bed_list, 
+    panel.fun = function(region, value, ...) {
+        cex = (value[[1]] - min(value[[1]]))/(max(value[[1]]) - min(value[[1]]))
+        i = getI(...)
+        circos.genomicPoints(region, value, cex = cex, pch = 16, col = i, ...)
 })
 
 ### track D
@@ -516,9 +517,10 @@ circos.genomicTrackPlotRegion(bed_list, stack = TRUE,
 
 ### track E
 bed = generateRandomBed(nr = 300, nc = 4)
-circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
-    cex = (value[[1]] - min(value[[1]]))/(max(value[[1]]) - min(value[[1]]))
-    circos.genomicPoints(region, value, cex = 0.5, pch = 16, col = 1:4, ...)
+circos.genomicTrackPlotRegion(bed, 
+    panel.fun = function(region, value, ...) {
+        cex = (value[[1]] - min(value[[1]]))/(max(value[[1]]) - min(value[[1]]))
+        circos.genomicPoints(region, value, cex = 0.5, pch = 16, col = 1:4, ...)
 })
 
 ### track F
@@ -538,17 +540,19 @@ For line tracks (top right in figure \ref{fig:genomicpoints}), from track A to t
 <<echo=TRUE, eval=FALSE>>=
 ### track A
 bed = generateRandomBed(nr = 500)
-circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
-    circos.genomicLines(region, value, type = "l", ...)
+circos.genomicTrackPlotRegion(bed, 
+    panel.fun = function(region, value, ...) {
+        circos.genomicLines(region, value, type = "l", ...)
 })
 
 ### track B
 bed1 = generateRandomBed(nr = 500)
 bed2 = generateRandomBed(nr = 500)
 bed_list = list(bed1, bed2)
-circos.genomicTrackPlotRegion(bed_list, panel.fun = function(region, value, ...) {
-    i = getI(...)
-    circos.genomicLines(region, value, col = i, ...)
+circos.genomicTrackPlotRegion(bed_list, 
+    panel.fun = function(region, value, ...) {
+        i = getI(...)
+        circos.genomicLines(region, value, col = i, ...)
 })
 
 ### track C
@@ -560,8 +564,9 @@ circos.genomicTrackPlotRegion(bed_list, stack = TRUE,
 
 ### track D
 bed = generateRandomBed(nr = 500, nc = 4)
-circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
-    circos.genomicLines(region, value, col = 1:4, ...)
+circos.genomicTrackPlotRegion(bed, 
+    panel.fun = function(region, value, ...) {
+        circos.genomicLines(region, value, col = 1:4, ...)
 })
 
 ### track E
@@ -574,8 +579,9 @@ circos.genomicTrackPlotRegion(bed, stack = TRUE,
 
 ### track F
 bed = generateRandomBed(nr = 200)
-circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
-    circos.genomicLines(region, value, type = "segment", lwd = 2, ...)
+circos.genomicTrackPlotRegion(bed, 
+    panel.fun = function(region, value, ...) {
+        circos.genomicLines(region, value, type = "segment", lwd = 2, ...)
 })
 @
 
@@ -611,11 +617,12 @@ circos.genomicTrackPlotRegion(bed_list, ylim = c(0, 3),
 
 ### track D
 bed = generateRandomBed(nr = 200)
-circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
-    circos.genomicRect(region, value, ytop.column = 1, ybottom = 0, 
-        col = ifelse(value[[1]] > 0, "red", "green"), ...)
-    cell.xlim = get.cell.meta.data("cell.xlim")
-    circos.lines(cell.xlim, c(0, 0), lty = 2, col = "#00000040")
+circos.genomicTrackPlotRegion(bed, 
+    panel.fun = function(region, value, ...) {
+        circos.genomicRect(region, value, ytop.column = 1, ybottom = 0, 
+            col = ifelse(value[[1]] > 0, "red", "green"), ...)
+        cell.xlim = get.cell.meta.data("cell.xlim")
+        circos.lines(cell.xlim, c(0, 0), lty = 2, col = "#00000040")
 })
 @
 

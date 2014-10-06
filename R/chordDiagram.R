@@ -276,7 +276,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 # returns a list, each list containing settings for each new track
 parsePreAllocateTracksValue = function(preAllocateTracks) {
 	lt = list(ylim = c(0, 1),
-		      track.height = circos.par("default.track.height"),
+		      track.height = circos.par("track.height"),
 			  bg.col = NA,
 			  bg.border = NA,
 			  bg.lty = par("lty"),

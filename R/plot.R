@@ -63,7 +63,7 @@
 # of the plotting region can not be changed.
 circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NULL,
     force.ylim = TRUE, track.index = NULL,
-	track.height = circos.par("default.track.height"),
+	track.height = circos.par("track.height"),
 	track.margin = circos.par("track.margin"),
 	cell.padding = circos.par("cell.padding"),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
@@ -282,7 +282,7 @@ circos.updatePlotRegion = function(sector.index = get.cell.meta.data("sector.ind
 }
 
 # internal, so we do not need to check arguments
-circos.createPlotRegion = function(track.start, track.height = circos.par("default.track.height"),
+circos.createPlotRegion = function(track.start, track.height = circos.par("track.height"),
     sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"), ylim,
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd")) {
 	
@@ -1175,7 +1175,7 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 # == details
 # It draw histogram in cells among a whole track. It is also an example to show how to add self-defined
 # high-level graphics by this package.
-circos.trackHist = function(factors, x, track.height = circos.par("default.track.height"),
+circos.trackHist = function(factors, x, track.height = circos.par("track.height"),
     track.index = NULL, force.ylim = TRUE, col = ifelse(draw.density, "black", NA),
 	border = "black", lty = par("lty"), lwd = par("lwd"),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),

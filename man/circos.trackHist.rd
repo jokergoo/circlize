@@ -11,7 +11,7 @@
 
 }
 \usage{
-circos.trackHist(factors, x, track.height = circos.par("default.track.height"),
+circos.trackHist(factors, x, track.height = circos.par("track.height"),
     track.index = NULL, force.ylim = TRUE, col = ifelse(draw.density, "black", NA),
     border = "black", lty = par("lty"), lwd = par("lwd"),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),

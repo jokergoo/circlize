@@ -10,7 +10,7 @@ par(mar = c(1, 1, 1, 1), lwd = 0.1)
 layout(rbind(1:2, 3:4, 5:6))
 
 ######################################
-circos.par("default.track.height" = 0.1)
+circos.par("track.height" = 0.1)
 circos.initialize(factors = a$factor, x = a$x)
 circos.trackPlotRegion(factors = a$factor, y = a$y,
     panel.fun = function(x, y) {
@@ -25,7 +25,7 @@ circos.clear()
 
 ###########################################
 
-circos.par("default.track.height" = 0.1)
+circos.par("track.height" = 0.1)
 circos.initialize(factors = a$factor, x = a$x)
 circos.trackPlotRegion(factors = a$factor, y = a$y,
     panel.fun = function(x, y) {
@@ -41,7 +41,7 @@ circos.trackHist(a$factor, a$x, bg.col = bgcol, col = NA)
 circos.clear()
 
 ###########################################
-circos.par("default.track.height" = 0.1)
+circos.par("track.height" = 0.1)
 circos.initialize(factors = a$factor, x = a$x)
 circos.trackPlotRegion(factors = a$factor, y = a$y,
     panel.fun = function(x, y) {
@@ -65,7 +65,7 @@ circos.trackPlotRegion(factors = a$factor, x = a$x, y = a$y,
 circos.clear()
 
 ##############################################
-circos.par("default.track.height" = 0.1)
+circos.par("track.height" = 0.1)
 circos.initialize(factors = a$factor, x = a$x)
 circos.trackPlotRegion(factors = a$factor, y = a$y,
     panel.fun = function(x, y) {
@@ -92,7 +92,7 @@ circos.clear()
 
 ################################################
 
-circos.par("default.track.height" = 0.1)
+circos.par("track.height" = 0.1)
 circos.initialize(factors = a$factor, x = a$x)
 circos.trackPlotRegion(factors = a$factor, y = a$y,
     panel.fun = function(x, y) {
@@ -121,7 +121,7 @@ circos.clear()
 
 ###################################################
 
-circos.par("default.track.height" = 0.1)
+circos.par("track.height" = 0.1)
 circos.initialize(factors = a$factor, x = a$x)
 circos.trackPlotRegion(factors = a$factor, y = a$y,
     panel.fun = function(x, y) {

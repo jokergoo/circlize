@@ -3,7 +3,7 @@ op = par(no.readonly = TRUE)
 
 par(mar = c(1.5, 1.5, 1.5, 1.5))
 # highlight 
-circos.par("default.track.height" = 0.1, cell.padding = c(0, 0, 0, 0))
+circos.par("track.height" = 0.1, cell.padding = c(0, 0, 0, 0))
 circos.initializeWithIdeogram(plotType = c("axis", "labels"))
 
 bed = generateRandomBed(nr = 100)

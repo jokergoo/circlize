@@ -6,7 +6,7 @@ library(circlize)
 par(mfrow = c(2, 2))
 
 par(mar = c(1, 1, 1, 1))
-circos.par("default.track.height" = 0.1, start.degree = 90,
+circos.par("track.height" = 0.1, start.degree = 90,
 	canvas.xlim = c(0, 1), canvas.ylim = c(0, 1), gap.degree = 270)
 circos.initializeWithIdeogram(chromosome.index = "chr1")
 
@@ -74,7 +74,7 @@ circos.clear()
 
 
 par(mar = c(1, 1, 1, 1))
-circos.par("default.track.height" = 0.1, start.degree = 90,
+circos.par("track.height" = 0.1, start.degree = 90,
 	canvas.xlim = c(0, 1), canvas.ylim = c(0, 1), gap.degree = 270)
 circos.initializeWithIdeogram(chromosome.index = "chr1")
 
@@ -129,7 +129,7 @@ circos.clear()
 
 
 par(mar = c(1, 1, 1, 1))
-circos.par("default.track.height" = 0.1, cell.padding = c(0, 0, 0, 0), start.degree = 90,
+circos.par("track.height" = 0.1, cell.padding = c(0, 0, 0, 0), start.degree = 90,
 	canvas.xlim = c(0, 1), canvas.ylim = c(0, 1), gap.degree = 270)
 circos.initializeWithIdeogram(chromosome.index = "chr1")
 

@@ -77,7 +77,7 @@ circos.par = setGlobalOptions(
 		.filter = function(x) {
 			if(is.circos.initialized()){
 				warning(paste("'start.degree' can only be modified before `circos.initialize`,\nor maybe you forgot to call `circos.clear` in your last plot.\n", sep = ""))
-				}
+			}
 			return(x)
 		}),
 	gap.degree = list(

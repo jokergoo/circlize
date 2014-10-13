@@ -31,7 +31,7 @@
 #                  containing grid will be created.
 # -annotationTrackHeight Track height corresponding to values in ``annotationTrack``.
 # -link.border border for links
-# -grid.border border for grids. If it is ``NA``, the border color is same as grid color
+# -grid.border border for grids. If it is ``NULL``, the border color is same as grid color
 # -diffHeight The difference of height between two 'roots' if ``directional`` is set to ``TRUE``. 
 # -... pass to `circos.link`
 #
@@ -49,7 +49,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 	col = NULL, row.col = NULL, column.col = NULL, directional = FALSE, fromRows = TRUE,
 	symmetric = FALSE, order = NULL, preAllocateTracks = NULL,
 	annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
-	link.border = NA, grid.border = NULL, diffHeight = 0.04, ...) {
+	link.border = NA, grid.border = NA, diffHeight = 0.04, ...) {
 	
 	if(!is.matrix(mat)) {
 		stop("`mat` can only be a matrix.\n")

@@ -131,7 +131,9 @@ circos.par = setGlobalOptions(
 			return(x)
 		}),
 	major.by.degree = 10,
-	clock.wise = TRUE
+	clock.wise = TRUE,
+	lend = NULL,
+	ljoin = NULL
 )
 
 # before initialization, .SECTOR.DATA is NULL
@@ -220,7 +222,6 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
     } else {
 		stop("You should specify either `x` or `xlim`.\n")
 	}
-    
     
     cell.padding = circos.par("cell.padding")
     
@@ -335,6 +336,9 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 	assign(".SECTOR.DATA", .SECTOR.DATA, envir = .CIRCOS.ENV)
 	assign(".CELL.DATA", .CELL.DATA, envir = .CIRCOS.ENV)
     
+	circos.par(lend = par("lend"), ljoin = par("ljoin"))
+	
+	
     # draw everything in a unit circle
 	plot(circos.par("canvas.xlim"), circos.par("canvas.ylim"), type = "n", ann = FALSE, axes = FALSE)
     
@@ -355,7 +359,7 @@ circos.clear = function() {
     
 	resetGlobalVariable()
 	circos.par(RESET = TRUE)
-    
+	
     return(invisible(NULL))
 }
 

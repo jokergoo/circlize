@@ -6,7 +6,7 @@ library(circlize)
 par(mfrow = c(2, 2))
 
 par(mar = c(1, 1, 1, 1))
-circos.par("default.track.height" = 0.1, start.degree = 90,
+circos.par("track.height" = 0.1, start.degree = 90,
 	canvas.xlim = c(0, 1), canvas.ylim = c(0, 1), gap.degree = 270)
 circos.initializeWithIdeogram(chromosome.index = "chr1")
 
@@ -74,7 +74,7 @@ circos.clear()
 
 
 par(mar = c(1, 1, 1, 1))
-circos.par("default.track.height" = 0.1, start.degree = 90,
+circos.par("track.height" = 0.1, start.degree = 90,
 	canvas.xlim = c(0, 1), canvas.ylim = c(0, 1), gap.degree = 270)
 circos.initializeWithIdeogram(chromosome.index = "chr1")
 
@@ -129,7 +129,7 @@ circos.clear()
 
 
 par(mar = c(1, 1, 1, 1))
-circos.par("default.track.height" = 0.1, cell.padding = c(0, 0, 0, 0), start.degree = 90,
+circos.par("track.height" = 0.1, cell.padding = c(0, 0, 0, 0), start.degree = 90,
 	canvas.xlim = c(0, 1), canvas.ylim = c(0, 1), gap.degree = 270)
 circos.initializeWithIdeogram(chromosome.index = "chr1")
 
@@ -158,7 +158,7 @@ circos.genomicTrackPlotRegion(bed_list, ylim = c(0, 3), panel.fun = function(reg
 pos = get.cell.meta.data("yplot")
 text(0, mean(pos), "C", adj = c(1, 0.5))
 
-bed1= generateRandomBed(nr = 200)
+bed = generateRandomBed(nr = 200)
 circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
 	circos.genomicRect(region, value, ytop.column = 1, ybottom = 0, col = ifelse(value[[1]] > 0, "red", "green"), ...)
 	cell.xlim = get.cell.meta.data("cell.xlim")

@@ -42,7 +42,7 @@ resetGlobalVariable()
 #     respectively. The first and the third padding
 #     values are the percentages according to the radius of the unit circle and the second and
 #     fourth values are degrees.
-# -default.track.height    The default height of tracks. It is the percentage according to the radius
+# -track.height    The default height of tracks. It is the percentage according to the radius
 #     of the unit circle. The height includes the top and bottom cell paddings but not the margins.
 # -points.overflow.warning Since each cell is in fact not a real plotting region but only
 #     an ordinary rectangle, it does not eliminate points that are plotted out of
@@ -74,7 +74,7 @@ circos.par = setGlobalOptions(
 		.value = 0,
 		.length = 1,
 		.class = "numeric",
-	    .filter = function(x) {
+		.filter = function(x) {
 			if(is.circos.initialized()){
 				warning(paste("'start.degree' can only be modified before `circos.initialize`,\nor maybe you forgot to call `circos.clear` in your last plot.\n", sep = ""))
 			}
@@ -112,11 +112,14 @@ circos.par = setGlobalOptions(
 				return(x)
 			}
 		}),
-	default.track.height = 0.2,
+	default.track.height = list(
+		.value = 0.2,
+		.visible = FALSE),
+	track.height = 0.2,
 	points.overflow.warning = TRUE,
 	canvas.xlim = list(
 		.value = c(-1, 1),
-	    .filter = function(x) {
+		.filter = function(x) {
 			if(is.circos.initialized()){
 				warning(paste("'canvas.xlim' can only be modified before `circos.initialize`,\nor maybe you forgot to call `circos.clear` in your last plot.\n", sep = ""))
 			}
@@ -124,16 +127,29 @@ circos.par = setGlobalOptions(
 		}),
 	canvas.ylim = list(
 		.value = c(-1, 1),
-	    .filter = function(x) {
+		.filter = function(x) {
 			if(is.circos.initialized()){
 				warning(paste("'canvas.ylim' can only be modified before `circos.initialize`,\nor maybe you forgot to call `circos.clear` in your last plot.\n", sep = ""))
 			}
 			return(x)
 		}),
 	major.by.degree = 10,
-	clock.wise = TRUE,
-	lend = NULL,
-	ljoin = NULL
+	clock.wise = list(
+		.value = TRUE,
+		.filter = function(x) {
+			if(is.circos.initialized()){
+				warning(paste("'clock.wise' can only be modified before `circos.initialize`,\nor maybe you forgot to call `circos.clear` in your last plot.\n", sep = ""))
+			}
+			return(x)
+		}),
+	lend = list(
+		.value = NULL,
+		.visible = FALSE,
+		.private = TRUE),
+	ljoin = list(
+		.value = NULL,
+		.visible = FALSE,
+		.private = TRUE)
 )
 
 # before initialization, .SECTOR.DATA is NULL
@@ -336,8 +352,6 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 	assign(".SECTOR.DATA", .SECTOR.DATA, envir = .CIRCOS.ENV)
 	assign(".CELL.DATA", .CELL.DATA, envir = .CIRCOS.ENV)
     
-	circos.par(lend = par("lend"), ljoin = par("ljoin"))
-	
 	
     # draw everything in a unit circle
 	plot(circos.par("canvas.xlim"), circos.par("canvas.ylim"), type = "n", ann = FALSE, axes = FALSE)

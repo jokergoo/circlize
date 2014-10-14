@@ -130,18 +130,16 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 		if(length(grid.col) == 1) {
 			grid.col = rep(grid.col, length(factors))
 			names(grid.col) = factors
-		} else if(length(grid.col) == length(factors)) {
-			if(is.null(names(grid.col))) {
-				names(grid.col) = factors
-			} else {
-				if(length(setdiff(factors, names(grid.col))) > 0) {
-					stop("Since your ``grid.col`` is a named vector, all sectors should have corresponding colors.\n")
-				}
-				
-				grid.col = grid.col[factors]
+		} else if(!is.null(names(grid.col))) {
+			if(length(setdiff(factors, names(grid.col))) > 0) {
+				stop("Since your ``grid.col`` is a named vector, all sectors should have corresponding colors.\n")
 			}
+			
+			grid.col = grid.col[as.vector(factors)]
+		} else if(length(grid.col) == length(factors)) {
+			names(grid.col) = factors
 		} else {
-			stop("Since you set ``grid.col``, the length should be either 1 or number of sectors, or set your ``grid.col`` as vector with names.\n")
+			stop("Since you set ``grid.col``, the length should be either 1 or number of sectors,\nor set your ``grid.col`` as vector with names.\n")
 		}
 	}
 

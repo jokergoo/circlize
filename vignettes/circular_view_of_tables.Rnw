@@ -495,4 +495,67 @@ source("src/chordDiagram-05-compare.R")
 \end{figure}
 \setkeys{Gin}{width=0.8\textwidth}
 
+\subsection{Misc}
+
+If a category in Chord Diagram is too small, it will be removed from the original matrix.
+In the following matrix, the second row and third column is replaces with tiny numbers.
+
+<<echo=TRUE, eval=FALSE>>=
+mat = matrix(rnorm(36), 6, 6)
+rownames(mat) = paste0("R", 1:6)
+colnames(mat) = paste0("C", 1:6)
+mat[2, ] = 1e-10
+mat[, 3] = 1e-10
+@
+
+In the Chord Diagram, categories corresponding to the second row and the third column will
+be removed (figure \ref{fig:chordmisc}, top left):
+
+<<echo=TRUE, eval=FALSE>>=
+par(mar = c(1, 1, 1, 1))
+chordDiagram(mat)
+@
+
+If you set {\tt row.col}, {\tt column.col} or {\tt col} to specify the colors of the links,
+colors corresponding to the second row and the third column will also be removed (figure \ref{fig:chordmisc}, top right).
+
+<<echo=TRUE, eval=FALSE>>=
+chordDiagram(mat, row.col = c("red", "blue", "green", "yellow", "orange", "pink"))
+@
+
+If the {\tt grid.col} is set as a vector with no names, there would be error when matrix contains 
+tiny value rows or columns.
+
+\begin{Schunk}
+\begin{Sinput}
+> chordDiagram(mat, grid.col = 1:12)
+\end{Sinput}
+\begin{Soutput}
+Error in chordDiagram(mat, grid.col = grid.col) : 
+  Since you set ``grid.col``, the length should be either 1 or number of sectors,
+or set your ``grid.col`` as vector with names.
+\end{Soutput}
+\end{Schunk}
+
+A solution to get rid of it is to set {\tt grid.col} as a named vector (figure \ref{fig:chordmisc}, bottom left):
+
+<<echo=TRUE, eval=FALSE>>=
+grid.col = 1:12
+names(grid.col) = c(rownames(mat), colnames(mat))
+chordDiagram(mat, grid.col = grid.col)
+@
+
+\setkeys{Gin}{width=0.8\textwidth}
+\begin{figure}[h!]
+\begin{center}
+<<label=figchordmisc, fig = TRUE, echo = FALSE, results=hide>>=
+source("src/chordDiagram-06-misc.R")
+@
+\end{center}
+\caption{Reduced Chord Diagram with removing tiny categories}
+\label{fig:chordmisc}
+\end{figure}
+\setkeys{Gin}{width=0.8\textwidth}
+
+
 \end{document}

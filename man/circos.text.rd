@@ -1,12 +1,12 @@
 \name{circos.text}
 \alias{circos.text}
 \title{
-  Draw text in a cell  
+  Draw text in a cell  
 
 
 }
 \description{
-  Draw text in a cell  
+  Draw text in a cell  
 
 
 }
@@ -18,23 +18,23 @@ circos.text(x, y, labels, sector.index = get.cell.meta.data("sector.index"),
     font = par("font"), ...)
 }
 \arguments{
-  \item{x}{Data points on x-axis}
-  \item{y}{Data points on y-axis}
-  \item{labels}{Labels for each points}
-  \item{sector.index}{Index for the sector}
-  \item{track.index}{Index for the track}
-  \item{direction}{deprecated, use \code{facing} instead.}
-  \item{facing}{Facing of text. Please refer to vignette for different settings }
-  \item{niceFacing}{Should the facing of text be adjusted to fit human eyes?}
-  \item{adj}{Adjustment for text}
-  \item{cex}{Font size}
-  \item{col}{Font color}
-  \item{font}{Font style}
-  \item{...}{Pass to \code{\link[graphics]{text}}}
+  \item{x}{Data points on x-axis}
+  \item{y}{Data points on y-axis}
+  \item{labels}{Labels for each points}
+  \item{sector.index}{Index for the sector}
+  \item{track.index}{Index for the track}
+  \item{direction}{deprecated, use \code{facing} instead.}
+  \item{facing}{Facing of text. Please refer to vignette for different settings }
+  \item{niceFacing}{Should the facing of text be adjusted to fit human eyes?}
+  \item{adj}{Adjustment for text}
+  \item{cex}{Font size}
+  \item{col}{Font color}
+  \item{font}{Font style}
+  \item{...}{Pass to \code{\link[graphics]{text}}}
 
 }
 \details{
-  The function is similar to \code{\link[graphics]{text}}. All you need to note is the \code{facing} settings. 
+  The function is similar to \code{\link[graphics]{text}}. All you need to note is the \code{facing} settings. 
 
 
 }

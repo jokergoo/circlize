@@ -85,7 +85,24 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 	ignore = max(abs(mat))/1e8
 	ri = apply(mat, 1, function(x) any(abs(x) > ignore))
 	ci = apply(mat, 2, function(x) any(abs(x) > ignore))
-
+	
+	# if the matrix is reduced
+	if(sum(sum(ri) + sum(ci)) < sum(ncol(mat) + nrow(mat))) {
+		
+		un = union(rownames(mat), colnames(mat))
+		nn = union(rownames(mat)[ri], colnames(mat)[ci])
+		if(length(circos.par("gap.degree")) == length(un)) {
+			old.gap.degree = circos.par("gap.degree")
+			circos.par("gap.degree" = old.gap.degree[un %in% nn])
+		}
+		
+		if(!is.null(grid.col)) {
+			if(is.null(names(grid.col)) && length(grid.col) == sum(ncol(mat) + nrow(mat))) {
+				grid.col = grid.col[un %in% nn]
+			}
+		}
+	}
+	
 	mat = mat[ri, ci, drop = FALSE]
 	if(is.matrix(col)) {
 		col = col[ri, ci, drop = FALSE]

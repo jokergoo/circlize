@@ -2,6 +2,7 @@ Changes in version 0.1.3
 ------------------------------------------------------------------------------
 
 * add names for `chr.len` in `read.cytoband`
+* cytoband files are cached
 
 Changes in version 0.1.2
 ------------------------------------------------------------------------------

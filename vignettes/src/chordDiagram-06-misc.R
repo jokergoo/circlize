@@ -8,8 +8,9 @@ mat[, 3] = 1e-10
 
 par(mar = c(1, 1, 1, 1), mfrow = c(2, 2))
 chordDiagram(mat)
-chordDiagram(mat, row.col = c("red", "blue", "green", "yellow", "orange", "pink"))
+chordDiagram(mat, row.col = rep(c("red", "blue"), 3))
+chordDiagram(mat, grid.col = rep(c("red", "blue"), 6))
 
-grid.col = 1:12
-names(grid.col) = c(rownames(mat), colnames(mat))
-chordDiagram(mat, grid.col = grid.col)
+circos.par("gap.degree" = rep(c(2, 10), 6))
+chordDiagram(mat)
+circos.clear()

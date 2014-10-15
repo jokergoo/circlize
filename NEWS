@@ -3,6 +3,8 @@ Changes in version 0.1.3
 
 * add names for `chr.len` in `read.cytoband`
 * cytoband files are cached
+* `row.col`, `column.col`, `col`, `grid.col` and circos.par('gap.degree') will
+  also be reduced if the matrix is reduced
 
 Changes in version 0.1.2
 ------------------------------------------------------------------------------

@@ -520,39 +520,28 @@ If you set {\tt row.col}, {\tt column.col} or {\tt col} to specify the colors of
 colors corresponding to the second row and the third column will also be removed (figure \ref{fig:chordmisc}, top right).
 
 <<echo=TRUE, eval=FALSE>>=
-chordDiagram(mat, row.col = c("red", "blue", "green", "yellow", "orange", "pink"))
+chordDiagram(mat, row.col = rep(c("red", "blue"), 3))
 @
 
-If the {\tt grid.col} is set as a vector with no names, there would be error when matrix contains 
-tiny value rows or columns.
-
-\begin{Schunk}
-\begin{Sinput}
-> chordDiagram(mat, grid.col = 1:12)
-\end{Sinput}
-\begin{Soutput}
-Error in chordDiagram(mat, grid.col = grid.col) : 
-  Since you set ``grid.col``, the length should be either 1 or number of sectors,
-or set your ``grid.col`` as vector with names.
-\end{Soutput}
-\end{Schunk}
-
-A solution to get rid of it is to set {\tt grid.col} as a named vector (figure \ref{fig:chordmisc}, bottom left):
+{\tt grid.col} or {\tt circos.par("gap.degree")} will also be reduced if it is set as a vector
+which has the same length as categories which are from the unreduced matrix. (figure \ref{fig:chordmisc}, bottom)
 
 <<echo=TRUE, eval=FALSE>>=
-grid.col = 1:12
-names(grid.col) = c(rownames(mat), colnames(mat))
-chordDiagram(mat, grid.col = grid.col)
+chordDiagram(mat, grid.col = rep(c("red", "blue"), 6))
+
+circos.par("gap.degree" = rep(c(2, 10), 6))
+chordDiagram(mat)
+circos.clear()
 @
 
-\setkeys{Gin}{width=0.8\textwidth}
+\setkeys{Gin}{width=1\textwidth}
 \begin{figure}[h!]
 \begin{center}
 <<label=figchordmisc, fig = TRUE, echo = FALSE, results=hide>>=
 source("src/chordDiagram-06-misc.R")
 @
 \end{center}
-\caption{Reduced Chord Diagram with removing tiny categories}
+\caption{Reduced Chord Diagram with removing tiny categories.}
 \label{fig:chordmisc}
 \end{figure}
 \setkeys{Gin}{width=0.8\textwidth}

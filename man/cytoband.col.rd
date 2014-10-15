@@ -22,12 +22,3 @@ cytoband.col(x)
 
 
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-}
-\examples{
-\dontrun{
-cytoband = read.cytoband()
-cytoband.col(cytoband$df[[5]])
-}
-}

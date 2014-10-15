@@ -18,15 +18,3 @@ get.all.track.index()
 
 
 }
-\examples{
-\dontrun{
-library(circlize)
-factors = letters[1:4]
-circos.initialize(factors, xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1))
-get.all.track.index()
-circos.clear()
-}
-}

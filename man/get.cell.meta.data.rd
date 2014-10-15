@@ -48,18 +48,3 @@ get.cell.meta.data(name, sector.index = get.current.sector.index(),
 
 
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-}
-\examples{
-\dontrun{
-library(circlize)
-factors = letters[1:4]
-circos.initialize(factors, xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
-    print(get.cell.meta.data("xlim"))
-})
-print(get.cell.meta.data("xlim", sector.index = "a", track.index = 1))
-circos.clear()
-}
-}

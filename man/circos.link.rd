@@ -54,39 +54,3 @@ circos.link(sector.index1, point1, sector.index2, point2,
 
 
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-}
-\examples{
-\dontrun{
-
-par(mar = c(1, 1, 1, 1))
-factors = letters[1:8]
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey",
-    bg.border = NA, track.height = 0.05)
-circos.info(plot = TRUE)
-#circos.link("a", 5, "c", 5, rou1 = 0.4, rou2 = 0.6, col = "black")
-circos.link("a", 5, "g", 5, col = "black", h = 0.5, w = -0.25)
-circos.link("c", 10, "d", c(1, 4), col = "#00000040", border = "black")
-circos.link("a", c(2, 8), "g", c(4, 4.5), rou1 = 0.9, rou2 = 0.8, 
-    col = "#00000040", border = "black")
-circos.link("b", c(1, 10), "a", c(1, 10), rou1 = 0.9, rou2 = 0.4,  
-    col = "#00000040", border = "black")
-circos.clear()
-
-par(mar = c(1, 1, 1, 1))
-factors = letters[1:8]
-circos.par("canvas.xlim" = c(-2, 2), "canvas.ylim" = c(-2, 2))
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", 
-    bg.border = NA, track.height = 0.05)
-circos.info(plot = TRUE)
-circos.link("a", 5, "b", 5, col = "black", w = 1)
-circos.link("b", 5, "c", 5, col = "black", w = 2)
-circos.link("c", 5, "d", 5, col = "black", w = 0.25)
-circos.link("d", 5, "e", 5, col = "black", w = -0.25)
-circos.clear()
-
-}
-}

@@ -36,6 +36,3 @@ circos.points(x, y, sector.index = get.cell.meta.data("sector.index"),
 
 
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-}

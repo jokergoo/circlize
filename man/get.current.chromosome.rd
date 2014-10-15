@@ -18,16 +18,3 @@ get.current.chromosome()
 
 
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-}
-\examples{
-\dontrun{
-library(circlize)
-circos.initializeWithIdeogram()
-circos.genomicTrackPlotRegion(ylim = c(0, 1), panel.fun = function(region, value, ...) {
-    print(get.current.chromosome())
-})
-circos.clear()
-}
-}

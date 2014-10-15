@@ -34,37 +34,3 @@ circos.genomicInitialize(data, sector.names = NULL, major.by = NULL,
 
 
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-}
-\examples{
-\dontrun{
-
-df = read.cytoband()$df
-circos.genomicInitialize(df)
-
-df = data.frame(name = c("TP53", "TP63", "TP73"),
-                 start = c(7565097, 189349205, 3569084),
-                 end = c(7590856, 189615068, 3652765),
-                 stringsAsFactors = FALSE)
-circos.genomicInitialize(df)
-circos.clear()
-
-circos.genomicInitialize(df, major.by = 10000)
-circos.clear()
-
-circos.genomicInitialize(df, plotType = "labels")
-circos.clear()
-
-circos.genomicInitialize(df, sector.names = c("tp53", "tp63", "tp73"))
-circos.clear()
-
-circos.genomicInitialize(df, sector.names = c("tp53x", "tp63x", "tp73"))
-circos.clear()
-
-df[[1]] = factor(df[[1]], levels = c("TP73", "TP63", "TP53"))
-circos.genomicInitialize(df)
-circos.clear()
-
-}
-}

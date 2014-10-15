@@ -33,18 +33,3 @@ circos.initialize(factors, x = NULL, xlim = NULL, sector.width = NULL)
 
 
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-}
-\examples{
-\dontrun{
-circos.initialize(factors = sample(letters[1:4], 20, replace = TRUE), xlim = c(0, 1))
-circos.clear()
-
-circos.initialize(factors = sample(letters[1:4], 20, replace = TRUE), xlim = cbind(1:4, 1:4*2))
-circos.clear()
-
-circos.initialize(factors = sample(letters[1:4], 20, replace = TRUE), x = rnorm(20))
-circos.clear()
-}
-}

@@ -29,15 +29,3 @@ colorRamp2(breaks, colors, transparency = 0)
 
 
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-}
-\examples{
-library(circlize)
-col_fun = colorRamp2(c(-1, 0, 1), c("green", "black", "red"))
-col_fun(seq(-2, 2, by = 0.5))
-
-# map colors to p-values
-col_fun = colorRamp2(c(log10(0.0001), log10(0.05), log10(1)), c("green", "white", "red"))
-col_fun(log10(c(0.000001, 0.0012, 0.012, 0.2)))
-}

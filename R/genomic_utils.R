@@ -32,10 +32,13 @@ read.cytoband = function(cytoband = paste(system.file(package = "circlize"),
 	
 	if(!is.null(species)) {
 		url = paste("http://hgdownload.cse.ucsc.edu/goldenPath/", species, "/database/cytoBand.txt.gz", sep = "")
-		cytoband = paste(tempdir(), "/cytoBand.txt.gz", sep = "")
-		e = try(download.file(url, destfile = cytoband, quiet = TRUE), silent = TRUE)
-		if(class(e) == "try-error") {
-			stop("Seems your species name is wrong or UCSC does not provide cytoband data for your species or internet connection was interrupted.\nIf possible, download cytoBand file from\n", url, "\nand use `read.cytoband(file)`.\n")
+		cytoband = paste0(circos.par("__tempdir__"), "/", species, "_cytoBand.txt.gz")
+		if(!file.exists(cytoband)) {
+			e = try(download.file(url, destfile = cytoband, quiet = TRUE), silent = TRUE)
+			if(class(e) == "try-error") {
+				file.remove(cytoband)
+				stop("Seems your species name is wrong or UCSC does not provide cytoband data for your species\nor internet connection was interrupted.\nIf possible, download cytoBand file from\n", url, "\nand use `read.cytoband(file)`.\n")
+			}
 		}
 	}
 	
@@ -68,6 +71,7 @@ read.cytoband = function(cytoband = paste(system.file(package = "circlize"),
 		chr.len = c(chr.len, max(d2[, 3]))
 		dnew = rbind(dnew, d2)
 	}
+	names(chr.len) = chromosome
 	
 	return(list(df = dnew, chromosome = chromosome, chr.len = chr.len))
 }

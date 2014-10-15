@@ -1,17 +1,23 @@
-Change in version 0.1.2
+Changes in version 0.1.3
+------------------------------------------------------------------------------
+
+* add names for `chr.len` in `read.cytoband`
+* cytoband files are cached
+
+Changes in version 0.1.2
 ------------------------------------------------------------------------------
 
 * global options are controlled by `GlobalOptions` package
 * set `par("lend")` and `par("ljoin")` to their default values.
 * add more example codes in genomic_plot vignette
 
-Change in version 0.1.1
+Changes in version 0.1.1
 ------------------------------------------------------------------------------
 
 * fixed the bug that if start position is not zero when calling `circos.genomicIntialize`,
   ``major.at`` is wrongly calculated.
 
-Change in version 0.1.0
+Changes in version 0.1.0
 ------------------------------------------------------------------------------
 
 * height(h) and shape(w) can be set for Bezier curve (in `circos.link`)
@@ -27,7 +33,7 @@ Change in version 0.1.0
 * add `posTransform.text` which can smartly put text on the circle
 * ``track.margin`` and ``cell.padding`` can be set in `circos.trackPlotRegion` as a local setting
 
-Change in version 0.0.9
+Changes in version 0.0.9
 ------------------------------------------------------------------------------
 
 * links are now implemented by Bezier curve
@@ -38,7 +44,7 @@ Change in version 0.0.9
 * move demo to http://jokergoo.github.io/circlize
 * re-implement `colorRamp2`
 
-Change in version 0.0.8
+Changes in version 0.0.8
 ------------------------------------------------------------------------------
 
 * axes labels will not draw when setting labels = FALSE
@@ -46,7 +52,7 @@ Change in version 0.0.8
 * add a new vignette to show how to plot genomic circos plot with new functions
 * add `circos.info`
 
-Change in version 0.0.7
+Changes in version 0.0.7
 ------------------------------------------------------------------------------
 
 * add an example in demo codes
@@ -60,7 +66,7 @@ Change in version 0.0.6
 * add a new vignette focusing on phylogenetic tree
 * support directly downloading cytoBand file from UCSC 
 
-Change in version 0.0.5
+Changes in version 0.0.5
 ------------------------------------------------------------------------------
 
 * support self-define width of sectors when initializing sectors
@@ -69,7 +75,7 @@ Change in version 0.0.5
 * ``cell.padding`` in `circos.par` now using degree as its measurement.
 * ``track.margin`` in `circos.par` now using percentage of radius as its measurement.
 
-Change in version 0.0.4
+Changes in version 0.0.4
 ------------------------------------------------------------------------------
 
 * number of points to simulate quadratic curves decreased
@@ -84,7 +90,7 @@ Change in version 0.0.4
 * links are optimized (although not so perfect)
 * no point overflow warnings when drawing axes
 
-Change in version 0.0.3
+Changes in version 0.0.3
 ------------------------------------------------------------------------------
 
 * vignettes has been improved
@@ -95,7 +101,7 @@ Change in version 0.0.3
 * the first sector is drawn first now.
 * add `draw.sector`
 
-Change in version 0.0.2
+Changes in version 0.0.2
 ------------------------------------------------------------------------------
 
 * add `draw.sector` so it would be more straightforward to highlight sectors

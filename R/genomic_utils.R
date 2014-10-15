@@ -68,6 +68,7 @@ read.cytoband = function(cytoband = paste(system.file(package = "circlize"),
 		chr.len = c(chr.len, max(d2[, 3]))
 		dnew = rbind(dnew, d2)
 	}
+	names(chr.len) = chromosome
 	
 	return(list(df = dnew, chromosome = chromosome, chr.len = chr.len))
 }

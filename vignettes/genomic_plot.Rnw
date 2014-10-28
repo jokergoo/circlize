@@ -770,15 +770,15 @@ circos.genomicTrackPlotRegion(bed, ylim = c(0, 1),
 For the next track, position transformation lines are going to be plotted. Now code will be a little complex. Since such text position transformation
 relies on text settings (e.g. font size, font family) and track for the text, we need to go back to the track where text
 position transformation happens. Such information should be collected when plotting transformation lines.
-The solution by {\it circlize} is to save the real call by {\tt quote} and pass it to {\tt posTransform} argument. 
-Inside {\tt circos.genomicPosTransformLines}, {\tt posTransform.text} will be called by {\tt panel.fun} by {\tt eval},
+The solution by {\it circlize} is to wrap {\tt posTransform.text} with pre-defined parameters,
 then text information will be recovered and the transformation will be calculated in the correct track.
 
 <<echo=TRUE, eval=FALSE>>=
 i_track = get.cell.meta.data("track.index")  # previous track
 circos.genomicPosTransformLines(bed, 
-    posTransform = quote(posTransform.text(region, y = 0, labels = value[[1]], 
-        cex = 0.8, track.index = i_track)), direction = "outside"
+    posTransform = function(region, value) posTransform.text(region, y = 0, 
+        labels = value[[1]], cex = 0.8, track.index = i_track), 
+    direction = "outside"
 )
 @
 
@@ -800,8 +800,8 @@ circos.genomicTrackPlotRegion(bed, ylim = c(0, 1),
 }, track.height = 0.1, bg.border = NA)
 
 circos.genomicPosTransformLines(bed, 
-    posTransform = quote(posTransform.text(region, y = 1, labels = value[[1]],
-        cex = 0.8, track.index = i_track+1)),
+    posTransform = function(region, value) posTransform.text(region, y = 1, 
+        labels = value[[1]], cex = 0.8, track.index = i_track+1),
     direction = "inside", track.index = i_track
 )
 @
@@ -819,8 +819,9 @@ circos.genomicTrackPlotRegion(bed, ylim = c(0, 1),
 
 i_track = get.cell.meta.data("track.index")  # previous track
 circos.genomicPosTransformLines(bed, 
-    posTransform = quote(posTransform.text(region, y = 0, labels = value[[1]], 
-        cex = 0.8, padding = 0.2, track.index = i_track)), direction = "outside"
+    posTransform = function(region, value) posTransform.text(region, y = 0, 
+        labels = value[[1]], cex = 0.8, padding = 0.2, track.index = i_track),
+    direction = "outside"
 )
 @
 

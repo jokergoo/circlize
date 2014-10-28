@@ -1001,9 +1001,12 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 			l = data[[1]] == chr
 			if(!is.null(posTransform)) {
 				if(is.function(posTransform)) {
-					region_new = posTransform(region)
-				} else if(is.call(posTransform)) {
-					region_new = eval(posTransform)
+					n_args = length(as.list(posTransform))
+					if(n_args == 2) {
+						region_new = posTransform(region)
+					} else if(n_args == 3) {
+						region_new = posTransform(region, value)
+					}
 				}
 			} else {
 				region_new  = region
@@ -1028,9 +1031,12 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 			region_subset = data[l, , drop = FALSE]
 			if(!is.null(posTransform)) {
 				if(is.function(posTransform)) {
-					region_new = posTransform(region)
-				} else if(is.call(posTransform)) {
-					region_new = eval(posTransform)
+					n_args = length(as.list(posTransform))
+					if(n_args == 2) {
+						region_new = posTransform(region)
+					} else if(n_args == 3) {
+						region_new = posTransform(region, value)
+					}
 				}
 			} else {
 				region_new  = region

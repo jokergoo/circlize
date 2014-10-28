@@ -18,7 +18,7 @@ circos.genomicTrackPlotRegion(bed, ylim = c(0, 1), panel.fun = function(region, 
 i_track = get.cell.meta.data("track.index")
 
 circos.genomicPosTransformLines(bed, 
-	posTransform = quote(posTransform.text(region, y = 0, labels = value[[1]], cex = 0.8, track.index = i_track)),
+	posTransform = function(region, value) posTransform.text(region, y = 0, labels = value[[1]], cex = 0.8, track.index = i_track),
 	direction = "outside"
 )
 
@@ -66,7 +66,7 @@ circos.genomicTrackPlotRegion(bed, ylim = c(0, 1), panel.fun = function(region, 
 }, track.height = 0.1, bg.border = NA)
 
 circos.genomicPosTransformLines(bed, 
-	posTransform = quote(posTransform.text(region, y = 1, labels = value[[1]], cex = 0.8, track.index = i_track+1)),
+	posTransform = function(region, value) posTransform.text(region, y = 1, labels = value[[1]], cex = 0.8, track.index = i_track+1),
 	direction = "inside", track.index = i_track
 )
 circos.clear()
@@ -90,7 +90,7 @@ circos.genomicTrackPlotRegion(bed, ylim = c(0, 1), panel.fun = function(region, 
 
 
 circos.genomicPosTransformLines(bed, 
-	posTransform = quote(posTransform.text(region, y = 1, labels = value[[1]], cex = 0.8, track.index = i_track+1, padding = 0.2)),
+	posTransform = function(region, value) posTransform.text(region, y = 1, labels = value[[1]], cex = 0.8, track.index = i_track+1, padding = 0.2),
 	direction = "inside", track.index = i_track
 )
 circos.clear()

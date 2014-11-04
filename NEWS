@@ -1,6 +1,7 @@
 Changes in version 0.1.3
 ------------------------------------------------------------------------------
 
+* add `species` argument in `generateRandomBed`
 * change use of posTransform.text
 * add names for `chr.len` in `read.cytoband`
 * cytoband files are cached

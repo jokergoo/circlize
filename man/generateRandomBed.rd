@@ -11,7 +11,12 @@
 
 }
 \usage{
+<<<<<<< HEAD
 generateRandomBed(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0.5), species = "hg19")
+=======
+generateRandomBed(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0.5),
+    species = "hg19")
+>>>>>>> bbb3ad58ed5b727fc8eb4625a067ea9a572b9917
 }
 \arguments{
   \item{nr}{Number of rows}

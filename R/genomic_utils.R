@@ -126,7 +126,7 @@ generateRandomBed = function(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0
 		breaks = sort(sample(chr.len[i], k))
 		res = data.frame(chr = rep(chromosome[i], length(breaks)/2),
 						  start = breaks[seq_along(breaks) %% 2 == 1],
-						  start = breaks[seq_along(breaks) %% 2 == 0],
+						  end = breaks[seq_along(breaks) %% 2 == 0],
 						  stringsAsFactors = FALSE)
 		for(k in seq_len(nc)) {
 			res = cbind(res, value = fun(length(breaks)/2))
@@ -137,6 +137,12 @@ generateRandomBed = function(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0
 	df = NULL
 	for(i in seq_along(dl)) {
 		df = rbind(df, dl[[i]])
+	}
+	
+	if(ncol(df) == 3) {
+		colnames(df) = c("chr", "start", "end")
+	} else {
+		colnames(df) = c("chr", "start", "end", paste0("value", seq_len(ncol(df)-3)))
 	}
 	return(df)
 }

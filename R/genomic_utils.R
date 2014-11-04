@@ -111,12 +111,13 @@ cytoband.col = function(x) {
 # -nr  Number of rows
 # -nc  Number of numeric columns / value columns
 # -fun Function for generating random values
+# -species species, pass to `read.cytoband`
 #
 # == details
 # The function will uniformly sample positions from human genome. Chromosome names start with "chr"
 # and positions are sorted. The final number of rows may not be exactly as same as ``nr``.
-generateRandomBed = function(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0.5)) {
-	cyto = read.cytoband()
+generateRandomBed = function(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0.5), species = "hg19") {
+	cyto = read.cytoband(species = species)
 	chr.len = cyto$chr.len
 	chromosome = cyto$chromosome
 	dl = lapply(seq_along(chr.len), function(i) {

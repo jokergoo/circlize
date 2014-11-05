@@ -194,10 +194,15 @@ colorRamp2 = function(breaks, colors, transparency = 0) {
     if(length(breaks) != length(colors)) {
         stop("Length of `breaks` should be equal to `colors`.\n")
     }
+	
+	if(length(unique(breaks)) != length(breaks)) {
+		stop("Duplicated values are not allowed in `breaks`\n")
+	}
+
     colors = colors[order(breaks)]
 	colors = col2rgb(colors)
     breaks = sort(breaks)
-
+	
     transparency = ifelse(transparency > 1, 1, ifelse(transparency < 0, 0, transparency))
 
     function(x) {

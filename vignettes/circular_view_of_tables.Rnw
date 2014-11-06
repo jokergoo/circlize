@@ -541,7 +541,7 @@ circos.clear()
 source("src/chordDiagram-06-misc.R")
 @
 \end{center}
-\caption{Reduced Chord Diagram with removing tiny categories.}
+\caption{Reduced Chord Diagram with removing tiny categories. Topright: notice how link colors are reduced; bottom left: notice how grid color are reduced; bottom right notice how gap degrees are reduced.}
 \label{fig:chordmisc}
 \end{figure}
 \setkeys{Gin}{width=0.8\textwidth}

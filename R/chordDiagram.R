@@ -33,6 +33,8 @@
 # -link.border border for links
 # -grid.border border for grids. If it is ``NULL``, the border color is same as grid color
 # -diffHeight The difference of height between two 'roots' if ``directional`` is set to ``TRUE``. 
+# -reduce if the ratio of the width of certain grid compared to the whole circle is less than this value, the grid is removed on the plot.
+#         Set it to value less than zero if you want to keep all tiny grid.
 # -... pass to `circos.link`
 #
 # == details
@@ -49,7 +51,8 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 	col = NULL, row.col = NULL, column.col = NULL, directional = FALSE, fromRows = TRUE,
 	symmetric = FALSE, order = NULL, preAllocateTracks = NULL,
 	annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
-	link.border = NA, grid.border = NA, diffHeight = 0.04, ...) {
+	link.border = NA, grid.border = NA, diffHeight = 0.04, 
+	reduce = 1e-5, ...) {
 	
 	if(!is.matrix(mat)) {
 		stop("`mat` can only be a matrix.\n")
@@ -82,12 +85,31 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 		}
 	}
 	
-	ignore = max(abs(mat))/1e8
-	ri = apply(mat, 1, function(x) any(abs(x) > ignore))
-	ci = apply(mat, 2, function(x) any(abs(x) > ignore))
+	if(is.null(rownames(mat))) {
+		rownames(mat) = paste0("R", seq_len(nrow(mat)))
+	}
+	if(is.null(colnames(mat))) {
+		colnames(mat) = paste0("C", seq_len(ncol(mat)))
+	}
+	
+
+	# width of the category is almost 0, it means this category has no link to the others
+	rs = rowSums(abs(mat))
+	cs = colSums(abs(mat))
+
+	nn = union(names(rs), names(cs))
+	xlim = numeric(length(nn))
+	names(xlim) = nn
+
+	xlim[names(rs)] = xlim[names(rs)] + rs
+	xlim[names(cs)] = xlim[names(cs)] + cs
+
+	keep_index = names(xlim)[xlim / sum(xlim) >= reduce]
+	ri = which(rownames(mat) %in% keep_index)
+	ci = which(colnames(mat) %in% keep_index)
 	
 	# if the matrix is reduced
-	if(sum(sum(ri) + sum(ci)) < sum(ncol(mat) + nrow(mat))) {
+	if(sum(length(ri) + length(ci)) < sum(ncol(mat) + nrow(mat))) {
 		
 		un = union(rownames(mat), colnames(mat))
 		nn = union(rownames(mat)[ri], colnames(mat)[ci])
@@ -101,6 +123,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 				grid.col = grid.col[un %in% nn]
 			}
 		}
+		
 	}
 	
 	mat = mat[ri, ci, drop = FALSE]
@@ -114,13 +137,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 		column.col = column.col[ci]
 	}
 
-	if(is.null(rownames(mat))) {
-		rownames(mat) = paste0("R", seq_len(nrow(mat)))
-	}
-	if(is.null(colnames(mat))) {
-		colnames(mat) = paste0("C", seq_len(ncol(mat)))
-	}
-
+	# re-calculate xlim based on reduced mat
 	rs = rowSums(abs(mat))
 	cs = colSums(abs(mat))
 

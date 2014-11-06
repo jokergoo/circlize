@@ -56,3 +56,10 @@ pdf("test.pdf")
 par(mar = c(1, 1, 1, 1))
 chordDiagram(mat, directional = TRUE)
 dev.off()
+
+
+## test if some category is reduced
+mat = matrix(rnorm(25), 5, 5)
+mat2 = mat
+mat2[, 2] = 0
+chordDiagram(mat2)

@@ -849,8 +849,11 @@ circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.col
 			if(! facing %in% c("clockwise", "reverse.clockwise")) {
 				stop("Only support `facing` in c('clockwise', 'reverse.clockwise') if `posTransform` is `posTransform.text`.\n")
 			}
+			region = posTransform(region, value[[ numeric.column ]], value[[labels.column]], cex, font, padding = padding)
+		} else {
+			region = posTransform(region)
 		}
-		region = posTransform(region, value[[ numeric.column ]], value[[labels.column]], cex, font, padding = padding)
+		
 	}
 	
 	nc = length(numeric.column)
@@ -1001,10 +1004,10 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 			l = data[[1]] == chr
 			if(!is.null(posTransform)) {
 				if(is.function(posTransform)) {
-					n_args = length(as.list(posTransform))
-					if(n_args == 2) {
+					args = as.list(posTransform)
+					if(length(args) == 2) {
 						region_new = posTransform(region)
-					} else if(n_args == 3) {
+					} else if(length(args) == 3) {
 						region_new = posTransform(region, value)
 					}
 				}
@@ -1031,10 +1034,10 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 			region_subset = data[l, , drop = FALSE]
 			if(!is.null(posTransform)) {
 				if(is.function(posTransform)) {
-					n_args = length(as.list(posTransform))
-					if(n_args == 2) {
+					args = as.list(posTransform)
+					if(length(args) == 2) {
 						region_new = posTransform(region)
-					} else if(n_args == 3) {
+					} else if(length(args) == 3) {
 						region_new = posTransform(region, value)
 					}
 				}
@@ -1412,7 +1415,7 @@ rainfallTransform = function(region, mode = c("min", "max", "mean")) {
 # == param
 # -region Genomic positions at a single chromosome. It is a data frame with two
 #     columns which are start position and end position.
-# -... black hole to eat junk arguments.
+# -... other arguments
 #
 # == details
 # The default position transformation functions transforms position to be equally distributed
@@ -1440,7 +1443,7 @@ posTransform.default = function(region, ...) {
 # -sector.index sector index
 # -track.index track index
 # -padding padding of text
-# -... black hole to eat junk arguments.
+# -... other arguments
 #
 # == details
 # This position transformation function is designed specifically for text.

@@ -15,7 +15,7 @@ posTransform.default(region, ...)
 }
 \arguments{
   \item{region}{Genomic positions at a single chromosome. It is a data frame with two columns which are start position and end position.}
-  \item{...}{black hole to eat junk arguments.}
+  \item{...}{other arguments}
 
 }
 \details{

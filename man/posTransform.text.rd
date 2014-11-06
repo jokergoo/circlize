@@ -24,7 +24,7 @@ posTransform.text(region, y, labels, cex = 1, font = par("font"),
   \item{sector.index}{sector index}
   \item{track.index}{track index}
   \item{padding}{padding of text}
-  \item{...}{black hole to eat junk arguments.}
+  \item{...}{other arguments}
 
 }
 \details{

@@ -50,3 +50,4 @@ export(
 
 importFrom("GlobalOptions", setGlobalOptions)
 import("methods")
+

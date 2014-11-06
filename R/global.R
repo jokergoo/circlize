@@ -114,7 +114,11 @@ circos.par = setGlobalOptions(
 		}),
 	default.track.height = list(
 		.value = 0.2,
-		.visible = FALSE),
+		.visible = FALSE,
+		.filter = function(x) {
+			warning("`default.track.height` is replaced by `track.height`, ignore this setting.\n")
+			return(x)
+		}),
 	track.height = 0.2,
 	points.overflow.warning = TRUE,
 	canvas.xlim = list(

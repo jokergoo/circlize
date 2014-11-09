@@ -155,7 +155,7 @@ circos.par = setGlobalOptions(
 		.visible = FALSE,
 		.private = TRUE),
 	'__tempdir__' = list(
-		.value = ".",
+		.value = tempdir(),
 		.private = TRUE,
 		.visible = TRUE
 	)

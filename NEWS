@@ -3,6 +3,7 @@ Changes in version 0.1.3
 
 * add `jitter` for adding points under `stack` mode
 * value in `panel.fun` can be selected by character index
+* change default temporary dir to `tempdir()`
 
 Changes in version 0.1.3
 ------------------------------------------------------------------------------

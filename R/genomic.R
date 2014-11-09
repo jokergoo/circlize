@@ -190,6 +190,7 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 #                 If ``data`` is a data frame, the default value for ``numeric.column`` is all the numeric column starting from the fourth column.
 #                 If ``data`` is a list of data frame, the default value for ``numeric.column`` is a vector which have the same length as ``data``
 #                 and the value in default ``numeric.column`` is the index of the first numeric column in corresponding data frame.
+# -jitter Numeric. Only works for adding points in `circos.genomicTrackPlotRegion` under ``stack` mode
 # -panel.fun Self-defined function which will be applied on each sector. Please not it is different
 #            from that in `circos.trackPlotRegion`. In this function, there are two arguments (``region`` and ``value``) plus ``...``.
 #            In them, ``region`` is a two-column data frame with start positions and end positions in current genomic category (e.g. chromosome). 
@@ -228,7 +229,8 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 # argument is used to pass hidden values to low-level graphical functions. So if you are using functions like ``circos.genomicPoints``, you should also
 # add ``...`` as an additional argument into ``circos.genomicPoints``.
 circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE,
-	numeric.column = NULL, panel.fun = function(region, value, ...)  {NULL}, ... ) {
+	numeric.column = NULL, jitter = 0,
+	panel.fun = function(region, value, ...)  {NULL}, ... ) {
 	
 	if(is.null(data)) {
 		all.sector.index = get.all.sector.index()
@@ -245,9 +247,11 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 	
 	# excluding the first three columns
 	if(!is.null(numeric.column)) {
-		numeric.column = numeric.column - 3
+		if(is.numeric(numeric.column)) {
+			numeric.column = numeric.column - 3
+		}
 		if(any(numeric.column < 0)) {
-			stop("Wrong value in `numeric.column`, they should be larger than 3.\n")
+			stop("Wrong value in `numeric.column`, they should be larger than 3 or character index.\n")
 		}
 	}
 	
@@ -308,6 +312,7 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 							.param = new.env()
 							assign("i", i, envir = .param)
 							assign("stack", TRUE, envir = .param)
+							assign("jitter", jitter, envir = .param)
 							if(!is.null(numeric.column) && !is.na(numeric.column[i])) {
 								assign("numeric.column", numeric.column[i], envir = .param)
 							}
@@ -332,6 +337,7 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 							.param = new.env()
 							assign("i", i, envir = .param)
 							assign("stack", TRUE, envir = .param)
+							assign("jitter", jitter, envir = .param)
 							genomicPanelFun(df[2:3], df[-(1:3)][non.numeric.column], .param = .param)
 						}
 
@@ -348,6 +354,7 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 								assign("i", i, envir = .param)
 								assign("stack", TRUE, envir = .param)
 								assign("numeric.column", 1, envir = .param)
+								assign("jitter", jitter, envir = .param)
 								genomicPanelFun(df[2:3], df[-(1:3)][c(numeric.column[i], non.numeric.column)], .param = .param)
 							}
 						}
@@ -468,7 +475,11 @@ circos.genomicPoints = function(region, value, numeric.column = NULL,
 		.param = args$.param
 		if(!is.null(.param$stack)) {
 			if(.param$stack && is.null(numeric.column)) {
-				value = data.frame(hline = rep(.param$i, nr))
+				if(is.null(.param$jitter)) {
+					value = data.frame(hline = rep(.param$i, nr))
+				} else {
+					value = data.frame(hline = rep(.param$i, nr) + (runif(nr) - 0.5)*.param$jitter)
+				}
 				numeric.column = 1
 			}
 		} else if(!is.null(.param$numeric.column) && is.null(numeric.column)) {

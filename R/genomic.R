@@ -478,7 +478,7 @@ circos.genomicPoints = function(region, value, numeric.column = NULL,
 				if(is.null(.param$jitter)) {
 					value = data.frame(hline = rep(.param$i, nr))
 				} else {
-					value = data.frame(hline = rep(.param$i, nr) + (runif(nr) - 0.5)*.param$jitter)
+					value = data.frame(hline = rep(.param$i, nr) + (runif(nr) - 0.5)*abs(.param$jitter))
 				}
 				numeric.column = 1
 			}

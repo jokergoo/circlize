@@ -158,7 +158,7 @@ circos.par = setGlobalOptions(
 		.value = ".",
 		.private = TRUE,
 		.filter = function(x) {dir.create(x, showWarnings = FALSE); return(x)},
-		.visible = TRUE
+		.visible = FALSE
 	)
 )
 

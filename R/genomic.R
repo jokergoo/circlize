@@ -190,7 +190,7 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 #                 If ``data`` is a data frame, the default value for ``numeric.column`` is all the numeric column starting from the fourth column.
 #                 If ``data`` is a list of data frame, the default value for ``numeric.column`` is a vector which have the same length as ``data``
 #                 and the value in default ``numeric.column`` is the index of the first numeric column in corresponding data frame.
-# -jitter Numeric. Only works for adding points in `circos.genomicTrackPlotRegion` under ``stack` mode
+# -jitter Numeric. Only works for adding points in ``circos.genomicTrackPlotRegion`` under ``stack`` mode
 # -panel.fun Self-defined function which will be applied on each sector. Please not it is different
 #            from that in `circos.trackPlotRegion`. In this function, there are two arguments (``region`` and ``value``) plus ``...``.
 #            In them, ``region`` is a two-column data frame with start positions and end positions in current genomic category (e.g. chromosome). 

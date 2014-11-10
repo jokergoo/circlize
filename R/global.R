@@ -155,11 +155,14 @@ circos.par = setGlobalOptions(
 		.visible = FALSE,
 		.private = TRUE),
 	'__tempdir__' = list(
-		.value = tempdir(),
+		.value = ".",
 		.private = TRUE,
+		.filter = function(x) {dir.create(x, showWarnings = FALSE); return(x)},
 		.visible = TRUE
 	)
 )
+
+circos.par('__tempdir__' = tempdir())
 
 # before initialization, .SECTOR.DATA is NULL
 is.circos.initialized = function() {

@@ -228,9 +228,9 @@ colorRamp2 = function(breaks, colors, transparency = 0) {
 # rgb1 vector with 3 elements
 # rgb2 vector with 3 elements
 .get_color = function(x, break1, break2, rgb1, rgb2, transparency) {
-	res_rgb = NULL
+	res_rgb = matrix(nrow = 3, ncol = length(x))
 	for(i in seq_along(x)) {
-		res_rgb = cbind(res_rgb, (x[i] - break2)*(rgb2 - rgb1) / (break2 - break1) + rgb2)
+		res_rgb[, i] = (x[i] - break2)*(rgb2 - rgb1) / (break2 - break1) + rgb2
 	}
 	return(rgb(t(res_rgb)/255, alpha = 1-transparency))
 }

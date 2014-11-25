@@ -1,6 +1,8 @@
 Changes in version 0.1.4
 ------------------------------------------------------------------------------
 
+* different colors for each rows can be set to `circos.genomicLines` if 
+  type %in% c("segment", "h")
 * pre-allocate the matrix in `.get_color`
 
 Changes in version 0.1.3

@@ -537,6 +537,8 @@ circos.genomicPoints = function(region, value, numeric.column = NULL,
 # -track.index Pass to `circos.lines`
 # -posTransform Self-defined function to transform genomic positions, see `posTransform.default` for explaination
 # -col col of lines/areas. If there are more than one numeric column, the length of ``col`` can be either one or number of numeric columns.
+#      If there is only one numeric column and type is either ``segment`` or ``h``, 
+#      the length of ``col`` can be either one or number of rows of ``region``.
 #      pass to `circos.lines`
 # -lwd Settings are similar as ``col``. Pass to `circos.lines`
 # -lty Settings are similar as ``col``. Pass to `circos.lines`
@@ -602,17 +604,23 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 	}
 
 	nc = length(numeric.column)
-
-	col = .normalizeGraphicalParam(col, nc, 1, "col")
-	lwd = .normalizeGraphicalParam(lwd, nc, 1, "col")
-	lty = .normalizeGraphicalParam(lty, nc, 1, "col")
+	
+	if(all(type %in% c("h", "segment"))) {
+		col = .normalizeGraphicalParam(col, nc, nr, "col")
+		lwd = .normalizeGraphicalParam(lwd, nc, nr, "col")
+		lty = .normalizeGraphicalParam(lty, nc, nr, "col")
+	} else {
+		col = .normalizeGraphicalParam(col, nc, 1, "col")
+		lwd = .normalizeGraphicalParam(lwd, nc, 1, "col")
+		lty = .normalizeGraphicalParam(lty, nc, 1, "col")
+	}
+	pt.col = .normalizeGraphicalParam(pt.col, nc, 1, "col")
+	cex = .normalizeGraphicalParam(cex, nc, 1, "col")
+	pch = .normalizeGraphicalParam(pch, nc, 1, "col")
 	type = .normalizeGraphicalParam(type, nc, 1, "col")
 	area = .normalizeGraphicalParam(area, nc, 1, "col")
 	baseline = .normalizeGraphicalParam(baseline, nc, 1, "col")
 	border = .normalizeGraphicalParam(border, nc, 1, "col")
-	pt.col = .normalizeGraphicalParam(pt.col, nc, 1, "col")
-	cex = .normalizeGraphicalParam(cex, nc, 1, "col")
-	pch = .normalizeGraphicalParam(pch, nc, 1, "col")
 	
 	if(!is.null(args$hline)) {
 		for(i in seq_len(nr)) {

@@ -908,16 +908,7 @@ circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.col
 #
 # If you want to have more controls on links, please use `circos.link` directly.
 circos.genomicLink = function(region1, region2, 
-	rou = {tracks = get.all.track.index()
-	       if(length(tracks) == 0) {
-		       1
-		   } else {
-		       n = length(tracks)
-		       get.cell.meta.data("cell.bottom.radius", track.index = tracks[n]) - 
-			     get.cell.meta.data("track.margin", track.index = tracks[n])[1] - 
-			     circos.par("track.margin")[2]
-		   }
-    }, rou1 = rou, rou2 = rou,
+	rou = get_most_inside_radius(), rou1 = rou, rou2 = rou,
     col = "black", lwd = par("lwd"), lty = par("lty"), border = NA, ...) {
 	
 	region1 = normalizeToDataFrame(region1)

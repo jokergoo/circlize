@@ -271,3 +271,13 @@ circos.approx = function(x, y, resolution = 0.1, sector.index = get.cell.meta.da
 rand_color = function(n, transparency = 0) {
     return(rgb(runif(n), runif(n), runif(n), 1 - transparency))
 }
+
+get_most_inside_radius = function() {
+	tracks = get.all.track.index()
+	if(length(tracks) == 0) {
+	    1
+	} else {
+	    n = length(tracks)
+	    get.cell.meta.data("cell.bottom.radius", track.index = tracks[n]) - get.cell.meta.data("track.margin", track.index = tracks[n])[1] - circos.par("track.margin")[2]
+	}
+}

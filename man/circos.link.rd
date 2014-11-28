@@ -12,16 +12,7 @@
 }
 \usage{
 circos.link(sector.index1, point1, sector.index2, point2,
-    rou = {tracks = get.all.track.index()
-    if(length(tracks) == 0) {
-    1
-    } else {
-    n = length(tracks)
-    get.cell.meta.data("cell.bottom.radius", track.index = tracks[n]) -
-    get.cell.meta.data("track.margin", track.index = tracks[n])[1] -
-    circos.par("track.margin")[2]
-    }
-    },
+    rou = get_most_inside_radius(),
     rou1 = rou, rou2 = rou, h = NULL, w = 1, h2 = h, w2 = w,
     col = "black", lwd = par("lwd"), lty = par("lty"), border = NA)
 }

@@ -268,6 +268,15 @@ circos.approx = function(x, y, resolution = 0.1, sector.index = get.cell.meta.da
 	return(list(x = newx, y = newy))
 }
 
+# == title
+# generate random colors
+#
+# == param
+# -n number of colors
+# -transparency transparency
+#
+# == value
+# a vector of colors
 rand_color = function(n, transparency = 0) {
     return(rgb(runif(n), runif(n), runif(n), 1 - transparency))
 }

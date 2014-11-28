@@ -1004,7 +1004,8 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	labels.font = par("font"), labels.cex = par("cex"),
 	labels.facing = "inside", labels.direction = NULL, labels.niceFacing = TRUE,
 	direction = c("outside", "inside"), minor.ticks = 4,
-	major.tick.percentage = 0.1, labels.away.percentage = 0.05, lwd = par("lwd")) {
+	major.tick.percentage = 0.1, labels.away.percentage = major.tick.percentage/2, 
+	lwd = par("lwd")) {
 	
     if(!is.null(labels.direction)) {
         labels.facing = switch(labels.direction[1], 

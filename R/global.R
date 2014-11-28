@@ -512,11 +512,19 @@ circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 	} else {
 		# just print the name and xlim for each sector
 		if(is.null(sector.index) && is.null(track.index)) {
-			cat("All your sectors:\n")
-			print(sectors)
+			if(length(sectors)) {
+				cat("All your sectors:\n")
+				print(sectors)
+			} else {
+				cat("No sector has been created\n")
+			}
 			cat("\n")
-			cat("All your tracks:\n")
-			print(tracks)
+			if(length(tracks)) {
+				cat("All your tracks:\n")
+				print(tracks)
+			} else {
+				cat("No track has been created\n")
+			}
 			cat("\n")
 
 		} else {
@@ -527,7 +535,7 @@ circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 			}
 			for(i in seq_along(sector.index)) {
 				for(j in seq_along(track.index)) {
-					cat("sector index: ", sector.index[i], "\n", sep = "")
+					cat("sector index: '", sector.index[i], "'\n", sep = "")
 					cat("track index: ", track.index[j], "\n", sep = "")
 					xlim = get.cell.meta.data('xlim', sector.index[i], track.index[j])
 					ylim = get.cell.meta.data('ylim', sector.index[i], track.index[j])

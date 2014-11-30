@@ -30,7 +30,9 @@
 # -annotationTrack Which annotation track should be plotted? By default, a track containing sector names and a track
 #                  containing grid will be created.
 # -annotationTrackHeight Track height corresponding to values in ``annotationTrack``.
-# -link.border border for links
+# -link.border border for links, single scalar or a matrix with names
+# -link.lwd width for link borders, single scalar or a matrix with names
+# -link.lty style for link borders, single scalar or a matrix with names
 # -grid.border border for grids. If it is ``NULL``, the border color is same as grid color
 # -diffHeight The difference of height between two 'roots' if ``directional`` is set to ``TRUE``. 
 # -reduce if the ratio of the width of certain grid compared to the whole circle is less than this value, the grid is removed on the plot.
@@ -47,12 +49,12 @@
 #
 # This function is flexible and contains some settings that may be a little difficult to understand. 
 # Please refer to vignette for better explanation.
-chordDiagram = function(mat, grid.col = NULL, transparency = 0,
+chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	col = NULL, row.col = NULL, column.col = NULL, directional = FALSE, fromRows = TRUE,
 	symmetric = FALSE, order = NULL, preAllocateTracks = NULL,
 	annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
-	link.border = NA, grid.border = NA, diffHeight = 0.04, 
-	reduce = 1e-5, ...) {
+	link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), grid.border = NA, 
+	diffHeight = 0.04, reduce = 1e-5, ...) {
 	
 	if(!is.matrix(mat)) {
 		stop("`mat` can only be a matrix.\n")
@@ -249,8 +251,32 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 			}, track.height = annotationTrackHeight[which(annotationTrack %in% "grid")])
 	}
     # links
-    rn = rownames(mat)
+	rn = rownames(mat)
 	cn = colnames(mat)
+	
+	.normalize_to_mat = function(value, rn, cn, default) {
+		var_name = deparse(substitute(value))
+		mat = matrix(default, nrow = length(rn), ncol = length(cn))
+		rownames(mat) = rn
+		colnames(mat) = cn
+		if(length(value) == 1) {
+			mat[,] = value
+		} else {
+			if(!is.null(rownames(value)) && !is.null(colnames(value))) {
+				common_rn = intersect(rownames(value), rn)
+				common_cn = intersect(colnames(value), cn)
+				mat[common_rn, common_cn] = value[common_rn, common_cn]
+			} else {
+				stop(paste0(var_name, " should be a scalar or a matrix with both rownames and colnames.\n"))
+			}
+		}
+		return(mat)
+	}
+	
+	link.border = .normalize_to_mat(link.border, rn, cn, default = NA)
+	link.lwd = .normalize_to_mat(link.lwd, rn, cn, default = 1)
+	link.lty = .normalize_to_mat(link.lty, rn, cn, default = 1)
+	
     sector.sum.row = numeric(length(factors))
     sector.sum.col = numeric(length(factors))
 	names(sector.sum.row) = factors
@@ -268,17 +294,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 			if(abs(mat[rn[i], cn[j]]) < 1e-8) {
 				next
 			}
-			rou = {
-				tracks = get.all.track.index()
-				if(length(tracks) == 0) {
-					1
-				} else {
-					n = length(tracks)
-					get.cell.meta.data("cell.bottom.radius", track.index = tracks[n]) - 
-					get.cell.meta.data("track.margin", track.index = tracks[n])[1] - 
-					circos.par("track.margin")[2]
-			    }
-			}
+			rou = get_most_inside_radius()
             sector.index1 = rn[i]
             sector.index2 = cn[j]
 			
@@ -286,16 +302,19 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0,
 				if(fromRows) {
 					circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
 								sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-								col = col[rn[i], cn[j]], rou1 = rou - diffHeight, rou2 = rou, border = link.border, ...)
+								col = col[rn[i], cn[j]], rou1 = rou - diffHeight, rou2 = rou, border = link.border[rn[i], cn[j]], 
+								lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]], ...)
 				} else {
 					circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
 							sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-							col = col[rn[i], cn[j]], rou1 = rou, rou2 = rou - diffHeight, border = link.border, ...)
+							col = col[rn[i], cn[j]], rou1 = rou, rou2 = rou - diffHeight, border = link.border[rn[i], cn[j]],
+							lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]], ...)
 				}
 			} else {
 				circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
 							sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-							col = col[rn[i], cn[j]], rou1 = rou, border = link.border, ...)
+							col = col[rn[i], cn[j]], rou1 = rou, border = link.border[rn[i], cn[j]], lwd = link.lwd[rn[i], cn[j]], 
+							lty = link.lty[rn[i], cn[j]], ...)
 			}
 			
             sector.sum.row[ rn[i] ] = sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])

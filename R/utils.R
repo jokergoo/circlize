@@ -16,16 +16,19 @@ circlize = function(x, y, sector.index = get.current.sector.index(),
 	track.index = get.current.track.index()) {
     
     sector.data = get.sector.data(sector.index)
-    cell.data = get.cell.data(sector.index, track.index)
-    cell.ylim = get.cell.meta.data("cell.ylim", sector.index, track.index)
-        
+       
     theta = sector.data["start.degree"] - (x - sector.data["min.value"]) / (sector.data["max.value"] - sector.data["min.value"]) *
             abs(sector.data["start.degree"] - sector.data["end.degree"])
-        
-    y.range = cell.ylim[2] - cell.ylim[1]
-        
-    rou = cell.data$track.start - (cell.ylim[2] - y) / y.range * cell.data$track.height
     
+	if(track.index == 0) {
+		rou = rep(1, length(theta))
+	} else {
+		cell.data = get.cell.data(sector.index, track.index)
+		cell.ylim = get.cell.meta.data("cell.ylim", sector.index, track.index)  
+		y.range = cell.ylim[2] - cell.ylim[1] 
+		rou = cell.data$track.start - (cell.ylim[2] - y) / y.range * cell.data$track.height
+    }
+	
     m = cbind(theta, rou)
     colnames(m) = c("theta", "rou")
     rownames(m) = NULL

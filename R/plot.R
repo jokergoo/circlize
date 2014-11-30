@@ -873,7 +873,7 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 				alpha = alpha - asin(strw[[i]][j]/d[i, 2])*180/pi
 			}
 			dr = reverse.circlize(theta, rep(rou, length(theta)), sector.index, track.index)
-			circos.text(dr[, 1], dr[, 2], labels = chars[[i]], cex = cex[i], col = col[i], font = font[i], adj = c(0.5, 0), ...)
+			circos.text(dr[, 1], dr[, 2], labels = chars[[i]], sector.index = sector.index, track.index = track.index, cex = cex[i], col = col[i], font = font[i], adj = c(0.5, 0), ...)
 			#circos.points(dr[, 1], dr[, 2], pch = 16, cex = 0.8)
 		}
 		

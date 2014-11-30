@@ -1,0 +1,794 @@
+% \VignetteIndexEntry{Circular visualization of matrix (Chord Diagram)}
+% \VignetteDepends{circlize}
+% \VignetteKeywords{circos R}
+% \VignetteKeywords{Chord Diagram}
+% \VignetteKeywords{circlize}
+% \VignettePackage{circlize}
+%\VignetteCompiler{knitr}
+%\VignetteEngine{knitr::knitr}
+
+
+<<echo = FALSE>>=
+opts_chunk$set(fig.pos = "")
+@
+
+
+\documentclass{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+
+\title{How to make Chord Diagram}
+
+\author{Zuguang Gu {\tt <z.gu@dkfz.de>}}
+\usepackage[margin=1in, a4paper]{geometry}
+
+\usepackage{hyperref}
+
+\begin{document}
+
+\maketitle 
+
+One unique feature of circular layout is the links (or connectors) to represent relations
+between elements (\url{http://circos.ca/intro/tabular_visualization/}). The name
+of such plot is sometimes called Chord Diagram (\url{http://en.wikipedia.org/wiki/Chord_diagram}). 
+In {\tt circlize}, it is easy to plot it in a straightforward or customized way.
+
+\section{Start from ground}
+Normally, the relationship can be represented as a matrix in which values in $i^{th}$ row 
+and $j^{th}$ column are some kind of strength for the relationship. Let's assume 
+we have a transition matrix in which rows correspond to starting states and columns 
+correspond to ending states. Numbers in the matrix are the amount of observations that 
+transit between two states.
+
+<<>>=
+mat = matrix(1:18, 3, 6)
+rownames(mat) = paste0("S", 1:3)
+colnames(mat) = paste0("E", 1:6)
+
+mat
+@
+
+Sector names in the circos plot correspond to the union of row names and column names 
+from the matrix. To initialize the circos plot, we need to construct {\tt factors} 
+and {\tt xlim}. Since here row names and columns are different, the data range 
+is simply the summation in rows or columns respectively.
+
+<<>>=
+rn = rownames(mat)
+cn = colnames(mat)
+
+factors = c(rn, cn)
+factors = factor(factors, levels = factors)
+
+col_sum = apply(mat, 2, sum)
+row_sum = apply(mat, 1, sum)
+xlim = cbind(rep(0, length(factors)), c(row_sum, col_sum))
+@
+
+The next step is to create a new track to put the grids which represent states and 
+the names for the states. In following code, colors for different states are specified 
+by {\tt bg.col} in {\tt circos.trackPlotRegion}. You may meet several warning messages 
+saying there are points out of plotting regions, but it is totally fine because we create 
+a new track and fill in with colors for the whole plotting regions then add text outside 
+of each region.
+
+<<chord_diagram_by_hand_initialize, eval = FALSE>>=
+library(circlize)
+
+par(mar = c(1, 1, 1, 1))
+circos.par(cell.padding = c(0, 0, 0, 0))
+circos.initialize(factors = factors, xlim = xlim)
+circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.border = NA, 
+    bg.col = c("red", "green", "blue", rep("grey", 6)), track.height = 0.05, 
+    panel.fun = function(x, y) {
+        sector.name = get.cell.meta.data("sector.index")
+        xlim = get.cell.meta.data("xlim")
+        circos.text(mean(xlim), 1.5, sector.name, adj = c(0.5, 0))
+})
+@
+
+Finally add links to the plot (figure \ref{fig:chord_diagram_by_hand}).
+
+<<chord_diagram_by_hand_add_links, eval = FALSE>>=
+col = c("#FF000020", "#00FF0020", "#0000FF20")
+for(i in seq_len(nrow(mat))) {
+    for(j in seq_len(ncol(mat))) {
+        circos.link(rn[i], c(sum(mat[i, seq_len(j-1)]), sum(mat[i, seq_len(j)])),
+            cn[j], c(sum(mat[seq_len(i-1), j]), sum(mat[seq_len(i), j])), 
+            col = col[i], border = "white")
+    }
+}
+
+circos.clear()
+@
+
+
+<<chord_diagram_by_hand, echo = FALSE, fig.align = "center", out.width = "0.6\\textwidth", fig.cap = "Matrix in circular layout.">>=
+circos.par(points.overflow.warning = FALSE)
+<<chord_diagram_by_hand_initialize>>
+<<chord_diagram_by_hand_add_links>>
+@
+
+
+Above codes show the basic idea to implement Chord Diagram in {\it circlize}. Of course
+you can customize the plot in your own way such as changing the order on ending states 1 to 6
+so that the links are not over-twisted. 
+
+\section{The pre-defined {\tt chordDiagram} function}
+
+A general function {\tt chordDiagram} is already defined in the package.
+
+\subsection{Basic usage}
+We will still use {\tt mat} object in previous section to demonstrate the usage of 
+{\tt chordDiagram}. The most simple usage is just calling {\tt chordDiagram} with 
+{\tt mat} (figure \ref{fig:chord_diagram_basic} A).
+
+<<chord_diagram_basic_simple, eval = FALSE>>=
+set.seed(999)
+chordDiagram(mat)
+circos.clear()
+@
+
+The default Chord Diagram consists of a track of labels, a track of grids, and links.
+Under default settings, the grid colors are randomly generated with 50% transparency,
+that why we add {\tt set.seed} to make sure that users can make same figures with the same code.
+The link colors are same as colors for grids which correspond to rows. The order of 
+sectors is the order of {\tt union(rownames(mat), colnames(mat))}.
+
+Since Chord Diagram is implemented by {\it circlize} package, like normal circos plot,
+there are a lot of settings that can be tuned.
+
+The gaps between sectors can be set through {\tt circos.par} (figure \ref{fig:chord_diagram_basic} B). 
+It is useful when rows and columns are different measurements (as in {\tt mat}). 
+Please note since you change default circos graphical settings, you need to 
+use {\tt circos.clear} in the end to reset it.
+
+<<chord_diagram_basic_gap_degree, eval = FALSE>>=
+circos.par(gap.degree = c(rep(2, nrow(mat)-1), 10, rep(2, ncol(mat)-1), 10))
+chordDiagram(mat)
+circos.clear()
+@
+
+Similarly, the start degree for the first sector can also be set through {\tt circos.par}
+(figure \ref{fig:chord_diagram_basic} C).
+
+<<chord_diagram_basic_start_degree, eval = FALSE>>=
+circos.par(start.degree = 90)
+chordDiagram(mat)
+circos.clear()
+@
+
+The order of sectors can be controlled by {\tt order} argument 
+(figure \ref{fig:chord_diagram_basic} D). Of course, the length of {\tt order} vector 
+should be same as the number of sectors.
+
+<<chord_diagram_basic_order, eval = FALSE>>=
+chordDiagram(mat, order = c("S1", "E1", "E2", "S2", "E3", "E4", "S3", "E5", "E6"))
+@
+
+<<chord_diagram_basic, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Basic usages of {\\tt chordDiagram}. A) default style; B) set {\\tt gap.degree}; C) set {\\tt start.degree}; D) set orders of sectors">>=
+par(mfrow = c(2, 2), mar = c(1, 1, 1, 1))
+<<chord_diagram_basic_simple>>
+text(-0.9, 0.9, "A", cex = 1.5)
+<<chord_diagram_basic_gap_degree>>
+text(-0.9, 0.9, "B", cex = 1.5)
+<<chord_diagram_basic_start_degree>>
+text(-0.9, 0.9, "C", cex = 1.5)
+<<chord_diagram_basic_order>>
+text(-0.9, 0.9, "D", cex = 1.5)
+par(mfrow = c(1, 1))
+@
+
+\subsection{Colors}
+
+Setting colors is flexible. Colors for grids can be set through {\tt grid.col}.
+Values of {\tt grid.col} should be a named vector of which names correspond to sector names.
+If {\tt grid.col} has no name index, the order of {\tt grid.col} corresponds to the order of sector names.
+As explained before, the default link colors are same
+as colors for grids which correspond to rows (figure \ref{fig:chord_diagram_color} A).
+
+<<chord_diagram_color_grid, eval = FALSE>>=
+grid.col = NULL  # just create the variable
+grid.col[rn] = c("red", "green", "blue")
+grid.col[cn] = "grey"
+chordDiagram(mat, grid.col = grid.col)
+@
+
+Transparency of link colors can be set through {\tt transparency} (figure \ref{fig:chord_diagram_color} B). 
+The value should between 0 to 1 in which 0 means no transparency and 1 means full transparency.
+Default transparency is 0.5.
+
+<<chord_diagram_color_transparency, eval = FALSE>>=
+chordDiagram(mat, grid.col = grid.col, transparency = 0)
+@
+
+Colors for links can be customized by providing a matrix of colors which correspond to {\tt mat}.
+In the following example, we use {\tt rand\_color} which is shippped by {\it circlize} package
+to generate a random color matrix. Note since {\tt col\_mat} already contains transparency, 
+{\tt transparency} will be ignored if it is set (figure \ref{fig:chord_diagram_color} C).
+
+<<chord_diagram_color_mat, eval = FALSE>>=
+col_mat = rand_color(length(mat), transparency = 0.5)
+dim(col_mat) = dim(mat)  # to make sure it is a matrix
+chordDiagram(mat, grid.col = grid.col, col = col_mat)
+@
+
+{\tt col} argument can also be a self-defined function which maps values to colors.
+Here we use {\tt colorRamp2} which is available in this package to generate a function
+with a list of break points and corresponding colors (figure \ref{fig:chord_diagram_color} D).
+
+<<chord_diagram_color_fun, eval = FALSE>>=
+col_fun = colorRamp2(quantile(mat, seq(0, 1, length.out = 18)), rev(rainbow(18)))
+chordDiagram(mat, grid.col = grid.col, col = col_fun)
+@
+
+Sometimes you don't need to generate the whole color matrix. You can just provide
+colors which correspond to rows or columns so that links from a same row/column will
+have the same color (figure \ref{fig:chord_diagram_color} E, F). Here note values of colors
+can be set as numbers, color names or hex code, same as in the traditional R graphics.
+
+<<chord_diagram_color_row_col, eval = FALSE, echo = -2>>=
+chordDiagram(mat, grid.col = grid.col, row.col = 1:3)
+text(-0.9, 0.9, "E", cex = 1.5)
+chordDiagram(mat, grid.col = grid.col, column.col = 1:6)
+@
+
+To emphasize again, transparency of links can be included in {\tt col} or {\tt row.col} 
+or {\tt column.col}, if transparency is already set there, {\tt transparency} argument 
+will be ignored if it is set.
+
+
+<<chord_diagram_color, echo = FALSE, fig.align = "center", out.width = "\\textwidth", out.height = "1.5\\textwidth", fig.width = 7, fig.height = 10.5, fig.cap = "Color settings in {\\tt chordDiagram}. A) set {\\tt grid.col}; B) set {\\tt transparency}; C) set {\\tt col} as a matrix; D) set {\\tt col} as a function; E) set {\\tt row.col}; F) set {\\tt column.col}">>=
+par(mfrow = c(3, 2), mar = c(1, 1, 1, 1))
+<<chord_diagram_color_grid>>
+text(-0.9, 0.9, "A", cex = 1.5)
+<<chord_diagram_color_transparency>>
+text(-0.9, 0.9, "B", cex = 1.5)
+<<chord_diagram_color_mat>>
+text(-0.9, 0.9, "C", cex = 1.5)
+<<chord_diagram_color_fun>>
+text(-0.9, 0.9, "D", cex = 1.5)
+<<chord_diagram_color_row_col>>
+text(-0.9, 0.9, "F", cex = 1.5)
+par(mfrow = c(1, 1))
+@
+
+\subsection{Other Style of links}
+{\tt link.lwd}, {\tt link.lty} and {\tt link.border} controls the style of links. 
+All these three parameters can be set either a single scalar or a matrix with names.
+
+If it is set as a single scale, it means all links share the same style (figure \ref{fig:chord_diagram_style} A).
+
+<<chord_diagram_style_scalar, eval = FALSE>>=
+chordDiagram(mat, grid.col = grid.col, link.lwd = 2, link.lty = 2, link.border = "black")
+@
+
+If it is set as a matrix, it should corresponds to rows and columns in {\tt mat} 
+(figure \ref{fig:chord_diagram_style} B). 
+
+<<chord_diagram_style_fullmat, eval = FALSE>>=
+lwd_mat = matrix(1, nrow = nrow(mat), ncol = ncol(mat))
+rownames(lwd_mat) = rownames(mat)
+colnames(lwd_mat) = colnames(mat)
+lwd_mat[mat > 12] = 2
+
+border_mat = matrix(NA, nrow = nrow(mat), ncol = ncol(mat))
+rownames(border_mat) = rownames(mat)
+colnames(border_mat) = colnames(mat)
+border_mat[mat > 12] = "black"
+
+chordDiagram(mat, grid.col = grid.col, link.lwd = lwd_mat, link.border = border_mat)
+@
+
+The matrix is not necessary to have same number of rows and columns as in {\tt mat}.
+It can also be a sub matrix (figure \ref{fig:chord_diagram_style} C). For rows or columns 
+of which the corresponding values are not specified in the matrix, default values are filled in.
+
+<<chord_diagram_style_submatrix, eval = FALSE>>=
+border_mat2 = matrix("black", nrow = 1, ncol = ncol(mat))
+rownames(border_mat2) = rownames(mat)[2]
+colnames(border_mat2) = colnames(mat)
+
+chordDiagram(mat, grid.col = grid.col, link.lwd = 2, link.border = border_mat2)
+@
+
+<<chord_diagram_style, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Link style settings in {\\tt chordDiagram}. A) set as scalar; B) set as matrix; C) set as sub matrix">>=
+par(mfrow = c(2, 2), mar = c(1, 1, 1, 1))
+<<chord_diagram_style_scalar>>
+text(-0.9, 0.9, "A", cex = 1.5)
+<<chord_diagram_style_fullmat>>
+text(-0.9, 0.9, "B", cex = 1.5)
+<<chord_diagram_style_submatrix>>
+text(-0.9, 0.9, "C", cex = 1.5)
+par(mfrow = c(1, 1))
+@
+
+
+\subsection{Highlight links}
+
+Sometimes we want to highlight some links to emphasize the importance of such connections.
+Highlighting by different link styles are introduced in previous section and here we focus on
+highlighting by colors.
+
+The key point for highlighting by colors is to set different colors for different links.
+For example, if we want to highlight links which correspond to state "S1", we can set
+{\tt row.col} with different transparency (figure \ref{fig:chord_diagram_highlight} A).
+
+<<chord_diagram_highlight_row, eval = FALSE>>=
+chordDiagram(mat, grid.col = grid.col, row.col = c("#FF000080", "#00FF0010", "#0000FF10"))
+@
+
+We can also highlight links with values larger than a cutoff (figure \ref{fig:chord_diagram_highlight} B, C). 
+There are at least two ways to do it. First, by constructing a color matrix.
+
+<<chord_diagram_highlight_mat, eval = FALSE>>=
+col_mat[mat < 12] = "#00000000"
+chordDiagram(mat, grid.col = grid.col, col = col_mat) 
+@
+
+Second, use a color function to generate different colors with differnet values.
+
+<<chord_diagram_highlight_fun, eval = FALSE>>=
+col_fun = function(x) ifelse(x < 12, "#00000000", "#FF000080")
+chordDiagram(mat, grid.col = grid.col, col = col_fun)
+@
+
+Remember if you want to highlight links by colors, make sure to set high or full
+transparency to the links that you want to ignore.
+
+<<chord_diagram_highlight, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Highlight links by colors. A) set {\\tt row.col}; B) set by matrix; C) set by color function">>=
+par(mfrow = c(2, 2), mar = c(1, 1, 1, 1))
+<<chord_diagram_highlight_row>>
+text(-0.9, 0.9, "A", cex = 1.5)
+<<chord_diagram_highlight_mat>>
+text(-0.9, 0.9, "B", cex = 1.5)
+<<chord_diagram_highlight_fun>>
+text(-0.9, 0.9, "C", cex = 1.5)
+par(mfrow = c(1, 1))
+@
+
+\subsection{Directional matrix}
+
+In some cases, rows and columns represent information of direction. Argument {\tt directional}
+is used to illustrate such direction. If {\tt directional} is set to {\tt TRUE}, the
+links will have unequal height of root (figure \ref{fig:chord_diagram_directional} A). The type of direction 
+can be set through {\tt fromRows} and the difference between the unequal root can be set 
+through {\tt diffHeight} (figure \ref{chord_diagram_directional} B, C). 
+In {\tt chordDiagram}, the starting foot of the link is shorter
+than the ending foot to give people the feeling that the link is pointing out.
+
+
+<<chord_diagram_directional_simple, eval = FALSE, echo = c(1, 3, 5)>>=
+chordDiagram(mat, directional = TRUE)
+text(-0.9, 0.9, "A", cex = 1.5)
+chordDiagram(mat, directional = TRUE, diffHeight = 0.08)
+text(-0.9, 0.9, "B", cex = 1.5)
+chordDiagram(mat, directional = TRUE, fromRows = FALSE)
+text(-0.9, 0.9, "C", cex = 1.5)
+@
+
+Row names and column names in {\tt mat} can also overlap. In this case, showing directions of the link is 
+quite important in visualization (figure \ref{fig:chord_diagram_directional} D).
+
+<<>>=
+mat2 = matrix(sample(100, 35), nrow = 5)
+rownames(mat2) = letters[1:5]
+colnames(mat2) = letters[1:7]
+mat2
+@
+
+<<chord_diagram_directional_overlap, eval = FALSE>>=
+chordDiagram(mat2, directional = TRUE, row.col = 1:5)
+@
+
+If you don't need self-loop for which two roots of a link are in a same sector, 
+just set corresponding values to 0 in {\tt mat2} (figure \ref{fig:chord_diagram_directional} E).
+
+<<>>=
+for(cn in intersect(rownames(mat2), colnames(mat2))) {
+    mat2[cn, cn] = 0
+}
+mat2
+@
+
+<<chord_diagram_directional_non_selfloop, eval = FALSE>>=
+chordDiagram(mat2, directional = TRUE, row.col = 1:5)
+@
+
+
+
+<<chord_diagram_directional, echo = FALSE, fig.align = "center", out.width = "\\textwidth", out.height = "1.5\\textwidth", fig.width = 7, fig.height = 10.5, fig.cap = "Visualization of directional matrix. A) with default settings; B) set difference of two feet of links; C) set the starting feet; D) row names and column names have overlaps; E) remove self-loop">>=
+par(mfrow = c(3, 2), mar = c(1, 1, 1, 1))
+<<chord_diagram_directional_simple>>
+<<chord_diagram_directional_overlap>>
+text(-0.9, 0.9, "D", cex = 1.5)
+<<chord_diagram_directional_overlap>>
+text(-0.9, 0.9, "E", cex = 1.5)
+par(mfrow = c(1, 1))
+@
+
+\subsection{Symmetric matrix}
+
+{\tt chordDiagram} can also be used to visualize symmetric matrix. If {\tt symmetric}
+is set to {\tt TRUE}, only lower triangular matrix without the diagonal will be used. 
+Of course, your matrix should be symmetric. In figure \ref{fig:chord_diagram_symmetric},
+you may see the difference between specifying {\tt symmetric} or not when visualizing a
+symmetric matrix. 
+
+<<chord_diagram_symmetric_show, eval = FALSE>>=
+mat3 = matrix(rnorm(100), 10)
+colnames(mat3) = letters[1:10]
+chordDiagram(cor(mat3), symmetric = TRUE,
+    col = colorRamp2(c(-1, 0, 1), c("green", "white", "red")))
+@
+
+<<chord_diagram_symmetric_hidden, eval = FALSE, echo = FALSE>>=
+chordDiagram(cor(mat3), col = colorRamp2(c(-1, 0, 1), c("green", "white", "red")))
+@
+
+<<chord_diagram_symmetric, echo = FALSE, fig.align = "center", out.width = "\\textwidth", out.height = "0.5\\textwidth", fig.width = 7, fig.height = 3.5, fig.cap = "Visualization of symmetric matrix. A) set {\\tt symmetric} to {\\tt TRUE}; B) set {\\tt symmetric} to {\\tt FALSE}">>=
+par(mfrow = c(1, 2), mar = c(1, 1, 1, 1))
+<<chord_diagram_symmetric_show>>
+text(-0.9, 0.9, "A", cex = 1.5)
+<<chord_diagram_symmetric_hidden>>
+text(-0.9, 0.9, "B", cex = 1.5)
+par(mfrow = c(1, 1))
+@
+
+
+\section{Advanced usage}
+
+Although the default style of {\tt chordDiagram} is enough for most visualization tasks,
+still you can have more fine-tune on the plot. 
+
+\subsection{Organization of tracks}
+
+By default, {\tt chordDiagram} which utilizes circos graphics function will create two tracks,
+one track for labels and one track for grids. 
+
+<<echo = 2:3>>=
+pdf(NULL)
+chordDiagram(mat)
+circos.info()
+invisible(dev.off())
+@
+
+
+These two tracks can be controlled by {\tt annotationTrack}. Available values 
+for this argument are {\tt grid} and {\tt name}. The height of annotation tracks can be 
+set through {\tt annotationTrackHeight} which corresponds to values in 
+{\tt annotationTrack} (figure \ref{fig:chord_diagram_default_track} A, B, C).
+The value in {\tt annotationTrackHeight} is the percentage to the radius of unit circle.
+
+<<chord_diagram_default_track_simple, eval = FALSE, echo = c(1, 3, 4, 6)>>=
+chordDiagram(mat, grid.col = grid.col, annotationTrack = "grid")
+text(-0.9, 0.9, "A", cex = 1.5)
+chordDiagram(mat, grid.col = grid.col, annotationTrack = c("name", "grid"),
+    annotationTrackHeight = c(0.03, 0.01))
+text(-0.9, 0.9, "B", cex = 1.5)
+chordDiagram(mat, annotationTrack = NULL)
+text(-0.9, 0.9, "C", cex = 1.5)
+@
+
+
+<<chord_diagram_default_track, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Track organization in {\\tt chordDiagram}. A) only show the grid track; B) set label track and grid track with heights; C) do not add label track or grid track">>=
+par(mfrow = c(2, 2), mar = c(1, 1, 1, 1))
+<<chord_diagram_default_track_simple>>
+par(mfrow = c(1, 1))
+@
+
+
+Several empty tracks can be allocated before Chord Diagram is drawn. Then self-defined graphics can
+be added to these empty tracks afterwards. The number of pre-allocated tracks can be set 
+through {\tt preAllocateTracks}.
+
+<<echo = 2:3>>=
+pdf(NULL)
+chordDiagram(mat, preAllocateTracks = 2)
+circos.info()
+invisible(dev.off())
+@
+
+The default settings for pre-allocated tracks are:
+
+<<eval = FALSE>>=
+list(ylim = c(0, 1),
+    track.height = circos.par("track.height"),
+    bg.col = NA,
+    bg.border = NA,
+    bg.lty = par("lty"),
+    bg.lwd = par("lwd"))
+@
+
+The default settings for pre-allocated tracks can be overwritten by specifying {\tt preAllocateTracks}
+as a list.
+
+<<eval = FALSE>>=
+chordDiagram(mat, annotationTrack = NULL,
+    preAllocateTracks = list(track.height = 0.3))
+circos.info(sector.index = "S1", track.index = 1)
+@
+
+If more than one tracks need to be pre-allocated, just specify {\tt preAllocateTracks}
+as a list which contains settings for each track:
+
+<<eval = FALSE>>=
+chordDiagram(mat, annotationTrack = NULL,
+    preAllocateTracks = list(list(track.height = 0.1),
+                             list(bg.border = "black")))
+@
+
+By default {\tt chordDiagram} provides poor support for styles of sector labels and axis, 
+but with {\tt preAllocateTracks} it is rather easy to customize them which we will introduce
+in next section.
+
+\subsection{Customize sector labels}
+
+In {\tt chordDiagram}, there is no argument to control the style of sector names. 
+But this can be done by first pre-allocating an empty track and customizing the labels 
+in it later. In the following example, one track is firstly allocated and a Chord Diagram 
+is added without label track. Later, the first track is updated with setting 
+{\tt facing} of labels (figure \ref{fig:chord_diagram_labels} A).
+
+<<chord_diagram_labels_show, eval = FALSE>>=
+chordDiagram(mat, annotationTrack = "grid", preAllocateTracks = list(track.height = 0.3))
+# we go back to the first track and customize sector labels
+circos.trackPlotRegion(track.index = 1, panel.fun = function(x, y) {
+    xlim = get.cell.meta.data("xlim")
+    ylim = get.cell.meta.data("ylim")
+    sector.name = get.cell.meta.data("sector.index")
+    circos.text(mean(xlim), ylim[1], sector.name, facing = "clockwise", 
+        niceFacing = TRUE, adj = c(0, 0.5))
+}, bg.border = NA)
+@
+
+In the following example, the labels are put inside the grids (\ref{fig:chord_diagram_labels} B).
+Please note {\tt get.cell.meta.data} and {\tt circos.text} are used outside of {\tt panel.fun},
+so {\tt track.index} and {\tt sector.index} should be specified explicitly.
+
+<<chord_diagram_labels_inside, eval = FALSE>>=
+chordDiagram(mat, annotationTrack = "grid", annotationTrackHeight = 0.15)
+for(si in get.all.sector.index()) {
+    xlim = get.cell.meta.data("xlim", sector.index = si, track.index = 1)
+    ylim = get.cell.meta.data("ylim", sector.index = si, track.index = 1)
+    circos.text(mean(xlim), mean(ylim), si, sector.index = si, track.index = 1, 
+        facing = "bending", col = "white")
+}
+@
+
+For the last example, we add the sector labels with different style. If the width of the 
+sector is less than 20 degree, the labels are added in the radical direction. 
+
+<<chord_diagram_labels_multile_style, eval = FALSE>>=
+chordDiagram(mat, annotationTrack = "grid", preAllocateTracks = list(track.height = 0.1))
+circos.trackPlotRegion(track.index = 1, panel.fun = function(x, y) {
+    xlim = get.cell.meta.data("xlim")
+    xplot = get.cell.meta.data("xplot")
+    ylim = get.cell.meta.data("ylim")
+    sector.name = get.cell.meta.data("sector.index")
+
+    if(abs(xplot[2] - xplot[1]) < 20) {
+        circos.text(mean(xlim), ylim[1], sector.name, facing = "clockwise",
+            niceFacing = TRUE, adj = c(0, 0.5))
+    } else {
+        circos.text(mean(xlim), ylim[1], sector.name, facing = "inside", 
+            niceFacing = TRUE, adj = c(0.5, 0))
+    }
+}, bg.border = NA)
+@
+
+
+<<chord_diagram_labels, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Customize sector labels. A) put sector labels in radical direction; B) sector labels are put inside grids; C) sector labels are put in different direction according the width of sectors">>=
+par(mfrow = c(2, 2), mar = c(1, 1, 1, 1))
+<<chord_diagram_labels_show>>
+text(-0.9, 0.9, "A", cex = 1.5)
+<<chord_diagram_labels_inside>>
+text(-0.9, 0.9, "B", cex = 1.5)
+circos.par(points.overflow.warning = FALSE)
+<<chord_diagram_labels_multile_style>>
+circos.clear()
+text(-0.9, 0.9, "C", cex = 1.5)
+par(mfrow = c(1, 1))
+@
+
+One last thing, when you set direction of sector labels as radical, if the labels are too long
+and exceed your figure region, you can either decrease the size of the font or set 
+{\tt canvas.xlim} and {\tt canvas.ylim} to wider intervals. 
+
+\subsection{Customize sector axes}
+
+Axes are helpful to visualize the absolute values of links. By default {\tt chordDiagram}
+does not provide argument to add axes. But it is easy with self-defined code.
+
+Since there is already a grid track, we can add the axes directly to this track (figure \ref{fig:chord_diagram_axes} A).
+Here since the default height for the grid track is small, thus the default height for the axes ticks
+are also small, we manually set it to a larger value by {\tt major.tick.percentage}. The value
+of {\tt major.tick.percentage} is the ratio to the height of the track where the axes are plotted.
+
+<<chord_diagram_axes_simple, eval = FALSE>>=
+chordDiagram(mat, grid.col = grid.col)
+for(si in get.all.sector.index()) {
+    # here the index for the grid track is 2
+    circos.axis(h = "top", labels.cex = 0.3, major.tick.percentage = 0.2,
+    sector.index = si, track.index = 2)
+}
+@
+
+Another type of axes which show relative percent is also helpful for visualizing Chord Diagram.
+Here we pre-allocate an empty track by {\tt preAllocateTracks} and come back to this track
+to add axes later. In following example, a major tick is put every 25\% in each sector.
+And the axes are only added if the width of the sector is larger than 20 degree (figure \ref{fig:chord_diagram_axes} B).
+
+<<chord_diagram_axes_two, eval = FALSE>>=
+# similar as the previous example, but we only plot the grid track
+chordDiagram(mat, annotationTrack = "grid", preAllocateTracks = list(track.height = 0.1))
+for(si in get.all.sector.index()) {
+    circos.axis(h = "top", labels.cex = 0.3, major.tick.percentage = 0.2,
+        sector.index = si, track.index = 2)
+}
+
+# the second axis as well as the sector labels are added in this track
+circos.trackPlotRegion(track.index = 1, panel.fun = function(x, y) {
+    xlim = get.cell.meta.data("xlim")
+    xplot = get.cell.meta.data("xplot")
+    ylim = get.cell.meta.data("ylim")
+    sector.name = get.cell.meta.data("sector.index")
+    
+    if(abs(xplot[2] - xplot[1]) > 20) {
+        circos.lines(xlim, c(mean(ylim), mean(ylim)), lty = 3) # dotted line
+        for(p in seq(0.2, 1, by = 0.2)) {
+            circos.text(p*(xlim[2] - xlim[1]) + xlim[1], mean(ylim) + 0.1, 
+                p, cex = 0.3, adj = c(0.5, 0), niceFacing = TRUE)
+        }
+    }
+    circos.text(mean(xlim), 1, sector.name, niceFacing = TRUE, adj = c(0.5, 0))
+}, bg.border = NA)
+circos.clear()
+@
+
+
+<<chord_diagram_axes, echo = FALSE, fig.align = "center", out.width = "\\textwidth", out.height = "0.5\\textwidth", fig.width = 7, fig.height = 3.5, fig.cap = "Customize sector axes. A) add axes to the grid track; B) add another percentage axes">>=
+par(mfrow = c(1, 2), mar = c(1, 1, 1, 1))
+<<chord_diagram_axes_simple>>
+text(-0.9, 0.9, "A", cex = 1.5)
+<<chord_diagram_axes_two>>
+text(-0.9, 0.9, "B", cex = 1.5)
+par(mfrow = c(1, 1))
+@
+
+
+\subsection{Compare two Chord Diagrams}
+
+Normally, values in {\tt mat} are normalized to the summation, and each value is put to 
+the circle according to its percentage, which means the width for each link only 
+represents kind of relative value. However, when comparing two Chord Diagrams, 
+it is necessary that unit width of links in the two plots should be represented in 
+a same scale. This problem can be solved by adding more blank gaps to the Chord Diagram 
+which has smaller values.
+
+First, let's plot a Chord Diagram. In this Chord Diagram, we set larger gaps between rows
+and columns for better visualization. Axis on the grid illustrates scale of the values.
+
+<<chord_diagram_compare_1, eval = FALSE>>=
+mat1 = matrix(sample(20, 25, replace = TRUE), 5)
+
+gap.degree = c(rep(2, 4), 10, rep(2, 4), 10)
+circos.clear()
+circos.par(gap.degree = gap.degree, start.degree = -10/2)
+chordDiagram(mat1, directional = TRUE, grid.col = rep(1:5, 2))
+for(si in get.all.sector.index()) {
+    circos.axis(labels.cex = 0.3, major.tick.percentage = 0.2,
+        sector.index = si, track.index = 2)
+}
+circos.clear()
+@
+
+The second matrix only has half the values in {\tt mat1}.
+
+<<chord_diagram_compare_2, eval = FALSE>>=
+mat2 = mat1 / 2
+@
+
+If the second Chord Diagram is plotted in the way as the first one, the two diagrams will looks 
+exactly the same which makes the comparison impossible. What we want to compare between two diagrams is
+the absolute values. For example, if the matrix contains the amount of transmission from one state
+to another state, then the interest is to see which diagram has more transmissions.
+
+First we calculate the percentage of {\tt mat2} in {\tt mat1}. And then we calculate the degree
+which corresponds to the difference. In the following code, {\tt 360 - sum(gap.degree)}
+is the total degree for values in {\tt mat1} (excluding the gaps) and {\tt blank.degree} 
+corresponds the difference between {\tt mat1} and {\tt mat2}.
+
+<<chord_diagram_compare_3, eval = FALSE>>=
+percent = sum(abs(mat2)) / sum(abs(mat1))
+blank.degree = (360 - sum(gap.degree)) * (1 - percent)
+@
+
+Since now we have the additional blank gap, we can set it to {\tt circos.par} and plot the second Chord Diagram.
+
+<<chord_diagram_compare_4, eval = FALSE>>=
+big.gap = (blank.degree - sum(rep(2, 8)))/2
+gap.degree = c(rep(2, 4), big.gap, rep(2, 4), big.gap)
+circos.par(gap.degree = gap.degree, start.degree = -big.gap/2)
+chordDiagram(mat2, directional = TRUE, grid.col = rep(1:5, 2), transparency = 0.5)
+for(si in get.all.sector.index()) {
+    circos.axis(labels.cex = 0.3, major.tick.percentage = 0.2,
+        sector.index = si, track.index = 2)
+}
+circos.clear()
+@
+
+Now the scale of the two Chord Diagrams (figure \ref{fig:chord_diagram_compare}) are the 
+same if you look at the scale of axes in the two diagrams.
+
+<<chord_diagram_compare, echo = FALSE, fig.align = "center", out.width = "\\textwidth", out.height = "0.5\\textwidth", fig.width = 7, fig.height = 3.5, fig.cap = "Compare two Chord Diagrams and make them in same scale. bottom matrix has half the values as in the upper matrix">>=
+par(mfrow = c(1, 2), mar = c(1, 1, 1, 1))
+<<chord_diagram_compare_1>>
+text(-0.9, 0.9, "A", cex = 1.5)
+<<chord_diagram_compare_2>>
+<<chord_diagram_compare_3>>
+<<chord_diagram_compare_4>>
+text(-0.9, 0.9, "B", cex = 1.5)
+par(mfrow = c(1, 1))
+@
+
+
+\section{Misc}
+
+If a sector in Chord Diagram is too small, it will be removed from the original matrix.
+In the following matrix, the second row and third column contains tiny numbers.
+
+<<>>=
+mat = matrix(rnorm(36), 6, 6)
+rownames(mat) = paste0("R", 1:6)
+colnames(mat) = paste0("C", 1:6)
+mat[2, ] = 1e-10
+mat[, 3] = 1e-10
+@
+
+In the Chord Diagram, categories corresponding to the second row and the third column will
+be removed (figure \ref{fig:chord_diagram_reduce} A).
+
+<<chord_diagram_reduce_1, eval=FALSE>>=
+chordDiagram(mat)
+@
+
+If you set {\tt row.col}, {\tt column.col} or {\tt col} to specify the colors of the links,
+colors corresponding to the second row and the third column will also be removed (figure \ref{fig:chord_diagram_reduce} B).
+
+<<chord_diagram_reduce_2, eval=FALSE>>=
+chordDiagram(mat, row.col = rep(c("red", "blue"), 3))
+@
+
+{\tt grid.col} is reduced if it is set as a vector
+which has the same length as categories which are from the unreduced matrix (figure \ref{fig:chord_diagram_reduce} C).
+
+<<chord_diagram_reduce_3, eval=FALSE>>=
+chordDiagram(mat, grid.col = rep(c("red", "blue"), 6))
+circos.clear()
+@
+
+{\tt circos.par("gap.degree")} will be reduced as well (figure \ref{fig:chord_diagram_reduce} D).
+
+<<chord_diagram_reduce_4, eval=FALSE>>=
+circos.par("gap.degree" = rep(c(2, 10), 6))
+chordDiagram(mat)
+circos.clear()
+@
+
+
+<<chord_diagram_reduce, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Reduced Chord Diagram with removing tiny sectors. A) notice how sector labels are reduced; B) notice how link colors are reduced; C) notice how grid colors are reduced; D) notice how gap degrees are reduced.">>=
+par(mfrow = c(2, 2), mar = c(1, 1, 1, 1))
+<<chord_diagram_reduce_1>>
+text(-0.9, 0.9, "A", cex = 1.5)
+<<chord_diagram_reduce_2>>
+text(-0.9, 0.9, "B", cex = 1.5)
+<<chord_diagram_reduce_3>>
+text(-0.9, 0.9, "C", cex = 1.5)
+<<chord_diagram_reduce_4>>
+text(-0.9, 0.9, "D", cex = 1.5)
+@
+
+
+\end{document}

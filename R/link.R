@@ -41,17 +41,17 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 	
 	point1 = sort(point1)
 	point2 = sort(point2)
-    
+
     if(length(point1) == 1 && length(point2) == 1) {
-        theta1 = circlize(point1, 0, sector.index = sector.index1, track.index = 1)[1, "theta"]
-        theta2 = circlize(point2, 0, sector.index = sector.index2, track.index = 1)[1, "theta"]
+        theta1 = circlize(point1, 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
+        theta2 = circlize(point2, 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
         
 		d = getQuadraticPoints(theta1, theta2, rou1, rou2, h = h, w = w)
         lines(d, col = col, lwd = lwd, lty = lty)
     } else if(length(point1) == 1) {
-		theta1 = circlize(point1, 0, sector.index = sector.index1, track.index = 1)[1, "theta"]
-		theta21 = circlize(point2[1], 0, sector.index = sector.index2, track.index = 1)[1, "theta"]
-        theta22 = circlize(point2[2], 0, sector.index = sector.index2, track.index = 1)[1, "theta"]
+		theta1 = circlize(point1, 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
+		theta21 = circlize(point2[1], 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
+        theta22 = circlize(point2[2], 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
         
         if(degreeDiff(theta1, theta21) > degreeDiff(theta1, theta22)) {
         	d1 = getQuadraticPoints(theta1, theta21, rou1, rou2, h = h, w = w)
@@ -65,9 +65,9 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 		d = rbind(d, revMat(d2))
 		polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 	} else if(length(point2) == 1) {
-		theta2 = circlize(point2, 0, sector.index = sector.index2, track.index = 1)[1, "theta"]
-		theta11 = circlize(point1[1], 0, sector.index = sector.index1, track.index = 1)[1, "theta"]
-        theta12 = circlize(point1[2], 0, sector.index = sector.index1, track.index = 1)[1, "theta"]
+		theta2 = circlize(point2, 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
+		theta11 = circlize(point1[1], 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
+        theta12 = circlize(point1[2], 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
         
         if(degreeDiff(theta2, theta11) > degreeDiff(theta2, theta12)) {
 	        d1 = getQuadraticPoints(theta11, theta2, rou1, rou2, h = h, w = w)
@@ -82,10 +82,10 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 		polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 	} else {
 		
-		theta11 = circlize(point1[1], 0, sector.index = sector.index1, track.index = 1)[1, "theta"]
-        theta12 = circlize(point1[2], 0, sector.index = sector.index1, track.index = 1)[1, "theta"]
-		theta21 = circlize(point2[1], 0, sector.index = sector.index2, track.index = 1)[1, "theta"]
-        theta22 = circlize(point2[2], 0, sector.index = sector.index2, track.index = 1)[1, "theta"]
+		theta11 = circlize(point1[1], 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
+        theta12 = circlize(point1[2], 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
+		theta21 = circlize(point2[1], 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
+        theta22 = circlize(point2[2], 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
 		
 		if(degreeDiff(theta11, theta22) > degreeDiff(theta12, theta21)) {
 			d1 = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h, w = w)
@@ -100,7 +100,7 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
         d = rbind(d1, revMat(r2))
         d = rbind(d, revMat(d2))
         d = rbind(d, revMat(r1))
-       	polygon(d, col = col, lty = lty, lwd = lwd, border = border)
+		polygon(d, col = col, lty = lty, lwd = lwd, border = border)
     }
 	
     return(invisible(NULL))

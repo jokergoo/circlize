@@ -1281,6 +1281,7 @@ circos.trackHist = function(factors, x, track.height = circos.par("track.height"
 # -rou1           Radius for one of the arc in the sector
 # -rou2           Radius for the other arc in the sector
 # -center         Center of the circle
+# -clock.wise     The direction from ``start.degree`` to ``end.degree``
 # -col            Filled color
 # -border         Border color
 # -lwd            Line width
@@ -1289,52 +1290,70 @@ circos.trackHist = function(factors, x, track.height = circos.par("track.height"
 # == details
 # If the interval between ``start`` and ``end`` (larger or equal to 360 or smaller or equal to -360)
 # it would draw a full circle or ring. If ``rou2`` is set, it would draw part of a ring.
+#
 draw.sector = function(start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL,
-	center = c(0, 0), col = NA, border = "black", lwd = par("lwd"), lty = par("lty")) {
-
-	if(end.degree < start.degree) {
-		tmp = end.degree
-		end.degree = start.degree
-		start.degree = tmp
+	center = c(0, 0), clock.wise = TRUE, col = NA, border = "black", lwd = par("lwd"), 
+	lty = par("lty")) {
+	
+	is.circular = function(start.degree, end.degree) {
+		(end.degree - start.degree) %% 360 == 0 && (end.degree - start.degree) != 0
 	}
 	
-	if( (end.degree - start.degree) >= 360 || (end.degree - start.degree) <= -360 ) {
-		start.degree = 0
-		end.degree = 360
+	degree_diff = function(start, end, clock.wise = TRUE) {
+		if(is.circular(start, end)) {
+			360
+		} else {
+			start = start %% 360
+			end = end %% 360
+			if(clock.wise) (start - end) %% 360
+			else (end - start) %% 360
+		}
 	}
 	
-	# the following codes ensure that end.degree is larger than start.degree and the minus is less than or equal to 360
+	# from start to end
+	degree_seq = function(start, end, clock.wise = TRUE, ...) {
+		if(is.circular(start, end)) {
+			seq(0, 360, ...)
+		} else {
+			start = start %% 360
+			end = end %% 360
+			if(clock.wise) {
+				# make start is larger than end, but the difference is less than 360
+				if(start < end) start = start + 360
+				seq(start, end, ...)
+			} else {
+				if(start > end) start = start - 360
+				seq(start, end, ...)
+			}
+		}
+	}
 	
-    d1 = NULL
+	d1 = NULL
 	
 	# calculate the number of segments of the up arc
-	l1 = as.radian(end.degree - start.degree) * rou1
+	l1 = as.radian(degree_diff(start.degree, end.degree, clock.wise)) * rou1
 	ncut1 = l1/ (2*pi/circos.par("unit.circle.segments"))
     ncut1 = floor(ncut1)
 	ncut1 = ifelse(ncut1 < 2, 2, ncut1)
 	
 	# d1 is from the start.degree to end.degree
-    for (i in c(0, seq_len(ncut1))) {
-        d1 = rbind(d1, c(start.degree + (end.degree - start.degree)/ncut1*i, rou1))
-    }
-	
+	d1 = rbind(d1, cbind(degree_seq(start.degree, end.degree, clock.wise, length.out = ncut1), rep(rou1, ncut1)))
+    
+	# d2 is from end.degree to start.degree
 	d2 = NULL
 	if(!is.null(rou2)) {
 		# calculate the number of segments of the bottom arc
-		l2 = as.radian(end.degree - start.degree) * rou2
+		l2 = as.radian(degree_diff(start.degree, end.degree, clock.wise)) * rou2
 		ncut2 = l2/ (2*pi/circos.par("unit.circle.segments"))
 		ncut2 = floor(ncut2)
 		ncut2 = ifelse(ncut2 < 2, 2, ncut2)
 	
-		for (i in c(0, seq_len(ncut2))) {
-			d2 = rbind(d2, c(start.degree + (end.degree - start.degree)/ncut2*i, rou2))
-		}
-		d2 = d2[nrow(d2):1, ]
+		d2 = rbind(d2, cbind(degree_seq(end.degree, start.degree, !clock.wise, length.out = ncut2), rep(rou2, ncut2)))
 	}
 
 	if(is.null(rou2)) {
 		m1 = polar2Cartesian(d1)
-		if(end.degree - start.degree == 360) {  # it is a circle
+		if(is.circular(start.degree, end.degree)) {  # it is a circle
 			m = m1
 		} else {
 			m = rbind(m1, c(0, 0))
@@ -1348,7 +1367,7 @@ draw.sector = function(start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL
 		m1 = polar2Cartesian(d1)
 		m2 = polar2Cartesian(d2)
 		
-		if(end.degree - start.degree == 360) {  # a ring
+		if(is.circular(start.degree, end.degree)) {  # a ring
 			m = rbind(m1, m2)
 			
 			m[, 1] = m[, 1] + center[1]

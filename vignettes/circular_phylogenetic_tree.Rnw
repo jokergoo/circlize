@@ -4,104 +4,84 @@
 % \VignetteKeywords{Phylogenetic tree}
 % \VignetteKeywords{circlize}
 % \VignettePackage{circlize}
+%\VignetteCompiler{knitr}
+%\VignetteEngine{knitr::knitr}
+
+<<echo = FALSE>>=
+opts_chunk$set(fig.pos = "")
+@
 
 \documentclass{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+
 
 \title{How to draw a phylogenetic tree}
 
 \author{Zuguang Gu {\tt <z.gu@dkfz.de>}}
 \usepackage[margin=1in, a4paper]{geometry}
 
-\usepackage{Sweave}
 \usepackage{hyperref}
 
 
-\setkeys{Gin}{width=\textwidth}
 \begin{document}
 
 \maketitle 
 
-In this short vignette, we will show you how to customize the circular style of phylogenetic tree through {\it circlize}
-package. Basically, a phylogenetic tree is a dendrogram which is a combination of lines. In R, there are
-several classes that describe such type of tree such as {\tt hclust}, {\tt dendrogram} and {\tt phylo}. In this
-example, we will demonstrate how to draw the tree from the {\tt dendrogram} class. Nevertheless, other classes
-can be converted to {\tt dendrogram} without too much difficulty.
+In this short vignette, we will show you how to customize the circular style of 
+phylogenetic tree through {\it circlize} package. Basically, a phylogenetic tree is 
+a dendrogram which is a combination of lines. In R, there are several classes that 
+describe such type of tree such as {\tt hclust}, {\tt dendrogram} and {\tt phylo}. 
+In this example, we will demonstrate how to draw the tree from the {\tt dendrogram} class. 
+Nevertheless, other classes can be converted to {\tt dendrogram} without too much difficulty.
 
-The {\tt bird.orders} data we are using here is from {\tt ape} package. This data set is related to species of birds.
-Some other values such as the label for each bird (bird's name.) are also extracted. We split the tree into six categories by {\tt cutree}
+The {\tt bird.orders} data we are using here is from {\tt ape} package. This data set is 
+related to species of birds. Some other values such as labels for birds (birds' names) 
+are also extracted. We split the tree into six sub trees by {\tt cutree}
 and finally we convert the data into a {\tt dendrogram} object.
 
-<<eval=FALSE>>==
+<<>>==
 library(ape)
 data(bird.orders)
 hc = as.hclust(bird.orders)
 labels = hc$labels
 ct = cutree(hc, 6)  # cut tree into 6 pieces
 n = length(labels)  # number of bird species
-hc = as.dendrogram(hc)
+dgm = as.dendrogram(hc)
 @
 
-The {\tt dendrogram} class stores data recursively, which means, a {\tt dendrogram} object contains two children nodes which
-are also {\tt dendrogram} objects. Thus, we can implement drawing dendrogram tree in a recursive way as well.
+The {\tt dendrogram} class stores data recursively, which means, a {\tt dendrogram} object 
+contains two children nodes which are also {\tt dendrogram} objects. Thus, we can implement 
+dendrogram tree in a recursive way as well.
 
-\begin{Schunk}
-\begin{Sinput}
-> hc
-\end{Sinput}
-\begin{Soutput}
-'dendrogram' with 2 branches and 23 members total, at height 28
-\end{Soutput}
-\begin{Sinput}
-> attributes(hc)
-\end{Sinput}
-\begin{Soutput}
-$members
-[1] 23
+<<>>=
+dgm
+attributes(dgm)
+length(dgm)
+dgm[[1]]
+dgm[[2]]
+@
 
-$midpoint
-[1] 4.286621
+For each node in the dendrogram, there are several attributes which are {\tt members}, 
+{\tt midpoint}, {\tt height}, and if the node is the leaf of the tree (i.e. the end of the tree), 
+there would be an binary attribute called {\tt leaf}. Here what should be noted is that 
+{\tt midpoint} is the distance to its two children nodes while not the coordinate of the point.
 
-$height
-[1] 28
+As we mentioned in the main vignette, the x-value for the phylogenetic tree is in fact index. 
+Thus, the x-lim is just the minimum and maximum index of labels in the tree. Since there is 
+only one phylogenetic tree, we only need one ``big" sector. In the first track, 
+we plot the name of each bird, with different colors to represent different sub trees. 
 
-$class
-[1] "dendrogram"
+Maximum height of tree {\tt maxy} here is not necessary, but it would be important if there
+are more than one tress that are put on the same track.
 
-\end{Soutput}
-\begin{Sinput}
-> length(hc)
-\end{Sinput}
-\begin{Soutput}
-[1] 2
-\end{Soutput}
-\begin{Sinput}
-> hc[[1]]
-\end{Sinput}
-\begin{Soutput}
-'dendrogram' with 2 branches and 5 members total, at height 25.9 
-\end{Soutput}
-\begin{Sinput}
-> hc[[2]]
-\end{Sinput}
-\begin{Soutput}
-'dendrogram' with 2 branches and 18 members total, at height 27 
-\end{Soutput}
-\end{Schunk}
-
-For each node in the dendrogram, there are several attributes which are {\tt members}, {\tt midpoint}, {\tt height}, and if
-the node is the leaf of the tree (i.e. the end of the tree), there would be an binary attribute called {\tt leaf}. Here what shoud
-be noted is that {\tt midpoint} is the distance to its two children nodes while not the coordinate of the point.
-
-As we mentioned in the main vignette, the x-value for the phylogenetic tree is in fact index. Thus, the x-lim is just the minimum
-and maximum index of labels in the tree. Since there is only one phylogenetic tree, we only need one ``big" sector. In the first
-track, we plot the name of each bird, with different colors to represent different categories. 
-
-<<eval=FALSE>>==
+<<phylogenetic_tree_part1, eval = FALSE>>==
 library(circlize)
 par(mar = c(1, 1, 1, 1))
 circos.par(cell.padding = c(0, 0, 0, 0))
 circos.initialize(factors = "a", xlim = c(0, n))
-maxy = attr(hc, "height")  # maximum height of the tree
+maxy = attr(dgm, "height")  # maximum height of the trees
 circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.3, 
     panel.fun = function(x, y) {
         for(i in seq_len(n)) {
@@ -112,12 +92,14 @@ circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.3,
 })
 @
 
-In the second track, we are going to plot the circular dendrogram. Here we implement the code as {\tt circos.dendrogram} in a recursive way. The
-{\tt draw.d} function adds lines to its two children nodes, and once it reaches the leaf of the tree, the recursive
-execution will stop. You can see the advantage of {\it circlize} that if you replace {\tt circos.lines} to {\tt lines} in the function, then you can almost
+In the second track, we plot the circular dendrogram. Here we implement the code 
+as {\tt circos.dendrogram} in a recursive way. The {\tt draw.d} function adds lines to 
+its two children nodes, and once it reaches the leaf of the tree, the recursive
+execution will stop. You can see the advantage of {\it circlize} that if you replace 
+{\tt circos.lines} to {\tt lines} in the function, then you can almost
 use the function to draw dendrogram in the regular Cartesian coordinate system without any error.
 
-<<eval=FALSE>>==
+<<>>==
 # == param
 # -dend a `dendogram` object
 # -maxy the maximum height of the tree is a global attribute,
@@ -170,25 +152,28 @@ circos.dendrogram = function(dend, maxy = attr(dend, "height")) {
 
 Finally add the circular dendrogram to the second track:
 
-<<eval=FALSE>>==
+<<phylogenetic_tree_part2, eval = FALSE>>==
 circos.trackPlotRegion(ylim = c(0, maxy), bg.border = NA, 
     track.height = 0.4, panel.fun = function(x, y) {
-        circos.dendrogram(hc, maxy)
+        circos.dendrogram(dgm, maxy)
 })
 
 circos.clear()
 @
 
-In figure \ref{fig:phylogenetic} (top), we additionally cut the dendrogram into six parts and mark the text with different colors. Once you know the basic rule for drawing such circular
+In figure \ref{fig:phylogenetic_tree} (top), we additionally cut the dendrogram into six 
+parts and mark the text with different colors. Once you know the basic rule for drawing such circular
 dendrogram, it would be flexible to customize your figures such as adding 
 bars, lines, points, or even highlighting some parts on the tree.
 
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.7\textwidth]{figures/phylogenetic-tree.pdf}
-\caption{A simple phylogenetic tree. Top: circular style; Bottom: normal style.}
-\label{fig:phylogenetic}
-\end{figure}
+
+<<phylogenetic_tree, echo = FALSE, fig.align = "center", out.width = "0.6\\textwidth", out.height = "1.2\\textwidth", fig.width = 6, fig.height = 12, fig.cap = "A simple phylogenetic tree. Top: circular style; Bottom: normal style.">>=
+par(mar = c(1, 1, 1, 1), mfrow = c(2, 1))
+<<phylogenetic_tree_part1>>
+<<phylogenetic_tree_part2>>
+par(mar = c(8, 4, 4, 1))
+plot(dgm)
+@
 
 
 \end{document}

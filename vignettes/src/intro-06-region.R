@@ -4,7 +4,9 @@ op = par(no.readonly = TRUE)
 library(circlize)
 par(mar = c(1, 1, 1, 1), "xaxs" = "i", "yaxs" = "i")
 factors = letters[1:8]
-circos.par("canvas.xlim" = c(0, 1), "canvas.ylim" = c(0, 1), "gap.degree" = 3, "start.degree" = 20, "track.margin" = c(0.05, 0.05), "cell.padding" = c(0.03, 2, 0.03, 2), "clock.wise" = FALSE)
+circos.par("canvas.xlim" = c(0, 1), "canvas.ylim" = c(0, 1), "gap.degree" = 3, "start.degree" = 20, 
+"track.margin" = c(0.05, 0.05), "cell.padding" = c(0.03, 2, 0.03, 2), "clock.wise" = FALSE,
+points.overflow.warning = FALSE)
 circos.initialize(factors = factors, xlim = c(0, 10))
 
 circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.1, bg.border = NA, bg.col = "#E41A1C", panel.fun = function(x, y) {
@@ -57,8 +59,8 @@ x = seq(0, 0.2, length = 1000)
 y = sqrt(0.2^2 - x^2)
 lines(x, y, lty = 3, lwd = 2)
 
-draw.sector(center = c(0, 0), start = 17, end = 20, rou1 = 1, rou2 = 0.2, col = "#4DAF4A")
-draw.sector(center = c(0, 0), start = 62, end = 65, rou1 = 1, rou2 = 0.2, col = "#4DAF4A")
+draw.sector(center = c(0, 0), start = 17, end = 20, rou1 = 1, rou2 = 0.2, col = "#4DAF4A", clock.wise = FALSE)
+draw.sector(center = c(0, 0), start = 62, end = 65, rou1 = 1, rou2 = 0.2, col = "#4DAF4A", clock.wise = FALSE)
 
 circos.text(5, 5, "plotting region", sector.index = "a", track.index = 2)
 circos.text(5, 10.5, "cell.padding[3]", sector.index = "a", track.index = 2)

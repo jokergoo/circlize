@@ -1,6 +1,13 @@
 Changes in version 0.1.4
 ------------------------------------------------------------------------------
 
+* `draw.sector` is modified, now accepts an argument `clock.wise` to control
+  the direction of sectors.
+* `highlight.chromosome` can highlight more than one chromosomes now.
+* vignettes are rendered by `knitr`
+* set default transparency to 0.5 in `chordDiagram`
+* `circlize` returns value when track.index == 0
+* fixed a bug when text facing is 'bending', all text are plotted in one cell
 * different colors for each rows can be set to `circos.genomicLines` if 
   type %in% c("segment", "h")
 * pre-allocate the matrix in `.get_color`

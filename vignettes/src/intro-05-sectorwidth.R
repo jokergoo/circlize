@@ -22,7 +22,7 @@ par(mar = c(1, 1, 1, 1))
 circos.par(start.degree = 90)
 circos.initialize(factors = factor2, x = x2, sector.width = sector.width)
 circos.trackPlotRegion(factors = factor2, x = x2, y = y2, panel.fun = function(x, y) {
-	circos.points(x, y, col = "orange", pch = 16)
+    circos.points(x, y, col = "orange", pch = 16)
 })
 circos.link("a", get.cell.meta.data("cell.xlim", "a", 1), "a_zoom", get.cell.meta.data("cell.xlim", "a_zoom", 1), col = "#0000FF20", border = NA)
 circos.link("b", get.cell.meta.data("cell.xlim", "b", 1), "b_zoom", get.cell.meta.data("cell.xlim", "b_zoom", 1), col = "#FF000020", border = NA)

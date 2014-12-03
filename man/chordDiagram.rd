@@ -11,12 +11,12 @@
 
 }
 \usage{
-chordDiagram(mat, grid.col = NULL, transparency = 0,
+chordDiagram(mat, grid.col = NULL, transparency = 0.5,
     col = NULL, row.col = NULL, column.col = NULL, directional = FALSE, fromRows = TRUE,
     symmetric = FALSE, order = NULL, preAllocateTracks = NULL,
     annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
-    link.border = NA, grid.border = NA, diffHeight = 0.04,
-    reduce = 1e-5, ...)
+    link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), grid.border = NA,
+    diffHeight = 0.04, reduce = 1e-5, ...)
 }
 \arguments{
   \item{mat}{A table which represents as a numeric matrix.}
@@ -32,7 +32,9 @@ chordDiagram(mat, grid.col = NULL, transparency = 0,
   \item{preAllocateTracks}{Pre-allocate empty tracks before drawing chord diagram. It can be a single number indicating how many empty tracks needed to be created or a list containing settings for empty tracks. Please refer to vignette for details.}
   \item{annotationTrack}{Which annotation track should be plotted? By default, a track containing sector names and a track containing grid will be created.}
   \item{annotationTrackHeight}{Track height corresponding to values in \code{annotationTrack}.}
-  \item{link.border}{border for links}
+  \item{link.border}{border for links, single scalar or a matrix with names}
+  \item{link.lwd}{width for link borders, single scalar or a matrix with names}
+  \item{link.lty}{style for link borders, single scalar or a matrix with names}
   \item{grid.border}{border for grids. If it is \code{NULL}, the border color is same as grid color}
   \item{diffHeight}{The difference of height between two 'roots' if \code{directional} is set to \code{TRUE}. }
   \item{reduce}{if the ratio of the width of certain grid compared to the whole circle is less than this value, the grid is removed on the plot. Set it to value less than zero if you want to keep all tiny grid.}

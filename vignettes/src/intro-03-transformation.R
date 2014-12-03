@@ -40,6 +40,6 @@ circos.clear()
 box()
 axis(side = 1)
 axis(side = 2)
-arrows(0, 1.5, 0, 1.07, code = 2)
+arrows(0, 2, 0, 1.3, code = 2)
 
 par(op)

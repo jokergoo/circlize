@@ -7,16 +7,32 @@
 %\VignetteEngine{knitr::knitr}
 
 <<echo = FALSE>>=
+library(knitr)
 opts_chunk$set(fig.pos = "", fig.align = "center")
+
+library(circlize)
+circos.genomicInitialize = function(...) {
+	circos.par(unit.circle.segments = 350)
+	circlize::circos.genomicInitialize(...)
+}
+
+circos.initializeWithIdeogram = function(...) {
+	circos.par(unit.circle.segments = 350)
+	circlize::circos.initializeWithIdeogram(...)
+}
 @
 
 \documentclass{article}
 
 \usepackage[T1]{fontenc}
 \usepackage[sc]{mathpazo}
+\renewcommand{\sfdefault}{lmss}
+\renewcommand{\ttdefault}{lmtt}
 
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
 
-\title{An introduction of drawing genomic figures with {\it circlize}}
+\title{An introduction of drawing genomic figures with \textbf{circlize}}
 
 \author{Zuguang Gu {\tt <z.gu@dkfz.de>}}
 \usepackage[margin=1in, a4paper]{geometry}
@@ -28,7 +44,7 @@ opts_chunk$set(fig.pos = "", fig.align = "center")
 \maketitle 
 
 
-Since circos plots are mostly used in genomic research, the {\it circlize} package 
+Since circos plots are mostly used in genomic research, the \textbf{circlize} package 
 particularly provides functions which focus on genomic plots. These functions 
 are synonymous to the basic circos graphical functions but expect special format of input data:
 
@@ -53,7 +69,7 @@ the third column is the end positions. Following columns are optional where nume
 or other related values are stored. Such data structure is known as {\it BED} format 
 and is broadly used in genomic research.
 
-{\it circlize} provides a simple function {\tt generateRandomBed} which can generate 
+\textbf{circlize} provides a simple function {\tt generateRandomBed} which can generate 
 random genomic data. Positions are uniformly generated from human genome and the number 
 of regions on chromosomes approximately proportional to the length of chromosomes. 
 In the function, {\tt nr} and {\tt nc} are number of rows and numeric columns that 
@@ -108,7 +124,7 @@ invisible(dev.off())
 If you want to read cytoband data from file, please explicitly specify {\tt colClasses} 
 arguments and set the class of position columns as {\tt numeric}. The reason is since 
 positions are represented as integers, {\tt read.table} would treat those numbers as 
-{\tt integer} by default. In initialization of circos plot, {\it circlize} needs to 
+{\tt integer} by default. In initialization of circos plot, \textbf{circlize} needs to 
 calculate the summation of all chromosome lengths. The sumation of such large integers 
 would throw error of data overflow.
 
@@ -165,7 +181,7 @@ text(-0.9, 0.9, "E", cex = 1.5)
 If {\tt cytoband} is specified as a file path, or {\tt species} is specified, the order 
 of chromosomes depends on the original order in the source file.
 
-{\it circlize} provides a function {\tt read.cytoband} which can read/download and process cytoband data.
+\textbf{circlize} provides a function {\tt read.cytoband} which can read/download and process cytoband data.
 In fact, {\tt circos.initializeWithIdeogram} calls {\tt read.cytoband} internally. Please refer to the
 help page of the function for more details.
 
@@ -335,6 +351,67 @@ par(mar = c(1, 1, 1, 1))
 <<genomic_gene_model_2>>
 @
 
+\subsection{Zooming}
+
+{\tt circos.genomicInitialize} is implemented by the general {\tt circos.initialize} function,
+so same strategy can be applied to zoom chromosomes (figure \ref{genomic_zoom}). Be careful with the order of chromosomes.
+
+<<>>=
+cytoband = read.cytoband()
+df = cytoband$df
+chromosome = cytoband$chromosome
+zoom_df = df[df[[1]] %in% chromosome[1:2], ]
+zoom_df[[1]] = paste0("zoom_", zoom_df[[1]])
+df2 = rbind(df, zoom_df)
+
+xrange = c(cytoband$chr.len, cytoband$chr.len[1:2])
+normal_sector_index = seq_along(chromosome)
+zoomed_sector_index = length(chromosome) + 1:2
+sector.width = c(xrange[normal_sector_index] / sum(xrange[normal_sector_index]), 
+                 xrange[zoomed_sector_index] / sum(xrange[zoomed_sector_index])) 
+@
+
+We can only use {\tt circos.genomicInitialize} to deal with zoomed chromosomes because chromosome 
+with name "zoom_chr1" is not a normal chromosome.
+
+<<genomic_zoom_1, eval = FALSE>>=
+par(mar = c(1, 1, 1, 1))
+circos.par(start.degree = 90)
+circos.genomicInitialize(df2, sector.width = sector.width)
+@
+
+In following tracks, data frames should also be extended with zoomed chromosomes.
+We can write a simple function to do the extension.
+
+<<>>=
+extend_zoomed_chromosome_in_bed = function(bed, chromosome, prefix = "zoom_") {
+	zoom_bed = bed[bed[[1]] %in% chromosome, , drop = FALSE]
+	zoom_bed[[1]] = paste0(prefix, zoom_bed[[1]])
+	rbind(bed, zoom_bed)
+}
+@
+
+Then add a new track:
+
+<<genomic_zoom_2, eval = FALSE>>=
+bed = generateRandomBed(100)
+circos.genomicTrackPlotRegion(extend_zoomed_chromosome_in_bed(bed, chromosome[1:2]),
+	panel.fun = function(region, value, ...) {
+		circos.genomicPoints(region, value, pch = 16, cex = 0.5)
+})
+circos.link("chr1", get.cell.meta.data("cell.xlim", sector.index = "chr1"),
+	"zoom_chr1", get.cell.meta.data("cell.xlim", sector.index = "zoom_chr1"),
+	col = "#00000040")
+circos.clear()
+@
+
+<<genomic_zoom, echo = FALSE, out.width = "0.8\\textwidth", fig.cap = "Zoom chromosomes.">>=
+<<genomic_zoom_1>>
+<<genomic_zoom_2>>
+@
+
+Same strategy can be applied if you only want to zoom sub regions inside a certain chromosome (just make them as pseudo chromosomes).
+
 \section{Create plotting regions}
 
 In following sections, chromosome will be used as the type of genomic category. 
@@ -481,7 +558,7 @@ circos.genomicRect(region, value, col, border)
 @
 
 One of the usage of {\tt circos.genomicRect} is to plot heatmap on the circle.
-{\it circlize} provides a simple function {\tt colorRamp2} to interpolate colors. 
+\textbf{circlize} provides a simple function {\tt colorRamp2} to interpolate colors. 
 The arguments of {\tt colorRamp2} are break points and colors
 which correspond to the the break points. {\tt colorRamp2} returns a new function
 which can be used to generate new colors. 
@@ -954,11 +1031,11 @@ bed1 = generateRandomBed(nr = 100)
 bed1 = bed1[sample(nrow(bed1), 20), ]
 bed2 = generateRandomBed(nr = 100)
 bed2 = bed2[sample(nrow(bed2), 20), ]
-circos.initializeWithIdeogram()
+circos.initializeWithIdeogram(plotType = c("axis", "labels"))
 circos.genomicLink(bed1, bed2)
 circos.clear()
 
-circos.initializeWithIdeogram()
+circos.initializeWithIdeogram(plotType = c("axis", "labels"))
 circos.genomicLink(bed1, bed2, col = rand_color(nrow(bed1)), border = NA)
 circos.clear()
 par(mfrow = c(1, 1))
@@ -975,9 +1052,9 @@ First let's create four tracks with random points
 
 <<genomic_highlight_1, eval = FALSE>>=
 circos.par("track.height" = 0.1)
-circos.initializeWithIdeogram()
+circos.initializeWithIdeogram(plotType = c("axis", "labels"))
 
-for(i in 1:4) {
+for(i in 1:5) {
     bed = generateRandomBed(nr = 100)
     circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
         circos.genomicPoints(region, value, pch = 16, cex = 0.5, ...)
@@ -1012,7 +1089,7 @@ If you only want to highlight some regions in a chromosome, use {\tt draw.sector
 
 \section{High-level genomic functions}
 
-{\it circlize} implements several high-level functions which may help to visualize genomic data.
+\textbf{circlize} implements several high-level functions which may help to visualize genomic data.
 
 \subsection{Position transformation}
 
@@ -1031,7 +1108,7 @@ transformation: Number of rows of regions should be the same before and after th
 
 \subsubsection{The default position transformation function}
 
-In {\it circlize}, there already provides a position transformation function {\tt posTransform.default} 
+In \textbf{circlize}, there already provides a position transformation function {\tt posTransform.default} 
 which distributes positions uniformly in the current chromosome.
 
 Following code does the transformation. The points are plotted with the new transformed regions.
@@ -1120,7 +1197,7 @@ par(mfrow = c(1, 1))
 
 \subsubsection{Position transformation for text}
 
-There is another position transformation function {\tt posTransform.text} provided in {\it circlize} that can smartly position
+There is another position transformation function {\tt posTransform.text} provided in \textbf{circlize} that can smartly position
 text on the circle. Normally, we don't want the text too away from the original position
 and also we want to get avoid of text overlapping. {\tt posTransform.text} calculates the height of 
 text and transform positions properly. Since such text position transformation relies on font size of text
@@ -1145,7 +1222,7 @@ Since the calculation of the position of the line ends which corresponds to the 
 relies on text settings (e.g. font size, font family) and track for the text (i.e. the font size, family and
 the track will affect the position of text), we need to go back to the track where text position transformation happens
 and use the same settings for the text. Such information should be collected when plotting transformation lines.
-The solution by {\it circlize} is to wrap {\tt posTransform.text} with pre-defined parameters,
+The solution by \textbf{circlize} is to wrap {\tt posTransform.text} with pre-defined parameters,
 then text information will be recovered and the transformation will be calculated in the correct track.
 
 As we mentioned before, {\tt posTransform} expect at least one argument, so the argument {\tt value}

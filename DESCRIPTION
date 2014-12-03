@@ -5,8 +5,11 @@ Version: 0.1.4
 Date: 2014-11-15
 Author: Zuguang Gu
 Maintainer: Zuguang Gu <z.gu@dkfz.de>
-Depends: R (>= 2.10.0), methods
-Imports: GlobalOptions (>= 0.0.3)
+Depends: R (>= 2.10.0)
+Imports: GlobalOptions (>= 0.0.4)
+Enhances: ape
+Suggests: knitr
+VignetteBuilder: knitr
 Description: This package implements circular visualization
     (http://circos.ca/) in R. Due to the natural born feature of R to draw statistical
     graphics, this package can provide a more general and flexible way to

@@ -1,7 +1,7 @@
 
 op = par(no.readonly = TRUE)
 
-par(mfrow = c(2, 1))
+par(mfrow = c(1, 2))
 par(mar = c(1, 1, 1, 1))
 factors = letters[1:8]
 circos.par("track.margin" = c(0.1, 0.1), "clock.wise" = FALSE, start.degree = 30,

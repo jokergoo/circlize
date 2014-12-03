@@ -8,13 +8,22 @@
 %\VignetteEngine{knitr::knitr}
 
 <<echo = FALSE>>=
+library(knitr)
 opts_chunk$set(fig.pos = "")
+
+library(circlize)
+circos.initialize = function(...) {
+	circos.par(unit.circle.segments = 300)
+	circlize::circos.initialize(...)
+}
 @
 
 \documentclass{article}
 
 \usepackage[T1]{fontenc}
 \usepackage[sc]{mathpazo}
+\renewcommand{\sfdefault}{lmss}
+\renewcommand{\ttdefault}{lmtt}
 
 \title{How to draw ideogram}
 
@@ -27,14 +36,14 @@ opts_chunk$set(fig.pos = "")
 
 \maketitle 
 
-{\it There is a new and more comprehensive vignette in this package which is focusing 
+{\bf There is a new and more comprehensive vignette in this package which is focusing 
 on plotting genomic figures. Nevertheless, this vignette is still useful for users to 
 get a clue on how to draw genomic graphics by very basic low-level graphical functions.}
 
 \vbox{}
 
 The most widely use of the circular layout is to display genomic information.
-In most circumstances, figures contain an ideogram. Drawing ideogram by {\it circlize} 
+In most circumstances, figures contain an ideogram. Drawing ideogram by \textbf{circlize} 
 package is rather simple.
 
 An ideogram is, in fact, a series of rectangles with different colors.
@@ -43,12 +52,11 @@ In the following example we draw the ideogram for human.
 The cytoband data for human can be downloaded from \\
 \url{http://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz} or
 from UCSC Table Browser (\url{http://genome-euro.ucsc.edu/cgi-bin/hgTables}).
-Uncompress the file and read it into R. Here {\it circlize} package already contains such file.
+Uncompress the file and read it into R. Here \textbf{circlize} package already contains such file.
 
 <<>>=
 library(circlize)
-d = read.table(file = paste(system.file(package = "circlize"),
-        "/extdata/cytoBand.txt", sep=""),
+d = read.table(file = paste0(system.file(package = "circlize"), "/extdata/cytoBand.txt"),
     colClasses = c("character", "numeric", "numeric", "character", "character"))
 head(d)
 @
@@ -58,7 +66,7 @@ for cytogenetic bands.
 
 Here, setting the {\tt colClasses} argument when reading the cytoband file is very important.
 Because positions on chromosomes are represented as large integers (the second column and third column),
-by default {\tt read.table} would store such data as {\tt integer} mode. {\it circlize} will sum up such positions
+by default {\tt read.table} would store such data as {\tt integer} mode. \textbf{circlize} will sum up such positions
 to determine the range of chromosomes and summation of such large integers
 would throw error of data overflow, thus you must set the data mode to floating point ({\tt numeric}).
 
@@ -181,7 +189,7 @@ for(chr in chromosome) {
     major.at = seq(0, 10^nchar(max(xlim[, 2])), by = 50000000)
     circos.axis(h = 0.5, major.at = major.at,
         labels = paste(major.at/1000000, "MB", sep = ""),
-		labels.direction = "clock.wise", labels.niceFacing = TRUE,
+        labels.facing = "clockwise", labels.niceFacing = TRUE,
         sector.index = chr, labels.cex = 0.2)
     chr.xlim = get.cell.meta.data("xlim", sector.index = chr)
     
@@ -205,8 +213,7 @@ If there is a translocation from position 111111111 in chromosome 2 to position 
 as a link in the circular layout.
 
 <<ideogram_basic_trunk5, eval = FALSE>>=
-circos.link(sector.index1 = "chr2", point1 = 111111111, sector.index2 = "chr16", 
-    point2 = 55555555)
+circos.link("chr2", 111111111, "chr16", 55555555)
 @
 
 If position 88888888 in chromosome 6 is important and we want to mark it, we can first create
@@ -223,7 +230,7 @@ circos.lines(c(88888888, 88888888), c(0.3, 1), sector.index = "chr6", straight =
 
 Finally, don't forget to call {\tt circos.clear} in the end.
 
-<<ideogram_basic_trunk6, eval = FALSE>>=
+<<ideogram_basic_trunk7, eval = FALSE>>=
 circos.clear()
 @
 
@@ -236,6 +243,7 @@ circos.par(points.overflow.warning = FALSE)
 <<ideogram_basic_trunk4>>
 <<ideogram_basic_trunk5>>
 <<ideogram_basic_trunk6>>
+<<ideogram_basic_trunk7>>
 @
 
 

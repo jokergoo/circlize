@@ -559,8 +559,8 @@ circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 				
 		}
 
-		cat("Your current sector.index is ", get.current.sector.index(), "\n", sep = "")
-		cat("Your current track.index is ", get.current.track.index(), "\n", sep = "")
+		if(length(get.current.sector.index())) cat("Your current sector.index is ", get.current.sector.index(), "\n", sep = "")
+		if(get.current.track.index() > 0) cat("Your current track.index is ", get.current.track.index(), "\n", sep = "")
 	}
 	
 }

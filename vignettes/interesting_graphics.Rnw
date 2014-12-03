@@ -8,14 +8,22 @@
 
 
 <<echo = FALSE>>=
-opts_chunk$set(fig.pos = "")
+library(knitr)
+opts_chunk$set(fig.pos = "", fig.align = "center")
+
+library(circlize)
+circos.initialize = function(...) {
+	circos.par(unit.circle.segments = 350)
+	circlize::circos.initialize(...)
+}
 @
 
 \documentclass{article}
 
-
 \usepackage[T1]{fontenc}
 \usepackage[sc]{mathpazo}
+\renewcommand{\sfdefault}{lmss}
+\renewcommand{\ttdefault}{lmtt}
 
 \title{Some interesting graphics}
 

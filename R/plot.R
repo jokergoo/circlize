@@ -1368,11 +1368,14 @@ draw.sector = function(start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL
 		m2 = polar2Cartesian(d2)
 		
 		if(is.circular(start.degree, end.degree)) {  # a ring
-			m = rbind(m1, m2)
+			m = rbind(m1, m2[rev(seq_len(nrow(m2))), ,drop = FALSE])
 			
 			m[, 1] = m[, 1] + center[1]
 			m[, 2] = m[, 2] + center[2]
-			polygon(m, col = col, border = col)
+			polygon(m, col = col, border = NA, lwd = 0.1)
+			# two borders
+			#lines(m1[, 1]+center[1], m1[, 2]+center[2], col = "white", lwd = lwd, lty = 1)
+			#lines(m2[, 1]+center[1], m2[, 2]+center[2], col = "white", lwd = lwd, lty = 1)
 			lines(m1[, 1]+center[1], m1[, 2]+center[2], col = border, lwd = lwd, lty = lty)
 			lines(m2[, 1]+center[1], m2[, 2]+center[2], col = border, lwd = lwd, lty = lty)
 			

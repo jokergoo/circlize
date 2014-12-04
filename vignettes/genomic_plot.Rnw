@@ -29,7 +29,6 @@ circos.initializeWithIdeogram = function(...) {
 \renewcommand{\sfdefault}{lmss}
 \renewcommand{\ttdefault}{lmtt}
 
-\setcounter{secnumdepth}{2}
 \setcounter{tocdepth}{2}
 
 \title{An introduction of drawing genomic figures with \textbf{circlize}}

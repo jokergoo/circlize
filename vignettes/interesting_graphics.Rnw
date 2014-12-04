@@ -37,10 +37,10 @@ circos.initialize = function(...) {
 
 The first example is a clock. The key function here is {\tt circos.axis} (figure \ref{fig:interesting_clock}).
 The whole circle only contains one sector in which major tick at 0 is overlapping with major tick at 12.
-The two arrows are plotted in the canvas coordinate. An example of a real-time clock is in {\tt Examples} section in
+The two arrows are plotted in the canvas coordinate. An example of a real-time clock is in {\it Examples} section in
 the help page of {\tt circos.axis}.
 
-<<interesting_clock, fig.align = "center", out.width = "0.6\\textwidth", fig.cap = "A clock">>=
+<<interesting_clock, fig.align = "center", out.width = "0.6\\textwidth", fig.cap = "A clock.">>=
 library(circlize)
 factors = "a"  # any name is OK
 par(mar = c(1, 1, 1, 1))
@@ -60,7 +60,7 @@ circos.clear()
 The second example is a dartboard. In the figure, tracks are assigned with different heights and each cell is initialized with
 different colors (figure \ref{fig:interesting_dartboard}). The most inside green ring and red circle are plotted by {\tt draw.sector}.
 
-<<interesting_dartboard, fig.align = "center", out.width = "0.6\\textwidth", fig.cap = "A dartboard">>=
+<<interesting_dartboard, fig.align = "center", out.width = "0.6\\textwidth", fig.cap = "A dartboard.">>=
 factors = 1:20  # just indicate there are 20 sectors
 par(mar = c(1, 1, 1, 1))
 circos.par(gap.degree = 0, cell.padding = c(0, 0, 0, 0),
@@ -108,9 +108,9 @@ of white and black, the opposite color is generated. In real world,
 Taiji can represent all phenomenon that is of dualism. Such as male and female, correct and
 wrong. However things would change, good thing would become bad thing as time goes by, and bad
 thing also would turn good according how you look at the world. So when you are upset, don't worry,
-Tai-ji would tell you that things are going to be fine.
+Taiji would tell you that things are going to be fine.
 
-<<interesting_bagua, fig.align = "center", out.width = "0.6\\textwidth", fig.cap = "Buagua and Taiji">>=
+<<interesting_bagua, fig.align = "center", out.width = "0.6\\textwidth", fig.cap = "Bagua and Taiji.">>=
 factors = 1:8
 par(mar = c(1, 1, 1, 1))
 circos.par(start.degree = 22.5, gap.degree = 6)
@@ -144,11 +144,12 @@ circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA,
         if(i %in% c(4, 5, 6, 7)) add_yang_yao() else add_yin_yao()
     }, track.height = 0.1)
 
+# the bottom of the most recent track
 r = get.cell.meta.data("cell.bottom.radius") - 0.1
-# draw taiji
-draw.sector(center = c(0, 0), start.degree = -90, end.degree = 90,
+# draw taiji, note default order is clock wise for `draw.sector`
+draw.sector(center = c(0, 0), start.degree = 90, end.degree = -90,
     rou1 = r, col = "black", border = "black")
-draw.sector(center = c(0, 0), start.degree = 90, end.degree = 270,
+draw.sector(center = c(0, 0), start.degree = 270, end.degree = 90,
     rou1 = r, col = "white", border = "black")
 draw.sector(center = c(0, r/2), start.degree = 0, end.degree = 360,
     rou1 = r/2, col = "white", border = "white")
@@ -169,12 +170,10 @@ information for each pixel in the original figure; 2. use {\tt circos.rect} to d
 every pixel into the circle. Source code for generating the figure can be found
 at \url{http://jokergoo.github.io/circlize/example/doodle.html}.
 
-It is cool, isn't it?
-
 \begin{figure}
 \centering
 \includegraphics[width=0.8\textwidth]{figures/doodle.jpeg}
-\caption{Keith Haring's Doodle}
+\caption{Keith Haring's Doodle.}
 \label{fig:painting}
 \end{figure}
 

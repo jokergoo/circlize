@@ -13,8 +13,8 @@ opts_chunk$set(fig.pos = "")
 
 library(circlize)
 circos.initialize = function(...) {
-	circos.par(unit.circle.segments = 300)
-	circlize::circos.initialize(...)
+    circos.par(unit.circle.segments = 300)
+    circlize::circos.initialize(...)
 }
 @
 
@@ -37,7 +37,7 @@ circos.initialize = function(...) {
 
 \maketitle 
 
-In this short vignette, we will show you how to customize the circular style of 
+In this short vignette, we will show how to customize the circular style of 
 phylogenetic tree through \textbf{circlize} package. Basically, a phylogenetic tree is 
 a dendrogram which is a combination of lines. In R, there are several classes that 
 describe such type of tree such as {\tt hclust}, {\tt dendrogram} and {\tt phylo}. 
@@ -45,15 +45,14 @@ In this example, we will demonstrate how to draw the tree from the {\tt dendrogr
 Nevertheless, other classes can be converted to {\tt dendrogram} without too much difficulty.
 
 The {\tt bird.orders} data we are using here is from {\tt ape} package. This data set is 
-related to species of birds. Some other values such as labels for birds (birds' names) 
-are also extracted. We split the tree into six sub trees by {\tt cutree}
-and finally we convert the data into a {\tt dendrogram} object.
+related to species of birds. We split the tree into six sub trees by {\tt cutree}
+and convert the data into a {\tt dendrogram} object.
 
 <<>>==
 library(ape)
 data(bird.orders)
 hc = as.hclust(bird.orders)
-labels = hc$labels
+labels = hc$labels  # name of birds
 ct = cutree(hc, 6)  # cut tree into 6 pieces
 n = length(labels)  # number of bird species
 dgm = as.dendrogram(hc)
@@ -81,14 +80,13 @@ Thus, the x-lim is just the minimum and maximum index of labels in the tree. Sin
 only one phylogenetic tree, we only need one ``big" sector. In the first track, 
 we plot the name of each bird, with different colors to represent different sub trees. 
 
-Maximum height of tree {\tt maxy} here is not necessary, but it would be important if there
-are more than one tress that are put on the same track.
+{\tt maxy} is the maximum height of tree and is used to calculate the height of the track.
 
 <<phylogenetic_tree_part1, eval = FALSE>>==
 library(circlize)
 par(mar = c(1, 1, 1, 1))
 circos.par(cell.padding = c(0, 0, 0, 0))
-circos.initialize(factors = "a", xlim = c(0, n))
+circos.initialize(factors = "a", xlim = c(0, n)) # only one sector
 maxy = attr(dgm, "height")  # maximum height of the trees
 circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.3, 
     panel.fun = function(x, y) {
@@ -104,8 +102,11 @@ In the second track, we plot the circular dendrogram. Here we implement the code
 as {\tt circos.dendrogram} in a recursive way. The {\tt draw.d} function adds lines to 
 its two children nodes, and once it reaches the leaf of the tree, the recursive
 execution will stop. You can see the advantage of \textbf{circlize} that if you replace 
-{\tt circos.lines} to {\tt lines} in the function, then you can almost
-use the function to draw dendrogram in the regular Cartesian coordinate system without any error.
+{\tt circos.lines} to {\tt lines} in this function, then you can almost
+use the same function to draw dendrogram in the regular Cartesian coordinate system without any error.
+
+Note in following example, argument {\tt maxy} is important if you have more than one trees
+that are put on a same track.
 
 <<>>==
 # == param
@@ -117,14 +118,21 @@ circos.dendrogram = function(dend, maxy = attr(dend, "height")) {
     x = seq_along(labels) - 0.5 # leaves are places at x = 0.5, 1.5, ..., n - 0.5
     names(x) = labels
     
-    is.leaf = function(object) (is.logical(L <- attr(object, "leaf"))) && L
+    is.leaf = function(object) {
+        leaf = attr(object, "leaf")
+        if(is.null(leaf)) {
+            FALSE
+        } else {
+            leaf
+        }
+    }
     
     draw.d = function(dend, maxy) {
         leaf = attr(dend, "leaf")
         d1 = dend[[1]]  # child tree 1
         d2 = dend[[2]]  # child tree 2
-        height = attr(dend, 'height')
-        midpoint = attr(dend, 'midpoint')
+        height = attr(dend, "height")
+        midpoint = attr(dend, "midpoint")
         
         if(is.leaf(d1)) {
             x1 = x[as.character(attr(d1, "label"))]
@@ -169,7 +177,7 @@ circos.trackPlotRegion(ylim = c(0, maxy), bg.border = NA,
 circos.clear()
 @
 
-In figure \ref{fig:phylogenetic_tree} (top), we additionally cut the dendrogram into six 
+In figure \ref{fig:phylogenetic_tree} (top), we cut the dendrogram into six 
 parts and mark the text with different colors. Once you know the basic rule for drawing such circular
 dendrogram, it would be flexible to customize your figures such as adding 
 bars, lines, points, or even highlighting some parts on the tree.

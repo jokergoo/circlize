@@ -15,7 +15,6 @@
 \renewcommand{\sfdefault}{lmss}
 \renewcommand{\ttdefault}{lmtt}
 
-\setcounter{secnumdepth}{2}
 \setcounter{tocdepth}{2}
 
 \title{An introduction to \textbf{circlize} package}
@@ -220,7 +219,7 @@ circos.link("e", 0, "g", c(-1,1), col = "green", lwd = 2, lty = 2)
 @
 
 
-<<circlize_glance, echo = FALSE, out.width = "1\\textwidth", out.height = "1.5\\textwidth", fig.width = 7, fig.height = 10.5, fig.cap = "A step-by-step example by \\textbf{circlize}">>=
+<<circlize_glance, echo = FALSE, out.width = "0.6\\textheight", out.height = "0.9\\textheight", fig.width = 7, fig.height = 10.5, fig.cap = "A step-by-step example by \\textbf{circlize}">>=
 par(mfrow = c(3, 2), mar = c(1, 1, 1, 1))
 
 <<circlize_glance_0>>
@@ -292,7 +291,7 @@ a {\bf polar coordinate} to allocates graphics on the circle and a {\bf canvas c
 draws the graphics (figure \ref{fig:circlize_coordinate_transformation}). The package would first transform from the data
 coordinate to a polar coordinate and finally transform into the canvas coordinate.
 
-<<circlize_coordinate_transformation, echo = FALSE, out.width = "0.6\\textwidth", out.height = "1.3536\\textwidth", fig.width = 5, fig.height = 11.28, fig.cap = "Transformation between different coordinates. Top: data coordinate; Middle: polar coordinate; Bottom: canvas coordinate.">>=
+<<circlize_coordinate_transformation, echo = FALSE, out.width = "0.3989362\\textheight", out.height = "0.9\\textheight", fig.width = 5, fig.height = 11.28, fig.cap = "Transformation between different coordinates. Top: data coordinate; Middle: polar coordinate; Bottom: canvas coordinate.">>=
 source("src/intro-03-transformation.R")
 @
 

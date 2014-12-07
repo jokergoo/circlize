@@ -47,7 +47,7 @@ Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioi
 
 ############################
 ### rect matrix
-circos.par("default.track.height" = 0.1, cell.padding = c(0, 0, 0, 0))
+circos.par("track.height" = 0.1, cell.padding = c(0, 0, 0, 0))
 circos.initializeWithIdeogram(plotType = NULL)
 
 bed = generateRandomBed(nr = 100, nc = 4)
@@ -71,7 +71,7 @@ circos.genomicTrackPlotRegion(bed, stack = TRUE, panel.fun = function(region, va
 }, bg.border = NA)
 
 circos.genomicPosTransformLines(bed, posTransform = posTransform.default,
-    type = "reverse", horizontalLine = "bottom")
+    direction = "outside", horizontalLine = "bottom")
 
 circos.genomicTrackPlotRegion(bed, stack = TRUE, panel.fun = function(region, value, ...) {
     circos.genomicRect(region, value, col = sample(1:10, nrow(region), replace = TRUE), 
@@ -85,7 +85,7 @@ circos.clear()
 
 ##########################
 ### rect from bed list
-circos.par("default.track.height" = 0.1, cell.padding = c(0, 0, 0, 0))
+circos.par("track.height" = 0.1, cell.padding = c(0, 0, 0, 0))
 circos.initializeWithIdeogram(plotType = NULL)
 
 bed1 = generateRandomBed(nr = 100)

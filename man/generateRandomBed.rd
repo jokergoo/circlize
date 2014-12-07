@@ -12,7 +12,7 @@
 }
 \usage{
 generateRandomBed(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0.5),
-    species = "hg19")
+    species = NULL)
 }
 \arguments{
   \item{nr}{Number of rows}

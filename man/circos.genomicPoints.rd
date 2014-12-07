@@ -41,7 +41,7 @@ Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioi
 \dontrun{
 par(mar = c(1, 1, 1, 1))
 
-circos.par("default.track.height" = 0.1)
+circos.par("track.height" = 0.1)
 circos.initializeWithIdeogram(plotType = NULL)
 
 bed = generateRandomBed(nr = 100)

@@ -97,8 +97,8 @@ while(1) {
     sec = ceiling(current.time$sec)
     min = current.time$min
     hour = current.time$hour
-	
-	# erase the clock hands
+    
+    # erase the clock hands
     draw.sector(rou1 = 0.8, border = "white", col = "white")
 
     sec.degree = 90 - sec/60 * 360

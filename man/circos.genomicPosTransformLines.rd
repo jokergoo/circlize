@@ -73,7 +73,7 @@ circos.genomicTrackPlotRegion(bed, ylim = c(0, 1), panel.fun = function(region, 
 }, bg.border = NA)
 
 circos.genomicPosTransformLines(bed, posTransform = posTransform.default,
-    horizontalLine = "bottom", type = "reverse", track.height = 0.1)
+    horizontalLine = "bottom", direction = "outside", track.height = 0.1)
 
 cytoband = read.cytoband()$df
 circos.genomicTrackPlotRegion(cytoband, stack = TRUE, panel.fun = function(region, value, ...) {

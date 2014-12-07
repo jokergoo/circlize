@@ -63,7 +63,7 @@ cytoband = read.table(cytoband.file, colClasses = c("character", "numeric",
     "numeric", "character", "character"), sep = "\t")
 circos.initializeWithIdeogram(cytoband, sort.chr = FALSE)
 
-cytoband[[1]] = factor(cytoband[[1]], levels = paste("chr", c(22:1, "X", "Y")))
+cytoband[[1]] = factor(cytoband[[1]], levels = paste0("chr", c(22:1, "X", "Y")))
 circos.initializeWithIdeogram(cytoband, sort.chr = FALSE)
 
 cytoband = read.table(cytoband.file, colClasses = c("character", "numeric",
@@ -78,7 +78,7 @@ circos.par("start.degree" = 90)
 circos.initializeWithIdeogram()
 circos.clear()
 
-circos.par("gap.degree" = rep(c(2, 4), 11))
+circos.par("gap.degree" = rep(c(2, 4), 12))
 circos.initializeWithIdeogram()
 circos.clear()
 }

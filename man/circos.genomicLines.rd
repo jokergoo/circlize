@@ -57,7 +57,7 @@ par(mar = c(1, 1, 1, 1))
 ## test line
 
 ### test bed
-circos.par("default.track.height" = 0.1)
+circos.par("track.height" = 0.1)
 circos.initializeWithIdeogram(plotType = NULL)
 
 bed = generateRandomBed(nr = 100)

@@ -12,13 +12,13 @@ opts_chunk$set(fig.pos = "", fig.align = "center")
 
 library(circlize)
 circos.genomicInitialize = function(...) {
-	circos.par(unit.circle.segments = 350)
-	circlize::circos.genomicInitialize(...)
+    circos.par(unit.circle.segments = 400)
+    circlize::circos.genomicInitialize(...)
 }
 
 circos.initializeWithIdeogram = function(...) {
-	circos.par(unit.circle.segments = 350)
-	circlize::circos.initializeWithIdeogram(...)
+    circos.par(unit.circle.segments = 400)
+    circlize::circos.initializeWithIdeogram(...)
 }
 @
 
@@ -107,7 +107,7 @@ text(-0.9, 0.9, "A", cex = 1.5)
 By default, the function will initialize the plot with cytoband data of hg19. You can also 
 use your own cytoband data by specifying the path of your cytoband file (no matter 
 compressed or not) or providing your cytoband data as a data frame.  An example for 
-cytoband file is \url{http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/cytoBand.txt.gz}.
+cytoband file is \url{http://hgdownload.soe.ucsc.edu/goldenpath/hg19/database/cytoBand.txt.gz}.
 
 <<echo = 2:6>>=
 pdf(NULL)
@@ -128,8 +128,8 @@ calculate the summation of all chromosome lengths. The sumation of such large in
 would throw error of data overflow.
 
 For simple use, users can also specify abbreviation of the species and the function will 
-download cytoband file from UCSC server automatically (If it exists in UCSCl. As you can guess,
-the URL template we use is {\tt http://hgdownload.cse.ucsc.edu/goldenpath/$species/database/cytoBand.txt.gz}).
+download cytoband file from UCSC server automatically (If it exists in UCSC. As you can guess,
+the URL template we use is {\tt http://hgdownload.soe.ucsc.edu/goldenpath/\$species/database/cytoBand.txt.gz}).
 
 <<eval = FALSE>>=
 circos.initializeWithIdeogram(species = "hg18")
@@ -176,7 +176,7 @@ text(-0.9, 0.9, "D", cex = 1.5)
 
 cytoband = cytoband.df
 circos.initializeWithIdeogram(cytoband, sort.chr = TRUE)
-text(0, 0, "read from cytoband file\nsort.chr = TRUE", cex = 0.7)
+text(0, 0, "read from cytoband df\nsort.chr = TRUE", cex = 0.7)
 text(-0.9, 0.9, "E", cex = 1.5)
 @
 
@@ -389,9 +389,9 @@ We can write a simple function to do the extension.
 
 <<>>=
 extend_zoomed_chromosome_in_bed = function(bed, chromosome, prefix = "zoom_") {
-	zoom_bed = bed[bed[[1]] %in% chromosome, , drop = FALSE]
-	zoom_bed[[1]] = paste0(prefix, zoom_bed[[1]])
-	rbind(bed, zoom_bed)
+    zoom_bed = bed[bed[[1]] %in% chromosome, , drop = FALSE]
+    zoom_bed[[1]] = paste0(prefix, zoom_bed[[1]])
+    rbind(bed, zoom_bed)
 }
 @
 
@@ -400,8 +400,8 @@ Then add a new track:
 <<genomic_zoom_2, eval = FALSE>>=
 bed = generateRandomBed(100)
 circos.genomicTrackPlotRegion(extend_zoomed_chromosome_in_bed(bed, chromosome[1:2]),
-	panel.fun = function(region, value, ...) {
-		circos.genomicPoints(region, value, pch = 16, cex = 0.5)
+    panel.fun = function(region, value, ...) {
+        circos.genomicPoints(region, value, pch = 16, cex = 0.5)
 })
 @
 
@@ -409,8 +409,8 @@ Also add link from original chromosome to the zoomed chromosome.
 
 <<genomic_zoom_3, eval = FALSE>>=
 circos.link("chr1", get.cell.meta.data("cell.xlim", sector.index = "chr1"),
-	"zoom_chr1", get.cell.meta.data("cell.xlim", sector.index = "zoom_chr1"),
-	col = "#00000020")
+    "zoom_chr1", get.cell.meta.data("cell.xlim", sector.index = "zoom_chr1"),
+    col = "#00000020")
 circos.clear()
 @
 
@@ -1352,10 +1352,8 @@ circos.initializeWithIdeogram(plotType = c("axis", "labels"))
 
 bed_list = list(DMR_hyper, DMR_hypo)
 circos.genomicRainfall(bed_list, pch = 16, cex = 0.4, col = c("#FF000080", "#0000FF80"))
-
 circos.genomicDensity(DMR_hyper, col = c("#FF000080"), track.height = 0.1)
 circos.genomicDensity(DMR_hypo, col = c("#0000FF80"), track.height = 0.1)
-
 circos.clear()
 @
 

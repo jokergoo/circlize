@@ -13,8 +13,8 @@ opts_chunk$set(fig.pos = "")
 
 library(circlize)
 circos.initialize = function(...) {
-	circos.par(unit.circle.segments = 300)
-	circlize::circos.initialize(...)
+    circos.par(unit.circle.segments = 400)
+    circlize::circos.initialize(...)
 }
 @
 
@@ -49,7 +49,7 @@ package is simple.
 An ideogram is, in fact, a series of rectangles with different colors, so theoretically, you
 can use {\tt circos.rect} to implement it. In the following example we draw the ideogram 
 for human. The cytoband data for human can be downloaded from
-\url{http://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz} or
+\url{http://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz} or
 from UCSC Table Browser (\url{http://genome-euro.ucsc.edu/cgi-bin/hgTables}).
 Uncompress the file and read it into R. Here \textbf{circlize} package already contains such file.
 

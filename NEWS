@@ -1,4 +1,4 @@
-Changes in version 0.1.4
+Changes in version 0.2.0
 ------------------------------------------------------------------------------
 
 * `draw.sector` is modified, now accepts an argument `clock.wise` to control

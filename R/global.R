@@ -162,8 +162,6 @@ circos.par = setGlobalOptions(
 	)
 )
 
-circos.par('__tempdir__' = tempdir())
-
 # before initialization, .SECTOR.DATA is NULL
 is.circos.initialized = function() {
 	.SECTOR.DATA = get(".SECTOR.DATA", envir = .CIRCOS.ENV)

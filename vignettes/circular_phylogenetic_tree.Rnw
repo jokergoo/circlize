@@ -13,7 +13,7 @@ opts_chunk$set(fig.pos = "")
 
 library(circlize)
 circos.initialize = function(...) {
-    circos.par(unit.circle.segments = 300)
+    circos.par(unit.circle.segments = 400)
     circlize::circos.initialize(...)
 }
 @
@@ -44,7 +44,7 @@ describe such type of tree such as {\tt hclust}, {\tt dendrogram} and {\tt phylo
 In this example, we will demonstrate how to draw the tree from the {\tt dendrogram} class. 
 Nevertheless, other classes can be converted to {\tt dendrogram} without too much difficulty.
 
-The {\tt bird.orders} data we are using here is from {\tt ape} package. This data set is 
+The {\tt bird.orders} data we are using here is from \textbf{ape} package. This data set is 
 related to species of birds. We split the tree into six sub trees by {\tt cutree}
 and convert the data into a {\tt dendrogram} object.
 

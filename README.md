@@ -1,6 +1,6 @@
 ## circlize
 
-This package aims to implement circos layout in R.
+This package aims to implement circular layout in R.
 
 Since most of the figures are composed of points, lines and polygons, 
 we just need to implement functions for drawing points, lines and polygons.
@@ -30,7 +30,7 @@ Functions to arrange circos layout:
 - `circos.info`
 - `circos.clear`
 
-Theoretically, you are able to draw most kinds of circos figures by the above functions.
+Theoretically, you are able to draw most kinds of circos plots by the above functions.
 
 For specific use in genomics, we also implement functions which add graphics in genome scale.
 
@@ -60,7 +60,7 @@ Finally, function that draws chord diagram:
 
 - `chordDiagram`
 
-Please refer to the vignettes to find out how to draw basic and advanced circos figures by this package.
+Please refer to the vignettes to find out how to draw basic and advanced circos plots by this package.
 
 
 ### Install

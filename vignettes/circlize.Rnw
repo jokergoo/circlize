@@ -35,8 +35,8 @@ opts_chunk$set(fig.pos = "", fig.align = "center")
 
 library(circlize)
 circos.initialize = function(...) {
-	circos.par(unit.circle.segments = 350)
-	circlize::circos.initialize(...)
+    circos.par(unit.circle.segments = 400)
+    circlize::circos.initialize(...)
 }
 @
 
@@ -48,7 +48,7 @@ It is also effective to visualize relations between elements.
 \textbf{Circos} (\url{http://circos.ca}) is an extraordinarily cool tool to make such circular layout and it is broadly used in real applications, not just
 popular in Genomic but in a lot of other areas as well. It is not only a way to visualize data, 
 but also enhances the representation of scientific results into a level of aesthetics. Therefore, most people call figures with circular layout as `circos plot'.
-Here the \textbf{circlize} package aims to implement \textbf{Circos} in R. One important advantage for the implementation in R is that R is an ideal
+Here the \textbf{circlize} package \footnote{It would be great if you can cite: Gu Z {\it et. al.} (2014) circlize implements and enhances circular visualization in R. {\it Bioinformatics}.}  aims to implement \textbf{Circos} in R. One important advantage for the implementation in R is that R is an ideal
 environment which provides seamless connection between data analysis and data visualization. This package is not a front-end wrapper
 to generate configuration files for \textbf{Circos}, but completely coded in R style by using R's elegant statistical and graphic engine.  
 We aim to keep the flexibility and configurability of \textbf{Circos}, also make the package more straightforward to use and enhance it to support more types of graphics. 
@@ -205,7 +205,7 @@ circos.updatePlotRegion(sector.index = "d", track.index = 2)
 circos.points(x = -2:2, y = rep(0, 5))
 xlim = get.cell.meta.data("xlim")
 ylim = get.cell.meta.data("ylim")
-circos.points(mean(xlim), mean(ylim), "updated")
+circos.text(mean(xlim), mean(ylim), "updated")
 @
 
 Draw the fourth track (figure \ref{fig:circlize_glance} E). Here you can choose different 
@@ -323,7 +323,7 @@ The rules for making circular layout is rather simple. It follows the sequence o
 ``initialize - create track - add graphics - create track - add graphics - ... - clear'' (figure \ref{fig:circlize_order}).
 Details are as follows:
 
-<<circlize_order, echo = FALSE, out.width = "\\textwidth", out.height = "0.8571429\\textwidth", fig.height = 6, fig.width = 7, fig.cap = "Order of drawing circular layout">>=
+<<circlize_order, echo = FALSE, out.width = "\\textwidth", out.height = "0.8571429\\textwidth", fig.height = 6, fig.width = 7, fig.cap = "Order of drawing circular layout.">>=
 source("src/intro-02-order.R")
 @
 
@@ -356,7 +356,9 @@ source("src/intro-02-order.R")
   \item Call {\tt circos.clear} to do cleaning.
 \end{enumerate}
 
-As mentioned above, there are three ways to add graphics on the created track. 1. create plotting regions for the whole track
+As mentioned above, there are three ways to add graphics on the created track. 
+
+1. create plotting regions for the whole track
 and then add graphics by specifying {\tt sector.index} and {\tt track.index}. In the following pseudo code, {\tt x1}, {\tt y1}
 are data points in a given cell, which means you need to do data subsetting by yourself.
 
@@ -370,19 +372,19 @@ for(sector.index in all.sector.index) {
 @
 
 2. add graphics through a batch mode. This can be replaced by {\tt circos.points} or {\tt circos.lines} in a {\tt for} loop.
-In the following code, you need to specifying the {\tt factors} and now {\tt x1} and {\tt y1} are data points for all categories.
-The data points for a given cell will be subsetted according the {\tt factors}.
+In the following code, you need to specifying the {\tt factors} and now {\tt x} and {\tt y} are data points for all categories.
+The data points for a given cell will be subsetted according {\tt factors}.
 
 <<eval = FALSE>>=
 circos.initialize(factors, xlim)
 circos.trackPlotRegion(factors, ylim)
-circos.trackPoints(factors, x1, y1)
-circos.trackLines(factors, x2, y2)
+circos.trackPoints(factors, x, y)
+circos.trackLines(factors, x, y)
 @
 
 3. use a panel function to add self-defined graphics as soon as the cell has been created. This is the way recommended since when
 you look at {\tt panel.fun}, it is just like adding graphics in traditional R graphics system. There will be a more detailed explanation
-of {\tt panel.fun} argument in the following section.
+of {\tt panel.fun} argument in the following sections.
 
 <<eval = FALSE>>=
 circos.initialize(factors, xlim)
@@ -394,19 +396,19 @@ circos.trackPlotRegion(factors, all_x, all_y, ylim,
 @
 
 There is several internal variables keeping tracing of the current sector and track when applying {\tt circos.trackPlotRegion} and {\tt circos.updatePlotRegion}.
-So although functions like {\tt circos.points}, {\tt circos.lines} need to specify the index for sector and track,
-they will take the current calculated ones by default. As a result,
-if you draw points, lines, text, {\it et al} just after the creation of the track or cell, you do not need to set the sector
+So although functions like {\tt circos.points}, {\tt circos.lines} need to specify the index of sector and track,
+they will take the current one by default. As a result,
+if you draw points, lines, text {\it et al} just after the creation of the track or cell, you do not need to set the sector
 index and the track index explicitly and it will be put in the most recently created cell. Note again, only {\tt circos.trackPlotRegion}
 and {\tt circos.updatePlotRegion} can reset the current track index and sector index.
 
-Finally, in \textbf{circlize} package, function with prefix {\tt circos.track} would affect all cells in a track.
+Finally, in \textbf{circlize} package, function with prefix ``{\tt circos.track}'' would affect all cells in one track.
 
 \subsection{Sectors and tracks}
 
 A circular layout is composed of sectors and tracks, as illustrated in figure \ref{fig:circlize_coordinate}.
 The red circle is the track and the blue one is the sector. The intersection of a sector and 
-a track is called a cell which can be thought as an imaginary plotting region for data points in a certain category (data coordinate). 
+a track is called a cell which can be thought as an imaginary plotting region for data points in a certain category ({\bf data coordinate}). 
 
 <<circlize_coordinate, echo = FALSE, out.width = "0.8\\textwidth", fig.cap = "Sectors and tracks in circular layout. There are 10 sectors and 4 tracks. Orders of sectors are randomly permuted.">>=
 source("src/intro-04-coordinate.R")
@@ -424,7 +426,7 @@ circos.initialize(factors, xlim)
 There are something very important that should be noted in the initialization step. In this step, not only the width
 of each sector is assigned, but also the order of sectors on the circle is determined. 
 {\bf Order of the sectors are determined by the order of levels of the factor}. So if you want to change the order
-of the sectors, just change of the level of the {\tt factors} variable. The following codes would generate different figures (figure \ref{fig:circlize_factor}):
+of the sectors, just change of the level of {\tt factors} variable. The following codes would generate different figures (figure \ref{fig:circlize_factor}):
 
 <<eval = FALSE>>=
 fa = c("d", "f", "e", "c", "g", "b", "a")
@@ -439,9 +441,9 @@ source("src/intro-05-factor.R")
 @
 
 If {\tt x} which is the x-values corresponding
-to {\tt factors} is specified, the range for x-values in different categories would be calculated according to {\tt factors}
+to {\tt factors} is specified, the range for x-values in different categories will be calculated according to {\tt factors}
 automatically. And if {\tt xlim} is specified, it should be either a matrix which has same number of rows as the length
-of the level of {\tt factors} or a two-element vector. If it is a two-element vector, it would be extended to a matrix which 
+of the {\tt factors} levels or a two-element vector. If it is a two-element vector, it would be extended to a matrix which 
 has the same number of rows as the length of {\tt factors} levels. Here, every row in {\tt xlim} corresponds to the x-ranges
 of a category and the order of rows in {\tt xlim} corresponds to the order of levels of {\tt factors}.
 
@@ -457,12 +459,12 @@ circos.trackPlotRegion(factors, ylim)
 
 In the track creation step, since all sectors are already allocated in the circle, if {\tt factors} argument is not set, 
 {\tt circos.trackPlotRegion} would create plotting regions for all available sectors. Also, levels of {\tt factors} do not
-need to be specified explicitly because the order of sectors has already be determined in the initialization step. If {\tt factors} is just a vector, it 
-would be converted to factor automatically. And if users just create cells for part of sectors in the track (not all sectors), in fact, cells in remaining
-unspecified sectors would also be created as well, but with no borders (pretending they are not created).
+need to be specified explicitly because the order of sectors has already be determined in the initialization step. 
+If users only create cells for part of sectors in the track (not all sectors), in fact, cells in remaining
+unspecified sectors are created as well, but with no borders (pretending they are not created).
 
 Cells are basic units in the circle and are independent with each other. After the creation of cells, they have self-contained meta values
-of x-lim and y-lim (range of data in the category, data coordinate, ...). So if you are adding graphics in one cell, you do not need to consider things outside the cell and also you
+of x-lim and y-lim (data range measured in data coordinate). So if you are adding graphics in one cell, you do not need to consider things outside the cell and also you
 do not need to consider you are in the circle. Just pretending it is rectangle area. 
 
 
@@ -482,40 +484,39 @@ are as follows, note some parameters can only be assigned before the initializat
     \item {\tt start.degree}: The starting degree where to put the first sector. Note this degree is measured 
           in the standard polar coordinate which means it is always reverse clockwise. See figure \ref{fig:circlize_direction}.
     \item {\tt gap.degree}: Gap between two neighbour sectors. It can be a single value which means all gaps share same
-          degree, or a vector which has same length as levels of the factors. The first gap is after the first sector.
+          degree, or a vector which has same length as factors levels. {\bf The first gap is after the first sector.}
           See figure \ref{fig:circlize_direction} and figure \ref{fig:circlize_region}.
     \item {\tt track.margin}: Like {\tt margin} in Cascading Style Sheets (CSS), it is the blank area
           out of the plotting region, also outside of the borders. Since left and right margin are controlled
           by {\tt gap.degree}, only bottom and top margin need to be set. The value for the {\tt track.margin}
-          is the percentage according to the radius of the unit circle. See figure \ref{fig:circlize_region}.
+          is the percentage to the radius of the unit circle. See figure \ref{fig:circlize_region}.
     \item {\tt cell.padding}: Padding of the cell. Like {\tt padding} in Cascading Style Sheets
           (CSS), it is the blank area around the plotting regions, but within the borders.
           The parameter has four values, which control the bottom, left, top and right padding
           respectively. The first and the third padding
-          values are the percentages according to the radius of the unit circle and the second and
+          values are the percentages to the radius of the unit circle, and the second and
           fourth values are the degrees. See figure \ref{fig:circlize_region}.
     \item {\tt unit.circle.segments}: Since curves are simulated by a series of straight lines,
           this parameter controls the amount of segments to represent a curve. The minimal length
           of the line segment is the length of the unit circle ({\tt 2*pi}) divided by {\tt unit.circle.segments}. 
-          More segments means better approximation for the curves while larger file size if you generate figures as PDF format.
-          (The name of this parameter may be a little hard to understand. I will try to change it with a better one.)
-    \item {\tt track.height}: The default height of tracks. It is the percentage according to the radius
+          More segments means better approximation for the curves, while generate larger file size if figures are in PDF format.
+    \item {\tt track.height}: The default height of tracks. It is the percentage to the radius
           of the unit circle. The height includes the top and bottom cell paddings but not the margins.
     \item {\tt points.overflow.warning}: Since each cell is in fact not a real plotting region but only
           an ordinary rectangle (or more precisely, rectangle-like), it does not remove points that are plotted outside of
           the region. So if some points are out of the plotting region, by default, the 
           package would continue drawing the points and print warnings. But in some 
-          circumstances, draw something out of the plotting region is useful, such as draw
+          circumstances, draw something out of the plotting region is useful, such as adding
           some legend or text. Set this value to {\tt FALSE} to turn off the warnings.
-    \item {\tt canvas.xlim}: The coordinate for the canvas. The package is forced to draw unit circle, so
-          the {\tt xlim} and {\tt ylim} for the canvas would be {\tt c(-1, 1)} by default. However, you can set it to a more broad
+    \item {\tt canvas.xlim}: The coordinate for the canvas. \textbf{circlize} is forced to put everything in side the unit circle, so
+          {\tt xlim} and {\tt ylim} for the canvas would be {\tt c(-1, 1)} by default. However, you can set it to a more broad
           interval if you want to draw other things out of the circle. By choose proper
-          {\tt canvas.xlim} and {\tt canvas.ylim}, you can draw part of the circle. E.g. setting
+          {\tt canvas.xlim} and {\tt canvas.ylim}, you can only draw part of the circle. E.g. setting
           {\tt canvas.xlim} to {\tt c(0, 1)} and {\tt canvas.ylim} to {\tt c(0, 1)} would only draw
           circle in the region of {\tt (0, pi/2)}. 
     \item {\tt canvas.ylim}: The coordinate for the canvas.
     \item {\tt clock.wise}: The order of drawing sectors. Default is {\tt TRUE} which means clockwise (figure \ref{fig:circlize_direction}).
-          But note that inside each cell, the direction of x-axis is always clockwise and direction of y-axis is always from inside to outside in the circle.
+          {\bf But note that inside each cell, the direction of x-axis is always clockwise and direction of y-axis is always from inside to outside in the circle.}
 \end{itemize}
 
 Default values for graphic parameters are in table \ref{table:gp}.
@@ -542,7 +543,7 @@ parameter & default value \\
 \label{table:gp}
 \end{table}
 
-Parameters related to the allocation of sectors cannot be changed after the initialization of the circos layout.
+Parameters related to the allocation of sectors cannot be changed after the initialization of the circular layout.
 So {\tt start.degree}, {\tt gap.degree}, {\tt canvas.xlim}, {\tt canvas.ylim} and {\tt clock.wise} can only
 be modified before {\tt circos.initialize}. The second and the fourth element of {\tt cell.padding} (left and right paddings) can not
 be modified either (or will be ignored).
@@ -550,18 +551,23 @@ be modified either (or will be ignored).
 \subsection{Create plotting region}
 
 As described above, only after creating the plotting region can you add low-level graphics on it. The minimal set
-of arguments for this function is to set either {\tt y} or {\tt ylim} (remember order of rows of {\tt ylim} corresponds 
-to the order of levels of {\tt factors} and if {\tt factors} is not specified, then it corresponds to the order of default 
-sectors which is determined in the initialization step) which will assign range of y-values for the
-track. {\tt circos.trackPlotRegion} create tracks for all sectors although in some case only part of them is visible.
-If you only want to create the plotting regions but do not draw anything, you do not need to specify {\tt factors} and {\tt x}.
-While if you want to draw something by {\tt panel.fun} as soon as you create the plotting region, then you need to specify {\tt factors}
-and {\tt x} to pass the categories and values to {\tt panel.fun}. Graphic arguments such as {\tt bg.border} and {\tt bg.col}
-can either be a scalar or a vector. If it is a vector, the length must be equal to the length of levels of {\tt factors}
-and the order of these graphics arguments is also as same as the order of levels of {\tt factors}. With setting these graphics arguments you can create plot regions 
-with different styles of borders and background colors. If you are confused with the {\tt factors} orders, you can also
-customize the borders and background colors for the plotting region in {\tt panel.fun} (using {\tt get.cell.meta.data("cell.xlim")}
-and {\tt get.cell.meta.data("cell.ylim")} to get the position of the plotting region).
+of arguments for this function is to set either {\tt y} or {\tt ylim} which assigns range of y-values for the
+track. {\tt circos.trackPlotRegion} create tracks for all sectors although in some case only parts of them are visible.
+
+If {\tt factors} is not specified, all cells in the track will be created with the same settings.
+If {\tt factors}, {\tt x} and {\tt y} are set, they need to be vectors with the same length. 
+Proper values of {\tt x} and {\tt y} that correspond to current cell will be passed to {\tt panel.fun}
+by subsetting {\tt factors} internally.
+
+Graphic arguments such as {\tt bg.border} and {\tt bg.col}
+can either be a scalar or a vector. If it is a vector, the length must be equal to the length of {\tt factors} levels
+and the order should also correspond to the order of {\tt factors} levels. Thus you can create plot regions 
+with different styles of borders and background colors. 
+
+If you are confused with the {\tt factors} orders, you can also
+customize the borders and background colors inside {\tt panel.fun}. {\tt get.cell.meta.data("cell.xlim")}
+and {\tt get.cell.meta.data("cell.ylim")} give you positions of the plotting region and you can customize
+plot regions by {\tt circos.rect}.
 
 \subsection{Update plotting region}
 
@@ -574,7 +580,7 @@ circos.trackPlotRegion(data, ylim = c(0, 1), track.index = 1, ...)
 @
 
 For single cell, {\tt circos.updatePlotRegion} can be used to erase all graphics that have been already plotted in the cell.
-In this case, you cannot re-define y-ranges in the cell.
+In this case, you cannot re-define y-ranges in the cell either.
 
 <<eval = FALSE>>=
 circos.updatePlotRegion(sector.index, track.index)
@@ -590,13 +596,13 @@ circos.points(x, y, sector.index, track.index)
 circos.points(x, y, pch, col, cex)
 @
 
-Since {\tt circos.points} is a low-level function, it can only be applied to those
-cells which have been created. If {\tt sector.index} or {\tt track.index} is not
-specified, it would use the `current' index for sector and track which would be 
+Since {\tt circos.points} is a low-level function, it can only be applied to
+cells which have been already created. If {\tt sector.index} or {\tt track.index} is not
+specified, it uses `current' index for sector and track which are
 defined by the most recent {\tt circos.trackPlotRegion} or {\tt circos.updatePlotRegion}.
 
-{\tt circos.trackPoints} can draw points in the whole cells on a same track.
-However, it is the same if you use {\tt circos.points} in a {\tt for} loop.
+{\tt circos.trackPoints} can add points in the whole cells on a same track as a batch.
+It is the same as if you use {\tt circos.points} in a {\tt for} loop.
 
 
 \subsection{Lines}
@@ -610,12 +616,14 @@ when {\tt lty} is set to {\tt h}.
 source("src/intro-08-lines.R")
 @
 
-Straight lines will be transformed to curves when mapping to circular layout (figure \ref{fig:circlize_linecurve}). Normally, 
-curves can be approximated by a series of segmentations of straight lines. With more segmentations,
-there would be better approximations, but with larger size if you generate the graph file as pdf format, especially
-for huge genomic data. Thus, in this package, the number of the segmentation can be controlled by {\tt circos.par("unit.circle.segments")}.
-The length of minimal segment is the length of the unit circle divided by 
-{\tt circos.par("unit.circle.segments")}. If you do not want such curve-transformations, you can set {\tt straight} argument to {\tt TRUE} (e.g. if it is a radical line.). 
+Straight lines are transformed to curves when mapping to circular layout (figure \ref{fig:circlize_linecurve}). Normally, 
+curves can be approximated by a series of segments of straight lines. With more segments,
+there would be better approximation, but with larger size if you generate figures into PDF files, especially
+for huge genomic data. Default number of segments in \textbf{circlize} is a balance between
+the quality and size of the figure. Still you can change the number of segments by {\tt circos.par("unit.circle.segments")}.
+The length of minimal segment is the length of the unit circle (2$\pi$) divided by 
+{\tt circos.par("unit.circle.segments")}. When you plot radical line, you can set {\tt straight} argument to {\tt TRUE}
+to get rid of unnecessary segmentation. 
 
 <<circlize_linecurve, echo = FALSE, out.width = "0.8\\textwidth", fig.cap = "Straight lines will be transformed into curves in the circle.">>=
 source("src/intro-08-linescurve.R")
@@ -637,7 +645,7 @@ which is identical to {\tt circos.lines} in a {\tt for} loop.
 \subsection{Text}
 Only the facing of text by {\tt circos.text} should be noted, as illustrated in figure \ref{fig:circlize_text}.
 {\tt srt} in {\tt text} has been degenerated as {\tt facing} in {\tt circos.text} which  
-support only six types of rotation pre-defined in {\tt c("inside", "outside", "reverse.clockwise", "clockwise", "downward", "bending")}.
+support only six types of rotation that are pre-defined in {\tt c("inside", "outside", "reverse.clockwise", "clockwise", "downward", "bending")}.
 But {\tt adj} argument is still applicable in {\tt circos.text}. Possible usage for {\tt circos.text} is:
 
 <<circlize_text, echo = FALSE, out.width = "0.8\\textwidth", fig.cap = "Text facing.">>=
@@ -657,14 +665,14 @@ setting {\tt niceFacing} to {\tt TRUE}. This option only works for {\tt facing} 
 and {\tt adj} will be re-defined according to the position of the texts in the circle.
 Please refer to figure \ref{fig:circlize_text_easy} for examples.
 
-<<circlize_text_easy, echo = FALSE, out.width = "\\textwidth", fig.cap = "Human easy text facing. When {\tt niceFacing} is on, settings in upper two figures are actually identical. Same as the settings in two bottom figures. Red dots represent positions of the texts.">>=
+<<circlize_text_easy, echo = FALSE, out.width = "\\textwidth", fig.cap = "Human easy text facing. When {\\tt niceFacing} is on, settings in upper two figures or bottom two are actually identical. Red dots represent positions of the texts.">>=
 source("src/intro-09-text-niceFacing.R")
 @
 
 There is also a {\tt circos.trackText} in the package.
 
 \subsection{Rectangle}
-If you imagine the plotting region in a cell as Cartesian coordinate, then it draws rectangles.
+If you imagine the plotting region in a cell as Cartesian coordinate, then {\tt circos.rect} draws rectangles.
 In the circle, the up and bottom edge become two arcs. Usage is similar as {\tt rect}, but it
 can only draw one rectangle at a time.
 
@@ -675,7 +683,7 @@ circos.rect(xleft, ybottom, xright, ytop, col, border, lty, lwd)
 @
 
 \subsection{Polygon}
-Similar as {\tt circos.rect} and {\tt polygon}, it draws a polygon through a series
+Similar as {\tt circos.rect} and {\tt polygon}, {\tt circos.polygon} draws a polygon through a series
 of points in a cell:
 
 <<eval = FALSE>>=
@@ -685,18 +693,17 @@ circos.polygon(x, y, col, border, lty, lwd)
 @
 
 In figure \ref{fig:circlize_errorline}, the area of standard deviation of the smoothed line
-is drawn by {\tt circos.polygon}. (Source code is in the examples section of {\tt circos.polygon}
+is drawn by {\tt circos.polygon}. (Source code is in {\it Examples} section of {\tt circos.polygon}
 help page.)
 
-<<circlize_errorline, echo = FALSE, out.width = "0.8\\textwidth", fig.cap = "Area of standard deviation of the smoothed line">>=
+<<circlize_errorline, echo = FALSE, out.width = "0.8\\textwidth", fig.cap = "Area of standard deviation of the smoothed line.">>=
 source("src/intro-10-smooth.R")
 @
 
 \subsection{Axis}
 Because there may be no space to put y-axis, only adding x-axis for each cell is supported by {\tt circos.axis}, as illustrated in figure \ref{fig:circlize_axis}.
 A lot of styles for axis can be set such as the position and length of major ticks, the number of minor ticks,
-the position and direction of the axis labels and the position of the x-axis. Note the adjustment of label strings is defined internally according
-to different label directions to ensure the start/end position of the string is located near the major tick.
+the position and direction of the axis labels and the position of the x-axis. 
 
 In figure \ref{fig:circlize_axis}, axis styles in different sectors are :
 
@@ -730,11 +737,12 @@ circos.axis(h, major.at, labels, major.tick, minor.ticks,
 @
 
 If you really want the y-axes, you can implement one by yourself. It is just a combination
-of lines and text by using {\tt circos.lines} and {\tt circos.text}
+of lines and text by using {\tt circos.lines} and {\tt circos.text}.
 
 \subsection{Links}
-{\tt circos.link} draws links from points and intervals (figure \ref{fig:circlize_link}, top left). If both ends are points, then the link is represented
-as a line. If one of the ends is an interval, the link would be a belt/ribbon. The link is in fact a quadratic Bezier curve. Links do not hold any position as tracks,
+{\tt circos.link} draws links from points and intervals (figure \ref{fig:circlize_link} A). 
+If both ends are single points, the link is represented as a line. If one of the ends is 
+an interval, the link would be a belt/ribbon. Links do not hold any position as tracks,
 so they can be overlapping with tracks.
 
 Possible usage for {\tt circos.link} is:
@@ -747,11 +755,11 @@ circos.link(sector.index1, c(0, 1), sector.index2, 0, col, lwd, lty, border)
 @
 
 
-<<circlize_link, echo = FALSE, out.width = "\\textwidth", fig.cap = "Drawing links. Top right: set different positions of roots; Bottom left: set different height of two borders. Bottom right: set different {\\tt h} and {\\tt w}.">>=
+<<circlize_link, echo = FALSE, out.width = "\\textwidth", fig.cap = "Drawing links. A) set different positions of roots; B) set different height of two borders. C,D) set different {\\tt h} and {\\tt w}.">>=
 source("src/intro-12-link.R")
 @
 
-The position of the `root' of the link is controlled by {\tt rou}. By default, it is the end position of the most recently created track.
+The position of link `root' is controlled by {\tt rou}. By default, it is the end position of the most recently created track.
 So normally, you don't need to care about this setting. The default value of {\tt rou} is calculated by an interval function {\tt get\_most\_inside\_radius}:
 
 <<tidy = TRUE>>=
@@ -759,7 +767,7 @@ circlize:::get_most_inside_radius
 @
 
 By default, the two roots of the link are located in a same circle. The positions of two 
-roots can be assigned with different values by {\tt rou1} and {\tt rou2} (figure \ref{fig:circlize_link}, top right).
+roots can be assigned with different values by {\tt rou1} and {\tt rou2} (figure \ref{fig:circlize_link} B).
 
 <<eval = FALSE>>=
 circos.link(sector.index1, 0, sector.index2, 0, rou)
@@ -768,19 +776,20 @@ circos.link(sector.index1, 0, sector.index2, 0, rou1, rou2)
 
 The height of the link can be controlled by {\tt h} argument in {\tt circos.link}.
 
-When the link represents as a belt/ribbon (i.e. link from point to interval or from interval to interval),
+When the link represents as a ribbon (i.e. link from point to interval or from interval to interval),
 It can not ensure that one border is always below or above the other. Which means, in 
-some cases, the two borders would intersect and it would make the link so ugly. It happens
+some case, the two borders are intersected and the link would be messed up. It happens
 especially when position of the two ends are too close or the width of one end is extremely large while
 the width of the other end is too small. In that case, users can manually set height of the top
-and bottom border by {\tt h} and {\tt h2} (figure \ref{fig:circlize_link}, bottom left).
+and bottom border by {\tt h} and {\tt h2} (figure \ref{fig:circlize_link} C).
 
 <<eval = FALSE>>=
 circos.link(sector.index1, 0, sector.index2, 0, h)
 circos.link(sector.index1, 0, sector.index2, 0, h, h2)
 @
 
-You can also control the shape of the link by {\tt w} and {\tt w2} ({\tt w2} controls the shape of bottom border). Examples are in figure \ref{fig:circlize_link}, bottom right.
+The border of link is in fact a quadratic Bezier curve, so you can control the shape of the 
+link by {\tt w} and {\tt w2} ({\tt w2} controls the shape of bottom border, figure \ref{fig:circlize_link} D).
 For more explanation of {\tt w}, please refer to \url{http://en.wikipedia.org/wiki/B%C3%A9zier_curve#Rational_B.C3.A9zier_curves}.
 
 <<eval = FALSE>>=
@@ -793,8 +802,8 @@ circos.link(sector.index1, 0, sector.index2, 0, w, w2)
 
 {\tt panel.fun} argument in {\tt circos.trackPlotRegion} is useful to apply plotting as soon as the cell has been created. This self-defined
 function needs two arguments {\tt x} and {\tt y} which are data points that belong to this cell. The value for such values are automatically extracted from {\tt x} and {\tt y}
-in {\tt circos.trackPlotRegion} function according to the category argument {\tt factors}. In the following example, {\tt x} in category {\tt a} in {\tt panel.fun}
-would be {\tt 1:3} and {\tt y} values are {\tt 5:3}. If {\tt x} or {\tt y} in {\tt circos.trackPlotRegion} is {\tt NULL}, then {\tt x} or {\tt y} inside
+in {\tt circos.trackPlotRegion} according to the category argument {\tt factors}. In the following example, inside {\tt panel.fun},
+for category {\tt a}, {\tt x} would be {\tt 1:3} and {\tt y} are {\tt 5:3}. If {\tt x} or {\tt y} in {\tt circos.trackPlotRegion} is {\tt NULL}, then {\tt x} or {\tt y} inside
 {\tt panel.fun} is also {\tt NULL}.
 
 <<eval = FALSE>>=
@@ -812,17 +821,19 @@ Remember that when applying {\tt circos.trackPlotRegion}, cells in the track are
 and track index of the cell as the `current' index for the sector and track. When the cell is created, {\tt panel.fun} would be executed immediately. Without specifying
 {\tt sector.index} and {\tt track.index}, the `current' one would be used and that's exactly what you need.
 
-The advantage of {\tt panel.fun} is that it makes you feel you are using graphical functions in traditional graphics engine (You can see it is the same of using {\tt circos.points(x, y)} and {\tt points(x, y)}).
-And you just pretend to draw in regular plotting regions. It will be much easier for users to understand and customize new graphics. 
+The advantage of {\tt panel.fun} is that it makes you feel you are using graphical functions 
+in traditional graphic engine (You can see it is the same of using {\tt circos.points(x, y)} and {\tt points(x, y)}).
+It will be much easier for users to understand and customize new graphics. 
 
 Inside {\tt panel.fun}, more information of the `current' cell can be obtained through
 {\tt get.cell.meta.data}. Also this function takes the `current' sector and `current' track by default,
 Explanation of {\tt get.cell.meta.data} can be found in following section.
 
 
-\subsection{High level plotting functions}
-With those low-level graphical functions such as {\tt circos.points}, {\tt circos.lines},
-more high-level functions can be easily implemented. The package provides a high-level 
+\subsection{High-level plotting functions}
+
+With those low-level graphic functions such as {\tt circos.points}, {\tt circos.lines},
+more high-level functions can be easily implemented. \textbf{circlize} provides a high-level 
 function {\tt circos.trackHist} which draws histograms or the density
 distributions of data (figure \ref{fig:circlize_hist}). Users can learn how to implement
 high-level functions to support graphs such as barplot, heatmap, ... according to the source code of {\tt circos.trackHist}.
@@ -831,18 +842,18 @@ finally uses {\tt circos.rect} or {\tt circos.lines} to draw histograms or densi
 
 In figure \ref{fig:circlize_hist}, the first track is histograms in which all the {\tt ylim} are the same.
 The second track is histograms in which {\tt force.ylim} is {\tt FALSE}.
-The third and the fourth tracks are density distributions in which ylims
+The third and the fourth tracks are density distributions in which y-lims
 are forced same or not.
 
 <<circlize_hist, echo = FALSE, out.width = "0.8\\textwidth", fig.cap = "Histograms in circular layout.">>=
 source("src/intro-14-hist.R")
 @
 
-In figure \ref{fig:circlize_heatmap} you would see heatmap and cluster dendrograms in a circular layout. Heatmap is
+In figure \ref{fig:circlize_heatmap} there are heatmap and cluster dendrograms in circular layout. Heatmap is
 series of grids which can be drawn by {\tt circos.rect}. Dendrograms are series of lines which can be drawn
 by {\tt circos.lines}. However, x-values for heatmaps and dendrograms are not really x-values but just index for
-the grid/leaf (i.e., 1, 2, ... for grid/leaf 1, 2, ...), so it would be hard (or not proper) to make them
-as general functions for circos plotting. Thus we do not provide such {\tt circos.heatmap} or {\tt circos.dendrogram}
+the grid/leaf ({\it i.e.}, 1, 2, ...), so it would be hard (or not proper) to make them
+as general functions for the circos plot. Thus we do not provide such {\tt circos.heatmap} or {\tt circos.dendrogram}
 in the package for public use. Anyway, we still wrote a not-full-functional {\tt circos.dendrogram} which can be found at
 \url{http://jokergoo.github.io/circlize/example/genomic_heatmap.html}. If you want to draw heatmap or dendrogram by your own, this may be 
 helpful for you, especially when you want to customize a complicated phylogenic tree.
@@ -853,7 +864,7 @@ source("src/intro-15-heatmap.R")
 
 \subsection{Other functions}
 
-{\tt get.cell.meta.cell} can provide detailed information for a cell. It needs the index
+{\tt get.cell.meta.data} can provide detailed information for a cell. It needs the index
 of sector and track as arguments. As usual, it uses `current' index by default.
 
 <<eval = FALSE>>=
@@ -864,35 +875,34 @@ get.cell.meta.data(name, sector.index, track.index)
 Items that can be extracted by {\tt get.cell.meta.data} are:
 
 \begin{itemize}
-  \item {\tt sector.index}: The name (label) for the sector
-  \item {\tt sector.numeric}.index: Numeric index for the sector. It is the numeric order of levels of {\tt factors} in initialization step.
-  \item {\tt track.index}: Numeric index for the track
-  \item {\tt xlim}: Minimal and maximal values on the x-axis
-  \item {\tt ylim}: Minimal and maximal values on the y-axis
-  \item {\tt xcenter}: mean of {\tt xlim}
-  \item {\tt ycenter}: mean of {\tt ylim}
-  \item {\tt xrange}: Range of {\tt xlim}
-  \item {\tt yrange}: Range of {\tt ylim}
-  \item {\tt cell.xlim}: Minimal and maximal values on the x-axis extended by cell paddings
-  \item {\tt cell.ylim}: Minimal and maximal values on the y-axis extended by cell paddings
-  \item {\tt xplot}: Right and left border degree for the plotting region in the unit circle.
+  \item {\tt sector.index}: The name (label) for the sector.
+  \item {\tt sector.numeric}.index: Numeric index for the sector. It is the numeric order of {\tt factors} levels in initialization step.
+  \item {\tt track.index}: Numeric index for the track.
+  \item {\tt xlim}: Minimal and maximal values on the x-axis.
+  \item {\tt ylim}: Minimal and maximal values on the y-axis.
+  \item {\tt xcenter}: mean of {\tt xlim}.
+  \item {\tt ycenter}: mean of {\tt ylim}.
+  \item {\tt xrange}: Range of {\tt xlim}.
+  \item {\tt yrange}: Range of {\tt ylim}.
+  \item {\tt cell.xlim}: Minimal and maximal values on the x-axis extended by cell paddings.
+  \item {\tt cell.ylim}: Minimal and maximal values on the y-axis extended by cell paddings.
+  \item {\tt xplot}: Degree of right and left borders in the plotting region.
                         The first element corresponds to the start point of values on x-axis ({\tt cell.xlm[1]})
                         and the second element corresponds to the end point of values on x-axis ({\tt cell.xlim[2]})
                         Since x-axis in data coordinate in cells are always clockwise, {\tt xplot[1]} is larger
                         than {\tt xplot[2]}.
-  \item {\tt yplot}: Bottom and top radius value for borders of the plotting region. It is the value
-                        of radius of arc corresponding to inner border or outer border.
-  \item {\tt cell.start.degree}: Same as {\tt xplot[1]}
-  \item {\tt cell.end.degree}: Same as {\tt xplot[2]}
-  \item {\tt cell.bottom.radius}: Same as {\tt yplot[1]}
-  \item {\tt cell.top.radius}: Same as {\tt yplot[2]}
-  \item {\tt track.margin}: Margins for the cell
-  \item {\tt cell.padding}: Paddings for the cell
+  \item {\tt yplot}: Radius of bottom and top radius in the plotting region.
+  \item {\tt cell.start.degree}: Same as {\tt xplot[1]}.
+  \item {\tt cell.end.degree}: Same as {\tt xplot[2]}.
+  \item {\tt cell.bottom.radius}: Same as {\tt yplot[1]}.
+  \item {\tt cell.top.radius}: Same as {\tt yplot[2]}.
+  \item {\tt track.margin}: Margins of the cell.
+  \item {\tt cell.padding}: Paddings of the cell.
 \end{itemize}
 
 One common use of {\tt get.cell.meta.data} is to put inside {\tt panel.fun} when calling
 {\tt circos.trackPlotRegion}, then you can get detailed information for the `current` cell
-that you want to put graphics.
+where you want to put graphics.
 
 
 The core function {\tt circlize} transform from data coordinate (coordinate in the cells) 
@@ -917,7 +927,7 @@ are different.
 {\tt draw.sector} draws sectors, rings or their parts. This is useful if you want to highlight 
 some part of your circos plot. As you can guess, this function needs arguments of the position 
 of circle center, the start degree and the end degree for sectors, and radius for two edges 
-(or one edge) which may be the up or bottom border of a cell. Actually, {\tt draw.sector} is
+(or one edge) which are up or bottom border of a cell. Actually, {\tt draw.sector} is
 independent from the circos plot.
 
 <<eval = FALSE>>=
@@ -935,7 +945,7 @@ draw.sector(start.degree, end.degree, clock.wise = FALSE)
 
 Following code shows some examples of {\tt draw.sector} (figure \ref{fig:circlize_draw_sector_general}).
 
-<<circlize_draw_sector_general, echo = FALSE, out.width = "0.8\\textwidth", fig.cap = "Examples of {\\tt draw.sector}">>=
+<<circlize_draw_sector_general, out.width = "0.8\\textwidth", fig.cap = "Examples of {\\tt draw.sector}.">>=
 par(mar = c(1, 1, 1, 1))
 plot(c(-1, 1), c(-1, 1), type = "n", axes = FALSE, ann = FALSE)
 draw.sector(20, 0)
@@ -967,7 +977,7 @@ If we want to highlight sector a:
 <<circlize_highlight_2, eval = FALSE>>=
 draw.sector(get.cell.meta.data("cell.start.degree", sector.index = "a"),
             get.cell.meta.data("cell.end.degree", sector.index = "a"),
-            col = "#FF000040")
+            rou1 = 1, col = "#FF000040")
 @
 
 If we want to highlight track 1:
@@ -991,7 +1001,7 @@ draw.sector(get.cell.meta.data("cell.start.degree", sector.index = "e"),
 
 If we want to highlight specific regions such as a small region inside cell ({\tt h:2}),
 we can use {\tt circlize} to calculate the exact positions on the circle. But always
-keep in mind that x-axes in the cell are always clock wise.
+keep in mind that x-axis in the cell are always clock wise.
 
 <<circlize_highlight_5, eval = FALSE>>=
 pos = circlize(c(0.2, 0.8), c(0.2, 0.8), sector.index = "h", track.index = 2)
@@ -1029,20 +1039,20 @@ invisible(dev.off())
 It can also add labels to cells by {\tt circos.info(plot = TRUE)}.
 
 \subsection{Do not forget {\tt circos.clear}}
-You should always call {\tt circos.clear} to complete the circos plottings. Because there are several
+You should always call {\tt circos.clear} to complete the circos plot. Because there are several
 parameters for circos plot which can only be set before {\tt circos.initialize}. So before you draw the next
 circos plot, you need to reset all these parameters.
 
-\subsection{A simple example of implementing high level graphics}
+\subsection{A simple example of implementing high-level graphics}
 
 We will show a simple example (figure \ref{fig:circlize_combine}) which combines several 
-low-level graphical functions to construct a complicated graphic for specific purpose.
+low-level graphic functions to construct complicated graphics for specific purpose.
 
 In the following code, we make histogram in another circular way. The bars are added by
 {\tt circos.rect}, reference lines are added by {\tt circos.lines}, labels are added by
 {\tt circos.text} and axes are added by {\tt circos.axis}.
 
-<<circlize_combine, out.width = "0.8\\textwidth", fig.cap = "Combine low-level graphical functions to generate high-level graphic.">>=
+<<circlize_combine, out.width = "0.8\\textwidth", fig.cap = "Combine low-level graphic functions to generate high-level graphics.">>=
 category = paste0("category", "_", 1:10)
 percent = sort(sample(40:80, 10))
 color = rev(rainbow(length(percent)))
@@ -1077,14 +1087,14 @@ circos.clear()
 \subsection{Zooming of sectors}
 
 Under the default settings, width of sectors are calculated according to the range of data 
-in each category. In some circumstance, you many want to manually set the width of each 
+in each category. In some circumstance, you may want to manually set the width of each 
 sector. Normally it is not a good idea since width of sectors can reflect useful information of your data. However, 
 sometimes it is useful to modify the width of sectors, e.g., you want to put your plot only 
 in half of the circle while in the other half of the circle, zooming of certain sectors are applied.
 The width of sectors can be manually set by {\tt sector.width} argument in {\tt circos.initialize}. 
 The value for the argument should be a vector with length of either one or as same as the 
 number of categories (again, order of {\tt sector.width} vector corresponds to the order of levels of {\tt factors}). 
-{\tt sector.width} is relative values, and it will be scaled to percentage 
+{\tt sector.width} is relative value, and it will be scaled to percentage 
 (e.g. if you set {\tt sector.width} to {\tt c(1, 3)}, it will be scaled as {\tt c(0.25, 0.75)}).
 
 In order to zoom e.g. one sector, the copy of the data corresponding to this sector
@@ -1099,7 +1109,7 @@ one data frame.
 df = data.frame(factors = sample(letters[1:6], 100, replace = TRUE),
                 x = rnorm(100),
                 y = rnorm(100),
-				stringsAsFactors = FALSE)
+                stringsAsFactors = FALSE)
 @
 
 Extract the data for sector a and b, and assign to a new variable.
@@ -1152,14 +1162,14 @@ circos.link("a", get.cell.meta.data("cell.xlim", sector.index = "a"),
 circos.clear()
 @
 
-<<circlize_zoom, out.width = "0.8\\textwidth", fig.cap = "Zoom sectors.">>=
+<<circlize_zoom, echo = FALSE, out.width = "0.8\\textwidth", fig.cap = "Zoom sectors.">>=
 <<circlize_zoom_1>>
 <<circlize_zoom_2>>
 @
 
 \subsection{Draw part of the circos layout}
 
-{\tt canvas.xlim} and {\tt canvas.ylim} in {\tt circos.par} is useful to draw only part of circle. In the example,
+{\tt canvas.xlim} and {\tt canvas.ylim} in {\tt circos.par} is useful to make figures on only part of circle. In the example,
 only sectors between $0^\circ$ to $90^\circ$ are plotted (figure \ref{fig:circlize_part}). First, four sectors
 with the same width are initialized. Then only the first sector is drawn with points and lines. From figure \ref{fig:circlize_part},
 we in fact created the whole circle, but only a quarter of the circle is in the canvas region. Codes are as follows. 
@@ -1186,10 +1196,10 @@ circos.clear()
 source("src/intro-17-part.R")
 @
 
-In the second situation, you don't need some sectors or cells but still you need to draw the whole circle.
+In the second situation, in some tracks, you only need to add graphic on subset of sectors.
 Remember when you are creating new track with {\tt circos.trackPlotRegion} and set {\tt bg.col} and {\tt bg.border}
-to {\tt NA}, it means create the new track and draw nothing. After that, you can use {\tt circos.updatePlotRegion} to update
-these invisible cells of interest to add graphics on it (figure \ref{fig:circlize_part2}).
+to {\tt NA}, it means create the new track while draw nothing. After that, you can use {\tt circos.updatePlotRegion} to update
+these invisible cells of interest and add graphics on it (figure \ref{fig:circlize_part2}).
 
 <<eval=FALSE>>=
 par(mar = c(1, 1, 1, 1))
@@ -1212,7 +1222,7 @@ circos.trackPlotRegion(factors = factors, ylim = c(0, 1))
 circos.clear()
 @
 
-<<circlize_part2, echo = FALSE, out.width = "0.8\\textwidth", fig.cap = "Only plot subset of sectors in certain track.">>=
+<<circlize_part2, echo = FALSE, out.width = "0.8\\textwidth", fig.cap = "Only plot subset of sectors in certain tracks.">>=
 source("src/intro-18-part2.R")
 @
 
@@ -1221,11 +1231,11 @@ source("src/intro-18-part2.R")
 \subsection{Combine more than one circos plots}
 
 Since circular layout by \textbf{circlize} is finally plotted in an ordinary R plotting system.
-Two seperated circular layouts can be plotted together by some tricks. Here the secret is 
+Two seperated circular layouts can be plotted together by some tricks. Here the key is 
 {\tt par(new = TRUE)} which allows to draw a new figure on the previous canvas region.
 {\bf Just remember the radius of the circos is always 1.}
 
-The first example is to draw one outer circos plot and an inner circos plot (figure \ref{fig:circlize_nested}).
+The first example is to make one outer circos plot and an inner circos plot (figure \ref{fig:circlize_nested}).
 
 <<eval=FALSE>>=
 par(mar = c(1, 1, 1, 1))
@@ -1250,7 +1260,7 @@ circos.clear()
 source("src/intro-19-nested.R")
 @
 
-The second example is drawing two separated circular layouts in which every
+The second example is to make two separated circos plot in which every
 circos plot only contains a half (figure \ref{fig:circlize_separated}).
 
 <<eval=FALSE>>=
@@ -1278,12 +1288,12 @@ circos.text(0.5, 0.5, "second one")
 circos.clear()
 @
 
-<<circlize_separated, echo = FALSE, out.width = "\\textwidth", fig.cap = "Two seperated circos plots">>=
+<<circlize_separated, echo = FALSE, out.width = "\\textwidth", fig.cap = "Two separated circos plots">>=
 source("src/intro-20-seperated.R")
 @
 
 The third example is to draw sectors with different radius (figure \ref{fig:circlize_diff_radius}). In fact,
-it draws four circos graphs in which only one sector of each graphs is plotted. Note links
+it makes four circos plots in which only one sector of each graphs is plotted. Note links
 can not be drawn in these different sectors because links can only be drawn in one circos
 plot. 
 
@@ -1305,10 +1315,10 @@ for(i in 1:4) {
 par(new = FALSE)
 @
 
-It is different from example in ``Draw part of the circular layout'' section. In that example,
+It is different from example in ``Draw part of the circos layout'' section. In that example,
 cells both visible and invisible all belong to a same track and they are in a same circos plot, so they
-should have same radius. But here, cells have different radius to the center of the circle and they
-belong to different circos plot (although only part of each circos plot is visible).
+should have same radius. But here, cells have different radius and they
+belong to different circos plot.
 
 
 <<circlize_diff_radius, echo = FALSE, out.width = "0.8\\textwidth", fig.cap = "Sectors with different radius.">>=
@@ -1318,9 +1328,9 @@ source("src/intro-21-diffradius.R")
 
 \subsection{Draw outside and combine with canvas coordinate}
 
-Sometimes it is very useful to draw something outside the plotting region of cell. (You can think it is
+Sometimes it is very useful to draw something outside plotting region. (You can think it is
 similar as {\tt par(xpd = NA)} setting.) The following is a simple
-example to illustrate such circumstance (figure \ref{fig:circlize_outside}). The text is drawn outside the cell.
+example to illustrate such circumstance (figure \ref{fig:circlize_outside}).
 
 <<eval=FALSE, echo=TRUE>>=
 set.seed(12345)
@@ -1342,20 +1352,20 @@ legend("bottomleft", pch = 1, legend = "this is the legend")
 circos.clear()
 @
 
-Since the final graphic is drawn in an ordinary canvas plotting region, we can add additional graphics through
-the traditional way. It is useful to add some legends or marks on the figure. You can see how {\tt text} and {\tt legend} work in the example code.
+Since the final graphics are plotted in an ordinary canvas plotting region, we can add additional graphics through
+the traditional way, such as legends, texts, ...
 
-<<circlize_outside, echo = FALSE, out.width = "0.8\\textwidth", fig.cap = "Draw outside the cell and combine with canvas coordinate">>=
+<<circlize_outside, echo = FALSE, out.width = "0.8\\textwidth", fig.cap = "Draw outside the cell and combine with canvas coordinate.">>=
 source("src/intro-22-outside.R")
 @
 
 
 \subsection{Arrange figures with layouts}
 
-You can use {\tt layout} to arrange multiple figures together (also it is available from {\tt par(mfrow)}
+You can use {\tt layout} to arrange multiple figures together (also it is available by {\tt par(mfrow)}
 or {\tt par(mfcol)}) (figure \ref{fig:circlize_layout}). 
 
-<<circlize_layout, out.width = "\\textwidth", fig.cap = "Arrangen multiple circos plots.">>=
+<<circlize_layout, out.width = "\\textwidth", fig.cap = "Arrange multiple circos plots.">>=
 layout(matrix(1:9, 3, 3))
 for(i in 1:9) {
     factors = 1:8

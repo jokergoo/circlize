@@ -14,8 +14,8 @@ opts_chunk$set(fig.pos = "")
 
 library(circlize)
 chordDiagram = function(...) {
-	circos.par(unit.circle.segments = 350)
-	circlize::chordDiagram(...)
+    circos.par(unit.circle.segments = 400)
+    circlize::chordDiagram(...)
 }
 @
 
@@ -43,7 +43,7 @@ chordDiagram = function(...) {
 One unique feature of circular layout is the links (or connectors) to represent relations
 between elements (\url{http://circos.ca/intro/tabular_visualization/}). The name
 of such plot is sometimes called Chord Diagram (\url{http://en.wikipedia.org/wiki/Chord_diagram}). 
-In {\tt circlize}, it is easy to plot it in a straightforward or customized way.
+In \textbf{circlize}, it is easy to plot it in a straightforward or customized way.
 
 \section{Start from ground}
 Normally, the relationship can be represented as a matrix in which values in $i^{th}$ row 

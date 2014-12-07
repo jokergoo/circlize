@@ -27,17 +27,17 @@
 # -chromosome Sorted chromosome names
 # -chr.len    Length of chromosomes. Order are same as ``chromosome``
 #
-read.cytoband = function(cytoband = paste(system.file(package = "circlize"),
-    "/extdata/cytoBand.txt", sep=""), species = NULL, sort.chr = TRUE) {
+read.cytoband = function(cytoband = paste0(system.file(package = "circlize"),
+    "/extdata/cytoBand.txt"), species = NULL, sort.chr = TRUE) {
 	
 	if(!is.null(species)) {
-		url = paste("http://hgdownload.cse.ucsc.edu/goldenPath/", species, "/database/cytoBand.txt.gz", sep = "")
+		url = paste("http://hgdownload.soe.ucsc.edu/goldenPath/", species, "/database/cytoBand.txt.gz", sep = "")
 		cytoband = paste0(circos.par("__tempdir__"), "/", species, "_cytoBand.txt.gz")
 		if(!file.exists(cytoband)) {
 			e = try(download.file(url, destfile = cytoband, quiet = TRUE), silent = TRUE)
 			if(class(e) == "try-error") {
 				file.remove(cytoband)
-				stop("Seems your species name is wrong or UCSC does not provide cytoband data for your species\nor internet connection was interrupted.\nIf possible, download cytoBand file from\n", url, "\nand use `read.cytoband(file)`.\n")
+				stop("Seems your species name is wrong or UCSC does not provide cytoband data\nfor your species or internet connection was interrupted.\nIf possible, download cytoBand file from\n", url, "\nand use `read.cytoband(file)`.\n")
 			}
 		}
 	}
@@ -117,7 +117,7 @@ cytoband.col = function(x) {
 # The function will uniformly sample positions from human genome. Chromosome names start with "chr"
 # and positions are sorted. The final number of rows may not be exactly as same as ``nr``.
 generateRandomBed = function(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0.5),
-    species = "hg19") {
+    species = NULL) {
 	cyto = read.cytoband(species = species)
 	chr.len = cyto$chr.len
 	chromosome = cyto$chromosome

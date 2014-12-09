@@ -48,10 +48,17 @@ The {\tt bird.orders} data we are using here is from \textbf{ape} package. This 
 related to species of birds. We split the tree into six sub trees by {\tt cutree}
 and convert the data into a {\tt dendrogram} object.
 
-<<>>==
+<<eval = FALSE>>=
 library(ape)
 data(bird.orders)
 hc = as.hclust(bird.orders)
+@
+
+<<echo = FALSE>>=
+load(paste0(system.file(package = "circlize"), "/extdata/bird.orders.RData"))
+@
+
+<<>>=
 labels = hc$labels  # name of birds
 ct = cutree(hc, 6)  # cut tree into 6 pieces
 n = length(labels)  # number of bird species
@@ -82,7 +89,7 @@ we plot the name of each bird, with different colors to represent different sub 
 
 {\tt maxy} is the maximum height of tree and is used to calculate the height of the track.
 
-<<phylogenetic_tree_part1, eval = FALSE>>==
+<<phylogenetic_tree_part1, eval = FALSE>>=
 library(circlize)
 par(mar = c(1, 1, 1, 1))
 circos.par(cell.padding = c(0, 0, 0, 0))
@@ -108,7 +115,7 @@ use the same function to draw dendrogram in the regular Cartesian coordinate sys
 Note in following example, argument {\tt maxy} is important if you have more than one trees
 that are put on a same track.
 
-<<>>==
+<<>>=
 # == param
 # -dend a `dendogram` object
 # -maxy the maximum height of the tree is a global attribute,
@@ -168,7 +175,7 @@ circos.dendrogram = function(dend, maxy = attr(dend, "height")) {
 
 Finally add the circular dendrogram to the second track:
 
-<<phylogenetic_tree_part2, eval = FALSE>>==
+<<phylogenetic_tree_part2, eval = FALSE>>=
 circos.trackPlotRegion(ylim = c(0, maxy), bg.border = NA, 
     track.height = 0.4, panel.fun = function(x, y) {
         circos.dendrogram(dgm, maxy)

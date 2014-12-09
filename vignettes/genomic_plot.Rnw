@@ -1227,7 +1227,8 @@ and which track the text is in, the usage of {\tt posTransform.text} is a little
 Currently, {\tt posTransform.text} only makes sense if it is called inside {\tt circos.genomicText} 
 and only works when {\tt facing} is set to {\tt clockwise} or {\tt reverse.clockwise}.
 
-In following example code, using {\tt posTransform.text} is quite similar as {\tt posTransform.default}:
+In following example code, using {\tt posTransform.text} is quite similar as {\tt posTransform.default}
+(but note this function is quit experimental):
 
 <<eval=FALSE>>=
 bed = generateRandomBed(nr = 400, fun = function(k) rep("text", k))
@@ -1317,6 +1318,136 @@ is available in the help page of {\tt posTransform.text}.
 <<genomic_text_pos_transformation, echo = FALSE, out.width = "\\textwidth", fig.cap = "Transformation of text positions.">>=
 source("src/genomic-07-posTransformLinesText.R")
 @
+
+\subsubsection{How about if I have a lot of labels?}
+
+Position transformation is applied inside each chromosome, which means, the transformed new positions
+are still located in the original chromosome. This would cause a problem that if you have 
+a lot of labels to put, they will overlap with each other (figure \ref{fig:genome_more_labels} B). Unfortunately there is no simple solution
+to extend the positions outside of the chromosome.
+
+Anyway, we provide a 'not-too-perfect' solution but the code is a little bit lengthy (figure \ref{fig:genome_more_labels} A). The idea
+is to put labels and transformation lines in one same track. Here we use {\tt posTransform.text}
+directly to calculate the transformed positions.
+
+To make a clear demonstration, we only add graphics in the first quarter of the circle, only 
+on one chromosome.
+
+<<genome_more_labels_1, eval = FALSE>>=
+set.seed(999)
+bed = generateRandomBed(nr = 800, fun = function(k) rep("text", k))
+
+par(mar = c(1, 1, 1, 1))
+circos.par(start.degree = 75, canvas.xlim = c(0, 1), canvas.ylim = c(0, 1), 
+    gap.degree = 300, cell.padding = c(0, 0, 0, 0), track.margin = c(0, 0))
+circos.initializeWithIdeogram(plotType = NULL, chromosome.index = "chr1")
+@
+
+The steps inside {\tt panel.fun} are:
+
+\begin{enumerate}
+    \item Original positions are plotted as dots.
+    \item In order to get rid of text overlapping, we separate the text into two groups.
+    One group of text are plotted lower than the other group. In following code, the x-axis 
+    is splitted into 6 intervals and {\tt region} and {\tt value} are separated into groups
+    by looking at whether the middle points of the corresponding region are in the odd intervals (i.e., the first interval, the third interval, ...)
+    or even intervals. Of course, in this step, users should determine their own rule to separate the groups.
+    \item Different positions for text are assigned according to their groups.
+    \item Do the position transformation on text and add labels correspond to different {\tt y}.
+    \item Add the identification line manually. Note the line for lower text and higher text
+	are different. We do something more to make sure lines which points to higher text do not overlap
+	with lower text too much.
+\end{enumerate}
+
+<<genome_more_labels_1, eval = FALSE>>=
+circos.genomicTrackPlotRegion(bed, ylim = c(0, 1), panel.fun = function(region, value, ...) {
+    
+    circos.genomicPoints(region, data.frame(rep(0, nrow(region))), pch = 16)
+        
+    xlim = get.cell.meta.data("xlim")
+    breaks = seq(xlim[1], xlim[2], length.out = 7)
+    midpoints = (region[[1]] + region[[2]])/2
+    for(i in seq_along(breaks)[-1]) {
+        l = midpoints >= breaks[i - 1] & midpoints < breaks[i]
+        
+        if(sum(l) == 0) next
+        
+        sub_region = region[l, , drop = FALSE]
+        sub_value = value[l, , drop = FALSE]
+        
+        if(i %% 2 == 0) {
+		    y = 0.2
+		} else {
+		    y = 0.8
+		}
+		
+        tr_region = posTransform.text(sub_region, y = y, labels = sub_value[[1]], 
+            cex = 0.8, adj = c(0, 0.5))
+        circos.genomicText(tr_region, sub_value, labels.column = 1, y = y, 
+            adj = c(0, 0.5), facing = "clockwise", niceFacing = TRUE, cex = 0.8)
+            
+		if(i %% 2 == 0) {	
+			for(i in seq_len(nrow(sub_region))) {
+                x = c( (sub_region[i, 1] + sub_region[i, 2])/2,
+                       (sub_region[i, 1] + sub_region[i, 2])/2,
+                       (tr_region[i, 1] + tr_region[i, 2])/2,
+                       (tr_region[i, 1] + tr_region[i, 2])/2)
+                y = c(0, 0.2/3, 0.2/3*2, 0.2)
+                circos.lines(x, y)
+            }
+        } else {
+            median_sub_region_midpoint = median(midpoints[l])
+            sub_region_width = max(midpoints[l]) - min(midpoints[l])
+            for(i in seq_len(nrow(sub_region))) {
+                x = c( (sub_region[i, 1] + sub_region[i, 2])/2,
+                       (sub_region[i, 1] + sub_region[i, 2])/2,
+                       median_sub_region_midpoint + 
+                           sub_region_width*(i - nrow(sub_region))/nrow(sub_region) * 0.2,
+                       median_sub_region_midpoint + 
+                           sub_region_width*(i - nrow(sub_region))/nrow(sub_region) * 0.2,
+                       (tr_region[i, 1] + tr_region[i, 2])/2,
+                       (tr_region[i, 1] + tr_region[i, 2])/2)
+                y = c(0, 0.1, 0.2, 0.6, 0.7, 0.8)
+                circos.lines(x, y)
+            }
+        }
+    }
+    
+}, track.height = 0.2, bg.border = NA)
+
+circos.clear()
+@
+
+
+<<genome_more_labels, echo = FALSE, out.width = "\\textwidth", out.height = "0.5\\textwidth", fig.width = 10, fig.height = 5, fig.cap = "Position transformation for a lot of text. A) put text on two layers; B) put text on one layer.">>=
+par(mfrow = c(1, 2), mar = c(1, 1, 1, 1))
+<<genome_more_labels_1>>
+text(0.1, 0.1, "A", cex = 1.5)
+
+<<genome_more_labels_2>>
+par(mar = c(1, 1, 1, 1))
+circos.par(start.degree = 75, canvas.xlim = c(0, 1), canvas.ylim = c(0, 1), gap.degree = 300, cell.padding = c(0, 0, 0, 0), track.margin = c(0, 0))
+circos.initializeWithIdeogram(plotType = NULL, chromosome.index = "chr1")
+circos.genomicTrackPlotRegion(bed, ylim = c(0, 1), panel.fun = function(region, value, ...) {
+    circos.genomicText(region, value, y = 0, labels.column = 1, facing = "clockwise", adj = c(0, 0.5),
+        posTransform = posTransform.text, cex = 0.8, niceFacing = F)
+}, track.height = 0.1, bg.border = NA)
+i_track = get.cell.meta.data("track.index")
+
+circos.genomicPosTransformLines(bed, 
+    posTransform = function(region, value) posTransform.text(region, y = 0, labels = value[[1]], cex = 0.8, track.index = i_track),
+    direction = "outside"
+)
+
+circos.genomicTrackPlotRegion(bed, ylim = c(0, 1), panel.fun = function(region, value, ...) {
+    circos.points( (region[[1]] + region[[2]])/2, rep(0.5, nrow(region)), pch = 16)
+}, track.height = 0.02, bg.border = NA)
+
+circos.clear()
+
+text(0.1, 0.1, "B", cex = 1.5)
+@
+
 
 \subsection{Genomic density and Rainfall plot}
 

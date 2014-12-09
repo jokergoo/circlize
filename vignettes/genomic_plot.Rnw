@@ -1350,16 +1350,16 @@ The steps inside {\tt panel.fun} are:
     \item In order to get rid of text overlapping, we separate the text into two groups.
     One group of text are plotted lower than the other group. In following code, the x-axis 
     is splitted into 6 intervals and {\tt region} and {\tt value} are separated into groups
-    by looking at whether the middle points of the corresponding region are in the odd intervals (i.e., the first interval, the third interval, ...)
+    by looking at whether the middle points of corresponding regions are in the odd intervals (i.e., the first interval, the third interval, ...)
     or even intervals. Of course, in this step, users should determine their own rule to separate the groups.
-    \item Different positions for text are assigned according to their groups.
-    \item Do the position transformation on text and add labels correspond to different {\tt y}.
-    \item Add the identification line manually. Note the line for lower text and higher text
+    \item Positions for text are assigned to new variables according to their groups.
+    \item Do the position transformation on text and add labels at different {\tt y}.
+    \item Add the position transformation line manually. Note the line for lower text and higher text
 	are different. We do something more to make sure lines which points to higher text do not overlap
 	with lower text too much.
 \end{enumerate}
 
-<<genome_more_labels_1, eval = FALSE>>=
+<<genome_more_labels_2, eval = FALSE>>=
 circos.genomicTrackPlotRegion(bed, ylim = c(0, 1), panel.fun = function(region, value, ...) {
     
     circos.genomicPoints(region, data.frame(rep(0, nrow(region))), pch = 16)
@@ -1418,8 +1418,10 @@ circos.genomicTrackPlotRegion(bed, ylim = c(0, 1), panel.fun = function(region, 
 circos.clear()
 @
 
+You can self-define positions of the `necks' of the long transformation lines so that
+they will not overlap with the lower text.
 
-<<genome_more_labels, echo = FALSE, out.width = "\\textwidth", out.height = "0.5\\textwidth", fig.width = 10, fig.height = 5, fig.cap = "Position transformation for a lot of text. A) put text on two layers; B) put text on one layer.">>=
+<<genome_more_labels, echo = FALSE, out.width = "\\textwidth", out.height = "0.5\\textwidth", fig.width = 14, fig.height = 7, fig.cap = "Position transformation for a lot of text. A) put text on two layers; B) put text on one layer.">>=
 par(mfrow = c(1, 2), mar = c(1, 1, 1, 1))
 <<genome_more_labels_1>>
 text(0.1, 0.1, "A", cex = 1.5)

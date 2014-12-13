@@ -1,3 +1,9 @@
+Changes in version 0.2.1
+------------------------------------------------------------------------------
+
+* don't remove temporary folder
+* `value` can be scalar or vector in `circos.genomicPoints`, `circos.genomicLines`, ...
+
 Changes in version 0.2.0
 ------------------------------------------------------------------------------
 

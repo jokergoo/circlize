@@ -470,6 +470,14 @@ circos.genomicPoints = function(region, value, numeric.column = NULL,
 	
 	nr = nrow(region)
 	
+	if(is.atomic(value) && length(value) == 1) {
+		value = data.frame(value = rep(value, nr))
+	}
+	if(is.atomic(value) && length(value) == nr) {
+		value = data.frame(value = value)
+	}
+	if(!is.data.frame(value)) stop("`value` should be a data frame.\n")
+	
 	args = list(...)
 	if(!is.null(args$.param)) {
 		.param = args$.param
@@ -568,6 +576,13 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 	}
 	
 	nr = nrow(region)
+	if(is.atomic(value) && length(value) == 1) {
+		value = data.frame(value = rep(value, nr))
+	}
+	if(is.atomic(value) && length(value) == nr) {
+		value = data.frame(value = value)
+	}
+	if(!is.data.frame(value)) stop("`value` should be a data frame.\n")
 	
 	args = list(...)
 	if(!is.null(args$.param)) {
@@ -701,10 +716,10 @@ circos.genomicRect = function(region, value = NULL,
 		}
 	}
 	
-	if(is.vector(value) && !is.list(value) && length(value) == 1) {
+	if(is.atomic(value) && length(value) == 1) {
 		value = data.frame(value = rep(value, nr))
 	}
-	if(is.vector(value) && !is.list(value) && length(value) == nr) {
+	if(is.atomic(value) && length(value) == nr) {
 		value = data.frame(value = value)
 	}
 	
@@ -726,6 +741,8 @@ circos.genomicRect = function(region, value = NULL,
 		value = cbind(value, ybottom)
 		ybottom.column = ncol(value)
 	}
+	if(is.matrix(value)) value = as.data.frame(value)
+	if(!is.data.frame(value)) stop("`value` should be a data frame.\n")
 	
 	ylim = get.cell.meta.data("ylim", sector.index = sector.index, track.index = track.index)
 	if(is.null(ybottom.column) && is.null(ytop.column)) {
@@ -791,7 +808,7 @@ circos.genomicRect = function(region, value = NULL,
 #
 # == details
 # The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
-circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.column = NULL,
+circos.genomicText = function(region, value = NULL, y = NULL, labels = NULL, labels.column = NULL,
 	numeric.column = NULL, sector.index = get.cell.meta.data("sector.index"), 
 	track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
 	direction = NULL, facing = "inside", niceFacing = FALSE,
@@ -801,8 +818,17 @@ circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.col
 		facing = direction
 		warning("`direction` is deprecated, please use `facing` instead.\n")
 	}
-
+	
 	nr = nrow(region)
+	
+	if(is.vector(value) && !is.list(value) && length(value) == 1) {
+		value = data.frame(value = rep(value, nr))
+		numeric.column = 1
+	}
+	if(is.vector(value) && !is.list(value) && length(value) == nr) {
+		value = data.frame(value = value)
+		numeric.column = 1
+	}
 	
 	args = list(...)
 	if(!is.null(args$.param)) {
@@ -817,15 +843,6 @@ circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.col
 		}
 	}
 	
-	if(is.vector(value) && !is.list(value) && length(value) == 1) {
-		value = data.frame(value = rep(value, nr))
-		numeric.column = 1
-	}
-	if(is.vector(value) && !is.list(value) && length(value) == nr) {
-		value = data.frame(value = value)
-		numeric.column = 1
-	}
-
 	if(!is.null(y)) {
 		if(length(y) == 1) {
 			y = rep(y, nr)
@@ -833,7 +850,9 @@ circos.genomicText = function(region, value, y = NULL, labels = NULL, labels.col
 		value = cbind(value, y)
 		numeric.column = ncol(value)
 	}
-	
+	if(is.matrix(value)) value = as.data.frame(value)
+	if(!is.data.frame(value)) stop("`value` should be a data frame.\n")
+
 	if(is.null(labels) && is.null(labels.column)) {
 		stop("You should either specify `labels` or `labels.column`.\n")
 	}

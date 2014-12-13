@@ -75,6 +75,16 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 				stop("Is `mat` really a symmetric matrix?\n")
 			}
 		}
+
+		if(is.null(rownames(mat)) && is.null(colnames(mat))) {
+			rownames(mat) = paste0("S", seq_len(nrow(mat)))
+			colnames(mat) = paste0("S", seq_len(ncol(mat)))
+		}
+
+		if(!setequal(rownames(mat), colnames(mat))) {
+			stop("Since you specified a symmetric matrix, rownames and colnames should be the same.\n")
+		}
+
 		mat[upper.tri(mat, diag = TRUE)] = 0
 	}
 

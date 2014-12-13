@@ -1,6 +1,7 @@
 Changes in version 0.2.1
 ------------------------------------------------------------------------------
 
+* `colorRamp2`: can only return the 'breaks'
 * `chordDiagram`: assign same names for rows and columns if the input matrix
   is specified symmetric while has no names
 * `chordDiagram`: also check rownames and colnames if the matrix is specified as

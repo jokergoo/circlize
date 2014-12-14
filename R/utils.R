@@ -212,7 +212,7 @@ colorRamp2 = function(breaks, colors, transparency = 0) {
     	if(show_breaks) {
     		return(breaks)
     	}
-    	if(is.null(x) && !return_breaks) {
+    	if(is.null(x) && !show_breaks) {
     		stop("Please specify `x`\n")
     	}
 

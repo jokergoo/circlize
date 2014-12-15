@@ -131,7 +131,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 		}
 		
 		if(!is.null(grid.col)) {
-			if(is.null(names(grid.col)) && length(grid.col) == sum(ncol(mat) + nrow(mat))) {
+			if(is.null(names(grid.col)) && length(grid.col) == length(un)) {
 				grid.col = grid.col[un %in% nn]
 			}
 		}

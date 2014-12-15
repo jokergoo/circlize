@@ -1,6 +1,7 @@
 Changes in version 0.2.1
 ------------------------------------------------------------------------------
 
+* `chordDiagram`: `grid.col` is correctly reduced if rownames and colnames overlap
 * `circos.text`: `font` is passed to `text` function
 * `colorRamp2`: can only return the 'breaks'
 * `chordDiagram`: assign same names for rows and columns if the input matrix

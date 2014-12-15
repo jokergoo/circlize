@@ -841,13 +841,13 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 		if(sum(l1)) {
 			circos.text(x[l1], y[l1], labels[l1], sector.index = sector.index,
 				track.index = track.index, facing = facing1, niceFacing = FALSE, adj = adj1,
-				cex = cex, col = col, ...)
+				cex = cex, col = col, font = font, ...)
 		}
 		
 		if(sum(l2)) {
 			circos.text(x[l2], y[l2], labels[l2], sector.index = sector.index,
 				track.index = track.index, facing = facing2, niceFacing = FALSE, adj = adj2,
-				cex = cex, col = col, ...)
+				cex = cex, col = col, font = font, ...)
 		}
 		return(invisible(NULL))
 	}
@@ -890,9 +890,8 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
         } else if(facing == "outside") {
 			srt = srt + 180
 		}
-    
+
 		m = polar2Cartesian(d)
-		
 		for(i in seq_along(x)) {
 			text(m[i, 1], m[i, 2], labels = labels[i], srt = srt[i],
 				 cex = cex[i], col = col[i], font = font[i], adj = adj, ...)

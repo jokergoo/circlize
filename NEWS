@@ -1,6 +1,7 @@
 Changes in version 0.2.1
 ------------------------------------------------------------------------------
 
+* `circos.text`: `font` is passed to `text` function
 * `colorRamp2`: can only return the 'breaks'
 * `chordDiagram`: assign same names for rows and columns if the input matrix
   is specified symmetric while has no names

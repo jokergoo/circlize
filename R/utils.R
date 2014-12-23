@@ -208,11 +208,8 @@ colorRamp2 = function(breaks, colors, transparency = 0) {
 	
     transparency = ifelse(transparency > 1, 1, ifelse(transparency < 0, 0, transparency))
 
-    function(x = NULL, show_breaks = FALSE) {
-    	if(show_breaks) {
-    		return(breaks)
-    	}
-    	if(is.null(x) && !show_breaks) {
+    fun = function(x = NULL) {
+    	if(is.null(x)) {
     		stop("Please specify `x`\n")
     	}
 
@@ -230,6 +227,9 @@ colorRamp2 = function(breaks, colors, transparency = 0) {
 		attributes(res_col) = att
 		return(res_col)
     }
+    
+    attr(fun, "breaks") = breaks
+    return(fun)
 }
 
 # x: vector

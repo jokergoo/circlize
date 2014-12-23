@@ -4,7 +4,7 @@ Changes in version 0.2.1
 * `.get_color`: there will be no negative value due to 0.000 - 0.000
 * `chordDiagram`: `grid.col` is correctly reduced if rownames and colnames overlap
 * `circos.text`: `font` is passed to `text` function
-* `colorRamp2`: can only return the 'breaks'
+* `colorRamp2`: returned function has an attribute: `breaks`
 * `chordDiagram`: assign same names for rows and columns if the input matrix
   is specified symmetric while has no names
 * `chordDiagram`: also check rownames and colnames if the matrix is specified as

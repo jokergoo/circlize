@@ -1193,6 +1193,8 @@ circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, o
 # a data frame with three columns: start position, end position and percent of overlapping.
 genomicDensity = function(region, window.size = 10000000, overlap = TRUE) {
 	
+	region = region[, 1:2]
+	
 	region = sort_region(region)
 	region = reduce_region(region)
 

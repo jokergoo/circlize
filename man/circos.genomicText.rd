@@ -11,7 +11,7 @@
 
 }
 \usage{
-circos.genomicText(region, value, y = NULL, labels = NULL, labels.column = NULL,
+circos.genomicText(region, value = NULL, y = NULL, labels = NULL, labels.column = NULL,
     numeric.column = NULL, sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), posTransform = NULL,
     direction = NULL, facing = "inside", niceFacing = FALSE,

@@ -241,8 +241,7 @@ colorRamp2 = function(breaks, colors, transparency = 0) {
 	res_rgb = matrix(nrow = 3, ncol = length(x))
 	for(i in seq_along(x)) {
 		xx = abs((x[i] - break2)*(rgb2 - rgb1) / (break2 - break1) + rgb2)
-		xx[xx < 0] = 0
-		xx[xx > 1] = 1
+		xx = round(xx)
 		res_rgb[, i] = xx
 	}
 	return(rgb(t(res_rgb)/255, alpha = 1-transparency))

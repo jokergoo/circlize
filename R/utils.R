@@ -240,9 +240,11 @@ colorRamp2 = function(breaks, colors, transparency = 0) {
 .get_color = function(x, break1, break2, rgb1, rgb2, transparency) {
 	res_rgb = matrix(nrow = 3, ncol = length(x))
 	for(i in seq_along(x)) {
-		res_rgb[, i] = (x[i] - break2)*(rgb2 - rgb1) / (break2 - break1) + rgb2
+		xx = abs((x[i] - break2)*(rgb2 - rgb1) / (break2 - break1) + rgb2)
+		xx[xx < 0] = 0
+		xx[xx > 1] = 1
+		res_rgb[, i] = xx
 	}
-	res_rgb = abs(res_rgb)
 	return(rgb(t(res_rgb)/255, alpha = 1-transparency))
 }
 

@@ -13,6 +13,7 @@ resetGlobalVariable = function() {
 resetGlobalVariable()
 
 tempdir = tempdir()
+dir.create(tempdir, showWarnings = FALSE)
 
 # == title
 # Parameters for circos layout

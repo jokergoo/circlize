@@ -12,9 +12,6 @@ resetGlobalVariable = function() {
 
 resetGlobalVariable()
 
-tempdir = tempdir()
-dir.create(tempdir, showWarnings = FALSE)
-
 # == title
 # Parameters for circos layout
 #
@@ -158,7 +155,7 @@ circos.par = setGlobalOptions(
 		.visible = FALSE,
 		.private = TRUE),
 	'__tempdir__' = list(
-		.value = tempdir,
+		.value = ".",
 		.private = TRUE,
 		.filter = function(x) {dir.create(x, showWarnings = FALSE); return(x)},
 		.visible = FALSE

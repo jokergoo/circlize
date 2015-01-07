@@ -569,7 +569,7 @@ for(si in get.all.sector.index()) {
     xlim = get.cell.meta.data("xlim", sector.index = si, track.index = 1)
     ylim = get.cell.meta.data("ylim", sector.index = si, track.index = 1)
     circos.text(mean(xlim), mean(ylim), si, sector.index = si, track.index = 1, 
-        facing = "bending", col = "white")
+        facing = "bending.inside", col = "white")
 }
 @
 

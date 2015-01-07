@@ -759,8 +759,8 @@ circos.polygon = function(x, y, sector.index = get.cell.meta.data("sector.index"
 circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), direction = NULL,
     facing = c("inside", "outside", "reverse.clockwise", "clockwise",
-	"downward", "bending"), niceFacing = FALSE, adj = par("adj"), cex = 1, col = "black",
-	font = par("font"), ...) {
+	"downward", "bending", "bending.inside", "bending.outside"), niceFacing = FALSE, 
+	adj = par("adj"), cex = 1, col = "black", font = par("font"), ...) {
     
 	if(length(x) != length(y)) {
 		stop("Length of x and y differ.\n")
@@ -803,9 +803,12 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
         }
     }
     facing = match.arg(facing)[1]
-    
-	if(niceFacing && facing %in% c("clockwise", "reverse.clockwise", "inside", "outside")) {
-		if(facing == "clockwise" || facing == "reverse.clockwise") {
+    if(facing == "bending") {
+    	facing = "bending.inside"
+    }
+
+	if(niceFacing && facing %in% c("clockwise", "reverse.clockwise", "inside", "outside", "bending.inside", "bending.outside")) {
+		if(facing %in% c("clockwise", "reverse.clockwise")) {
 			degree = circlize(x, y, sector.index = sector.index, track.index = track.index)[, 1]
 			degree = degree %% 360
 			l1 = degree >= 90 & degree < 270  # should be reverse.clockwise
@@ -821,7 +824,7 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 				facing1 = "reverse.clockwise"
 				facing2 = "clockwise"
 			}
-		} else if(facing == "inside" || facing == "outside") {
+		} else if(facing %in% c("inside", "outside", "bending.inside", "bending.outside")) {
 			degree = circlize(x, y, sector.index = sector.index, track.index = track.index)[, 1]
 			degree = degree %% 360
 			l1 = degree > 0 & degree < 180  # should be inside
@@ -831,11 +834,21 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 				adj2 = 1 - adj
 				facing1 = "inside"
 				facing2 = "outside"
-			} else {
+			} else if(facing == "outside") {
 				adj1 = 1 - adj
 				adj2 = adj
 				facing1 = "inside"
 				facing2 = "outside"
+			} else if(facing == "bending.inside") {
+				adj1 = adj
+				adj2 = 1 - adj
+				facing1 = "bending.inside"
+				facing2 = "bending.outside"
+			} else if(facing == "bending.outside") {
+				adj1 = 1 - adj
+				adj2 = adj
+				facing1 = "bending.inside"
+				facing2 = "bending.outside"
 			}
 		}
 		if(sum(l1)) {
@@ -852,13 +865,26 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 		return(invisible(NULL))
 	}
 	
-	if(facing == "bending") {
+	if(grepl("bending", facing)) {
+
+		print(labels)
+		print(facing)
+		print(adj)
+		cat("\n\n")
+
+		#if(facing == "bending.outside") {
+		#	labels = sapply(labels, rev)
+		#}
 		
 		chars = strsplit(labels, "")
 		nlabel = length(labels)
 		strw = lapply(chars, strwidth, cex = cex, font = font)
 		strh = lapply(chars, strheight, cex = cex, font = font)
 		
+		#if(facing == "bending.outside") {
+		#	adj = 1 - adj
+		#}
+
 		alpha.offset = sapply(strw, function(x) sum(x))*adj[1]/d[, 2] * 180/pi
 		rou.offset = sapply(strh, function(x) -x[1]*adj[2])
 
@@ -873,7 +899,12 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 				alpha = alpha - asin(strw[[i]][j]/d[i, 2])*180/pi
 			}
 			dr = reverse.circlize(theta, rep(rou, length(theta)), sector.index, track.index)
-			circos.text(dr[, 1], dr[, 2], labels = chars[[i]], sector.index = sector.index, track.index = track.index, cex = cex[i], col = col[i], font = font[i], adj = c(0.5, 0), ...)
+
+			if(facing == "bending.inside") {
+				circos.text(dr[, 1], dr[, 2], labels = chars[[i]], sector.index = sector.index, track.index = track.index, cex = cex[i], col = col[i], font = font[i], facing = "inside", adj = c(0.5, 0), ...)
+			} else if(facing == "bending.outside") {
+				circos.text(dr[, 1], dr[, 2], labels = chars[[i]], sector.index = sector.index, track.index = track.index, cex = cex[i], col = col[i], font = font[i], facing = "outside", adj = c(0.5, 0), ...)
+			}
 			#circos.points(dr[, 1], dr[, 2], pch = 16, cex = 0.8)
 		}
 		

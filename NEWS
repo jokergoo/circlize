@@ -1,6 +1,8 @@
 Changes in version 0.2.1
 ------------------------------------------------------------------------------
 
+* `circos.text`: add two options ('bending.inside' which is identical to original
+  'bending' and 'bending.outside'), both support `niceFacing`
 * circos.par('__tempdir__') is initialized by `tempdir()`
 * `.get_color`: there will be no negative value due to 0.000 - 0.000
 * `chordDiagram`: `grid.col` is correctly reduced if rownames and colnames overlap

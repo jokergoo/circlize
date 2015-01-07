@@ -665,7 +665,7 @@ setting {\tt niceFacing} to {\tt TRUE}. This option only works for {\tt facing} 
 and {\tt adj} will be re-defined according to the position of the texts in the circle.
 Please refer to figure \ref{fig:circlize_text_easy} for examples.
 
-<<circlize_text_easy, echo = FALSE, out.width = "\\textwidth", fig.cap = "Human easy text facing. When {\\tt niceFacing} is on, settings in upper two figures or bottom two are actually identical. Red dots represent positions of the texts.">>=
+<<circlize_text_easy, echo = FALSE, out.width = "0.6\\textheight", out.height = "0.9\\textheight", fig.cap = "Human easy text facing. When {\\tt niceFacing} is on, settings in upper two figures or bottom two are actually identical. Red dots represent positions of the texts.">>=
 source("src/intro-09-text-niceFacing.R")
 @
 

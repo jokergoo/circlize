@@ -12,8 +12,8 @@ circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.5, p
     circos.text(0, 5, "reverse.clockwise", facing = "reverse.clockwise", adj = c(0.5, 0), cex = 0.8)
     circos.text(10, 5, "clockwise", facing = "clockwise", adj = c(0.5, 0), cex = 0.8)
     circos.text(5, 5, "downward", facing = "downward", cex = 0.8)
-    circos.text(3, 9, "bending.inside", facing = "bending.inside", cex = 0.8)
-    circos.text(7, 9, "bending.outside", facing = "bending.outside", cex = 0.8)
+    circos.text(3, 9, "====bending.inside====", facing = "bending.inside", cex = 0.8)
+    circos.text(7, 9, "====bending.outside====", facing = "bending.outside", cex = 0.8)
 })
 circos.clear()
 

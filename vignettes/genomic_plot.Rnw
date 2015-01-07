@@ -12,12 +12,12 @@ opts_chunk$set(fig.pos = "", fig.align = "center")
 
 library(circlize)
 circos.genomicInitialize = function(...) {
-    circos.par(unit.circle.segments = 3500)
+    circos.par(unit.circle.segments = 300)
     circlize::circos.genomicInitialize(...)
 }
 
 circos.initializeWithIdeogram = function(...) {
-    circos.par(unit.circle.segments = 350)
+    circos.par(unit.circle.segments = 300)
     circlize::circos.initializeWithIdeogram(...)
 }
 @
@@ -1352,42 +1352,50 @@ The steps inside {\tt panel.fun} are:
     is splitted into 6 intervals and {\tt region} and {\tt value} are separated into groups
     by looking at whether the middle points of corresponding regions are in the odd intervals (i.e., the first interval, the third interval, ...)
     or even intervals. Of course, in this step, users should determine their own rule to separate the groups.
-    \item Positions for text are assigned to new variables according to their groups.
-    \item Do the position transformation on text and add labels at different {\tt y}.
-    \item Add the position transformation line manually. Note the line for lower text and higher text
-	are different. We do something more to make sure lines which points to higher text do not overlap
-	with lower text too much.
+    \item Text in different groups are assigned with different heights ({\tt y}).
+    \item Do the position transformation on text and add labels.
+    \item Add the position transformation lines manually. Note the line for lower text and higher text
+    are different. We do something more to make sure lines which points to higher text do not overlap
+    with lower text too much.
 \end{enumerate}
 
 <<genome_more_labels_2, eval = FALSE>>=
-circos.genomicTrackPlotRegion(bed, ylim = c(0, 1), panel.fun = function(region, value, ...) {
+circos.genomicTrackPlotRegion(bed, ylim = c(0, 1), 
+    panel.fun = function(region, value, ...) {
     
+    # original positions
     circos.genomicPoints(region, data.frame(rep(0, nrow(region))), pch = 16)
         
     xlim = get.cell.meta.data("xlim")
     breaks = seq(xlim[1], xlim[2], length.out = 7)
     midpoints = (region[[1]] + region[[2]])/2
     for(i in seq_along(breaks)[-1]) {
+        # index for current interval
         l = midpoints >= breaks[i - 1] & midpoints < breaks[i]
-        
+        # if there is no data in this interval
         if(sum(l) == 0) next
         
+        # sub-regions in this interval
         sub_region = region[l, , drop = FALSE]
         sub_value = value[l, , drop = FALSE]
         
+        # note here i == 2, 4, 6, ... corresponds to odd intervals
+        # text in odd intervals are in lower position
         if(i %% 2 == 0) {
-		    y = 0.2
-		} else {
-		    y = 0.8
-		}
-		
+            y = 0.2
+        } else {
+            y = 0.8
+        }
+        
+        # get the transformed position and add text with new positions
         tr_region = posTransform.text(sub_region, y = y, labels = sub_value[[1]], 
             cex = 0.8, adj = c(0, 0.5))
         circos.genomicText(tr_region, sub_value, labels.column = 1, y = y, 
             adj = c(0, 0.5), facing = "clockwise", niceFacing = TRUE, cex = 0.8)
-            
-		if(i %% 2 == 0) {	
-			for(i in seq_len(nrow(sub_region))) {
+        
+        # add position transformation lines for odd intervals
+        if(i %% 2 == 0) {    
+            for(i in seq_len(nrow(sub_region))) {
                 x = c( (sub_region[i, 1] + sub_region[i, 2])/2,
                        (sub_region[i, 1] + sub_region[i, 2])/2,
                        (tr_region[i, 1] + tr_region[i, 2])/2,
@@ -1395,7 +1403,7 @@ circos.genomicTrackPlotRegion(bed, ylim = c(0, 1), panel.fun = function(region, 
                 y = c(0, 0.2/3, 0.2/3*2, 0.2)
                 circos.lines(x, y)
             }
-        } else {
+        } else { # add position transformation lines for even intervals
             median_sub_region_midpoint = median(midpoints[l])
             sub_region_width = max(midpoints[l]) - min(midpoints[l])
             for(i in seq_len(nrow(sub_region))) {

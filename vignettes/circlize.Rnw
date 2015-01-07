@@ -35,7 +35,7 @@ opts_chunk$set(fig.pos = "", fig.align = "center")
 
 library(circlize)
 circos.initialize = function(...) {
-    circos.par(unit.circle.segments = 350)
+    circos.par(unit.circle.segments = 300)
     circlize::circos.initialize(...)
 }
 @
@@ -645,9 +645,10 @@ which is identical to {\tt circos.lines} in a {\tt for} loop.
 \subsection{Text}
 Only the facing of text by {\tt circos.text} should be noted, as illustrated in figure \ref{fig:circlize_text}.
 {\tt srt} in {\tt text} has been degenerated as {\tt facing} in {\tt circos.text} which  
-support only six types of rotation that are pre-defined in {\tt c("inside", "outside", "reverse.clockwise", "clockwise", "downward", "bending.inside", "bending.outside")}.
+support eight types of rotation that are pre-defined in ({\tt inside}, {\tt outside}, {\tt reverse.clockwise}, 
+{\tt clockwise}, {\tt downward}, {\tt bending.inside}, {\tt bending.outside}).
 But {\tt adj} argument is still applicable in {\tt circos.text}. Please note for {\tt bending.inside}
-and {\tt bending.outside}, currently, single line text is only supported).
+and {\tt bending.outside}, currently, single line text is only supported.
 Possible usage for {\tt circos.text} is:
 
 <<circlize_text, echo = FALSE, out.width = "0.8\\textwidth", fig.cap = "Text facing.">>=
@@ -667,7 +668,7 @@ setting {\tt niceFacing} to {\tt TRUE}. This option only works for {\tt facing} 
 and {\tt adj} will be re-defined according to the position of the texts in the circle.
 Please refer to figure \ref{fig:circlize_text_easy} for examples.
 
-<<circlize_text_easy, echo = FALSE, out.width = "0.6\\textheight", out.height = "0.9\\textheight", fig.width = 6, fig.height = 10, fig.cap = "Human easy text facing. When {\\tt niceFacing} is on, settings in the same row are actually identical. Red dots represent positions of the texts.">>=
+<<circlize_text_easy, echo = FALSE, out.width = "0.6\\textheight", out.height = "0.9\\textheight", fig.width = 6, fig.height = 9, fig.cap = "Human easy text facing. When {\\tt niceFacing} is on, settings in the same row are actually identical. Red dots represent positions of the texts.">>=
 source("src/intro-09-text-niceFacing.R")
 @
 

@@ -131,9 +131,9 @@ circos.trackPlotRegion(factors = factors, ylim = c(0, 10), panel.fun = function(
 		circos.text(5, 5, "facing = 'bending.outside'\nadj = c(0.5, 0)", facing = "inside", cex = 0.7)
 	} else {
 		circos.points(5, 3, pch = 16, col = "red", cex = 1)
-		circos.text(5, 3, "rawTextrawTextrawTextrawTextrawText", facing = "bending.outside", adj = c(0.5, 0), cex = 0.7)
+		circos.text(5, 3, "rawTextrawTextrawTextrawText", facing = "bending.outside", adj = c(0.5, 0), cex = 0.7)
 		circos.points(5, 7, pch = 16, col = "red", cex = 1)
-		circos.text(5, 7, "niceFacingniceFacingniceFacingniceFacing", facing = "bending.outside", niceFacing = TRUE, adj = c(0.5, 0), cex = 0.7)
+		circos.text(5, 7, "niceFacingniceFacingniceFacing", facing = "bending.outside", niceFacing = TRUE, adj = c(0.5, 0), cex = 0.7)
 	}
 }, track.height = 0.2)
 circos.clear()
@@ -158,9 +158,9 @@ circos.trackPlotRegion(factors = factors, ylim = c(0, 10), panel.fun = function(
 		circos.text(5, 5, "facing = 'bending.inside'\nadj = c(0.5, 1)", facing = "inside", cex = 0.7)
 	} else {
 		circos.points(5, 3, pch = 16, col = "red", cex = 1)
-		circos.text(5, 3, "rawTextrawTextrawTextrawTextrawText", facing = "bending.inside", adj = c(0.5, 1), cex = 0.7)
+		circos.text(5, 3, "rawTextrawTextrawTextrawText", facing = "bending.inside", adj = c(0.5, 1), cex = 0.7)
 		circos.points(5, 7, pch = 16, col = "red", cex = 1)
-		circos.text(5, 7, "niceFacingniceFacingniceFacingniceFacing", facing = "bending.inside", niceFacing = TRUE, adj = c(0.5, 1), cex = 0.7)
+		circos.text(5, 7, "niceFacingniceFacingniceFacing", facing = "bending.inside", niceFacing = TRUE, adj = c(0.5, 1), cex = 0.7)
 	}
 }, track.height = 0.2)
 circos.clear()

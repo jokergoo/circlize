@@ -951,8 +951,8 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 # This function can be replaced by a ``for`` loop containing `circos.text`.
 circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.data("track.index"),
     direction = NULL, facing = c("inside", "outside", "reverse.clockwise", "clockwise",
-	"downward", "bending"), niceFacing = FALSE, adj = par("adj"), cex = 1, col = "black", 
-	font = par("font")) {
+	"downward", "bending", "bending.inside", "bending.outside"), niceFacing = FALSE, 
+    adj = par("adj"), cex = 1, col = "black", font = par("font")) {
     
     # basic check here
     if(length(x) != length(factors) || length(y) != length(factors)) {

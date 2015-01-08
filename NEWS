@@ -1,6 +1,8 @@
 Changes in version 0.2.1
 ------------------------------------------------------------------------------
 
+* If par("mar") is using default, it will be changed to par(mar = c(1, 1, 1, 1))
+  internally and will be recovered after calling circos.clear()
 * `circos.text`: add two options ('bending.inside' which is identical to original
   'bending' and 'bending.outside'), both support `niceFacing`
 * circos.par('__tempdir__') is initialized by `tempdir()`

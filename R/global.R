@@ -158,8 +158,11 @@ circos.par = setGlobalOptions(
 		.value = ".",
 		.private = TRUE,
 		.filter = function(x) {dir.create(x, showWarnings = FALSE); return(x)},
-		.visible = FALSE
-	)
+		.visible = FALSE),
+	'__omar__' = list(   # is par("mar") the default value?
+		.value = FALSE,
+		.private = TRUE,
+		.visible = FALSE)
 )
 
 # before initialization, .SECTOR.DATA is NULL
@@ -362,7 +365,11 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 	assign(".SECTOR.DATA", .SECTOR.DATA, envir = .CIRCOS.ENV)
 	assign(".CELL.DATA", .CELL.DATA, envir = .CIRCOS.ENV)
     
-	
+    circos.par("__omar__" = FALSE)
+	if(identical(par("mar"), c(5.1, 4.1, 4.1, 2.1))) {
+		circos.par("__omar__" = TRUE)
+		par(mar = c(1, 1, 1, 1))
+	}
     # draw everything in a unit circle
 	plot(circos.par("canvas.xlim"), circos.par("canvas.ylim"), type = "n", ann = FALSE, axes = FALSE)
     
@@ -382,8 +389,12 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 circos.clear = function() {
     
 	resetGlobalVariable()
+	if(circos.par("__omar__")) {
+		circos.par("__omar__" = FALSE)
+		par(mar = c(5.1, 4.1, 4.1, 2.1))
+	}
 	circos.par(RESET = TRUE)
-	
+
     return(invisible(NULL))
 }
 

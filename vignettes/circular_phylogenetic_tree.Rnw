@@ -91,7 +91,6 @@ we plot the name of each bird, with different colors to represent different sub 
 
 <<phylogenetic_tree_part1, eval = FALSE>>=
 library(circlize)
-par(mar = c(1, 1, 1, 1))
 circos.par(cell.padding = c(0, 0, 0, 0))
 circos.initialize(factors = "a", xlim = c(0, n)) # only one sector
 maxy = attr(dgm, "height")  # maximum height of the trees
@@ -191,7 +190,7 @@ bars, lines, points, or even highlighting some parts on the tree.
 
 
 <<phylogenetic_tree, echo = FALSE, fig.align = "center", out.width = "0.6\\textwidth", out.height = "1.2\\textwidth", fig.width = 6, fig.height = 12, fig.cap = "A simple phylogenetic tree. Top: circular style; Bottom: normal style.">>=
-par(mar = c(1, 1, 1, 1), mfrow = c(2, 1))
+par(mfrow = c(2, 1))
 <<phylogenetic_tree_part1>>
 <<phylogenetic_tree_part2>>
 par(mar = c(8, 4, 4, 1))

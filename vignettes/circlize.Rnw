@@ -1152,7 +1152,7 @@ circos.trackPlotRegion(df2$factors, x = df2$x, y = df2$y, panel.fun = function(x
     xlim = get.cell.meta.data("xlim")
     ylim = get.cell.meta.data("ylim")
     sector.index = get.cell.meta.data("sector.index")
-    circos.text(mean(xlim), mean(ylim), sector.index)
+    circos.text(mean(xlim), mean(ylim), sector.index, niceFacing = TRUE)
 })
 @
 

@@ -393,7 +393,9 @@ circos.clear = function() {
 		circos.par("__omar__" = FALSE)
 		par(mar = c(5.1, 4.1, 4.1, 2.1))
 	}
+	tmpdir = circos.par("__tempdir__")
 	circos.par(RESET = TRUE)
+	circos.par("__tempdir__" = tmpdir)
 
     return(invisible(NULL))
 }

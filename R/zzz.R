@@ -1,3 +1,3 @@
-.onLoad = function(lib, pkg) {
+setLoadActions(function(ns) {
 	circos.par("__tempdir__" = tempdir())
-}
+})

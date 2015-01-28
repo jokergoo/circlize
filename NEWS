@@ -1,6 +1,7 @@
 Changes in version 0.2.2
 ------------------------------------------------------------------------------
 
+* change `.onLoad` to `setLoadActions`
 * `circos.clear`: __tempdir__ will not be reset
 
 Changes in version 0.2.1

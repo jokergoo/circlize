@@ -2,11 +2,11 @@ Package: circlize
 Type: Package
 Title: Circular Visualization in R
 Version: 0.2.2
-Date: 2015-1-8
+Date: 2015-1-28
 Author: Zuguang Gu
 Maintainer: Zuguang Gu <z.gu@dkfz.de>
 Depends: R (>= 2.10.0)
-Imports: GlobalOptions (>= 0.0.4)
+Imports: GlobalOptions (>= 0.0.6)
 Suggests: knitr
 VignetteBuilder: knitr
 Description: This package implements circular visualization
@@ -15,6 +15,6 @@ Description: This package implements circular visualization
     visualize huge information in a circular style.
 URL: https://github.com/jokergoo/circlize
 License: GPL (>= 2)
-Packaged: 2015-1-8 00:00:00 UTC; Administrator
+Packaged: 2015-1-28 00:00:00 UTC; Administrator
 Repository: CRAN
-Date/Publication: 2015-1-8 00:00:00
+Date/Publication: 2015-1-28 00:00:00

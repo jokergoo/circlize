@@ -40,6 +40,8 @@ circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = 
 		if(length(chromosome) == 0) {
 			stop("Cannot find any chromosome. It is probably related with your chromosome names with or without 'chr' prefix.\nYou can run `circos.info()` to find out which type of chromosome names are used.\n")
 		}
+		cytoband = read.cytoband(df, sort.chr = sort.chr)
+		df = cytoband$df
 	}
 	
 	df = df[df[[1]] %in% chromosome, , drop = FALSE]

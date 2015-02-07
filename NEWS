@@ -1,3 +1,11 @@
+Changes in version 0.2.3
+------------------------------------------------------------------------------
+
+* `chromosome.index` is to set the order of chromosomes
+* add `read.chromInfo()` to read chromInfo file from UCSC
+* if downloading cytoband file failed, try to download chromInfo file
+* `chromosome.index` can be set in `read.cytoband()` and `read.chromInfo()`
+
 Changes in version 0.2.2
 ------------------------------------------------------------------------------
 

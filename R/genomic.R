@@ -7,12 +7,14 @@
 #            Pass to `read.cytoband`.
 # -species Abbreviations of species. e.g. hg19 for human, mm10 for mouse. If this
 #          value is specified, the function will download cytoBand.txt.gz from
-#          UCSC website automatically. Pass to `read.cytoband`.
-# -sort.chr Whether chromosome names should be sorted (first sort by numbers then by letters) when reading cytoband data.
-#           Pass to `read.cytoband`.
-# -chromosome.index Index of chromosomes. The index is used only for subsetting, not for re-ordering.
+#          UCSC website automatically. If there is no cytoband for user's species,
+#          it will keep on trying to download chromInfo file. Pass to `read.cytoband` and `read.chromInfo`.
+# -chromosome.index subset of chromosomes, also used to re-set chromosome orders.
+# -sort.chr Whether chromosome names should be sorted (first sort by numbers then by letters).
+#           If ``chromosome.index`` is set, this argumetn is enforced to ``FALSE``
 # -major.by     Increment of major ticks. Pass to `circos.genomicInitialize`.
-# -plotType     Which tracks should be drawn. ``rect`` for ideogram rectangle, ``axis`` for genomic axis and ``labels`` for chromosome names.
+# -plotType     Which tracks should be drawn. ``ideogram`` for ideogram rectangle, ``axis`` for genomic axis and ``labels`` for chromosome names.
+#               If there is no ideogram for specified species, ``ideogram`` will be enforced to be excluded.
 #               If it is set to ``NULL``, the function just initialize the plot but draw nothing.
 # -track.height Height of the track which contains "axis" and "labels".
 # -ideogram.height Height of the ideogram track
@@ -20,7 +22,8 @@
 #
 # == details
 # The function will initialize the circos plot in which each sector corresponds to a chromosome. You can control the order of 
-# chromosomes by set a special format of ``cytoband`` (please refer to `read.cytoband` to find out how to control a proper ``cytoband``).
+# chromosomes by ``chromosome.index`` or by ``sort.chr``, or by setting a special format of ``cytoband`` (please refer to `read.cytoband` 
+# to find out how to control a proper ``cytoband``).
 #
 # The function finally pass data to `circos.genomicInitialize` to initialize the circos plot.
 #
@@ -31,22 +34,31 @@ circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = 
 	plotType = c("ideogram", "axis", "labels"), 
 	track.height = 0.05, ideogram.height = 0.05, ...) {
 	
-	cytoband = read.cytoband(cytoband, species = species, sort.chr = sort.chr)
+
+	# proper order will be returned depending on cytoband and sort.chr
+	e = try(cytoband <- read.cytoband(cytoband, species = species, sort.chr = sort.chr, chromosome.index = chromosome.index), silent = TRUE)
+	if(class(e) == "try-error" && !is.null(species)) {  # if species is defined
+		e2 = try(cytoband <- read.chromInfo(species = species, sort.chr = sort.chr, chromosome.index = chromosome.index), silent = TRUE)
+		if(class(e2) == "try-error") {
+			message(e)
+			message(e2)
+			stop("Cannot download either cytoband or chromInfo file from UCSC.\n")
+		} else {
+			message("Downloading cytoBand file from UCSC failed. Use chromInfo file instead.\nNote ideogram track will be removed from the plot.")
+			plotType = setdiff(plotType, "ideogram")
+		}
+	} else if(class(e) == "try-error") {
+		stop(e)
+	}
 	df = cytoband$df
 	chromosome = cytoband$chromosome
 	
-	if(! is.null(chromosome.index)) {
-		chromosome = chromosome[chromosome %in% chromosome.index]
-		if(length(chromosome) == 0) {
-			stop("Cannot find any chromosome. It is probably related with your chromosome names with or without 'chr' prefix.\nYou can run `circos.info()` to find out which type of chromosome names are used.\n")
-		}
-		cytoband = read.cytoband(df, sort.chr = sort.chr)
-		df = cytoband$df
+	if(is.null(chromosome.index)) {
+		chromosome.index = chromosome
 	}
-	
-	df = df[df[[1]] %in% chromosome, , drop = FALSE]
+
 	# here df[[1]] is quite important, should be re-factered
-	df[[1]] = factor(as.vector(df[[1]]), levels = chromosome)
+	df[[1]] = factor(as.vector(df[[1]]), levels = chromosome.index)
 	
 	# sn for sector names, but not for sector index
 	sn = unique(as.vector(df[[1]]))

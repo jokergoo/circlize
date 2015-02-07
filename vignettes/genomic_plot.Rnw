@@ -138,8 +138,8 @@ circos.initializeWithIdeogram(species = "mm10")
 
 By default, the function will use all chromosomes which are available in cytoband data to 
 initialize the circos plot. Users can also choose a subset of chromosomes by specifying 
-{\tt chromosome.index}. Please note this argument is only used for subsetting but not for 
-ordering (figure \ref{fig:genomic_initialize_ideogram} B).
+{\tt chromosome.index}. This argument is also for 
+ordering chromosomes (figure \ref{fig:genomic_initialize_ideogram} B).
 
 <<genomic_initialize_ideogram_2, eval = FALSE, echo = 1>>=
 circos.initializeWithIdeogram(chromosome.index = paste0("chr", 10:1))
@@ -153,35 +153,40 @@ Initialization step is important for circos plot. It controls orders of chromoso
 which are going to be put on the circle. There are several ways to control the order:
 
 \begin{itemize}
-  \item If {\tt cytoband} is provided as a data frame, and if the first column is not a factor, the order of chromosomes would be 
-      {\tt unique(cytoband[[1]])} (figure \ref{fig:genomic_initialize_ideogram} C). 
-  \item If {\tt cytoband} is provided as a data frame, and if the first column is a factor, 
-      the order of chromosome would be {\tt levels(cytoband[[1]])}  (figure \ref{fig:genomic_initialize_ideogram} D). 
-  \item If {\tt cytoband} is specified as a file path, or {\tt species} is specified, the order 
-      of chromosomes depends on the original order in the source file.
-  \item If {\tt sort.chr} is set to {\tt TRUE}, chromosomes will be sorted 
-      first by numbers then by letters (figure \ref{fig:genomic_initialize_ideogram} E).
+  \item If {\tt chromosome.index} is set, the order of {\tt chromosome.index} is taken as 
+        order of chromosomes.
+  \item If {\tt chromosome.index} is not set and {\tt sort.chr} is set to {\tt TRUE}, chromosomes will be sorted 
+      first by numbers then by letters (figure \ref{fig:genomic_initialize_ideogram} C).
+  \item If {\tt chromosome.index} and {\tt sort.chr} are not set neither:
+  \begin{itemize}
+    \item If {\tt cytoband} is provided as a data frame, and if the first column is not a factor, the order of chromosomes would be 
+        {\tt unique(cytoband[[1]])} (figure \ref{fig:genomic_initialize_ideogram} D). 
+    \item If {\tt cytoband} is provided as a data frame, and if the first column is a factor, 
+        the order of chromosome would be {\tt levels(cytoband[[1]])}  (figure \ref{fig:genomic_initialize_ideogram} E). 
+    \item If {\tt cytoband} is specified as a file path, or {\tt species} is specified, the order 
+        of chromosomes depends on the original order in the source file.
 \end{itemize}
 
 <<genomic_initialize_ideogram_3, eval = FALSE, echo = c(1:2, 6:7, 11:12)>>=
 cytoband = cytoband.df
+circos.initializeWithIdeogram(cytoband, sort.chr = TRUE)
+text(0, 0, "read from cytoband df\nsort.chr = TRUE", cex = 0.7)
+text(-0.9, 0.9, "C", cex = 1.5)
+
+cytoband = cytoband.df
 circos.initializeWithIdeogram(cytoband, sort.chr = FALSE)
 text(0, 0, "read from a data frame", cex = 0.7)
-text(-0.9, 0.9, "C", cex = 1.5)
+text(-0.9, 0.9, "D", cex = 1.5)
 
 cytoband[[1]] = factor(cytoband[[1]], levels = paste0("chr", c(22:1, "X", "Y")))
 circos.initializeWithIdeogram(cytoband, sort.chr = FALSE)
 text(0, 0, "read from cytoband file\nfirst column converted to factor\nlevels = paste0('chr', c(22:1, 'X', 'Y'))", cex = 0.7)
-text(-0.9, 0.9, "D", cex = 1.5)
-
-cytoband = cytoband.df
-circos.initializeWithIdeogram(cytoband, sort.chr = TRUE)
-text(0, 0, "read from cytoband df\nsort.chr = TRUE", cex = 0.7)
 text(-0.9, 0.9, "E", cex = 1.5)
 @
 
 \textbf{circlize} provides a function {\tt read.cytoband} which can read/download and process cytoband data.
-In fact, {\tt circos.initializeWithIdeogram} calls {\tt read.cytoband} internally. Please refer to the
+In fact, {\tt circos.initializeWithIdeogram} calls {\tt read.cytoband} internally (actually, if there is no cytoband 
+available, {\tt read.chromInfo} will be called later). Please refer to the
 help page of the function for more details.
 
 <<eval=FALSE>>=
@@ -194,7 +199,8 @@ cytoband = read.cytoband(species)
 \subsubsection{Pre-defined tracks}
 
 After the initialization of the circos plot, the function will additionally create a track where there
-are genomic axes and chromosome names, and create another track where there is an ideogram.
+are genomic axes and chromosome names, and create another track where there is an ideogram 
+(depends on whether cytoband data is available).
 {\tt plotType} can be used to control which kind of graphics need to be added 
 (figure \ref{fig:genomic_initialize_ideogram} F, G).
 

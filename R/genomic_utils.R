@@ -6,7 +6,9 @@
 # -species  Abbreviations of species. e.g. hg19 for human, mm10 for mouse. If this
 #          value is specified, the function will download ``cytoBand.txt.gz`` from
 #          UCSC website automatically.
+# -chromosome.index subset of chromosomes, also used to re-set chromosome orders.
 # -sort.chr Whether chromosome names should be sorted (first sort by numbers then by letters).
+#           If ``chromosome.index`` is set, this argument is enforced to ``FALSE``
 #
 # == details
 # The function read the cytoband data, sort the chromosome names and calculate the length of each chromosome. 
@@ -14,8 +16,8 @@
 #
 # You can find the data structure for the cytoband data from http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/cytoBand.txt.gz
 #
-# If ``sort.chr`` is not set, there would be several circumstances when determining the order of chromosomes. 
-# Assuming ``chromosome`` is the first column in the cytoband data frame,
+# If ``sort.chr`` is not set and ``chromosome.index`` is not specified, there would be several circumstances when 
+# determining the order of chromosomes. Assuming ``chromosome`` is the first column in the cytoband data frame,
 # then, if ``cytoband`` is defined as a file path, or ``species`` is set, the order of chromosomes is ``unique(chromosome)`` 
 # which is read from the file; If ``cytoband``
 # is set as a data frame and the first column is a factor, the order of chromosomes is ``levels(chromosome)``; If ``cytoband`` is a data frame
@@ -28,16 +30,20 @@
 # -chr.len    Length of chromosomes. Order are same as ``chromosome``
 #
 read.cytoband = function(cytoband = paste0(system.file(package = "circlize"),
-    "/extdata/cytoBand.txt"), species = NULL, sort.chr = TRUE) {
+    "/extdata/cytoBand.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE) {
+
+	# this function should also take charge of the order of chromosome
+	if(!is.null(chromosome.index)) sort.chr = FALSE
 	
+	# `species` is prior to `cytoband`
 	if(!is.null(species)) {
 		url = paste("http://hgdownload.soe.ucsc.edu/goldenPath/", species, "/database/cytoBand.txt.gz", sep = "")
 		cytoband = paste0(circos.par("__tempdir__"), "/", species, "_cytoBand.txt.gz")
 		if(!file.exists(cytoband)) {
-			e = try(download.file(url, destfile = cytoband, quiet = TRUE), silent = TRUE)
+			e = try(suppressWarnings(download.file(url, destfile = cytoband, quiet = TRUE)), silent = TRUE)
 			if(class(e) == "try-error") {
 				file.remove(cytoband)
-				stop("Seems your species name is wrong or UCSC does not provide cytoband data\nfor your species or internet connection was interrupted.\nIf possible, download cytoBand file from\n", url, "\nand use `read.cytoband(file)`.\n")
+				stop("It seems your species name is wrong or UCSC does not provide cytoband data\nfor your species or internet connection was interrupted.\nIf possible, download cytoBand file from\n", url, "\nand use `read.cytoband(file)`.\n")
 			}
 		}
 	}
@@ -49,14 +55,33 @@ read.cytoband = function(cytoband = paste0(system.file(package = "circlize"),
 			cytoband = gzfile(cytoband)
 		}
 		
-		d = read.table(cytoband, colClasses = c("character", "numeric", "numeric", "character", "character"), sep = "\t")
+		d = read.table(cytoband, colClasses = c("character", "numeric", "numeric", "character", "character"), sep = "\t", stringsAsFactors = FALSE)
+	}
+
+	# now cytoband data is normalized to `d`
+	if(!is.null(chromosome.index)) {
+		chromosome.index = intersect(chromosome.index, unique(as.vector(d[[1]])))
+		d = d[d[[1]] %in% chromosome.index, , drop = FALSE]
+		if(is.factor(d[[1]])) {
+			# re-factor because levels may decrease due to `chromosome.index`
+			levels(d[[1]]) = intersect(levels(chromosome.index, d[[1]]))  # ensures the remaining order is same as in `chromosome.index`
+		}
+	}
+
+	if(nrow(d) == 0) {
+		stop("Cannot find any chromosome. It is probably related to your chromosome names having or not having 'chr' prefix.")
 	}
 	
-	if(is.factor(d[[1]])) {
-		chromosome = levels(d[[1]])
+	if(is.null(chromosome.index)) {
+		if(is.factor(d[[1]])) {
+			chromosome = levels(d[[1]])
+		} else {
+			chromosome = unique(d[[1]])
+		}
 	} else {
-		chromosome = unique(d[[1]])
+		chromosome = chromosome.index
 	}
+
 	if(sort.chr) {
 		chromosome.ind = gsub("chr", "", chromosome)
 		chromosome.num = as.numeric(grep("^\\d+$", chromosome.ind, value = TRUE))
@@ -72,6 +97,114 @@ read.cytoband = function(cytoband = paste0(system.file(package = "circlize"),
 		dnew = rbind(dnew, d2)
 	}
 	names(chr.len) = chromosome
+	
+	return(list(df = dnew, chromosome = chromosome, chr.len = chr.len))
+}
+
+# == title
+# Read/parse chromInfo data from a data frame/file/UCSC database
+#
+# == param
+# -chromInfo Path of the cytoband file or a data frame that already contains cytoband data
+# -species  Abbreviations of species. e.g. hg19 for human, mm10 for mouse. If this
+#          value is specified, the function will download ``chromInfo.txt.gz`` from
+#          UCSC website automatically.
+# -chromosome.index subset of chromosomes, also used to re-set chromosome orders.
+# -sort.chr Whether chromosome names should be sorted (first sort by numbers then by letters).
+#           If ``chromosome.index`` is set, this argument is enforced to ``FALSE``#
+#
+# == details
+# The function read the chromInfo data, sort the chromosome names and calculate the length of each chromosome. 
+# By default, it is human hg19 chromInfo data.
+#
+# You can find the data structure for the cytoband data from http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/chromInfo.txt.gz
+#
+# If ``sort.chr`` is not set and ``chromosome.index`` is not specified, there would be several circumstances when determining the order of chromosomes. 
+# Assuming ``chromosome`` is the first column in the chromInfo data frame,
+# then, if ``chromInfo`` is defined as a file path, or ``species`` is set, the order of chromosomes is ``unique(chromosome)`` 
+# which is read from the file; If ``chromInfo``
+# is set as a data frame and the first column is a factor, the order of chromosomes is ``levels(chromosome)``; If ``chromInfo`` is a data frame
+# and the first column is just a character vector, the order of chromosomes is ``unique(chromosome)``. Please not this concept is really
+# important since the order of chromosomes will be used to control the order of sectors when initializing the circos plot.
+#
+# == values
+# -df         Data frame for chromInfo data (rows are sorted if ``sort.chr`` is set to ``TRUE``)
+# -chromosome Sorted chromosome names
+# -chr.len    Length of chromosomes. Order are same as ``chromosome``
+#
+read.chromInfo = function(chromInfo = NULL, species = "hg19", chromosome.index = NULL, sort.chr = TRUE) {
+	
+	# this function should also take charge of the order of chromosome
+	if(!is.null(chromosome.index)) sort.chr = FALSE
+	
+	if(!is.null(species)) {
+		url = paste("http://hgdownload.soe.ucsc.edu/goldenPath/", species, "/database/chromInfo.txt.gz", sep = "")
+		chromInfo = paste0(circos.par("__tempdir__"), "/", species, "_chromInfo.txt.gz")
+		if(!file.exists(chromInfo)) {
+			e = try(suppressWarnings(download.file(url, destfile = chromInfo, quiet = TRUE)), silent = TRUE)
+			if(class(e) == "try-error") {
+				file.remove(chromInfo)
+				stop("It seems your species name is wrong or UCSC does not provide chromInfo data\nfor your species or internet connection was interrupted.\nIf possible, download chromInfo file from\n", url, "\nand use `read.chromInfo(file)`.\n")
+			}
+		}
+	}
+	
+	if(is.data.frame(chromInfo)) {
+		d = chromInfo
+	} else {
+		if(grepl("\\.gz$", chromInfo)) {
+			chromInfo = gzfile(chromInfo)
+		}
+		
+		d = read.table(chromInfo, colClasses = c("character", "numeric"), sep = "\t", stringsAsFactors = FALSE)[1:2]  # only first two columns
+	}
+	rownames(d) = d[[1]]
+
+	if(!is.null(chromosome.index)) {
+		chromosome.index = intersect(chromosome.index, unique(as.vector(d[[1]])))
+		d = d[d[[1]] %in% chromosome.index, , drop = FALSE]
+		if(is.factor(d[[1]])) {
+			# re-factor because levels may decrease due to `chromosome.index`
+			levels(d[[1]]) = intersect(levels(chromosome.index, d[[1]]))  # ensures the remaining order is same as in `chromosome.index`
+		}
+	}
+
+	if(nrow(d) == 0) {
+		stop("Cannot find any chromosome. It is probably related to your chromosome names having or not having 'chr' prefix.")
+	}
+	
+	# now cytoband data is normalized to `d`
+	if(!is.null(chromosome.index)) {
+		chromosome.index = intersect(chromosome.index, unique(as.vector(d[[1]])))
+		d = d[d[[1]] %in% chromosome.index, , drop = FALSE]
+		if(is.factor(d[[1]])) {
+			# re-factor because levels may decrease due to `chromosome.index`
+			levels(d[[1]]) = intersect(levels(chromosome.index, d[[1]]))  # ensures the remaining order is same as in `chromosome.index`
+		}
+	}
+
+	if(is.null(chromosome.index)) {
+		if(is.factor(d[[1]])) {
+			chromosome = levels(d[[1]])
+		} else {
+			chromosome = unique(d[[1]])
+		}
+	} else {
+		chromosome = chromosome.index
+	}
+
+	if(sort.chr) {
+		chromosome.ind = gsub("chr", "", chromosome)
+		chromosome.num = as.numeric(grep("^\\d+$", chromosome.ind, value = TRUE))
+		chromosome.letter = chromosome.ind[!grepl("^\\d+$", chromosome.ind)]
+		chromosome = chromosome[ c(order(chromosome.num), order(chromosome.letter) + length(chromosome.num)) ]
+	}
+
+	dnew = d[chromosome, , drop = FALSE]
+	chr.len = dnew[[2]]
+	names(chr.len) = chromosome
+
+	dnew = data.frame(chr = chromosome, start = rep(0, nrow(dnew)), end = dnew[[2]], stringsAsFactors = FALSE)
 	
 	return(list(df = dnew, chromosome = chromosome, chr.len = chr.len))
 }

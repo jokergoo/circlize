@@ -1,12 +1,12 @@
 \name{circos.lines}
 \alias{circos.lines}
 \title{
-  Add lines to the plotting region  
+Add lines to the plotting region  
 
 
 }
 \description{
-  Add lines to the plotting region  
+Add lines to the plotting region  
 
 
 }
@@ -18,6 +18,7 @@ circos.lines(x, y, sector.index = get.cell.meta.data("sector.index"),
     baseline = "bottom", pt.col = par("col"), cex = par("cex"), pch = par("pch"))
 }
 \arguments{
+
   \item{x}{Data points on x-axis}
   \item{y}{Data points on y-axis}
   \item{sector.index}{Index for the sector}
@@ -37,9 +38,9 @@ circos.lines(x, y, sector.index = get.cell.meta.data("sector.index"),
 
 }
 \details{
-  Normally, straight lines in the Cartesian coordinate have to be transformed into curves in the circos layout. But if you do not want to do such transformation you can use this function just drawing straight lines between points by setting \code{straight} to \code{TRUE}.  
+Normally, straight lines in the Cartesian coordinate have to be transformed into curves in the circos layout. But if you do not want to do such transformation you can use this function just drawing straight lines between points by setting \code{straight} to \code{TRUE}.  
 
-  Draw areas below lines can help to identify the direction of y-axis in cells (since it is a circle). This can be done by specifying \code{area} to \code{TURE}. 
+Draw areas below lines can help to identify the direction of y-axis in cells (since it is a circle). This can be done by specifying \code{area} to \code{TURE}. 
 
 
 }

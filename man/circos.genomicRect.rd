@@ -1,12 +1,12 @@
 \name{circos.genomicRect}
 \alias{circos.genomicRect}
 \title{
-  Draw rectangle-like grid, specifically for genomic graphics  
+Draw rectangle-like grid, specifically for genomic graphics  
 
 
 }
 \description{
-  Draw rectangle-like grid, specifically for genomic graphics  
+Draw rectangle-like grid, specifically for genomic graphics  
 
 
 }
@@ -18,6 +18,7 @@ circos.genomicRect(region, value = NULL,
     col = NA, border = "black", lty = par("lty"), lwd = par("lwd"), ...)
 }
 \arguments{
+
   \item{region}{A data frame contains 2 column which correspond to start position and end position}
   \item{value}{A data frame contains values and other information}
   \item{ytop}{A vector or a single value indicating top position of rectangles}
@@ -35,7 +36,7 @@ circos.genomicRect(region, value = NULL,
 
 }
 \details{
-  The function is a low-level graphical function and usually is put in \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}. 
+The function is a low-level graphical function and usually is put in \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}. 
 
 
 }

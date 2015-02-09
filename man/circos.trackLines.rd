@@ -1,12 +1,12 @@
 \name{circos.trackLines}
 \alias{circos.trackLines}
 \title{
-  Add lines to the plotting regions in a same track  
+Add lines to the plotting regions in a same track  
 
 
 }
 \description{
-  Add lines to the plotting regions in a same track  
+Add lines to the plotting regions in a same track  
 
 
 }
@@ -17,6 +17,7 @@ circos.trackLines(factors, x, y, track.index = get.cell.meta.data("track.index")
     pt.col = par("col"), cex = par("cex"), pch = par("pch"))
 }
 \arguments{
+
   \item{factors}{Factors which represent the categories of data}
   \item{x}{Data points on x-axis}
   \item{y}{Data points on y-axis}
@@ -36,9 +37,9 @@ circos.trackLines(factors, x, y, track.index = get.cell.meta.data("track.index")
 
 }
 \details{
-  The function adds lines in multiple cells by first splitting data into several parts in which each part corresponds to one factor (sector index) and then add lines in cells by calling \code{\link{circos.lines}}.  
+The function adds lines in multiple cells by first splitting data into several parts in which each part corresponds to one factor (sector index) and then add lines in cells by calling \code{\link{circos.lines}}.  
 
-  This function can be replaced by a \code{for} loop containing \code{\link{circos.lines}}. 
+This function can be replaced by a \code{for} loop containing \code{\link{circos.lines}}. 
 
 
 }

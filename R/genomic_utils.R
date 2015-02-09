@@ -64,7 +64,7 @@ read.cytoband = function(cytoband = paste0(system.file(package = "circlize"),
 		d = d[d[[1]] %in% chromosome.index, , drop = FALSE]
 		if(is.factor(d[[1]])) {
 			# re-factor because levels may decrease due to `chromosome.index`
-			levels(d[[1]]) = intersect(levels(chromosome.index, d[[1]]))  # ensures the remaining order is same as in `chromosome.index`
+			levels(d[[1]]) = intersect(levels(chromosome.index), d[[1]])  # ensures the remaining order is same as in `chromosome.index`
 		}
 	}
 
@@ -132,7 +132,8 @@ read.cytoband = function(cytoband = paste0(system.file(package = "circlize"),
 # -chromosome Sorted chromosome names
 # -chr.len    Length of chromosomes. Order are same as ``chromosome``
 #
-read.chromInfo = function(chromInfo = NULL, species = "hg19", chromosome.index = NULL, sort.chr = TRUE) {
+read.chromInfo = function(chromInfo = paste0(system.file(package = "circlize"),
+    "/extdata/chromInfo.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE) {
 	
 	# this function should also take charge of the order of chromosome
 	if(!is.null(chromosome.index)) sort.chr = FALSE
@@ -165,7 +166,7 @@ read.chromInfo = function(chromInfo = NULL, species = "hg19", chromosome.index =
 		d = d[d[[1]] %in% chromosome.index, , drop = FALSE]
 		if(is.factor(d[[1]])) {
 			# re-factor because levels may decrease due to `chromosome.index`
-			levels(d[[1]]) = intersect(levels(chromosome.index, d[[1]]))  # ensures the remaining order is same as in `chromosome.index`
+			levels(d[[1]]) = intersect(levels(chromosome.index), d[[1]])  # ensures the remaining order is same as in `chromosome.index`
 		}
 	}
 
@@ -179,7 +180,7 @@ read.chromInfo = function(chromInfo = NULL, species = "hg19", chromosome.index =
 		d = d[d[[1]] %in% chromosome.index, , drop = FALSE]
 		if(is.factor(d[[1]])) {
 			# re-factor because levels may decrease due to `chromosome.index`
-			levels(d[[1]]) = intersect(levels(chromosome.index, d[[1]]))  # ensures the remaining order is same as in `chromosome.index`
+			levels(d[[1]]) = intersect(levels(chromosome.index), d[[1]])  # ensures the remaining order is same as in `chromosome.index`
 		}
 	}
 

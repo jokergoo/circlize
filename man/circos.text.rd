@@ -1,12 +1,12 @@
 \name{circos.text}
 \alias{circos.text}
 \title{
-  Draw text in a cell  
+Draw text in a cell  
 
 
 }
 \description{
-  Draw text in a cell  
+Draw text in a cell  
 
 
 }
@@ -18,6 +18,7 @@ circos.text(x, y, labels, sector.index = get.cell.meta.data("sector.index"),
     adj = par("adj"), cex = 1, col = "black", font = par("font"), ...)
 }
 \arguments{
+
   \item{x}{Data points on x-axis}
   \item{y}{Data points on y-axis}
   \item{labels}{Labels for each points}
@@ -34,7 +35,7 @@ circos.text(x, y, labels, sector.index = get.cell.meta.data("sector.index"),
 
 }
 \details{
-  The function is similar to \code{\link[graphics]{text}}. All you need to note is the \code{facing} settings. 
+The function is similar to \code{\link[graphics]{text}}. All you need to note is the \code{facing} settings. 
 
 
 }

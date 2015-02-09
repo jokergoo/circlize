@@ -1,12 +1,12 @@
 \name{circos.trackText}
 \alias{circos.trackText}
 \title{
-  Draw text in cells among the whole track  
+Draw text in cells among the whole track  
 
 
 }
 \description{
-  Draw text in cells among the whole track  
+Draw text in cells among the whole track  
 
 
 }
@@ -17,6 +17,7 @@ circos.trackText(factors, x, y, labels, track.index = get.cell.meta.data("track.
     adj = par("adj"), cex = 1, col = "black", font = par("font"))
 }
 \arguments{
+
   \item{factors}{Factors which represent the categories of data}
   \item{x}{Data points on x-axis}
   \item{y}{Data points on y-axis}
@@ -32,9 +33,9 @@ circos.trackText(factors, x, y, labels, track.index = get.cell.meta.data("track.
 
 }
 \details{
-  The function adds texts in multiple cells by first splitting data into several parts in which each part corresponds to one factor (sector index) and then add texts in cells by calling \code{\link{circos.text}}.  
+The function adds texts in multiple cells by first splitting data into several parts in which each part corresponds to one factor (sector index) and then add texts in cells by calling \code{\link{circos.text}}.  
 
-  This function can be replaced by a \code{for} loop containing \code{\link{circos.text}}. 
+This function can be replaced by a \code{for} loop containing \code{\link{circos.text}}. 
 
 
 }

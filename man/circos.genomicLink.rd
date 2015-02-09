@@ -1,12 +1,12 @@
 \name{circos.genomicLink}
 \alias{circos.genomicLink}
 \title{
-  Add links from two sets of genomic positions  
+Add links from two sets of genomic positions  
 
 
 }
 \description{
-  Add links from two sets of genomic positions  
+Add links from two sets of genomic positions  
 
 
 }
@@ -16,6 +16,7 @@ circos.genomicLink(region1, region2,
     col = "black", lwd = par("lwd"), lty = par("lty"), border = NA, ...)
 }
 \arguments{
+
   \item{region1}{A genomic data frame}
   \item{region2}{A genomic data frame}
   \item{rou}{Pass to \code{\link{circos.link}}}
@@ -29,9 +30,9 @@ circos.genomicLink(region1, region2,
 
 }
 \details{
-  Of course, number of rows should be same in \code{region1} and \code{region2}.  
+Of course, number of rows should be same in \code{region1} and \code{region2}.  
 
-  If you want to have more controls on links, please use \code{\link{circos.link}} directly. 
+If you want to have more controls on links, please use \code{\link{circos.link}} directly. 
 
 
 }

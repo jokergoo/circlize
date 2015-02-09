@@ -1,12 +1,12 @@
 \name{get.cell.meta.data}
 \alias{get.cell.meta.data}
 \title{
-  Get the meta data of a cell  
+Get the meta data of a cell  
 
 
 }
 \description{
-  Get the meta data of a cell  
+Get the meta data of a cell  
 
 
 }
@@ -15,13 +15,14 @@ get.cell.meta.data(name, sector.index = get.current.sector.index(),
     track.index = get.current.track.index())
 }
 \arguments{
+
   \item{name}{Only support one name at a time, see "details" section}
   \item{sector.index}{Index of the sector}
   \item{track.index}{Index of the track}
 
 }
 \details{
-  The following meta information for a cell can be obtained:  
+The following meta information for a cell can be obtained:  
 
 \describe{
   \item{sector.index}{The name (index) for the sector}
@@ -44,7 +45,8 @@ get.cell.meta.data(name, sector.index = get.current.sector.index(),
   \item{track.margin}{Margin for the cell}
   \item{cell.padding}{Padding for the cell}
 }
-  The function is useful when using \code{panel.fun} in \code{\link{circos.trackPlotRegion}} to get detailed information of the current cell. 
+
+The function is useful when using \code{panel.fun} in \code{\link{circos.trackPlotRegion}} to get detailed information of the current cell. 
 
 
 }

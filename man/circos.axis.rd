@@ -1,12 +1,12 @@
 \name{circos.axis}
 \alias{circos.axis}
 \title{
-  Draw x-axis  
+Draw x-axis  
 
 
 }
 \description{
-  Draw x-axis  
+Draw x-axis  
 
 
 }
@@ -21,6 +21,7 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
     lwd = par("lwd"))
 }
 \arguments{
+
   \item{h}{Position of the x-axis, can be "top", "bottom" or a numeric value}
   \item{major.at}{If it is numeric vector, it identifies the positions of the major ticks. It can exceed \code{xlim} value and the exceeding part would be trimmed automatically. If it is \code{NULL}, about every 10 degrees there is a major tick.}
   \item{labels}{labels of the major ticks. Also, the exceeding part would be trimmed automatically.}
@@ -40,9 +41,9 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
 
 }
 \details{
-  It can only draw axes on x-direction.  
+It can only draw axes on x-direction.  
 
-  Currently, this package doesn't provide a function to add axes on y-direction. But it is easy to implement by users with \code{\link{circos.lines}} and \code{\link{circos.text}}. 
+Currently, this package doesn't provide a function to add axes on y-direction. But it is easy to implement by users with \code{\link{circos.lines}} and \code{\link{circos.text}}. 
 
 
 }

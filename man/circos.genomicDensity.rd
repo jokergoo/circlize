@@ -1,12 +1,12 @@
 \name{circos.genomicDensity}
 \alias{circos.genomicDensity}
 \title{
-  Calculate and add genomic density track  
+Calculate and add genomic density track  
 
 
 }
 \description{
-  Calculate and add genomic density track  
+Calculate and add genomic density track  
 
 
 }
@@ -16,6 +16,7 @@ circos.genomicDensity(data, ylim.force = FALSE, window.size = NULL, overlap = TR
     area = TRUE, area.baseline = NULL, baseline = 0, border = NA, ...)
 }
 \arguments{
+
   \item{data}{A bed-file-like data frame or a list of data frames}
   \item{ylim.force}{Whether to force upper bound of \code{ylim} to be 1.}
   \item{window.size}{Pass to \code{\link{genomicDensity}}}
@@ -32,7 +33,7 @@ circos.genomicDensity(data, ylim.force = FALSE, window.size = NULL, overlap = TR
 
 }
 \details{
-  This function is a high-level graphical function, and it will create a new track. 
+This function is a high-level graphical function, and it will create a new track. 
 
 
 }

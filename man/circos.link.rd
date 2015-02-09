@@ -1,12 +1,12 @@
 \name{circos.link}
 \alias{circos.link}
 \title{
-  Draw links between points or intervals  
+Draw links between points or intervals  
 
 
 }
 \description{
-  Draw links between points or intervals  
+Draw links between points or intervals  
 
 
 }
@@ -17,6 +17,7 @@ circos.link(sector.index1, point1, sector.index2, point2,
     col = "black", lwd = par("lwd"), lty = par("lty"), border = NA)
 }
 \arguments{
+
   \item{sector.index1}{Index for sector one}
   \item{point1}{A single value or a numeric vector of length 2. If it is a 2-elements vector, then the link would be a belt/ribbon.}
   \item{sector.index2}{Index for the other sector}
@@ -35,13 +36,13 @@ circos.link(sector.index1, point1, sector.index2, point2,
 
 }
 \details{
-  Links are implemented as quadratic Bezier curves.  
+Links are implemented as quadratic Bezier curves.  
 
-  Drawing links does not create any track. So you can think it is independent of the tracks.  
+Drawing links does not create any track. So you can think it is independent of the tracks.  
 
-  By default you only need to set \code{sector.index1}, \code{point1}, \code{sector.index2} and \code{point2}. The links would look nice.   
+By default you only need to set \code{sector.index1}, \code{point1}, \code{sector.index2} and \code{point2}. The links would look nice.   
 
-  See vignette for detailed explanation. 
+See vignette for detailed explanation. 
 
 
 }

@@ -1,53 +1,52 @@
-export(
-	chordDiagram,
-	circlize,
-	circos.axis,
-	circos.clear,
-	circos.genomicDensity,
-	circos.genomicInitialize,
-	circos.genomicLines,
-	circos.genomicLink,
-	circos.genomicPoints,
-	circos.genomicPosTransformLines,
-	circos.genomicRainfall,
-	circos.genomicRect,
-	circos.genomicText,
-	circos.genomicTrackPlotRegion,
-	circos.info,
-	circos.initialize,
-	circos.initializeWithIdeogram,
-	circos.lines,
-	circos.link,
-	circos.par,
-	circos.points,
-	circos.polygon,
-	circos.rect,
-	circos.text,
-	circos.trackHist,
-	circos.trackLines,
-	circos.trackPlotRegion,
-	circos.trackPoints,
-	circos.trackText,
-	circos.updatePlotRegion,
-	colorRamp2,
-	cytoband.col,
-	draw.sector,
-	generateRandomBed,
-	genomicDensity,
-	get.all.sector.index,
-	get.all.track.index,
-	get.cell.meta.data,
-	get.current.chromosome,
-	getI,
-	highlight.chromosome,
-	posTransform.default,
-	posTransform.text,
-	rainfallTransform,
-	rand_color,
-	read.cytoband,
-	reverse.circlize,
-	show.index
-)
+export(chordDiagram)
+export(circlize)
+export(circos.axis)
+export(circos.clear)
+export(circos.genomicDensity)
+export(circos.genomicInitialize)
+export(circos.genomicLines)
+export(circos.genomicLink)
+export(circos.genomicPoints)
+export(circos.genomicPosTransformLines)
+export(circos.genomicRainfall)
+export(circos.genomicRect)
+export(circos.genomicText)
+export(circos.genomicTrackPlotRegion)
+export(circos.info)
+export(circos.initialize)
+export(circos.initializeWithIdeogram)
+export(circos.lines)
+export(circos.link)
+export(circos.par)
+export(circos.points)
+export(circos.polygon)
+export(circos.rect)
+export(circos.text)
+export(circos.trackHist)
+export(circos.trackLines)
+export(circos.trackPlotRegion)
+export(circos.trackPoints)
+export(circos.trackText)
+export(circos.updatePlotRegion)
+export(colorRamp2)
+export(cytoband.col)
+export(draw.sector)
+export(generateRandomBed)
+export(genomicDensity)
+export(get.all.sector.index)
+export(get.all.track.index)
+export(get.cell.meta.data)
+export(get.current.chromosome)
+export(getI)
+export(highlight.chromosome)
+export(posTransform.default)
+export(posTransform.text)
+export(rainfallTransform)
+export(rand_color)
+export(read.chromInfo)
+export(read.cytoband)
+export(reverse.circlize)
+export(show.index)
 
 importFrom("GlobalOptions", setGlobalOptions)
 

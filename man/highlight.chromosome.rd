@@ -1,12 +1,12 @@
 \name{highlight.chromosome}
 \alias{highlight.chromosome}
 \title{
-  Highlight chromosomes  
+Highlight chromosomes  
 
 
 }
 \description{
-  Highlight chromosomes  
+Highlight chromosomes  
 
 
 }
@@ -16,6 +16,7 @@ highlight.chromosome(chr, track.index = get.all.track.index(),
     padding = c(0, 0, 0, 0))
 }
 \arguments{
+
   \item{chr}{Chromosome names. It should be consistent with the sector index.}
   \item{track.index}{A vector of track index that you want to highlight}
   \item{col}{Color for highlighting. Note the color should be semi-transparent.}
@@ -26,9 +27,9 @@ highlight.chromosome(chr, track.index = get.all.track.index(),
 
 }
 \details{
-  You can use \code{\link{circos.info}} to find out index for all tracks.  
+You can use \code{\link{circos.info}} to find out index for all tracks.  
 
-  The function calls \code{\link{draw.sector}}. 
+The function calls \code{\link{draw.sector}}. 
 
 
 }

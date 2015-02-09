@@ -1,12 +1,12 @@
 \name{circos.par}
 \alias{circos.par}
 \title{
-  Parameters for circos layout  
+Parameters for circos layout  
 
 
 }
 \description{
-  Parameters for circos layout  
+Parameters for circos layout  
 
 
 }
@@ -14,13 +14,14 @@
 circos.par(..., RESET = FALSE, READ.ONLY = NULL)
 }
 \arguments{
+
   \item{...}{Arguments for the parameters, see "details" section}
   \item{RESET}{reset to default values}
   \item{READ.ONLY}{whether only return read-only options}
 
 }
 \details{
-  Global parameters for the circos layout. Currently supported parameters are:  
+Global parameters for the circos layout. Currently supported parameters are:  
 
 \describe{
   \item{start.degree}{The starting degree from which the circle begins to draw. Note this degree is measured in the standard polar coordinate which means it is always reverse-clockwise.}
@@ -34,9 +35,10 @@ circos.par(..., RESET = FALSE, READ.ONLY = NULL)
   \item{canvas.ylim}{The coordinate for the canvas. By default it is \code{c(-1, 1)}}
   \item{clock.wise}{The direction for adding sectors. Default is \code{TRUE}.}
 }
-  Similar as \code{\link[graphics]{par}}, you can get the parameter values by specifying the  names of parameters and you can set the parameter values by specifying a named list which contains the new values.  
 
-  \code{gap.degree}, \code{start.degree}, \code{canvas.xlim}, \code{canvas.ylim} and \code{clock.wise}  only be set before the initialization of circos layout (i.e. before calling \code{\link{circos.initialize}}) because these values will not be changed after adding sectors on the circle. The left and right padding for \code{cell.padding} will also be ignored after the initialization because all cells in a sector would share the same left and right paddings.  
+Similar as \code{\link[graphics]{par}}, you can get the parameter values by specifying the  names of parameters and you can set the parameter values by specifying a named list which contains the new values.  
+
+\code{gap.degree}, \code{start.degree}, \code{canvas.xlim}, \code{canvas.ylim} and \code{clock.wise}  only be set before the initialization of circos layout (i.e. before calling \code{\link{circos.initialize}}) because these values will not be changed after adding sectors on the circle. The left and right padding for \code{cell.padding} will also be ignored after the initialization because all cells in a sector would share the same left and right paddings.  
 
 
 }

@@ -1,12 +1,12 @@
 \name{circos.polygon}
 \alias{circos.polygon}
 \title{
-  Draw polygon  
+Draw polygon  
 
 
 }
 \description{
-  Draw polygon  
+Draw polygon  
 
 
 }
@@ -16,6 +16,7 @@ circos.polygon(x, y, sector.index = get.cell.meta.data("sector.index"),
     col = NA, border = "black", lty = par("lty"), lwd = par("lwd"))
 }
 \arguments{
+
   \item{x}{Data points on x-axis}
   \item{y}{Data points on y-axis}
   \item{sector.index}{Index for the sector}
@@ -27,7 +28,7 @@ circos.polygon(x, y, sector.index = get.cell.meta.data("sector.index"),
 
 }
 \details{
-  similar as \code{\link[graphics]{polygon}} 
+similar as \code{\link[graphics]{polygon}} 
 
 
 }

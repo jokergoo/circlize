@@ -1,12 +1,12 @@
 \name{circos.genomicPoints}
 \alias{circos.genomicPoints}
 \title{
-  Add points to a plotting region, specifically for genomic graphics  
+Add points to a plotting region, specifically for genomic graphics  
 
 
 }
 \description{
-  Add points to a plotting region, specifically for genomic graphics  
+Add points to a plotting region, specifically for genomic graphics  
 
 
 }
@@ -17,6 +17,7 @@ circos.genomicPoints(region, value, numeric.column = NULL,
     pch = par("pch"), col = par("col"), cex = par("cex"), ...)
 }
 \arguments{
+
   \item{region}{A data frame contains 2 columns which correspond to start positions and end positions}
   \item{value}{A data frame contains values and other information}
   \item{numeric.column}{Which column in \code{value} data frame should be taken as y-value. If it is not defined, the whole numeric columns in \code{value} will be taken.}
@@ -30,7 +31,7 @@ circos.genomicPoints(region, value, numeric.column = NULL,
 
 }
 \details{
-  The function is a low-level graphical function and usually is put in \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}. 
+The function is a low-level graphical function and usually is put in \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}. 
 
 
 }

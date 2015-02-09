@@ -1,12 +1,12 @@
 \name{circos.trackPlotRegion}
 \alias{circos.trackPlotRegion}
 \title{
-  Create plotting regions for a whole track  
+Create plotting regions for a whole track  
 
 
 }
 \description{
-  Create plotting regions for a whole track  
+Create plotting regions for a whole track  
 
 
 }
@@ -20,6 +20,7 @@ circos.trackPlotRegion(factors = NULL, x = NULL, y = NULL, ylim = NULL,
     panel.fun = function(x, y) {NULL})
 }
 \arguments{
+
   \item{factors}{Factors which represent categories of data, if it is \code{NULL},  then it uses the whole sector index.}
   \item{x}{Data on x-axis. It is only used if \code{panel.fun} is set.}
   \item{y}{Data on y-axis}
@@ -37,21 +38,21 @@ circos.trackPlotRegion(factors = NULL, x = NULL, y = NULL, ylim = NULL,
 
 }
 \details{
-  This function pretends to be a high-level plotting function, which means,  you must first call this function to create plotting regions, then those low-level graphical function such as \code{\link{circos.points}}, \code{\link{circos.lines}} can be applied.  
+This function pretends to be a high-level plotting function, which means,  you must first call this function to create plotting regions, then those low-level graphical function such as \code{\link{circos.points}}, \code{\link{circos.lines}} can be applied.  
 
-  It has two different usages. First, it can create a complete track which among several sectors. Because currently it does not support creating single cell since it will make the layout disordered, this is the only way to create plotting regions.  
+It has two different usages. First, it can create a complete track which among several sectors. Because currently it does not support creating single cell since it will make the layout disordered, this is the only way to create plotting regions.  
 
-  Currently, all the cells that are created in a same track sharing same height, which means, there is no cell has larger height than others.  
+Currently, all the cells that are created in a same track sharing same height, which means, there is no cell has larger height than others.  
 
-  Since limitation for values on x-axis has already been defined by \code{\link{circos.initialize}}, only limitation for values on y-axis should be specified in this function. The \code{x} argument is only used if you set \code{panel.fun}. There are two ways to identify the limitation for values on y-axes either by \code{y} or \code{ylim}. If \code{y} is set, it must has the same length as \code{factors} and the \code{ylim} for each cell is calculated from y values. Also, the ylim can be specified from \code{ylim} which can be a two-element vector or a matrix which has two columns and the number of rows is the same as the length of the levels of the factors.  
+Since limitation for values on x-axis has already been defined by \code{\link{circos.initialize}}, only limitation for values on y-axis should be specified in this function. The \code{x} argument is only used if you set \code{panel.fun}. There are two ways to identify the limitation for values on y-axes either by \code{y} or \code{ylim}. If \code{y} is set, it must has the same length as \code{factors} and the \code{ylim} for each cell is calculated from y values. Also, the ylim can be specified from \code{ylim} which can be a two-element vector or a matrix which has two columns and the number of rows is the same as the length of the levels of the factors.  
 
-  If there is no enough space for the new track or the new track has overlap with other tracks, there will be an error.  
+If there is no enough space for the new track or the new track has overlap with other tracks, there will be an error.  
 
-  \code{panel.fun} provides a convenient way to add graphics in each cell when initializing the  tracks. The self-defined function need two arguments: \code{x} and \code{y} which correspond to the data points in the current cell. \code{\link{circos.trackPlotRegion}} creates plotting regions one by one on the track and \code{panel.fun} adds graphics in the 'current' cell after the plotting region for a certain cell has been created. See vignette for examples of how to use this feature.  
+\code{panel.fun} provides a convenient way to add graphics in each cell when initializing the  tracks. The self-defined function need two arguments: \code{x} and \code{y} which correspond to the data points in the current cell. \code{\link{circos.trackPlotRegion}} creates plotting regions one by one on the track and \code{panel.fun} adds graphics in the 'current' cell after the plotting region for a certain cell has been created. See vignette for examples of how to use this feature.  
 
-  If \code{factors} does not cover all sectors, the cells in remaining unselected sectors would also be created but without drawing anything. The \code{ylim} for these cells are the same as that in the latest created cell.  
+If \code{factors} does not cover all sectors, the cells in remaining unselected sectors would also be created but without drawing anything. The \code{ylim} for these cells are the same as that in the latest created cell.  
 
-  Second, it can update a already-created track if the index for the track is specified. If the index is one larger than the largest track index, it in fact creates the new track. If updating an existed track, those parameters related to the position (such as track height and track margin) of the plotting region can not be changed. 
+Second, it can update a already-created track if the index for the track is specified. If the index is one larger than the largest track index, it in fact creates the new track. If updating an existed track, those parameters related to the position (such as track height and track margin) of the plotting region can not be changed. 
 
 
 }

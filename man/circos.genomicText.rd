@@ -1,12 +1,12 @@
 \name{circos.genomicText}
 \alias{circos.genomicText}
 \title{
-  Draw text in a cell, specifically for genomic graphics  
+Draw text in a cell, specifically for genomic graphics  
 
 
 }
 \description{
-  Draw text in a cell, specifically for genomic graphics  
+Draw text in a cell, specifically for genomic graphics  
 
 
 }
@@ -18,6 +18,7 @@ circos.genomicText(region, value = NULL, y = NULL, labels = NULL, labels.column 
     adj = par("adj"), cex = 1, col = "black", font = par("font"), padding = 0, ...)
 }
 \arguments{
+
   \item{region}{A data frame contains 2 column which correspond to start position and end position}
   \item{value}{A data frame contains values and other information}
   \item{y}{A vector or a single value indicating position of text.}
@@ -39,7 +40,7 @@ circos.genomicText(region, value = NULL, y = NULL, labels = NULL, labels.column 
 
 }
 \details{
-  The function is a low-level graphical function and usually is put in \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}. 
+The function is a low-level graphical function and usually is put in \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}. 
 
 
 }

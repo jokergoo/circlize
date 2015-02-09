@@ -1,12 +1,12 @@
 \name{chordDiagram}
 \alias{chordDiagram}
 \title{
-  Plot Chord Diagram  
+Plot Chord Diagram  
 
 
 }
 \description{
-  Plot Chord Diagram  
+Plot Chord Diagram  
 
 
 }
@@ -19,6 +19,7 @@ chordDiagram(mat, grid.col = NULL, transparency = 0.5,
     diffHeight = 0.04, reduce = 1e-5, ...)
 }
 \arguments{
+
   \item{mat}{A table which represents as a numeric matrix.}
   \item{grid.col}{Grid colors which correspond to matrix rows/columns (or sectors). The length of the vector should be either 1 or \code{length(union(rownames(mat), colnames(mat)))}. It's preferred that \code{grid.col} is a named vector of which names correspond to sectors.  If it is not a named vector, the order of \code{grid.col} corresponds to order of sectors.}
   \item{transparency}{Transparency of link colors, 0 means no transparency and 1 means full transparency. If transparency is already set in \code{col} or \code{row.col} or \code{column.col}, this argument will be ignored.}
@@ -42,11 +43,11 @@ chordDiagram(mat, grid.col = NULL, transparency = 0.5,
 
 }
 \details{
-  Chord diagram is a way to visualize numeric tables ( \url{http://circos.ca/intro/tabular_visualization/} ), especially useful when the table represent information of directional relation. This function visualize tables in a circular way.  
+Chord diagram is a way to visualize numeric tables ( \url{http://circos.ca/intro/tabular_visualization/} ), especially useful when the table represent information of directional relation. This function visualize tables in a circular way.  
 
-  Sectors of the circos plot is \code{union(rownames(mat), colnames(mat))}. If there is no rowname or colname, the function will assign names for it ("R1", "R2", ... for row names, "C1", "C2", ... for column names).  
+Sectors of the circos plot is \code{union(rownames(mat), colnames(mat))}. If there is no rowname or colname, the function will assign names for it ("R1", "R2", ... for row names, "C1", "C2", ... for column names).  
 
-  This function is flexible and contains some settings that may be a little difficult to understand.  Please refer to vignette for better explanation. 
+This function is flexible and contains some settings that may be a little difficult to understand.  Please refer to vignette for better explanation. 
 
 
 }

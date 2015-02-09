@@ -1,12 +1,12 @@
 \name{circos.trackHist}
 \alias{circos.trackHist}
 \title{
-  Draw histogram in cells among a whole track  
+Draw histogram in cells among a whole track  
 
 
 }
 \description{
-  Draw histogram in cells among a whole track  
+Draw histogram in cells among a whole track  
 
 
 }
@@ -18,6 +18,7 @@ circos.trackHist(factors, x, track.height = circos.par("track.height"),
     breaks = "Sturges", include.lowest = TRUE, right = TRUE, draw.density = FALSE)
 }
 \arguments{
+
   \item{factors}{Factors which represent the categories of data}
   \item{x}{Data on the x-axis}
   \item{track.index}{Index for the track which is going to be updated. Setting it to \code{NULL} means creating the plotting regions in the next newest track.}
@@ -38,7 +39,7 @@ circos.trackHist(factors, x, track.height = circos.par("track.height"),
 
 }
 \details{
-  It draw histogram in cells among a whole track. It is also an example to show how to add self-defined high-level graphics by this package. 
+It draw histogram in cells among a whole track. It is also an example to show how to add self-defined high-level graphics by this package. 
 
 
 }

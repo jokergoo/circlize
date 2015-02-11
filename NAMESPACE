@@ -1,3 +1,4 @@
+export(adjacencyList2Matrix)
 export(chordDiagram)
 export(circlize)
 export(circos.axis)

@@ -46,6 +46,21 @@ circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = 
 		} else {
 			message("Downloading cytoBand file from UCSC failed. Use chromInfo file instead.\nNote ideogram track will be removed from the plot.")
 			plotType = setdiff(plotType, "ideogram")
+
+			# because in chromInfo file, there are also many short scaffold
+			if(is.null(chromosome.index)) {
+	            chromInfo = read.chromInfo(species = species)
+	            chr_len = sort(chromInfo$chr.len, decreasing = TRUE)
+
+	            # sometimes there are small scaffold
+	            i = which(chr_len[seq_len(length(chr_len)-1)] / chr_len[seq_len(length(chr_len)-1)+1] > 5)[1]
+	            if(length(i)) {
+	                chromosome = chromInfo$chromosome[chromInfo$chromosome %in% names(chr_len[chr_len >= chr_len[i]])]
+	            } else {
+	                chromosome = chromInfo$chromosome
+	            }
+	            cytoband = read.chromInfo(species = species, chromosome.index = chromosome, sort.chr = sort.chr)
+	        } 
 		}
 	} else if(class(e) == "try-error") {
 		stop(e)

@@ -11,7 +11,8 @@ Read/parse chromInfo data from a data frame/file/UCSC database
 
 }
 \usage{
-read.chromInfo(chromInfo = NULL, species = "hg19", chromosome.index = NULL, sort.chr = TRUE)
+read.chromInfo(chromInfo = paste0(system.file(package = "circlize"),
+    "/extdata/chromInfo.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE)
 }
 \arguments{
 

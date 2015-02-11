@@ -83,10 +83,7 @@ read.cytoband = function(cytoband = paste0(system.file(package = "circlize"),
 	}
 
 	if(sort.chr) {
-		chromosome.ind = gsub("chr", "", chromosome)
-		chromosome.num = as.numeric(grep("^\\d+$", chromosome.ind, value = TRUE))
-		chromosome.letter = chromosome.ind[!grepl("^\\d+$", chromosome.ind)]
-		chromosome = chromosome[ c(order(chromosome.num), order(chromosome.letter) + length(chromosome.num)) ]
+		chromosome = sort_chr(chromosome)
 	}
 
 	chr.len = NULL
@@ -195,10 +192,7 @@ read.chromInfo = function(chromInfo = paste0(system.file(package = "circlize"),
 	}
 
 	if(sort.chr) {
-		chromosome.ind = gsub("chr", "", chromosome)
-		chromosome.num = as.numeric(grep("^\\d+$", chromosome.ind, value = TRUE))
-		chromosome.letter = chromosome.ind[!grepl("^\\d+$", chromosome.ind)]
-		chromosome = chromosome[ c(order(chromosome.num), order(chromosome.letter) + length(chromosome.num)) ]
+		chromosome = sort_chr(chromosome)
 	}
 
 	dnew = d[chromosome, , drop = FALSE]
@@ -281,3 +275,65 @@ generateRandomBed = function(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0
 	}
 	return(df)
 }
+
+# == title
+# Convert adjacency list to adjacency matrix
+#
+# == param
+# -lt a data frame which contains adjacency list.
+# -square should returned matrix a square matrix?
+#
+# == details
+# Convert adjacency list to adjacency matrix.
+#
+adjacencyList2Matrix = function(lt, square = FALSE) {
+	if(ncol(lt) < 3) {
+		stop("`lt` should be a data frame with three columns")
+	}
+
+	if(!is.numeric(lt[[3]])) {
+		stop("Third column in `lt` should be numeric.")
+	}
+
+	lt[[1]] = as.vector(lt[[1]])
+	lt[[2]] = as.vector(lt[[2]])
+
+	rn = unique(lt[[1]])
+	cn = unique(lt[[2]])
+
+	if(square) {
+		nm = union(rn, cn)
+		mat = matrix(0, ncol = length(nm), nrow = length(nm))
+		rownames(mat) = nm
+		colnames(mat) = nm
+	} else {
+		mat = matrix(0, ncol = length(cn), nrow = length(rn))
+		rownames(mat) = rn
+		colnames(mat) = cn
+	}
+
+	for(i in seq_len(nrow(lt))) {
+		mat[lt[i, 1], lt[i, 2]] = lt[i, 3]
+	}
+
+	return(mat)
+}
+
+
+sort_chr = function(chromosome) {
+	chromosome = sort(chromosome)
+	
+	chromosome.ind = gsub("chr", "", chromosome)
+	chromosome.ind = gsub("_.*$", "", chromosome.ind)
+	l_num = grepl("^\\d+$", chromosome.ind)
+	l_letter = !l_num
+
+	chromosome.num = chromosome[l_num]
+	chromosome.levels = chromosome[!l_num]
+
+	chromosome.num = chromosome.num[order(as.numeric(chromosome.ind[l_num]))]
+	chromosome.letter = chromosome.levels[order(chromosome.ind[!l_num])]
+	chromosome = c(chromosome.num, chromosome.letter)
+	return(chromosome)
+}
+

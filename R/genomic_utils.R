@@ -4,7 +4,7 @@
 # == param
 # -cytoband Path of the cytoband file or a data frame that already contains cytoband data
 # -species  Abbreviations of species. e.g. hg19 for human, mm10 for mouse. If this
-#          value is specified, the function will download ``cytoBand.txt.gz`` from
+#          value is specified, the function will download ``cytoBand.txt.gz`` or ``chromInfo.txt.gz`` from
 #          UCSC website automatically.
 # -chromosome.index subset of chromosomes, also used to re-set chromosome orders.
 # -sort.chr Whether chromosome names should be sorted (first sort by numbers then by letters).

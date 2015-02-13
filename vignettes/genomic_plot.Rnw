@@ -176,7 +176,7 @@ text(-0.9, 0.9, "C", cex = 1.5)
 
 cytoband = cytoband.df
 circos.initializeWithIdeogram(cytoband, sort.chr = FALSE)
-text(0, 0, "read from a data frame", cex = 0.7)
+text(0, 0, "read from a data frame\nunique(cytoband[[1]])", cex = 0.7)
 text(-0.9, 0.9, "D", cex = 1.5)
 
 cytoband[[1]] = factor(cytoband[[1]], levels = paste0("chr", c(22:1, "X", "Y")))

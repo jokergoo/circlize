@@ -64,7 +64,7 @@ read.cytoband = function(cytoband = paste0(system.file(package = "circlize"),
 		d = d[d[[1]] %in% chromosome.index, , drop = FALSE]
 		if(is.factor(d[[1]])) {
 			# re-factor because levels may decrease due to `chromosome.index`
-			levels(d[[1]]) = intersect(levels(chromosome.index), unique(as.vector(d[[1]])))  # ensures the remaining order is same as in `chromosome.index`
+			levels(d[[1]]) = intersect(chromosome.index, unique(as.vector(d[[1]])))  # ensures the remaining order is same as in `chromosome.index`
 		}
 	}
 
@@ -163,7 +163,7 @@ read.chromInfo = function(chromInfo = paste0(system.file(package = "circlize"),
 		d = d[d[[1]] %in% chromosome.index, , drop = FALSE]
 		if(is.factor(d[[1]])) {
 			# re-factor because levels may decrease due to `chromosome.index`
-			levels(d[[1]]) = intersect(levels(chromosome.index), unique(as.vector(d[[1]])))  # ensures the remaining order is same as in `chromosome.index`
+			levels(d[[1]]) = intersect(chromosome.index, unique(as.vector(d[[1]])))  # ensures the remaining order is same as in `chromosome.index`
 		}
 	}
 
@@ -177,7 +177,7 @@ read.chromInfo = function(chromInfo = paste0(system.file(package = "circlize"),
 		d = d[d[[1]] %in% chromosome.index, , drop = FALSE]
 		if(is.factor(d[[1]])) {
 			# re-factor because levels may decrease due to `chromosome.index`
-			levels(d[[1]]) = intersect(levels(chromosome.index), unique(as.vector(d[[1]])))  # ensures the remaining order is same as in `chromosome.index`
+			levels(d[[1]]) = intersect(chromosome.index, unique(as.vector(d[[1]])))  # ensures the remaining order is same as in `chromosome.index`
 		}
 	}
 

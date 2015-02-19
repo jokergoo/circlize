@@ -963,7 +963,7 @@ get the information of positions of cells. E.g. the start degree
 and end degree can be obtained through {\tt cell.start.degree} and {\tt cell.end.degree}, 
 and the position of the top border and bottom border on the circle radius can be obtained 
 through {\tt cell.top.radius} and {\tt cell.bottom.radius}.  Following code shows several
-examples to highlight sectors and tracks (figure \ref{fig:circlize_highlight}).
+examples to highlight sectors and tracks (figure \ref{fig:circlize_highlight} A).
 
 <<circlize_highlight_1, eval = FALSE>>=
 par(mar = c(1, 1, 1, 1))
@@ -1013,15 +1013,40 @@ draw.sector(pos[1, "theta"], pos[2, "theta"], pos[1, "rou"], pos[2, "rou"],
 circos.clear()
 @
 
-<<circlize_highlight, echo = FALSE, out.width = "0.8\\textwidth", fig.cap = "Highlight sectors and tracks.">>=
+If the purpose is simply highlight complete cells, there is a shortcut function
+{\tt code highlight.sector} for which you only need to specify index for sectors
+and tracks that you want to to highlight (figure \ref{fig:circlize_highlight} B).
+
+<<circlize_highlight_sector, eval = FALSE>>=
+factors = letters[1:8]
+circos.initialize(factors, xlim = c(0, 1))
+for(i in 1:4) {
+    circos.trackPlotRegion(ylim = c(0, 1))
+}
+circos.info(plot = TRUE)
+
+highlight.sector(c("a", "h"), track.index = 1)
+highlight.sector("c", col = "#00FF0040")
+highlight.sector("d", col = NA, border = "red", lwd = 2)
+highlight.sector("e", col = "#0000FF40", track.index = c(2, 3))
+highlight.sector(c("f", "g"), col = NA, border = "green", 
+    lwd = 2, track.index = c(2, 3))
+highlight.sector(factors, col = "#FFFF0040", track.index = 4)
+circos.clear()
+@
+
+<<circlize_highlight, echo = FALSE, out.width = "0.6\\textwidth", out.height = "1.2\\textwidth", fig.width = 6, fig.height = 12, fig.cap = "Highlight sectors and tracks. A) highlight by {\\tt code draw.sector}; B) highlight by {\\tt highlight.sector}.">>=
+par(mfrow = c(2, 1))
 <<circlize_highlight_1>>
 <<circlize_highlight_2>>
 <<circlize_highlight_3>>
 <<circlize_highlight_4>>
 <<circlize_highlight_5>>
+text(-0.9, 0.9, "A", cex = 1.5)
+<<circlize_highlight_sector>>
+text(-0.9, 0.9, "B", cex = 1.5)
+par(mfrow = c(1, 1))
 @
-
-Remember the color should be semi-transparent in the highlighted area.
 
 
 \subsection{Get information of circos plot}

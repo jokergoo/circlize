@@ -111,7 +111,7 @@ Here we do not need any cell paddings and we do not need lines to be too thick
 because genomic graphics are always huge.
 
 <<ideogram_basic_trunk1, eval = FALSE>>=
-par(mar = c(1, 1, 1, 1), lwd = 0.5)
+par(lwd = 0.5)
 circos.par(cell.padding = c(0, 0, 0, 0))
 @
 

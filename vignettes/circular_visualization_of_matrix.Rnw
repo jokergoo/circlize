@@ -88,7 +88,6 @@ a new track and fill in with colors for the whole plotting regions then add text
 each region.
 
 <<chord_diagram_by_hand_initialize, eval = FALSE>>=
-par(mar = c(1, 1, 1, 1))
 circos.par(cell.padding = c(0, 0, 0, 0))
 circos.initialize(factors = factors, xlim = xlim)
 circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.border = NA, 
@@ -180,7 +179,7 @@ chordDiagram(mat, order = c("S1", "E1", "E2", "S2", "E3", "E4", "S3", "E5", "E6"
 @
 
 <<chord_diagram_basic, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Basic usages of {\\tt chordDiagram}. A) default style; B) set {\\tt gap.degree}; C) set {\\tt start.degree}; D) set orders of sectors.">>=
-par(mfrow = c(2, 2), mar = c(1, 1, 1, 1))
+par(mfrow = c(2, 2))
 <<chord_diagram_basic_simple>>
 text(-0.9, 0.9, "A", cex = 1.5)
 <<chord_diagram_basic_gap_degree>>
@@ -252,7 +251,7 @@ will be ignored if it is set.
 
 
 <<chord_diagram_color, echo = FALSE, fig.align = "center", out.width = "0.6\\textheight", out.height = "0.9\\textheight", fig.width = 7, fig.height = 10.5, fig.cap = "Color settings in {\\tt chordDiagram}. A) set {\\tt grid.col}; B) set {\\tt transparency}; C) set {\\tt col} as a matrix; D) set {\\tt col} as a function; E) set {\\tt row.col}; F) set {\\tt column.col}.">>=
-par(mfrow = c(3, 2), mar = c(1, 1, 1, 1))
+par(mfrow = c(3, 2))
 <<chord_diagram_color_grid>>
 text(-0.9, 0.9, "A", cex = 1.5)
 <<chord_diagram_color_transparency>>
@@ -308,7 +307,7 @@ chordDiagram(mat, grid.col = grid.col, link.lwd = 2, link.border = border_mat2)
 @
 
 <<chord_diagram_style, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Link style settings in {\\tt chordDiagram}. A) set as scalar; B) set as matrix; C) set as sub matrix.">>=
-par(mfrow = c(2, 2), mar = c(1, 1, 1, 1))
+par(mfrow = c(2, 2))
 <<chord_diagram_style_scalar>>
 text(-0.9, 0.9, "A", cex = 1.5)
 <<chord_diagram_style_fullmat>>
@@ -353,7 +352,7 @@ Just remember if you want to highlight links by colors, make sure to set high or
 transparency to the links that you want to ignore.
 
 <<chord_diagram_highlight, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Highlight links by colors. A) set {\\tt row.col}; B) set by matrix; C) set by color function.">>=
-par(mfrow = c(2, 2), mar = c(1, 1, 1, 1))
+par(mfrow = c(2, 2))
 <<chord_diagram_highlight_row>>
 text(-0.9, 0.9, "A", cex = 1.5)
 <<chord_diagram_highlight_mat>>
@@ -415,7 +414,7 @@ chordDiagram(mat3, directional = TRUE, row.col = 1:5)
 
 
 <<chord_diagram_directional, echo = FALSE, fig.align = "center", out.width = "0.6\\textheight", out.height = "0.9\\textheight", fig.width = 7, fig.height = 10.5, fig.cap = "Visualization of directional matrix. A) with default settings; B) set difference of two feet of links; C) set the starting feet; D) row names and column names have overlaps; E) remove self-loop.">>=
-par(mfrow = c(3, 2), mar = c(1, 1, 1, 1))
+par(mfrow = c(3, 2))
 <<chord_diagram_directional_simple>>
 <<chord_diagram_directional_overlap>>
 text(-0.9, 0.9, "D", cex = 1.5)
@@ -444,7 +443,7 @@ chordDiagram(cor(mat3), col = colorRamp2(c(-1, 0, 1), c("green", "white", "red")
 @
 
 <<chord_diagram_symmetric, echo = FALSE, fig.align = "center", out.width = "\\textwidth", out.height = "0.5\\textwidth", fig.width = 7, fig.height = 3.5, fig.cap = "Visualization of symmetric matrix. A) set {\\tt symmetric} to {\\tt TRUE}; B) set {\\tt symmetric} to {\\tt FALSE}.">>=
-par(mfrow = c(1, 2), mar = c(1, 1, 1, 1))
+par(mfrow = c(1, 2))
 <<chord_diagram_symmetric_show>>
 text(-0.9, 0.9, "A", cex = 1.5)
 <<chord_diagram_symmetric_hidden>>
@@ -489,7 +488,7 @@ text(-0.9, 0.9, "C", cex = 1.5)
 
 
 <<chord_diagram_default_track, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Track organization in {\\tt chordDiagram}. A) only show the grid track; B) set label track and grid track with heights; C) do not add label track or grid track.">>=
-par(mfrow = c(2, 2), mar = c(1, 1, 1, 1))
+par(mfrow = c(2, 2))
 <<chord_diagram_default_track_simple>>
 par(mfrow = c(1, 1))
 @
@@ -596,7 +595,7 @@ circos.trackPlotRegion(track.index = 1, panel.fun = function(x, y) {
 
 
 <<chord_diagram_labels, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Customize sector labels. A) put sector labels in radical direction; B) sector labels are put inside grids; C) sector labels are put in different direction according the width of sectors.">>=
-par(mfrow = c(2, 2), mar = c(1, 1, 1, 1))
+par(mfrow = c(2, 2))
 <<chord_diagram_labels_show>>
 text(-0.9, 0.9, "A", cex = 1.5)
 <<chord_diagram_labels_inside>>
@@ -665,7 +664,7 @@ circos.clear()
 
 
 <<chord_diagram_axes, echo = FALSE, fig.align = "center", out.width = "\\textwidth", out.height = "0.5\\textwidth", fig.width = 7, fig.height = 3.5, fig.cap = "Customize sector axes. A) add axes to the grid track; B) add another percentage axes">>=
-par(mfrow = c(1, 2), mar = c(1, 1, 1, 1))
+par(mfrow = c(1, 2))
 <<chord_diagram_axes_simple>>
 text(-0.9, 0.9, "A", cex = 1.5)
 <<chord_diagram_axes_two>>
@@ -739,7 +738,7 @@ Now the scale of the two Chord Diagrams (figure \ref{fig:chord_diagram_compare})
 same if you look at the scale of axes in the two diagrams.
 
 <<chord_diagram_compare, echo = FALSE, fig.align = "center", out.width = "\\textwidth", out.height = "0.5\\textwidth", fig.width = 7, fig.height = 3.5, fig.cap = "Compare two Chord Diagrams and make them in same scale. bottom matrix has half the values as in the upper matrix.">>=
-par(mfrow = c(1, 2), mar = c(1, 1, 1, 1))
+par(mfrow = c(1, 2))
 <<chord_diagram_compare_1>>
 text(-0.9, 0.9, "A", cex = 1.5)
 <<chord_diagram_compare_2>>
@@ -795,7 +794,7 @@ circos.clear()
 
 
 <<chord_diagram_reduce, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Reduced Chord Diagram with removing tiny sectors. A) notice how sector labels are reduced; B) notice how link colors are reduced; C) notice how grid colors are reduced; D) notice how gap degrees are reduced.">>=
-par(mfrow = c(2, 2), mar = c(1, 1, 1, 1))
+par(mfrow = c(2, 2))
 <<chord_diagram_reduce_1>>
 text(-0.9, 0.9, "A", cex = 1.5)
 <<chord_diagram_reduce_2>>

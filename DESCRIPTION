@@ -9,10 +9,15 @@ Depends: R (>= 2.10.0)
 Imports: GlobalOptions (>= 0.0.6)
 Suggests: knitr
 VignetteBuilder: knitr
-Description: This package implements circular visualization
-    (http://circos.ca/) in R. Due to the natural born feature of R to draw statistical
-    graphics, this package can provide a more general and flexible way to
-    visualize huge information in a circular style.
+Description: Circular layout is an efficient way for the visualization of huge 
+    amounts of information. Here the circlize package provides an implementation 
+	of circular layout generation in R as well as an enhancement of available 
+	software. The flexibility of this package is based on the usage of low-level 
+	graphics functions such that self-defined high-level graphics can be easily 
+	implemented by users for specific purposes. Together with the seamless 
+	connection between the powerful computational and visual environment in R, 
+	circlize gives users more convenience and freedom to design figures for 
+	better understanding complex patterns behind multi-dimensional data.
 URL: https://github.com/jokergoo/circlize
 License: GPL (>= 2)
 Packaged: 2015-1-28 00:00:00 UTC; Administrator

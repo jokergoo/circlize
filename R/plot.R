@@ -1429,14 +1429,17 @@ draw.sector = function(start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL
 # -lty Style of borders
 # -padding Padding for the highlighted region. It should contain four values
 #          representing ratios of the width or height of the highlighted region
+# -text text added in the highlight region
+# -text.vjust adjustment on 'vertical' (radical) direction
+# -... pass to `circos.text`
 #
 # == details
-# You can use `circos.info` to find out index for all tracks.
+# You can use `circos.info` to find out index for all sectors and all tracks.
 #
 # The function calls `draw.sector`.
 highlight.sector = function(sector.index, track.index = get.all.track.index(), 
 	col = "#FF000040", border = NA, lwd = par("lwd"), lty = par("lty"),
-	padding = c(0, 0, 0, 0)) {
+	padding = c(0, 0, 0, 0), text = NULL, text.vjust = 0.5, ...) {
 	
 	sectors = get.all.sector.index()
 	if(!all(sector.index %in% sectors)) {
@@ -1447,7 +1450,7 @@ highlight.sector = function(sector.index, track.index = get.all.track.index(),
 		stop("`track.index` contains index that does not belong to available tracks.\n")
 	}
 	
-	# if all chromosomes are selected
+	# if all sectors are selected
 	if(length(setdiff(sectors, sector.index)) == 0) {
 		track.index = sort(unique(track.index))
 		ts = continuousIndexSegment(track.index)
@@ -1464,6 +1467,14 @@ highlight.sector = function(sector.index, track.index = get.all.track.index(),
 			rou2 = rou2 - d2*padding[1]
 			
 			draw.sector(start.degree = start.degree, end.degree = end.degree, rou1 = rou1, rou2 = rou2, col = col, border = border, lwd = lwd, lty = lty)
+
+			if(!is.null(text)) {
+				# map to most recent cell
+				pos = reverse.circlize((start.degree + end.degree)/2, (rou1 + rou2)/2)
+				op_warning = circos.par("points.overflow.warning")
+        		circos.text(pos[1,1], pos[1,2], text, adj = c(0.5, text.vjust), ...)
+        		circos.par(points.overflow.warning = op_warning)
+			}
 		}
 		
 	} else {
@@ -1491,6 +1502,13 @@ highlight.sector = function(sector.index, track.index = get.all.track.index(),
 				rou2 = rou2 - d2*padding[1]
 				
 				draw.sector(start.degree = start.degree, end.degree = end.degree, rou1 = rou1, rou2 = rou2, col = col, border = border, lwd = lwd, lty = lty)
+				if(!is.null(text)) {
+					# map to most recent cell
+					pos = reverse.circlize((start.degree + end.degree)/2, (rou1 + rou2)/2)
+					op_warning = circos.par("points.overflow.warning")
+	        		circos.text(pos[1,1], pos[1,2], text, adj = c(0.5, text.vjust), ...)
+	        		circos.par(points.overflow.warning = op_warning)
+				}
 			}
 		}
 	}	

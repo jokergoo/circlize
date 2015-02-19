@@ -13,7 +13,7 @@ Highlight sectors and tracks
 \usage{
 highlight.sector(sector.index, track.index = get.all.track.index(),
     col = "#FF000040", border = NA, lwd = par("lwd"), lty = par("lty"),
-    padding = c(0, 0, 0, 0))
+    padding = c(0, 0, 0, 0), text = NULL, text.vjust = 0.5, ...)
 }
 \arguments{
 
@@ -24,12 +24,34 @@ highlight.sector(sector.index, track.index = get.all.track.index(),
   \item{lwd}{Width of borders}
   \item{lty}{Style of borders}
   \item{padding}{Padding for the highlighted region. It should contain four values representing ratios of the width or height of the highlighted region}
+  \item{text}{text added in the highlight region}
+  \item{text.vjust}{adjustment on 'vertical' (radical) direction}
+  \item{...}{pass to \code{\link{circos.text}}}
 
 }
 \details{
-You can use \code{\link{circos.info}} to find out index for all tracks.  
+You can use \code{\link{circos.info}} to find out index for all sectors and all tracks.  
 
 The function calls \code{\link{draw.sector}}. 
 
 
+}
+\examples{
+\dontrun{
+factors = letters[1:8]
+circos.initialize(factors, xlim = c(0, 1))
+for(i in 1:4) {
+    circos.trackPlotRegion(ylim = c(0, 1))
+}
+circos.info(plot = TRUE)
+
+highlight.sector(c("a", "h"), track.index = 1)
+highlight.sector("c", col = "#00FF0040")
+highlight.sector("d", col = NA, border = "red", lwd = 2)
+highlight.sector("e", col = "#0000FF40", track.index = c(2, 3))
+highlight.sector(c("f", "g"), col = NA, border = "green", 
+    lwd = 2, track.index = c(2, 3))
+highlight.sector(factors, col = "#FFFF0040", track.index = 4)
+circos.clear()
+}
 }

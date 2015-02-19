@@ -1,6 +1,7 @@
 Changes in version 0.2.3
 ------------------------------------------------------------------------------
 
+# add `highlight.sector`
 * `chromosome.index` can set the order of chromosomes
 * add `read.chromInfo()` to read chromInfo file from UCSC
 * if downloading cytoband file failed, try to download chromInfo file

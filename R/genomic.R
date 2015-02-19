@@ -1258,80 +1258,14 @@ genomicDensity = function(region, window.size = 10000000, overlap = TRUE) {
 # Highlight chromosomes
 #
 # == param
-# -chr Chromosome names. It should be consistent with the sector index.
-# -track.index A vector of track index that you want to highlight
-# -col Color for highlighting. Note the color should be semi-transparent.
-# -border Border of the highlighted region
-# -lwd Width of borders
-# -lty Style of borders
-# -padding Padding for the highlighted region. It should contain four values
-#          representing ratios of the width or height of the highlighted region
+# -... pass to `highlight.sector`
 #
 # == details
-# You can use `circos.info` to find out index for all tracks.
+# This is only a shortcut function of `highlight.sector`.
 #
-# The function calls `draw.sector`.
-highlight.chromosome = function(chr, track.index = get.all.track.index(), 
-	col = "#FF000040", border = NA, lwd = par("lwd"), lty = par("lty"),
-	padding = c(0, 0, 0, 0)) {
+highlight.chromosome = function(...) {
 	
-	sector.index = chr
-	sectors = get.all.sector.index()
-	if(!all(sector.index %in% sectors)) {
-		stop("`chr` contains index that does not beling to available sectors")
-	}
-	tracks = get.all.track.index()
-	if(!all(track.index %in% tracks)) {
-		stop("`track.index` contains index that does not belong to available tracks.\n")
-	}
-	
-	# if all chromosomes are selected
-	if(length(setdiff(sectors, sector.index)) == 0) {
-		track.index = sort(unique(track.index))
-		ts = continuousIndexSegment(track.index)
-		
-		for(i in seq_along(ts)) {
-			track.index.vector = ts[[i]]
-			start.degree = 0
-			end.degree = 360
-			rou1 = get.cell.meta.data("cell.top.radius", sectors[1], track.index.vector[1])
-			rou2 = get.cell.meta.data("cell.bottom.radius", sectors[1], track.index.vector[length(track.index.vector)])
-			
-			d2 = rou1 - rou2
-			rou1 = rou1 + d2*padding[3]
-			rou2 = rou2 - d2*padding[1]
-			
-			draw.sector(start.degree = start.degree, end.degree = end.degree, rou1 = rou1, rou2 = rou2, col = col, border = border, lwd = lwd, lty = lty)
-		}
-		
-	} else {
-	
-		sector.numeric.index = which(sectors %in% sector.index)
-		ss = continuousIndexSegment(sector.numeric.index, n = length(sectors), loop = TRUE)
-		
-		track.index = sort(unique(track.index))
-		ts = continuousIndexSegment(track.index)
-		
-		for(j in seq_along(ss)) {
-			sector.index.vector = sectors[ ss[[j]] ]
-			for(i in seq_along(ts)) {
-				track.index.vector = ts[[i]]
-				start.degree = get.cell.meta.data("cell.start.degree", sector.index.vector[1], track.index = 1)
-				end.degree = get.cell.meta.data("cell.end.degree", sector.index.vector[length(sector.index.vector)], track.index = 1)
-				rou1 = get.cell.meta.data("cell.top.radius", sector.index.vector[1], track.index.vector[1])
-				rou2 = get.cell.meta.data("cell.bottom.radius", sector.index.vector[1], track.index.vector[length(track.index.vector)])
-				
-				d1 = end.degree - start.degree
-				d2 = rou1 - rou2
-				start.degree = start.degree - d1*padding[2]
-				end.degree = end.degree + d1*padding[4]
-				rou1 = rou1 + d2*padding[3]
-				rou2 = rou2 - d2*padding[1]
-				
-				draw.sector(start.degree = start.degree, end.degree = end.degree, rou1 = rou1, rou2 = rou2, col = col, border = border, lwd = lwd, lty = lty)
-			}
-		}
-	}	
+	highlight.sector(...)
 }
 
 continuousIndexSegment = function(x, n = NULL, loop = FALSE) {

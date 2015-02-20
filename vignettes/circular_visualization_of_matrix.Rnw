@@ -266,6 +266,37 @@ par(mfrow = c(1, 1))
 @
 
 \subsection{Other Style of links}
+The order of links on the sectors can be controlled by {\tt link.order}. The value
+of {\tt link.order} is a length-two vector which controls order of sectors which correspond
+to rows and columns respectively.
+
+<<chord_diagram_style_cross_1, eval = FALSE>>=
+chordDiagram(mat, grid.col = grid.col, link.order = c(1, 1))
+chordDiagram(mat, grid.col = grid.col, link.order = c(1, -1))
+chordDiagram(mat, grid.col = grid.col, link.order = c(-1, 1))
+chordDiagram(mat, grid.col = grid.col, link.order = c(-1, -1))
+@
+
+You can compare the difference in figure \ref{fig:chord_diagram_link_order}.
+
+<<chord_diagram_link_order, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Link orders in sectors. A) set {\\tt link.order} to {\\tt c(1, 1)}; B) set {\\tt link.order} to {\\tt c(1, -1)}; C) set {\\tt link.order} to {\\tt c(-1, 1)}; D) set {\\tt link.order} to {\\tt c(-1, -1)}.">>=
+par(mfrow = c(2, 2))
+chordDiagram(mat, grid.col = grid.col, link.order = c(1, 1))
+text(-0.9, 0.9, "A", cex = 1.5)
+chordDiagram(mat, grid.col = grid.col, link.order = c(1, -1))
+text(-0.9, 0.9, "B", cex = 1.5)
+chordDiagram(mat, grid.col = grid.col, link.order = c(-1, 1))
+text(-0.9, 0.9, "C", cex = 1.5)
+chordDiagram(mat, grid.col = grid.col, link.order = c(-1, -1))
+text(-0.9, 0.9, "D", cex = 1.5)
+par(mfrow = c(1, 1))
+@
+
+
+<<chord_diagram_style_cross_2, eval = FALSE>>=
+chordDiagram(mat, grid.col = grid.col, cross = TRUE)
+@
+
 {\tt link.lwd}, {\tt link.lty} and {\tt link.border} controls the style of links. 
 All these three parameters can be set either a single scalar or a matrix with names.
 
@@ -306,7 +337,7 @@ colnames(border_mat2) = colnames(mat)
 chordDiagram(mat, grid.col = grid.col, link.lwd = 2, link.border = border_mat2)
 @
 
-<<chord_diagram_style, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Link style settings in {\\tt chordDiagram}. A) set as scalar; B) set as matrix; C) set as sub matrix.">>=
+<<chord_diagram_style, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Link style settings in {\\tt chordDiagram}. A) graphic parameters set as scalar; B) graphic parameters set as matrix; C) graphic parameters set as sub matrix.">>=
 par(mfrow = c(2, 2))
 <<chord_diagram_style_scalar>>
 text(-0.9, 0.9, "A", cex = 1.5)

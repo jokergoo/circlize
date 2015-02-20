@@ -16,7 +16,7 @@ chordDiagram(mat, grid.col = NULL, transparency = 0.5,
     symmetric = FALSE, order = NULL, preAllocateTracks = NULL,
     annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
     link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), grid.border = NA,
-    diffHeight = 0.04, reduce = 1e-5, ...)
+    diffHeight = 0.04, reduce = 1e-5, link.order = -1, ...)
 }
 \arguments{
 
@@ -39,6 +39,7 @@ chordDiagram(mat, grid.col = NULL, transparency = 0.5,
   \item{grid.border}{border for grids. If it is \code{NULL}, the border color is same as grid color}
   \item{diffHeight}{The difference of height between two 'roots' if \code{directional} is set to \code{TRUE}. }
   \item{reduce}{if the ratio of the width of certain grid compared to the whole circle is less than this value, the grid is removed on the plot. Set it to value less than zero if you want to keep all tiny grid.}
+  \item{cross}{order of links in single sector.}
   \item{...}{pass to \code{\link{circos.link}}}
 
 }

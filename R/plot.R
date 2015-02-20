@@ -1429,8 +1429,9 @@ draw.sector = function(start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL
 # -lty Style of borders
 # -padding Padding for the highlighted region. It should contain four values
 #          representing ratios of the width or height of the highlighted region
-# -text text added in the highlight region
+# -text text added in the highlight region, only support plotting one string at a time
 # -text.vjust adjustment on 'vertical' (radical) direction
+# -text.col color for the text
 # -... pass to `circos.text`
 #
 # == details
@@ -1439,7 +1440,8 @@ draw.sector = function(start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL
 # The function calls `draw.sector`.
 highlight.sector = function(sector.index, track.index = get.all.track.index(), 
 	col = "#FF000040", border = NA, lwd = par("lwd"), lty = par("lty"),
-	padding = c(0, 0, 0, 0), text = NULL, text.vjust = 0.5, ...) {
+	padding = c(0, 0, 0, 0), text = NULL, text.col = par("col"), 
+	text.vjust = 0.5, ...) {
 	
 	sectors = get.all.sector.index()
 	if(!all(sector.index %in% sectors)) {
@@ -1472,7 +1474,7 @@ highlight.sector = function(sector.index, track.index = get.all.track.index(),
 				# map to most recent cell
 				pos = reverse.circlize((start.degree + end.degree)/2, (rou1 + rou2)/2)
 				op_warning = circos.par("points.overflow.warning")
-        		circos.text(pos[1,1], pos[1,2], text, adj = c(0.5, text.vjust), ...)
+        		circos.text(pos[1,1], pos[1,2], text, adj = c(0.5, text.vjust), col = text.col, ...)
         		circos.par(points.overflow.warning = op_warning)
 			}
 		}
@@ -1506,7 +1508,7 @@ highlight.sector = function(sector.index, track.index = get.all.track.index(),
 					# map to most recent cell
 					pos = reverse.circlize((start.degree + end.degree)/2, (rou1 + rou2)/2)
 					op_warning = circos.par("points.overflow.warning")
-	        		circos.text(pos[1,1], pos[1,2], text, adj = c(0.5, text.vjust), ...)
+	        		circos.text(pos[1,1], pos[1,2], text, adj = c(0.5, text.vjust), col = text.col, ...)
 	        		circos.par(points.overflow.warning = op_warning)
 				}
 			}

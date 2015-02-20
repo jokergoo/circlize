@@ -13,7 +13,8 @@ Highlight sectors and tracks
 \usage{
 highlight.sector(sector.index, track.index = get.all.track.index(),
     col = "#FF000040", border = NA, lwd = par("lwd"), lty = par("lty"),
-    padding = c(0, 0, 0, 0), text = NULL, text.vjust = 0.5, ...)
+    padding = c(0, 0, 0, 0), text = NULL, text.col = par("col"),
+    text.vjust = 0.5, ...)
 }
 \arguments{
 
@@ -24,8 +25,9 @@ highlight.sector(sector.index, track.index = get.all.track.index(),
   \item{lwd}{Width of borders}
   \item{lty}{Style of borders}
   \item{padding}{Padding for the highlighted region. It should contain four values representing ratios of the width or height of the highlighted region}
-  \item{text}{text added in the highlight region}
+  \item{text}{text added in the highlight region, only support plotting one string at a time}
   \item{text.vjust}{adjustment on 'vertical' (radical) direction}
+  \item{text.col}{color for the text}
   \item{...}{pass to \code{\link{circos.text}}}
 
 }

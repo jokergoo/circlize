@@ -37,6 +37,7 @@
 # -diffHeight The difference of height between two 'roots' if ``directional`` is set to ``TRUE``. 
 # -reduce if the ratio of the width of certain grid compared to the whole circle is less than this value, the grid is removed on the plot.
 #         Set it to value less than zero if you want to keep all tiny grid.
+# -cross order of links in single sector.
 # -... pass to `circos.link`
 #
 # == details
@@ -54,7 +55,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	symmetric = FALSE, order = NULL, preAllocateTracks = NULL,
 	annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
 	link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), grid.border = NA, 
-	diffHeight = 0.04, reduce = 1e-5, ...) {
+	diffHeight = 0.04, reduce = 1e-5, link.order = -1, ...) {
 	
 	if(!is.matrix(mat)) {
 		stop("`mat` can only be a matrix.\n")
@@ -292,9 +293,29 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	names(sector.sum.row) = factors
 	names(sector.sum.col) = factors
 	sector.sum.col[ names(rs) ] = rs
-    for(i in seq_along(rn)) {
+
+	if(length(link.order) == 1) {
+		link.order = rep(link.order, 2)
+	}
+	if(length(link.order) != 2) {
+		stop("`link.order` should be of length 1 or 2.")
+	}
+	if(!all(link.order %in% c(-1, 1))) {
+		stop("`link.order` can only be in c(-1, 1).")
+	}
+
+	if(link.order[1] == 1) {
+		row_index = seq_along(rn)
+	} else {
+		row_index = rev(seq_along(rn))	
+	}
+    for(i in row_index) {
 		# if one name exists in both rows and columns, put it 
-		cn_index = rev(seq_along(cn))
+		if(link.order[2] == 1) {
+			cn_index = seq_along(cn)
+		} else {
+			cn_index = rev(seq_along(cn))
+		}
 		if(rn[i] %in% cn) {
 			is = which(cn == rn[i])
 			cn_index = c(is, cn_index[cn_index != is])

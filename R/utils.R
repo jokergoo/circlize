@@ -302,3 +302,51 @@ get_most_inside_radius = function() {
 	    get.cell.meta.data("cell.bottom.radius", track.index = tracks[n]) - get.cell.meta.data("track.margin", track.index = tracks[n])[1] - circos.par("track.margin")[2]
 	}
 }
+
+# == title
+# Convert adjacency list to adjacency matrix
+#
+# == param
+# -lt a data frame which contains adjacency list.
+# -square should returned matrix a square matrix?
+#
+# == details
+# Convert adjacency list to adjacency matrix.
+#
+adjacencyList2Matrix = function(lt, square = FALSE) {
+	lt = as.data.frame(lt)
+	if(ncol(lt) == 2) {
+		lt = cbind(lt, rep(1, nrow(lt)))
+	}
+	if(ncol(lt) < 3) {
+		stop("`lt` should be a data frame with three columns")
+	}
+
+	if(!is.numeric(lt[[3]])) {
+		stop("Third column in `lt` should be numeric.")
+	}
+
+	lt[[1]] = as.vector(lt[[1]])
+	lt[[2]] = as.vector(lt[[2]])
+
+	rn = unique(lt[[1]])
+	cn = unique(lt[[2]])
+
+	if(square) {
+		nm = union(rn, cn)
+		mat = matrix(0, ncol = length(nm), nrow = length(nm))
+		rownames(mat) = nm
+		colnames(mat) = nm
+	} else {
+		mat = matrix(0, ncol = length(cn), nrow = length(rn))
+		rownames(mat) = rn
+		colnames(mat) = cn
+	}
+
+	for(i in seq_len(nrow(lt))) {
+		mat[lt[i, 1], lt[i, 2]] = lt[i, 3]
+	}
+
+	return(mat)
+}
+

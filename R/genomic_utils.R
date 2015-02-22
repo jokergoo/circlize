@@ -102,7 +102,7 @@ read.cytoband = function(cytoband = paste0(system.file(package = "circlize"),
 # Read/parse chromInfo data from a data frame/file/UCSC database
 #
 # == param
-# -chromInfo Path of the cytoband file or a data frame that already contains cytoband data
+# -chromInfo Path of the chromInfo file or a data frame that already contains chromInfo data
 # -species  Abbreviations of species. e.g. hg19 for human, mm10 for mouse. If this
 #          value is specified, the function will download ``chromInfo.txt.gz`` from
 #          UCSC website automatically.
@@ -274,49 +274,6 @@ generateRandomBed = function(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0
 		colnames(df) = c("chr", "start", "end", paste0("value", seq_len(ncol(df)-3)))
 	}
 	return(df)
-}
-
-# == title
-# Convert adjacency list to adjacency matrix
-#
-# == param
-# -lt a data frame which contains adjacency list.
-# -square should returned matrix a square matrix?
-#
-# == details
-# Convert adjacency list to adjacency matrix.
-#
-adjacencyList2Matrix = function(lt, square = FALSE) {
-	if(ncol(lt) < 3) {
-		stop("`lt` should be a data frame with three columns")
-	}
-
-	if(!is.numeric(lt[[3]])) {
-		stop("Third column in `lt` should be numeric.")
-	}
-
-	lt[[1]] = as.vector(lt[[1]])
-	lt[[2]] = as.vector(lt[[2]])
-
-	rn = unique(lt[[1]])
-	cn = unique(lt[[2]])
-
-	if(square) {
-		nm = union(rn, cn)
-		mat = matrix(0, ncol = length(nm), nrow = length(nm))
-		rownames(mat) = nm
-		colnames(mat) = nm
-	} else {
-		mat = matrix(0, ncol = length(cn), nrow = length(rn))
-		rownames(mat) = rn
-		colnames(mat) = cn
-	}
-
-	for(i in seq_len(nrow(lt))) {
-		mat[lt[i, 1], lt[i, 2]] = lt[i, 3]
-	}
-
-	return(mat)
 }
 
 

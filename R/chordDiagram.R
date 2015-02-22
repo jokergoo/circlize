@@ -37,7 +37,8 @@
 # -diffHeight The difference of height between two 'roots' if ``directional`` is set to ``TRUE``. 
 # -reduce if the ratio of the width of certain grid compared to the whole circle is less than this value, the grid is removed on the plot.
 #         Set it to value less than zero if you want to keep all tiny grid.
-# -cross order of links in single sector.
+# -link.order order of links in single sector. The value is a length-two vector which 
+#         controls order of sectors which correspond to rows and columns respectively.
 # -... pass to `circos.link`
 #
 # == details

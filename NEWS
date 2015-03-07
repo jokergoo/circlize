@@ -1,6 +1,11 @@
 Changes in version 0.2.3
 ------------------------------------------------------------------------------
 
+* add `circos.dendrogram` which draw dendrograms
+
+Changes in version 0.2.3
+------------------------------------------------------------------------------
+
 * add `link.order` argument in `chordDiagram` to control order of links on
   sectors
 * add `highlight.sector`

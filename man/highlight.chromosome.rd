@@ -1,12 +1,12 @@
 \name{highlight.chromosome}
 \alias{highlight.chromosome}
 \title{
-Highlight chromosomes  
+Highlight chromosomes  
 
 
 }
 \description{
-Highlight chromosomes  
+Highlight chromosomes  
 
 
 }
@@ -15,11 +15,11 @@ highlight.chromosome(...)
 }
 \arguments{
 
-  \item{...}{pass to \code{\link{highlight.sector}}}
+  \item{...}{pass to \code{\link{highlight.sector}}}
 
 }
 \details{
-This is only a shortcut function of \code{\link{highlight.sector}}.  
+This is only a shortcut function of \code{\link{highlight.sector}}.  
 
 
 }

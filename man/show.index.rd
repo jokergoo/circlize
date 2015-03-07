@@ -1,12 +1,12 @@
 \name{show.index}
 \alias{show.index}
 \title{
-Label the sector index and the track index on each cell  
+Label the sector index and the track index on each cell  
 
 
 }
 \description{
-Label the sector index and the track index on each cell  
+Label the sector index and the track index on each cell  
 
 
 }
@@ -14,7 +14,7 @@ Label the sector index and the track index on each cell
 show.index()
 }
 \details{
-This function is deprecated, please use \code{\link{circos.info}} instead. 
+This function is deprecated, please use \code{\link{circos.info}} instead. 
 
 
 }

@@ -1515,3 +1515,94 @@ highlight.sector = function(sector.index, track.index = get.all.track.index(),
 		}
 	}	
 }
+
+# == title
+# Add circlized dendrograms
+#
+# == param
+# -dend A `stats::dendrogram` object.
+# -facing Is the dendromgrams facing inside to the circle or outside.
+# -max_height Maximum height of the dendrogram. This is important if more than one dendrograms
+#             are drawn in one track and making them comparable.
+#
+# == details
+# You can use the ``dendextend`` package to render the dendrograms.
+# 
+circos.dendrogram = function(dend, facing = c("outside", "inside"), max_height = NULL) {
+
+	facing = match.arg(facing)[1]
+
+	if(is.null(max_height)) {
+		max_height = attr(dend, "height")
+	}
+
+    is.leaf = function(object) {
+        leaf = attr(object, "leaf")
+        if(is.null(leaf)) {
+            FALSE
+        } else {
+            leaf
+        }
+    }
+
+    lines_par = function(col = par("col"), lty = par("lty"), lwd = par("lwd"), ...) {
+    	return(list(col = col, lty = lty, lwd = lwd))
+    }
+    
+    draw.d = function(dend, max_height, facing = "outside", max_width = 0) {
+        leaf = attr(dend, "leaf")
+        d1 = dend[[1]]  # child tree 1
+        d2 = dend[[2]]  # child tree 2
+        height = attr(dend, "height")
+        midpoint = attr(dend, "midpoint")
+        
+        if(is.leaf(d1)) {
+            x1 = x[as.character(attr(d1, "label"))]
+        } else {
+            x1 = attr(d1, "midpoint") + x[as.character(labels(d1))[1]]
+        }
+        y1 = attr(d1, "height")
+        
+        if(is.leaf(d2)) {
+            x2 = x[as.character(attr(d2, "label"))]
+        } else {
+            x2 = attr(d2, "midpoint") + x[as.character(labels(d2))[1]]
+        }
+        y2 = attr(d2, "height")
+
+        # graphic parameter for current branch
+        # only for lines, there are lwd, col, lty
+        edge_par1 = do.call("lines_par", as.list(attr(d1, "edgePar")))  # as.list to convert NULL to list()
+        edge_par2 = do.call("lines_par", as.list(attr(d2, "edgePar")))
+        
+        # plot the connection line
+        
+        if(facing == "outside") {
+        	circos.lines(c(x1, x1), max_height - c(y1, height), col = edge_par1$col, lty = edge_par1$lty, lwd = edge_par1$lwd, straight = TRUE)
+        	circos.lines(c(x1, (x1+x2)/2), max_height - c(height, height), col = edge_par1$col, lty = edge_par1$lty, lwd = edge_par1$lwd)
+       		circos.lines(c(x2, x2), max_height - c(y2, height), col = edge_par2$col, lty = edge_par2$lty, lwd = edge_par2$lwd, straight = TRUE)
+       		circos.lines(c(x2, (x1+x2)/2), max_height - c(height, height), col = edge_par2$col, lty = edge_par2$lty, lwd = edge_par2$lwd)
+       	} else if(facing == "inside") {
+      		circos.lines(c(x1, x1), c(y1, height), col = edge_par1$col, lty = edge_par1$lty, lwd = edge_par1$lwd, straight = TRUE)
+        	circos.lines(c(x1, (x1+x2)/2), c(height, height), col = edge_par1$col, lty = edge_par1$lty, lwd = edge_par1$lwd)
+        	circos.lines(c(x2, x2), c(y2, height), col = edge_par2$col, lty = edge_par2$lty, lwd = edge_par2$lwd, straight = TRUE)
+       		circos.lines(c(x2, (x1+x2)/2), c(height, height), col = edge_par2$col, lty = edge_par2$lty, lwd = edge_par2$lwd)
+       	}
+  
+        # do it recursively
+        if(!is.leaf(d1)) {
+            draw.d(d1, max_height, facing, max_width)
+        }
+        if(!is.leaf(d2)) {
+            draw.d(d2, max_height, facing, max_width)
+        }
+    }
+    
+    labels = as.character(labels(dend))
+    x = seq_along(labels) - 0.5
+
+    names(x) = labels
+    n = length(labels)
+
+    draw.d(dend, max_height, facing, max_width = n)
+}

@@ -1,12 +1,12 @@
 \name{get.all.track.index}
 \alias{get.all.track.index}
 \title{
-Get index for all tracks  
+Get index for all tracks  
 
 
 }
 \description{
-Get index for all tracks  
+Get index for all tracks  
 
 
 }
@@ -14,7 +14,7 @@ Get index for all tracks
 get.all.track.index()
 }
 \details{
-Simple function returning a vector of all track index. 
+Simple function returning a vector of all track index. 
 
 
 }

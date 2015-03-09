@@ -52,34 +52,50 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 		theta1 = circlize(point1, 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
 		theta21 = circlize(point2[1], 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
         theta22 = circlize(point2[2], 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
-        
-        if(degreeDiff(theta1, theta21) > degreeDiff(theta1, theta22)) {
-        	d1 = getQuadraticPoints(theta1, theta21, rou1, rou2, h = h, w = w)
-        	d2 = getQuadraticPoints(theta1, theta22, rou1, rou2, h = h2, w = w2)
-        } else {
-	        d1 = getQuadraticPoints(theta1, theta21, rou1, rou2, h = h2, w = w2)
-	        d2 = getQuadraticPoints(theta1, theta22, rou1, rou2, h = h, w = w)
-	    }
-		r2 = arc.points(theta21, theta22, rou2)
-		d = rbind(d1, r2)
-		d = rbind(d, revMat(d2))
-		polygon(d, col = col, lty = lty, lwd = lwd, border = border)
+
+        if(degreeDiff(theta21, theta1) <= degreeDiff(theta21, theta22) &
+           degreeDiff(theta1, theta22) <= degreeDiff(theta21, theta22)) {
+			d = getQuadraticPoints(theta21, theta22, rou1, rou2, h = h, w = w)
+			r = arc.points(theta21, theta22, rou)
+			d = rbind(d, revMat(r))
+			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
+		} else {
+	        if(degreeDiff(theta1, theta21) > degreeDiff(theta1, theta22)) {
+	        	d1 = getQuadraticPoints(theta1, theta21, rou1, rou2, h = h, w = w)
+	        	d2 = getQuadraticPoints(theta1, theta22, rou1, rou2, h = h2, w = w2)
+	        } else {
+		        d1 = getQuadraticPoints(theta1, theta21, rou1, rou2, h = h2, w = w2)
+		        d2 = getQuadraticPoints(theta1, theta22, rou1, rou2, h = h, w = w)
+		    }
+			r2 = arc.points(theta21, theta22, rou2)
+			d = rbind(d1, r2)
+			d = rbind(d, revMat(d2))
+			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
+		}
 	} else if(length(point2) == 1) {
 		theta2 = circlize(point2, 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
 		theta11 = circlize(point1[1], 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
         theta12 = circlize(point1[2], 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
         
-        if(degreeDiff(theta2, theta11) > degreeDiff(theta2, theta12)) {
-	        d1 = getQuadraticPoints(theta11, theta2, rou1, rou2, h = h, w = w)
-	        d2 = getQuadraticPoints(theta12, theta2, rou1, rou2, h = h2, w = w2)
-	    } else {
-	    	d1 = getQuadraticPoints(theta11, theta2, rou1, rou2, h = h2, w = w2)
-	        d2 = getQuadraticPoints(theta12, theta2, rou1, rou2, h = h, w = w)
-	    }
-		r1 = arc.points(theta11, theta12, rou1)
-		d = rbind(revMat(d1), r1)
-		d = rbind(d, d2)
-		polygon(d, col = col, lty = lty, lwd = lwd, border = border)
+        if(degreeDiff(theta11, theta2) <= degreeDiff(theta11, theta12) &
+           degreeDiff(theta2, theta12) <= degreeDiff(theta11, theta12)) {
+			d = getQuadraticPoints(theta11, theta12, rou1, rou2, h = h, w = w)
+			r = arc.points(theta11, theta12, rou)
+			d = rbind(d, revMat(r))
+			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
+		} else {
+	        if(degreeDiff(theta2, theta11) > degreeDiff(theta2, theta12)) {
+		        d1 = getQuadraticPoints(theta11, theta2, rou1, rou2, h = h, w = w)
+		        d2 = getQuadraticPoints(theta12, theta2, rou1, rou2, h = h2, w = w2)
+		    } else {
+		    	d1 = getQuadraticPoints(theta11, theta2, rou1, rou2, h = h2, w = w2)
+		        d2 = getQuadraticPoints(theta12, theta2, rou1, rou2, h = h, w = w)
+		    }
+			r1 = arc.points(theta11, theta12, rou1)
+			d = rbind(revMat(d1), r1)
+			d = rbind(d, d2)
+			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
+		}
 	} else {
 		
 		theta11 = circlize(point1[1], 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
@@ -87,20 +103,35 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 		theta21 = circlize(point2[1], 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
         theta22 = circlize(point2[2], 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
 		
-		if(degreeDiff(theta11, theta22) > degreeDiff(theta12, theta21)) {
-			d1 = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h, w = w)
-	        d2 = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h2, w = w2)
-	    } else {
-	    	d1 = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h2, w = w2)
-	        d2 = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h, w = w)
-	    }
-		r2 = arc.points(theta21, theta22, rou2)
-		r1 = arc.points(theta11, theta12, rou1)
+		if(degreeDiff(theta21, theta12) <= degreeDiff(theta21, theta22) + degreeDiff(theta11, theta12) &
+		   degreeDiff(theta21, theta12) >= degreeDiff(theta11, theta22)) {
+			d = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h, w = w)
+			r = arc.points(theta12, theta21, rou)
+			d = rbind(d, revMat(r))
+			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
+		} else if(degreeDiff(theta11, theta22) <= degreeDiff(theta11, theta12) + degreeDiff(theta21, theta22) &
+			      degreeDiff(theta11, theta22) >= degreeDiff(theta21, theta12)) {
+			d = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h, w = w)
+			r = arc.points(theta11, theta22, rou)
+			d = rbind(d, revMat(r))
+			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
+		} else {
 
-        d = rbind(d1, revMat(r2))
-        d = rbind(d, revMat(d2))
-        d = rbind(d, revMat(r1))
-		polygon(d, col = col, lty = lty, lwd = lwd, border = border)
+			if(degreeDiff(theta11, theta22) > degreeDiff(theta12, theta21)) {
+				d1 = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h, w = w)
+		        d2 = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h2, w = w2)
+		    } else {
+		    	d1 = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h2, w = w2)
+		        d2 = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h, w = w)
+		    }
+			r2 = arc.points(theta21, theta22, rou2)
+			r1 = arc.points(theta11, theta12, rou1)
+
+	        d = rbind(d1, revMat(r2))
+	        d = rbind(d, revMat(d2))
+	        d = rbind(d, revMat(r1))
+			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
+		}
     }
 	
     return(invisible(NULL))

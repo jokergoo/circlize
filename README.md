@@ -1,4 +1,4 @@
-## circlize
+## circlize: circular visualizatio in R
 
 This package aims to implement circular layout in R.
 

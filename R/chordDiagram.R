@@ -121,7 +121,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	# self-link, values are added twice
 	self_link = intersect(rownames(mat), colnames(mat))
 	if(length(self_link)) {
-		xlim[self_link] = xlim[self_link] - diag(mat[self_link, self_link, drop = FALSE])
+		xlim[self_link] = xlim[self_link] - abs(diag(mat[self_link, self_link, drop = FALSE]))
 	}
 
 	keep_index = names(xlim)[xlim / sum(xlim) >= reduce]
@@ -173,7 +173,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	xlim[names(cs)] = xlim[names(cs)] + cs
 
 	if(length(self_link)) {
-		xlim[self_link] = xlim[self_link] - diag(mat[self_link, self_link, drop = FALSE])
+		xlim[self_link] = xlim[self_link] - abs(diag(mat[self_link, self_link, drop = FALSE]))
 	}
 
 	factors = names(xlim)

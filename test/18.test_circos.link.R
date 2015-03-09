@@ -171,3 +171,21 @@ plot(NULL, xlim = c(-2, 2), ylim = c(-2, 2))
 d = getQuadraticPoints(240, 300, 1, 1, h = 0.5, w = -0.5)
 lines(d)
 arrows(d[49, 1], d[49, 2], d[51, 1], d[51, 2], length = 0.1)
+
+
+#### test if roots overlap
+circos.initialize("a", xlim = c(0, 1))
+circos.link("a", c(0, 0.1), "a", c(0.9, 1), col = "#FF000040", border = 1)
+circos.link("a", c(0.1, 0.7), "a", 0.5, col = "#FF000040", border = 1)
+circos.link("a", 0.5, "a", c(0.1, 0.7), col = "#FF000040", border = 1)
+circos.link("a", c(0.1, 0.2), "a", 0.15, col = "#FF000040", border = 1)
+circos.link("a", 0.45, "a", c(0.4, 0.5), col = "#FF000040", border = 1)
+
+circos.par(start.degree = 90)
+circos.initialize("a", xlim = c(0, 1))
+circos.link("a", c(0.1, 0.2), "a", c(0.3, 0.4), col = "#FF000040", border = 1)
+circos.clear()
+
+circos.initialize("a", xlim = c(0, 1))
+circos.link("a", c(0.3, 0.7), "a", c(0.1, 0.4), col = "#FF000040", border = 1)
+circos.link("a", c(0.4, 0.8), "a", c(0.1, 0.9), col = "#FF000040", border = 1)

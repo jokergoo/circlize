@@ -53,8 +53,8 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 		theta21 = circlize(point2[1], 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
         theta22 = circlize(point2[2], 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
 
-        if(degreeDiff(theta21, theta1) <= degreeDiff(theta21, theta22) &
-           degreeDiff(theta1, theta22) <= degreeDiff(theta21, theta22)) {
+        if(degreeDiff2(theta1, theta21) <= degreeDiff(theta22, theta21) &
+           degreeDiff2(theta22, theta1) <= degreeDiff(theta22, theta21)) {
 			d = getQuadraticPoints(theta21, theta22, rou1, rou2, h = h, w = w)
 			r = arc.points(theta21, theta22, rou)
 			d = rbind(d, revMat(r))
@@ -77,8 +77,8 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 		theta11 = circlize(point1[1], 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
         theta12 = circlize(point1[2], 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
         
-        if(degreeDiff(theta11, theta2) <= degreeDiff(theta11, theta12) &
-           degreeDiff(theta2, theta12) <= degreeDiff(theta11, theta12)) {
+        if(degreeDiff2(theta2, theta11) <= degreeDiff2(theta12, theta11) &
+           degreeDiff2(theta12, theta2) <= degreeDiff2(theta12, theta11)) {
 			d = getQuadraticPoints(theta11, theta12, rou1, rou2, h = h, w = w)
 			r = arc.points(theta11, theta12, rou)
 			d = rbind(d, revMat(r))
@@ -102,15 +102,15 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
         theta12 = circlize(point1[2], 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
 		theta21 = circlize(point2[1], 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
         theta22 = circlize(point2[2], 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
-		
-		if(degreeDiff(theta21, theta12) <= degreeDiff(theta21, theta22) + degreeDiff(theta11, theta12) &
-		   degreeDiff(theta21, theta12) >= degreeDiff(theta11, theta22)) {
+
+		if(degreeDiff2(theta12, theta21) <= degreeDiff2(theta22, theta21) + degreeDiff2(theta12, theta11) &
+		   degreeDiff2(theta12, theta21) >= degreeDiff2(theta22, theta11)) {
 			d = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h, w = w)
 			r = arc.points(theta12, theta21, rou)
 			d = rbind(d, revMat(r))
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
-		} else if(degreeDiff(theta11, theta22) <= degreeDiff(theta11, theta12) + degreeDiff(theta21, theta22) &
-			      degreeDiff(theta11, theta22) >= degreeDiff(theta21, theta12)) {
+		} else if(degreeDiff2(theta22, theta11) <= degreeDiff2(theta12, theta11) + degreeDiff2(theta22, theta21) &
+			      degreeDiff2(theta22, theta11) >= degreeDiff2(theta12, theta21)) {
 			d = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h, w = w)
 			r = arc.points(theta11, theta22, rou)
 			d = rbind(d, revMat(r))
@@ -314,6 +314,7 @@ linesWithArrows = function(d, sep = 6, col = "red") {
 	}
 }
 
+# used for links
 degreeDiff = function (theta1, theta2) {
     theta1 = theta1 %% 360
     theta2 = theta2 %% 360
@@ -323,4 +324,10 @@ degreeDiff = function (theta1, theta2) {
     else {
         return(abs(theta2 - theta1))
     }
+}
+
+# used to calculate whether two arcs overlap
+# theta1 is reverse-clockwise of theta2
+degreeDiff2 = function(theta1, theta2) {
+	(theta2 - theta1) %% 360
 }

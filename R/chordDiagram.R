@@ -118,6 +118,12 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	xlim[names(rs)] = xlim[names(rs)] + rs
 	xlim[names(cs)] = xlim[names(cs)] + cs
 
+	# self-link, values are added twice
+	self_link = intersect(rownames(mat), colnames(mat))
+	if(length(self_link)) {
+		xlim[self_link] = xlim[self_link] - diag(mat[self_link, self_link, drop = FALSE])
+	}
+
 	keep_index = names(xlim)[xlim / sum(xlim) >= reduce]
 	ri = which(rownames(mat) %in% keep_index)
 	ci = which(colnames(mat) %in% keep_index)
@@ -165,6 +171,10 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 
 	xlim[names(rs)] = xlim[names(rs)] + rs
 	xlim[names(cs)] = xlim[names(cs)] + cs
+
+	if(length(self_link)) {
+		xlim[self_link] = xlim[self_link] - diag(mat[self_link, self_link, drop = FALSE])
+	}
 
 	factors = names(xlim)
 	factors = factor(factors, levels = factors)
@@ -319,7 +329,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 		}
 		if(rn[i] %in% cn) {
 			is = which(cn == rn[i])
-			cn_index = c(is, cn_index[cn_index != is])
+			cn_index = c(is, cn_index[cn_index != is])  # self link is always put in the first?
 		}
 		
 		for(j in cn_index) {
@@ -330,27 +340,35 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
             sector.index1 = rn[i]
             sector.index2 = cn[j]
 			
-			if(directional) {
-				if(fromRows) {
-					circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
-								sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-								col = col[rn[i], cn[j]], rou1 = rou - diffHeight, rou2 = rou, border = link.border[rn[i], cn[j]], 
-								lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]], ...)
-				} else {
-					circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
-							sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-							col = col[rn[i], cn[j]], rou1 = rou, rou2 = rou - diffHeight, border = link.border[rn[i], cn[j]],
-							lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]], ...)
-				}
-			} else {
-				circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
-							sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
+			if(sector.index1 == sector.index2) {
+				circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]]))*0.50000001,
+							sector.index2, c(sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])/2, sector.sum.row[ cn[j] ] + abs(mat[rn[i], cn[j]])),
 							col = col[rn[i], cn[j]], rou1 = rou, border = link.border[rn[i], cn[j]], lwd = link.lwd[rn[i], cn[j]], 
 							lty = link.lty[rn[i], cn[j]], ...)
+	            sector.sum.row[ rn[i] ] = sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])
+			} else {
+				if(directional) {
+					if(fromRows) {
+						circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
+									sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
+									col = col[rn[i], cn[j]], rou1 = rou - diffHeight, rou2 = rou, border = link.border[rn[i], cn[j]], 
+									lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]], ...)
+					} else {
+						circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
+								sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
+								col = col[rn[i], cn[j]], rou1 = rou, rou2 = rou - diffHeight, border = link.border[rn[i], cn[j]],
+								lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]], ...)
+					}
+				} else {
+					circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
+								sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
+								col = col[rn[i], cn[j]], rou1 = rou, border = link.border[rn[i], cn[j]], lwd = link.lwd[rn[i], cn[j]], 
+								lty = link.lty[rn[i], cn[j]], ...)
+				}
+				
+	            sector.sum.row[ rn[i] ] = sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])
+				sector.sum.col[ cn[j] ] = sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])
 			}
-			
-            sector.sum.row[ rn[i] ] = sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])
-			sector.sum.col[ cn[j] ] = sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])
         }
 		
     }

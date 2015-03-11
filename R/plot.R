@@ -1526,6 +1526,9 @@ highlight.sector = function(sector.index, track.index = get.all.track.index(),
 #             are drawn in one track and making them comparable.
 #
 # == details
+# Assuming there are ``n`` nodes in the dendrogram, the positions for leaves on x-axis is ``0.5, 1.5, ..., n - 0.5``.
+# So you must be careful with ``xlim`` when you initialize the cirular layout.
+#
 # You can use the ``dendextend`` package to render the dendrograms.
 # 
 circos.dendrogram = function(dend, facing = c("outside", "inside"), max_height = NULL) {

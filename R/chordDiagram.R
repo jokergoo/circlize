@@ -172,6 +172,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	xlim[names(rs)] = xlim[names(rs)] + rs
 	xlim[names(cs)] = xlim[names(cs)] + cs
 
+	self_link = intersect(rownames(mat), colnames(mat))
 	if(length(self_link)) {
 		xlim[self_link] = xlim[self_link] - abs(diag(mat[self_link, self_link, drop = FALSE]))
 	}

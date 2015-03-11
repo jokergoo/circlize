@@ -21,6 +21,8 @@ circos.dendrogram(dend, facing = c("outside", "inside"), max_height = NULL)
 
 }
 \details{
+Assuming there are \code{n} nodes in the dendrogram, the positions for leaves on x-axis is \code{0.5, 1.5, ..., n - 0.5}. So you must be careful with \code{xlim} when you initialize the cirular layout.  
+
 You can use the \code{dendextend} package to render the dendrograms.  
 
 

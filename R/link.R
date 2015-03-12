@@ -21,6 +21,13 @@
 # -lwd           Line (or border) width
 # -lty           Line (or border) style
 # -border        If the link is a ribbon, then it is the color for the ribbon border.
+# -directional   0 for no direction, 1 for direction from point1 to point2, -1 for direction from point2 to point1.
+# -arr.length    Length of the arrows, pass to `shape::Arrowhead`.
+# -arr.width     Width of the arrows, pass to `shape::Arrowhead`.
+# -arr.type      Type of the arrows, pass to `shape::Arrowhead`. Default value is ``triangle``.
+# -arr.col       Color of the arrows, pass to `shape::Arrowhead`.
+# -arr.lwd       Line width of arrows, pass to `shape::Arrowhead`.
+# -arr.lty       Line type of arrows, pass to `shape::Arrowhead`.
 #
 # == details
 # Links are implemented as quadratic Bezier curves.
@@ -34,7 +41,9 @@
 circos.link = function(sector.index1, point1, sector.index2, point2,
     rou = get_most_inside_radius(),
     rou1 = rou, rou2 = rou, h = NULL, w = 1, h2 = h, w2 = w,
-    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA) {
+    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA,
+    directional = 0, arr.length = 0.4, arr.width = arr.length/2,
+    arr.type = "triangle", arr.lty = lty, arr.lwd = lwd, arr.col = col) {
     
     sector.data1 = get.sector.data(sector.index1)
     sector.data2 = get.sector.data(sector.index2)
@@ -48,6 +57,19 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
         
 		d = getQuadraticPoints(theta1, theta2, rou1, rou2, h = h, w = w)
         lines(d, col = col, lwd = lwd, lty = lty)
+        if(nrow(d) > 1) {
+	        if(directional == 1) {  # point1 to point2
+	        	nr = nrow(d)
+	        	alpha = line_degree(d[nr-1, 1], d[nr-1, 2], d[nr, 1], d[nr, 2])
+	        	Arrowhead(d[nr, 1], d[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
+	        		arr.adj = 1, arr.type = arr.type, arr.col = col, lcol = col)
+	        } else if(directional == -1) {  # point2 to point2
+	        	nr = nrow(d)
+	        	alpha = line_degree(d[2, 1], d[2, 2], d[1, 1], d[1,2])
+	        	Arrowhead(d[1, 1], d[1, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
+	        		arr.adj = 1, arr.type = arr.type, arr.col = col, lcol = col)
+	        }
+	    }
     } else if(length(point1) == 1) {
 		theta1 = circlize(point1, 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
 		theta21 = circlize(point2[1], 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
@@ -63,15 +85,33 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 	        if(degreeDiff(theta1, theta21) > degreeDiff(theta1, theta22)) {
 	        	d1 = getQuadraticPoints(theta1, theta21, rou1, rou2, h = h, w = w)
 	        	d2 = getQuadraticPoints(theta1, theta22, rou1, rou2, h = h2, w = w2)
+	        	dcenter = getQuadraticPoints(theta1, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
 	        } else {
 		        d1 = getQuadraticPoints(theta1, theta21, rou1, rou2, h = h2, w = w2)
 		        d2 = getQuadraticPoints(theta1, theta22, rou1, rou2, h = h, w = w)
+	        	dcenter = getQuadraticPoints(theta1, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
 		    }
 			r2 = arc.points(theta21, theta22, rou2)
 			d = rbind(d1, r2)
 			d = rbind(d, revMat(d2))
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
+			if(nrow(dcenter) > 1) {
+		        if(directional == 1) {  # point1 to point2
+		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
+		        	nr = nrow(dcenter)
+		        	alpha = line_degree(dcenter[nr-1, 1], dcenter[nr-1, 2], dcenter[nr, 1], dcenter[nr, 2])
+		        	Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
+		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
+		        } else if(directional == -1) {  # point2 to point2
+		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
+		        	nr = nrow(dcenter)
+		        	alpha = line_degree(dcenter[2, 1], dcenter[2, 2], dcenter[1, 1], dcenter[1,2])
+		        	Arrowhead(dcenter[1, 1], dcenter[1, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
+		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
+		        }
+		    }
 		}
+		
 	} else if(length(point2) == 1) {
 		theta2 = circlize(point2, 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
 		theta11 = circlize(point1[1], 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
@@ -87,15 +127,33 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 	        if(degreeDiff(theta2, theta11) > degreeDiff(theta2, theta12)) {
 		        d1 = getQuadraticPoints(theta11, theta2, rou1, rou2, h = h, w = w)
 		        d2 = getQuadraticPoints(theta12, theta2, rou1, rou2, h = h2, w = w2)
+	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, theta2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
 		    } else {
 		    	d1 = getQuadraticPoints(theta11, theta2, rou1, rou2, h = h2, w = w2)
 		        d2 = getQuadraticPoints(theta12, theta2, rou1, rou2, h = h, w = w)
+	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, theta2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
 		    }
 			r1 = arc.points(theta11, theta12, rou1)
 			d = rbind(revMat(d1), r1)
 			d = rbind(d, d2)
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
+			if(nrow(dcenter) > 1) {
+		        if(directional == 1) {  # point1 to point2
+		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
+		        	nr = nrow(dcenter)
+		        	alpha = line_degree(dcenter[nr-1, 1], dcenter[nr-1, 2], dcenter[nr, 1], dcenter[nr, 2])
+		        	Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
+		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
+		        } else if(directional == -1) {  # point2 to point2
+		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
+		        	nr = nrow(dcenter)
+		        	alpha = line_degree(dcenter[2, 1], dcenter[2, 2], dcenter[1, 1], dcenter[1,2])
+		        	Arrowhead(dcenter[1, 1], dcenter[1, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
+		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
+		        }
+		    }
 		}
+		
 	} else {
 		
 		theta11 = circlize(point1[1], 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
@@ -120,9 +178,11 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 			if(degreeDiff(theta11, theta22) > degreeDiff(theta12, theta21)) {
 				d1 = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h, w = w)
 		        d2 = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h2, w = w2)
+	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
 		    } else {
 		    	d1 = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h2, w = w2)
 		        d2 = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h, w = w)
+	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
 		    }
 			r2 = arc.points(theta21, theta22, rou2)
 			r1 = arc.points(theta11, theta12, rou1)
@@ -131,6 +191,21 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 	        d = rbind(d, revMat(d2))
 	        d = rbind(d, revMat(r1))
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
+			if(nrow(dcenter) > 1) {
+		        if(directional == 1) {  # point1 to point2
+		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
+		        	nr = nrow(dcenter)
+		        	alpha = line_degree(dcenter[nr-1, 1], dcenter[nr-1, 2], dcenter[nr, 1], dcenter[nr, 2])
+		        	Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
+		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
+		        } else if(directional == -1) {  # point2 to point2
+		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
+		        	nr = nrow(dcenter)
+		        	alpha = line_degree(dcenter[2, 1], dcenter[2, 2], dcenter[1, 1], dcenter[1,2])
+		        	Arrowhead(dcenter[1, 1], dcenter[1, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
+		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
+		        }
+		    }
 		}
     }
 	
@@ -191,6 +266,9 @@ getQuadraticPoints = function(theta1, theta2, rou1, rou2, h = NULL, w = 1) {
 	
 	if(is.null(h)) {
 		h = h_auto
+	}
+	if(length(h) == 0) {
+		h = h_auto	
 	}
 	if(h > rou_min) {
 		h = h_auto
@@ -330,4 +408,11 @@ degreeDiff = function (theta1, theta2) {
 # theta1 is reverse-clockwise of theta2
 degreeDiff2 = function(theta1, theta2) {
 	(theta2 - theta1) %% 360
+}
+
+line_degree = function(x0, y0, x1, y1) {
+	alpha = (atan((y0 - y1)/(x0 - x1))*180/pi) # -90 ~ 90
+	if(x0 > x1 && y0 > y1) alpha = (alpha + 180) %% 360
+	if(x0 > x1 && y0 < y1) alpha = (alpha + 180) %% 360
+	return(alpha)
 }

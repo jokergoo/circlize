@@ -12,8 +12,9 @@ Plot Chord Diagram
 }
 \usage{
 chordDiagram(mat, grid.col = NULL, transparency = 0.5,
-    col = NULL, row.col = NULL, column.col = NULL, directional = FALSE, fromRows = TRUE,
-    symmetric = FALSE, order = NULL, preAllocateTracks = NULL,
+    col = NULL, row.col = NULL, column.col = NULL, directional = FALSE, direction.type = c("diffHeight", "arrow"),
+    fromRows = TRUE,
+    symmetric = FALSE, keep.diagonal = FALSE, order = NULL, preAllocateTracks = NULL,
     annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
     link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), grid.border = NA,
     diffHeight = 0.04, reduce = 1e-5, link.order = -1, ...)

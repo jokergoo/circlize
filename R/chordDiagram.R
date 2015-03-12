@@ -52,17 +52,22 @@
 # This function is flexible and contains some settings that may be a little difficult to understand. 
 # Please refer to vignette for better explanation.
 chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
-	col = NULL, row.col = NULL, column.col = NULL, directional = FALSE, fromRows = TRUE,
-	symmetric = FALSE, order = NULL, preAllocateTracks = NULL,
+	col = NULL, row.col = NULL, column.col = NULL, directional = FALSE, 
+	direction.type = c("diffHeight", "arrows"), fromRows = TRUE,
+	symmetric = FALSE, keep.diagonal = FALSE, order = NULL, preAllocateTracks = NULL,
 	annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
 	link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), grid.border = NA, 
-	diffHeight = 0.04, reduce = 1e-5, link.order = -1, ...) {
+	diffHeight = 0.04, reduce = 1e-5, link.order = -1,
+	link.arr.length = 0.4, link.arr.width = link.arr.length/2, 
+	link.arr.type = "triangle", link.arr.lty = par("lty"), 
+	link.arr.lwd = par("lwd"), link.arr.col = par("col"), ...) {
 	
 	if(!is.matrix(mat)) {
 		stop("`mat` can only be a matrix.\n")
 	}
 	
 	transparency = ifelse(transparency < 0, 0, ifelse(transparency > 1, 1, transparency))
+	direction.type = match.arg(direction.type)[1]
 
 	if(symmetric) {
 		if(nrow(mat) != ncol(mat)) {
@@ -87,7 +92,11 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 			stop("Since you specified a symmetric matrix, rownames and colnames should be the same.\n")
 		}
 
-		mat[upper.tri(mat, diag = TRUE)] = 0
+		if(keep.diagonal) {
+			mat[upper.tri(mat, diag = TRUE)] = 0
+		} else {
+			mat[upper.tri(mat, diag = TRUE)] = 0
+		}
 	}
 
 	if(!is.null(order)) {
@@ -299,6 +308,12 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	link.border = .normalize_to_mat(link.border, rn, cn, default = NA)
 	link.lwd = .normalize_to_mat(link.lwd, rn, cn, default = 1)
 	link.lty = .normalize_to_mat(link.lty, rn, cn, default = 1)
+	link.arr.length = .normalize_to_mat(link.arr.length, rn, cn, default = 0.4)
+	link.arr.width = .normalize_to_mat(link.arr.width, rn, cn, default = 0.2)
+	link.arr.type = .normalize_to_mat(link.arr.type, rn, cn, default = "triangle")
+	link.arr.lty = .normalize_to_mat(link.arr.lty, rn, cn, default = 1)
+	link.arr.lwd = .normalize_to_mat(link.arr.lwd, rn, cn, default = 1)
+	link.arr.col = .normalize_to_mat(link.arr.col, rn, cn, default = 1)
 	
     sector.sum.row = numeric(length(factors))
     sector.sum.col = numeric(length(factors))
@@ -349,16 +364,37 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	            sector.sum.row[ rn[i] ] = sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])
 			} else {
 				if(directional) {
-					if(fromRows) {
-						circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
+					if(direction.type == "diffHeight") {
+						if(fromRows) {
+							circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
+										sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
+										col = col[rn[i], cn[j]], rou1 = rou - diffHeight, rou2 = rou, border = link.border[rn[i], cn[j]], 
+										lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]], ...)
+						} else {
+							circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
 									sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-									col = col[rn[i], cn[j]], rou1 = rou - diffHeight, rou2 = rou, border = link.border[rn[i], cn[j]], 
+									col = col[rn[i], cn[j]], rou1 = rou, rou2 = rou - diffHeight, border = link.border[rn[i], cn[j]],
 									lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]], ...)
-					} else {
-						circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
-								sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-								col = col[rn[i], cn[j]], rou1 = rou, rou2 = rou - diffHeight, border = link.border[rn[i], cn[j]],
-								lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]], ...)
+						}
+					} else if(direction.type == "arrows") {
+						if(fromRows) {
+							circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
+										sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
+										directional = 1, col = col[rn[i], cn[j]], rou1 = rou, border = link.border[rn[i], cn[j]], 
+										lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]], 
+										arr.length = link.arr.length[rn[i], cn[j]], arr.width = link.arr.width[rn[i], cn[j]],
+										arr.type = link.arr.type[rn[i], cn[j]], arr.col = link.arr.col[rn[i], cn[j]],
+										arr.lty = link.arr.lty[rn[i], cn[j]], arr.lwd = link.arr.lwd[rn[i], cn[j]],
+										...)
+						} else {
+							circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
+										sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
+										directional = -1, col = col[rn[i], cn[j]], rou1 = rou, border = link.border[rn[i], cn[j]],
+										lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]],
+										arr.length = link.arr.length[rn[i], cn[j]], arr.width = link.arr.width[rn[i], cn[j]],
+										arr.type = link.arr.type[rn[i], cn[j]], arr.col = link.arr.col[rn[i], cn[j]],
+										arr.lty = link.arr.lty[rn[i], cn[j]], arr.lwd = link.arr.lwd[rn[i], cn[j]], ...)
+						}
 					}
 				} else {
 					circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),

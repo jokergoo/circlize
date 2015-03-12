@@ -189,3 +189,42 @@ circos.clear()
 circos.initialize("a", xlim = c(0, 1))
 circos.link("a", c(0.3, 0.7), "a", c(0.1, 0.4), col = "#FF000040", border = 1)
 circos.link("a", c(0.4, 0.8), "a", c(0.1, 0.9), col = "#FF000040", border = 1)
+
+
+### test arrows for link lines
+circos.initialize("a", xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 1))
+for(i in c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)) {
+	circos.link("a", i-0.025, "a", i+0.025, directional=1, col = sample(1:8, 1))
+}
+
+circos.initialize("a", xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 1))
+for(i in c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)) {
+	circos.link("a", i-0.025, "a", i+0.025, directional=-1, col = sample(1:8, 1))
+}
+
+
+circos.initialize("a", xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 1))
+for(i in c(0.1, 0.3, 0.5, 0.7, 0.9)) {
+	circos.link("a", i, "a", c(i + 0.05, i+0.1), directional=1, col = sample(1:8, 1), arr.col = sample(1:8, 1))
+}
+
+circos.initialize("a", xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 1))
+for(i in c(0.1, 0.3, 0.5, 0.7, 0.9)) {
+	circos.link("a", i, "a", c(i + 0.05, i+0.1), directional=-1, col = sample(1:8, 1), arr.col = sample(1:8, 1))
+}
+
+circos.initialize("a", xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 1))
+for(i in c(0.1, 0.3, 0.5, 0.7, 0.9)) {
+	circos.link("a", c(i-0.07, i-0.05), "a", c(i + 0.05, i+0.1), directional=1, col = sample(1:8, 1), arr.col = sample(1:8, 1))
+}
+
+circos.initialize("a", xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 1))
+for(i in c(0.1, 0.3, 0.5, 0.7, 0.9)) {
+	circos.link("a", c(i-0.07, i-0.05), "a", c(i + 0.05, i+0.1), directional=-1, col = sample(1:8, 1), arr.col = sample(1:8, 1))
+}

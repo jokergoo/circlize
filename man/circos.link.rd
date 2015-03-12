@@ -14,7 +14,9 @@ Draw links between points or intervals
 circos.link(sector.index1, point1, sector.index2, point2,
     rou = get_most_inside_radius(),
     rou1 = rou, rou2 = rou, h = NULL, w = 1, h2 = h, w2 = w,
-    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA)
+    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA,
+    directional = 0, arr.length = 0.4, arr.width = arr.length/2,
+    arr.type = "triangle", arr.lty = lty, arr.lwd = lwd, arr.col = col)
 }
 \arguments{
 
@@ -33,6 +35,13 @@ circos.link(sector.index1, point1, sector.index2, point2,
   \item{lwd}{Line (or border) width}
   \item{lty}{Line (or border) style}
   \item{border}{If the link is a ribbon, then it is the color for the ribbon border.}
+  \item{directional}{0 for no direction, 1 for direction from point1 to point2, -1 for direction from point2 to point1.}
+  \item{arr.length}{Length of the arrows, pass to \code{\link[shape]{Arrowhead}}.}
+  \item{arr.width}{Width of the arrows, pass to \code{\link[shape]{Arrowhead}}.}
+  \item{arr.type}{Type of the arrows, pass to \code{\link[shape]{Arrowhead}}. Default value is \code{triangle}.}
+  \item{arr.col}{Color of the arrows, pass to \code{\link[shape]{Arrowhead}}.}
+  \item{arr.lwd}{Line width of arrows, pass to \code{\link[shape]{Arrowhead}}.}
+  \item{arr.lty}{Line type of arrows, pass to \code{\link[shape]{Arrowhead}}.}
 
 }
 \details{

@@ -52,4 +52,5 @@ export(circos.trackPlotRegion)
 export(circos.info)
 
 importFrom("GlobalOptions", setGlobalOptions)
+importFrom("shape", Arrowhead)
 

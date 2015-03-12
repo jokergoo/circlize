@@ -758,7 +758,7 @@ circos.link(sector.index1, c(0, 1), sector.index2, 0, col, lwd, lty, border)
 @
 
 
-<<circlize_link, echo = FALSE, out.width = "\\textwidth", fig.cap = "Drawing links. A) set different positions of roots; B) set different height of two borders. C,D) set different {\\tt h} and {\\tt w}.">>=
+<<circlize_link, echo = FALSE, out.width = "0.6\\textheight", out.height = "0.9\\textheight", fig.width = 6, fig.height = 9, fig.cap = "A) set different positions of roots; B) set different height of two borders. C,D) set different {\\tt h} and {\\tt w}. E) if two branches overlap, the link will be degenerated as a 'hill'. F) links with directions.">>=
 source("src/intro-12-link.R")
 @
 
@@ -800,6 +800,16 @@ circos.link(sector.index1, 0, sector.index2, 0, w)
 circos.link(sector.index1, 0, sector.index2, 0, w, w2)
 @
 
+If two branches overlap, the link will be de-generated as a 'hill' (figure \ref{fig:circlize_link}, E).
+Also, links can have arrows to identify the directions (figure \ref{fig:circlize_link}, F). For adding
+arrows, the {\tt directional} argument with value 0 means there is no direction, 1 means the direction 
+is from point1 to point2 and -1 means the direction is from point2 to point1. If the link
+represents as a belt, a line with arrow will be added in the center of the link to represent directions.
+
+<<eval = FALSE>>=
+circos.link(sector.index1, 0, sector.index2, 0, directional = 1)
+circos.link(sector.index1, c(0, 1), sector.index2, c(0, 1), directional = -1)
+@
 
 \subsection{The {\tt panel.fun} argument in {\tt circos.trackPlotRegion}}
 

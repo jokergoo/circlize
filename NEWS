@@ -1,12 +1,15 @@
 Changes in version 0.2.4
 ------------------------------------------------------------------------------
 
+* 'chrodDiagram`: If graphic parameters for links are different, the value can be
+   specified as a three-column data frame.
 * `chordDiagram`: arrows can be used to identify directions
 * ·circos.link`: arrows can be used to identify directions
 * `chordDiagram`: width of self-links are not duplicated. 
 * `circos.link`: if two roots for a link overlaps, the link is de-generated
   as an area with a quadratic curve and an arc.
-* add `circos.dendrogram` which draw dendrograms
+* add `circos.dendrogram` which draw dendrograms (dendrogram can be rendered by
+  `dendextend` package)
 
 Changes in version 0.2.3
 ------------------------------------------------------------------------------

@@ -2,7 +2,7 @@
 op = par(no.readonly = TRUE)
 
 library(circlize)
-par(mar = c(1, 1, 1, 1), mfrow = c(2, 2))
+par(mar = c(1, 1, 1, 1), mfrow = c(3, 2))
 factors = letters[1:8]
 circos.par(points.overflow.warning = FALSE)
 circos.initialize(factors = factors, xlim = c(0, 10))
@@ -51,5 +51,22 @@ circos.link("e", 5, "f", 5, w = -0.5); circos.text(10, 5, "w=-0.5", sector.index
 circos.link("f", 5, "g", 5, w = 0.1, h = 0.3); circos.text(10, -5, "w=0.1\nh=0.3", sector.index = "f")
 circos.clear()
 text(0.9, 0.9, "D", cex = 1.5)
+
+circos.par(points.overflow.warning = FALSE)
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", bg.border = NA, track.height = 0.05)
+circos.link("a", c(2, 6), "a", c(3, 7))
+circos.clear()
+text(0.9, 0.9, "E", cex = 1.5)
+
+
+circos.par(points.overflow.warning = FALSE)
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", bg.border = NA, track.height = 0.05)
+circos.link("a", 5, "b", 5, directional = 1, arr.length = 0.2)
+circos.link("c", c(3, 7), "d", c(3, 7), directional = 1, arr.col = "white", arr.length = 0.2)
+circos.clear()
+text(0.9, 0.9, "F", cex = 1.5)
+
 
 par(op)

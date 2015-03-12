@@ -337,7 +337,19 @@ colnames(border_mat2) = colnames(mat)
 chordDiagram(mat, grid.col = grid.col, link.lwd = 2, link.border = border_mat2)
 @
 
-<<chord_diagram_style, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Link style settings in {\\tt chordDiagram}. A) graphic parameters set as scalar; B) graphic parameters set as matrix; C) graphic parameters set as sub matrix.">>=
+To be more convenient, graphic parameters can be set as a three-column data frame
+in which the first two columns correspond to row names and column names, and the 
+third column corresponds to the graphic parameters (figure \ref{fig:chord_diagram_style} D). 
+
+<<chord_diagram_style_dataframe, eval = FALSE>>=
+lty_df = data.frame(c("S1", "S2", "S3"), c("E5", "E6", "E4"), c(1, 2, 3))
+lwd_df = data.frame(c("S1", "S2", "S3"), c("E5", "E6", "E4"), c(2, 2, 2))
+border_df = data.frame(c("S1", "S2", "S3"), c("E5", "E6", "E4"), c(1, 1, 1))
+chordDiagram(mat, grid.col = grid.col, link.lty = lty_df, link.lwd = lwd_df,
+    link.border = border_df)
+@
+
+<<chord_diagram_style, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Link style settings in {\\tt chordDiagram}. A) graphic parameters set as scalar; B) graphic parameters set as matrix; C) graphic parameters set as sub matrix. D) graphic parameters set as a three-column data frame.">>=
 par(mfrow = c(2, 2))
 <<chord_diagram_style_scalar>>
 text(-0.9, 0.9, "A", cex = 1.5)
@@ -345,6 +357,8 @@ text(-0.9, 0.9, "A", cex = 1.5)
 text(-0.9, 0.9, "B", cex = 1.5)
 <<chord_diagram_style_submatrix>>
 text(-0.9, 0.9, "C", cex = 1.5)
+<<chord_diagram_style_dataframe>>
+text(-0.9, 0.9, "D", cex = 1.5)
 par(mfrow = c(1, 1))
 @
 
@@ -372,17 +386,25 @@ col_mat[mat < 12] = "#00000000"
 chordDiagram(mat, grid.col = grid.col, col = col_mat) 
 @
 
-Second, use a color function to generate different colors with differnet values.
+Second, use a color function to generate different colors with different values.
 
 <<chord_diagram_highlight_fun, eval = FALSE>>=
 col_fun = function(x) ifelse(x < 12, "#00000000", "#FF000080")
 chordDiagram(mat, grid.col = grid.col, col = col_fun)
 @
 
+Third, use a three-column data frame to assign colors to links of interest (figure \ref{fig:chord_diagram_highlight_df} D).
+
+<<chord_diagram_highlight_df, eval = FALSE>>=
+col_df = data.frame(c("S1", "S2", "S3"), c("E5", "E6", "E4"), 
+    c("#FF000080", "#00FF0080", "#0000FF80"))
+chordDiagram(mat, grid.col = grid.col, col = col_df)
+@
+
 Just remember if you want to highlight links by colors, make sure to set high or full
 transparency to the links that you want to ignore.
 
-<<chord_diagram_highlight, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Highlight links by colors. A) set {\\tt row.col}; B) set by matrix; C) set by color function.">>=
+<<chord_diagram_highlight, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Highlight links by colors. A) set {\\tt row.col}; B) set by matrix; C) set by color function; D) set by a three-column data frame.">>=
 par(mfrow = c(2, 2))
 <<chord_diagram_highlight_row>>
 text(-0.9, 0.9, "A", cex = 1.5)
@@ -390,6 +412,8 @@ text(-0.9, 0.9, "A", cex = 1.5)
 text(-0.9, 0.9, "B", cex = 1.5)
 <<chord_diagram_highlight_fun>>
 text(-0.9, 0.9, "C", cex = 1.5)
+<<chord_diagram_highlight_df>>
+text(-0.9, 0.9, "D", cex = 1.5)
 par(mfrow = c(1, 1))
 @
 
@@ -442,17 +466,40 @@ mat3
 chordDiagram(mat3, directional = TRUE, row.col = 1:5)
 @
 
+If the amount of links is not too large, links with arrows are more intuitionistic
+to represent directions (figure \ref{fig:chord_diagram_directional} F). In this case, {\tt direction.type} can be set to {\tt arrows}.
+Similar as other graphics parameters for links, the parameters for drawing arrows
+can either be a scalar, a matrix with dimension names, or a three-column data frame.
+
+<<chord_diagram_directional_arrow, eval = FALSE>>=
+arr.col = data.frame(c("S1", "S2", "S3"), c("E5", "E6", "E4"), 
+    c("black", "black", "black"))
+chordDiagram(mat, directional = TRUE, direction.type = "arrow",
+    link.arr.col = arr.col, link.arr.length = 0.2)
+@
+
+If combining both {\tt arrows} and {\tt diffHeight}, it will give you better visualization effect.
+
+<<chord_diagram_directional_arrow, eval = FALSE>>=
+arr.col = data.frame(c("S1", "S2", "S3"), c("E5", "E6", "E4"), 
+    c("black", "black", "black"))
+chordDiagram(mat, directional = TRUE, direction.type = c("diffHeight", "arrow"),
+    link.arr.col = arr.col, link.arr.length = 0.2)
+@
 
 
-<<chord_diagram_directional, echo = FALSE, fig.align = "center", out.width = "0.6\\textheight", out.height = "0.9\\textheight", fig.width = 7, fig.height = 10.5, fig.cap = "Visualization of directional matrix. A) with default settings; B) set difference of two feet of links; C) set the starting feet; D) row names and column names have overlaps; E) remove self-loop.">>=
+<<chord_diagram_directional, echo = FALSE, fig.align = "center", out.width = "0.6\\textheight", out.height = "0.9\\textheight", fig.width = 7, fig.height = 10.5, fig.cap = "Visualization of directional matrix. A) with default settings; B) set difference of two feet of links; C) set the starting feet; D) row names and column names have overlaps; E) remove self-loop; F) directions are represented by arrows.">>=
 par(mfrow = c(3, 2))
 <<chord_diagram_directional_simple>>
 <<chord_diagram_directional_overlap>>
 text(-0.9, 0.9, "D", cex = 1.5)
 <<chord_diagram_directional_non_selfloop>>
 text(-0.9, 0.9, "E", cex = 1.5)
+<<chord_diagram_directional_arrow>>
+text(-0.9, 0.9, "F", cex = 1.5)
 par(mfrow = c(1, 1))
 @
+
 
 \subsection{Symmetric matrix}
 

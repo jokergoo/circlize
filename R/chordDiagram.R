@@ -74,9 +74,14 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	if(!is.matrix(mat)) {
 		stop("`mat` can only be a matrix.\n")
 	}
+
+	if(directional) {
+		if(length(setdiff(direction.type, c("diffHeight", "arrows"))) > 0) {
+			stop("`direction.type` can only be in 'diffHeight' and 'arrows'.")
+		}
+	}
 	
 	transparency = ifelse(transparency < 0, 0, ifelse(transparency > 1, 1, transparency))
-	direction.type = match.arg(direction.type)
 
 	if(symmetric) {
 		if(nrow(mat) != ncol(mat)) {
@@ -375,7 +380,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 										arr.type = link.arr.type[rn[i], cn[j]], arr.col = link.arr.col[rn[i], cn[j]],
 										arr.lty = link.arr.lty[rn[i], cn[j]], arr.lwd = link.arr.lwd[rn[i], cn[j]], ...)
 						}
-					} else if(direction.type == "diffHeight") {
+					} else if(setequal(direction.type, "diffHeight")) {
 						if(fromRows) {
 							circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
 										sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
@@ -387,7 +392,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 									col = col[rn[i], cn[j]], rou1 = rou, rou2 = rou - diffHeight, border = link.border[rn[i], cn[j]],
 									lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]], ...)
 						}
-					} else if(direction.type == "arrows") {
+					} else if(setequal(direction.type, "arrows")) {
 						if(fromRows) {
 							circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
 										sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),

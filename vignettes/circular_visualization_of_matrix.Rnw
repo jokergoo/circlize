@@ -467,33 +467,33 @@ chordDiagram(mat3, directional = TRUE, row.col = 1:5)
 @
 
 If the amount of links is not too large, links with arrows are more intuitionistic
-to represent directions (figure \ref{fig:chord_diagram_directional} F). In this case, {\tt direction.type} can be set to {\tt arrows}.
+to represent directions (figure \ref{fig:chord_diagram_directional} E). In this case, {\tt direction.type} can be set to {\tt arrows}.
 Similar as other graphics parameters for links, the parameters for drawing arrows
 can either be a scalar, a matrix with dimension names, or a three-column data frame.
 
 <<chord_diagram_directional_arrow, eval = FALSE>>=
 arr.col = data.frame(c("S1", "S2", "S3"), c("E5", "E6", "E4"), 
     c("black", "black", "black"))
-chordDiagram(mat, directional = TRUE, direction.type = "arrow",
+chordDiagram(mat, directional = TRUE, direction.type = "arrows",
     link.arr.col = arr.col, link.arr.length = 0.2)
 @
 
-If combining both {\tt arrows} and {\tt diffHeight}, it will give you better visualization effect.
+If combining both {\tt arrows} and {\tt diffHeight}, it will give you better visualization effect (figure \ref{fig:chord_diagram_directional} F).
 
-<<chord_diagram_directional_arrow, eval = FALSE>>=
+<<chord_diagram_directional_arrow2, eval = FALSE>>=
 arr.col = data.frame(c("S1", "S2", "S3"), c("E5", "E6", "E4"), 
     c("black", "black", "black"))
-chordDiagram(mat, directional = TRUE, direction.type = c("diffHeight", "arrow"),
+chordDiagram(mat, directional = TRUE, direction.type = c("diffHeight", "arrows"),
     link.arr.col = arr.col, link.arr.length = 0.2)
 @
 
 
-<<chord_diagram_directional, echo = FALSE, fig.align = "center", out.width = "0.6\\textheight", out.height = "0.9\\textheight", fig.width = 7, fig.height = 10.5, fig.cap = "Visualization of directional matrix. A) with default settings; B) set difference of two feet of links; C) set the starting feet; D) row names and column names have overlaps; E) remove self-loop; F) directions are represented by arrows.">>=
+<<chord_diagram_directional, echo = FALSE, fig.align = "center", out.width = "0.6\\textheight", out.height = "0.9\\textheight", fig.width = 7, fig.height = 10.5, fig.cap = "Visualization of directional matrix. A) with default settings; B) set difference of two feet of links; C) set the starting feet; D) row names and column names have overlaps; E, F) directions are represented by arrows.">>=
 par(mfrow = c(3, 2))
 <<chord_diagram_directional_simple>>
 <<chord_diagram_directional_overlap>>
 text(-0.9, 0.9, "D", cex = 1.5)
-<<chord_diagram_directional_non_selfloop>>
+<<chord_diagram_directional_arrow>>
 text(-0.9, 0.9, "E", cex = 1.5)
 <<chord_diagram_directional_arrow>>
 text(-0.9, 0.9, "F", cex = 1.5)

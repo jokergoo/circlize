@@ -495,7 +495,7 @@ par(mfrow = c(3, 2))
 text(-0.9, 0.9, "D", cex = 1.5)
 <<chord_diagram_directional_arrow>>
 text(-0.9, 0.9, "E", cex = 1.5)
-<<chord_diagram_directional_arrow>>
+<<chord_diagram_directional_arrow2>>
 text(-0.9, 0.9, "F", cex = 1.5)
 par(mfrow = c(1, 1))
 @

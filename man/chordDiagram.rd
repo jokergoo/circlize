@@ -13,7 +13,7 @@ Plot Chord Diagram
 \usage{
 chordDiagram(mat, grid.col = NULL, transparency = 0.5,
     col = NULL, row.col = NULL, column.col = NULL, directional = FALSE,
-    direction.type = c("diffHeight", "arrows"), fromRows = TRUE,
+    direction.type = "diffHeight", fromRows = TRUE,
     symmetric = FALSE, keep.diagonal = FALSE, order = NULL, preAllocateTracks = NULL,
     annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
     link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), grid.border = NA,

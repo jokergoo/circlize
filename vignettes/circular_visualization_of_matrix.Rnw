@@ -393,7 +393,7 @@ col_fun = function(x) ifelse(x < 12, "#00000000", "#FF000080")
 chordDiagram(mat, grid.col = grid.col, col = col_fun)
 @
 
-Third, use a three-column data frame to assign colors to links of interest (figure \ref{fig:chord_diagram_highlight_df} D).
+Third, use a three-column data frame to assign colors to links of interest (figure \ref{fig:chord_diagram_highlight} D).
 
 <<chord_diagram_highlight_df, eval = FALSE>>=
 col_df = data.frame(c("S1", "S2", "S3"), c("E5", "E6", "E4"), 

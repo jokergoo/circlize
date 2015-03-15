@@ -106,11 +106,8 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 			stop("Since you specified a symmetric matrix, rownames and colnames should be the same.\n")
 		}
 
-		if(keep.diagonal) {
-			mat[upper.tri(mat, diag = TRUE)] = 0
-		} else {
-			mat[upper.tri(mat, diag = TRUE)] = 0
-		}
+		mat[upper.tri(mat, diag = !keep.diagonal)] = 0
+		
 	}
 
 	if(!is.null(order)) {

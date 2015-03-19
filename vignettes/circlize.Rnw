@@ -864,12 +864,7 @@ source("src/intro-14-hist.R")
 
 In figure \ref{fig:circlize_heatmap} there are heatmap and cluster dendrograms in circular layout. Heatmap is
 series of grids which can be drawn by {\tt circos.rect}. Dendrograms are series of lines which can be drawn
-by {\tt circos.lines}. However, x-values for heatmaps and dendrograms are not really x-values but just index for
-the grid/leaf ({\it i.e.}, 1, 2, ...), so it would be hard (or not proper) to make them
-as general functions for the circos plot. Thus we do not provide such {\tt circos.heatmap} or {\tt circos.dendrogram}
-in the package for public use. Anyway, we still wrote a not-full-functional {\tt circos.dendrogram} which can be found at
-\url{http://jokergoo.github.io/circlize/example/genomic_heatmap.html}. If you want to draw heatmap or dendrogram by your own, this may be 
-helpful for you, especially when you want to customize a complicated phylogenic tree.
+by {\tt circos.lines}. Here we also have a high-level {\tt circos.dendrogram} function to draw the dendrograms. 
 
 <<circlize_heatmap, echo = FALSE, out.width = "0.8\\textwidth", fig.cap = "Circular heatmap with dendrogram trees.">>=
 source("src/intro-15-heatmap.R")

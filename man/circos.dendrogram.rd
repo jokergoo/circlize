@@ -1,12 +1,12 @@
 \name{circos.dendrogram}
 \alias{circos.dendrogram}
 \title{
-Add circlized dendrograms  
+Add circlized dendrograms  
 
 
 }
 \description{
-Add circlized dendrograms  
+Add circlized dendrograms  
 
 
 }
@@ -15,15 +15,15 @@ circos.dendrogram(dend, facing = c("outside", "inside"), max_height = NULL)
 }
 \arguments{
 
-  \item{dend}{A \code{\link[stats]{dendrogram}} object.}
-  \item{facing}{Is the dendromgrams facing inside to the circle or outside.}
-  \item{max_height}{Maximum height of the dendrogram. This is important if more than one dendrograms are drawn in one track and making them comparable.}
+  \item{dend}{A \code{\link[stats]{dendrogram}} object.}
+  \item{facing}{Is the dendromgrams facing inside to the circle or outside.}
+  \item{max_height}{Maximum height of the dendrogram. This is important if more than one dendrograms are drawn in one track and making them comparable.}
 
 }
 \details{
-Assuming there are \code{n} nodes in the dendrogram, the positions for leaves on x-axis is \code{0.5, 1.5, ..., n - 0.5}. So you must be careful with \code{xlim} when you initialize the cirular layout.  
+Assuming there are \code{n} nodes in the dendrogram, the positions for leaves on x-axis is \code{0.5, 1.5, ..., n - 0.5}. So you must be careful with \code{xlim} when you initialize the cirular layout.  
 
-You can use the \code{dendextend} package to render the dendrograms.  
+You can use the \code{dendextend} package to render the dendrograms.  
 
 
 }

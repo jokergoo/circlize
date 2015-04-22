@@ -1,3 +1,5 @@
+![](https://travis-ci.org/jokergoo/circlize.svg?branch=master)
+
 ## circlize: circular visualizatio in R
 
 This package aims to implement circular layout in R.

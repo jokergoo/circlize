@@ -10,3 +10,5 @@ r-packages:
 - shape
 - dendextend
 - knitr
+
+r_check_args: --no-vignettes --no-build-vignettes

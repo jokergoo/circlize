@@ -243,6 +243,19 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 }
 
 # == title
+# Create plotting regions for a whole track
+#
+# == param
+# -... pass to `circos.trackPlotRegion`
+#
+# == details
+# shortcut function of `circos.trackPlotRegion`.
+#
+circos.track = function(...) {
+	circos.trackPlotRegion(...)
+}
+
+# == title
 # Update the plotting region in an existed cell
 #
 # == param
@@ -279,6 +292,19 @@ circos.updatePlotRegion = function(sector.index = get.cell.meta.data("sector.ind
     circos.rect(cell.xlim[1], cell.ylim[1], cell.xlim[2], cell.ylim[2], 
         col = bg.col, border = bg.border, lty = bg.lty, lwd = bg.lwd)
     return(invisible(NULL))
+}
+
+# == title
+# Create plotting regions for a whole track
+#
+# == param
+# -... pass to `circos.updatePlotRegion`
+#
+# == details
+# shortcut function of `circos.updatePlotRegion`.
+#
+circos.update = function(...)  {
+	circos.updatePlotRegion(...)
 }
 
 # internal, so we do not need to check arguments

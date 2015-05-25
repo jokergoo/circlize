@@ -342,7 +342,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 	}
 	
 	if(any(cell.padding[2] + cell.padding[4] >= sector[["start.degree"]] - sector[["end.degree"]])) {
-		stop("Summation of cell padding on x-direction are larger than the width for some sectors.\n")
+		stop("Summation of cell padding on x-direction are larger than the width for some sectors.\nYou can set 'circos.par(cell.padding = c(0.02, 0, 0.02, 0))' or remove tiny sectors.\n")
 	}
 	
 	min.value = min.value - cell.padding[2]/(sector[["start.degree"]] - sector[["end.degree"]] - cell.padding[2] - cell.padding[4])*sector.range  # real min value
@@ -558,7 +558,7 @@ circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 				    cell.padding = get.cell.meta.data("cell.padding", sector.index[i], track.index[j])
 					cat("xlim: [", xlim[1], ", ", xlim[2], "]\n", sep = "")
 					cat("ylim: [", ylim[1], ", ", ylim[2], "]\n", sep = "")
-					cat("cell.ylim: [", cell.ylim[1], ", ", cell.ylim[2], "]\n", sep = "")
+					cat("cell.xlim: [", cell.xlim[1], ", ", cell.xlim[2], "]\n", sep = "")
 					cat("cell.ylim: [", cell.ylim[1], ", ", cell.ylim[2], "]\n", sep = "")
 					cat("xplot (degree): [", xplot[1], ", ", xplot[2], "]\n", sep = "")
 					cat("yplot (radius): [", yplot[1], ", ", yplot[2], "]\n", sep = "")

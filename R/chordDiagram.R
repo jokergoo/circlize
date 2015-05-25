@@ -506,3 +506,31 @@ parsePreAllocateTracksValue = function(preAllocateTracks) {
 	}
 	return(mat)
 }
+
+# == title
+# Adjust gaps to make chord diagrams comparable
+#
+# == param
+# -mat1 matrix that has the largest sum of absolute
+# -gap.degree gap.degree for the Chord Diagram which corresponds to ``mat1``
+# -mat2 matrix to be compared
+#
+# == details
+# Normally, in Chord Diagram, values in mat are normalized to the summation and each value is put 
+# to the circle according to its percentage, which means the width for each link only represents 
+# kind of relative value. However, when comparing two Chord Diagrams, it is necessary that unit 
+# width of links in the two plots should be represented in a same scale. This problem can be solved by 
+# adding more blank gaps to the Chord Diagram which has smaller values.
+#
+# == value
+# Sum of gaps for ``mat2``.
+#
+normalizeChordDiagramGap = function(mat1, gap.degree = circos.par("gap.degree"), mat2) {
+	percent = sum(abs(mat2)) / sum(abs(mat1))
+
+	if(length(gap.degree) == 1) {
+		gap.degree = rep(gap.degree, length(unique(rownames(mat1), colnames(mat1))))
+	}
+	blank.degree = (360 - sum(gap.degree)) * (1 - percent)
+	return(blank.degree)
+}

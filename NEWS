@@ -1,3 +1,10 @@
+Changes in version 0.2.5
+-----------------------------------------------------------------------------
+
+* add shortcut functions: `circos.track`, `circos.update` and `circos.genomicTrack`
+* add `normalizeChordDiagramGap`
+* fixed type in `get.cell.meta.data`
+
 Changes in version 0.2.4
 ------------------------------------------------------------------------------
 

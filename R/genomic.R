@@ -449,6 +449,19 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 }
 
 # == title
+# Create a track for genomic graphics
+#
+# == param
+# -... pass to `circos.genomicTrackPlotRegion`
+#
+# == details
+# shortcut function of `circos.genomicTrackPlotRegion`.
+circos.genomicTrack = function(...) {
+	circos.genomicTrackPlotRegion(...)
+}
+
+
+# == title
 # Which data that ``panel.fun`` is using
 #
 # == param

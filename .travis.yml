@@ -1,0 +1,14 @@
+language: r
+
+sudo: required
+
+# Be strict when checking our package
+warnings_are_errors: true
+
+r-packages:
+- GlobalOptions
+- shape
+- dendextend
+- knitr
+
+r_check_args: --no-vignettes --no-build-vignettes

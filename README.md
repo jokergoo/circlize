@@ -1,6 +1,6 @@
 ![](https://travis-ci.org/jokergoo/circlize.svg?branch=master)
 
-## circlize: circular visualizatio in R
+## circlize: circular visualization in R
 
 This package aims to implement circular layout in R.
 
@@ -9,28 +9,28 @@ we just need to implement functions for drawing points, lines and polygons.
 
 Current there are following low-level graphical functions: 
 
-- `circos.points`
-- `circos.lines`
-- `circos.rect`
-- `circos.polygon`
-- `circos.text`
-- `circos.axis`
-- `circos.link`, This maybe the unique feature for circos layout to represent relationships between elements.
+- `circos.points()`
+- `circos.lines()`
+- `circos.rect()`
+- `circos.polygon()`
+- `circos.text()`
+- `circos.axis()`
+- `circos.link()`, This maybe the unique feature for circos layout to represent relationships between elements.
  
 For drawing points, lines and text through the whole track (among several sectors), the following 
 functions are available:
 
-- `circos.trackPoints`
-- `circos.trackLines`
-- `circos.trackText`
+- `circos.trackPoints()`
+- `circos.trackLines()`
+- `circos.trackText()`
 
 Functions to arrange circos layout:
 
-- `circos.trackPlotRegion`
-- `circos.updatePlotRegion`
-- `circos.par`
-- `circos.info`
-- `circos.clear`
+- `circos.trackPlotRegion()`
+- `circos.updatePlotRegion()`
+- `circos.par()`
+- `circos.info()`
+- `circos.clear()`
 
 Theoretically, you are able to draw most kinds of circos plots by the above functions.
 
@@ -38,29 +38,29 @@ For specific use in genomics, we also implement functions which add graphics in 
 
 Functions to initialize circos plot with genomic coordinates:
  
-- `circos.initializeWithIdeogram`
-- `circos.genomicInitialize`
+- `circos.initializeWithIdeogram()`
+- `circos.genomicInitialize()`
 
 Functions to arrange genomic circos layout:
 
-- `circos.genomicTrackPlotRegion`
+- `circos.genomicTrackPlotRegion()`
 
 Functions to add basic graphics in genomic scale:
 
-- `circos.genomicPoints`
-- `circos.genomicLines`
-- `circos.genomicText`
-- `circos.genomicRect`
-- `circos.genomicLink`
+- `circos.genomicPoints()`
+- `circos.genomicLines()`
+- `circos.genomicText()`
+- `circos.genomicRect()`
+- `circos.genomicLink()`
 
 Functions with specific purpose:
 
-- `circos.genomicDensity`
-- `circos.genomicRainfall`
+- `circos.genomicDensity()`
+- `circos.genomicRainfall()`
 
 Finally, function that draws chord diagram:
 
-- `chordDiagram`
+- `chordDiagram()`
 
 Please refer to the vignettes to find out how to draw basic and advanced circos plots by this package.
 

@@ -5,9 +5,9 @@ Version: 0.2.5
 Date: 2015-3-20
 Author: Zuguang Gu
 Maintainer: Zuguang Gu <z.gu@dkfz.de>
-Depends: R (>= 2.10.0)
+Depends: R (>= 2.10.0), graphics, stats
 Imports: GlobalOptions (>= 0.0.6), shape
-Suggests: knitr, dendextend
+Suggests: knitr, dendextend (>= 1.0.1)
 VignetteBuilder: knitr
 Description: Circular layout is an efficient way for the visualization of huge 
     amounts of information. Here the circlize package provides an implementation 

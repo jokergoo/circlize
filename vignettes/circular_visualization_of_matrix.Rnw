@@ -487,9 +487,25 @@ chordDiagram(mat, directional = TRUE, direction.type = c("diffHeight", "arrows")
     link.arr.col = arr.col, link.arr.length = 0.2)
 @
 
+There is also another arrow type: {\tt big.arrow} which is efficient to visualize arrows if the width of links are too small
+(figure \ref{fig:chord_diagram_directional} G)
 
-<<chord_diagram_directional, echo = FALSE, fig.align = "center", out.width = "0.6\\textheight", out.height = "0.9\\textheight", fig.width = 7, fig.height = 10.5, fig.cap = "Visualization of directional matrix. A) with default settings; B) set difference of two feet of links; C) set the starting feet; D) row names and column names have overlaps; E, F) directions are represented by arrows.">>=
-par(mfrow = c(3, 2))
+<<chord_diagram_directional_arrow3, eval = FALSE>>=
+matx = matrix(rnorm(64), 8)
+chordDiagram(matx, directional = TRUE, direction.type = c("diffHeight", "arrows"),
+    link.arr.type = "big.arrow")
+@
+
+If {\tt diffHeight} is set to a negative value, the start roots are longer than the end roots (figure \ref{fig:chord_diagram_direction} H)
+
+<<chord_diagram_directional_arrow4, eval = FALSE>>=
+chordDiagram(matx, directional = TRUE, direction.type = c("diffHeight", "arrows"),
+    link.arr.type = "big.arrow", diffHeight = -0.04)
+@
+
+
+<<chord_diagram_directional, echo = FALSE, fig.align = "center", out.width = "\\textwidth", out.height = "\\textwidth", fig.width = 10.5, fig.height = 10.5, fig.cap = "Visualization of directional matrix. A) with default settings; B) set difference of two feet of links; C) set the starting feet; D) row names and column names have overlaps; E, F, G, H) directions are represented by arrows.">>=
+par(mfrow = c(3, 3))
 <<chord_diagram_directional_simple>>
 <<chord_diagram_directional_overlap>>
 text(-0.9, 0.9, "D", cex = 1.5)
@@ -497,6 +513,10 @@ text(-0.9, 0.9, "D", cex = 1.5)
 text(-0.9, 0.9, "E", cex = 1.5)
 <<chord_diagram_directional_arrow2>>
 text(-0.9, 0.9, "F", cex = 1.5)
+<<chord_diagram_directional_arrow3>>
+text(-0.9, 0.9, "G", cex = 1.5)
+<<chord_diagram_directional_arrow4>>
+text(-0.9, 0.9, "H", cex = 1.5)
 par(mfrow = c(1, 1))
 @
 

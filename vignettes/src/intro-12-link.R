@@ -65,6 +65,7 @@ circos.initialize(factors = factors, xlim = c(0, 10))
 circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", bg.border = NA, track.height = 0.05)
 circos.link("a", 5, "b", 5, directional = 1, arr.length = 0.2)
 circos.link("c", c(3, 7), "d", c(3, 7), directional = 1, arr.col = "white", arr.length = 0.2)
+circos.link("e", c(4, 6), "f", c(4, 6), directional = 1, arr.type = "big.arrow", arr.length = 0.04)
 circos.clear()
 text(0.9, 0.9, "F", cex = 1.5)
 

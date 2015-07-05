@@ -1,27 +1,22 @@
 \name{adjacencyList2Matrix}
 \alias{adjacencyList2Matrix}
 \title{
-Convert adjacency list to adjacency matrix  
-
+Convert adjacency list to adjacency matrix
 
 }
 \description{
-Convert adjacency list to adjacency matrix  
-
+Convert adjacency list to adjacency matrix
 
 }
 \usage{
-adjacencyList2Matrix(lt, square = FALSE)
-}
+adjacencyList2Matrix(lt, square = FALSE)}
 \arguments{
 
   \item{lt}{a data frame which contains adjacency list.}
   \item{square}{should returned matrix a square matrix?}
-
 }
 \details{
-Convert adjacency list to adjacency matrix.  
-
+Convert adjacency list to adjacency matrix.
 
 }
 \examples{
@@ -34,5 +29,4 @@ adjacencyList2Matrix(lt)
 set.seed(123)
 lt = data.frame(sample(letters, 4), sample(letters, 4), 1:4)
 adjacencyList2Matrix(lt)
-adjacencyList2Matrix(lt, square = TRUE)
-}
+adjacencyList2Matrix(lt, square = TRUE)}

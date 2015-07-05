@@ -1,21 +1,18 @@
 \name{highlight.sector}
 \alias{highlight.sector}
 \title{
-Highlight sectors and tracks  
-
+Highlight sectors and tracks
 
 }
 \description{
-Highlight sectors and tracks  
-
+Highlight sectors and tracks
 
 }
 \usage{
 highlight.sector(sector.index, track.index = get.all.track.index(),
     col = "#FF000040", border = NA, lwd = par("lwd"), lty = par("lty"),
     padding = c(0, 0, 0, 0), text = NULL, text.col = par("col"),
-    text.vjust = 0.5, ...)
-}
+    text.vjust = 0.5, ...)}
 \arguments{
 
   \item{sector.index}{A vector of sector index}
@@ -24,18 +21,16 @@ highlight.sector(sector.index, track.index = get.all.track.index(),
   \item{border}{Border of the highlighted region}
   \item{lwd}{Width of borders}
   \item{lty}{Style of borders}
-  \item{padding}{Padding for the highlighted region. It should contain four values representing ratios of the width or height of the highlighted region}
+  \item{padding}{Padding for the highlighted region. It should contain four valuesrepresenting ratios of the width or height of the highlighted region}
   \item{text}{text added in the highlight region, only support plotting one string at a time}
   \item{text.vjust}{adjustment on 'vertical' (radical) direction}
   \item{text.col}{color for the text}
   \item{...}{pass to \code{\link{circos.text}}}
-
 }
 \details{
-You can use \code{\link{circos.info}} to find out index for all sectors and all tracks.  
+You can use \code{\link{circos.info}} to find out index for all sectors and all tracks.
 
-The function calls \code{\link{draw.sector}}. 
-
+The function calls \code{\link{draw.sector}}.
 
 }
 \examples{
@@ -55,5 +50,4 @@ highlight.sector(c("f", "g"), col = NA, border = "green",
     lwd = 2, track.index = c(2, 3))
 highlight.sector(factors, col = "#FFFF0040", track.index = 4)
 circos.clear()
-}
-}
+}}

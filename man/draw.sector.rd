@@ -1,20 +1,17 @@
 \name{draw.sector}
 \alias{draw.sector}
 \title{
-Draw sectors or rings in a circle  
-
+Draw sectors or rings in a circle
 
 }
 \description{
-Draw sectors or rings in a circle  
-
+Draw sectors or rings in a circle
 
 }
 \usage{
 draw.sector(start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL,
     center = c(0, 0), clock.wise = TRUE, col = NA, border = "black", lwd = par("lwd"),
-    lty = par("lty"))
-}
+    lty = par("lty"))}
 \arguments{
 
   \item{start.degree}{start degree for the sector}
@@ -27,16 +24,14 @@ draw.sector(start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL,
   \item{border}{Border color}
   \item{lwd}{Line width}
   \item{lty}{Line style}
-
 }
 \details{
-If the interval between \code{start} and \code{end} (larger or equal to 360 or smaller or equal to -360) it would draw a full circle or ring. If \code{rou2} is set, it would draw part of a ring.  
-
+If the interval between \code{start} and \code{end} (larger or equal to 360 or smaller or equal to -360)
+it would draw a full circle or ring. If \code{rou2} is set, it would draw part of a ring.
 
 }
 \references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-}
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}
 \examples{
 \dontrun{
 library(circlize)
@@ -75,5 +70,4 @@ pos = circlize(c(0.2, 0.8), c(0.2, 0.8), sector.index = "h", track.index = 2)
 draw.sector(pos[1, "theta"], pos[2, "theta"], pos[1, "rou"], pos[2, "rou"], 
     clock.wise = TRUE, col = "#00FFFF40")
 circos.clear()
-}
-}
+}}

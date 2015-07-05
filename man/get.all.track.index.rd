@@ -1,21 +1,17 @@
 \name{get.all.track.index}
 \alias{get.all.track.index}
 \title{
-Get index for all tracks  
-
+Get index for all tracks
 
 }
 \description{
-Get index for all tracks  
-
+Get index for all tracks
 
 }
 \usage{
-get.all.track.index()
-}
+get.all.track.index()}
 \details{
-Simple function returning a vector of all track index. 
-
+Simple function returning a vector of all track index.
 
 }
 \examples{
@@ -28,5 +24,4 @@ circos.trackPlotRegion(ylim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1))
 get.all.track.index()
 circos.clear()
-}
-}
+}}

@@ -1,13 +1,11 @@
 \name{circos.axis}
 \alias{circos.axis}
 \title{
-Draw x-axis  
-
+Draw x-axis
 
 }
 \description{
-Draw x-axis  
-
+Draw x-axis
 
 }
 \usage{
@@ -18,14 +16,13 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
     labels.facing = "inside", labels.direction = NULL, labels.niceFacing = TRUE,
     direction = c("outside", "inside"), minor.ticks = 4,
     major.tick.percentage = 0.1, labels.away.percentage = major.tick.percentage/2,
-    lwd = par("lwd"))
-}
+    lwd = par("lwd"))}
 \arguments{
 
   \item{h}{Position of the x-axis, can be "top", "bottom" or a numeric value}
-  \item{major.at}{If it is numeric vector, it identifies the positions of the major ticks. It can exceed \code{xlim} value and the exceeding part would be trimmed automatically. If it is \code{NULL}, about every 10 degrees there is a major tick.}
+  \item{major.at}{If it is numeric vector, it identifies the positionsof the major ticks. It can exceed \code{xlim} value and the exceeding partwould be trimmed automatically. If it is \code{NULL}, about every 10 degrees there is a major tick.}
   \item{labels}{labels of the major ticks. Also, the exceeding part would be trimmed automatically.}
-  \item{major.tick}{Whether to draw major tick. If it is set to \code{FALSE}, there would be no minor ticks.}
+  \item{major.tick}{Whether to draw major tick. If it is set to \code{FALSE}, there would beno minor ticks.}
   \item{sector.index}{Index for the sector}
   \item{track.index}{Index for the track}
   \item{labels.font}{font style for the axis labels}
@@ -38,18 +35,16 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
   \item{major.tick.percentage}{Length of the major ticks. It is the percentage to the height of the cell.}
   \item{labels.away.percentage}{The distance for the axis labels to the major ticks. It is the percentage to the height of the cell.}
   \item{lwd}{line width for ticks}
-
 }
 \details{
-It can only draw axes on x-direction.  
+It can only draw axes on x-direction.
 
-Currently, this package doesn't provide a function to add axes on y-direction. But it is easy to implement by users with \code{\link{circos.lines}} and \code{\link{circos.text}}. 
-
+Currently, this package doesn't provide a function to add axes on y-direction. But it is easy
+to implement by users with \code{\link{circos.lines}} and \code{\link{circos.text}}.
 
 }
 \references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-}
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}
 \examples{
 \dontrun{
 library(circlize)
@@ -116,5 +111,4 @@ while(1) {
 }
 circos.clear()
 
-}
-}
+}}

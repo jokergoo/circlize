@@ -1,13 +1,11 @@
 \name{circos.genomicRect}
 \alias{circos.genomicRect}
 \title{
-Draw rectangle-like grid, specifically for genomic graphics  
-
+Draw rectangle-like grid, specifically for genomic graphics
 
 }
 \description{
-Draw rectangle-like grid, specifically for genomic graphics  
-
+Draw rectangle-like grid, specifically for genomic graphics
 
 }
 \usage{
@@ -15,8 +13,7 @@ circos.genomicRect(region, value = NULL,
     ytop = NULL, ybottom = NULL, ytop.column = NULL, ybottom.column = NULL,
     sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), posTransform = NULL,
-    col = NA, border = "black", lty = par("lty"), lwd = par("lwd"), ...)
-}
+    col = NA, border = "black", lty = par("lty"), lwd = par("lwd"), ...)}
 \arguments{
 
   \item{region}{A data frame contains 2 column which correspond to start position and end position}
@@ -33,16 +30,13 @@ circos.genomicRect(region, value = NULL,
   \item{lty}{Settings are similar as \code{col}. Pass to \code{\link{circos.rect}}}
   \item{lwd}{Settings are similar as \code{col}. Pass to \code{\link{circos.rect}}}
   \item{...}{Mysterious parameters}
-
 }
 \details{
-The function is a low-level graphical function and usually is put in \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}. 
-
+The function is a low-level graphical function and usually is put in \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}.
 
 }
 \references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-}
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}
 \examples{
 \dontrun{
 
@@ -126,5 +120,4 @@ circos.genomicTrackPlotRegion(bed_list, panel.fun = function(region, value, ...)
 
 circos.clear()
 
-}
-}
+}}

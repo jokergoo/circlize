@@ -22,9 +22,11 @@
 # -lty           Line (or border) style
 # -border        If the link is a ribbon, then it is the color for the ribbon border.
 # -directional   0 for no direction, 1 for direction from point1 to point2, -1 for direction from point2 to point1.
-# -arr.length    Length of the arrows, pass to `shape::Arrowhead`.
+# -arr.length    Length of the arrows, measured in 'cm', pass to `shape::Arrowhead`. If ``arr.type`` is set to ``big.arrow``,
+#                the value is percent to the radius of the unit circle.
 # -arr.width     Width of the arrows, pass to `shape::Arrowhead`.
-# -arr.type      Type of the arrows, pass to `shape::Arrowhead`. Default value is ``triangle``.
+# -arr.type      Type of the arrows, pass to `shape::Arrowhead`. Default value is ``triangle``. There is an additional option
+#                that is not passed to `shape::Arrowhead` (``big.arrow``).
 # -arr.col       Color of the arrows, pass to `shape::Arrowhead`.
 # -arr.lwd       Line width of arrows, pass to `shape::Arrowhead`.
 # -arr.lty       Line type of arrows, pass to `shape::Arrowhead`.
@@ -42,8 +44,9 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
     rou = get_most_inside_radius(),
     rou1 = rou, rou2 = rou, h = NULL, w = 1, h2 = h, w2 = w,
     col = "black", lwd = par("lwd"), lty = par("lty"), border = NA,
-    directional = 0, arr.length = 0.4, arr.width = arr.length/2,
-    arr.type = "triangle", arr.lty = lty, arr.lwd = lwd, arr.col = col) {
+    directional = 0, arr.length = ifelse(arr.type == "big.arrow", 0.02, 0.4), 
+    arr.width = arr.length/2, arr.type = "triangle", arr.lty = lty, 
+    arr.lwd = lwd, arr.col = col) {
     
     sector.data1 = get.sector.data(sector.index1)
     sector.data2 = get.sector.data(sector.index2)
@@ -85,24 +88,39 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 	        if(degreeDiff(theta1, theta21) > degreeDiff(theta1, theta22)) {
 	        	d1 = getQuadraticPoints(theta1, theta21, rou1, rou2, h = h, w = w)
 	        	d2 = getQuadraticPoints(theta1, theta22, rou1, rou2, h = h2, w = w2)
+	        	d1x = getQuadraticPoints(theta1, theta21, rou1, rou2 - arr.length, h = h, w = w)
+	        	d2x = getQuadraticPoints(theta1, theta22, rou1, rou2 - arr.length, h = h2, w = w2)
 	        	dcenter = getQuadraticPoints(theta1, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
 	        } else {
 		        d1 = getQuadraticPoints(theta1, theta21, rou1, rou2, h = h2, w = w2)
 		        d2 = getQuadraticPoints(theta1, theta22, rou1, rou2, h = h, w = w)
+	        	d1x = getQuadraticPoints(theta1, theta21, rou1, rou2 - arr.length, h = h2, w = w2)
+		        d2x = getQuadraticPoints(theta1, theta22, rou1, rou2 - arr.length, h = h, w = w)
 	        	dcenter = getQuadraticPoints(theta1, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
 		    }
-			r2 = arc.points(theta21, theta22, rou2)
-			d = rbind(d1, r2)
-			d = rbind(d, revMat(d2))
+		   	r2 = arc.points(theta21, theta22, rou2)
+			if(arr.type == "big.arrow" && directional == 1) {
+				if(nrow(r2) %% 2 == 1) {
+					r2 = r2[ceiling(nrow(r2)/2), , drop = FALSE]
+				} else {
+					r2 = colMeans(r2[c(nrow(r2)/2, nrow(r2)/2+1), , drop = FALSE])
+				}
+				d = rbind(d1x, r2)
+				d = rbind(d, revMat(d2x))
+			} else {
+				d = rbind(d1, r2)
+				d = rbind(d, revMat(d2))
+			}
+			
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
-			if(nrow(dcenter) > 1) {
+			if(nrow(dcenter) > 1 & arr.type != "big.arrow") {
 		        if(directional == 1) {  # point1 to point2
 		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
 		        	nr = nrow(dcenter)
 		        	alpha = line_degree(dcenter[nr-1, 1], dcenter[nr-1, 2], dcenter[nr, 1], dcenter[nr, 2])
 		        	Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
 		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
-		        } else if(directional == -1) {  # point2 to point2
+		        } else if(directional == -1) {  # point2 to point1
 		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
 		        	nr = nrow(dcenter)
 		        	alpha = line_degree(dcenter[2, 1], dcenter[2, 2], dcenter[1, 1], dcenter[1,2])
@@ -127,17 +145,31 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 	        if(degreeDiff(theta2, theta11) > degreeDiff(theta2, theta12)) {
 		        d1 = getQuadraticPoints(theta11, theta2, rou1, rou2, h = h, w = w)
 		        d2 = getQuadraticPoints(theta12, theta2, rou1, rou2, h = h2, w = w2)
+	        	d1x = getQuadraticPoints(theta11, theta2, rou1 - arr.length, rou2, h = h, w = w)
+		        d2x = getQuadraticPoints(theta12, theta2, rou1 - arr.length, rou2, h = h2, w = w2)
 	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, theta2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
 		    } else {
 		    	d1 = getQuadraticPoints(theta11, theta2, rou1, rou2, h = h2, w = w2)
 		        d2 = getQuadraticPoints(theta12, theta2, rou1, rou2, h = h, w = w)
+	        	d1x = getQuadraticPoints(theta11, theta2, rou1 - arr.length, rou2, h = h2, w = w2)
+		        d2x = getQuadraticPoints(theta12, theta2, rou1 - arr.length, rou2, h = h, w = w)
 	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, theta2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
 		    }
 			r1 = arc.points(theta11, theta12, rou1)
-			d = rbind(revMat(d1), r1)
-			d = rbind(d, d2)
+			if(arr.type == "big.arrow" && directional == -1) {
+				if(nrow(r1) %% 2 == 1) {
+					r1 = r1[ceiling(nrow(r1)/2), , drop = FALSE]
+				} else {
+					r1 = colMeans(r1[c(nrow(r1)/2, nrow(r1)/2+1), , drop = FALSE])
+				}
+				d = rbind(revMat(d1x), r1)
+				d = rbind(d, d2x)
+			} else {
+				d = rbind(revMat(d1), r1)
+				d = rbind(d, d2)
+			}
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
-			if(nrow(dcenter) > 1) {
+			if(nrow(dcenter) > 1 && arr.type != "big.arrow") {
 		        if(directional == 1) {  # point1 to point2
 		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
 		        	nr = nrow(dcenter)
@@ -178,20 +210,56 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 			if(degreeDiff(theta11, theta22) > degreeDiff(theta12, theta21)) {
 				d1 = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h, w = w)
 		        d2 = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h2, w = w2)
+		        if(directional == 1) {
+		        	d1x = getQuadraticPoints(theta11, theta22, rou1, rou2 - arr.length, h = h, w = w)
+			        d2x = getQuadraticPoints(theta12, theta21, rou1, rou2 - arr.length, h = h2, w = w2)
+			    } else if(directional == -1) {
+			    	d1x = getQuadraticPoints(theta11, theta22, rou1 - arr.length, rou2, h = h, w = w)
+		        	d2x = getQuadraticPoints(theta12, theta21, rou1 - arr.length, rou2, h = h2, w = w2)
+			    }
 	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
 		    } else {
 		    	d1 = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h2, w = w2)
 		        d2 = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h, w = w)
+		        if(directional == 1) {
+		        	d1x = getQuadraticPoints(theta11, theta22, rou1, rou2 - arr.length, h = h2, w = w2)
+			        d2x = getQuadraticPoints(theta12, theta21, rou1, rou2 - arr.length, h = h, w = w)
+	        	} else if(directional == -1) {
+		        	d1x = getQuadraticPoints(theta11, theta22, rou1 - arr.length, rou2, h = h2, w = w2)
+			        d2x = getQuadraticPoints(theta12, theta21, rou1 - arr.length, rou2, h = h, w = w)
+			    }
 	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
 		    }
 			r2 = arc.points(theta21, theta22, rou2)
 			r1 = arc.points(theta11, theta12, rou1)
 
-	        d = rbind(d1, revMat(r2))
-	        d = rbind(d, revMat(d2))
-	        d = rbind(d, revMat(r1))
+			if(arr.type == "big.arrow") {
+				if(directional == 1) {
+					if(nrow(r2) %% 2 == 1) {
+						r2 = r2[ceiling(nrow(r2)/2), , drop = FALSE]
+					} else {
+						r2 = colMeans(r2[c(nrow(r2)/2, nrow(r2)/2+1), , drop = FALSE])
+					}
+					d = rbind(d1x, r2)
+			        d = rbind(d, revMat(d2x))
+			        d = rbind(d, revMat(r1))
+			    } else if(directional == -1) {
+			    	if(nrow(r1) %% 2 == 1) {
+						r1 = r1[ceiling(nrow(r1)/2), , drop = FALSE]
+					} else {
+						r1 = colMeans(r1[c(nrow(r1)/2, nrow(r1)/2+1), , drop = FALSE])
+					}
+			    	d = rbind(d1x, revMat(r2))
+			        d = rbind(d, revMat(d2x))
+			        d = rbind(d, r1)
+			    } 
+			} else {
+		        d = rbind(d1, revMat(r2))
+		        d = rbind(d, revMat(d2))
+		        d = rbind(d, revMat(r1))
+		    }
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
-			if(nrow(dcenter) > 1) {
+			if(nrow(dcenter) > 1 && arr.type != "big.arrow") {
 		        if(directional == 1) {  # point1 to point2
 		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
 		        	nr = nrow(dcenter)

@@ -880,13 +880,13 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 		if(sum(l1)) {
 			circos.text(x[l1], y[l1], labels[l1], sector.index = sector.index,
 				track.index = track.index, facing = facing1, niceFacing = FALSE, adj = adj1,
-				cex = cex, col = col, font = font, ...)
+				cex = cex[l1], col = col[l1], font = font[l1], ...)
 		}
 		
 		if(sum(l2)) {
 			circos.text(x[l2], y[l2], labels[l2], sector.index = sector.index,
 				track.index = track.index, facing = facing2, niceFacing = FALSE, adj = adj2,
-				cex = cex, col = col, font = font, ...)
+				cex = cex[l2], col = col[l2], font = font[l2], ...)
 		}
 		return(invisible(NULL))
 	}
@@ -1577,6 +1577,10 @@ circos.dendrogram = function(dend, facing = c("outside", "inside"), max_height =
     lines_par = function(col = par("col"), lty = par("lty"), lwd = par("lwd"), ...) {
     	return(list(col = col, lty = lty, lwd = lwd))
     }
+
+    points_par = function(col = par("col"), pch = par("pch"), cex = par("cex"), ...) {
+    	return(list(col = col, pch = pch, cex = cex))
+    }
     
     draw.d = function(dend, max_height, facing = "outside", max_width = 0) {
         leaf = attr(dend, "leaf")
@@ -1603,26 +1607,58 @@ circos.dendrogram = function(dend, facing = c("outside", "inside"), max_height =
         # only for lines, there are lwd, col, lty
         edge_par1 = do.call("lines_par", as.list(attr(d1, "edgePar")))  # as.list to convert NULL to list()
         edge_par2 = do.call("lines_par", as.list(attr(d2, "edgePar")))
+        node_par = attr(dend, "nodePar")
+        if(!is.null(node_par)) node_par = do.call("points_par", as.list(attr(dend, "nodePar")))
         
         # plot the connection line
-        
         if(facing == "outside") {
         	circos.lines(c(x1, x1), max_height - c(y1, height), col = edge_par1$col, lty = edge_par1$lty, lwd = edge_par1$lwd, straight = TRUE)
         	circos.lines(c(x1, (x1+x2)/2), max_height - c(height, height), col = edge_par1$col, lty = edge_par1$lty, lwd = edge_par1$lwd)
        		circos.lines(c(x2, x2), max_height - c(y2, height), col = edge_par2$col, lty = edge_par2$lty, lwd = edge_par2$lwd, straight = TRUE)
        		circos.lines(c(x2, (x1+x2)/2), max_height - c(height, height), col = edge_par2$col, lty = edge_par2$lty, lwd = edge_par2$lwd)
+       		if(!is.null(node_par)) {
+       			circos.points((x1+x2)/2, max_height - height, col = node_par$col, pch = node_par$pch, cex = node_par$cex)
+       		}
        	} else if(facing == "inside") {
       		circos.lines(c(x1, x1), c(y1, height), col = edge_par1$col, lty = edge_par1$lty, lwd = edge_par1$lwd, straight = TRUE)
         	circos.lines(c(x1, (x1+x2)/2), c(height, height), col = edge_par1$col, lty = edge_par1$lty, lwd = edge_par1$lwd)
         	circos.lines(c(x2, x2), c(y2, height), col = edge_par2$col, lty = edge_par2$lty, lwd = edge_par2$lwd, straight = TRUE)
        		circos.lines(c(x2, (x1+x2)/2), c(height, height), col = edge_par2$col, lty = edge_par2$lty, lwd = edge_par2$lwd)
+       		if(!is.null(node_par)) {
+       			circos.points((x1+x2)/2, height, col = node_par$col, pch = node_par$pch, cex = node_par$cex)
+       		}
        	}
   
         # do it recursively
-        if(!is.leaf(d1)) {
+        if(is.leaf(d1)) {
+        	node_par = attr(d1, "nodePar")
+        	if(!is.null(node_par)) node_par = do.call("points_par", as.list(attr(d1, "nodePar")))
+        	if(facing == "outside") {
+        		if(!is.null(node_par)) {
+	       			circos.points(x1, max_height, col = node_par$col, pch = node_par$pch, cex = node_par$cex)
+	       		}
+        	} else if(facing == "inside") {
+        		if(!is.null(node_par)) {
+	       			circos.points(x1, 0, col = node_par$col, pch = node_par$pch, cex = node_par$cex)
+	       		}
+        	}
+        } else {
             draw.d(d1, max_height, facing, max_width)
         }
-        if(!is.leaf(d2)) {
+
+        if(is.leaf(d2)) {
+        	node_par = attr(d2, "nodePar")
+        	if(!is.null(node_par)) node_par = do.call("points_par", as.list(attr(d2, "nodePar")))
+        	if(facing == "outside") {
+        		if(!is.null(node_par)) {
+	       			circos.points(x2, max_height, col = node_par$col, pch = node_par$pch, cex = node_par$cex)
+	       		}
+        	} else if(facing == "inside") {
+        		if(!is.null(node_par)) {
+	       			circos.points(x2, 0, col = node_par$col, pch = node_par$pch, cex = node_par$cex)
+	       		}
+        	}
+        } else {
             draw.d(d2, max_height, facing, max_width)
         }
     }

@@ -37,14 +37,16 @@
 # -link.lwd width for link borders, single scalar or a matrix with names or a data frame with three columns
 # -link.lty style for link borders, single scalar or a matrix with names or a data frame with three columns
 # -grid.border border for grids. If it is ``NULL``, the border color is same as grid color
-# -diffHeight The difference of height between two 'roots' if ``directional`` is set to ``TRUE``. 
+# -diffHeight The difference of height between two 'roots' if ``directional`` is set to ``TRUE``. If the value is set to
+#             a positive value, start root is shorter than end root and if it is set to a negative value, start root is longer
+#             than the end root.
 # -reduce if the ratio of the width of certain grid compared to the whole circle is less than this value, the grid is removed on the plot.
 #         Set it to value less than zero if you want to keep all tiny grid.
 # -link.order order of links in single sector. The value is a length-two vector which 
 #         controls order of sectors which correspond to rows and columns respectively.
-# -link.arr.length pass to `shape::Arrowhead`, same settings as ``link.lwd``.
+# -link.arr.length pass to `circos.link`, same settings as ``link.lwd``.
 # -link.arr.width pass to `shape::Arrowhead`, same settings as ``link.lwd``.
-# -link.arr.type pass to `shape::Arrowhead`, same settings as ``link.lwd``. Default value is ``triangle``.
+# -link.arr.type pass to `circos.link`, same settings as ``link.lwd``. Default value is ``triangle``.
 # -link.arr.col color or the single line link which is put in the center of the belt, same settings as ``link.lwd``.
 # -link.arr.lwd line width ofthe single line link which is put in the center of the belt, same settings as ``link.lwd``.
 # -link.arr.lty line type of the single line link which is put in the center of the belt, same settings as ``link.lwd``.
@@ -67,7 +69,8 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
 	link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), grid.border = NA, 
 	diffHeight = 0.04, reduce = 1e-5, link.order = -1,
-	link.arr.length = 0.4, link.arr.width = link.arr.length/2, 
+	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4), 
+	link.arr.width = link.arr.length/2, 
 	link.arr.type = "triangle", link.arr.lty = par("lty"), 
 	link.arr.lwd = par("lwd"), link.arr.col = par("col"), ...) {
 	
@@ -360,18 +363,32 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 				if(directional) {
 					if(setequal(direction.type, c("diffHeight", "arrows"))) {
 						if(fromRows) {
+							if(diffHeight > 0) {
+								rou1 = rou - diffHeight
+								rou2 = rou
+							} else {
+								rou1 = rou
+								rou2 = rou + diffHeight
+							}
 							circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
 										sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-										directional = 1, col = col[rn[i], cn[j]], rou1 = rou - diffHeight, rou2 = rou, border = link.border[rn[i], cn[j]], 
+										directional = 1, col = col[rn[i], cn[j]], rou1 = rou1, rou2 = rou2, border = link.border[rn[i], cn[j]], 
 										lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]], 
 										arr.length = link.arr.length[rn[i], cn[j]], arr.width = link.arr.width[rn[i], cn[j]],
 										arr.type = link.arr.type[rn[i], cn[j]], arr.col = link.arr.col[rn[i], cn[j]],
 										arr.lty = link.arr.lty[rn[i], cn[j]], arr.lwd = link.arr.lwd[rn[i], cn[j]],
 										...)
 						} else {
+							if(diffHeight > 0) {
+								rou1 = rou
+								rou2 = rou - diffHeight
+							} else {
+								rou1 = rou + diffHeight
+								rou2 = rou
+							}
 							circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
 										sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-										directional = -1, col = col[rn[i], cn[j]], rou1 = rou, rou2 = rou - diffHeight, border = link.border[rn[i], cn[j]],
+										directional = -1, col = col[rn[i], cn[j]], rou1 = rou1, rou2 = rou2, border = link.border[rn[i], cn[j]],
 										lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]],
 										arr.length = link.arr.length[rn[i], cn[j]], arr.width = link.arr.width[rn[i], cn[j]],
 										arr.type = link.arr.type[rn[i], cn[j]], arr.col = link.arr.col[rn[i], cn[j]],
@@ -379,14 +396,28 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 						}
 					} else if(setequal(direction.type, "diffHeight")) {
 						if(fromRows) {
+							if(diffHeight > 0) {
+								rou1 = rou - diffHeight
+								rou2 = rou
+							} else {
+								rou1 = rou
+								rou2 = rou + diffHeight
+							}
 							circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
 										sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-										col = col[rn[i], cn[j]], rou1 = rou - diffHeight, rou2 = rou, border = link.border[rn[i], cn[j]], 
+										col = col[rn[i], cn[j]], rou1 = rou1, rou2 = rou2, border = link.border[rn[i], cn[j]], 
 										lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]], ...)
 						} else {
+							if(diffHeight > 0) {
+								rou1 = rou
+								rou2 = rou - diffHeight
+							} else {
+								rou1 = rou + diffHeight
+								rou2 = rou
+							}
 							circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
 									sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-									col = col[rn[i], cn[j]], rou1 = rou, rou2 = rou - diffHeight, border = link.border[rn[i], cn[j]],
+									col = col[rn[i], cn[j]], rou1 = rou1, rou2 = rou2, border = link.border[rn[i], cn[j]],
 									lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]], ...)
 						}
 					} else if(setequal(direction.type, "arrows")) {

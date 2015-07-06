@@ -86,6 +86,14 @@ lines.expand = function(x, y, sector.index = get.current.sector.index(), track.i
         if(i == 1) {
             next   
         }
+        if(is.na(x[i]) || is.na(y[i])) {
+        	nx = c(nx, NA)
+        	ny = c(ny, NA)
+        	next
+        }
+        if(is.na(x[i-1]) || is.na(y[i-1])) {
+        	next
+        }
 	
 		td = cbind(c(x[i-1], x[i]), c(y[i-1], y[i]))
         td = td[order(td[, 1]), ]
@@ -161,6 +169,10 @@ check.points.position = function(x, y, sector.index = get.cell.meta.data("sector
     cell.xlim = get.cell.meta.data("cell.xlim", sector.index, track.index)
     cell.ylim = get.cell.meta.data("cell.ylim", sector.index, track.index)
     
+    l = is.na(x) | is.na(y)
+    x = x[!l]
+    y = y[!l]
+
     l1 = x < cell.xlim[1] | x > cell.xlim[2]
     l2 = y < cell.ylim[1] | y > cell.ylim[2]
     l = l1 | l2

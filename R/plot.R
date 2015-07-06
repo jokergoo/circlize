@@ -689,43 +689,54 @@ circos.trackLines = function(factors, x, y, track.index = get.cell.meta.data("tr
 # `graphics::rect` does.
 circos.rect = function(xleft, ybottom, xright, ytop,
 	sector.index = get.cell.meta.data("sector.index"), 
-	track.index = get.cell.meta.data("track.index"),
-    col = NA, border = "black", lty = par("lty"), lwd = par("lwd")) {
-    if(! (length(xleft) == 1 &&
-          length(ybottom) == 1 &&
-          length(xright) == 1 &&
-          length(ytop) == 1) ) {
-        stop("There should only be one data points in 'xleft', 'ybottom', 'xright' or 'ytop'.\n")  
-    }
+	track.index = get.cell.meta.data("track.index"), ...) {
+
+    # if(! (length(xleft) == 1 &&
+    #       length(ybottom) == 1 &&
+    #       length(xright) == 1 &&
+    #       length(ytop) == 1) ) {
+    #     stop("There should only be one data points in 'xleft', 'ybottom', 'xright' or 'ytop'.\n")  
+    # }
 
     if(!has.cell(sector.index, track.index)) {
         stop("'circos.rect' can only be used after the plotting region been created\n")
     }
+
+    if(! (length(xleft) == length(ybottom) && length(ybottom) == length(xright) && length(xright) == length(ytop)) ) {
+		stop("xleft, ybottom, xright, ytop should have same length.")
+	}
     
-    # no filled colors, just four edges, here edges colors are controled by ``border``
-    if(is.na(col)) {
-        # vertical lines in the original coordinate system are still straight lines
-        # in the new coordinate system except they now pointing to the circle center.
-        circos.lines(c(xleft, xleft), c(ybottom, ytop),
-                     sector.index = sector.index, track.index = track.index,
-                     col = border, lty = lty, lwd = lwd, straight = TRUE)
-        # horizontal lines in the original coordinate system are now arcs and the arcs
-        # share the same circle center as the polar coordinate system
-        circos.lines(c(xleft, xright), c(ytop, ytop),
-                   sector.index = sector.index, track.index = track.index,
-                   col = border, lty = lty, lwd = lwd)
-        circos.lines(c(xright, xright), c(ytop, ybottom),
-                     sector.index = sector.index, track.index = track.index,
-                     col = border, lty = lty, lwd = lwd, straight = TRUE)
-        circos.lines(c(xleft, xright), c(ybottom, ybottom),
-                   sector.index = sector.index, track.index = track.index,
-                   col = border, lty = lty, lwd = lwd)
-    } else {
-        circos.polygon(c(xleft, xleft, xright, xright, xleft),
-                       c(ybottom, ytop, ytop, ybottom, ybottom),
-                       sector.index = sector.index, track.index = track.index,
-                       col = col, border = border, lty = lty, lwd = lwd)
-    }
+    # # no filled colors, just four edges, here edges colors are controled by ``border``
+    # if(is.na(col)) {
+    #     # vertical lines in the original coordinate system are still straight lines
+    #     # in the new coordinate system except they now pointing to the circle center.
+    #     circos.lines(c(xleft, xleft), c(ybottom, ytop),
+    #                  sector.index = sector.index, track.index = track.index,
+    #                  col = border, lty = lty, lwd = lwd, straight = TRUE)
+    #     # horizontal lines in the original coordinate system are now arcs and the arcs
+    #     # share the same circle center as the polar coordinate system
+    #     circos.lines(c(xleft, xright), c(ytop, ytop),
+    #                sector.index = sector.index, track.index = track.index,
+    #                col = border, lty = lty, lwd = lwd)
+    #     circos.lines(c(xright, xright), c(ytop, ybottom),
+    #                  sector.index = sector.index, track.index = track.index,
+    #                  col = border, lty = lty, lwd = lwd, straight = TRUE)
+    #     circos.lines(c(xleft, xright), c(ybottom, ybottom),
+    #                sector.index = sector.index, track.index = track.index,
+    #                col = border, lty = lty, lwd = lwd)
+    # } else {
+    #     circos.polygon(c(xleft, xleft, xright, xright, xleft),
+    #                    c(ybottom, ytop, ytop, ybottom, ybottom),
+    #                    sector.index = sector.index, track.index = track.index,
+    #                    col = col, border = border, lty = lty, lwd = lwd)
+    # }
+
+    x = unlist(lapply(seq_along(xleft), function(i) c(xleft[i], xleft[i], xright[i], xright[i], xleft[i], NA)))
+    y = unlist(lapply(seq_along(ybottom), function(i) c(ybottom[i], ytop[i], ytop[i], ybottom[i], ybottom[i], NA)))
+    x = x[-length(x)]
+    y = y[-length(y)]
+    circos.polygon(x, y, sector.index = sector.index, track.index = track.index, ...)
+
     return(invisible(NULL))
 }
 
@@ -743,10 +754,12 @@ circos.rect = function(xleft, ybottom, xright, ytop,
 # -lwd          line width for the border
 #
 # == details
-# similar as `graphics::polygon`
+# similar as `graphics::polygon`.
+#
+# Note: start point should overlap with the end point,
+#
 circos.polygon = function(x, y, sector.index = get.cell.meta.data("sector.index"),
-	track.index = get.cell.meta.data("track.index"),
-    col = NA, border = "black", lty = par("lty"), lwd = par("lwd")) {
+	track.index = get.cell.meta.data("track.index"), ...) {
     
     if(!has.cell(sector.index, track.index)) {
         stop("'circos.polygon' can only be used after the plotting region been created\n")
@@ -754,12 +767,55 @@ circos.polygon = function(x, y, sector.index = get.cell.meta.data("sector.index"
     
     # whether the points that are out of the plotting region.
     check.points.position(x, y, sector.index, track.index)
-    
+
     d = lines.expand(x, y, sector.index, track.index)
     d2 = circlize(d[, 1], d[, 2], sector.index, track.index)
-    polygon(polar2Cartesian(d2), col = col, border = border,
-            lty = lty, lwd = lwd)
+    polygon(polar2Cartesian(d2), ...)
     return(invisible(NULL))
+}
+
+# == title
+# Draw segments through pairwise of points
+#
+# == param
+# -x0
+# -y0
+# -x1
+# -y1
+# -sector.index
+# -track.index
+# -straight
+# -...
+#
+circos.segments = function(x0, y0, x1, y1, sector.index = get.cell.meta.data("sector.index"),
+	track.index = get.cell.meta.data("track.index"), straight = FALSE, ...) {
+
+	if(!has.cell(sector.index, track.index)) {
+        stop("'circos.polygon' can only be used after the plotting region been created\n")
+    }
+
+	if(! (length(x0) == length(y0) && length(y0) == length(x1) && length(x1) == length(y1)) ) {
+		stop("x0, y0, x1, y1 should have same length.")
+	}
+
+	if(length(straight) == 1) straight = rep(straight, length(x0))
+	x = NULL
+	y = NULL
+	for(i in seq_along(x0)) {
+		if(straight[i]) {
+			x = c(x, c(x0[i], x1[i], NA))
+			y = c(y, c(y0[i], y1[i], NA))
+		} else {
+			d = lines.expand(c(x0[i], x1[i]), c(y0[i], y1[i]), sector.index, track.index)
+			x = c(x, c(d[, 1], NA))
+			y = c(y, c(d[, 2], NA))
+		}
+	}
+	x = x[-length(x)]
+	y = y[-length(y)]
+	d2 = circlize(x, y, sector.index, track.index)
+	d3 = polar2Cartesian(d2)
+	lines(d3[,1], d3[,2], ...)
 }
 
 # == title

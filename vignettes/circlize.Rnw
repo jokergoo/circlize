@@ -35,7 +35,7 @@ opts_chunk$set(fig.pos = "", fig.align = "center")
 
 library(circlize)
 circos.initialize = function(...) {
-    circos.par(unit.circle.segments = 300)
+    circos.par(unit.circle.segments = 280)
     circlize::circos.initialize(...)
 }
 @

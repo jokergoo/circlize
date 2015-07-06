@@ -674,10 +674,7 @@ circos.trackLines = function(factors, x, y, track.index = get.cell.meta.data("tr
 # -ytop         y for the right top points
 # -sector.index Index for the sector
 # -track.index  Index for the track
-# -col          filled color
-# -border       color for the border
-# -lty          line style for the border
-# -lwd          line width for the border
+# -... pass to `graphics::polygon`
 #
 # == details
 # Currently, ``xleft``, ``ybottom``, ``xright``, ``ytop`` are all single values, which means
@@ -748,10 +745,7 @@ circos.rect = function(xleft, ybottom, xright, ytop,
 # -y            Data points on y-axis
 # -sector.index Index for the sector
 # -track.index  Index for the track
-# -col          filled color
-# -border       color for the border
-# -lty          line style for the border
-# -lwd          line width for the border
+# -... pass to `graphics::polygon`
 #
 # == details
 # similar as `graphics::polygon`.
@@ -778,14 +772,14 @@ circos.polygon = function(x, y, sector.index = get.cell.meta.data("sector.index"
 # Draw segments through pairwise of points
 #
 # == param
-# -x0
-# -y0
-# -x1
-# -y1
-# -sector.index
-# -track.index
-# -straight
-# -...
+# -x0 x coordinates for starting points
+# -y0 y coordinates for ending points 
+# -x1 x coordinates for starting points
+# -y1 y coordinates for ending points
+# -sector.index Index for the sector
+# -track.index  Index for the track
+# -straight whether the segment is a straight line
+# -... pass to `graphics::lines`
 #
 circos.segments = function(x0, y0, x1, y1, sector.index = get.cell.meta.data("sector.index"),
 	track.index = get.cell.meta.data("track.index"), straight = FALSE, ...) {
@@ -1168,16 +1162,21 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	
 	op = circos.par("points.overflow.warning")
 	circos.par("points.overflow.warning" = FALSE)
-	for(i in seq_along(major.at)) {
-		
-		if(major.at[i] < xlim2[1] || major.at[i] > xlim2[2]) {
-			next
-		}
-	
-		if(major.tick) {
-			circos.lines(c(major.at[i], major.at[i]), c(h, h + major.tick.length*ifelse(direction == "outside", 1, -1)), straight = TRUE,
+	l = major.at >= xlim2[1] & major.at <= xlim2[2]
+	if(major.tick) {
+		circos.segments(major.at[l], rep(h, sum(l)), major.at[l], rep(h, sum(l)) + major.tick.length*ifelse(direction == "outside", 1, -1), straight = TRUE,
 			             sector.index = sector.index, track.index = track.index, lwd = lwd)
-		}
+	}
+	#for(i in seq_along(major.at)) {
+		
+		# if(major.at[i] < xlim2[1] || major.at[i] > xlim2[2]) {
+		# 	next
+		# }
+	
+		# if(major.tick) {
+		# 	circos.lines(c(major.at[i], major.at[i]), c(h, h + major.tick.length*ifelse(direction == "outside", 1, -1)), straight = TRUE,
+		# 	             sector.index = sector.index, track.index = track.index, lwd = lwd)
+		# }
 		
 		labels.adj = NULL
 		if(direction == "outside") {
@@ -1211,29 +1210,33 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 		}
 		
 		if(is.logical(labels) && labels) {
-			circos.text(major.at[i], h + (major.tick.length+yrange*labels.away.percentage)*ifelse(direction == "outside", 1, -1),
-			           labels = major.at[i], adj = labels.adj,
+			circos.text(major.at[l], rep(h, sum(l)) + (major.tick.length+yrange*labels.away.percentage)*ifelse(direction == "outside", 1, -1),
+			           labels = major.at[l], adj = labels.adj,
 			           font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
 			           facing = labels.facing, niceFacing = labels.niceFacing)
 		} else if(is.logical(labels) && !labels) {
                           
         } else if(length(labels)) {
-			circos.text(major.at[i], h + (major.tick.length+yrange*labels.away.percentage)*ifelse(direction == "outside", 1, -1),
-			            labels = labels[i], adj = labels.adj,
+			circos.text(major.at[l], rep(h, sum(l)) + (major.tick.length+yrange*labels.away.percentage)*ifelse(direction == "outside", 1, -1),
+			            labels = labels[l], adj = labels.adj,
 			            font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
 				        facing = labels.facing, niceFacing = labels.niceFacing)
 		}				
 		
-	}
+	#}
 	if(major.tick) {
-		for(i in seq_along(minor.at)) {
-			if(minor.at[i] < xlim2[1] || minor.at[i] > xlim2[2]) {
-				next
-			}
+		# for(i in seq_along(minor.at)) {
+		# 	if(minor.at[i] < xlim2[1] || minor.at[i] > xlim2[2]) {
+		# 		next
+		# 	}
 		
-			circos.lines(c(minor.at[i], minor.at[i]), c(h, h + major.tick.length/2*ifelse(direction == "outside", 1, -1)), straight = TRUE,
-			             sector.index = sector.index, track.index = track.index, lwd = lwd)
-		}
+		# 	circos.lines(c(minor.at[i], minor.at[i]), c(h, h + major.tick.length/2*ifelse(direction == "outside", 1, -1)), straight = TRUE,
+		# 	             sector.index = sector.index, track.index = track.index, lwd = lwd)
+		# }
+
+		l = minor.at >= xlim2[1] & minor.at <= xlim2[2]
+		circos.segments(minor.at[l], rep(h, sum(l)), minor.at[l], rep(h, sum(l)) + major.tick.length/2*ifelse(direction == "outside", 1, -1), straight = TRUE,
+			sector.index = sector.index, track.index = track.index, lwd = lwd)
 	}
 	
 	circos.par("points.overflow.warning" = op)

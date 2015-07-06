@@ -10,21 +10,19 @@ Draw polygon
 }
 \usage{
 circos.polygon(x, y, sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"),
-    col = NA, border = "black", lty = par("lty"), lwd = par("lwd"))}
+    track.index = get.cell.meta.data("track.index"), ...)}
 \arguments{
 
   \item{x}{Data points on x-axis}
   \item{y}{Data points on y-axis}
   \item{sector.index}{Index for the sector}
   \item{track.index}{Index for the track}
-  \item{col}{filled color}
-  \item{border}{color for the border}
-  \item{lty}{line style for the border}
-  \item{lwd}{line width for the border}
+  \item{...}{pass to \code{\link[graphics]{polygon}}}
 }
 \details{
-similar as \code{\link[graphics]{polygon}}
+similar as \code{\link[graphics]{polygon}}.
+
+Note: start point should overlap with the end point,
 
 }
 \references{

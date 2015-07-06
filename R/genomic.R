@@ -680,18 +680,24 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 	border = .normalizeGraphicalParam(border, nc, 1, "col")
 	
 	if(!is.null(args$hline)) {
-		for(i in seq_len(nr)) {
-			circos.lines( c(region[i, 1], region[i, 2]), c(value[i, numeric.column], value[i, numeric.column]), 
-				col = col, lwd = lwd, lty = lty, type = "l",
+		# for(i in seq_len(nr)) {
+		# 	circos.lines( c(region[i, 1], region[i, 2]), c(value[i, numeric.column], value[i, numeric.column]), 
+		# 		col = col, lwd = lwd, lty = lty, type = "l",
+		# 		sector.index = sector.index, track.index = track.index )
+		# }
+		circos.segments( region[, 1], value[, numeric.column], region[, 2], value[, numeric.column], 
+				col = col, lwd = lwd, lty = lty, 
 				sector.index = sector.index, track.index = track.index )
-		}
 	} else if(nc == 1) {
 		if(type == "segment") {
-			for(i in seq_len(nr)) {
-				circos.lines( c(region[i, 1], region[i, 2]), c(value[i, numeric.column], value[i, numeric.column]), 
-					col = col[i], lwd = lwd[i], lty = lty[i], type = "l",
+			# for(i in seq_len(nr)) {
+			# 	circos.lines( c(region[i, 1], region[i, 2]), c(value[i, numeric.column], value[i, numeric.column]), 
+			# 		col = col[i], lwd = lwd[i], lty = lty[i], type = "l",
+			# 		sector.index = sector.index, track.index = track.index )
+			# }
+			circos.segments( region[, 1], value[, numeric.column], region[, 2], value[, numeric.column], 
+					col = col, lwd = lwd, lty = lty, 
 					sector.index = sector.index, track.index = track.index )
-			}
 		} else {
 			circos.lines( (region[[1]] + region[[2]])/2, value[[ numeric.column ]], 
 				col = col, lwd = lwd, lty = lty, type = type, 
@@ -702,11 +708,14 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 	} else {
 		for(i in seq_len(nc)) {
 			if(type[i] == "segment") {
-				for(k in seq_len(nr)) {
-					circos.lines( c(region[k, 1], region[k, 2]), c(value[k, numeric.column[i] ], value[k, numeric.column[i] ]), 
+				# for(k in seq_len(nr)) {
+				# 	circos.lines( c(region[k, 1], region[k, 2]), c(value[k, numeric.column[i] ], value[k, numeric.column[i] ]), 
+				# 		col = col[i], lwd = lwd[i], lty = lty[i], type = "l",
+				# 		sector.index = sector.index, track.index = track.index )
+				# }
+				circos.segments( region[, 1], value[, numeric.column[i] ], region[, 2], value[, numeric.column[i] ], 
 						col = col[i], lwd = lwd[i], lty = lty[i], type = "l",
 						sector.index = sector.index, track.index = track.index )
-				}
 			} else {
 				circos.lines( (region[[1]] + region[[2]])/2, value[[ numeric.column[i] ]], 
 					col = col[i], lwd = lwd[i], lty = lty[i], type = type[i], 
@@ -816,11 +825,14 @@ circos.genomicRect = function(region, value = NULL,
 	lwd = .normalizeGraphicalParam(lwd, 1, nr, "lwd")
 	lty = .normalizeGraphicalParam(lty, 1, nr, "lty")
 	
-	for(i in seq_len(nr)) {
-		circos.rect(region[i, 1], value[i, ybottom.column], region[i, 2], value[i, ytop.column],
+	# for(i in seq_len(nr)) {
+	# 	circos.rect(region[i, 1], value[i, ybottom.column], region[i, 2], value[i, ytop.column],
+	# 	            sector.index = sector.index, track.index = track.index,
+	# 				col = col[i], border = border[i], lwd = lwd[i], lty = lty[i])
+	# }
+	circos.rect(region[, 1], value[, ybottom.column], region[, 2], value[, ytop.column],
 		            sector.index = sector.index, track.index = track.index,
-					col = col[i], border = border[i], lwd = lwd[i], lty = lty[i])
-	}
+					col = col, border = border, lwd = lwd, lty = lty)
 
 }
 
@@ -1086,17 +1098,29 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 				region_new  = region
 			}
 			
-			for(i in seq_len(nrow(region))) {
-				if(horizontalLine == "both" || horizontalLine == "top") {
-					circos.lines(c(region[i, 1], region[i, 2]), c(1, 1), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
-				}
-				if(horizontalLine == "both" || horizontalLine == "bottom") {
-					circos.lines(c(region[i, 1], region[i, 2]), c(0, 0), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
-				}
-				mid = (region[i, 1] + region[i, 2])/2
-				mid_new = (region_new[i, 1] + region_new[i, 2])/2
-				circos.lines(c(mid, mid, mid_new, mid_new), c(1, 2/3, 1/3, 0), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
+			# for(i in seq_len(nrow(region))) {
+			# 	if(horizontalLine == "both" || horizontalLine == "top") {
+			# 		circos.lines(c(region[i, 1], region[i, 2]), c(1, 1), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
+			# 	}
+			# 	if(horizontalLine == "both" || horizontalLine == "bottom") {
+			# 		circos.lines(c(region[i, 1], region[i, 2]), c(0, 0), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
+			# 	}
+			# 	mid = (region[i, 1] + region[i, 2])/2
+			# 	mid_new = (region_new[i, 1] + region_new[i, 2])/2
+			# 	circos.lines(c(mid, mid, mid_new, mid_new), c(1, 2/3, 1/3, 0), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
+			# }
+			nr = nrow(region)
+			if(horizontalLine == "both" || horizontalLine == "top") {
+				circos.segments(region[, 1], rep(1, nr), region[, 2], rep(1, nr), col = col[l], lwd = lwd[l], lty = lty[l])
 			}
+			if(horizontalLine == "both" || horizontalLine == "bottom") {
+				circos.segments(region[, 1], rep(0, nr), region[, 2], rep(0, nr), col = col[l], lwd = lwd[l], lty = lty[l])
+			}
+			mid = (region[, 1] + region[, 2])/2
+			mid_new = (region_new[, 1] + region_new[, 2])/2
+			circos.segments(mid, rep(1, nr), mid, rep(2/3, nr), col = col[l], lwd = lwd[l], lty = lty[l])
+			circos.segments(mid, rep(2/3, nr), mid_new, rep(1/3, nr), col = col[l], lwd = lwd[l], lty = lty[l])
+			circos.segments(mid_new, rep(1/3, nr), mid_new, rep(0, nr), col = col[l], lwd = lwd[l], lty = lty[l])
 		}, ...)
 	} else {
 		circos.genomicTrackPlotRegion(data, ylim = c(0, 1), bg.border = NA, track.height = track.height, panel.fun = function(region, value, ...) {
@@ -1116,17 +1140,29 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 				region_new  = region
 			}
 			
-			for(i in seq_len(nrow(region))) {
-				if(horizontalLine == "both" || horizontalLine == "bottom") {
-					circos.lines(c(region[i, 1], region[i, 2]), c(0, 0), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
-				}
-				if(horizontalLine == "both" || horizontalLine == "top") {
-					circos.lines(c(region[i, 1], region[i, 2]), c(1, 1), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
-				}
-				mid = (region[i, 1] + region[i, 2])/2
-				mid_new = (region_new[i, 1] + region_new[i, 2])/2
-				circos.lines(c(mid, mid, mid_new, mid_new), c(0, 1/3, 2/3, 1), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
+			# for(i in seq_len(nrow(region))) {
+			# 	if(horizontalLine == "both" || horizontalLine == "bottom") {
+			# 		circos.lines(c(region[i, 1], region[i, 2]), c(0, 0), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
+			# 	}
+			# 	if(horizontalLine == "both" || horizontalLine == "top") {
+			# 		circos.lines(c(region[i, 1], region[i, 2]), c(1, 1), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
+			# 	}
+			# 	mid = (region[i, 1] + region[i, 2])/2
+			# 	mid_new = (region_new[i, 1] + region_new[i, 2])/2
+			# 	circos.lines(c(mid, mid, mid_new, mid_new), c(0, 1/3, 2/3, 1), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
+			# }
+			nr = nrow(region)
+			if(horizontalLine == "both" || horizontalLine == "bottom") {
+				circos.segments(region[, 1], rep(0, nr), region[, 2], rep(0, nr), col = col[l], lwd = lwd[l], lty = lty[l])
 			}
+			if(horizontalLine == "both" || horizontalLine == "top") {
+				circos.segments(region[, 1], rep(1, nr), region[, 2], rep(1, nr), col = col[l], lwd = lwd[l], lty = lty[l])
+			}
+			mid = (region[, 1] + region[, 2])/2
+			mid_new = (region_new[, 1] + region_new[, 2])/2
+			circos.segments(mid, rep(0, nr), mid, rep(1/3, nr), col = col[l], lwd = lwd[l], lty = lty[l])
+			circos.segments(mid, rep(1/3, nr), mid_new, rep(2/3, nr), col = col[l], lwd = lwd[l], lty = lty[l])
+			circos.segments(mid_new, rep(2/3, nr), mid_new, rep(1, nr), col = col[l], lwd = lwd[l], lty = lty[l])
 		}, ...)
 	}
 	

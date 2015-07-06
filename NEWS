@@ -1,6 +1,8 @@
 Changes in version 0.2.5
 -----------------------------------------------------------------------------
 
+* `circos.rect` and `circos.polygon` are vectorized
+* `circos.dendrogram`: supports graphical settings for nodes
 * `circos.link`: support 'big.arrow' mode for links
 * `circos.text`: graphical settings are subsetted correctly in `niceFacing` is set
 * add shortcut functions: `circos.track`, `circos.update` and `circos.genomicTrack`

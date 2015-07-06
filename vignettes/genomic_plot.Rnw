@@ -17,7 +17,7 @@ circos.genomicInitialize = function(...) {
 }
 
 circos.initializeWithIdeogram = function(...) {
-    circos.par(unit.circle.segments = 300)
+    circos.par(unit.circle.segments = 280)
     circlize::circos.initializeWithIdeogram(...)
 }
 @

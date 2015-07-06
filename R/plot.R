@@ -808,6 +808,8 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 	if(length(adj) == 1) {
 		adj = c(adj, adj)
 	}
+
+	labels = as.vector(labels)
 	
     # whether the points that are out of the plotting region.
     check.points.position(x, y, sector.index, track.index)

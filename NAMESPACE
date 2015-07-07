@@ -58,4 +58,10 @@ export(circos.info)
 
 importFrom("GlobalOptions", setGlobalOptions)
 importFrom("shape", Arrowhead)
-
+import(graphics)
+importFrom("grDevices", col2rgb)
+importFrom("grDevices", rgb)
+importFrom("utils", download.file)
+importFrom("utils", read.table)
+importFrom("stats", rnorm)
+importFrom("stats", runif)

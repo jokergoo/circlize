@@ -1,14 +1,44 @@
-language: r
+#language: r
 
-sudo: required
+#sudo: required
 
 # Be strict when checking our package
-warnings_are_errors: true
+#warnings_are_errors: true
 
-r-packages:
-- GlobalOptions
-- shape
-- dendextend
-- knitr
+#r-packages:
+#- GlobalOptions
+#- shape
+#- #- knitr
 
-r_check_args: --no-vignettes --no-build-vignettes
+#r_check_args: --no-vignettes --no-build-vignettes
+
+language: c
+sudo: required
+
+before_install:
+  - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
+  - chmod 755 pkg-build.sh
+  - cp pkg-build.sh rbuildertest
+  - cd rbuildertest
+  - ./pkg-build.sh bootstrap
+
+install:
+  - ./pkg-build.sh install_deps
+
+script:
+  - ./pkg-build.sh run_build
+  - ./pkg-build.sh run_check
+
+after_failure:
+  - ./pkg-build.sh dump_logs
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+
+env:
+  matrix:
+    - RVERSION=oldrel
+    - RVERSION=release
+    - RVERSION=devel

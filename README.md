@@ -1,4 +1,5 @@
-![](https://travis-ci.org/jokergoo/circlize.svg?branch=master)
+[![Build Status](https://travis-ci.org/jokergoo/circlize.svg)](https://travis-ci.org/jokergoo/circlize)
+
 
 ## circlize: circular visualization in R
 

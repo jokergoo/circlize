@@ -24,6 +24,7 @@ You can use the \code{dendextend} package to render the dendrograms.
 
 }
 \examples{
+\dontrun{
 load(paste0(system.file(package = "circlize"), "/extdata/bird.orders.RData"))
 
 labels = hc$labels  # name of birds
@@ -45,8 +46,11 @@ circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.3,
 
 require(dendextend)
 dend = color_branches(dend, k = 6, col = 1:6)
+
 circos.trackPlotRegion(ylim = c(0, max_height), bg.border = NA, 
     track.height = 0.4, panel.fun = function(x, y) {
         circos.dendrogram(dend, max_height = max_height)
 })
-circos.clear()}
+circos.clear()
+}
+}

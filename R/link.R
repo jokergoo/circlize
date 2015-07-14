@@ -54,7 +54,7 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 	point1 = sort(point1)
 	point2 = sort(point2)
 
-    if(length(point1) == 1 && length(point2) == 1) {
+    if(length(point1) == 1 && length(point2) == 1) {  # single line
         theta1 = circlize(point1, 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
         theta2 = circlize(point2, 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
         

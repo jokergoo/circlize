@@ -17,11 +17,8 @@
 #          Length should be same as number of rows in ``mat``. This argument only works when ``col`` is set to ``NULL``.
 # -column.col Colors for links. Links from the same column in ``mat`` will have the same color.
 #             Length should be same as number of columns in ``mat``. This argument only works when ``col`` and ``row.col`` is set to ``NULL``.
-# -fromRows Unequal height of link root is used to represent the link direction.
-#           If links are directional, whether they start from Rows. The starting root is always
-#           more inside to circle centre than the ending root.
-# -directional Whether links have directions. The directions are always from rows to columns. If you
-#              want the direction from columns to rows, set ``fromRow`` to ``FALSE``.
+# -fromRows deprecated, use ``directional`` instead
+# -directional Whether links have directions. 1 means from rows to columns. -1 means from columns to rows
 # -direction.type type for representing directions. Can be one or two values in "diffHeight" and "arrows".
 # -symmetric Whether the matrix is symmetric. If the value is set to ``TRUE``, only
 #            lower triangular matrix without the diagonal will be used.
@@ -42,8 +39,8 @@
 #             than the end root.
 # -reduce if the ratio of the width of certain grid compared to the whole circle is less than this value, the grid is removed on the plot.
 #         Set it to value less than zero if you want to keep all tiny grid.
-# -link.order order of links in single sector. The value is a length-two vector which 
-#         controls order of sectors which correspond to rows and columns respectively.
+# -link.sort whether sort links on every sector based on the width of the links on it.
+# -link.decreasing for ``link.sort``
 # -link.arr.length pass to `circos.link`, same settings as ``link.lwd``.
 # -link.arr.width pass to `shape::Arrowhead`, same settings as ``link.lwd``.
 # -link.arr.type pass to `circos.link`, same settings as ``link.lwd``. Default value is ``triangle``.
@@ -63,12 +60,12 @@
 # This function is flexible and contains some settings that may be a little difficult to understand. 
 # Please refer to vignette for better explanation.
 chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
-	col = NULL, row.col = NULL, column.col = NULL, directional = FALSE, 
-	direction.type = "diffHeight", fromRows = TRUE,
+	col = NULL, row.col = NULL, column.col = NULL, directional = 0, fromRow,
+	direction.type = "diffHeight",
 	symmetric = FALSE, keep.diagonal = FALSE, order = NULL, preAllocateTracks = NULL,
 	annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
 	link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), grid.border = NA, 
-	diffHeight = 0.04, reduce = 1e-5, link.order = -1,
+	diffHeight = 0.04, reduce = 1e-5, link.sort = FALSE, link.decreasing = FALSE,
 	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4), 
 	link.arr.width = link.arr.length/2, 
 	link.arr.type = "triangle", link.arr.lty = par("lty"), 
@@ -81,6 +78,10 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	if(directional) {
 		if(length(setdiff(direction.type, c("diffHeight", "arrows"))) > 0) {
 			stop("`direction.type` can only be in 'diffHeight' and 'arrows'.")
+		}
+		if(!missing(fromRow)) {
+			if(fromRow) warning("`fromRow` is deprated, use `directional = 1` instread.")
+			else warning("`fromRow` is deprated, use `directional = -1` instread.")
 		}
 	}
 	
@@ -311,147 +312,144 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	link.arr.lty = .normalize_to_mat(link.arr.lty, rn, cn, default = 1)
 	link.arr.lwd = .normalize_to_mat(link.arr.lwd, rn, cn, default = 1)
 	link.arr.col = .normalize_to_mat(link.arr.col, rn, cn, default = NA)
-	
-    sector.sum.row = numeric(length(factors))
-    sector.sum.col = numeric(length(factors))
-	names(sector.sum.row) = factors
-	names(sector.sum.col) = factors
-	sector.sum.col[ names(rs) ] = rs
 
-	if(length(link.order) == 1) {
-		link.order = rep(link.order, 2)
-	}
-	if(length(link.order) != 2) {
-		stop("`link.order` should be of length 1 or 2.")
-	}
-	if(!all(link.order %in% c(-1, 1))) {
-		stop("`link.order` can only be in c(-1, 1).")
-	}
+	nr = length(rn)
+	nc = length(cn)
 
-	if(link.order[1] == 1) {
-		row_index = seq_along(rn)
-	} else {
-		row_index = rev(seq_along(rn))	
+	df = mat2df
+
+	chordDiagram(df, ...)
+	df$o1 = rep(0, nrow(df))
+	df$or = rep(0, nrow(df))
+	df$x1 = rep(0, nrow(df))
+	df$x2 = rep(0, nrow(df))
+	# row first
+	od = tapply(abs(df$value), df$rn, order)
+	for(nm in names(od)) {
+		df$o1[df$rn == nm] = od[[nm]]
+		df$x1[df$rn == nm] = cumsum(abs(df$value)[od[[nm]]])
 	}
-    for(i in row_index) {
-		# if one name exists in both rows and columns, put it 
-		if(link.order[2] == 1) {
-			cn_index = seq_along(cn)
+	max_o1 = sapply(od, max)
+	sum_1 = tapply(df$x1, df$rn, sum)
+	od = tapply(abs(df$value), df$cn, order)
+	for(nm in names(od)) {
+		if(!is.null(max_o1[[nm]])) {
+			df$o2[df$cn == nm] = od[[nm]] + max_o1[nm]
+			df$x2[df$cn == nm] = cumsum(abs(df$value)[od[nm]]) + sum_1[nm]
 		} else {
-			cn_index = rev(seq_along(cn))
+			df$o2[df$cn == nm] = od[[nm]]
+			df$x2[df$cn == nm] = cumsum(abs(df$value)[od[nm]])
 		}
-		if(rn[i] %in% cn) {
-			is = which(cn == rn[i])
-			cn_index = c(is, cn_index[cn_index != is])  # self link is always put in the first?
-		}
-		
-		for(j in cn_index) {
-			if(abs(mat[rn[i], cn[j]]) < 1e-8) {
-				next
+	}
+	
+
+	
+	# if row names and column names overlaps, seperate them and sort separately
+	.get_pos = function(mat, ri, ci, on = "row", sort = FALSE, decreasing = FALSE) {
+		if(on == "row") {
+			x1 = mat[ri, ]
+			x2 = numeric(0)
+			if(rownames(mat)[ri] %in% colnames(mat)) {
+				x2 = mat[-ri, ri]
 			}
-			rou = get_most_inside_radius()
-            sector.index1 = rn[i]
-            sector.index2 = cn[j]
-			
-			if(sector.index1 == sector.index2) {
-				circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]]))*0.50000001,
-							sector.index2, c(sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])/2, sector.sum.row[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-							col = col[rn[i], cn[j]], rou1 = rou, border = link.border[rn[i], cn[j]], lwd = link.lwd[rn[i], cn[j]], 
-							lty = link.lty[rn[i], cn[j]], ...)
-	            sector.sum.row[ rn[i] ] = sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])
+			if(sort) {
+				x = c(0, cumsum(c(sort(abs(x1), decreasing = link.decreasing), sort(abs(x2), decreasing = link.decreasing))))
 			} else {
-				if(directional) {
-					if(setequal(direction.type, c("diffHeight", "arrows"))) {
-						if(fromRows) {
-							if(diffHeight > 0) {
-								rou1 = rou - diffHeight
-								rou2 = rou
-							} else {
-								rou1 = rou
-								rou2 = rou + diffHeight
-							}
-							circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
-										sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-										directional = 1, col = col[rn[i], cn[j]], rou1 = rou1, rou2 = rou2, border = link.border[rn[i], cn[j]], 
-										lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]], 
-										arr.length = link.arr.length[rn[i], cn[j]], arr.width = link.arr.width[rn[i], cn[j]],
-										arr.type = link.arr.type[rn[i], cn[j]], arr.col = link.arr.col[rn[i], cn[j]],
-										arr.lty = link.arr.lty[rn[i], cn[j]], arr.lwd = link.arr.lwd[rn[i], cn[j]],
-										...)
-						} else {
-							if(diffHeight > 0) {
-								rou1 = rou
-								rou2 = rou - diffHeight
-							} else {
-								rou1 = rou + diffHeight
-								rou2 = rou
-							}
-							circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
-										sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-										directional = -1, col = col[rn[i], cn[j]], rou1 = rou1, rou2 = rou2, border = link.border[rn[i], cn[j]],
-										lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]],
-										arr.length = link.arr.length[rn[i], cn[j]], arr.width = link.arr.width[rn[i], cn[j]],
-										arr.type = link.arr.type[rn[i], cn[j]], arr.col = link.arr.col[rn[i], cn[j]],
-										arr.lty = link.arr.lty[rn[i], cn[j]], arr.lwd = link.arr.lwd[rn[i], cn[j]], ...)
-						}
-					} else if(setequal(direction.type, "diffHeight")) {
-						if(fromRows) {
-							if(diffHeight > 0) {
-								rou1 = rou - diffHeight
-								rou2 = rou
-							} else {
-								rou1 = rou
-								rou2 = rou + diffHeight
-							}
-							circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
-										sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-										col = col[rn[i], cn[j]], rou1 = rou1, rou2 = rou2, border = link.border[rn[i], cn[j]], 
-										lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]], ...)
-						} else {
-							if(diffHeight > 0) {
-								rou1 = rou
-								rou2 = rou - diffHeight
-							} else {
-								rou1 = rou + diffHeight
-								rou2 = rou
-							}
-							circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
-									sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-									col = col[rn[i], cn[j]], rou1 = rou1, rou2 = rou2, border = link.border[rn[i], cn[j]],
-									lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]], ...)
-						}
-					} else if(setequal(direction.type, "arrows")) {
-						if(fromRows) {
-							circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
-										sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-										directional = 1, col = col[rn[i], cn[j]], rou1 = rou, border = link.border[rn[i], cn[j]], 
-										lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]], 
-										arr.length = link.arr.length[rn[i], cn[j]], arr.width = link.arr.width[rn[i], cn[j]],
-										arr.type = link.arr.type[rn[i], cn[j]], arr.col = link.arr.col[rn[i], cn[j]],
-										arr.lty = link.arr.lty[rn[i], cn[j]], arr.lwd = link.arr.lwd[rn[i], cn[j]],
-										...)
-						} else {
-							circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
-										sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-										directional = -1, col = col[rn[i], cn[j]], rou1 = rou, border = link.border[rn[i], cn[j]],
-										lwd = link.lwd[rn[i], cn[j]], lty = link.lty[rn[i], cn[j]],
-										arr.length = link.arr.length[rn[i], cn[j]], arr.width = link.arr.width[rn[i], cn[j]],
-										arr.type = link.arr.type[rn[i], cn[j]], arr.col = link.arr.col[rn[i], cn[j]],
-										arr.lty = link.arr.lty[rn[i], cn[j]], arr.lwd = link.arr.lwd[rn[i], cn[j]], ...)
-						}
-					}
-				} else {
-					circos.link(sector.index1, c(sector.sum.row[ rn[i] ], sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])),
-								sector.index2, c(sector.sum.col[ cn[j] ], sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])),
-								col = col[rn[i], cn[j]], rou1 = rou, border = link.border[rn[i], cn[j]], lwd = link.lwd[rn[i], cn[j]], 
-								lty = link.lty[rn[i], cn[j]], ...)
-				}
-				
-	            sector.sum.row[ rn[i] ] = sector.sum.row[ rn[i] ] + abs(mat[rn[i], cn[j]])
-				sector.sum.col[ cn[j] ] = sector.sum.col[ cn[j] ] + abs(mat[rn[i], cn[j]])
+				x = c(0, cumsum(abs(c(x1, x2))))
 			}
-        }
+			x = rev(x)
+			return(x[ci + 0:1])
+		} else if(on == "column") {
+			if(colnames(mat)[ci] %in% rownames(mat)) {
+				rri = which(rownames(mat), colnames(mat)[ci])
+				x1 = mat[rri, ]
+				x2 = numeric(0)
+				if(rownames(mat)[rri] %in% colnames(mat)) {
+					x2 = mat[-rri, rri]
+				}
+				if(sort) {
+					x = c(0, cumsum(c(sort(abs(x1), decreasing = link.decreasing), sort(abs(x2), decreasing = link.decreasing))))
+				} else {
+					x = c(0, cumsum(abs(c(x1, x2))))
+				}
+
+			} else {
+				x1 = mat[, ci]
+				if(sort) {
+					x = c(0, cumsum(sort(abs(x1), decreasing = link.decreasing)))
+				} else {
+					x = c(0, cumsum(abs(x1)))
+				}
+				x = rev(x)
+				return(x[ri + 0:1])
+			}
+		}
+	}
+
+	pos = list(sector1 = character(0), sector2 = character(0),
+		       x1 = numeric(0), x2 = numeric(0), y1 = numeric(0), y2 = numeric(0),
+		       ri = numeric(0), ci = numeric(0))
+	for(i in seq_along(rn)) {
+		for(j in seq_along(cn)) {
+			pos$sector1 = c(pos$sector1, rn[i])
+			pos$sector2 = c(pos$sector2, cn[j])
+			pos$x1 = c(pos$x1, .get_pos(mat, ri = i, ci = j, on = "row", sort = TRUE)[1])
+			pos$x2 = c(pos$x2, .get_pos(mat, ri = i, ci = j, on = "row", sort = TRUE)[2])
+			pos$y1 = c(pos$y1, .get_pos(mat, ri = i, ci = j, on = "column", sort = TRUE)[1])
+			pos$y2 = c(pos$y2, .get_pos(mat, ri = i, ci = j, on = "column", sort = TRUE)[2])
+			pos$ri = c(pos$ri, i)
+			pos$ci = c(pos$ci, j)
+		}
+	}
+
+	rou = get_most_inside_radius()
+	if(directional) {
+		if("diffHeight" %in% direction.type) {
+			if(directional > 0) {
+				if(diffHeight > 0) {
+					rou1 = rou - diffHeight
+					rou2 = rou
+				} else {
+					rou1 = rou
+					rou2 = rou + diffHeight
+				}
+			} else {
+				if(diffHeight > 0) {
+					rou1 = rou
+					rou2 = rou - diffHeight
+				} else {
+					rou1 = rou + diffHeight
+					rou2 = rou
+				}
+			}
+		} else {
+			rou1 = rou
+			rou2 = rou
+		}
+	} else {
+		rou1 = rou
+		rou2 = rou
+	}
+
+	for(k in seq_along(pos$sector1)) {
 		
+		sector.index1 = pos$sector1[k]
+		sector.index2 = pos$sector2[k]
+		i = pos$ri[k]
+		j = pos$ci[k]
+
+		if(abs(mat[i, j]) < 1e-8) {
+			next
+		}
+		
+		circos.link(sector.index1, c(pos$x1[k], pos$x2[k]),
+					sector.index2, c(pos$y1[k], pos$y2[k]),
+					directional = directional, col = col[i, j], rou1 = rou1, rou2 = rou2, border = link.border[i, j], 
+					lwd = link.lwd[i, j], lty = link.lty[i, j], 
+					arr.length = link.arr.length[i, j], arr.width = link.arr.width[i, j],
+					arr.type = link.arr.type[i, j], arr.col = link.arr.col[i, j],
+					arr.lty = link.arr.lty[i, j], arr.lwd = link.arr.lwd[i, j],
+					...)
     }
 	
 	circos.par("cell.padding" = o.cell.padding)
@@ -564,4 +562,39 @@ normalizeChordDiagramGap = function(mat1, gap.degree = circos.par("gap.degree"),
 	}
 	blank.degree = (360 - sum(gap.degree)) * (1 - percent)
 	return(blank.degree)
+}
+
+mat2df = function(mat) {
+	nr = dim(mat)[1]
+	nc = dim(mat)[2]
+	rn = rep(rownames(mat), times = nc)
+	ri = rep(seq_len(nr), times = nc)
+	cn = rep(colnames(mat), each = nr)
+	ci = rep(seq_len(nc), each = nr)
+	v = as.vector(mat)
+	df = data.frame(rn = rn, cn = cn, ri = ri, ci = ci, value = v, stringsAsFactors = FALSE)
+	l = df$value > 0
+	return(df[l, , drop = FALSE])
+}
+
+chordDiagram.matrix = function(x) {
+
+}
+
+chordDiagram.data.frame = function(x, grid.col = NULL, transparency = 0.5,
+	col = NULL, from.col = NULL, to.col = NULL, directional = 0,
+	direction.type = "diffHeight",
+	order = NULL, preAllocateTracks = NULL,
+	annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
+	link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), grid.border = NA, 
+	diffHeight = 0.04, reduce = 1e-5, link.sort = FALSE, link.decreasing = FALSE,
+	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4), 
+	link.arr.width = link.arr.length/2, 
+	link.arr.type = "triangle", link.arr.lty = par("lty"), 
+	link.arr.lwd = par("lwd"), link.arr.col = par("col"), ...) {
+
+}
+
+chordDiagram = function(x, ...) {
+	UseMethod("chordDiagram")
 }

@@ -3,59 +3,13 @@
 # Plot Chord Diagram
 #
 # == param
-# -mat A table which represents as a numeric matrix.
-# -grid.col Grid colors which correspond to matrix rows/columns (or sectors). The length of the vector should be either 1 or ``length(union(rownames(mat), colnames(mat)))``.
-#           It's preferred that ``grid.col`` is a named vector of which names correspond to sectors. 
-#           If it is not a named vector, the order of ``grid.col`` corresponds to order of sectors.
-# -transparency Transparency of link colors, 0 means no transparency and 1 means full transparency.
-#               If transparency is already set in ``col`` or ``row.col`` or ``column.col``, this argument will be ignored.
-# -col Colors for links. It can be a matrix which corresponds to ``mat``, or a function which generate colors 
-#      according to values in ``mat``, or a single value which means colors for all links are the same, or a three-column
-#      data frame in which the first two columns correspond to row names and columns and the third column is colors. You
-#      may use `colorRamp2` to generate a function which maps values to colors.
-# -row.col Colors for links. Links from the same row in ``mat`` will have the same color.
-#          Length should be same as number of rows in ``mat``. This argument only works when ``col`` is set to ``NULL``.
-# -column.col Colors for links. Links from the same column in ``mat`` will have the same color.
-#             Length should be same as number of columns in ``mat``. This argument only works when ``col`` and ``row.col`` is set to ``NULL``.
-# -fromRows deprecated, use ``directional`` instead
-# -directional Whether links have directions. 1 means from rows to columns. -1 means from columns to rows
-# -direction.type type for representing directions. Can be one or two values in "diffHeight" and "arrows".
-# -symmetric Whether the matrix is symmetric. If the value is set to ``TRUE``, only
-#            lower triangular matrix without the diagonal will be used.
-# -keep.diagonal If the matrix is specified as symmetric, whether keep diagonal for visualization.
-# -order Order of sectors. Default order is ``union(rownames(mat), colnames(mat))``.
-# -preAllocateTracks Pre-allocate empty tracks before drawing chord diagram. It can be a single number indicating
-#                    how many empty tracks needed to be created or a list containing settings for empty
-#                    tracks. Please refer to vignette for details.
-# -annotationTrack Which annotation track should be plotted? By default, a track containing sector names and a track
-#                  containing grid will be created.
-# -annotationTrackHeight Track height corresponding to values in ``annotationTrack``.
-# -link.border border for links, single scalar or a matrix with names or a data frame with three columns
-# -link.lwd width for link borders, single scalar or a matrix with names or a data frame with three columns
-# -link.lty style for link borders, single scalar or a matrix with names or a data frame with three columns
-# -grid.border border for grids. If it is ``NULL``, the border color is same as grid color
-# -diffHeight The difference of height between two 'roots' if ``directional`` is set to ``TRUE``. If the value is set to
-#             a positive value, start root is shorter than end root and if it is set to a negative value, start root is longer
-#             than the end root.
-# -reduce if the ratio of the width of certain grid compared to the whole circle is less than this value, the grid is removed on the plot.
-#         Set it to value less than zero if you want to keep all tiny grid.
-# -link.sort whether sort links on every sector based on the width of the links on it.
-# -link.decreasing for ``link.sort``
-# -link.arr.length pass to `circos.link`, same settings as ``link.lwd``.
-# -link.arr.width pass to `shape::Arrowhead`, same settings as ``link.lwd``.
-# -link.arr.type pass to `circos.link`, same settings as ``link.lwd``. Default value is ``triangle``.
-# -link.arr.col color or the single line link which is put in the center of the belt, same settings as ``link.lwd``.
-# -link.arr.lwd line width ofthe single line link which is put in the center of the belt, same settings as ``link.lwd``.
-# -link.arr.lty line type of the single line link which is put in the center of the belt, same settings as ``link.lwd``.
-# -... pass to `circos.link`
+# -x a matrix or a data frame. The function will pass all argument to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame` depending on the type of ``x``
+# -... pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`.
 #
 # == details
 # Chord diagram is a way to visualize numeric tables ( http://circos.ca/intro/tabular_visualization/ ), especially useful
 # when the table represents information of directional relations. This function
 # visualize tables in a circular way.
-#
-# Sectors of the circos plot is ``union(rownames(mat), colnames(mat))``. If there is no rowname or colname, the function will
-# assign names for it ("R1", "R2", ... for row names, "C1", "C2", ... for column names).
 #
 # This function is flexible and contains some settings that may be a little difficult to understand. 
 # Please refer to vignette for better explanation.
@@ -189,17 +143,70 @@ mat2df = function(mat) {
 	ci = rep(seq_len(nc), each = nr)
 	v = as.vector(mat)
 	df = data.frame(rn = rn, cn = cn, ri = ri, ci = ci, value = v, stringsAsFactors = FALSE)
-	l = df$value > 0
-	return(df[l, , drop = FALSE])
+	return(df)
 }
 
-chordDiagramFromMatrix = function(mat, grid.col = NULL, transparency = 0.5,
-	col = NULL, row.col = NULL, column.col = NULL, directional = 0, fromRow,
-	direction.type = "diffHeight",
-	symmetric = FALSE, keep.diagonal = FALSE, order = NULL, preAllocateTracks = NULL,
-	annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
-	link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), grid.border = NA, 
-	diffHeight = 0.04, reduce = 1e-5, link.sort = FALSE, link.decreasing = FALSE,
+# == title
+# Plot Chord Diagram from a matrix
+#
+# == param
+# -mat A table which represents as a numeric matrix.
+# -grid.col Grid colors which correspond to matrix rows/columns (or sectors). The length of the vector should be either 1 or ``length(union(rownames(mat), colnames(mat)))``.
+#           It's preferred that ``grid.col`` is a named vector of which names correspond to sectors. 
+#           If it is not a named vector, the order of ``grid.col`` corresponds to order of sectors.
+# -grid.border border for grids. If it is ``NULL``, the border color is same as grid color
+# -transparency Transparency of link colors, 0 means no transparency and 1 means full transparency.
+#               If transparency is already set in ``col`` or ``row.col`` or ``column.col``, this argument will be ignored.
+# -col Colors for links. It can be a matrix which corresponds to ``mat``, or a function which generate colors 
+#      according to values in ``mat``, or a single value which means colors for all links are the same, or a three-column
+#      data frame in which the first two columns correspond to row names and columns and the third column is colors. You
+#      may use `colorRamp2` to generate a function which maps values to colors.
+# -row.col Colors for links. Links from the same row in ``mat`` will have the same color.
+#          Length should be same as number of rows in ``mat``. This argument only works when ``col`` is set to ``NULL``.
+# -column.col Colors for links. Links from the same column in ``mat`` will have the same color.
+#             Length should be same as number of columns in ``mat``. This argument only works when ``col`` and ``row.col`` is set to ``NULL``.
+# -order Order of sectors. Default order is ``union(df[[1]], df[[2]])``.
+# -directional Whether links have directions. 1 means the direction is from the first column in ``df`` to the second column, -1
+#              is the reverse and 0 is no direction.
+# -direction.type type for representing directions. Can be one or two values in "diffHeight" and "arrows". If the value contains "diffHeight",
+#            different heights of the links are used to represent the directions for which starting root has long height to give people feeling
+#            that something is comming out. If the value contains "arrows", users can customize arrows with following arguments.
+# -diffHeight The difference of height between two 'roots' if ``directional`` is set to ``TRUE``. If the value is set to
+#             a positive value, start root is shorter than end root and if it is set to a negative value, start root is longer
+#             than the end root.
+# -reduce if the ratio of the width of certain grid compared to the whole circle is less than this value, the grid is removed on the plot.
+#         Set it to value less than zero if you want to keep all tiny grid.
+# -self.link if there is a self link in one sector, 1 means the link will be degenerated as a 'mountain' and the width corresponds to the value for this connection.
+#            2 means the width of the starting root and the ending root all have the width that corresponds to the value for the connection.
+# -symmetric Whether the matrix is symmetric. If the value is set to ``TRUE``, only
+#            lower triangular matrix without the diagonal will be used.
+# -keep.diagonal If the matrix is specified as symmetric, whether keep diagonal for visualization.
+# -preAllocateTracks Pre-allocate empty tracks before drawing Chord diagram. It can be a single number indicating
+#                    how many empty tracks needed to be created or a list containing settings for empty
+#                    tracks. Please refer to vignette for details.
+# -annotationTrack Which annotation track should be plotted? By default, a track containing sector names and a track
+#                  containing grid will be created.
+# -annotationTrackHeight Track height corresponding to values in ``annotationTrack``.
+# -link.border border for links, single scalar or a matrix with names or a data frame with three columns
+# -link.lwd width for link borders, single scalar or a matrix with names or a data frame with three columns
+# -link.lty style for link borders, single scalar or a matrix with names or a data frame with three columns
+# -link.sort whether sort links on every sector based on the width of the links on it.
+# -link.decreasing for ``link.sort``
+# -link.arr.length pass to `circos.link`, same settings as ``link.lwd``.
+# -link.arr.width pass to `shape::Arrowhead`, same settings as ``link.lwd``.
+# -link.arr.type pass to `circos.link`, same settings as ``link.lwd``. Default value is ``triangle``.
+# -link.arr.col color or the single line link which is put in the center of the belt, same settings as ``link.lwd``.
+# -link.arr.lwd line width ofthe single line link which is put in the center of the belt, same settings as ``link.lwd``.
+# -link.arr.lty line type of the single line link which is put in the center of the belt, same settings as ``link.lwd``.
+# -... pass to `circos.link`
+#
+chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transparency = 0.5,
+	col = NULL, row.col = NULL, column.col = NULL, order = NULL, directional = 0,
+	direction.type = "diffHeight", diffHeight = 0.04, reduce = 1e-5, self.link = 2,
+	symmetric = FALSE, keep.diagonal = FALSE, preAllocateTracks = NULL,
+	annotationTrack = c("name", "grid", "axis"), annotationTrackHeight = c(0.05, 0.05),
+	link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), 
+	link.sort = FALSE, link.decreasing = TRUE,
 	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4), 
 	link.arr.width = link.arr.length/2, 
 	link.arr.type = "triangle", link.arr.lty = par("lty"), 
@@ -396,18 +403,19 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, transparency = 0.5,
 	link.arr.lwd = .normalize_to_mat(link.arr.lwd, rn, cn, default = 1)
 	link.arr.col = .normalize_to_mat(link.arr.col, rn, cn, default = NA)
 
-	nr = length(rn)
-	nc = length(cn)
-	df = mat2df
+	df = mat2df(mat)
 
-	chordDiagramFromDataFrame(df, grid.col = grid.col, col = psubset(mat, df$ri, df$ci), directional = directional,
-		direction.type = direction.type, order = order, preAllocateTracks = preAllocateTracks,
+	chordDiagramFromDataFrame(df, grid.col = grid.col, grid.border = grid.border,
+		col = psubset(col, df$ri, df$ci), order = order, directional = directional,
+		direction.type = direction.type, diffHeight = diffHeight, reduce = 0, self.link = self.link,
+		preAllocateTracks = preAllocateTracks,
 		annotationTrack = annotationTrack, annotationTrackHeight = annotationTrackHeight,
+		link.sort = link.sort, link.decreasing = link.decreasing,
 		link.border = psubset(link.border, df$ri, df$ci), 
 		link.lwd = psubset(link.lwd, df$ri, df$ci),
 		link.lty = psubset(link.lty, df$ri, df$ci), 
 		link.arr.length = psubset(link.arr.length, df$ri, df$ci),
-		link.arr.width = psubst(link.arr.width, df$ri, df$ci),
+		link.arr.width = psubset(link.arr.width, df$ri, df$ci),
 		link.arr.type = psubset(link.arr.type, df$ri, df$ci),
 		link.arr.lwd = psubset(link.arr.lwd, df$ri, df$ci),
 		link.arr.lty = psubset(link.arr.lty, df$ri, df$ci),
@@ -416,13 +424,62 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, transparency = 0.5,
 	
 }
 
-chordDiagramFromDataFrame = function(df, grid.col = NULL, transparency = 0.5,
-	col = NULL, directional = 0,
-	direction.type = "diffHeight",
-	order = NULL, preAllocateTracks = NULL,
-	annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
-	link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), grid.border = NA, 
-	diffHeight = 0.04, reduce = 1e-5, link.sort = FALSE, link.decreasing = FALSE,
+
+# == title
+# Plot Chord Diagram from a data frame
+#
+# == param
+# -df A data frame with at least two columns. The first two columns specify the connections and the third column (optional)
+#     contains numeric values which are mapped to the width of links as well as the colors if ``col`` is specified as a color mapping function.
+#     The sectors in the plot will be ``union(df[[1]], df[[2]])``.
+# -grid.col Grid colors which correspond to sectors. The length of the vector should be either 1 or the number of sectors.
+#           It's preferred that ``grid.col`` is a named vector of which names correspond to sectors. 
+#           If it is not a named vector, the order of ``grid.col`` corresponds to order of sectors.
+# -grid.border border for grids. If it is ``NULL``, the border color is same as grid color
+# -transparency Transparency of link colors, 0 means no transparency and 1 means full transparency.
+#               If transparency is already set in ``col`` or ``row.col`` or ``column.col``, this argument will be ignored.
+# -col Colors for links. It can be a vector which corresponds to connections in ``df``, or a function which generate colors 
+#      according to values (the third column) in ``df``, or a single value which means colors for all links are the same. You
+#      may use `colorRamp2` to generate a function which maps values to colors.
+# -order Order of sectors. Default order is ``union(df[[1]], df[[2]])``.
+# -directional Whether links have directions. 1 means the direction is from the first column in ``df`` to the second column, -1
+#              is the reverse and 0 is no direction.
+# -direction.type type for representing directions. Can be one or two values in "diffHeight" and "arrows". If the value contains "diffHeight",
+#            different heights of the links are used to represent the directions for which starting root has long height to give people feeling
+#            that something is comming out. If the value contains "arrows", users can customize arrows with following arguments.
+# -diffHeight The difference of height between two 'roots' if ``directional`` is set to ``TRUE``. If the value is set to
+#             a positive value, start root is shorter than end root and if it is set to a negative value, start root is longer
+#             than the end root.
+# -reduce if the ratio of the width of certain grid compared to the whole circle is less than this value, the grid is removed on the plot.
+#         Set it to value less than zero if you want to keep all tiny grid.
+# -self.link if there is a self link in one sector, 1 means the link will be degenerated as a 'mountain' and the width corresponds to the value for this connection.
+#            2 means the width of the starting root and the ending root all have the width that corresponds to the value for the connection.
+# -preAllocateTracks Pre-allocate empty tracks before drawing Chord diagram. It can be a single number indicating
+#                    how many empty tracks needed to be created or a list containing settings for empty
+#                    tracks. Please refer to vignette for details.
+# -annotationTrack Which annotation track should be plotted? By default, a track containing sector names and a track
+#                  containing grid will be created.
+# -annotationTrackHeight Track height corresponding to values in ``annotationTrack``.
+# -link.border border for links, single scalar or a vector which has the same length as nrows of ``df``
+# -link.lwd width for link borders, single scalar or a vector which has the same length as nrows of ``df``
+# -link.lty style for link borders, single scalar or a vector which has the same length as nrows of ``df``
+# -link.sort whether sort links on every sector based on the width of the links on it.
+# -link.decreasing for ``link.sort``
+# -link.arr.length pass to `circos.link`, same settings as ``link.lwd``.
+# -link.arr.width pass to `shape::Arrowhead`, same settings as ``link.lwd``.
+# -link.arr.type pass to `circos.link`, same settings as ``link.lwd``. Default value is ``triangle``.
+# -link.arr.col color or the single line link which is put in the center of the belt, same settings as ``link.lwd``.
+# -link.arr.lwd line width ofthe single line link which is put in the center of the belt, same settings as ``link.lwd``.
+# -link.arr.lty line type of the single line link which is put in the center of the belt, same settings as ``link.lwd``.
+# -... pass to `circos.link`
+#
+chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, transparency = 0.5,
+	col = NULL, order = NULL, directional = 0,
+	direction.type = "diffHeight", diffHeight = 0.04, reduce = 1e-5, self.link = 2,
+	preAllocateTracks = NULL,
+	annotationTrack = c("name", "grid", "axis"), annotationTrackHeight = c(0.05, 0.05),
+	link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), 
+	link.sort = FALSE, link.decreasing = TRUE,
 	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4), 
 	link.arr.width = link.arr.length/2, 
 	link.arr.type = "triangle", link.arr.lty = par("lty"), 
@@ -562,8 +619,8 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, transparency = 0.5,
 
 	######## sort links on every sector
 	# row first
-	.order = function(x, order = FALSE, reverse = FALSE) {
-		if(order) {
+	.order = function(x, sort = FALSE, reverse = FALSE) {
+		if(sort) {
 			od = order(x)
 		} else {
 			od = seq_along(x)
@@ -574,21 +631,27 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, transparency = 0.5,
 		return(od)
 	}
 
-	od = tapply(abs(df$value), df$rn, .order, link.sort, link.decreasing)
+	if(length(link.sort) == 1) link.sort = rep(link.sort, 2)
+	if(length(link.decreasing) == 1) link.decreasing = rep(link.decreasing, 2)
+
+	od = tapply(abs(df$value), df$rn, .order, link.sort[1], link.decreasing[1])
 	for(nm in names(od)) {
-		df$o1[df$rn == nm] = od[[nm]]
-		df$x1[df$rn == nm] = cumsum(abs(df$value)[od[[nm]]])
+		l = df$rn == nm
+		df$o1[l] = od[[nm]]
+		df$x1[l][od[[nm]]] = cumsum(abs(df$value[l])[od[[nm]]])
 	}
 	max_o1 = sapply(od, max)
-	sum_1 = tapply(df$value, df$rn, sum)
-	od = tapply(abs(df$value), df$cn, .order, link.sort, link.decreasing)
+	sum_1 = tapply(abs(df$value), df$rn, sum)
+	od = tapply(abs(df$value), df$cn, .order, link.sort[2], link.decreasing[2])
 	for(nm in names(od)) {
 		if(!is.na(max_o1[nm])) {
-			df$o2[df$cn == nm] = od[[nm]] + max_o1[nm]
-			df$x2[df$cn == nm] = cumsum(abs(df$value)[od[[nm]]]) + sum_1[nm]
+			l = df$cn == nm
+			df$o2[l] = od[[nm]] + max_o1[nm]
+			df$x2[l][od[[nm]]] = cumsum(abs(df$value[l])[od[[nm]]]) + sum_1[nm]
 		} else {
-			df$o2[df$cn == nm] = od[[nm]]
-			df$x2[df$cn == nm] = cumsum(abs(df$value)[od[[nm]]])
+			l = df$cn == nm
+			df$o2[l] = od[[nm]]
+			df$x2[l][od[[nm]]] = cumsum(abs(df$value[l])[od[[nm]]])
 		}
 	}
 	#######################################
@@ -606,7 +669,7 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, transparency = 0.5,
 				bg.col = va$bg.col, bg.border = va$bg.border, bg.lty = va$bg.lty, bg.lwd = va$bg.lwd)
 		}
 	}
-	if(any(annotationTrack %in% "name")) {
+	if("name" %in% annotationTrack) {
 		circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA,
 			panel.fun = function(x, y) {
 				xlim = get.cell.meta.data("xlim")
@@ -616,7 +679,7 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, transparency = 0.5,
 					facing = "inside", niceFacing = TRUE, adj = c(0.5, 0))
 			}, track.height = annotationTrackHeight[which(annotationTrack %in% "name")])
     }
-	if(any(annotationTrack %in% "grid")) {
+	if("grid" %in% annotationTrack) {
 		circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, 
 			panel.fun = function(x, y) {
 				xlim = get.cell.meta.data("xlim")
@@ -627,8 +690,13 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, transparency = 0.5,
 					border.col = grid.border
 				}
 				circos.rect(xlim[1], 0, xlim[2], 1, col = grid.col[current.sector.index], border = border.col)
+				if("axis" %in% annotationTrack) {
+					circos.axis("top", labels.cex = 0.5)
+				}
 			}, track.height = annotationTrackHeight[which(annotationTrack %in% "grid")])
 	}
+
+
     
     rou = get_most_inside_radius()
 	if(directional) {
@@ -662,14 +730,14 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, transparency = 0.5,
 	for(k in seq_len(nrow(df))) {
 		
 		if(setequal(direction.type, c("diffHeight"))) {
-			circos.link(df$rn[k], c(df$x1[k] - df$value[k], df$x1[k]),
-					df$cn[k], c(df$x2[k] - df$value[k], df$x2[k]),
+			circos.link(df$rn[k], c(df$x1[k] - abs(df$value[k]), df$x1[k]),
+					df$cn[k], c(df$x2[k] - abs(df$value[k]), df$x2[k]),
 					directional = 0, col = col[k], rou1 = rou1, rou2 = rou2, 
 					border = link.border[k], lwd = link.lwd[k], lty = link.lty[k],
 					...)	
 		} else if("arrows" %in% direction.type) {
-			circos.link(df$rn[k], c(df$x1[k] - df$value[k], df$x1[k]),
-						df$cn[k], c(df$x2[k] - df$value[k], df$x2[k]),
+			circos.link(df$rn[k], c(df$x1[k] - abs(df$value[k]), df$x1[k]),
+						df$cn[k], c(df$x2[k] - abs(df$value[k]), df$x2[k]),
 						directional = directional, col = col[k], rou1 = rou1, rou2 = rou2, 
 						border = link.border[k], 
 						lwd = link.lwd[k], lty = link.lty[k], 

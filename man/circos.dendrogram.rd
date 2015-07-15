@@ -52,5 +52,4 @@ circos.trackPlotRegion(ylim = c(0, max_height), bg.border = NA,
         circos.dendrogram(dend, max_height = max_height)
 })
 circos.clear()
-}
-}
+}}

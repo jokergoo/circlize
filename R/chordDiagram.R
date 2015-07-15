@@ -59,7 +59,141 @@
 #
 # This function is flexible and contains some settings that may be a little difficult to understand. 
 # Please refer to vignette for better explanation.
-chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
+chordDiagram = function(x, ...) {
+	
+	if(inherits(x, "matrix")) {
+		chordDiagramFromMatrix(x, ...)
+	} else if(inherits(x, "data.frame")) {
+		chordDiagramFromDataFrame(x, ...)
+	} else {
+		stop("`x` can only be a matrix or a data frame.")
+	}
+	
+}
+
+# returns a list, each list containing settings for each new track
+parsePreAllocateTracksValue = function(preAllocateTracks) {
+	lt = list(ylim = c(0, 1),
+		      track.height = circos.par("track.height"),
+			  bg.col = NA,
+			  bg.border = NA,
+			  bg.lty = par("lty"),
+			  bg.lwd = par("lwd"))
+	if(length(preAllocateTracks) && is.numeric(preAllocateTracks)) {
+		res = vector("list", length = preAllocateTracks)
+		for(i in seq_len(preAllocateTracks)) {
+			res[[i]] = lt
+		}
+		return(res)
+	} else if(is.list(preAllocateTracks)) {
+		# list of list
+		if(all(sapply(preAllocateTracks, is.list))) {
+			res = vector("list", length = length(preAllocateTracks))
+			for(i in seq_along(preAllocateTracks)) {
+				lt2 = lt
+				for(nm in intersect(names(lt), names(preAllocateTracks[[i]]))) {
+					lt2[[nm]] = preAllocateTracks[[i]][[nm]]
+				}
+				res[[i]] = lt2
+			}
+			return(res)
+		} else {
+			lt2 = lt
+			for(nm in intersect(names(lt), names(preAllocateTracks))) {
+				lt2[[nm]] = preAllocateTracks[[nm]]
+			}
+			return(list(lt2))
+		}
+	} else {
+		stop("Wrong `preAllocateTracks` value.\n")
+	}
+}
+
+# values can be:
+# - a scalar
+# - a matrix
+# - a three column data frame
+.normalize_to_mat = function(value, rn, cn, default) {
+	var_name = deparse(substitute(value))
+	mat = matrix(default, nrow = length(rn), ncol = length(cn))
+	rownames(mat) = rn
+	colnames(mat) = cn
+	if(inherits(value, "data.frame")) {
+		if(ncol(value) == 3) {
+			value[[1]] = as.vector(value[[1]])
+			value[[2]] = as.vector(value[[2]])
+			value[[3]] = as.vector(value[[3]])
+
+			l = value[, 1] %in% rn & value[, 2] %in% cn
+			value = value[l, , drop = FALSE]
+			for(i in seq_len(nrow(value))) {
+				mat[ value[i, 1], value[i, 2] ] = value[i, 3]
+			}
+		} else {
+			stop(paste0("If ", var_name, " is set as a data frame, it should have three columns."))
+		}
+	} else if(is.atomic(value) && length(value) == 1) {
+		mat[,] = value
+	} else {
+		if(!is.null(rownames(value)) && !is.null(colnames(value))) {
+			common_rn = intersect(rownames(value), rn)
+			common_cn = intersect(colnames(value), cn)
+			mat[common_rn, common_cn] = value[common_rn, common_cn]
+		} else {
+			if(nrow(value) == length(rn) && ncol(value) == length(cn)) {
+				mat = value
+				rownames(mat) = rn
+				colnames(mat) = cn
+			} else {
+				stop(paste0("If ", var_name, " is a matrix, it should have both rownames and colnames.\n"))
+			}
+		}
+	}
+	return(mat)
+}
+
+# == title
+# Adjust gaps to make chord diagrams comparable
+#
+# == param
+# -mat1 matrix that has the largest sum of absolute
+# -gap.degree gap.degree for the Chord Diagram which corresponds to ``mat1``
+# -mat2 matrix to be compared
+#
+# == details
+# Normally, in Chord Diagram, values in mat are normalized to the summation and each value is put 
+# to the circle according to its percentage, which means the width for each link only represents 
+# kind of relative value. However, when comparing two Chord Diagrams, it is necessary that unit 
+# width of links in the two plots should be represented in a same scale. This problem can be solved by 
+# adding more blank gaps to the Chord Diagram which has smaller values.
+#
+# == value
+# Sum of gaps for ``mat2``.
+#
+normalizeChordDiagramGap = function(mat1, gap.degree = circos.par("gap.degree"), mat2) {
+	percent = sum(abs(mat2)) / sum(abs(mat1))
+
+	if(length(gap.degree) == 1) {
+		gap.degree = rep(gap.degree, length(unique(rownames(mat1), colnames(mat1))))
+	}
+	blank.degree = (360 - sum(gap.degree)) * (1 - percent)
+	return(blank.degree)
+}
+
+mat2df = function(mat) {
+	nr = dim(mat)[1]
+	nc = dim(mat)[2]
+	rn = rep(rownames(mat), times = nc)
+	ri = rep(seq_len(nr), times = nc)
+	cn = rep(colnames(mat), each = nr)
+	ci = rep(seq_len(nc), each = nr)
+	v = as.vector(mat)
+	df = data.frame(rn = rn, cn = cn, ri = ri, ci = ci, value = v, stringsAsFactors = FALSE)
+	l = df$value > 0
+	return(df[l, , drop = FALSE])
+}
+
+chordDiagramFromMatrix = function(mat, grid.col = NULL, transparency = 0.5,
 	col = NULL, row.col = NULL, column.col = NULL, directional = 0, fromRow,
 	direction.type = "diffHeight",
 	symmetric = FALSE, keep.diagonal = FALSE, order = NULL, preAllocateTracks = NULL,
@@ -75,16 +209,6 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 		stop("`mat` can only be a matrix.\n")
 	}
 
-	if(directional) {
-		if(length(setdiff(direction.type, c("diffHeight", "arrows"))) > 0) {
-			stop("`direction.type` can only be in 'diffHeight' and 'arrows'.")
-		}
-		if(!missing(fromRow)) {
-			if(fromRow) warning("`fromRow` is deprated, use `directional = 1` instread.")
-			else warning("`fromRow` is deprated, use `directional = -1` instread.")
-		}
-	}
-	
 	transparency = ifelse(transparency < 0, 0, ifelse(transparency > 1, 1, transparency))
 
 	if(symmetric) {
@@ -261,48 +385,7 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 	dim(col) = dim(mat)
 	colnames(col) = colnames(mat)
 	rownames(col) = rownames(mat)
-	
-	o.cell.padding = circos.par("cell.padding")
-	circos.par(cell.padding = c(0, 0, 0, 0))
-    circos.initialize(factors = factors, xlim = xlim)
 
-	# pre allocate track
-	if(!is.null(preAllocateTracks)) {
-		pa = parsePreAllocateTracksValue(preAllocateTracks)
-		for(i in seq_along(pa)) {
-			va = pa[[i]]
-			circos.trackPlotRegion(ylim = va$ylim, track.height = va$track.height,
-				bg.col = va$bg.col, bg.border = va$bg.border, bg.lty = va$bg.lty, bg.lwd = va$bg.lwd)
-		}
-	}
-	if(any(annotationTrack %in% "name")) {
-		circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA,
-			panel.fun = function(x, y) {
-				xlim = get.cell.meta.data("xlim")
-				current.sector.index = get.cell.meta.data("sector.index")
-				i = get.cell.meta.data("sector.numeric.index")
-				circos.text(mean(xlim), 0.5, labels = current.sector.index,
-					facing = "inside", niceFacing = TRUE, adj = c(0.5, 0))
-			}, track.height = annotationTrackHeight[which(annotationTrack %in% "name")])
-    }
-	if(any(annotationTrack %in% "grid")) {
-		circos.trackPlotRegion(ylim = c(0, 1), factors = factors, bg.border = NA, 
-			panel.fun = function(x, y) {
-				xlim = get.cell.meta.data("xlim")
-				current.sector.index = get.cell.meta.data("sector.index")
-				if(is.null(grid.border)) {
-					border.col = grid.col[current.sector.index]
-				} else {
-					border.col = grid.border
-				}
-				circos.rect(xlim[1], 0, xlim[2], 1, col = grid.col[current.sector.index], border = border.col)
-			}, track.height = annotationTrackHeight[which(annotationTrack %in% "grid")])
-	}
-    # links
-	rn = rownames(mat)
-	cn = colnames(mat)
-	
-	
 	link.border = .normalize_to_mat(link.border, rn, cn, default = NA)
 	link.lwd = .normalize_to_mat(link.lwd, rn, cn, default = 1)
 	link.lty = .normalize_to_mat(link.lty, rn, cn, default = 1)
@@ -315,94 +398,239 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 
 	nr = length(rn)
 	nc = length(cn)
-
 	df = mat2df
 
-	chordDiagram(df, ...)
-	df$o1 = rep(0, nrow(df))
-	df$or = rep(0, nrow(df))
-	df$x1 = rep(0, nrow(df))
-	df$x2 = rep(0, nrow(df))
+	chordDiagramFromDataFrame(df, grid.col = grid.col, col = psubset(mat, df$ri, df$ci), directional = directional,
+		direction.type = direction.type, order = order, preAllocateTracks = preAllocateTracks,
+		annotationTrack = annotationTrack, annotationTrackHeight = annotationTrackHeight,
+		link.border = psubset(link.border, df$ri, df$ci), 
+		link.lwd = psubset(link.lwd, df$ri, df$ci),
+		link.lty = psubset(link.lty, df$ri, df$ci), 
+		link.arr.length = psubset(link.arr.length, df$ri, df$ci),
+		link.arr.width = psubst(link.arr.width, df$ri, df$ci),
+		link.arr.type = psubset(link.arr.type, df$ri, df$ci),
+		link.arr.lwd = psubset(link.arr.lwd, df$ri, df$ci),
+		link.arr.lty = psubset(link.arr.lty, df$ri, df$ci),
+		link.arr.col = psubset(link.arr.col, df$ri, df$ci),
+		...)
+	
+}
+
+chordDiagramFromDataFrame = function(df, grid.col = NULL, transparency = 0.5,
+	col = NULL, directional = 0,
+	direction.type = "diffHeight",
+	order = NULL, preAllocateTracks = NULL,
+	annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
+	link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), grid.border = NA, 
+	diffHeight = 0.04, reduce = 1e-5, link.sort = FALSE, link.decreasing = FALSE,
+	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4), 
+	link.arr.width = link.arr.length/2, 
+	link.arr.type = "triangle", link.arr.lty = par("lty"), 
+	link.arr.lwd = par("lwd"), link.arr.col = par("col"), ...) {
+
+	# check the format of the data frame
+	if(!inherits(df, "data.frame")) {
+		stop("`df` must be a data frame.")
+	}
+	if(ncol(df) < 2) {
+		stop("`df` should have at least have two columns.")
+	}
+	if(ncol(df) == 2) {
+		df$value = rep(1, nrow(df))
+	}
+
+	df[[1]] = as.character(df[[1]])
+	df[[2]] = as.character(df[[2]])
+	colnames(df) = c("rn", "cn", colnames(df)[-(1:2)])
+	nr = nrow(df)
+
+	transparency = ifelse(transparency < 0, 0, ifelse(transparency > 1, 1, transparency))
+
+	cate = union(df[[1]], df[[2]])
+	if(!is.null(order)) {
+		if(length(order) != length(cate)) {
+			stop("Length of `order` should be same as number of sectors.")
+		}
+		if(is.numeric(order)) {
+			if(!setequal(order, seq_along(cate))) {
+				stop(paste0("`order` needs to be integers ranging from 1 to", length(cate)))
+			}
+			cate = cate[order]
+		} else {
+			if(!setequal(order, cate)) {
+				stop("`order` should only be picked from sectors.")	
+			}
+			cate = order
+		}
+	}
+
+	n = length(cate)
+	if(is.null(grid.col)) {
+		grid.col = rand_color(n)
+		names(grid.col) = cate
+	} else {
+		if(length(grid.col) == 1) {
+			grid.col = rep(grid.col, n)
+			names(grid.col) = cate
+		} else if(!is.null(names(grid.col))) {
+			if(length(setdiff(cate, names(grid.col))) > 0) {
+				stop("Since your ``grid.col`` is a named vector, all sectors should have corresponding colors.\n")
+			}
+			
+			grid.col = grid.col[as.vector(cate)]
+		} else if(length(grid.col) == length(cate)) {
+			names(grid.col) = cate
+		} else {
+			stop("Since you set ``grid.col``, the length should be either 1 or number of sectors,\nor set your ``grid.col`` as vector with names.\n")
+		}
+	}
+
+	# colors
+	if(is.null(col)) {
+		col = grid.col[df[[1]]]
+	} else {
+		if(is.function(col)) {
+			col = col(df[[3]])
+		} else {
+			col = rep(col, nr)[1:nr]
+		}
+	} 
+
+	rgb_mat = t(col2rgb(col, alpha = TRUE))
+	if(all(rgb_mat[, 4] == 255)) {
+		col = rgb(rgb_mat, maxColorValue = 255, alpha = (1-transparency)*255)
+	} else {
+		col = rgb(rgb_mat, maxColorValue = 255, alpha = rgb_mat[, 4])
+	}
+
+	link.border = rep(link.border, nr)[1:nr]
+	link.lwd = rep(link.lwd, nr)[1:nr]
+	link.lty = rep(link.lty, nr)[1:nr] 
+	link.arr.length = rep(link.arr.length, nr)[1:nr]
+	link.arr.width = rep(link.arr.width, nr)[1:nr]
+	link.arr.type = rep(link.arr.type, nr)[1:nr]
+	link.arr.lwd = rep(link.arr.lwd, nr)[1:nr]
+	link.arr.lty = rep(link.arr.lty, nr)[1:nr]
+	link.arr.col = rep(link.arr.col, nr)[1:nr]
+
+	#### reduce the data frame
+	xsum = structure(rep(0, length(cate)), names = cate)
+	for(i in seq_len(nr)) {
+		if(df$rn[i] == df$cn[i]) {
+			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value[i])
+		} else {
+			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value[i])
+			xsum[df$cn[i]] = xsum[df$cn[i]] + abs(df$value[i])
+		}
+	}
+
+	keep = names(xsum)[xsum / sum(xsum) >= reduce]
+	l = df$rn %in% keep | df$cn %in% keep
+
+	cate = intersect(cate, keep)
+	df = df[l, , drop = FALSE]
+	grid.col = grid.col[intersect(names(grid.col), keep)]
+	col = col[l]
+	link.border = link.border[l]
+	link.lwd = link.lwd[l]
+	link.lty = link.lty[l] 
+	link.arr.length = link.arr.length[l]
+	link.arr.width = link.arr.width[l]
+	link.arr.type = link.arr.type[l]
+	link.arr.lwd = link.arr.lwd[l]
+	link.arr.lty = link.arr.lty[l]
+	link.arr.col = link.arr.col[l]
+
+	nr = nrow(df)
+	# re-calcualte xsum
+	xsum = structure(rep(0, length(cate)), names = cate)
+	for(i in seq_len(nr)) {
+		if(df$rn[i] == df$cn[i]) {
+			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value[i])
+			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value[i])  # <<- self-link!!!!!
+		} else {
+			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value[i])
+			xsum[df$cn[i]] = xsum[df$cn[i]] + abs(df$value[i])
+		}
+	}
+
+	# add additinal columns in df
+	df$o1 = rep(0, nr)  # order of the link root in the sector
+	df$o2 = rep(0, nr)  # order of the other link root in the sector
+	df$x1 = rep(0, nr)  # end position of the link root in the sector
+	df$x2 = rep(0, nr)  # end position on the other link root in the sector
+
+	######## sort links on every sector
 	# row first
-	od = tapply(abs(df$value), df$rn, order)
+	.order = function(x, order = FALSE, reverse = FALSE) {
+		if(order) {
+			od = order(x)
+		} else {
+			od = seq_along(x)
+		}
+		if(reverse) {
+			od = rev(od)
+		}
+		return(od)
+	}
+
+	od = tapply(abs(df$value), df$rn, .order, link.sort, link.decreasing)
 	for(nm in names(od)) {
 		df$o1[df$rn == nm] = od[[nm]]
 		df$x1[df$rn == nm] = cumsum(abs(df$value)[od[[nm]]])
 	}
 	max_o1 = sapply(od, max)
-	sum_1 = tapply(df$x1, df$rn, sum)
-	od = tapply(abs(df$value), df$cn, order)
+	sum_1 = tapply(df$value, df$rn, sum)
+	od = tapply(abs(df$value), df$cn, .order, link.sort, link.decreasing)
 	for(nm in names(od)) {
-		if(!is.null(max_o1[[nm]])) {
+		if(!is.na(max_o1[nm])) {
 			df$o2[df$cn == nm] = od[[nm]] + max_o1[nm]
-			df$x2[df$cn == nm] = cumsum(abs(df$value)[od[nm]]) + sum_1[nm]
+			df$x2[df$cn == nm] = cumsum(abs(df$value)[od[[nm]]]) + sum_1[nm]
 		} else {
 			df$o2[df$cn == nm] = od[[nm]]
-			df$x2[df$cn == nm] = cumsum(abs(df$value)[od[nm]])
+			df$x2[df$cn == nm] = cumsum(abs(df$value)[od[[nm]]])
 		}
 	}
-	
+	#######################################
 
-	
-	# if row names and column names overlaps, seperate them and sort separately
-	.get_pos = function(mat, ri, ci, on = "row", sort = FALSE, decreasing = FALSE) {
-		if(on == "row") {
-			x1 = mat[ri, ]
-			x2 = numeric(0)
-			if(rownames(mat)[ri] %in% colnames(mat)) {
-				x2 = mat[-ri, ri]
-			}
-			if(sort) {
-				x = c(0, cumsum(c(sort(abs(x1), decreasing = link.decreasing), sort(abs(x2), decreasing = link.decreasing))))
-			} else {
-				x = c(0, cumsum(abs(c(x1, x2))))
-			}
-			x = rev(x)
-			return(x[ci + 0:1])
-		} else if(on == "column") {
-			if(colnames(mat)[ci] %in% rownames(mat)) {
-				rri = which(rownames(mat), colnames(mat)[ci])
-				x1 = mat[rri, ]
-				x2 = numeric(0)
-				if(rownames(mat)[rri] %in% colnames(mat)) {
-					x2 = mat[-rri, rri]
-				}
-				if(sort) {
-					x = c(0, cumsum(c(sort(abs(x1), decreasing = link.decreasing), sort(abs(x2), decreasing = link.decreasing))))
+	o.cell.padding = circos.par("cell.padding")
+	circos.par(cell.padding = c(0, 0, 0, 0))
+    circos.initialize(factors = factor(cate, levels = cate), xlim = cbind(rep(0, length(xsum)), xsum))
+
+	# pre allocate track
+	if(!is.null(preAllocateTracks)) {
+		pa = parsePreAllocateTracksValue(preAllocateTracks)
+		for(i in seq_along(pa)) {
+			va = pa[[i]]
+			circos.trackPlotRegion(ylim = va$ylim, track.height = va$track.height,
+				bg.col = va$bg.col, bg.border = va$bg.border, bg.lty = va$bg.lty, bg.lwd = va$bg.lwd)
+		}
+	}
+	if(any(annotationTrack %in% "name")) {
+		circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA,
+			panel.fun = function(x, y) {
+				xlim = get.cell.meta.data("xlim")
+				current.sector.index = get.cell.meta.data("sector.index")
+				i = get.cell.meta.data("sector.numeric.index")
+				circos.text(mean(xlim), 0.5, labels = current.sector.index,
+					facing = "inside", niceFacing = TRUE, adj = c(0.5, 0))
+			}, track.height = annotationTrackHeight[which(annotationTrack %in% "name")])
+    }
+	if(any(annotationTrack %in% "grid")) {
+		circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, 
+			panel.fun = function(x, y) {
+				xlim = get.cell.meta.data("xlim")
+				current.sector.index = get.cell.meta.data("sector.index")
+				if(is.null(grid.border)) {
+					border.col = grid.col[current.sector.index]
 				} else {
-					x = c(0, cumsum(abs(c(x1, x2))))
+					border.col = grid.border
 				}
-
-			} else {
-				x1 = mat[, ci]
-				if(sort) {
-					x = c(0, cumsum(sort(abs(x1), decreasing = link.decreasing)))
-				} else {
-					x = c(0, cumsum(abs(x1)))
-				}
-				x = rev(x)
-				return(x[ri + 0:1])
-			}
-		}
+				circos.rect(xlim[1], 0, xlim[2], 1, col = grid.col[current.sector.index], border = border.col)
+			}, track.height = annotationTrackHeight[which(annotationTrack %in% "grid")])
 	}
-
-	pos = list(sector1 = character(0), sector2 = character(0),
-		       x1 = numeric(0), x2 = numeric(0), y1 = numeric(0), y2 = numeric(0),
-		       ri = numeric(0), ci = numeric(0))
-	for(i in seq_along(rn)) {
-		for(j in seq_along(cn)) {
-			pos$sector1 = c(pos$sector1, rn[i])
-			pos$sector2 = c(pos$sector2, cn[j])
-			pos$x1 = c(pos$x1, .get_pos(mat, ri = i, ci = j, on = "row", sort = TRUE)[1])
-			pos$x2 = c(pos$x2, .get_pos(mat, ri = i, ci = j, on = "row", sort = TRUE)[2])
-			pos$y1 = c(pos$y1, .get_pos(mat, ri = i, ci = j, on = "column", sort = TRUE)[1])
-			pos$y2 = c(pos$y2, .get_pos(mat, ri = i, ci = j, on = "column", sort = TRUE)[2])
-			pos$ri = c(pos$ri, i)
-			pos$ci = c(pos$ci, j)
-		}
-	}
-
-	rou = get_most_inside_radius()
+    
+    rou = get_most_inside_radius()
 	if(directional) {
 		if("diffHeight" %in% direction.type) {
 			if(directional > 0) {
@@ -431,170 +659,30 @@ chordDiagram = function(mat, grid.col = NULL, transparency = 0.5,
 		rou2 = rou
 	}
 
-	for(k in seq_along(pos$sector1)) {
+	for(k in seq_len(nrow(df))) {
 		
-		sector.index1 = pos$sector1[k]
-		sector.index2 = pos$sector2[k]
-		i = pos$ri[k]
-		j = pos$ci[k]
-
-		if(abs(mat[i, j]) < 1e-8) {
-			next
+		if(setequal(direction.type, c("diffHeight"))) {
+			circos.link(df$rn[k], c(df$x1[k] - df$value[k], df$x1[k]),
+					df$cn[k], c(df$x2[k] - df$value[k], df$x2[k]),
+					directional = 0, col = col[k], rou1 = rou1, rou2 = rou2, 
+					border = link.border[k], lwd = link.lwd[k], lty = link.lty[k],
+					...)	
+		} else if("arrows" %in% direction.type) {
+			circos.link(df$rn[k], c(df$x1[k] - df$value[k], df$x1[k]),
+						df$cn[k], c(df$x2[k] - df$value[k], df$x2[k]),
+						directional = directional, col = col[k], rou1 = rou1, rou2 = rou2, 
+						border = link.border[k], 
+						lwd = link.lwd[k], lty = link.lty[k], 
+						arr.length = link.arr.length[k], arr.width = link.arr.width[k],
+						arr.type = link.arr.type[k], arr.col = link.arr.col[k],
+						arr.lty = link.arr.lty[k], arr.lwd = link.arr.lwd[k],
+						...)
 		}
-		
-		circos.link(sector.index1, c(pos$x1[k], pos$x2[k]),
-					sector.index2, c(pos$y1[k], pos$y2[k]),
-					directional = directional, col = col[i, j], rou1 = rou1, rou2 = rou2, border = link.border[i, j], 
-					lwd = link.lwd[i, j], lty = link.lty[i, j], 
-					arr.length = link.arr.length[i, j], arr.width = link.arr.width[i, j],
-					arr.type = link.arr.type[i, j], arr.col = link.arr.col[i, j],
-					arr.lty = link.arr.lty[i, j], arr.lwd = link.arr.lwd[i, j],
-					...)
     }
 	
 	circos.par("cell.padding" = o.cell.padding)
 }
 
-# returns a list, each list containing settings for each new track
-parsePreAllocateTracksValue = function(preAllocateTracks) {
-	lt = list(ylim = c(0, 1),
-		      track.height = circos.par("track.height"),
-			  bg.col = NA,
-			  bg.border = NA,
-			  bg.lty = par("lty"),
-			  bg.lwd = par("lwd"))
-	if(length(preAllocateTracks) && is.numeric(preAllocateTracks)) {
-		res = vector("list", length = preAllocateTracks)
-		for(i in seq_len(preAllocateTracks)) {
-			res[[i]] = lt
-		}
-		return(res)
-	} else if(is.list(preAllocateTracks)) {
-		# list of list
-		if(all(sapply(preAllocateTracks, is.list))) {
-			res = vector("list", length = length(preAllocateTracks))
-			for(i in seq_along(preAllocateTracks)) {
-				lt2 = lt
-				for(nm in intersect(names(lt), names(preAllocateTracks[[i]]))) {
-					lt2[[nm]] = preAllocateTracks[[i]][[nm]]
-				}
-				res[[i]] = lt2
-			}
-			return(res)
-		} else {
-			lt2 = lt
-			for(nm in intersect(names(lt), names(preAllocateTracks))) {
-				lt2[[nm]] = preAllocateTracks[[nm]]
-			}
-			return(list(lt2))
-		}
-	} else {
-		stop("Wrong `preAllocateTracks` value.\n")
-	}
-}
-
-# values can be:
-# - a scalar
-# - a matrix
-# - a three column data frame
-.normalize_to_mat = function(value, rn, cn, default) {
-	var_name = deparse(substitute(value))
-	mat = matrix(default, nrow = length(rn), ncol = length(cn))
-	rownames(mat) = rn
-	colnames(mat) = cn
-	if(inherits(value, "data.frame")) {
-		if(ncol(value) == 3) {
-			value[[1]] = as.vector(value[[1]])
-			value[[2]] = as.vector(value[[2]])
-			value[[3]] = as.vector(value[[3]])
-
-			l = value[, 1] %in% rn & value[, 2] %in% cn
-			value = value[l, , drop = FALSE]
-			for(i in seq_len(nrow(value))) {
-				mat[ value[i, 1], value[i, 2] ] = value[i, 3]
-			}
-		} else {
-			stop(paste0("If ", var_name, " is set as a data frame, it should have three columns."))
-		}
-	} else if(is.atomic(value) && length(value) == 1) {
-		mat[,] = value
-	} else {
-		if(!is.null(rownames(value)) && !is.null(colnames(value))) {
-			common_rn = intersect(rownames(value), rn)
-			common_cn = intersect(colnames(value), cn)
-			mat[common_rn, common_cn] = value[common_rn, common_cn]
-		} else {
-			if(nrow(value) == length(rn) && ncol(value) == length(cn)) {
-				mat = value
-				rownames(mat) = rn
-				colnames(mat) = cn
-			} else {
-				stop(paste0("If ", var_name, " is a matrix, it should have both rownames and colnames.\n"))
-			}
-		}
-	}
-	return(mat)
-}
-
-# == title
-# Adjust gaps to make chord diagrams comparable
-#
-# == param
-# -mat1 matrix that has the largest sum of absolute
-# -gap.degree gap.degree for the Chord Diagram which corresponds to ``mat1``
-# -mat2 matrix to be compared
-#
-# == details
-# Normally, in Chord Diagram, values in mat are normalized to the summation and each value is put 
-# to the circle according to its percentage, which means the width for each link only represents 
-# kind of relative value. However, when comparing two Chord Diagrams, it is necessary that unit 
-# width of links in the two plots should be represented in a same scale. This problem can be solved by 
-# adding more blank gaps to the Chord Diagram which has smaller values.
-#
-# == value
-# Sum of gaps for ``mat2``.
-#
-normalizeChordDiagramGap = function(mat1, gap.degree = circos.par("gap.degree"), mat2) {
-	percent = sum(abs(mat2)) / sum(abs(mat1))
-
-	if(length(gap.degree) == 1) {
-		gap.degree = rep(gap.degree, length(unique(rownames(mat1), colnames(mat1))))
-	}
-	blank.degree = (360 - sum(gap.degree)) * (1 - percent)
-	return(blank.degree)
-}
-
-mat2df = function(mat) {
-	nr = dim(mat)[1]
-	nc = dim(mat)[2]
-	rn = rep(rownames(mat), times = nc)
-	ri = rep(seq_len(nr), times = nc)
-	cn = rep(colnames(mat), each = nr)
-	ci = rep(seq_len(nc), each = nr)
-	v = as.vector(mat)
-	df = data.frame(rn = rn, cn = cn, ri = ri, ci = ci, value = v, stringsAsFactors = FALSE)
-	l = df$value > 0
-	return(df[l, , drop = FALSE])
-}
-
-chordDiagram.matrix = function(x) {
-
-}
-
-chordDiagram.data.frame = function(x, grid.col = NULL, transparency = 0.5,
-	col = NULL, from.col = NULL, to.col = NULL, directional = 0,
-	direction.type = "diffHeight",
-	order = NULL, preAllocateTracks = NULL,
-	annotationTrack = c("name", "grid"), annotationTrackHeight = c(0.05, 0.05),
-	link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), grid.border = NA, 
-	diffHeight = 0.04, reduce = 1e-5, link.sort = FALSE, link.decreasing = FALSE,
-	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4), 
-	link.arr.width = link.arr.length/2, 
-	link.arr.type = "triangle", link.arr.lty = par("lty"), 
-	link.arr.lwd = par("lwd"), link.arr.col = par("col"), ...) {
-
-}
-
-chordDiagram = function(x, ...) {
-	UseMethod("chordDiagram")
+psubset = function(mat, ri, ci) {
+	return(mat[ri + (ci - 1) * nrow(mat)])
 }

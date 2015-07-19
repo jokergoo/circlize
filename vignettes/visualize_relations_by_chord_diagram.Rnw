@@ -549,7 +549,7 @@ and are two different roots.
 
 The {\tt self.link} argument can be set to 1 or 2 for different scenarios. You may see the difference in figure \ref{fig:chord_diagram_self_link}.
 
-<<chord_diagram_self_link1, eval = FALSE, echo = c(1, 3)>>=
+<<chord_diagram_self_link1, eval = FALSE, echo = c(1,2,4)>>=
 mat2 = matrix(runif(16), 4); rownames(mat2) = colnames(mat2) = letters[1:4]
 chordDiagram(mat2, self.link = 1)
 text(-0.9, 0.9, "A", cex = 1.5)

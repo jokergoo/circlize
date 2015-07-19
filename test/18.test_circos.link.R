@@ -145,14 +145,23 @@ par(mar = c(1, 1, 1, 1))
 plot(NULL, xlim = c(-2, 2), ylim = c(-2, 2))
 for(degree in seq(0, 360, by = 60)) {
 	d = getQuadraticPoints(degree, degree + 60, 1, 1, h = 0.5, w = -0.5)
-	lines(d, col = sample(10, 1))
+	i = sample(10, 1)
+	lines(d, col = i)
 	arrows(d[49, 1], d[49, 2], d[51, 1], d[51, 2], length = 0.1)
+	d = arc.points(degree, degree+60, 1)
+	d = d[rev(seq_len(nrow(d))), ]
+	lines(d, col = i)
+	arrows(d[round(nrow(d)/2), 1], d[round(nrow(d)/2), 2], d[round(nrow(d)/2)+1, 1], d[round(nrow(d)/2)+1, 2], length = 0.1)
 }
 plot(NULL, xlim = c(-1, 1), ylim = c(-1, 1))
 for(degree in seq(30, 360, by = 60)) {
 	d = getQuadraticPoints(degree, degree - 60, 1, 1)
-	lines(d)
+	i = sample(10, 1)
+	lines(d, col = i)
 	arrows(d[49, 1], d[49, 2], d[51, 1], d[51, 2], length = 0.1)
+	d = arc.points(degree - 60, degree, 1)
+	lines(d, col = i)
+	arrows(d[round(nrow(d)/2), 1], d[round(nrow(d)/2), 2], d[round(nrow(d)/2)+1, 1], d[round(nrow(d)/2)+1, 2], length = 0.1)
 }
 
 plot(NULL, xlim = c(-1, 1), ylim = c(-1, 1))

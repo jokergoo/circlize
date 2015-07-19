@@ -80,8 +80,8 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 
         if(degreeDiff2(theta1, theta21) <= degreeDiff(theta22, theta21) &
            degreeDiff2(theta22, theta1) <= degreeDiff(theta22, theta21)) {
-			d = getQuadraticPoints(theta21, theta22, rou1, rou2, h = h, w = w)
-			r = arc.points(theta21, theta22, rou)
+			d = getQuadraticPoints(theta22, theta21, max(rou1,rou2), max(rou1,rou2), h = h, w = w)
+			r = arc.points(theta22, theta21, rou)
 			d = rbind(d, revMat(r))
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 		} else {
@@ -137,8 +137,8 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
         
         if(degreeDiff2(theta2, theta11) <= degreeDiff2(theta12, theta11) &
            degreeDiff2(theta12, theta2) <= degreeDiff2(theta12, theta11)) {
-			d = getQuadraticPoints(theta11, theta12, rou1, rou2, h = h, w = w)
-			r = arc.points(theta11, theta12, rou)
+			d = getQuadraticPoints(theta12, theta11, max(rou1,rou2), max(rou1,rou2), h = h, w = w)
+			r = arc.points(theta12, theta11, rou)
 			d = rbind(d, revMat(r))
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 		} else {
@@ -155,17 +155,17 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 		        d2x = getQuadraticPoints(theta12, theta2, rou1 - arr.length, rou2, h = h, w = w)
 	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, theta2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
 		    }
-			r1 = arc.points(theta11, theta12, rou1)
+			r1 = arc.points(theta12, theta11, rou1)
 			if(arr.type == "big.arrow" && directional == -1) {
 				if(nrow(r1) %% 2 == 1) {
 					r1 = r1[ceiling(nrow(r1)/2), , drop = FALSE]
 				} else {
 					r1 = colMeans(r1[c(nrow(r1)/2, nrow(r1)/2+1), , drop = FALSE])
 				}
-				d = rbind(revMat(d1x), r1)
+				d = rbind(revMat(d1x), revMat(r1))
 				d = rbind(d, d2x)
 			} else {
-				d = rbind(revMat(d1), r1)
+				d = rbind(revMat(d1), revMat(r1))
 				d = rbind(d, d2)
 			}
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
@@ -195,14 +195,14 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 
 		if(degreeDiff2(theta12, theta21) <= degreeDiff2(theta22, theta21) + degreeDiff2(theta12, theta11) &
 		   degreeDiff2(theta12, theta21) >= degreeDiff2(theta22, theta11)) {
-			d = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h, w = w)
+			d = getQuadraticPoints(theta12, theta21, max(rou1,rou2), max(rou1,rou2), h = h, w = w)
 			r = arc.points(theta12, theta21, rou)
 			d = rbind(d, revMat(r))
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 		} else if(degreeDiff2(theta22, theta11) <= degreeDiff2(theta12, theta11) + degreeDiff2(theta22, theta21) &
 			      degreeDiff2(theta22, theta11) >= degreeDiff2(theta12, theta21)) {
-			d = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h, w = w)
-			r = arc.points(theta11, theta22, rou)
+			d = getQuadraticPoints(theta22, theta11, max(rou1,rou2), max(rou1,rou2), h = h, w = w)
+			r = arc.points(theta22, theta11, rou)
 			d = rbind(d, revMat(r))
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 		} else {
@@ -230,8 +230,8 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 			    }
 	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
 		    }
-			r2 = arc.points(theta21, theta22, rou2)
-			r1 = arc.points(theta11, theta12, rou1)
+			r2 = arc.points(theta22, theta21, rou2)
+			r1 = arc.points(theta12, theta11, rou1)
 
 			if(arr.type == "big.arrow") {
 				if(directional == 1) {
@@ -242,21 +242,21 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 					}
 					d = rbind(d1x, r2)
 			        d = rbind(d, revMat(d2x))
-			        d = rbind(d, revMat(r1))
+			        d = rbind(d, r1)
 			    } else if(directional == -1) {
 			    	if(nrow(r1) %% 2 == 1) {
 						r1 = r1[ceiling(nrow(r1)/2), , drop = FALSE]
 					} else {
 						r1 = colMeans(r1[c(nrow(r1)/2, nrow(r1)/2+1), , drop = FALSE])
 					}
-			    	d = rbind(d1x, revMat(r2))
+			    	d = rbind(d1x, r2)
 			        d = rbind(d, revMat(d2x))
 			        d = rbind(d, r1)
 			    } 
 			} else {
-		        d = rbind(d1, revMat(r2))
+		        d = rbind(d1, r2)
 		        d = rbind(d, revMat(d2))
-		        d = rbind(d, revMat(r1))
+		        d = rbind(d, r1)
 		    }
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 			if(nrow(dcenter) > 1 && arr.type != "big.arrow") {
@@ -280,23 +280,18 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
     return(invisible(NULL))
 }
 
-# points from theta1 to theta2
+# points from theta1 to theta2, reverse clockwise
 arc.points = function(theta1, theta2, rou) {
 	theta1 = theta1 %% 360
 	theta2 = theta2 %% 360
-	theta_diff = (theta1 - theta2) %% 360
+	theta_diff = (theta2 - theta1) %% 360
 	l = as.radian(theta_diff)*rou
 	ncut = l/ (2*pi/circos.par("unit.circle.segments"))
 	ncut = floor(ncut)
 	ncut = ifelse(ncut < 2, 2, ncut)
     
-	x = numeric(ncut)
-	y = numeric(ncut)
-	for(i in seq_len(ncut)) {
-		t = (theta1 - (i-1)*theta_diff/(ncut-1)) %% 360
-		x[i] = rou * cos(as.radian(t))
-		y[i] = rou * sin(as.radian(t))
-	}
+	x = rou * cos(as.radian(theta1 + seq_len(ncut-1)*theta_diff/(ncut-1)))
+	y = rou * sin(as.radian(theta1 + seq_len(ncut-1)*theta_diff/(ncut-1)))
 	d = cbind(x, y)
 	#linesWithArrows(d)
 	return(d)
@@ -393,6 +388,7 @@ getQuadraticPoints = function(theta1, theta2, rou1, rou2, h = NULL, w = 1) {
 
 # 'Rational bezier curve', from wikipedia
 # w: w1
+# if I know how to calculate the length of bezier curve, then I can choose a betten n
 quadratic.bezier = function(p0, p1, p2, n = 100, w = 1) {
 	
 	t = seq(0, 1, length.out = n)
@@ -474,6 +470,8 @@ degreeDiff = function (theta1, theta2) {
 
 # used to calculate whether two arcs overlap
 # theta1 is reverse-clockwise of theta2
+# e.g. degreeDiff2(90, 180) = 90
+#  degreeDiff2(180, 90) = 270
 degreeDiff2 = function(theta1, theta2) {
 	(theta2 - theta1) %% 360
 }

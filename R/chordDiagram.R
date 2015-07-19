@@ -583,6 +583,9 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	for(i in seq_len(nr)) {
 		if(df$rn[i] == df$cn[i]) {
 			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value[i])
+			if(self.link == 2) {
+				xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value[i])  # <<- self-link!!!!!
+			}
 		} else {
 			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value[i])
 			xsum[df$cn[i]] = xsum[df$cn[i]] + abs(df$value[i])
@@ -644,25 +647,45 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	if(length(link.sort) == 1) link.sort = rep(link.sort, 2)
 	if(length(link.decreasing) == 1) link.decreasing = rep(link.decreasing, 2)
 
+	# position of root 1
 	od = tapply(abs(df$value), df$rn, .order, link.sort[1], link.decreasing[1])
-	for(nm in names(od)) {
-		l = df$rn == nm
-		df$o1[l] = od[[nm]]
-		df$x1[l][od[[nm]]] = cumsum(abs(df$value[l])[od[[nm]]])
+	for(nm in names(od)) {  # for each sector
+		l = df$rn == nm # rows in df that correspond to current sector
+		df$o1[l] = od[[nm]] # adjust rows according to the order in current sector
+		df$x1[l][od[[nm]]] = cumsum(abs(df$value[l])[od[[nm]]]) # position
+
+		l2 = df$rn == nm & df$cn == nm 
+		if(sum(l2)) { # there is a self link
+			if(self.link == 1) {
+				df$x2[l2] = df$x1[l2]+abs(df$value[l2])*0.000001
+			}
+		}
 	}
 	max_o1 = sapply(od, max)
 	sum_1 = tapply(abs(df$value), df$rn, sum)
+	# position of root 2
 	od = tapply(abs(df$value), df$cn, .order, link.sort[2], link.decreasing[2])
 	for(nm in names(od)) {
-		if(!is.na(max_o1[nm])) {
+		if(!is.na(max_o1[nm])) { # if cn already in rn
 			l = df$cn == nm
-			df$o2[l] = od[[nm]] + max_o1[nm]
-			df$x2[l][od[[nm]]] = cumsum(abs(df$value[l])[od[[nm]]]) + sum_1[nm]
+			if(self.link == 1) {
+				l2 = ! df$rn[l] == nm # self link
+				od[[nm]] = order(od[[nm]][l2])
+			} else {
+				l2 = rep(TRUE, sum(l))
+			}
+			df$o2[l][l2] = od[[nm]] + max_o1[nm]
+			df$x2[l][l2][ od[[nm]] ] = cumsum(abs(df$value[l][l2])[ od[[nm]] ]) + sum_1[nm]
 		} else {
 			l = df$cn == nm
 			df$o2[l] = od[[nm]]
 			df$x2[l][od[[nm]]] = cumsum(abs(df$value[l])[od[[nm]]])
 		}
+	}
+	if(self.link == 1) {
+		l = df$rn == df$cn
+		df$x1[l] = pmin(df$x1[l], df$x2[l])
+		df$x2[l] = pmin(df$x1[l], df$x2[l])
 	}
 	#######################################
 
@@ -736,7 +759,6 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	}
 
 	for(k in seq_len(nrow(df))) {
-		
 		if(setequal(direction.type, c("diffHeight"))) {
 			circos.link(df$rn[k], c(df$x1[k] - abs(df$value[k]), df$x1[k]),
 					df$cn[k], c(df$x2[k] - abs(df$value[k]), df$x2[k]),

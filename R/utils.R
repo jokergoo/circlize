@@ -320,7 +320,7 @@ get_most_inside_radius = function() {
 #
 # == param
 # -lt a data frame which contains adjacency list.
-# -square should returned matrix a square matrix?
+# -square is the returned matrix a square matrix?
 #
 # == details
 # Convert adjacency list to adjacency matrix.

@@ -18,7 +18,7 @@ circos.link(sector.index1, point1, sector.index2, point2,
     arr.lwd = lwd, arr.col = col)}
 \arguments{
 
-  \item{sector.index1}{Index for sector one}
+  \item{sector.index1}{Index for the first sector}
   \item{point1}{A single value or a numeric vector of length 2. If it is a 2-elements vector, thenthe link would be a belt/ribbon.}
   \item{sector.index2}{Index for the other sector}
   \item{point2}{A single value or a numeric vector of length 2. If it is a 2-elements vector, thenthe link would be a belt/ribbon.}

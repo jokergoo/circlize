@@ -19,7 +19,7 @@ generateRandomBed(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0.5),
   \item{species}{species, pass to \code{\link{read.cytoband}}}
 }
 \details{
-The function will uniformly sample positions from human genome. Chromosome names start with "chr"
+The function will uniformly sample positions from the genome. Chromosome names start with "chr"
 and positions are sorted. The final number of rows may not be exactly as same as \code{nr}.
 
 }

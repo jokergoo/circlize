@@ -1,7 +1,8 @@
-Changes in version 0.2.6
+Changes in version 0.3.0
 -----------------------------------------------------------------------------
 
 * add `chordDiagramFromMatrix` and `chordDiagramFromDataFrame`
+* by default there is axis on chord diagram
 
 Changes in version 0.2.5
 -----------------------------------------------------------------------------

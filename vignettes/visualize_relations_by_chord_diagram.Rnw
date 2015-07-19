@@ -1,4 +1,4 @@
-% \VignetteIndexEntry{Circular visualization of matrix (Chord Diagram)}
+% \VignetteIndexEntry{Visualize relations by Chord diagram}
 % \VignetteDepends{circlize}
 % \VignetteKeywords{circos R}
 % \VignetteKeywords{Chord Diagram}
@@ -14,7 +14,7 @@ opts_chunk$set(fig.pos = "")
 
 library(circlize)
 chordDiagram = function(...) {
-    circos.par(unit.circle.segments = 280)
+    circos.par(unit.circle.segments = 200)
     circlize::chordDiagram(...)
 }
 @
@@ -29,7 +29,7 @@ chordDiagram = function(...) {
 
 \setcounter{tocdepth}{2}
 
-\title{How to make Chord Diagram}
+\title{Visualize Relations by Chord Diagram}
 
 \author{Zuguang Gu {\tt <z.gu@dkfz.de>}}
 \usepackage[margin=1in, a4paper]{geometry}
@@ -45,110 +45,86 @@ between elements (\url{http://circos.ca/intro/tabular_visualization/}). The name
 of such plot is sometimes called Chord Diagram (\url{http://en.wikipedia.org/wiki/Chord_diagram}). 
 In \textbf{circlize}, it is easy to plot it in a straightforward or customized way.
 
-\section{Start from ground}
-Normally, the relationship can be represented as a matrix in which values in $i^{th}$ row 
-and $j^{th}$ column are some kind of strength for the relationship. Let's assume 
-we have a transition matrix in which rows correspond to starting states and columns 
-correspond to ending states. Numbers in the matrix are the amount of observations that 
-transit between two states.
+There are two data formats that represent relations, either adjacency matrix or adjacency list.
+In adjacency matrix, value in $i^{th}$ row and $j^{th}$ column represents the relation from element
+in the $i^{th}$ row and the element in the $j^{th}$ column. The absolute value measures the strength
+of the relation. In adjacency list, relations are represented as a three-column data frame in which
+relations come from the frst column and end at the second column, the third column represents the strength
+of the relation.
+
+In following code, there is a connection from {\tt b} to {\tt B} and the strength of the connection is 5. 
 
 <<>>=
-#library(circlize)
-
-mat = matrix(1:18, 3, 6)
-rownames(mat) = paste0("S", 1:3)
-colnames(mat) = paste0("E", 1:6)
-
+mat = matrix(1:9, 3)
+rownames(mat) = letters[1:3]
+colnames(mat) = LETTERS[1:3]
 mat
 @
 
-Sector names in the circos plot correspond to the union of row names and column names 
-from the matrix. To initialize the circos plot, we need to construct {\tt factors} 
-and {\tt xlim}. Since here row names and columns are different, the data range 
-is simply the summation in rows or columns respectively. Just be careful with the order
-of {\tt factors} and {\tt xlim}.
+While in following code, there is a connection from {\tt b} to {\tt B} with the strength 2.
 
 <<>>=
-rn = rownames(mat)
-cn = colnames(mat)
-
-factors = c(rn, cn)
-factors = factor(factors, levels = factors)
-
-col_sum = apply(mat, 2, sum)
-row_sum = apply(mat, 1, sum)
-xlim = cbind(rep(0, length(factors)), c(row_sum, col_sum))
+df = data.frame(from = letters[1:3], to = LETTERS[1:3], value = 1:3)
+df
 @
 
-The next step is to create a new track to put the grids which represent states and 
-the names for the states. In following code, colors for different states are specified 
-by {\tt bg.col} in {\tt circos.trackPlotRegion}. You may meet several warning messages 
-saying there are points out of plotting regions, but it is totally fine because we create 
-a new track and fill in with colors for the whole plotting regions then add text outside 
-each region.
+In {\bf circlize} package, there is a {\tt chordDiagram()} function that supports both adjacency matrix
+and adjacency list. The function will dispatch to {\tt chordDiagramFromMatrix()} or {\tt chordDiagramFromDataFrame()}
+according to whether the input is a matrix or a data frame.
+Internally, the adjacency matrix is converted to a adjacency list and makes the final Chord diagram by {\tt chordDiagramFromDataFrame()}, 
+but the adjacency matrix still has some unique features such visualizing a sysmmetric matrix.
+Users are encouraged to use {\tt chordDiagram()} directly instead of using the two dispatched functions.
 
-<<chord_diagram_by_hand_initialize, eval = FALSE>>=
-circos.par(cell.padding = c(0, 0, 0, 0))
-circos.initialize(factors = factors, xlim = xlim)
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.border = NA, 
-    bg.col = c("red", "green", "blue", rep("grey", 6)), track.height = 0.05, 
-    panel.fun = function(x, y) {
-        sector.name = get.cell.meta.data("sector.index")
-        xlim = get.cell.meta.data("xlim")
-        circos.text(mean(xlim), 1.5, sector.name, adj = c(0.5, 0))
-})
-@
+\section{The {\tt chordDiagram} function}
 
-Finally add links to the plot (figure \ref{fig:chord_diagram_by_hand}).
-
-<<chord_diagram_by_hand_add_links, eval = FALSE>>=
-col = c("#FF000020", "#00FF0020", "#0000FF20")
-for(i in seq_len(nrow(mat))) {
-    for(j in seq_len(ncol(mat))) {
-        circos.link(rn[i], c(sum(mat[i, seq_len(j-1)]), sum(mat[i, seq_len(j)])),
-            cn[j], c(sum(mat[seq_len(i-1), j]), sum(mat[seq_len(i), j])), 
-            col = col[i], border = "white")
-    }
-}
-
-circos.clear()
-@
-
-
-<<chord_diagram_by_hand, echo = FALSE, fig.align = "center", out.width = "0.6\\textwidth", fig.cap = "Matrix in circular layout.">>=
-circos.par(points.overflow.warning = FALSE)
-<<chord_diagram_by_hand_initialize>>
-<<chord_diagram_by_hand_add_links>>
-@
-
-
-Above codes show the basic idea to implement Chord Diagram in \textbf{circlize}. Of course
-you can customize the plot in your own way such as changing the order for ending states 1 to 6
-so that the links are not over-twisted. 
-
-\section{The pre-defined {\tt chordDiagram} function}
-
-A general function {\tt chordDiagram} is already defined in the package.
+Because for adjacency matrix and adjacency list, most of the settings are the same, we only generate figures
+with using the matrix. But still the code for using the adjacency list is demonstrated without executing and the figures are generated
+only if necessary.
 
 \subsection{Basic usage}
-We will still use {\tt mat} object in previous section to demonstrate the usage of 
-{\tt chordDiagram}. The most simple usage is just calling {\tt chordDiagram} with 
+
+First let's generate a random matrix and the corresponding adjacency list.
+We also eliminate several rows in the data frame for users to see the difference.
+
+<<>>=
+set.seed(999)
+mat = matrix(sample(18, 18), 3, 6) 
+rownames(mat) = paste0("S", 1:3)
+colnames(mat) = paste0("E", 1:6)
+mat
+
+df = data.frame(from = rep(rownames(mat), times = ncol(mat)),
+    to = rep(colnames(mat), each = nrow(mat)),
+    value = as.vector(mat),
+    stringsAsFactors = FALSE)
+df = df[sample(18, 10), ]
+df
+@
+
+The most simple usage is just calling {\tt chordDiagram} with 
 {\tt mat} (figure \ref{fig:chord_diagram_basic} A).
 
 <<chord_diagram_basic_simple, eval = FALSE>>=
-set.seed(999)
 chordDiagram(mat)
 circos.clear()
 @
 
-The default Chord Diagram consists of a track of labels, a track of grids, and links.
-Under default settings, the grid colors are randomly generated with 50\% transparency,
-that is why we add {\tt set.seed} to make sure that users can make same colors with the same code.
-By default, the link colors are same as grid colors which correspond to rows. The order of 
-sectors is the order of {\tt union(rownames(mat), colnames(mat))}.
+or call with {\tt df}:
+
+<<eval = FALSE>>=
+# code is not run when building the vignette
+chordDiagram(df)
+circos.clear()
+@
+
+The default Chord Diagram consists of a track of labels, a track of grids with axes added, and links.
+Under default settings, the grid colors are randomly generated,
+and the link colors are same as grid colors which correspond to rows but with 50\% transparency. 
+The order of sectors is the order of {\tt union(rownames(mat), colnames(mat))}
+or {\tt union(df[[1]], df[[2]])} if input is a data frame.
 
 Since Chord Diagram is implemented by \textbf{circlize} package, like normal circos plot,
-there are a lot of settings that can be tuned.
+there are a lot of settings that can be configured.
 
 The gaps between sectors can be set through {\tt circos.par} (figure \ref{fig:chord_diagram_basic} B). 
 It is useful when rows and columns are different measurements (as in {\tt mat}). 
@@ -161,8 +137,20 @@ chordDiagram(mat)
 circos.clear()
 @
 
+For the data frame:
+
+<<eval = FALSE>>=
+# code is not run when building the vignette
+circos.par(gap.degree = c(rep(2, length(unique(df[[1]]))-1), 10, 
+                          rep(2, length(unique(df[[2]]))-1), 10))
+chordDiagram(df)
+circos.clear()
+@
+
 Similarly, the start degree for the first sector can also be set through {\tt circos.par}
-(figure \ref{fig:chord_diagram_basic} C).
+(figure \ref{fig:chord_diagram_basic} C). Since this setting is the same for using
+adjacency matrix and adjacency list, we will not show the code with using the adjacency list
+and so is in the remaining part of this vignette.
 
 <<chord_diagram_basic_start_degree, eval = FALSE>>=
 circos.par(start.degree = 90)
@@ -200,21 +188,20 @@ As explained before, the default link colors are same
 as grids which correspond to rows (figure \ref{fig:chord_diagram_color} A).
 
 <<chord_diagram_color_grid, eval = FALSE>>=
-grid.col = NULL  # just create the variable
-grid.col[rn] = c("red", "green", "blue")
-grid.col[cn] = "grey"
+grid.col = c(S1 = "red", S2 = "green", S3 = "blue",
+    E1 = "grey", E2 = "grey", E3 = "grey", E4 = "grey", E5 = "grey", E6 = "grey")
 chordDiagram(mat, grid.col = grid.col)
 @
 
 Transparency of link colors can be set through {\tt transparency} (figure \ref{fig:chord_diagram_color} B). 
 The value should between 0 to 1 in which 0 means no transparency and 1 means full transparency.
-Default transparency is 0.5.
+Default transparency is 0.5. A value of {\tt NA} means just to ignore the transparency setting.
 
 <<chord_diagram_color_transparency, eval = FALSE>>=
 chordDiagram(mat, grid.col = grid.col, transparency = 0)
 @
 
-Colors for links can be customized by providing a matrix of colors which correspond to {\tt mat}.
+For adjacecy matrix, colors for links can be customized by providing a matrix of colors which correspond to {\tt mat}.
 In the following example, we use {\tt rand\_color} which is shipped by \textbf{circlize} package
 to generate a random color matrix. Note since {\tt col\_mat} already contains transparency, 
 {\tt transparency} will be ignored if it is set (figure \ref{fig:chord_diagram_color} C).
@@ -225,9 +212,18 @@ dim(col_mat) = dim(mat)  # to make sure it is a matrix
 chordDiagram(mat, grid.col = grid.col, col = col_mat)
 @
 
+While for ajacency list, colors for links can be customized as a vector.
+
+<<eval = FALSE>>=
+# code is not run when building the vignette
+col = rand_color(nrow(df))
+chordDiagram(df, grid.col = grid.col, col = col)
+@
+
 {\tt col} argument can also be a self-defined function which maps values to colors.
 Here we use {\tt colorRamp2} which is available in \textbf{circlize} to generate a function
 with a list of break points and corresponding colors (figure \ref{fig:chord_diagram_color} D).
+This functionality also works for adjacency list.
 
 <<chord_diagram_color_fun, eval = FALSE>>=
 col_fun = colorRamp2(quantile(mat, seq(0, 1, length.out = 18)), rev(rainbow(18)))
@@ -244,6 +240,8 @@ chordDiagram(mat, grid.col = grid.col, row.col = 1:3)
 text(-0.9, 0.9, "E", cex = 1.5)
 chordDiagram(mat, grid.col = grid.col, column.col = 1:6)
 @
+
+There is no similar settings as {\tt row.col} for ajacency list. 
 
 To emphasize again, transparency of links can be included in {\tt col} or {\tt row.col} 
 or {\tt column.col}, if transparency is already set there, {\tt transparency} argument 
@@ -266,36 +264,6 @@ par(mfrow = c(1, 1))
 @
 
 \subsection{Other Style of links}
-The order of links on the sectors can be controlled by {\tt link.order}. The value
-of {\tt link.order} is a length-two vector which controls order of sectors which correspond
-to rows and columns respectively.
-
-<<chord_diagram_style_cross_1, eval = FALSE>>=
-chordDiagram(mat, grid.col = grid.col, link.sort = FALSE)
-chordDiagram(mat, grid.col = grid.col, link.sort = TRUE)
-chordDiagram(mat, grid.col = grid.col, link.sort = FALSE, link.decreasing = TRUE)
-chordDiagram(mat, grid.col = grid.col, link.sort = TRUE, link.decreasing = TRUE)
-@
-
-You can compare the difference in figure \ref{fig:chord_diagram_link_order}.
-
-<<chord_diagram_link_order, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Link orders in sectors. A) set {\\tt link.order} to {\\tt c(1, 1)}; B) set {\\tt link.order} to {\\tt c(1, -1)}; C) set {\\tt link.order} to {\\tt c(-1, 1)}; D) set {\\tt link.order} to {\\tt c(-1, -1)}.">>=
-par(mfrow = c(2, 2))
-chordDiagram(mat, grid.col = grid.col, link.sort = FALSE)
-text(-0.9, 0.9, "A", cex = 1.5)
-chordDiagram(mat, grid.col = grid.col, link.sort = TRUE)
-text(-0.9, 0.9, "B", cex = 1.5)
-chordDiagram(mat, grid.col = grid.col, link.sort = FALSE, link.decreasing = TRUE)
-text(-0.9, 0.9, "C", cex = 1.5)
-chordDiagram(mat, grid.col = grid.col, link.sort = TRUE, link.decreasing = TRUE)
-text(-0.9, 0.9, "D", cex = 1.5)
-par(mfrow = c(1, 1))
-@
-
-
-<<chord_diagram_style_cross_2, eval = FALSE>>=
-chordDiagram(mat, grid.col = grid.col, cross = TRUE)
-@
 
 {\tt link.lwd}, {\tt link.lty} and {\tt link.border} controls the style of links. 
 All these three parameters can be set either a single scalar or a matrix with names.
@@ -349,6 +317,15 @@ chordDiagram(mat, grid.col = grid.col, link.lty = lty_df, link.lwd = lwd_df,
     link.border = border_df)
 @
 
+For adjacency list, it is quite easier, you only need to set these graphical settings
+as a vecotr.
+
+<<eval = FALSE>>=
+# code is not run when building the vignette
+chordDiagram(df, grid.col = grid.col, link.lty = sample(1:3, nrow(df), replace = TRUE),
+    link.lwd = runif(nrow(df))*2, link.border = sample(0:1, nrow(df), replace = TRUE))
+@
+
 <<chord_diagram_style, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Link style settings in {\\tt chordDiagram}. A) graphic parameters set as scalar; B) graphic parameters set as matrix; C) graphic parameters set as sub matrix. D) graphic parameters set as a three-column data frame.">>=
 par(mfrow = c(2, 2))
 <<chord_diagram_style_scalar>>
@@ -387,6 +364,7 @@ chordDiagram(mat, grid.col = grid.col, col = col_mat)
 @
 
 Second, use a color function to generate different colors with different values.
+Note this is also workable for adjacency list.
 
 <<chord_diagram_highlight_fun, eval = FALSE>>=
 col_fun = function(x) ifelse(x < 12, "#00000000", "#FF000080")
@@ -404,6 +382,16 @@ chordDiagram(mat, grid.col = grid.col, col = col_df)
 Just remember if you want to highlight links by colors, make sure to set high or full
 transparency to the links that you want to ignore.
 
+Again, for adjacency list, you only need to construct a vector of colors according to
+what links you want to highlight.
+
+<<eval = FALSE>>=
+# code is not run when building the vignette
+col = rand_color(nrow(df))
+col[df[[3]] < 10] = "#00000000"
+chordDiagram(df, grid.col = grid.col, col = col)
+@
+
 <<chord_diagram_highlight, echo = FALSE, fig.align = "center", out.width = "\\textwidth", fig.cap = "Highlight links by colors. A) set {\\tt row.col}; B) set by matrix; C) set by color function; D) set by a three-column data frame.">>=
 par(mfrow = c(2, 2))
 <<chord_diagram_highlight_row>>
@@ -417,15 +405,36 @@ text(-0.9, 0.9, "D", cex = 1.5)
 par(mfrow = c(1, 1))
 @
 
-\subsection{Directional matrix}
+\subsection{Sort links on sectors}
+
+Orders of links on every sector are adjusted automatically to make them look nice.
+But sometimes sort links according to the width on one sector is useful to detect the 
+features in the plot. {\tt link.sort} and {\tt link.decreasing} can be set to control
+the link orders (figure \ref{fig:chord_diagram_link_order}).
+
+<<chord_diagram_link_order1, eval = FALSE, echo = c(1, 3)>>=
+chordDiagram(mat, link.sort = TRUE, link.decreasing = TRUE)
+text(-0.9, 0.9, "A", cex = 1.5)
+chordDiagram(mat, link.sort = TRUE, link.decreasing = FALSE)
+text(-0.9, 0.9, "B", cex = 1.5)
+@
+
+<<chord_diagram_link_order, echo = FALSE, fig.align = "center", out.width = "\\textwidth", out.height = "0.5\\textwidth", fig.width = 7, fig.height = 3.5, fig.cap = "Orders of links. A) set {\\tt self.decreasing} to {\tt TRUE}; B) set {\\tt self.decreasing} to {\tt FALSE}.">>=
+par(mfrow = c(1, 2))
+<<chord_diagram_link_order1>>
+par(mfrow = c(1, 1))
+@
+
+
+\subsection{Directional connections}
 
 In some cases, rows and columns represent information of direction. Argument {\tt directional}
-is used to illustrate such direction. If {\tt directional} is set to {\tt TRUE}, the
-links will have unequal height of root (figure \ref{fig:chord_diagram_directional} A). The type of direction 
-can be set through {\tt fromRows} and the difference between the unequal root can be set 
-through {\tt diffHeight} (figure \ref{fig:chord_diagram_directional} B, C). 
-In {\tt chordDiagram}, the starting foot of the link is shorter
-than the ending foot to give people the feeling that the link is moving out.
+is used to illustrate such direction. {\tt directional} with value 1 means the direction is from rows
+to columns which -1 means the direction is from columns to rows.
+By default, links will have unequal height of root (figure \ref{fig:chord_diagram_directional} A, B, C) 
+to represent the directions, and the starting foot of the link is shorter
+than the ending foot to give people the feeling that the link is moving out. If this is not what you feel,
+you can set {\tt diffHeight} to a negative value.
 
 
 <<chord_diagram_directional_simple, eval = FALSE, echo = c(1, 3, 5)>>=
@@ -448,7 +457,7 @@ mat2
 @
 
 <<chord_diagram_directional_overlap, eval = FALSE>>=
-chordDiagram(mat2, directional = TRUE, row.col = 1:5)
+chordDiagram(mat2, directional = 1, row.col = 1:5)
 @
 
 If you don't need self-loop for which two roots of a link are in a same sector, 
@@ -463,7 +472,7 @@ mat3
 @
 
 <<chord_diagram_directional_non_selfloop, eval = FALSE>>=
-chordDiagram(mat3, directional = TRUE, row.col = 1:5)
+chordDiagram(mat3, directional = 1, row.col = 1:5)
 @
 
 If the amount of links is not too large, links with arrows are more intuitionistic
@@ -474,7 +483,7 @@ can either be a scalar, a matrix with dimension names, or a three-column data fr
 <<chord_diagram_directional_arrow, eval = FALSE>>=
 arr.col = data.frame(c("S1", "S2", "S3"), c("E5", "E6", "E4"), 
     c("black", "black", "black"))
-chordDiagram(mat, directional = TRUE, direction.type = "arrows",
+chordDiagram(mat, directional = 1, direction.type = "arrows",
     link.arr.col = arr.col, link.arr.length = 0.2)
 @
 
@@ -483,7 +492,7 @@ If combining both {\tt arrows} and {\tt diffHeight}, it will give you better vis
 <<chord_diagram_directional_arrow2, eval = FALSE>>=
 arr.col = data.frame(c("S1", "S2", "S3"), c("E5", "E6", "E4"), 
     c("black", "black", "black"))
-chordDiagram(mat, directional = TRUE, direction.type = c("diffHeight", "arrows"),
+chordDiagram(mat, directional = 1, direction.type = c("diffHeight", "arrows"),
     link.arr.col = arr.col, link.arr.length = 0.2)
 @
 
@@ -492,17 +501,24 @@ There is also another arrow type: {\tt big.arrow} which is efficient to visualiz
 
 <<chord_diagram_directional_arrow3, eval = FALSE>>=
 matx = matrix(rnorm(64), 8)
-chordDiagram(matx, directional = TRUE, direction.type = c("diffHeight", "arrows"),
+chordDiagram(matx, directional = 1, direction.type = c("diffHeight", "arrows"),
     link.arr.type = "big.arrow")
 @
 
 If {\tt diffHeight} is set to a negative value, the start roots are longer than the end roots (figure \ref{fig:chord_diagram_direction} H)
 
 <<chord_diagram_directional_arrow4, eval = FALSE>>=
-chordDiagram(matx, directional = TRUE, direction.type = c("diffHeight", "arrows"),
+chordDiagram(matx, directional = 1, direction.type = c("diffHeight", "arrows"),
     link.arr.type = "big.arrow", diffHeight = -0.04)
 @
 
+Settings are similar for adjacency list, except by default, connection is from the first column
+in the data frame to the second one.
+
+<<eval = FALSE>>=
+# code is not run when building the vignette
+chordDiagram(df, directional = 1)
+@
 
 <<chord_diagram_directional, echo = FALSE, fig.align = "center", out.width = "\\textwidth", out.height = "\\textwidth", fig.width = 10.5, fig.height = 10.5, fig.cap = "Visualization of directional matrix. A) with default settings; B) set difference of two feet of links; C) set the starting feet; D) row names and column names have overlaps; E, F, G, H) directions are represented by arrows.">>=
 par(mfrow = c(3, 3))
@@ -517,6 +533,33 @@ text(-0.9, 0.9, "F", cex = 1.5)
 text(-0.9, 0.9, "G", cex = 1.5)
 <<chord_diagram_directional_arrow4>>
 text(-0.9, 0.9, "H", cex = 1.5)
+par(mfrow = c(1, 1))
+@
+
+\subsection{Self-links}
+
+How to set self links dependends on specific scenarios. A link have two roots that all correspond to the value.
+If it is a self link, the two roots will be on a same sector. If the link is plotted in the normal way,
+the value for this link would be counted twice and sometimes it is problematic.
+Take ajacency matrix for example, if users think the width of each sector should be exactly identical 
+to the sum of rows or columns, the link should be degenerated as a 'mountain' with the width corresponding to the value.
+In another scenario, suppose the connection represents the migration from countries, then
+the link should be plotted in the normal way because the two roots contain information of direction
+and are two different roots. 
+
+The {\tt self.link} argument can be set to 1 or 2 for different scenarios. You may see the difference in figure \ref{fig:chord_diagram_self_link}.
+
+<<chord_diagram_self_link1, eval = FALSE, echo = c(1, 3)>>=
+mat2 = matrix(runif(16), 4); rownames(mat2) = colnames(mat2) = letters[1:4]
+chordDiagram(mat2, self.link = 1)
+text(-0.9, 0.9, "A", cex = 1.5)
+chordDiagram(mat2, self.link = 2)
+text(-0.9, 0.9, "B", cex = 1.5)
+@
+
+<<chord_diagram_self_link, echo = FALSE, fig.align = "center", out.width = "\\textwidth", out.height = "0.5\\textwidth", fig.width = 7, fig.height = 3.5, fig.cap = "Deal with self links. A) set {\\tt self.link} to 1; B) set {\\tt self.link} to 2.">>=
+par(mfrow = c(1, 2))
+<<chord_diagram_self_link1>>
 par(mfrow = c(1, 1))
 @
 
@@ -555,10 +598,13 @@ par(mfrow = c(1, 1))
 Although the default style of {\tt chordDiagram} is enough for most visualization tasks,
 still you can have more fine-tune on the plot. 
 
+The usage is same for both ajacency matrix and ajacency list, so we only demonstrate
+with the matrix.
+
 \subsection{Organization of tracks}
 
 By default, {\tt chordDiagram} which utilizes circos graphics functions will create two tracks,
-one track for labels and one track for grids. 
+one track for labels and one track for grids (or plus axes). 
 
 <<echo = 2:3>>=
 pdf(NULL)
@@ -573,6 +619,8 @@ for this argument are {\tt grid} and {\tt name}. The height of annotation tracks
 set through {\tt annotationTrackHeight} which corresponds to values in 
 {\tt annotationTrack} (figure \ref{fig:chord_diagram_default_track} A, B, C).
 The value in {\tt annotationTrackHeight} is the percentage to the radius of unit circle.
+If {\tt grid} is specified in {\tt annotationTrack}, there can also be an additional option
+{\tt axis} to set whether add axes on this track.
 
 <<chord_diagram_default_track_simple, eval = FALSE, echo = c(1, 3, 4, 6)>>=
 chordDiagram(mat, grid.col = grid.col, annotationTrack = "grid")
@@ -712,26 +760,12 @@ and exceed your figure region, you can either decrease the size of the font or s
 \subsection{Customize sector axes}
 
 Axes are helpful to visualize the absolute values of links. By default {\tt chordDiagram}
-does not provide argument to add axes. But it is easy with self-defined code.
-
-Since there is already a grid track, we can add the axes directly to this track (figure \ref{fig:chord_diagram_axes} A).
-Here since the default height for the grid track is small, thus the default height for the axes ticks
-are also small, we manually set it to a larger value by {\tt major.tick.percentage}. The value
-of {\tt major.tick.percentage} is the ratio to the track height where axes are plotted.
-
-<<chord_diagram_axes_simple, eval = FALSE>>=
-chordDiagram(mat, grid.col = grid.col)
-for(si in get.all.sector.index()) {
-    # here the index for the grid track is 2
-    circos.axis(h = "top", labels.cex = 0.3, major.tick.percentage = 0.2,
-    sector.index = si, track.index = 2)
-}
-@
+add axes on the grid track. But it is easy to customize with self-defined code.
 
 Another type of axes which show relative percent is also helpful for visualizing Chord Diagram.
 Here we pre-allocate an empty track by {\tt preAllocateTracks} and come back to this track
 to add axes later. In following example, a major tick is put every 25\% in each sector.
-And the axes are only added if the sector width is larger than 20 degree (figure \ref{fig:chord_diagram_axes} B).
+And the axes are only added if the sector width is larger than 20 degree (figure \ref{fig:chord_diagram_axes}).
 
 <<chord_diagram_axes_two, eval = FALSE>>=
 # similar as the previous example, but we only plot the grid track
@@ -761,13 +795,8 @@ circos.clear()
 @
 
 
-<<chord_diagram_axes, echo = FALSE, fig.align = "center", out.width = "\\textwidth", out.height = "0.5\\textwidth", fig.width = 7, fig.height = 3.5, fig.cap = "Customize sector axes. A) add axes to the grid track; B) add another percentage axes">>=
-par(mfrow = c(1, 2))
-<<chord_diagram_axes_simple>>
-text(-0.9, 0.9, "A", cex = 1.5)
+<<chord_diagram_axes, echo = FALSE, fig.align = "center", out.width = "0.5\\textwidth", out.height = "0.5\\textwidth", fig.width = 3.5, fig.height = 3.5, fig.cap = "Customize sector axes">>=
 <<chord_diagram_axes_two>>
-text(-0.9, 0.9, "B", cex = 1.5)
-par(mfrow = c(1, 1))
 @
 
 

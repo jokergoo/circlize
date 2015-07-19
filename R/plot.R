@@ -947,10 +947,10 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 
 		chars = strsplit(labels, "")
 		if(facing == "bending.outside") {
-      chars = lapply(chars, rev)
+     		chars = lapply(chars, rev)
 		}
     
-    nlabel = length(labels)
+    	nlabel = length(labels)
 		strw = lapply(chars, strwidth, cex = cex, font = font)
 		strh = lapply(chars, strheight, cex = cex, font = font)
 		

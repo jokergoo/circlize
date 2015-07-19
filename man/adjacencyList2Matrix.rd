@@ -13,7 +13,7 @@ adjacencyList2Matrix(lt, square = FALSE)}
 \arguments{
 
   \item{lt}{a data frame which contains adjacency list.}
-  \item{square}{should returned matrix a square matrix?}
+  \item{square}{is the returned matrix a square matrix?}
 }
 \details{
 Convert adjacency list to adjacency matrix.

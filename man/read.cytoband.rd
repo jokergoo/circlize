@@ -37,7 +37,7 @@ important since the order of chromosomes will be used to control the order of se
 \describe{
   \item{df}{Data frame for cytoband data (rows are sorted if \code{sort.chr} is set to \code{TRUE})}
   \item{chromosome}{Sorted chromosome names}
-  \item{chr.len}{Length of chromosomes. Order are same as \code{chromosome}}
+  \item{chr.len}{Length of chromosomes. Orders are same as \code{chromosome}}
 }
 
 }

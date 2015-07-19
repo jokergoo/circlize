@@ -157,6 +157,7 @@ mat2df = function(mat) {
 # -grid.border border for grids. If it is ``NULL``, the border color is same as grid color
 # -transparency Transparency of link colors, 0 means no transparency and 1 means full transparency.
 #               If transparency is already set in ``col`` or ``row.col`` or ``column.col``, this argument will be ignored.
+#               ``NA``also ignores this argument.
 # -col Colors for links. It can be a matrix which corresponds to ``mat``, or a function which generate colors 
 #      according to values in ``mat``, or a single value which means colors for all links are the same, or a three-column
 #      data frame in which the first two columns correspond to row names and columns and the third column is colors. You
@@ -199,6 +200,9 @@ mat2df = function(mat) {
 # -link.arr.lwd line width ofthe single line link which is put in the center of the belt, same settings as ``link.lwd``.
 # -link.arr.lty line type of the single line link which is put in the center of the belt, same settings as ``link.lwd``.
 # -... pass to `circos.link`
+#
+# == details
+# Internally, the matrix is transformed to a data frame and sent to `chordDiagramFromDataFrame`.
 #
 chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transparency = 0.5,
 	col = NULL, row.col = NULL, column.col = NULL, order = NULL, directional = 0,
@@ -382,12 +386,13 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 	}
 
 	rgb_mat = t(col2rgb(col, alpha = TRUE))
-	if(all(rgb_mat[, 4] == 255)) {
+	if(is.na(transparency)) {
+		col = rgb(rgb_mat, maxColorValue = 255, alpha = rgb_mat[, 4])
+	} else if(all(rgb_mat[, 4] == 255)) {
 		col = rgb(rgb_mat, maxColorValue = 255, alpha = (1-transparency)*255)
 	} else {
 		col = rgb(rgb_mat, maxColorValue = 255, alpha = rgb_mat[, 4])
 	}
-	
 
 	dim(col) = dim(mat)
 	colnames(col) = colnames(mat)
@@ -405,7 +410,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 
 	df = mat2df(mat)
 
-	chordDiagramFromDataFrame(df, grid.col = grid.col, grid.border = grid.border,
+	chordDiagramFromDataFrame(df, grid.col = grid.col, grid.border = grid.border, transparency = NA,
 		col = psubset(col, df$ri, df$ci), order = order, directional = directional,
 		direction.type = direction.type, diffHeight = diffHeight, reduce = 0, self.link = self.link,
 		preAllocateTracks = preAllocateTracks,
@@ -438,6 +443,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 # -grid.border border for grids. If it is ``NULL``, the border color is same as grid color
 # -transparency Transparency of link colors, 0 means no transparency and 1 means full transparency.
 #               If transparency is already set in ``col`` or ``row.col`` or ``column.col``, this argument will be ignored.
+#               ``NA``also ignores this argument.
 # -col Colors for links. It can be a vector which corresponds to connections in ``df``, or a function which generate colors 
 #      according to values (the third column) in ``df``, or a single value which means colors for all links are the same. You
 #      may use `colorRamp2` to generate a function which maps values to colors.
@@ -453,7 +459,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 # -reduce if the ratio of the width of certain grid compared to the whole circle is less than this value, the grid is removed on the plot.
 #         Set it to value less than zero if you want to keep all tiny grid.
 # -self.link if there is a self link in one sector, 1 means the link will be degenerated as a 'mountain' and the width corresponds to the value for this connection.
-#            2 means the width of the starting root and the ending root all have the width that corresponds to the value for the connection.
+#            2 means the width of the starting root and the ending root all have the same width that corresponds to the value for the connection.
 # -preAllocateTracks Pre-allocate empty tracks before drawing Chord diagram. It can be a single number indicating
 #                    how many empty tracks needed to be created or a list containing settings for empty
 #                    tracks. Please refer to vignette for details.
@@ -554,7 +560,9 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	} 
 
 	rgb_mat = t(col2rgb(col, alpha = TRUE))
-	if(all(rgb_mat[, 4] == 255)) {
+	if(is.na(transparency)) {
+		col = rgb(rgb_mat, maxColorValue = 255, alpha = rgb_mat[, 4])
+	} else if(all(rgb_mat[, 4] == 255)) {
 		col = rgb(rgb_mat, maxColorValue = 255, alpha = (1-transparency)*255)
 	} else {
 		col = rgb(rgb_mat, maxColorValue = 255, alpha = rgb_mat[, 4])
@@ -604,7 +612,9 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	for(i in seq_len(nr)) {
 		if(df$rn[i] == df$cn[i]) {
 			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value[i])
-			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value[i])  # <<- self-link!!!!!
+			if(self.link == 2) {
+				xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value[i])  # <<- self-link!!!!!
+			}
 		} else {
 			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value[i])
 			xsum[df$cn[i]] = xsum[df$cn[i]] + abs(df$value[i])
@@ -675,7 +685,7 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 				xlim = get.cell.meta.data("xlim")
 				current.sector.index = get.cell.meta.data("sector.index")
 				i = get.cell.meta.data("sector.numeric.index")
-				circos.text(mean(xlim), 0.5, labels = current.sector.index,
+				circos.text(mean(xlim), 0.75, labels = current.sector.index, cex = 0.8,
 					facing = "inside", niceFacing = TRUE, adj = c(0.5, 0))
 			}, track.height = annotationTrackHeight[which(annotationTrack %in% "name")])
     }
@@ -691,12 +701,10 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 				}
 				circos.rect(xlim[1], 0, xlim[2], 1, col = grid.col[current.sector.index], border = border.col)
 				if("axis" %in% annotationTrack) {
-					circos.axis("top", labels.cex = 0.5)
+					circos.axis("top", labels.cex = 0.5, major.tick.percentage = 0.3)
 				}
 			}, track.height = annotationTrackHeight[which(annotationTrack %in% "grid")])
 	}
-
-
     
     rou = get_most_inside_radius()
 	if(directional) {

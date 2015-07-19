@@ -27,7 +27,7 @@
 # == values
 # -df         Data frame for cytoband data (rows are sorted if ``sort.chr`` is set to ``TRUE``)
 # -chromosome Sorted chromosome names
-# -chr.len    Length of chromosomes. Order are same as ``chromosome``
+# -chr.len    Length of chromosomes. Orders are same as ``chromosome``
 #
 read.cytoband = function(cytoband = paste0(system.file(package = "circlize"),
     "/extdata/cytoBand.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE) {
@@ -242,7 +242,7 @@ cytoband.col = function(x) {
 # -species species, pass to `read.cytoband`
 #
 # == details
-# The function will uniformly sample positions from human genome. Chromosome names start with "chr"
+# The function will uniformly sample positions from the genome. Chromosome names start with "chr"
 # and positions are sorted. The final number of rows may not be exactly as same as ``nr``.
 generateRandomBed = function(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0.5),
     species = NULL) {

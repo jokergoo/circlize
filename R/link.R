@@ -3,7 +3,7 @@
 # Draw links between points or intervals
 #
 # == param
-# -sector.index1 Index for sector one
+# -sector.index1 Index for the first sector
 # -point1        A single value or a numeric vector of length 2. If it is a 2-elements vector, then
 #                the link would be a belt/ribbon.
 # -sector.index2 Index for the other sector

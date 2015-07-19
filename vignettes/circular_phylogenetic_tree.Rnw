@@ -129,6 +129,8 @@ circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.3,
 circos.clear()
 @
 
+With the flexibility of {\bf circlize} package, it would be easy add more tracks if you want to add more corresponded information for the dendrogram to the plot.
+
 Figure \ref{fig:phylogenetic_tree} C is the normal dendrogram.
 
 <<phylogenetic_tree, echo = FALSE, fig.align = "center", out.width = "\\textwidth", out.height = "\\textwidth", fig.width = 10, fig.height = 10, fig.cap = "A simple phylogenetic tree. A: circular style; B) dendrogram is facing inside of the circle; C: normal style.">>=

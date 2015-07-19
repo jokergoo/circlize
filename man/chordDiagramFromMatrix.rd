@@ -54,4 +54,6 @@ chordDiagramFromMatrix(mat, grid.col = NULL, grid.border = NA, transparency = 0.
   \item{...}{pass to \code{\link{circos.link}}}
 }
 \details{
-...}
+Internally, the matrix is transformed to a data frame and sent to \code{\link{chordDiagramFromDataFrame}}.
+
+}

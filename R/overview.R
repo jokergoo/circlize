@@ -7,7 +7,7 @@
 # This package aims to implement circular layout in R.
 #
 # Since most of the figures are composed of points, lines and polygons, 
-# we just need to implement functions for drawing points, lines and polygons.
+# we just need to implement low-level functions for drawing points, lines and polygons.
 #
 # Current there are following low-level graphical functions: 
 #
@@ -17,7 +17,7 @@
 # - `circos.polygon`
 # - `circos.text`
 # - `circos.axis`
-# - `circos.link`, This maybe the unique feature for circos layout to represent relationships between elements.
+# - `circos.link`, This maybe the unique feature for circular layout to represent relationships between elements.
 #  
 # For drawing points, lines and text through the whole track (among several sectors), the following 
 # functions are available:
@@ -26,7 +26,7 @@
 # - `circos.trackLines`
 # - `circos.trackText`
 # 
-# Functions to arrange circos layout:
+# Functions to arrange circular layout:
 # 
 # - `circos.trackPlotRegion`
 # - `circos.updatePlotRegion`
@@ -34,7 +34,7 @@
 # - `circos.info`
 # - `circos.clear`
 # 
-# Theoretically, you are able to draw most kinds of circos plots by the above functions.
+# Theoretically, you are able to draw most kinds of circular plots by the above functions.
 # 
 # For specific use in genomics, we also implement functions which add graphics in genome scale.
 # 
@@ -43,7 +43,7 @@
 # - `circos.initializeWithIdeogram`
 # - `circos.genomicInitialize`
 # 
-# Functions to arrange genomic circos layout:
+# Functions to arrange genomic circular layout:
 # 
 # - `circos.genomicTrackPlotRegion`
 # 
@@ -63,6 +63,8 @@
 # Finally, function that draws chord diagram:
 # 
 # - `chordDiagram`
+# - `chordDiagramFromMatrix`
+# - `chordDiagramFromDataFrame`
 # 
-# Please refer to the vignettes to find out how to draw basic and advanced circos plots by this package.
+# Please refer to the vignettes to find out how to draw basic and advanced circular plots by this package.
 # 

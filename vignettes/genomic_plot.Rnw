@@ -12,12 +12,12 @@ opts_chunk$set(fig.pos = "", fig.align = "center")
 
 library(circlize)
 circos.genomicInitialize = function(...) {
-    circos.par(unit.circle.segments = 300)
+    circos.par(unit.circle.segments = 200)
     circlize::circos.genomicInitialize(...)
 }
 
 circos.initializeWithIdeogram = function(...) {
-    circos.par(unit.circle.segments = 280)
+    circos.par(unit.circle.segments = 200)
     circlize::circos.initializeWithIdeogram(...)
 }
 @
@@ -236,15 +236,12 @@ text(-0.9, 0.9, "I", cex = 1.5)
 @
 
 
-<<genomic_initialize_ideogram, echo = FALSE, out.width = '\\textwidth', fig.cap = "Different ways to initialize genomic circos plot. A) default; B) select subset of chromosomes; C) read from a data frame; D) the first column of the data frame is a factor; E) sort chromosomes; F) do not add ideogram; G) initialize the plot while plot nothing; H) set start degree of the plot; I) set gap degree.">>=
-par(mfrow = c(3, 3), mar = c(1, 1, 1, 1))
-<<genomic_initialize_ideogram_1>>
-<<genomic_initialize_ideogram_2>>
-<<genomic_initialize_ideogram_3>>
-<<genomic_initialize_ideogram_4>>
-<<genomic_initialize_ideogram_5>>
-par(mfrow = c(1, 1))
-@
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{figures/genomic_initialize_ideogram-1.pdf}
+\caption{Different ways to initialize genomic circos plot. A) default; B) select subset of chromosomes; C) read from a data frame; D) the first column of the data frame is a factor; E) sort chromosomes; F) do not add ideogram; G) initialize the plot while plot nothing; H) set start degree of the plot; I) set gap degree.}
+\label{fig:genomic_initialize_ideogram}
+\end{figure}
 
 
 \subsection{Customize ideogram}

@@ -106,12 +106,13 @@ parsePreAllocateTracksValue = function(preAllocateTracks) {
 	return(mat)
 }
 
-# == title
+# title
 # Adjust gaps to make chord diagrams comparable
 #
 # == param
 # -mat1 matrix that has the largest sum of absolute
-# -gap.degree gap.degree for the Chord Diagram which corresponds to ``mat1``
+# -gap.degree gap.degree for the Chord diagram which corresponds to ``mat1``
+# -start.degree start.degree for the first Chord diagram
 # -mat2 matrix to be compared
 #
 # == details
@@ -124,13 +125,16 @@ parsePreAllocateTracksValue = function(preAllocateTracks) {
 # == value
 # Sum of gaps for ``mat2``.
 #
-normalizeChordDiagramGap = function(mat1, gap.degree = circos.par("gap.degree"), mat2) {
+normalizeChordDiagramGap = function(mat1, gap.degree = circos.par("gap.degree"), 
+	start.degree = circos.par("start.degree"), mat2) {
 	percent = sum(abs(mat2)) / sum(abs(mat1))
 
 	if(length(gap.degree) == 1) {
 		gap.degree = rep(gap.degree, length(unique(rownames(mat1), colnames(mat1))))
 	}
 	blank.degree = (360 - sum(gap.degree)) * (1 - percent)
+	big.gap = (blank.degree - sum(rep()))/2
+	gap.degree = 
 	return(blank.degree)
 }
 
@@ -708,7 +712,7 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 				xlim = get.cell.meta.data("xlim")
 				current.sector.index = get.cell.meta.data("sector.index")
 				i = get.cell.meta.data("sector.numeric.index")
-				circos.text(mean(xlim), 0.75, labels = current.sector.index, cex = 0.8,
+				circos.text(mean(xlim), 0.9, labels = current.sector.index, cex = 0.8,
 					facing = "inside", niceFacing = TRUE, adj = c(0.5, 0))
 			}, track.height = annotationTrackHeight[which(annotationTrack %in% "name")])
     }

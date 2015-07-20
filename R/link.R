@@ -389,12 +389,25 @@ getQuadraticPoints = function(theta1, theta2, rou1, rou2, h = NULL, w = 1) {
 # 'Rational bezier curve', from wikipedia
 # w: w1
 # if I know how to calculate the length of bezier curve, then I can choose a betten n
-quadratic.bezier = function(p0, p1, p2, n = 100, w = 1) {
-	
-	t = seq(0, 1, length.out = n)
+quadratic.bezier = function(p0, p1, p2, w = 1) {
+
+	ncut = quadratic.bezier.length(p0, p1, p2, w = w)/ (2*pi/circos.par("unit.circle.segments"))
+	ncut = floor(ncut)
+	ncut = ifelse(ncut < 2, 2, ncut)
+
+	t = seq(0, 1, length.out = ncut)
 	x = ((1-t)^2 * p0[1] + 2*t*(1-t)*p1[1]*w + t^2*p2[1]) / ((1-t)^2 + 2*t*(1-t)*w + t^2)
 	y = ((1-t)^2 * p0[2] + 2*t*(1-t)*p1[2]*w + t^2*p2[2]) / ((1-t)^2 + 2*t*(1-t)*w + t^2)
 	return(cbind(x, y))
+
+}
+
+quadratic.bezier.length = function(p0, p1, p2, w = 1) {
+	n = 50
+	t = seq(0, 1, length.out = n)
+	x = ((1-t)^2 * p0[1] + 2*t*(1-t)*p1[1]*w + t^2*p2[1]) / ((1-t)^2 + 2*t*(1-t)*w + t^2)
+	y = ((1-t)^2 * p0[2] + 2*t*(1-t)*p1[2]*w + t^2*p2[2]) / ((1-t)^2 + 2*t*(1-t)*w + t^2)
+	sum((x[2:n] - x[1:(n-1)])^2 + (y[2:n] - y[1:(n-1)])^2)
 
 }
 

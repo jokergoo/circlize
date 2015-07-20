@@ -23,8 +23,7 @@ circos.rect(xleft, ybottom, xright, ytop,
   \item{...}{pass to \code{\link[graphics]{polygon}}}
 }
 \details{
-Currently, \code{xleft}, \code{ybottom}, \code{xright}, \code{ytop} are all single values, which means
-you can only draw one rectangle at once. The name for this function is \code{\link{circos.rect}}
+The name for this function is \code{\link{circos.rect}}
 because if you imagine the plotting region as Cartesian coordinate, then it is rectangle.
 in the polar coordinate, the up and bottom edge become two arcs.
 

@@ -48,15 +48,15 @@ particularly provides functions which focus on genomic plots. These functions
 are synonymous to the basic circos graphic functions but expect special format of input data:
 
 \begin{itemize}
-  \item {\tt circos.genomicTrackPlotRegion}: create a new track and add graphics.
-  \item {\tt circos.genomicPoints}: low-level function, add points
-  \item {\tt circos.genomicLines}: low-level function, add lines
-  \item {\tt circos.genomicRect}: low-level function, add rectangles
-  \item {\tt circos.genomicText}: low-level function, add text
-  \item {\tt circos.genomicLink}: add links
+  \item {\tt circos.genomicTrackPlotRegion()}: create a new track and add graphics.
+  \item {\tt circos.genomicPoints()}: low-level function, add points
+  \item {\tt circos.genomicLines()}: low-level function, add lines
+  \item {\tt circos.genomicRect()}: low-level function, add rectangles
+  \item {\tt circos.genomicText()}: low-level function, add text
+  \item {\tt circos.genomicLink()}: add links
 \end{itemize}
 
-The genomic functions are implemented by basic circos functions (e.g. {\tt circos.trackPlotRegion}, {\tt circos.points}),
+The genomic functions are implemented by basic circos functions (e.g. {\tt circos.trackPlotRegion()}, {\tt circos.points()}),
 thus, you can customize your own plots by both genomic functions and basic circos functions.
 
 \section{Input data}
@@ -68,7 +68,7 @@ the third column is the end positions. Following columns are optional where nume
 or other related values are stored. Such data structure is known as {\it BED} format 
 and is broadly used in genomic research.
 
-\textbf{circlize} provides a simple function {\tt generateRandomBed} which can generate 
+\textbf{circlize} provides a simple function {\tt generateRandomBed()} which can generate 
 random genomic data. Positions are uniformly generated from human genome and the number 
 of regions on chromosomes approximately proportional to the length of chromosomes. 
 In the function, {\tt nr} and {\tt nc} are number of rows and numeric columns that 
@@ -95,7 +95,7 @@ head(bed)
 
 Similar as general circos plots, the first step is to initialize the plot with genomic categories.
 In most situations, genomic categories are measured by chromosomes. The easiest way is to used
-{\tt circos.initializeWithIdeogram} (figure \ref{fig:genomic_initialize_ideogram} A):
+{\tt circos.initializeWithIdeogram()} (figure \ref{fig:genomic_initialize_ideogram} A):
 
 <<genomic_initialize_ideogram_1, eval = FALSE, echo = 1:2>>=
 par(mar = c(1, 1, 1, 1))
@@ -122,7 +122,7 @@ invisible(dev.off())
 
 If you want to read cytoband data from file, please explicitly specify {\tt colClasses} 
 arguments and set the class of position columns as {\tt numeric}. The reason is since 
-positions are represented as integers, {\tt read.table} would treat those numbers as 
+positions are represented as integers, {\tt read.table()} would treat those numbers as 
 {\tt integer} by default. In initialization of circos plot, \textbf{circlize} needs to 
 calculate the summation of all chromosome lengths. The sumation of such large integers 
 would throw error of data overflow.
@@ -185,9 +185,9 @@ text(0, 0, "read from cytoband file\nfirst column converted to factor\nlevels = 
 text(-0.9, 0.9, "E", cex = 1.5)
 @
 
-\textbf{circlize} provides a function {\tt read.cytoband} which can read/download and process cytoband data.
-In fact, {\tt circos.initializeWithIdeogram} calls {\tt read.cytoband} internally (actually, if there is no cytoband 
-available, {\tt read.chromInfo} will be called later). Please refer to the
+\textbf{circlize} provides a function {\tt read.cytoband()} which can read/download and process cytoband data.
+In fact, {\tt circos.initializeWithIdeogram()} calls {\tt read.cytoband()} internally (actually, if there is no cytoband 
+available, {\tt read.chromInfo()} will be called later). Please refer to the
 help page of the function for more details.
 
 <<eval=FALSE>>=
@@ -218,7 +218,7 @@ circos.clear()
 
 \subsubsection{Other general settings}
 
-Similar as general circos plot, the layout of circos plot can be controlled by {\tt circos.par}
+Similar as general circos plot, the layout of circos plot can be controlled by {\tt circos.par()}
 (figure \ref{fig:genomic_initialize_ideogram} H, I).
 
 <<genomic_initialize_ideogram_5, eval = FALSE, echo = c(1:3, 7:9)>>=
@@ -246,7 +246,7 @@ text(-0.9, 0.9, "I", cex = 1.5)
 
 \subsection{Customize ideogram}
 
-The default behaviour of {\tt circos.initializeWithIdeogram} is both initializing the layout
+The default behaviour of {\tt circos.initializeWithIdeogram()} is both initializing the layout
 and adding two tracks. But if {\tt plotType} is set to {\tt NULL}, the circular layout is only 
 initialized but nothing is added. It provides possibility for users to completely design
 their own style of plots. In the following example, we use different colors to represent 
@@ -269,9 +269,9 @@ circos.clear()
 
 \subsection{Initialize with general genomic category}
 
-Cytoband data is just a special case of genomic category. {\tt circos.genomicInitialize}
+Cytoband data is just a special case of genomic category. {\tt circos.genomicInitialize()}
 can initialize circular layout with any kind of genomic categories. In fact, 
-{\tt circos.initializeWithIdeogram} is implemented by {\tt circos.genomicInitialize}. 
+{\tt circos.initializeWithIdeogram()} is implemented by {\tt circos.genomicInitialize()}. 
 The input data for the function is also a data frame with at least three columns. The first 
 column is genomic category (for cytoband data, it is chromosome name), and the next two columns 
 are genomic positions in each genomic category. The range of each category will be inferred 
@@ -327,7 +327,7 @@ circos.genomicTrackPlotRegion(ylim = c(0, 1),
 @
 
 Next, we put each transcript line by line. It is simply adding lines and rectangles. 
-The usage of {\tt circos.genomicTrackPlotRegion} will be introduced in later sections.
+The usage of {\tt circos.genomicTrackPlotRegion()} will be introduced in later sections.
 
 <<genomic_gene_model_2, eval = FALSE>>=
 n = max(sapply(tp_family, length))
@@ -356,7 +356,7 @@ par(mar = c(1, 1, 1, 1))
 
 \subsection{Zooming}
 
-{\tt circos.genomicInitialize} is implemented by the general {\tt circos.initialize} function,
+{\tt circos.genomicInitialize()} is implemented by the general {\tt circos.initialize()} function,
 so same strategy can be applied to zoom chromosomes (figure \ref{fig:genomic_zoom}). Just be careful with the order of chromosomes.
 
 <<>>=
@@ -379,7 +379,7 @@ sector.width = c(xrange[normal_sector_index] / sum(xrange[normal_sector_index]),
                  xrange[zoomed_sector_index] / sum(xrange[zoomed_sector_index])) 
 @
 
-Here we can only use {\tt circos.genomicInitialize} to deal with zoomed chromosomes because chromosome 
+Here we can only use {\tt circos.genomicInitialize()} to deal with zoomed chromosomes because chromosome 
 with name "zoom\_chr1" is not a normal chromosome.
 
 <<genomic_zoom_1, eval = FALSE>>=
@@ -432,7 +432,7 @@ In following sections, chromosome will be used as the type of genomic category.
 In this section, we assume {\tt data} is simply a data frame. For more complex
 situations and behaviour of the functions, we will introduce in the next section.
 
-Similar as {\tt circos.trackPlotRegion}, {\tt circos.genomicTrackPlotRegion} also
+Similar as {\tt circos.trackPlotRegion()}, {\tt circos.genomicTrackPlotRegion()} also
 accepts a self-defined function {\tt panel.fun} which is applied in every cell but with 
 different form.
 
@@ -469,7 +469,7 @@ circos.clear()
 invisible(dev.off())
 @
 
-Since {\tt circos.genomicTrackPlotRegion} will create a new track, it needs values to
+Since {\tt circos.genomicTrackPlotRegion()} will create a new track, it needs values to
 calculate range of y-values to arrange data points. Users can either specify the index of 
 numeric columns in {\tt data} by {\tt numeric.column} ({\bf named index or numeric index})
 or set {\tt ylim}. If none of them are set, the function will try to look for all numeric columns
@@ -491,18 +491,18 @@ anywhere to get information of sectors and tracks.
 
 \subsection{Points}
 
-{\tt circos.genomicPoints} is similar as {\tt circos.points}. The difference is {\tt circos.genomicPoints}
+{\tt circos.genomicPoints()} is similar as {\tt circos.points()}. The difference is {\tt circos.genomicPoints()}
 expects a data frame containing genomic regions and a data frame containing values. The data column for 
 plotting should be indicated by {\tt numeric.column}. If the function is called
-inside {\tt circos.genomicTrackPlotRegion} and users have been already set {\tt numeric.column}
-in {\tt circos.genomicTrackPlotRegion}, proper value of {\tt numeric.column} will be
-passed to {\tt circos.genomicPoints} through {\tt ...} in {\tt panel.fun}. Which means, you need
-to add {\tt ...} as the final argument in {\tt circos.genomicPoints} to get such information.
-If {\tt numeric.column} is not set in both place, {\tt circos.genomicPoints} will use all numeric columns detected in {\tt value}.
+inside {\tt circos.genomicTrackPlotRegion()} and users have been already set {\tt numeric.column}
+in {\tt circos.genomicTrackPlotRegion()}, proper value of {\tt numeric.column} will be
+passed to {\tt circos.genomicPoints()} through {\tt ...} in {\tt panel.fun}. Which means, you need
+to add {\tt ...} as the final argument in {\tt circos.genomicPoints()} to get such information.
+If {\tt numeric.column} is not set in both place, {\tt circos.genomicPoints()} will use all numeric columns detected in {\tt value}.
 
 Note here {\tt numeric.column} is measured in {\tt value} while {\tt numeric.column} in
-{\tt circos.genomicTrackPlotRegion} is measured in the complete data frame. There is a
-difference of 3! When {\tt numeric.column} is passed to {\tt circos.genomicPoints} internally, 3 is subtracted automatically. 
+{\tt circos.genomicTrackPlotRegion()} is measured in the complete data frame. There is a
+difference of 3! When {\tt numeric.column} is passed to {\tt circos.genomicPoints()} internally, 3 is subtracted automatically. 
 If you use character index instead of numeric index, you do not need to worry about it. 
 
 <<eval=FALSE>>=
@@ -517,7 +517,7 @@ can be of length one or number of rows of {\tt region}. If there are more than
 one numeric columns specified, points for each numeric column will be added iteratively,
 and the graphical parameters should be either length one or number of numeric columns specified.
 
-{\tt circos.genomicPoints} is implemented by {\tt circos.points}. The basic idea of the 
+{\tt circos.genomicPoints()} is implemented by {\tt circos.points}. The basic idea of the 
 implementation is like follows.
 
 <<eval = FALSE>>=
@@ -528,14 +528,14 @@ circos.genomicPoints = function(region, value, numeric.column = 1, ...) {
 }
 @
 
-As shown above, {\tt circos.genomicPoints} also provides arguments {\tt sector.index} and {\tt track.index}.
+As shown above, {\tt circos.genomicPoints()} also provides arguments {\tt sector.index} and {\tt track.index}.
 The default values are current sector and current track. With these two arguments, you can
-add points by {\tt circos.genomicPoints} outside {\tt circos.genomicPlotTrackRegion}. 
+add points by {\tt circos.genomicPoints()} outside {\tt circos.genomicPlotTrackRegion()}. 
 
 \subsection{Lines}
 
-{\tt circos.genomicLines} is similar as {\tt circos.lines}. The setting of graphical parameters
-is similar as {\tt circos.genomicPoints}. 
+{\tt circos.genomicLines()} is similar as {\tt circos.lines()}. The setting of graphical parameters
+is similar as {\tt circos.genomicPoints()}. 
 
 <<eval=FALSE>>=
 circos.genomicLines(region, value, ...)
@@ -550,7 +550,7 @@ interval will represent as a 'horizontal' line.
 
 \subsection{Text}
 
-For {\tt circos.genomicText}, the position of text can be specified either by {\tt numeric.column} (index)
+For {\tt circos.genomicText()}, the position of text can be specified either by {\tt numeric.column} (index)
 or a separated vector {\tt y}. The labels of text can be specified either by {\tt labels.column} (index)
 or a vector {\tt labels}.
 
@@ -565,7 +565,7 @@ circos.genomicText(region, value, sector.index, track.index)
 
 \subsection{Rectangle}
 
-For {\tt circos.genomicRect}, the positions of top and bottom of the rectangles can be
+For {\tt circos.genomicRect()}, the positions of top and bottom of the rectangles can be
 specified by {\tt ytop}, {\tt ybottom} or {\tt ytop.column}, {\tt ybottom.column} (index).
 
 <<eval=FALSE>>=
@@ -574,10 +574,10 @@ circos.genomicRect(region, value, ytop.column = 2, ybottom = 0)
 circos.genomicRect(region, value, col, border)
 @
 
-One of the usage of {\tt circos.genomicRect} is to plot heatmap on the circle.
-\textbf{circlize} provides a simple function {\tt colorRamp2} to interpolate colors. 
-The arguments of {\tt colorRamp2} are break points and colors
-which correspond to the break points. {\tt colorRamp2} returns a new function
+One of the usage of {\tt circos.genomicRect()} is to plot heatmap on the circle.
+\textbf{circlize} provides a simple function {\tt colorRamp2()} to interpolate colors. 
+The arguments of {\tt colorRamp2()} are break points and colors
+which correspond to the break points. {\tt colorRamp2()} returns a new function
 which can be used to generate new colors. 
 
 <<>>=
@@ -589,9 +589,9 @@ p_value = c(0.8, 0.5, 0.001)
 col_fun(-log10(p_value))
 @
 
-\section{More details on {\tt circos.genomicTrackPlotRegion}}
+\section{More details on {\tt circos.genomicTrackPlotRegion()}}
 
-The behaviour of {\tt circos.genomicTrackPlotRegion} and {\tt panel.fun} 
+The behaviour of {\tt circos.genomicTrackPlotRegion()} and {\tt panel.fun} 
 will be different according to different input data (e.g. is it a simple data frame or a list
 of data frames? If it is a data frame, how many numeric columns it has?) and different settings.
 
@@ -603,9 +603,9 @@ If input data is a simple data frame, {\tt region} in {\tt panel.fun} would be a
 containing start position and end position in the current chromosome which is extracted
 from input data. {\tt value} is also a data frame which contains columns in input data
 excluding the first three columns. Index of proper numeric columns will be passed by {\tt ...}
-if it is set in {\tt circos.genomicTrackPlotRegion}.
+if it is set in {\tt circos.genomicTrackPlotRegion()}.
 So if users want to use such information, they need to pass {\tt ...} to low-level
-genomic function such as {\tt circos.genoimcPoints} as well.
+genomic function such as {\tt circos.genoimcPoints()} as well.
 
 If there are more than one numeric columns, all columns that are specified will be added to
 the plot.
@@ -648,7 +648,7 @@ circos.genomicTrackPlotRegion(bedlist, numeric.column = c(4, 5),
 
 \subsection{{\tt stack} mode}
 
-{\tt circos.genomicTrackPlotRegion} also supports a {\tt stack} mode. Under {\tt stack} mode,
+{\tt circos.genomicTrackPlotRegion()} also supports a {\tt stack} mode. Under {\tt stack} mode,
 {\tt ylim} is re-defined inside the function. The y-axis will be splitted into several layers
 with equal height and graphics are put on 'horizontal' layers (y = 1, 2, ...).
 
@@ -1045,7 +1045,7 @@ circos.genomicTrackPlotRegion(bed, ylim = c(-1, 1),
 
 \section{Links}
 
-{\tt circos.genomicLink} expects two data frames and it will add links from genomic
+{\tt circos.genomicLink()} expects two data frames and it will add links from genomic
 intervals in the first data frame to corresponding genomic intervals in the second
 data frame (figure \ref{fig:genomic_links}). You can set graphical parameters as a single
 scalar or a vector.
@@ -1069,7 +1069,7 @@ par(mfrow = c(1, 1))
 
 \section{Highlight chromosomes}
 
-{\tt highlight.chromosome} provides a simple way to highlight chromosomes. Just remember
+{\tt highlight.chromosome()} provides a simple way to highlight chromosomes. Just remember
 to use transparent filled colors. The position of the highlighted regions
 can be fine-tuned by {\tt padding} argument which are percent of corresponding height 
 and width in the highlighted regions.
@@ -1112,7 +1112,7 @@ par(mar = c(1, 1, 1, 1))
 @
 
 {\tt circos.info} would be helpful for you to find the correct track index. 
-And if you only want to highlight some sub regions in one chromosome, use {\tt draw.sector} directly. 
+And if you only want to highlight some sub regions in one chromosome, use {\tt draw.sector()} directly. 
 
 \section{High-level genomic functions}
 
@@ -1126,7 +1126,7 @@ If heatmap or text for those dense regions are to be plotted. They would be over
 hard to identify, also ugly to visualize. Thus, a way to transform original positions to 
 new positions would help for the visualization.
 
-Low-level genomic functions such as {\tt circos.genomicPoints} all accept an argument {\tt posTransform}
+Low-level genomic functions such as {\tt circos.genomicPoints()} all accept an argument {\tt posTransform}
 to apply user-defined position transformation. Value for {\tt posTransform} is a self-defined function which
 only accepts at least one argument: a data frame with two columns (start position and end position). 
 Because {\tt posTransform} is bound to low-level graphic functions, it is not necessary to add
@@ -1135,7 +1135,7 @@ transformation: Number of rows of regions should be the same before and after th
 
 \subsubsection{The default position transformation function}
 
-In \textbf{circlize}, there already provides a position transformation function {\tt posTransform.default} 
+In \textbf{circlize}, there already provides a position transformation function {\tt posTransform.default()} 
 which distributes positions uniformly in the current chromosome.
 
 Following code does the transformation. The points are plotted with the new transformed regions.
@@ -1147,9 +1147,9 @@ circos.genomicTrackPlotRegion(data, panel.fun = function(region, value, ...) {
 @
 
 Of course we need identification lines to connect the untransformed regions to the transformed
-regions. There is a function called {\tt circos.genomicPosTransformLines} which does the job.
-Same value for {\tt posTransform} which was used before should be passed to {\tt circos.genomicPosTransformLines}.
-Note {\tt circos.genomicPosTransformLines} will create a new track to put such identification lines.
+regions. There is a function called {\tt circos.genomicPosTransformLines()} which does the job.
+Same value for {\tt posTransform} which was used before should be passed to {\tt circos.genomicPosTransformLines()}.
+Note {\tt circos.genomicPosTransformLines()} will create a new track to put such identification lines.
 In the function, {\tt direction} controls whether the position transformed track is inside or outside
 the identification line track, and {\tt horizontalLine} controls whether add lines to identify the regions.
 
@@ -1223,15 +1223,15 @@ par(mfrow = c(1, 1))
 
 \subsubsection{Position transformation for text}
 
-There is another position transformation function {\tt posTransform.text} provided in \textbf{circlize} that can smartly position
+There is another position transformation function {\tt posTransform.text()} provided in \textbf{circlize} that can smartly position
 text on the circle. Normally, we don't want the text too away from the original position
-and also we want to get avoid of text overlapping. {\tt posTransform.text} calculates the height of 
+and also we want to get avoid of text overlapping. {\tt posTransform.text()} calculates the height of 
 text and transform positions properly. Since such text position transformation relies on font size of text
-and which track the text is in, the usage of {\tt posTransform.text} is a little bit complex. 
-Currently, {\tt posTransform.text} only makes sense if it is called inside {\tt circos.genomicText} 
+and which track the text is in, the usage of {\tt posTransform.text()} is a little bit complex. 
+Currently, {\tt posTransform.text()} only makes sense if it is called inside {\tt circos.genomicText()} 
 and only works when {\tt facing} is set to {\tt clockwise} or {\tt reverse.clockwise}.
 
-In following example code, using {\tt posTransform.text} is quite similar as {\tt posTransform.default}
+In following example code, using {\tt posTransform.text()} is quite similar as {\tt posTransform.default()}
 (but note this function is quit experimental):
 
 <<eval=FALSE>>=
@@ -1249,7 +1249,7 @@ Since the calculation of the position of the line ends which corresponds to the 
 relies on text settings (e.g. font size, font family) and track for the text (i.e.
 the track will affect the position of text), we need to go back to the track where text position transformation happened
 and use the same settings for the text. Such information should be collected when plotting transformation lines.
-The solution by \textbf{circlize} is to wrap {\tt posTransform.text} with such information,
+The solution by \textbf{circlize} is to wrap {\tt posTransform.text()} with such information,
 then text information will be recovered and the transformation will be calculated in the correct track.
 
 As we mentioned before, {\tt posTransform} expect at least one argument, so the argument {\tt value}
@@ -1267,7 +1267,7 @@ circos.genomicPosTransformLines(bed, direction = "outside",
 @
 
 If the transformation line track is plotted before the track where text position is transformed, 
-things will be more complicated. Since {\tt circos.genomicPosTransformLines} 
+things will be more complicated. Since {\tt circos.genomicPosTransformLines()} 
 needs information of the text, but at that moment, track which transforms text positions 
 has not be created. The solution is first creating an empty track for position transformation lines, 
 then adding the position transformation track. Finally go back to the 
@@ -1315,9 +1315,9 @@ circos.genomicPosTransformLines(bed,
 )
 @
 
-For examples and comparisons between {\tt posTransform.default} and {\tt posTransform.text} when
+For examples and comparisons between {\tt posTransform.default()} and {\tt posTransform.text()} when
 visualizing text, please refer to figure \ref{fig:genomic_text_pos_transformation}. Source code
-is available in the help page of {\tt posTransform.text}.
+is available in the help page of {\tt posTransform.text()}.
 
 <<genomic_text_pos_transformation, echo = FALSE, out.width = "\\textwidth", fig.cap = "Transformation of text positions.">>=
 source("src/genomic-07-posTransformLinesText.R")
@@ -1466,7 +1466,7 @@ text(0.1, 0.1, "B", cex = 1.5)
 \subsection{Genomic density and Rainfall plot}
 
 
-{\tt circos.genomicDensity} calculates how much a genomic window is covered by regions in {\tt bed}.
+{\tt circos.genomicDensity()} calculates how much a genomic window is covered by regions in {\tt bed}.
 The input data can be a single data frame or a list of data frames.
 
 <<eval = FALSE>>=

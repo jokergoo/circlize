@@ -45,7 +45,7 @@ In this example, we will demonstrate how to draw the tree from the {\tt dendrogr
 Nevertheless, other classes can be converted to {\tt dendrogram} without too much difficulty.
 
 The {\tt bird.orders} data we are using here is from \textbf{ape} package. This data set is 
-related to species of birds. We split the tree into six sub trees by {\tt cutree}
+related to species of birds. We split the tree into six sub trees by {\tt cutree()}
 and convert the data into a {\tt dendrogram} object.
 
 <<eval = FALSE>>=
@@ -90,7 +90,7 @@ circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.3,
 In the above code, set {\tt xlim} to {\tt c(0, n)} is very important because the leaves of 
 the dendrogram are drawn at {\tt x = seq(0.5, n - 0.5)}.
 
-In the second track, we plot the circular dendrogram by {\tt circos.dendrogram}. You can
+In the second track, we plot the circular dendrogram by {\tt circos.dendrogram()}. You can
 render the dendrogram by \textbf{dendextend} package (figure \ref{fig:phylogenetic_tree} A).
 
 <<phylogenetic_tree_part2, eval = FALSE, message = FALSE, text = FALSE>>=

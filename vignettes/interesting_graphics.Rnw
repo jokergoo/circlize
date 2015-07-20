@@ -35,10 +35,10 @@ circos.initialize = function(...) {
 
 \maketitle 
 
-The first example is a clock. The key function here is {\tt circos.axis} (figure \ref{fig:interesting_clock}).
+The first example is a clock. The key function here is {\tt circos.axis()} (figure \ref{fig:interesting_clock}).
 The whole circle only contains one sector in which major tick at 0 is overlapping with major tick at 12.
 The two arrows are plotted in the canvas coordinate. An example of a real-time clock is in {\it Examples} section in
-the help page of {\tt circos.axis}.
+the help page of {\tt circos.axis()}.
 
 <<interesting_clock, fig.align = "center", out.width = "0.6\\textwidth", fig.cap = "A clock.">>=
 library(circlize)
@@ -57,7 +57,7 @@ circos.clear()
 
 
 The second example is a dartboard. In the figure, tracks are assigned with different heights and each cell is initialized with
-different colors (figure \ref{fig:interesting_dartboard}). The most inside green ring and red circle are plotted by {\tt draw.sector}.
+different colors (figure \ref{fig:interesting_dartboard}). The most inside green ring and red circle are plotted by {\tt draw.sector()}.
 
 <<interesting_dartboard, fig.align = "center", out.width = "0.6\\textwidth", fig.cap = "A dartboard.">>=
 factors = 1:20  # just indicate there are 20 sectors
@@ -87,7 +87,7 @@ circos.clear()
 
 
 The third example is Bagua (\url{https://en.wikipedia.org/wiki/Bagua}). The
-key functions are {\tt circos.rect} and {\tt draw.sector} (figure \ref{fig:interesting_bagua}). 
+key functions are {\tt circos.rect()} and {\tt draw.sector()} (figure \ref{fig:interesting_bagua}). 
 
 Bagua is originated several thousands years ago in China. It is the source of almost all ancient
 Chinese philosophy. It abstracts the rule of universe into base signs and combination of the two basic signs 
@@ -162,7 +162,7 @@ circos.clear()
 
 Figure \ref{fig:painting} is a circular style of Keith Haring's doodle. 
 The circular transformation is as follows: 1. use {\tt jpeg} package to read RGB
-information for each pixel in the original figure; 2. use {\tt circos.rect} to draw
+information for each pixel in the original figure; 2. use {\tt circos.rect()} to draw
 every pixel into the circle. Source code for generating the figure can be found
 at \url{http://jokergoo.github.io/circlize/example/doodle.html}.
 

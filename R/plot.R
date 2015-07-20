@@ -677,8 +677,7 @@ circos.trackLines = function(factors, x, y, track.index = get.cell.meta.data("tr
 # -... pass to `graphics::polygon`
 #
 # == details
-# Currently, ``xleft``, ``ybottom``, ``xright``, ``ytop`` are all single values, which means
-# you can only draw one rectangle at once. The name for this function is `circos.rect`
+# The name for this function is `circos.rect`
 # because if you imagine the plotting region as Cartesian coordinate, then it is rectangle.
 # in the polar coordinate, the up and bottom edge become two arcs.
 #

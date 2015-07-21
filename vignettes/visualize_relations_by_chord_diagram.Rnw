@@ -68,12 +68,12 @@ df = data.frame(from = letters[1:3], to = LETTERS[1:3], value = 1:3)
 df
 @
 
-In {\bf circlize} package, there is a {\tt chordDiagram()} function that supports both adjacency matrix
-and adjacency list. The function will dispatch to {\tt chordDiagramFromMatrix()} or {\tt chordDiagramFromDataFrame()}
+In {\bf circlize} package, there is a {\tt chordDiagram} function that supports both adjacency matrix
+and adjacency list. The function will dispatch to {\tt chordDiagramFromMatrix} or {\tt chordDiagramFromDataFrame}
 according to whether the input is a matrix or a data frame.
-Internally, the adjacency matrix is converted to a adjacency list and makes the final Chord diagram by {\tt chordDiagramFromDataFrame()}, 
+Internally, the adjacency matrix is converted to a adjacency list and makes the final Chord diagram by {\tt chordDiagramFromDataFrame}, 
 but the adjacency matrix still has some unique features such visualizing a sysmmetric matrix.
-Users are encouraged to use {\tt chordDiagram()} directly instead of using the two dispatched functions.
+Users are encouraged to use {\tt chordDiagram} directly instead of using the two dispatched functions.
 
 \section{The {\tt chordDiagram} function}
 
@@ -221,7 +221,7 @@ chordDiagram(df, grid.col = grid.col, col = col)
 @
 
 {\tt col} argument can also be a self-defined function which maps values to colors.
-Here we use {\tt colorRamp2()} which is available in \textbf{circlize} to generate a function
+Here we use {\tt colorRamp2} which is available in \textbf{circlize} to generate a function
 with a list of break points and corresponding colors (figure \ref{fig:chord_diagram_color} D).
 This functionality also works for adjacency list.
 
@@ -607,7 +607,7 @@ par(mfrow = c(1, 1))
 
 \section{Advanced usage}
 
-Although the default style of {\tt chordDiagram()} is enough for most visualization tasks,
+Although the default style of {\tt chordDiagram} is enough for most visualization tasks,
 still you can have more configurations on the plot. 
 
 The usage is same for both ajacency matrix and ajacency list, so we only demonstrate
@@ -692,13 +692,13 @@ chordDiagram(mat, annotationTrack = NULL,
                              list(bg.border = "black")))
 @
 
-By default {\tt chordDiagram()} provides poor support for customization of sector labels and axes, 
+By default {\tt chordDiagram} provides poor support for customization of sector labels and axes, 
 but with {\tt preAllocateTracks} it is rather easy to customize them. Such customization will be introduced
 in next section.
 
 \subsection{Customize sector labels}
 
-In {\tt chordDiagram()}, there is no argument to control the style of sector labels. 
+In {\tt chordDiagram}, there is no argument to control the style of sector labels. 
 But this can be done by first pre-allocating an empty track and customizing the labels 
 in it later. In the following example, one track is firstly allocated and a Chord diagram 
 is added without label track. Later, the first track is updated with setting 
@@ -774,7 +774,7 @@ and exceed your figure region, you can either decrease the size of the font or s
 
 \subsection{Customize sector axes}
 
-Axes are helpful to visualize the absolute values of links. By default {\tt chordDiagram()}
+Axes are helpful to visualize the absolute values of links. By default {\tt chordDiagram}
 add axes on the grid track. But it is easy to customize a better one with self-defined code.
 
 Another type of axes which show relative percent is also helpful for visualizing Chord diagram.

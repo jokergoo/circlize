@@ -517,7 +517,7 @@ can be of length one or number of rows of {\tt region}. If there are more than
 one numeric columns specified, points for each numeric column will be added iteratively,
 and the graphical parameters should be either length one or number of numeric columns specified.
 
-{\tt circos.genomicPoints()} is implemented by {\tt circos.points}. The basic idea of the 
+{\tt circos.genomicPoints()} is implemented by {\tt circos.points()}. The basic idea of the 
 implementation is like follows.
 
 <<eval = FALSE>>=

@@ -3,6 +3,9 @@ Changes in version 0.3.0
 
 * add `chordDiagramFromMatrix` and `chordDiagramFromDataFrame`
 * by default there is axis on chord diagram
+* add `quadratic.bezier.length` that calculates the approximate length of bezier curve
+* normalize link-related functions to make sure the direction is always from
+  the first argument to the second argument, reverse clockwise.
 
 Changes in version 0.2.5
 -----------------------------------------------------------------------------

@@ -11,6 +11,7 @@ circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", bg.bo
 circos.link("a", 5, "c", 5, border = 1)
 circos.link("b", 5, "d", c(4, 6), border = 1)
 circos.link("a", c(2, 3), "f", c(4, 6), border = 1)
+circos.link("e", c(2, 3), "g", 5, border = 1)
 
 circos.clear()
 text(0.9, 0.9, "A", cex = 1.5)

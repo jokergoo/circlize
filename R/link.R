@@ -64,13 +64,19 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 	        if(directional == 1) {  # point1 to point2
 	        	nr = nrow(d)
 	        	alpha = line_degree(d[nr-1, 1], d[nr-1, 2], d[nr, 1], d[nr, 2])
+	        	oljoin = par("ljoin")
+	        	par(ljoin = "mitre")
 	        	Arrowhead(d[nr, 1], d[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
 	        		arr.adj = 1, arr.type = arr.type, arr.col = col, lcol = col)
+	        	par(ljoin = oljoin)
 	        } else if(directional == -1) {  # point2 to point2
 	        	nr = nrow(d)
 	        	alpha = line_degree(d[2, 1], d[2, 2], d[1, 1], d[1,2])
+	        	oljoin = par("ljoin")
+	        	par(ljoin = "mitre")
 	        	Arrowhead(d[1, 1], d[1, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
 	        		arr.adj = 1, arr.type = arr.type, arr.col = col, lcol = col)
+	        	par(ljoin = oljoin)
 	        }
 	    }
     } else if(length(point1) == 1) {
@@ -98,17 +104,18 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 		        d2x = getQuadraticPoints(theta1, theta22, rou1, rou2 - arr.length, h = h, w = w)
 	        	dcenter = getQuadraticPoints(theta1, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
 		    }
-		   	r2 = arc.points(theta21, theta22, rou2)
+		   	r2 = arc.points(theta22, theta21, rou2)
 			if(arr.type == "big.arrow" && directional == 1) {
-				if(nrow(r2) %% 2 == 1) {
-					r2 = r2[ceiling(nrow(r2)/2), , drop = FALSE]
-				} else {
-					r2 = colMeans(r2[c(nrow(r2)/2, nrow(r2)/2+1), , drop = FALSE])
-				}
-				d = rbind(d1x, r2)
+				# if(nrow(r2) %% 2 == 1) {
+				# 	r2 = r2[ceiling(nrow(r2)/2), , drop = FALSE]
+				# } else {
+				# 	r2 = colMeans(r2[c(nrow(r2)/2, nrow(r2)/2+1), , drop = FALSE])
+				# }
+				r2 = arc.midpoint(theta22, theta21, rou2)
+				d = rbind(d1x, revMat(r2))
 				d = rbind(d, revMat(d2x))
 			} else {
-				d = rbind(d1, r2)
+				d = rbind(d1, revMat(r2))
 				d = rbind(d, revMat(d2))
 			}
 			
@@ -118,14 +125,20 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
 		        	nr = nrow(dcenter)
 		        	alpha = line_degree(dcenter[nr-1, 1], dcenter[nr-1, 2], dcenter[nr, 1], dcenter[nr, 2])
+		        	oljoin = par("ljoin")
+	        		par(ljoin = "mitre")
 		        	Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
 		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
+		        	par(ljoin = oljoin)
 		        } else if(directional == -1) {  # point2 to point1
 		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
 		        	nr = nrow(dcenter)
 		        	alpha = line_degree(dcenter[2, 1], dcenter[2, 2], dcenter[1, 1], dcenter[1,2])
+		        	oljoin = par("ljoin")
+		        	par(ljoin = "mitre")
 		        	Arrowhead(dcenter[1, 1], dcenter[1, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
 		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
+		        	par(ljoin = oljoin)
 		        }
 		    }
 		}
@@ -157,11 +170,12 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 		    }
 			r1 = arc.points(theta12, theta11, rou1)
 			if(arr.type == "big.arrow" && directional == -1) {
-				if(nrow(r1) %% 2 == 1) {
-					r1 = r1[ceiling(nrow(r1)/2), , drop = FALSE]
-				} else {
-					r1 = colMeans(r1[c(nrow(r1)/2, nrow(r1)/2+1), , drop = FALSE])
-				}
+				# if(nrow(r1) %% 2 == 1) {
+				# 	r1 = r1[ceiling(nrow(r1)/2), , drop = FALSE]
+				# } else {
+				# 	r1 = colMeans(r1[c(nrow(r1)/2, nrow(r1)/2+1), , drop = FALSE])
+				# }
+				r1 = arc.midpoint(theta12, theta11, rou1)
 				d = rbind(revMat(d1x), revMat(r1))
 				d = rbind(d, d2x)
 			} else {
@@ -174,14 +188,20 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
 		        	nr = nrow(dcenter)
 		        	alpha = line_degree(dcenter[nr-1, 1], dcenter[nr-1, 2], dcenter[nr, 1], dcenter[nr, 2])
-		        	Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
+		        	oljoin = par("ljoin")
+	        		par(ljoin = "mitre")
+	        		Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
 		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
+	        		par(ljoin = oljoin)
 		        } else if(directional == -1) {  # point2 to point2
 		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
 		        	nr = nrow(dcenter)
 		        	alpha = line_degree(dcenter[2, 1], dcenter[2, 2], dcenter[1, 1], dcenter[1,2])
+		        	oljoin = par("ljoin")
+		        	par(ljoin = "mitre")
 		        	Arrowhead(dcenter[1, 1], dcenter[1, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
 		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
+		        	par(ljoin = oljoin)
 		        }
 		    }
 		}
@@ -235,20 +255,22 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 
 			if(arr.type == "big.arrow") {
 				if(directional == 1) {
-					if(nrow(r2) %% 2 == 1) {
-						r2 = r2[ceiling(nrow(r2)/2), , drop = FALSE]
-					} else {
-						r2 = colMeans(r2[c(nrow(r2)/2, nrow(r2)/2+1), , drop = FALSE])
-					}
+					# if(nrow(r2) %% 2 == 1) {
+					# 	r2 = r2[ceiling(nrow(r2)/2), , drop = FALSE]
+					# } else {
+					# 	r2 = colMeans(r2[c(nrow(r2)/2, nrow(r2)/2+1), , drop = FALSE])
+					# }
+					r2 = arc.midpoint(theta22, theta21, rou2)
 					d = rbind(d1x, r2)
 			        d = rbind(d, revMat(d2x))
 			        d = rbind(d, r1)
 			    } else if(directional == -1) {
-			    	if(nrow(r1) %% 2 == 1) {
-						r1 = r1[ceiling(nrow(r1)/2), , drop = FALSE]
-					} else {
-						r1 = colMeans(r1[c(nrow(r1)/2, nrow(r1)/2+1), , drop = FALSE])
-					}
+			  #   	if(nrow(r1) %% 2 == 1) {
+					# 	r1 = r1[ceiling(nrow(r1)/2), , drop = FALSE]
+					# } else {
+					# 	r1 = colMeans(r1[c(nrow(r1)/2, nrow(r1)/2+1), , drop = FALSE])
+					# }
+					r1 = arc.midpoint(theta12, theta11, rou1)
 			    	d = rbind(d1x, r2)
 			        d = rbind(d, revMat(d2x))
 			        d = rbind(d, r1)
@@ -264,14 +286,20 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
 		        	nr = nrow(dcenter)
 		        	alpha = line_degree(dcenter[nr-1, 1], dcenter[nr-1, 2], dcenter[nr, 1], dcenter[nr, 2])
+		        	oljoin = par("ljoin")
+	        		par(ljoin = "mitre")
 		        	Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
 		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
+		        	par(ljoin = oljoin)
 		        } else if(directional == -1) {  # point2 to point2
 		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
 		        	nr = nrow(dcenter)
 		        	alpha = line_degree(dcenter[2, 1], dcenter[2, 2], dcenter[1, 1], dcenter[1,2])
+		        	oljoin = par("ljoin")
+		        	par(ljoin = "mitre")
 		        	Arrowhead(dcenter[1, 1], dcenter[1, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
 		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
+		        	par(ljoin = oljoin)
 		        }
 		    }
 		}
@@ -295,6 +323,14 @@ arc.points = function(theta1, theta2, rou) {
 	d = cbind(x, y)
 	#linesWithArrows(d)
 	return(d)
+}
+
+arc.midpoint = function(theta1, theta2, rou) {
+	theta1 = theta1 %% 360
+	theta2 = theta2 %% 360
+	if(theta2 < theta1) theta2 = theta2 + 360
+	theta = (theta1 + theta2)/2
+	rbind(c(rou*cos(as.radian(theta)), rou*sin(as.radian(theta))))
 }
 
 # points from theta1 to theta2
@@ -393,7 +429,8 @@ quadratic.bezier = function(p0, p1, p2, w = 1) {
 
 	ncut = quadratic.bezier.length(p0, p1, p2, w = w)/ (2*pi/circos.par("unit.circle.segments"))
 	ncut = floor(ncut)
-	ncut = ifelse(ncut < 2, 2, ncut)
+	ncut = ifelse(ncut < 3, 3, ncut)
+	if(ncut %% 2 == 0) ncut = ncut + 1  # odd number
 
 	t = seq(0, 1, length.out = ncut)
 	x = ((1-t)^2 * p0[1] + 2*t*(1-t)*p1[1]*w + t^2*p2[1]) / ((1-t)^2 + 2*t*(1-t)*w + t^2)
@@ -407,7 +444,7 @@ quadratic.bezier.length = function(p0, p1, p2, w = 1) {
 	t = seq(0, 1, length.out = n)
 	x = ((1-t)^2 * p0[1] + 2*t*(1-t)*p1[1]*w + t^2*p2[1]) / ((1-t)^2 + 2*t*(1-t)*w + t^2)
 	y = ((1-t)^2 * p0[2] + 2*t*(1-t)*p1[2]*w + t^2*p2[2]) / ((1-t)^2 + 2*t*(1-t)*w + t^2)
-	sum((x[2:n] - x[1:(n-1)])^2 + (y[2:n] - y[1:(n-1)])^2)
+	sum(sqrt((x[2:n] - x[1:(n-1)])^2 + (y[2:n] - y[1:(n-1)])^2))
 
 }
 

@@ -253,6 +253,8 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 		
 	}
 
+	mat[is.na(mat)] = 0
+
 	if(!is.null(order)) {
 		if(is.null(rownames(mat)) || is.null(colnames(mat))) {
 			stop("Since you specified `order`, your matrix should have rowname and colname.\n")

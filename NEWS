@@ -1,6 +1,7 @@
 Changes in version 0.3.0
 -----------------------------------------------------------------------------
 
+* `chordDiagramFromMatrix`: automatically replace NA to 0 in the input matrix
 * add `chordDiagramFromMatrix` and `chordDiagramFromDataFrame`
 * by default there is axis on chord diagram
 * add `quadratic.bezier.length` that calculates the approximate length of bezier curve

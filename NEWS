@@ -1,3 +1,8 @@
+Changes in version 0.3.1
+-----------------------------------------------------------------------------
+
+* fixed a bug for `chordDiagramFromDataFrame` when there is the third column in the data frame
+
 Changes in version 0.3.0
 -----------------------------------------------------------------------------
 

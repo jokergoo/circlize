@@ -507,10 +507,10 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	if(ncol(df) == 2) {
 		df$value = rep(1, nrow(df))
 	}
-
+	df = df[1:3]
 	df[[1]] = as.character(df[[1]])
 	df[[2]] = as.character(df[[2]])
-	colnames(df) = c("rn", "cn", colnames(df)[-(1:2)])
+	colnames(df) = c("rn", "cn", "value")
 	nr = nrow(df)
 
 	transparency = ifelse(transparency < 0, 0, ifelse(transparency > 1, 1, transparency))

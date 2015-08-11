@@ -217,7 +217,11 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "Lab") {
   }
   
   colors = colors[order(breaks)]
-  colors = convertColor(t(col2rgb(colors)/255), from = "sRGB", to = space)
+  if(space == "hsv") {
+    colors = t(rgb2hsv(col2rgb(colors)))
+  } else {
+    colors = convertColor(t(col2rgb(colors)/255), from = "sRGB", to = space)
+  }
   breaks = sort(breaks)
   
   transparency = ifelse(transparency > 1, 1, ifelse(transparency < 0, 0, transparency))
@@ -257,11 +261,25 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "Lab") {
     xx = (x[i] - break2)*(col2 - col1) / (break2 - break1) + col2
     res_col[i,] = xx
   }
-  if(grepl("RGB", fromSpace)) res_col = abs(res_col)  # in case very small negative values
-  res_col = convertColor(res_col, from = fromSpace, to = "sRGB")
-  return(rgb(res_col, alpha = 1-transparency))
+  if(fromSpace == "hsv") {
+    res_col = abs(res_col)
+    return(hsv(res_col[,1], res_col[,2], res_col[,3], alpha = 1-transparency))
+  } else {
+    if(grepl("RGB", fromSpace)) res_col = abs(res_col)  # in case very small negative values
+    res_col = convertColor(res_col, from = fromSpace, to = "sRGB")
+    return(rgb(res_col, alpha = 1-transparency))
+  }
 }
 
+convertColor = function(col, from, to) {
+  if(from == "hsv") {
+    t(hsv(t(col), maxColorValue = 1))
+  } else if(to == "hsv") {
+    t(col2hsv(t(col), maxColorValue = 1))
+  } else {
+    grDevices::convertColor(col, from, to)
+  }
+}
 
 # will be considered in the future
 circos.approx = function(x, y, resolution = 0.1, sector.index = get.cell.meta.data("sector.index"),

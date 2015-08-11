@@ -2,11 +2,9 @@
 \alias{circos.initializeWithIdeogram}
 \title{
 Initialize the circos layout with an ideogram
-
 }
 \description{
 Initialize the circos layout with an ideogram
-
 }
 \usage{
 circos.initializeWithIdeogram(cytoband = paste(system.file(package = "circlize"),
@@ -30,11 +28,8 @@ circos.initializeWithIdeogram(cytoband = paste(system.file(package = "circlize")
 The function will initialize the circos plot in which each sector corresponds to a chromosome. You can control the order of 
 chromosomes by \code{chromosome.index} or by \code{sort.chr}, or by setting a special format of \code{cytoband} (please refer to \code{\link{read.cytoband}} 
 to find out how to control a proper \code{cytoband}).
-
 The function finally pass data to \code{\link{circos.genomicInitialize}} to initialize the circos plot.
-
 The style of ideogram is almost fixed, but you can customize it with your self-sefined code. Refer to vignette for demonstration.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

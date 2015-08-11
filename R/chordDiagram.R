@@ -416,7 +416,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 
 	df = mat2df(mat)
 
-	chordDiagramFromDataFrame(df, grid.col = grid.col, grid.border = grid.border, transparency = NA,
+	chordDiagramFromDataFrame(df[c(1, 2, 5)], grid.col = grid.col, grid.border = grid.border, transparency = NA,
 		col = psubset(col, df$ri, df$ci), order = order, directional = directional,
 		direction.type = direction.type, diffHeight = diffHeight, reduce = 0, self.link = self.link,
 		preAllocateTracks = preAllocateTracks,

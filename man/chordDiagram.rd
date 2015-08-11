@@ -2,11 +2,9 @@
 \alias{chordDiagram}
 \title{
 Plot Chord Diagram
-
 }
 \description{
 Plot Chord Diagram
-
 }
 \usage{
 chordDiagram(x, ...)}
@@ -19,10 +17,8 @@ chordDiagram(x, ...)}
 Chord diagram is a way to visualize numeric tables ( \url{http://circos.ca/intro/tabular_visualization/} ), especially useful
 when the table represents information of directional relations. This function
 visualize tables in a circular way.
-
 This function is flexible and contains some settings that may be a little difficult to understand. 
 Please refer to vignette for better explanation.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

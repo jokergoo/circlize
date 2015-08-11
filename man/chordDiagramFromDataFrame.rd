@@ -2,11 +2,9 @@
 \alias{chordDiagramFromDataFrame}
 \title{
 Plot Chord Diagram from a data frame
-
 }
 \description{
 Plot Chord Diagram from a data frame
-
 }
 \usage{
 chordDiagramFromDataFrame(df, grid.col = NULL, grid.border = NA, transparency = 0.5,

@@ -2,11 +2,9 @@
 \alias{circos.genomicRect}
 \title{
 Draw rectangle-like grid, specifically for genomic graphics
-
 }
 \description{
 Draw rectangle-like grid, specifically for genomic graphics
-
 }
 \usage{
 circos.genomicRect(region, value = NULL,
@@ -33,7 +31,6 @@ circos.genomicRect(region, value = NULL,
 }
 \details{
 The function is a low-level graphical function and usually is put in \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

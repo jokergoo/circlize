@@ -199,49 +199,51 @@ as.degree = function(radian) {
 # -breaks A vector indicating numeric breaks
 # -colors A vector of colors which correspond to values in ``breaks``
 # -transparency A single value in [0, 1]. 0 refers to no transparency and 1 refers to full transparency
+# -space color space in which colors are interpolated, see `grDevices::convertColor` for details.
 #
 # == details
-# Colors are interpolated according to break values and corresponding colors. Values exceeding breaks will be assigned with maximum or minimum colors.
+# Colors are interpolated according to break values and corresponding colors by default through CIE Lab color space. 
+# Values exceeding breaks will be assigned with maximum or minimum colors.
 #
 # == values
 # It returns a function which accepts a vector of numbers and returns interpolated colors.
-colorRamp2 = function(breaks, colors, transparency = 0) {
-    if(length(breaks) != length(colors)) {
-        stop("Length of `breaks` should be equal to `colors`.\n")
-    }
-	
-	if(length(unique(breaks)) != length(breaks)) {
-		stop("Duplicated values are not allowed in `breaks`\n")
-	}
-
-    colors = colors[order(breaks)]
-	colors = col2rgb(colors)
-    breaks = sort(breaks)
-	
-    transparency = ifelse(transparency > 1, 1, ifelse(transparency < 0, 0, transparency))
-
-    fun = function(x = NULL) {
-    	if(is.null(x)) {
-    		stop("Please specify `x`\n")
-    	}
-
-		att = attributes(x)
-        x = ifelse(x < breaks[1], breaks[1],
-                  ifelse(x > breaks[length(breaks)], breaks[length(breaks)],
-                        x
-                    ))
-		ibin = .bincode(x, breaks, right = TRUE, include.lowest = TRUE)
-		res_col = character(length(x))
-		for(i in unique(ibin)) {
-			l = ibin == i
-			res_col[l] = .get_color(x[l], breaks[i], breaks[i+1], colors[, i], colors[, i+1], transparency)
-		}
-		attributes(res_col) = att
-		return(res_col)
+colorRamp2 = function(breaks, colors, transparency = 0, space = "Lab") {
+  if(length(breaks) != length(colors)) {
+    stop("Length of `breaks` should be equal to `colors`.\n")
+  }
+  
+  if(length(unique(breaks)) != length(breaks)) {
+    stop("Duplicated values are not allowed in `breaks`\n")
+  }
+  
+  colors = colors[order(breaks)]
+  colors = convertColor(t(col2rgb(colors)/255), from = "sRGB", to = space)
+  breaks = sort(breaks)
+  
+  transparency = ifelse(transparency > 1, 1, ifelse(transparency < 0, 0, transparency))
+  
+  fun = function(x = NULL) {
+    if(is.null(x)) {
+      stop("Please specify `x`\n")
     }
     
-    attr(fun, "breaks") = breaks
-    return(fun)
+    att = attributes(x)
+    x = ifelse(x < breaks[1], breaks[1],
+               ifelse(x > breaks[length(breaks)], breaks[length(breaks)],
+                      x
+               ))
+    ibin = .bincode(x, breaks, right = TRUE, include.lowest = TRUE)
+    res_col = character(length(x))
+    for(i in unique(ibin)) {
+      l = ibin == i
+      res_col[l] = .get_color(x[l], breaks[i], breaks[i+1], colors[i, ], colors[i+1, ], transparency, fromSpace = space)
+    }
+    attributes(res_col) = att
+    return(res_col)
+  }
+  
+  attr(fun, "breaks") = breaks
+  return(fun)
 }
 
 # x: vector
@@ -249,15 +251,17 @@ colorRamp2 = function(breaks, colors, transparency = 0) {
 # break2 single value
 # rgb1 vector with 3 elements
 # rgb2 vector with 3 elements
-.get_color = function(x, break1, break2, rgb1, rgb2, transparency) {
-	res_rgb = matrix(nrow = 3, ncol = length(x))
-	for(i in seq_along(x)) {
-		xx = abs((x[i] - break2)*(rgb2 - rgb1) / (break2 - break1) + rgb2)
-		xx = round(xx)
-		res_rgb[, i] = xx
-	}
-	return(rgb(t(res_rgb)/255, alpha = 1-transparency))
+.get_color = function(x, break1, break2, col1, col2, transparency, fromSpace) {
+  res_col = matrix(ncol = 3, nrow = length(x))
+  for(i in seq_along(x)) {
+    xx = (x[i] - break2)*(col2 - col1) / (break2 - break1) + col2
+    res_col[i,] = xx
+  }
+  if(grepl("RGB", fromSpace)) res_col = abs(res_col)  # in case very small negative values
+  res_col = convertColor(res_col, from = fromSpace, to = "sRGB")
+  return(rgb(res_col, alpha = 1-transparency))
 }
+
 
 # will be considered in the future
 circos.approx = function(x, y, resolution = 0.1, sector.index = get.cell.meta.data("sector.index"),

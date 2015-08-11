@@ -2,11 +2,9 @@
 \alias{circos.rect}
 \title{
 Draw rectangle-like grid
-
 }
 \description{
 Draw rectangle-like grid
-
 }
 \usage{
 circos.rect(xleft, ybottom, xright, ytop,
@@ -26,10 +24,8 @@ circos.rect(xleft, ybottom, xright, ytop,
 The name for this function is \code{\link{circos.rect}}
 because if you imagine the plotting region as Cartesian coordinate, then it is rectangle.
 in the polar coordinate, the up and bottom edge become two arcs.
-
 You just need to specify the coordinates of two diagonal points just similar as 
 \code{\link[graphics]{rect}} does.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

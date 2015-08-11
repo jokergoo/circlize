@@ -2,11 +2,9 @@
 \alias{circos.genomicLink}
 \title{
 Add links from two sets of genomic positions
-
 }
 \description{
 Add links from two sets of genomic positions
-
 }
 \usage{
 circos.genomicLink(region1, region2,
@@ -27,9 +25,7 @@ circos.genomicLink(region1, region2,
 }
 \details{
 Of course, number of rows should be same in \code{region1} and \code{region2}.
-
 If you want to have more controls on links, please use \code{\link{circos.link}} directly.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

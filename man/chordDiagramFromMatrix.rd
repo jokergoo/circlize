@@ -2,11 +2,9 @@
 \alias{chordDiagramFromMatrix}
 \title{
 Plot Chord Diagram from a matrix
-
 }
 \description{
 Plot Chord Diagram from a matrix
-
 }
 \usage{
 chordDiagramFromMatrix(mat, grid.col = NULL, grid.border = NA, transparency = 0.5,
@@ -55,5 +53,4 @@ chordDiagramFromMatrix(mat, grid.col = NULL, grid.border = NA, transparency = 0.
 }
 \details{
 Internally, the matrix is transformed to a data frame and sent to \code{\link{chordDiagramFromDataFrame}}.
-
 }

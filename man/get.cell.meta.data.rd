@@ -2,11 +2,9 @@
 \alias{get.cell.meta.data}
 \title{
 Get the meta data of a cell
-
 }
 \description{
 Get the meta data of a cell
-
 }
 \usage{
 get.cell.meta.data(name, sector.index = get.current.sector.index(),
@@ -19,7 +17,6 @@ get.cell.meta.data(name, sector.index = get.current.sector.index(),
 }
 \details{
 The following meta information for a cell can be obtained:
-
 \describe{
   \item{sector.index}{The name (index) for the sector}
   \item{sector.numeric.index}{Numeric index for the sector}
@@ -44,7 +41,6 @@ The following meta information for a cell can be obtained:
 
 The function is useful when using \code{panel.fun} in \code{\link{circos.trackPlotRegion}} to
 get detailed information of the current cell.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

@@ -2,11 +2,9 @@
 \alias{circos.genomicLines}
 \title{
 Add lines to a plotting region, specifically for genomic graphics
-
 }
 \description{
 Add lines to a plotting region, specifically for genomic graphics
-
 }
 \usage{
 circos.genomicLines(region, value, numeric.column = NULL,
@@ -39,7 +37,6 @@ circos.genomicLines(region, value, numeric.column = NULL,
 }
 \details{
 The function is a low-level graphical function and usually is put in \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

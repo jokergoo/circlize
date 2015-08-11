@@ -2,11 +2,9 @@
 \alias{circos.genomicText}
 \title{
 Draw text in a cell, specifically for genomic graphics
-
 }
 \description{
 Draw text in a cell, specifically for genomic graphics
-
 }
 \usage{
 circos.genomicText(region, value = NULL, y = NULL, labels = NULL, labels.column = NULL,
@@ -37,7 +35,6 @@ circos.genomicText(region, value = NULL, y = NULL, labels = NULL, labels.column 
 }
 \details{
 The function is a low-level graphical function and usually is put in \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

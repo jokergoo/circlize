@@ -2,27 +2,25 @@
 \alias{colorRamp2}
 \title{
 Color interpolation
-
 }
 \description{
 Color interpolation
-
 }
 \usage{
-colorRamp2(breaks, colors, transparency = 0)}
+colorRamp2(breaks, colors, transparency = 0, space = "Lab")}
 \arguments{
 
   \item{breaks}{A vector indicating numeric breaks}
   \item{colors}{A vector of colors which correspond to values in \code{breaks}}
   \item{transparency}{A single value in [0, 1]. 0 refers to no transparency and 1 refers to full transparency}
+  \item{space}{color space in which colors are interpolated, see \code{\link[grDevices]{convertColor}} for details.}
 }
 \details{
-Colors are interpolated according to break values and corresponding colors. Values exceeding breaks will be assigned with maximum or minimum colors.
-
+Colors are interpolated according to break values and corresponding colors by default through CIE Lab color space. 
+Values exceeding breaks will be assigned with maximum or minimum colors.
 }
 \value{
 It returns a function which accepts a vector of numbers and returns interpolated colors.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

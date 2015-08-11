@@ -2,11 +2,9 @@
 \alias{adjacencyList2Matrix}
 \title{
 Convert adjacency list to adjacency matrix
-
 }
 \description{
 Convert adjacency list to adjacency matrix
-
 }
 \usage{
 adjacencyList2Matrix(lt, square = FALSE)}
@@ -17,7 +15,6 @@ adjacencyList2Matrix(lt, square = FALSE)}
 }
 \details{
 Convert adjacency list to adjacency matrix.
-
 }
 \examples{
 lt = data.frame(letters[1:5], letters[6:10])

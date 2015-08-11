@@ -2,11 +2,9 @@
 \alias{circos.update}
 \title{
 Create plotting regions for a whole track
-
 }
 \description{
 Create plotting regions for a whole track
-
 }
 \usage{
 circos.update(...)}
@@ -16,5 +14,4 @@ circos.update(...)}
 }
 \details{
 shortcut function of \code{\link{circos.updatePlotRegion}}.
-
 }

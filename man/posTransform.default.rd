@@ -2,11 +2,9 @@
 \alias{posTransform.default}
 \title{
 Genomic position transformation function
-
 }
 \description{
 Genomic position transformation function
-
 }
 \usage{
 posTransform.default(region, ...)}
@@ -20,9 +18,7 @@ The default position transformation functions transforms position to be equally 
 along the chromosome. If users want to define their own transformation function, the requirement
 is that the returned value should be a data frame with two columns: transformed start position
 and transformed end position. The returned value should have same number of rows as the input one.
-
 For details why need to use position transformation, please refer to \code{\link{circos.genomicPosTransformLines}}.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

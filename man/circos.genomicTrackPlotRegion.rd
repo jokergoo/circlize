@@ -2,11 +2,9 @@
 \alias{circos.genomicTrackPlotRegion}
 \title{
 Create a track for genomic graphics
-
 }
 \description{
 Create a track for genomic graphics
-
 }
 \usage{
 circos.genomicTrackPlotRegion(data = NULL, ylim = NULL, stack = FALSE,
@@ -25,32 +23,25 @@ circos.genomicTrackPlotRegion(data = NULL, ylim = NULL, stack = FALSE,
 \details{
 Similar as \code{\link{circos.trackPlotRegion}}, users can add customized graphics by \code{panel.fun}, but the behaviour of \code{panel.fun}
 will change depending on users' input data and \code{stack} setting.
-
 When \code{data} is a single data frame, \code{region} in \code{panel.fun} is a data frame containing the second and third column in \code{data} in 'current` genomic category (e.g. current chromosome).
 \code{value} is also a data frame containing columns in \code{data} excluding the first three columns.
-
 When \code{data} is a list containing data frames, \code{panel.fun} will be applied iteratively on each data frame, thus, 
 \code{region} is extracted from the data frame which is in the current iteration. For example, if \code{data} contains two data frames, \code{panel.fun}
 will be applied with the first data frame in current chromosome and then applied with the second data frame in the same chromosome.
-
 If \code{stack} is set to \code{TRUE}, \code{ylim} will be re-defined. in \code{stack} mode, the y-axis will be splitted into several part
 with equal height and graphics will be drawn on each 'horizontal' lines (y = 1, 2, ...). In this case:
-
 When \code{data} is a single data frame containing one or more numeric columns, each numeric column defined in \code{numeric.column} will be treated as a single unit. 
 \code{ylim} is re-defined to \code{c(0.5, n+0.5)} in which \code{n} is number of numeric columns. \code{panel.fun} will be applied iteratively on each numeric column. In each
 iteration, in \code{panel.fun}, \code{region} is still the genomic regions in current genomic category, but \code{value} contains current numeric column plus all non-numeric columns.
 Under \code{stack} mode, in \code{panel.fun}, all low-level genomic graphical functions will draw on the 'horizontal line' \code{y = i} in which \code{i} is the index of current numeric column 
 and the value of \code{i} can be obtained by \code{\link{getI}}.
-
 When \code{data} is a list containing data frames, each data frame will be treated as a single unit. The situation is quite similar as described in previous paragraph.
 \code{ylim} is re-defined to \code{c(0.5, n+0.5)} in which \code{n} is number of data frames. \code{panel.fun} will be applied iteratively on each data frame. In each
 iteration, in \code{panel.fun}, \code{region} is still the genomic regions in current genomic category, and \code{value} contains columns in current data frame excluding the first three columns.
 Under \code{stack} mode, in \code{panel.fun}, all low-level genomic graphical functions will draw on the 'horizontal line' \code{y = i} in which \code{i} is the index of current data frame.
-
 Being different from \code{panel.fun} in \code{\link{circos.trackPlotRegion}}, there should be an additional argument \code{...} in \code{panel.fun}. This additional
 argument is used to pass hidden values to low-level graphical functions. So if you are using functions like \code{circos.genomicPoints}, you should also
 add \code{...} as an additional argument into \code{circos.genomicPoints}.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

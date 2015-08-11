@@ -2,11 +2,9 @@
 \alias{circos.genomicRainfall}
 \title{
 Genomic rainfall plot
-
 }
 \description{
 Genomic rainfall plot
-
 }
 \usage{
 circos.genomicRainfall(data, ylim = c(0, 9), col = "black", pch = par("pch"),
@@ -22,13 +20,10 @@ circos.genomicRainfall(data, ylim = c(0, 9), col = "black", pch = par("pch"),
 }
 \details{
 This is high-level graphical function, which mean, it will create a new track.
-
 Rainfall plot can be used to visualize distribution of regions. On the plot, y-axis
 corresponds to the distance to neighbour regions (log-based). So if there is a drop-down on
 the plot, it means there is a cluster of regions at that area.
-
 On the plot, y-axis are log10-transformed.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

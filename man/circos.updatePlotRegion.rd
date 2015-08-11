@@ -2,11 +2,9 @@
 \alias{circos.updatePlotRegion}
 \title{
 Update the plotting region in an existed cell
-
 }
 \description{
 Update the plotting region in an existed cell
-
 }
 \usage{
 circos.updatePlotRegion(sector.index = get.cell.meta.data("sector.index"),
@@ -23,10 +21,8 @@ circos.updatePlotRegion(sector.index = get.cell.meta.data("sector.index"),
 }
 \details{
 You can update an existed cell by this function by erasing all the graphics.
-But the \code{xlim} and \code{ylim} inside the cell still remains unchanged. 
-
+But the \code{xlim} and \code{ylim} inside the cell still remains unchanged.
 Note if you use \code{\link{circos.trackPlotRegion}} to update an already created track, you can re-define \code{ylim} in these cells.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

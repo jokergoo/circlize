@@ -2,11 +2,9 @@
 \alias{circos.info}
 \title{
 Get information of the circos plot
-
 }
 \description{
 Get information of the circos plot
-
 }
 \usage{
 circos.info(sector.index = NULL, track.index = NULL, plot = FALSE)}
@@ -23,10 +21,8 @@ all sectors and all tracks. If \code{sector.index} and/or \code{track.index} are
 the function would print \code{xlim}, \code{ylim}, \code{cell.xlim}, \code{cell.ylim},
 \code{xplot}, \code{yplot}, \code{track.margin} and \code{cell.padding} for every cell in specified sectors and tracks.
 Also, the function will print index for your current sector and current track.
-
 If \code{plot} is set to \code{TRUE}, the function will plot the index of the sector and the track 
 for each cell on the figure.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

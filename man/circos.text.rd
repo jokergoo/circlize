@@ -2,11 +2,9 @@
 \alias{circos.text}
 \title{
 Draw text in a cell
-
 }
 \description{
 Draw text in a cell
-
 }
 \usage{
 circos.text(x, y, labels, sector.index = get.cell.meta.data("sector.index"),
@@ -32,7 +30,6 @@ circos.text(x, y, labels, sector.index = get.cell.meta.data("sector.index"),
 }
 \details{
 The function is similar to \code{\link[graphics]{text}}. All you need to note is the \code{facing} settings.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

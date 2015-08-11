@@ -2,11 +2,9 @@
 \alias{circos.polygon}
 \title{
 Draw polygon
-
 }
 \description{
 Draw polygon
-
 }
 \usage{
 circos.polygon(x, y, sector.index = get.cell.meta.data("sector.index"),
@@ -21,9 +19,7 @@ circos.polygon(x, y, sector.index = get.cell.meta.data("sector.index"),
 }
 \details{
 similar as \code{\link[graphics]{polygon}}.
-
 Note: start point should overlap with the end point,
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

@@ -2,11 +2,9 @@
 \alias{highlight.chromosome}
 \title{
 Highlight chromosomes
-
 }
 \description{
 Highlight chromosomes
-
 }
 \usage{
 highlight.chromosome(...)}
@@ -16,7 +14,6 @@ highlight.chromosome(...)}
 }
 \details{
 This is only a shortcut function of \code{\link{highlight.sector}}.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

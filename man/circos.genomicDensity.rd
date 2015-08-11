@@ -2,11 +2,9 @@
 \alias{circos.genomicDensity}
 \title{
 Calculate and add genomic density track
-
 }
 \description{
 Calculate and add genomic density track
-
 }
 \usage{
 circos.genomicDensity(data, ylim.force = FALSE, window.size = NULL, overlap = TRUE,
@@ -30,7 +28,6 @@ circos.genomicDensity(data, ylim.force = FALSE, window.size = NULL, overlap = TR
 }
 \details{
 This function is a high-level graphical function, and it will create a new track.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

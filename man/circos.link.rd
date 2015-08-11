@@ -2,11 +2,9 @@
 \alias{circos.link}
 \title{
 Draw links between points or intervals
-
 }
 \description{
 Draw links between points or intervals
-
 }
 \usage{
 circos.link(sector.index1, point1, sector.index2, point2,
@@ -43,14 +41,10 @@ circos.link(sector.index1, point1, sector.index2, point2,
 }
 \details{
 Links are implemented as quadratic Bezier curves.
-
 Drawing links does not create any track. So you can think it is independent of the tracks.
-
 By default you only need to set \code{sector.index1}, \code{point1}, \code{sector.index2} and \code{point2}. The
-links would look nice. 
-
+links would look nice.
 See vignette for detailed explanation.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

@@ -2,11 +2,9 @@
 \alias{circos.segments}
 \title{
 Draw segments through pairwise of points
-
 }
 \description{
 Draw segments through pairwise of points
-
 }
 \usage{
 circos.segments(x0, y0, x1, y1, sector.index = get.cell.meta.data("sector.index"),

@@ -2,11 +2,9 @@
 \alias{highlight.sector}
 \title{
 Highlight sectors and tracks
-
 }
 \description{
 Highlight sectors and tracks
-
 }
 \usage{
 highlight.sector(sector.index, track.index = get.all.track.index(),
@@ -29,9 +27,7 @@ highlight.sector(sector.index, track.index = get.all.track.index(),
 }
 \details{
 You can use \code{\link{circos.info}} to find out index for all sectors and all tracks.
-
 The function calls \code{\link{draw.sector}}.
-
 }
 \examples{
 \dontrun{

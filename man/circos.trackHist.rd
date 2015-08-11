@@ -2,11 +2,9 @@
 \alias{circos.trackHist}
 \title{
 Draw histogram in cells among a whole track
-
 }
 \description{
 Draw histogram in cells among a whole track
-
 }
 \usage{
 circos.trackHist(factors, x, track.height = circos.par("track.height"),
@@ -37,7 +35,6 @@ circos.trackHist(factors, x, track.height = circos.par("track.height"),
 \details{
 It draw histogram in cells among a whole track. It is also an example to show how to add self-defined
 high-level graphics by this package.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

@@ -2,11 +2,9 @@
 \alias{circos.axis}
 \title{
 Draw x-axis
-
 }
 \description{
 Draw x-axis
-
 }
 \usage{
 circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
@@ -38,10 +36,8 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
 }
 \details{
 It can only draw axes on x-direction.
-
 Currently, this package doesn't provide a function to add axes on y-direction. But it is easy
 to implement by users with \code{\link{circos.lines}} and \code{\link{circos.text}}.
-
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}

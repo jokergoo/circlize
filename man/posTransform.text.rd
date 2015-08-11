@@ -2,11 +2,9 @@
 \alias{posTransform.text}
 \title{
 Genomic position transformation function specifically for text
-
 }
 \description{
 Genomic position transformation function specifically for text
-
 }
 \usage{
 posTransform.text(region, y, labels, cex = 1, font = par("font"),
@@ -27,7 +25,6 @@ posTransform.text(region, y, labels, cex = 1, font = par("font"),
 \details{
 This position transformation function is designed specifically for text.
 Under the transformation, texts will be as close as possible to the original positions.
-
 }
 \examples{
 \dontrun{

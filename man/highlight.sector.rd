@@ -10,7 +10,8 @@ Highlight sectors and tracks
 highlight.sector(sector.index, track.index = get.all.track.index(),
     col = "#FF000040", border = NA, lwd = par("lwd"), lty = par("lty"),
     padding = c(0, 0, 0, 0), text = NULL, text.col = par("col"),
-    text.vjust = 0.5, ...)}
+    text.vjust = 0.5, ...)
+}
 \arguments{
 
   \item{sector.index}{A vector of sector index}
@@ -24,6 +25,7 @@ highlight.sector(sector.index, track.index = get.all.track.index(),
   \item{text.vjust}{adjustment on 'vertical' (radical) direction}
   \item{text.col}{color for the text}
   \item{...}{pass to \code{\link{circos.text}}}
+
 }
 \details{
 You can use \code{\link{circos.info}} to find out index for all sectors and all tracks.
@@ -46,4 +48,6 @@ highlight.sector(c("f", "g"), col = NA, border = "green",
     lwd = 2, track.index = c(2, 3))
 highlight.sector(factors, col = "#FFFF0040", track.index = 4)
 circos.clear()
-}}
+}
+
+}

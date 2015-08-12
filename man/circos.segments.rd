@@ -8,7 +8,8 @@ Draw segments through pairwise of points
 }
 \usage{
 circos.segments(x0, y0, x1, y1, sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"), straight = FALSE, ...)}
+    track.index = get.cell.meta.data("track.index"), straight = FALSE, ...)
+}
 \arguments{
 
   \item{x0}{x coordinates for starting points}
@@ -19,4 +20,5 @@ circos.segments(x0, y0, x1, y1, sector.index = get.cell.meta.data("sector.index"
   \item{track.index}{Index for the track}
   \item{straight}{whether the segment is a straight line}
   \item{...}{pass to \code{\link[graphics]{lines}}}
+
 }

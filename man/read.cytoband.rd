@@ -8,13 +8,22 @@ Read/parse cytoband data from a data frame/file/UCSC database
 }
 \usage{
 read.cytoband(cytoband = paste0(system.file(package = "circlize"),
-    "/extdata/cytoBand.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE)}
+    "/extdata/cytoBand.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE)
+}
 \arguments{
 
-  \item{cytoband}{Path of the cytoband file or a data frame that already contains cytoband data}
-  \item{species}{Abbreviations of species. e.g. hg19 for human, mm10 for mouse. If thisvalue is specified, the function will download \code{cytoBand.txt.gz} or \code{chromInfo.txt.gz} fromUCSC website automatically.}
-  \item{chromosome.index}{subset of chromosomes, also used to re-set chromosome orders.}
-  \item{sort.chr}{Whether chromosome names should be sorted (first sort by numbers then by letters).If \code{chromosome.index} is set, this argument is enforced to \code{FALSE}}
+  \item{cytoband}{Path of the cytoband file or a data frame that already contains cytoband data
+}
+  \item{species}{Abbreviations of species. e.g. hg19 for human, mm10 for mouse. If this
+value is specified, the function will download \code{cytoBand.txt.gz} or \code{chromInfo.txt.gz} from
+UCSC website automatically.
+}
+  \item{chromosome.index}{subset of chromosomes, also used to re-set chromosome orders.
+}
+  \item{sort.chr}{Whether chromosome names should be sorted (first sort by numbers then by letters).
+If \code{chromosome.index} is set, this argument is enforced to \code{FALSE}
+}
+
 }
 \details{
 The function read the cytoband data, sort the chromosome names and calculate the length of each chromosome. 
@@ -30,16 +39,22 @@ important since the order of chromosomes will be used to control the order of se
 }
 \value{
 \describe{
-  \item{df}{Data frame for cytoband data (rows are sorted if \code{sort.chr} is set to \code{TRUE})}
-  \item{chromosome}{Sorted chromosome names}
-  \item{chr.len}{Length of chromosomes. Orders are same as \code{chromosome}}
+  \item{df}{Data frame for cytoband data (rows are sorted if \code{sort.chr} is set to \code{TRUE})
 }
-
+  \item{chromosome}{Sorted chromosome names
+}
+  \item{chr.len}{Length of chromosomes. Orders are same as \code{chromosome}
+}
+}
 }
 \references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+
+}
 \examples{
 \dontrun{
 cytoband = read.cytoband(species = "hg19")
 cytoband = read.cytoband(species = "mm10")
-}}
+}
+
+}

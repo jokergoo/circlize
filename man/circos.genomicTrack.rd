@@ -7,10 +7,13 @@ Create a track for genomic graphics
 Create a track for genomic graphics
 }
 \usage{
-circos.genomicTrack(...)}
+circos.genomicTrack(...)
+}
 \arguments{
 
-  \item{...}{pass to \code{\link{circos.genomicTrackPlotRegion}}}
+  \item{...}{pass to \code{\link{circos.genomicTrackPlotRegion}}
+}
+
 }
 \details{
 shortcut function of \code{\link{circos.genomicTrackPlotRegion}}.

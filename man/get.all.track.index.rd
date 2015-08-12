@@ -7,7 +7,8 @@ Get index for all tracks
 Get index for all tracks
 }
 \usage{
-get.all.track.index()}
+get.all.track.index()
+}
 \details{
 Simple function returning a vector of all track index.
 }
@@ -21,4 +22,6 @@ circos.trackPlotRegion(ylim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1))
 get.all.track.index()
 circos.clear()
-}}
+}
+
+}

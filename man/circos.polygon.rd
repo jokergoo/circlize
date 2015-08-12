@@ -8,7 +8,8 @@ Draw polygon
 }
 \usage{
 circos.polygon(x, y, sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"), ...)}
+    track.index = get.cell.meta.data("track.index"), ...)
+}
 \arguments{
 
   \item{x}{Data points on x-axis}
@@ -16,13 +17,16 @@ circos.polygon(x, y, sector.index = get.cell.meta.data("sector.index"),
   \item{sector.index}{Index for the sector}
   \item{track.index}{Index for the track}
   \item{...}{pass to \code{\link[graphics]{polygon}}}
+
 }
 \details{
 similar as \code{\link[graphics]{polygon}}.
 Note: start point should overlap with the end point,
 }
 \references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+
+}
 \examples{
 \dontrun{
 library(circlize)
@@ -46,4 +50,6 @@ circos.trackPlotRegion(ylim = c(-3, 3), track.height = 0.4, panel.fun = function
     circos.lines(x1, loess.predict$fit)
 })
 circos.clear()
-}}
+}
+
+}

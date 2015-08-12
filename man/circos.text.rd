@@ -11,7 +11,8 @@ circos.text(x, y, labels, sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), direction = NULL,
     facing = c("inside", "outside", "reverse.clockwise", "clockwise",
     "downward", "bending", "bending.inside", "bending.outside"), niceFacing = FALSE,
-    adj = par("adj"), cex = 1, col = "black", font = par("font"), ...)}
+    adj = par("adj"), cex = 1, col = "black", font = par("font"), ...)
+}
 \arguments{
 
   \item{x}{Data points on x-axis}
@@ -27,12 +28,15 @@ circos.text(x, y, labels, sector.index = get.cell.meta.data("sector.index"),
   \item{col}{Font color}
   \item{font}{Font style}
   \item{...}{Pass to \code{\link[graphics]{text}}}
+
 }
 \details{
 The function is similar to \code{\link[graphics]{text}}. All you need to note is the \code{facing} settings.
 }
 \references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+
+}
 \examples{
 \dontrun{
 library(circlize)
@@ -74,4 +78,6 @@ circos.trackPlotRegion(factors = factors, ylim = c(0, 1), track.height = 0.5,
 })
 circos.clear()
 
-}}
+}
+
+}

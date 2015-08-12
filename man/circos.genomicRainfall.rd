@@ -8,15 +8,24 @@ Genomic rainfall plot
 }
 \usage{
 circos.genomicRainfall(data, ylim = c(0, 9), col = "black", pch = par("pch"),
-    cex = par("cex"), ...)}
+    cex = par("cex"), ...)
+}
 \arguments{
 
-  \item{data}{A bed-file-like data frame or a list of data frames}
-  \item{ylim}{ylim for rainfall plot track. It's value should be log10(inter-distance+1)}
-  \item{col}{Color of points. It should be length of one. If \code{data} is a list, the length of \code{col}can also be the length of the list.}
-  \item{pch}{Style of points}
-  \item{cex}{Size of points}
-  \item{...}{Pass to \code{\link{circos.trackPlotRegion}}}
+  \item{data}{A bed-file-like data frame or a list of data frames
+}
+  \item{ylim}{ylim for rainfall plot track. It's value should be log10(inter-distance+1)
+}
+  \item{col}{Color of points. It should be length of one. If \code{data} is a list, the length of \code{col}
+can also be the length of the list.
+}
+  \item{pch}{Style of points
+}
+  \item{cex}{Size of points
+}
+  \item{...}{Pass to \code{\link{circos.trackPlotRegion}}
+}
+
 }
 \details{
 This is high-level graphical function, which mean, it will create a new track.
@@ -26,7 +35,9 @@ the plot, it means there is a cluster of regions at that area.
 On the plot, y-axis are log10-transformed.
 }
 \references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+
+}
 \examples{
 \dontrun{
 library(circlize)
@@ -46,4 +57,6 @@ circos.genomicDensity(bed_list[[2]], col = c("#0000FF80"), track.height = 0.1)
 
 circos.clear()
 
-}}
+}
+
+}

@@ -7,10 +7,13 @@ Which data that \code{panel.fun} is using
 Which data that \code{panel.fun} is using
 }
 \usage{
-getI(...)}
+getI(...)
+}
 \arguments{
 
-  \item{...}{Invisible arguments that users do not need to care}
+  \item{...}{Invisible arguments that users do not need to care
+}
+
 }
 \details{
 The function should only be put inside \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}.
@@ -20,4 +23,6 @@ If \code{data} is a list of data frames, the value
 indicates which data frame is being used. Please see the vignette to get a more clear explanation.
 }
 \references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+
+}

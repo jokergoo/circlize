@@ -11,7 +11,8 @@ circos.trackHist(factors, x, track.height = circos.par("track.height"),
     track.index = NULL, force.ylim = TRUE, col = ifelse(draw.density, "black", NA),
     border = "black", lty = par("lty"), lwd = par("lwd"),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
-    breaks = "Sturges", include.lowest = TRUE, right = TRUE, draw.density = FALSE)}
+    breaks = "Sturges", include.lowest = TRUE, right = TRUE, draw.density = FALSE)
+}
 \arguments{
 
   \item{factors}{Factors which represent the categories of data}
@@ -31,13 +32,16 @@ circos.trackHist(factors, x, track.height = circos.par("track.height"),
   \item{include.lowest}{see \code{\link[graphics]{hist}}}
   \item{right}{see \code{\link[graphics]{hist}}}
   \item{draw.density}{whether draw density lines instead of histogram bars.}
+
 }
 \details{
 It draw histogram in cells among a whole track. It is also an example to show how to add self-defined
 high-level graphics by this package.
 }
 \references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+
+}
 \examples{
 \dontrun{
 library(circlize)
@@ -56,4 +60,6 @@ circos.trackHist(factors = factors, x = x, draw.density = TRUE,
 
 circos.clear()
 
-}}
+}
+
+}

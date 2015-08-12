@@ -10,7 +10,8 @@ Add lines to the plotting regions in a same track
 circos.trackLines(factors, x, y, track.index = get.cell.meta.data("track.index"),
     col = "black", lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
     area = FALSE, area.baseline = NULL, border = "black", baseline = "bottom",
-    pt.col = par("col"), cex = par("cex"), pch = par("pch"))}
+    pt.col = par("col"), cex = par("cex"), pch = par("pch"))
+}
 \arguments{
 
   \item{factors}{Factors which represent the categories of data}
@@ -29,6 +30,7 @@ circos.trackLines(factors, x, y, track.index = get.cell.meta.data("track.index")
   \item{pt.col}{if \code{type} is "o", points color}
   \item{cex}{if \code{type} is "o", points size}
   \item{pch}{if \code{type} is "o", points type}
+
 }
 \details{
 The function adds lines in multiple cells by first splitting data into several parts in which
@@ -36,4 +38,6 @@ each part corresponds to one factor (sector index) and then add lines in cells b
 This function can be replaced by a \code{for} loop containing \code{\link{circos.lines}}.
 }
 \references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+
+}

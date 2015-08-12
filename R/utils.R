@@ -202,31 +202,43 @@ as.degree = function(radian) {
 # -space color space in which colors are interpolated. Value should be one of "RGB", "HSV", "HLS", "LAB", "XYZ", "sRGB", "LUV", see `colorspace::color-class` for detail.
 #
 # == details
-# Colors are interpolated according to break values and corresponding colors by default through CIE Lab color space. 
+# Colors are interpolated according to break values and corresponding colors by default through CIE Lab color space (`colorspace::LAB`). 
 # Values exceeding breaks will be assigned with maximum or minimum colors.
 #
 # == values
 # It returns a function which accepts a vector of numbers and returns interpolated colors.
 colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB") {
+
   if(length(breaks) != length(colors)) {
     stop("Length of `breaks` should be equal to `colors`.\n")
   }
   
-  if(length(unique(breaks)) != length(breaks)) {
-    stop("Duplicated values are not allowed in `breaks`\n")
+  colors = colors[order(breaks)]
+  breaks = sort(breaks)
+
+  l = duplicated(breaks)
+  breaks = breaks[!l]
+  colors = colors[!l]
+
+  if(length(breaks) == 1) {
+    stop("You should have at least two distinct break values.")
+  } 
+
+
+  if(! space %in% c("RGB", "HSV", "HLS", "LAB", "XYZ", "sRGB", "LUV")) {
+    stop("`space` should be in 'RGB', 'HSV', 'HLS', 'LAB', 'XYZ', 'sRGB', 'LUV'")
   }
   
-  colors = colors[order(breaks)]
   colors = t(col2rgb(colors)/255)
-  breaks = sort(breaks)
+  
 
   if(space == "LUV") {
     i = which(apply(colors, 1, function(x) all(x == 0)))
     colors[i, ] = 1e-5
   }
   
-  transparency = ifelse(transparency > 1, 1, ifelse(transparency < 0, 0, transparency))[1]
-  transparency_str = sprintf("%X", transparency*255)
+  transparency = 1-ifelse(transparency > 1, 1, ifelse(transparency < 0, 0, transparency))[1]
+  transparency_str = sprintf("%X", round(transparency*255))
   if(nchar(transparency_str) == 1) transparency_str = paste0("0", transparency_str)
   
   fun = function(x = NULL) {
@@ -245,7 +257,7 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB") {
       l = ibin == i
       res_col[l] = .get_color(x[l], breaks[i], breaks[i+1], colors[i, ], colors[i+1, ], space = space)
     }
-    paste(res_col, transparency_str[1], sep = "")
+    res_col = paste(res_col, transparency_str[1], sep = "")
     attributes(res_col) = att
     return(res_col)
   }

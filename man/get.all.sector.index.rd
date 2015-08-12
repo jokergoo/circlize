@@ -7,12 +7,15 @@ Get index for all sectors
 Get index for all sectors
 }
 \usage{
-get.all.sector.index()}
+get.all.sector.index()
+}
 \details{
 Simple function returning a vector of all sector index.
 }
 \references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+
+}
 \examples{
 \dontrun{
 library(circlize)
@@ -21,4 +24,6 @@ circos.initialize(factors, xlim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1))
 get.all.sector.index()
 circos.clear()
-}}
+}
+
+}

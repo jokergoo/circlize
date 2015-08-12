@@ -7,11 +7,15 @@ Plot Chord Diagram
 Plot Chord Diagram
 }
 \usage{
-chordDiagram(x, ...)}
+chordDiagram(x, ...)
+}
 \arguments{
 
-  \item{x}{a matrix or a data frame. The function will pass all argument to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}} depending on the type of \code{x}}
-  \item{...}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}.}
+  \item{x}{a matrix or a data frame. The function will pass all argument to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}} depending on the type of \code{x}
+}
+  \item{...}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}.
+}
+
 }
 \details{
 Chord diagram is a way to visualize numeric tables ( \url{http://circos.ca/intro/tabular_visualization/} ), especially useful
@@ -21,7 +25,9 @@ This function is flexible and contains some settings that may be a little diffic
 Please refer to vignette for better explanation.
 }
 \references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+
+}
 \examples{
 \dontrun{
 
@@ -84,4 +90,6 @@ chordDiagram(mat, grid.col = grid.col, column.col = 1:6, transparency = 0.5)
 chordDiagram(mat, grid.col = grid.col, row.col = c("#FF000080", "#00FF0010", "#0000FF10"))
 circos.clear()
 
-}}
+}
+
+}

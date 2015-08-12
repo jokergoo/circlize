@@ -13,7 +13,8 @@ circos.trackPlotRegion(factors = NULL, x = NULL, y = NULL, ylim = NULL,
     track.margin = circos.par("track.margin"),
     cell.padding = circos.par("cell.padding"),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
-    panel.fun = function(x, y) {NULL})}
+    panel.fun = function(x, y) {NULL})
+}
 \arguments{
 
   \item{factors}{Factors which represent categories of data, if it is \code{NULL}, then it uses the whole sector index.}
@@ -30,6 +31,7 @@ circos.trackPlotRegion(factors = NULL, x = NULL, y = NULL, ylim = NULL,
   \item{bg.lty}{Line style for the border of the plotting regions. It can be vector which has the same length of sectors.}
   \item{bg.lwd}{Line width for the border of the plotting regions. It can be vector which has the same length of sectors.}
   \item{panel.fun}{Panel function to add graphics in each cell, see "details" sectionand vignette for explanation.}
+
 }
 \details{
 This function pretends to be a high-level plotting function, which means, 
@@ -63,4 +65,6 @@ creates the new track. If updating an existed track, those parameters related to
 of the plotting region can not be changed.
 }
 \references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+
+}

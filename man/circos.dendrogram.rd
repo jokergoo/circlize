@@ -7,12 +7,14 @@ Add circlized dendrograms
 Add circlized dendrograms
 }
 \usage{
-circos.dendrogram(dend, facing = c("outside", "inside"), max_height = NULL)}
+circos.dendrogram(dend, facing = c("outside", "inside"), max_height = NULL)
+}
 \arguments{
 
   \item{dend}{A \code{\link[stats]{dendrogram}} object.}
   \item{facing}{Is the dendromgrams facing inside to the circle or outside.}
   \item{max_height}{Maximum height of the dendrogram. This is important if more than one dendrogramsare drawn in one track and making them comparable.}
+
 }
 \details{
 Assuming there are \code{n} nodes in the dendrogram, the positions for leaves on x-axis is \code{0.5, 1.5, ..., n - 0.5}.
@@ -48,4 +50,6 @@ circos.trackPlotRegion(ylim = c(0, max_height), bg.border = NA,
         circos.dendrogram(dend, max_height = max_height)
 })
 circos.clear()
-}}
+}
+
+}

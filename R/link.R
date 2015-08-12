@@ -22,6 +22,7 @@
 # -lty           Line (or border) style
 # -border        If the link is a ribbon, then it is the color for the ribbon border.
 # -directional   0 for no direction, 1 for direction from point1 to point2, -1 for direction from point2 to point1.
+#                2 for two directional
 # -arr.length    Length of the arrows, measured in 'cm', pass to `shape::Arrowhead`. If ``arr.type`` is set to ``big.arrow``,
 #                the value is percent to the radius of the unit circle.
 # -arr.width     Width of the arrows, pass to `shape::Arrowhead`.
@@ -277,7 +278,13 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 			    	d = rbind(d1x, r2)
 			        d = rbind(d, revMat(d2x))
 			        d = rbind(d, r1)
-			    } 
+			    } else if(directional == 2) {
+			    	r1 = arc.midpoint(theta12, theta11, rou1)
+			    	r2 = arc.midpoint(theta22, theta21, rou2)
+					d = rbind(d1x, r2)
+			        d = rbind(d, revMat(d2x))
+			        d = rbind(d, r1)
+			    }
 			} else {
 		        d = rbind(d1, r2)
 		        d = rbind(d, revMat(d2))

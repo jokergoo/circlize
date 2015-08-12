@@ -7,12 +7,17 @@ Get information of the circos plot
 Get information of the circos plot
 }
 \usage{
-circos.info(sector.index = NULL, track.index = NULL, plot = FALSE)}
+circos.info(sector.index = NULL, track.index = NULL, plot = FALSE)
+}
 \arguments{
 
-  \item{sector.index}{Which sectors you want to look at? It can be a vector.}
-  \item{track.index}{Which tracks you want to look at? It can be a vector.}
-  \item{plot}{Whether to add information on the plot}
+  \item{sector.index}{Which sectors you want to look at? It can be a vector.
+}
+  \item{track.index}{Which tracks you want to look at? It can be a vector.
+}
+  \item{plot}{Whether to add information on the plot
+}
+
 }
 \details{
 It tells you the basic parameters for sectors/tracks/cells. If both \code{sector.index}
@@ -25,7 +30,9 @@ If \code{plot} is set to \code{TRUE}, the function will plot the index of the se
 for each cell on the figure.
 }
 \references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+
+}
 \examples{
 \dontrun{
 library(circlize)
@@ -41,4 +48,6 @@ circos.info(track.index = 1)
 circos.info()
 circos.info(plot = TRUE)
 circos.clear()
-}}
+}
+
+}

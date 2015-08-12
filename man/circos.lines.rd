@@ -11,7 +11,8 @@ circos.lines(x, y, sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"),
     col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l",
     straight = FALSE, area = FALSE, area.baseline = NULL, border = "black",
-    baseline = "bottom", pt.col = par("col"), cex = par("cex"), pch = par("pch"))}
+    baseline = "bottom", pt.col = par("col"), cex = par("cex"), pch = par("pch"))
+}
 \arguments{
 
   \item{x}{Data points on x-axis}
@@ -30,6 +31,7 @@ circos.lines(x, y, sector.index = get.cell.meta.data("sector.index"),
   \item{pt.col}{if \code{type} is "o", point color}
   \item{cex}{if \code{type} is "o", point size}
   \item{pch}{if \code{type} is "o", point type}
+
 }
 \details{
 Normally, straight lines in the Cartesian coordinate have to be transformed into curves in the circos layout.
@@ -39,7 +41,9 @@ Draw areas below lines can help to identify the direction of y-axis in cells (si
 \code{area} to \code{TURE}.
 }
 \references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.}
+Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
+
+}
 \examples{
 \dontrun{
 library(circlize)
@@ -79,4 +83,6 @@ circos.text(5, 9, "type = 'l', area = TRUE\nbaseline = 'top'", sector.index = "i
 circos.clear()
 par(cex = 1)
 
-}}
+}
+
+}

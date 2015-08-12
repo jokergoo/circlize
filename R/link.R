@@ -61,7 +61,7 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 		d = getQuadraticPoints(theta1, theta2, rou1, rou2, h = h, w = w)
         lines(d, col = col, lwd = lwd, lty = lty)
         if(nrow(d) > 1) {
-	        if(directional == 1) {  # point1 to point2
+	        if(directional %in% c(1,2)) {  # point1 to point2
 	        	nr = nrow(d)
 	        	alpha = line_degree(d[nr-1, 1], d[nr-1, 2], d[nr, 1], d[nr, 2])
 	        	oljoin = par("ljoin")
@@ -69,7 +69,8 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 	        	Arrowhead(d[nr, 1], d[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
 	        		arr.adj = 1, arr.type = arr.type, arr.col = col, lcol = col)
 	        	par(ljoin = oljoin)
-	        } else if(directional == -1) {  # point2 to point2
+	        } 
+	        if(directional %in% c(-1,2)) {  # point2 to point2
 	        	nr = nrow(d)
 	        	alpha = line_degree(d[2, 1], d[2, 2], d[1, 1], d[1,2])
 	        	oljoin = par("ljoin")
@@ -121,7 +122,7 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 			
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 			if(nrow(dcenter) > 1 & arr.type != "big.arrow") {
-		        if(directional == 1) {  # point1 to point2
+		        if(directional %in% c(1, 2)) {  # point1 to point2
 		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
 		        	nr = nrow(dcenter)
 		        	alpha = line_degree(dcenter[nr-1, 1], dcenter[nr-1, 2], dcenter[nr, 1], dcenter[nr, 2])
@@ -130,7 +131,8 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 		        	Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
 		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
 		        	par(ljoin = oljoin)
-		        } else if(directional == -1) {  # point2 to point1
+		        } 
+		        if(directional %in% c(-1,2)) {  # point2 to point1
 		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
 		        	nr = nrow(dcenter)
 		        	alpha = line_degree(dcenter[2, 1], dcenter[2, 2], dcenter[1, 1], dcenter[1,2])
@@ -184,7 +186,7 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 			}
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 			if(nrow(dcenter) > 1 && arr.type != "big.arrow") {
-		        if(directional == 1) {  # point1 to point2
+		        if(directional %in% c(1,2)) {  # point1 to point2
 		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
 		        	nr = nrow(dcenter)
 		        	alpha = line_degree(dcenter[nr-1, 1], dcenter[nr-1, 2], dcenter[nr, 1], dcenter[nr, 2])
@@ -193,7 +195,8 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 	        		Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
 		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
 	        		par(ljoin = oljoin)
-		        } else if(directional == -1) {  # point2 to point2
+		        } 
+		        if(directional %in% c(-1,2)) {  # point2 to point2
 		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
 		        	nr = nrow(dcenter)
 		        	alpha = line_degree(dcenter[2, 1], dcenter[2, 2], dcenter[1, 1], dcenter[1,2])
@@ -214,13 +217,13 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
         theta22 = circlize(point2[2], 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
 
 		if(degreeDiff2(theta12, theta21) <= degreeDiff2(theta22, theta21) + degreeDiff2(theta12, theta11) &
-		   degreeDiff2(theta12, theta21) >= degreeDiff2(theta22, theta11)) {
+		   degreeDiff2(theta12, theta21) >= degreeDiff2(theta22, theta11) && abs(rou1 - rou2) < 1e-5) {
 			d = getQuadraticPoints(theta12, theta21, max(rou1,rou2), max(rou1,rou2), h = h, w = w)
 			r = arc.points(theta12, theta21, rou)
 			d = rbind(d, revMat(r))
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 		} else if(degreeDiff2(theta22, theta11) <= degreeDiff2(theta12, theta11) + degreeDiff2(theta22, theta21) &
-			      degreeDiff2(theta22, theta11) >= degreeDiff2(theta12, theta21)) {
+			      degreeDiff2(theta22, theta11) >= degreeDiff2(theta12, theta21) && abs(rou1 - rou2) < 1e-5) {
 			d = getQuadraticPoints(theta22, theta11, max(rou1,rou2), max(rou1,rou2), h = h, w = w)
 			r = arc.points(theta22, theta11, rou)
 			d = rbind(d, revMat(r))
@@ -282,7 +285,7 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 		    }
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 			if(nrow(dcenter) > 1 && arr.type != "big.arrow") {
-		        if(directional == 1) {  # point1 to point2
+		        if(directional %in% c(1,2)) {  # point1 to point2
 		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
 		        	nr = nrow(dcenter)
 		        	alpha = line_degree(dcenter[nr-1, 1], dcenter[nr-1, 2], dcenter[nr, 1], dcenter[nr, 2])
@@ -291,7 +294,8 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 		        	Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
 		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
 		        	par(ljoin = oljoin)
-		        } else if(directional == -1) {  # point2 to point2
+		        } 
+		        if(directional %in% c(-1,2)) {  # point2 to point2
 		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
 		        	nr = nrow(dcenter)
 		        	alpha = line_degree(dcenter[2, 1], dcenter[2, 2], dcenter[1, 1], dcenter[1,2])

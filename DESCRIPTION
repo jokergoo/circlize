@@ -6,7 +6,7 @@ Date: 2015-8-5
 Author: Zuguang Gu
 Maintainer: Zuguang Gu <z.gu@dkfz.de>
 Depends: R (>= 2.10.0), graphics
-Imports: GlobalOptions (>= 0.0.6), shape, grDevices, utils, stats
+Imports: GlobalOptions (>= 0.0.6), shape, grDevices, utils, stats, colorspace
 Suggests: knitr, dendextend (>= 1.0.1)
 VignetteBuilder: knitr
 Description: Circular layout is an efficient way for the visualization of huge 

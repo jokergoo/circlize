@@ -7,13 +7,13 @@ Color interpolation
 Color interpolation
 }
 \usage{
-colorRamp2(breaks, colors, transparency = 0, space = "Lab")}
+colorRamp2(breaks, colors, transparency = 0, space = "LAB")}
 \arguments{
 
   \item{breaks}{A vector indicating numeric breaks}
   \item{colors}{A vector of colors which correspond to values in \code{breaks}}
   \item{transparency}{A single value in [0, 1]. 0 refers to no transparency and 1 refers to full transparency}
-  \item{space}{color space in which colors are interpolated, see \code{\link[grDevices]{convertColor}} for details.}
+  \item{space}{color space in which colors are interpolated. Value should be one of "RGB", "HSV", "HLS", "LAB", "XYZ", "sRGB", "LUV", see \code{\link[colorspace]{color-class}} for detail.}
 }
 \details{
 Colors are interpolated according to break values and corresponding colors by default through CIE Lab color space. 

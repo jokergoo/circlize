@@ -199,7 +199,7 @@ as.degree = function(radian) {
 # -breaks A vector indicating numeric breaks
 # -colors A vector of colors which correspond to values in ``breaks``
 # -transparency A single value in [0, 1]. 0 refers to no transparency and 1 refers to full transparency
-# -space color space in which colors are interpolated, see `grDevices::convertColor` for details.
+# -space color space in which colors are interpolated. Value should be one of "RGB", "HSV", "HLS", "LAB", "XYZ", "sRGB", "LUV", see `colorspace::color-class` for detail.
 #
 # == details
 # Colors are interpolated according to break values and corresponding colors by default through CIE Lab color space. 
@@ -207,7 +207,7 @@ as.degree = function(radian) {
 #
 # == values
 # It returns a function which accepts a vector of numbers and returns interpolated colors.
-colorRamp2 = function(breaks, colors, transparency = 0, space = "Lab") {
+colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB") {
   if(length(breaks) != length(colors)) {
     stop("Length of `breaks` should be equal to `colors`.\n")
   }
@@ -217,14 +217,17 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "Lab") {
   }
   
   colors = colors[order(breaks)]
-  if(space == "hsv") {
-    colors = t(rgb2hsv(col2rgb(colors)))
-  } else {
-    colors = convertColor(t(col2rgb(colors)/255), from = "sRGB", to = space)
-  }
+  colors = t(col2rgb(colors)/255)
   breaks = sort(breaks)
+
+  if(space == "LUV") {
+    i = which(apply(colors, 1, function(x) all(x == 0)))
+    colors[i, ] = 1e-5
+  }
   
-  transparency = ifelse(transparency > 1, 1, ifelse(transparency < 0, 0, transparency))
+  transparency = ifelse(transparency > 1, 1, ifelse(transparency < 0, 0, transparency))[1]
+  transparency_str = sprintf("%X", transparency*255)
+  if(nchar(transparency_str) == 1) transparency_str = paste0("0", transparency_str)
   
   fun = function(x = NULL) {
     if(is.null(x)) {
@@ -240,8 +243,9 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "Lab") {
     res_col = character(length(x))
     for(i in unique(ibin)) {
       l = ibin == i
-      res_col[l] = .get_color(x[l], breaks[i], breaks[i+1], colors[i, ], colors[i+1, ], transparency, fromSpace = space)
+      res_col[l] = .get_color(x[l], breaks[i], breaks[i+1], colors[i, ], colors[i+1, ], space = space)
     }
+    paste(res_col, transparency_str[1], sep = "")
     attributes(res_col) = att
     return(res_col)
   }
@@ -250,35 +254,34 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "Lab") {
   return(fun)
 }
 
+.restrict_in = function(x, lower, upper) {
+  x[x > upper] = upper
+  x[x < lower] = lower
+  x
+}
+
 # x: vector
 # break1 single value
 # break2 single value
 # rgb1 vector with 3 elements
 # rgb2 vector with 3 elements
-.get_color = function(x, break1, break2, col1, col2, transparency, fromSpace) {
+.get_color = function(x, break1, break2, col1, col2, space) {
+
+  col1 = coords(as(RGB(col1[1], col1[2], col1[3]), space))
+  col2 = coords(as(RGB(col2[1], col2[2], col2[3]), space))
+
   res_col = matrix(ncol = 3, nrow = length(x))
   for(i in seq_along(x)) {
     xx = (x[i] - break2)*(col2 - col1) / (break2 - break1) + col2
     res_col[i,] = xx
   }
-  if(fromSpace == "hsv") {
-    res_col = abs(res_col)
-    return(hsv(res_col[,1], res_col[,2], res_col[,3], alpha = 1-transparency))
-  } else {
-    if(grepl("RGB", fromSpace)) res_col = abs(res_col)  # in case very small negative values
-    res_col = convertColor(res_col, from = fromSpace, to = "sRGB")
-    return(rgb(res_col, alpha = 1-transparency))
-  }
-}
-
-convertColor = function(col, from, to) {
-  if(from == "hsv") {
-    t(hsv(t(col), maxColorValue = 1))
-  } else if(to == "hsv") {
-    t(col2hsv(t(col), maxColorValue = 1))
-  } else {
-    grDevices::convertColor(col, from, to)
-  }
+  
+  res_col = eval(parse(text = paste0(space, "(res_col)")))
+  res_col = coords(as(res_col, "RGB"))
+  res_col[, 1] = .restrict_in(res_col[,1], 0, 1)
+  res_col[, 2] = .restrict_in(res_col[,2], 0, 1)
+  res_col[, 3] = .restrict_in(res_col[,3], 0, 1)
+  hex(RGB(res_col))
 }
 
 # will be considered in the future

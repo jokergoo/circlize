@@ -583,6 +583,9 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	link.arr.lwd = rep(link.arr.lwd, nr)[1:nr]
 	link.arr.lty = rep(link.arr.lty, nr)[1:nr]
 	link.arr.col = rep(link.arr.col, nr)[1:nr]
+	directional = rep(directional, nr)[1:nr]
+	direction.type = rep(direction.type, nr)[1:nr]
+	diffHeight = rep(diffHeight, nr)[1:nr]
 
 	#### reduce the data frame
 	xsum = structure(rep(0, length(cate)), names = cate)
@@ -614,6 +617,9 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	link.arr.lwd = link.arr.lwd[l]
 	link.arr.lty = link.arr.lty[l]
 	link.arr.col = link.arr.col[l]
+	directional = directional[l]
+	direction.type = direction.type[l]
+	diffHeight = diffHeight[l]
 
 	nr = nrow(df)
 	# re-calcualte xsum
@@ -736,45 +742,57 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	}
     
     rou = get_most_inside_radius()
-	if(directional) {
-		if("diffHeight" %in% direction.type) {
-			if(directional > 0) {
-				if(diffHeight > 0) {
-					rou1 = rou - diffHeight
-					rou2 = rou
-				} else {
-					rou1 = rou
-					rou2 = rou + diffHeight
+    rou1 = numeric(nr)
+    rou2 = numeric(nr)
+    for(i in seq_len(nr)) {
+		if(directional[i]) {
+			if(grepl("diffHeight", direction.type[i])) {
+				if(directional[i] == 1) {
+					if(diffHeight[i] > 0) {
+						rou1[i] = rou - diffHeight[i]
+						rou2[i] = rou
+					} else {
+						rou1[i] = rou
+						rou2[i] = rou + diffHeight[i]
+					}
+				} else if(directional[i] == -1) {
+					if(diffHeight[i] > 0) {
+						rou1[i] = rou
+						rou2[i] = rou - diffHeight[i]
+					} else {
+						rou1[i] = rou + diffHeight[i]
+						rou2[i] = rou
+					}
+				} else  if(directional[i] == 2) {
+					if(diffHeight[i] > 0) {
+						rou1[i] = rou - diffHeight[i]
+						rou2[i] = rou - diffHeight[i]
+					} else {
+						rou1[i] = rou + diffHeight[i]
+						rou2[i] = rou + diffHeight[i]
+					}
 				}
 			} else {
-				if(diffHeight > 0) {
-					rou1 = rou
-					rou2 = rou - diffHeight
-				} else {
-					rou1 = rou + diffHeight
-					rou2 = rou
-				}
+				rou1[i] = rou
+				rou2[i] = rou
 			}
 		} else {
-			rou1 = rou
-			rou2 = rou
+			rou1[i] = rou
+			rou2[i] = rou
 		}
-	} else {
-		rou1 = rou
-		rou2 = rou
 	}
 
 	for(k in seq_len(nrow(df))) {
 		if(setequal(direction.type, c("diffHeight"))) {
 			circos.link(df$rn[k], c(df$x1[k] - abs(df$value[k]), df$x1[k]),
 					df$cn[k], c(df$x2[k] - abs(df$value[k]), df$x2[k]),
-					directional = 0, col = col[k], rou1 = rou1, rou2 = rou2, 
+					directional = 0, col = col[k], rou1 = rou1[k], rou2 = rou2[k], 
 					border = link.border[k], lwd = link.lwd[k], lty = link.lty[k],
 					...)	
-		} else if("arrows" %in% direction.type) {
+		} else if(grepl("arrows", direction.type[k])) {
 			circos.link(df$rn[k], c(df$x1[k] - abs(df$value[k]), df$x1[k]),
 						df$cn[k], c(df$x2[k] - abs(df$value[k]), df$x2[k]),
-						directional = directional, col = col[k], rou1 = rou1, rou2 = rou2, 
+						directional = directional[k], col = col[k], rou1 = rou1[k], rou2 = rou2[k], 
 						border = link.border[k], 
 						lwd = link.lwd[k], lty = link.lty[k], 
 						arr.length = link.arr.length[k], arr.width = link.arr.width[k],

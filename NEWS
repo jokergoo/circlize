@@ -3,6 +3,7 @@ Changes in version 0.3.1
 
 * fixed a bug for `chordDiagramFromDataFrame` when there is the third column in the data frame
 * `colorRamp2`: colors are interpolated linearly in Lab color space
+* `chordDiagram`: directional, direction.type and diffHeight can also be vector
 
 Changes in version 0.3.0
 -----------------------------------------------------------------------------

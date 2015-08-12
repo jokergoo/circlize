@@ -12,14 +12,10 @@ generateRandomBed(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0.5),
 }
 \arguments{
 
-  \item{nr}{Number of rows
-}
-  \item{nc}{Number of numeric columns / value columns
-}
-  \item{fun}{Function for generating random values
-}
-  \item{species}{species, pass to \code{\link{read.cytoband}}
-}
+  \item{nr}{Number of rows}
+  \item{nc}{Number of numeric columns / value columns}
+  \item{fun}{Function for generating random values}
+  \item{species}{species, pass to \code{\link{read.cytoband}}}
 
 }
 \details{

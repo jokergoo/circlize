@@ -11,16 +11,15 @@ chordDiagram(x, ...)
 }
 \arguments{
 
-  \item{x}{a matrix or a data frame. The function will pass all argument to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}} depending on the type of \code{x}
-}
-  \item{...}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}.
-}
+  \item{x}{a matrix or a data frame. The function will pass all argument to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}} depending on the type of \code{x}}
+  \item{...}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}.}
 
 }
 \details{
 Chord diagram is a way to visualize numeric tables ( \url{http://circos.ca/intro/tabular_visualization/} ), especially useful
 when the table represents information of directional relations. This function
 visualize tables in a circular way.
+
 This function is flexible and contains some settings that may be a little difficult to understand. 
 Please refer to vignette for better explanation.
 }

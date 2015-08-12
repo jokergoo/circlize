@@ -9,9 +9,12 @@ Circular layout in R
 }
 \details{
 This package aims to implement circular layout in R.
+
 Since most of the figures are composed of points, lines and polygons, 
 we just need to implement low-level functions for drawing points, lines and polygons.
+
 Current there are following low-level graphical functions:
+
 \itemize{
   \item \code{\link{circos.points}}
   \item \code{\link{circos.lines}}
@@ -24,6 +27,7 @@ Current there are following low-level graphical functions:
 
 For drawing points, lines and text through the whole track (among several sectors), the following 
 functions are available:
+
 \itemize{
   \item \code{\link{circos.trackPoints}}
   \item \code{\link{circos.trackLines}}
@@ -31,6 +35,7 @@ functions are available:
 }
 
 Functions to arrange circular layout:
+
 \itemize{
   \item \code{\link{circos.trackPlotRegion}}
   \item \code{\link{circos.updatePlotRegion}}
@@ -40,19 +45,24 @@ Functions to arrange circular layout:
 }
 
 Theoretically, you are able to draw most kinds of circular plots by the above functions.
+
 For specific use in genomics, we also implement functions which add graphics in genome scale.
+
 Functions to initialize circos plot with genomic coordinates:
+
 \itemize{
   \item \code{\link{circos.initializeWithIdeogram}}
   \item \code{\link{circos.genomicInitialize}}
 }
 
 Functions to arrange genomic circular layout:
+
 \itemize{
   \item \code{\link{circos.genomicTrackPlotRegion}}
 }
 
 Functions to add basic graphics in genomic scale:
+
 \itemize{
   \item \code{\link{circos.genomicPoints}}
   \item \code{\link{circos.genomicLines}}
@@ -62,12 +72,14 @@ Functions to add basic graphics in genomic scale:
 }
 
 Functions with specific purpose:
+
 \itemize{
   \item \code{\link{circos.genomicDensity}}
   \item \code{\link{circos.genomicRainfall}}
 }
 
 Finally, function that draws chord diagram:
+
 \itemize{
   \item \code{\link{chordDiagram}}
   \item \code{\link{chordDiagramFromMatrix}}

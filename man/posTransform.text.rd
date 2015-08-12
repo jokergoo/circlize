@@ -13,25 +13,15 @@ posTransform.text(region, y, labels, cex = 1, font = par("font"),
 }
 \arguments{
 
-  \item{region}{Genomic positions at a single chromosome. It is a data frame with two
-columns which are start position and end position.
-}
-  \item{y}{positions of texts
-}
-  \item{labels}{text labels
-}
-  \item{cex}{text size
-}
-  \item{font}{text font style
-}
-  \item{sector.index}{sector index
-}
-  \item{track.index}{track index
-}
-  \item{padding}{padding of text
-}
-  \item{...}{other arguments
-}
+  \item{region}{Genomic positions at a single chromosome. It is a data frame with twocolumns which are start position and end position.}
+  \item{y}{positions of texts}
+  \item{labels}{text labels}
+  \item{cex}{text size}
+  \item{font}{text font style}
+  \item{sector.index}{sector index}
+  \item{track.index}{track index}
+  \item{padding}{padding of text}
+  \item{...}{other arguments}
 
 }
 \details{

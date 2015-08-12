@@ -11,8 +11,7 @@ highlight.chromosome(...)
 }
 \arguments{
 
-  \item{...}{pass to \code{\link{highlight.sector}}
-}
+  \item{...}{pass to \code{\link{highlight.sector}}}
 
 }
 \details{

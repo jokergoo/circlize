@@ -12,23 +12,18 @@ read.cytoband(cytoband = paste0(system.file(package = "circlize"),
 }
 \arguments{
 
-  \item{cytoband}{Path of the cytoband file or a data frame that already contains cytoband data
-}
-  \item{species}{Abbreviations of species. e.g. hg19 for human, mm10 for mouse. If this
-value is specified, the function will download \code{cytoBand.txt.gz} or \code{chromInfo.txt.gz} from
-UCSC website automatically.
-}
-  \item{chromosome.index}{subset of chromosomes, also used to re-set chromosome orders.
-}
-  \item{sort.chr}{Whether chromosome names should be sorted (first sort by numbers then by letters).
-If \code{chromosome.index} is set, this argument is enforced to \code{FALSE}
-}
+  \item{cytoband}{Path of the cytoband file or a data frame that already contains cytoband data}
+  \item{species}{Abbreviations of species. e.g. hg19 for human, mm10 for mouse. If thisvalue is specified, the function will download \code{cytoBand.txt.gz} or \code{chromInfo.txt.gz} fromUCSC website automatically.}
+  \item{chromosome.index}{subset of chromosomes, also used to re-set chromosome orders.}
+  \item{sort.chr}{Whether chromosome names should be sorted (first sort by numbers then by letters).If \code{chromosome.index} is set, this argument is enforced to \code{FALSE}}
 
 }
 \details{
 The function read the cytoband data, sort the chromosome names and calculate the length of each chromosome. 
 By default, it is human hg19 cytoband data.
+
 You can find the data structure for the cytoband data from \url{http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/cytoBand.txt.gz}
+
 If \code{sort.chr} is not set and \code{chromosome.index} is not specified, there would be several circumstances when 
 determining the order of chromosomes. Assuming \code{chromosome} is the first column in the cytoband data frame,
 then, if \code{cytoband} is defined as a file path, or \code{species} is set, the order of chromosomes is \code{unique(chromosome)} 
@@ -39,12 +34,9 @@ important since the order of chromosomes will be used to control the order of se
 }
 \value{
 \describe{
-  \item{df}{Data frame for cytoband data (rows are sorted if \code{sort.chr} is set to \code{TRUE})
-}
-  \item{chromosome}{Sorted chromosome names
-}
-  \item{chr.len}{Length of chromosomes. Orders are same as \code{chromosome}
-}
+  \item{df}{Data frame for cytoband data (rows are sorted if \code{sort.chr} is set to \code{TRUE})}
+  \item{chromosome}{Sorted chromosome names}
+  \item{chr.len}{Length of chromosomes. Orders are same as \code{chromosome}}
 }
 }
 \references{

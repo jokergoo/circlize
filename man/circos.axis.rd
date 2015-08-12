@@ -38,6 +38,7 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
 }
 \details{
 It can only draw axes on x-direction.
+
 Currently, this package doesn't provide a function to add axes on y-direction. But it is easy
 to implement by users with \code{\link{circos.lines}} and \code{\link{circos.text}}.
 }

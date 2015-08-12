@@ -11,13 +11,9 @@ genomicDensity(region, window.size = 10000000, overlap = TRUE)
 }
 \arguments{
 
-  \item{region}{Genomic positions at a single chromosome. It is a data frame with two
-columns which are start position and end position
-}
-  \item{window.size}{Window size to calculate genomic density
-}
-  \item{overlap}{Whether two neighbouring windows have half overlap
-}
+  \item{region}{Genomic positions at a single chromosome. It is a data frame with twocolumns which are start position and end position}
+  \item{window.size}{Window size to calculate genomic density}
+  \item{overlap}{Whether two neighbouring windows have half overlap}
 
 }
 \details{

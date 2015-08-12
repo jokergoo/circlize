@@ -29,6 +29,7 @@ highlight.sector(sector.index, track.index = get.all.track.index(),
 }
 \details{
 You can use \code{\link{circos.info}} to find out index for all sectors and all tracks.
+
 The function calls \code{\link{draw.sector}}.
 }
 \examples{

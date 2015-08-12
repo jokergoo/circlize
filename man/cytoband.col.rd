@@ -11,8 +11,7 @@ cytoband.col(x)
 }
 \arguments{
 
-  \item{x}{A vector containing the Giemsa stain results
-}
+  \item{x}{A vector containing the Giemsa stain results}
 
 }
 \details{

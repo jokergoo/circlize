@@ -11,8 +11,7 @@ circos.genomicTrack(...)
 }
 \arguments{
 
-  \item{...}{pass to \code{\link{circos.genomicTrackPlotRegion}}
-}
+  \item{...}{pass to \code{\link{circos.genomicTrackPlotRegion}}}
 
 }
 \details{

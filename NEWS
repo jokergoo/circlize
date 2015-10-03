@@ -1,7 +1,8 @@
 Changes in version 0.3.2
 -----------------------------------------------------------------------------
 
-* `chrodDiagram`: add warning if users use data frame ad ajacency matrix
+* `chrodDiagram`: add warning if users use data frame as ajacency matrix
+* `circos.genomicTrackPlotRegion`: data frame will be sorted
 
 
 Changes in version 0.3.1

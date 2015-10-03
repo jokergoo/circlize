@@ -1367,13 +1367,15 @@ normalizeToDataFrame = function(data) {
 			stop("Your data frame is less than 3 column!.\n")
 		}
 		data = data[data[[1]] %in% all.chr, , drop = FALSE]
+		data = data[order(data[[1]], data[[2]]), , drop = FALSE]
 		return(data)
 	} else if(is.list(data) && all(sapply(data, is.data.frame))) {
 		df = lapply(data, function(gr) {
 			if(ncol(gr) < 3) {
 				stop("Your data frame is less than 3 column!.\n")
 			}
-			gr[gr[[1]] %in% all.chr, , drop = FALSE]
+			gr = gr[gr[[1]] %in% all.chr, , drop = FALSE]
+			gr = gr[order(gr[[1]], gr[[2]]), ]
 		})
 		return(df)
 	} else {

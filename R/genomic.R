@@ -1271,6 +1271,22 @@ circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, o
 # a data frame with three columns: start position, end position and percent of overlapping.
 genomicDensity = function(region, window.size = 10000000, overlap = TRUE) {
 	
+	if(is.character(region[, 1])) {
+		do.call("rbind", lapply(unique(region[, 1]), function(chr) {
+			df = rainfallTransform(region[, 2;3], mode = mode)
+			cbind(chr = rep(chr, nrow(df)), df)
+		}))
+	}
+	if(ncol(region) >= 3) {
+		if(is.numeric(region[, 1])) {
+			if(max(region[, 1]) < 100) {
+				do.call("rbind", lapply(unique(region[, 1]), function(chr) {
+					df = rainfallTransform(region[, 2;3], mode = mode)
+					cbind(chr = rep(chr, nrow(df)), df)
+				}))
+			}
+		}
+	}
 	region = region[, 1:2]
 	
 	region = sort_region(region)
@@ -1452,17 +1468,37 @@ circos.genomicRainfall = function(data, ylim = c(0, 9), col = "black", pch = par
 # Calculate inter-distance of genomic regions
 #
 # == param
-# -region Genomic positions at a single chromosome. It can be a data frame with two
-#     columns which are start positions and end positions.
+# -region Genomic positions. It can be a data frame with two
+#     columns which are start positions and end positions on a single chromosome or a normal
+#     bed-format data frame..
 # -mode How to calculate inter-distance. For a region, there is a distance to the 
 #       prevous region and also there is a distance to the next region. ``mode``
 #       controls how to merge these two distances into one value.
 #
 # == values
-# A data frame with three columns: start position, end position and distance
+# If the input is a two-column data frame, the function returns a data frame with 
+# three columns: start position, end position and distance. And if the input is a bed-format
+# data frame, the returned data frame will have an additional column which is chromosome name.
 rainfallTransform = function(region, mode = c("min", "max", "mean")) {
 	
 	mode = match.arg(mode)[1]
+	
+	if(is.character(region[, 1])) {
+		do.call("rbind", lapply(unique(region[, 1]), function(chr) {
+			df = rainfallTransform(region[, 2;3], mode = mode)
+			cbind(chr = rep(chr, nrow(df)), df)
+		}))
+	}
+	if(ncol(region) >= 3) {
+		if(is.numeric(region[, 1])) {
+			if(max(region[, 1]) < 100) {
+				do.call("rbind", lapply(unique(region[, 1]), function(chr) {
+					df = rainfallTransform(region[, 2;3], mode = mode)
+					cbind(chr = rep(chr, nrow(df)), df)
+				}))
+			}
+		}
+	}
 	
 	region = as.data.frame(sort_region(region[1:2]))
 	n = nrow(region)

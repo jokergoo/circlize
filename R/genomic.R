@@ -1259,8 +1259,9 @@ circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, o
 # Calculate genomic region density
 #
 # == param
-# -region Genomic positions at a single chromosome. It is a data frame with two
-#     columns which are start position and end position
+# -region Genomic positions. It can be a data frame with two
+#     columns which are start positions and end positions on a single chromosome.
+#     It can also be a bed-format data frame which contains the chromosome column.
 # -window.size Window size to calculate genomic density
 # -overlap Whether two neighbouring windows have half overlap
 #
@@ -1268,7 +1269,9 @@ circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, o
 # It calculate the percent of each genomic windows that is covered by the input regions.
 #
 # == values
-# a data frame with three columns: start position, end position and percent of overlapping.
+# If the input is a two-column data frame, the function returns a data frame with three columns: 
+# start position, end position and percent of overlapping. And if the input is a bed-format
+# data frame, there will be an additionally chromosome name column.
 genomicDensity = function(region, window.size = 10000000, overlap = TRUE) {
 	
 	if(is.character(region[, 1])) {
@@ -1277,7 +1280,7 @@ genomicDensity = function(region, window.size = 10000000, overlap = TRUE) {
 			df = genomicDensity(region[l, 2:3, drop = FALSE], window.size = window.size, overlap = overlap)
 			cbind(chr = rep(chr, nrow(df)), df)
 		})))
-	}
+
 	if(ncol(region) >= 3) {
 		if(is.numeric(region[, 1])) {
 			if(max(region[, 1]) < 100) {
@@ -1500,6 +1503,23 @@ rainfallTransform = function(region, mode = c("min", "max", "mean")) {
 					df = rainfallTransform(region[l, 2:3, drop = FALSE], mode = mode)
 					cbind(chr = rep(chr, nrow(df)), df)
 				})))
+			}
+		}
+	}
+	
+	if(is.character(region[, 1])) {
+		do.call("rbind", lapply(unique(region[, 1]), function(chr) {
+			df = rainfallTransform(region[, 2;3], mode = mode)
+			cbind(chr = rep(chr, nrow(df)), df)
+		}))
+	}
+	if(ncol(region) >= 3) {
+		if(is.numeric(region[, 1])) {
+			if(max(region[, 1]) < 100) {
+				do.call("rbind", lapply(unique(region[, 1]), function(chr) {
+					df = rainfallTransform(region[, 2;3], mode = mode)
+					cbind(chr = rep(chr, nrow(df)), df)
+				}))
 			}
 		}
 	}

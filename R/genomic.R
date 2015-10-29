@@ -1507,23 +1507,6 @@ rainfallTransform = function(region, mode = c("min", "max", "mean")) {
 		}
 	}
 	
-	if(is.character(region[, 1])) {
-		do.call("rbind", lapply(unique(region[, 1]), function(chr) {
-			df = rainfallTransform(region[, 2;3], mode = mode)
-			cbind(chr = rep(chr, nrow(df)), df)
-		}))
-	}
-	if(ncol(region) >= 3) {
-		if(is.numeric(region[, 1])) {
-			if(max(region[, 1]) < 100) {
-				do.call("rbind", lapply(unique(region[, 1]), function(chr) {
-					df = rainfallTransform(region[, 2;3], mode = mode)
-					cbind(chr = rep(chr, nrow(df)), df)
-				}))
-			}
-		}
-	}
-	
 	region = as.data.frame(sort_region(region[1:2]))
 	n = nrow(region)
 	dist = numeric(n)

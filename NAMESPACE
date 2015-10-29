@@ -75,4 +75,5 @@ importFrom("colorspace", LAB)
 importFrom("colorspace", HLS)
 importFrom("colorspace", XYZ)
 importFrom("colorspace", hex)
+importFrom("methods", as)
 

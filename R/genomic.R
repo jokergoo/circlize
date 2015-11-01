@@ -1280,7 +1280,8 @@ genomicDensity = function(region, window.size = 10000000, overlap = TRUE) {
 			df = genomicDensity(region[l, 2:3, drop = FALSE], window.size = window.size, overlap = overlap)
 			cbind(chr = rep(chr, nrow(df)), df)
 		})))
-
+	}
+	
 	if(ncol(region) >= 3) {
 		if(is.numeric(region[, 1])) {
 			if(max(region[, 1]) < 100) {

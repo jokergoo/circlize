@@ -20,7 +20,7 @@ circos.genomicText(region, value = NULL, y = NULL, labels = NULL, labels.column 
   \item{y}{A vector or a single value indicating position of text.}
   \item{labels}{Labels of text corresponding to each genomic positions}
   \item{labels.column}{If labels are in \code{value}, index of column in \code{value}}
-  \item{numeric.column}{Which column in \code{value} data frame should be taken as y-value.If it is not defined, only the first numeric columns in \code{value} will be taken.}
+  \item{numeric.column}{Which column in \code{value} data frame should be taken as y-value. If it is not defined, only the first numeric columns in \code{value} will be taken.}
   \item{sector.index}{Pass to \code{\link{circos.rect}}}
   \item{track.index}{Pass to \code{\link{circos.rect}}}
   \item{posTransform}{Self-defined function to transform genomic positions, see \code{\link{posTransform.default}} for explanation}

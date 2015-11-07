@@ -17,3 +17,7 @@ circos.update(...)
 \details{
 shortcut function of \code{\link{circos.updatePlotRegion}}.
 }
+\examples{
+# There is no example
+NULL
+}

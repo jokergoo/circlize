@@ -19,9 +19,9 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
 \arguments{
 
   \item{h}{Position of the x-axis, can be "top", "bottom" or a numeric value}
-  \item{major.at}{If it is numeric vector, it identifies the positionsof the major ticks. It can exceed \code{xlim} value and the exceeding partwould be trimmed automatically. If it is \code{NULL}, about every 10 degrees there is a major tick.}
+  \item{major.at}{If it is numeric vector, it identifies the positions of the major ticks. It can exceed \code{xlim} value and the exceeding part would be trimmed automatically. If it is \code{NULL}, about every 10 degrees there is a major tick.}
   \item{labels}{labels of the major ticks. Also, the exceeding part would be trimmed automatically.}
-  \item{major.tick}{Whether to draw major tick. If it is set to \code{FALSE}, there would beno minor ticks.}
+  \item{major.tick}{Whether to draw major tick. If it is set to \code{FALSE}, there would be no minor ticks.}
   \item{sector.index}{Index for the sector}
   \item{track.index}{Index for the track}
   \item{labels.font}{font style for the axis labels}

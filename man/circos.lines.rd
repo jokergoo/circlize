@@ -24,9 +24,9 @@ circos.lines(x, y, sector.index = get.cell.meta.data("sector.index"),
   \item{lty}{line style}
   \item{type}{line type, similar as \code{type} argument in \code{\link[graphics]{lines}}, but only in \code{c("l", "o", "h", "s")}}
   \item{straight}{whether draw straight lines between points}
-  \item{area}{whether to fill the area below the lines. If it is set to \code{TRUE}, \code{col} controls the filled colorin the area and \code{border} controls color of the line.}
+  \item{area}{whether to fill the area below the lines. If it is set to \code{TRUE}, \code{col} controls the filled color in the area and \code{border} controls color of the line.}
   \item{area.baseline}{deprecated, use \code{baseline} instead.}
-  \item{baseline}{the base line to draw areas. By default it is the minimal of y-range (bottom). It can be a string or a number.If a string, it should be one of \code{bottom} and \code{top}. This argument also works if \code{type} is set to \code{h}.}
+  \item{baseline}{the base line to draw areas. By default it is the minimal of y-range (bottom). It can be a string or a number. If a string, it should be one of \code{bottom} and \code{top}. This argument also works if \code{type} is set to \code{h}.}
   \item{border}{color for border of the area}
   \item{pt.col}{if \code{type} is "o", point color}
   \item{cex}{if \code{type} is "o", point size}

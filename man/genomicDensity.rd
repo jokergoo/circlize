@@ -11,7 +11,7 @@ genomicDensity(region, window.size = 10000000, overlap = TRUE)
 }
 \arguments{
 
-  \item{region}{Genomic positions at a single chromosome. It is a data frame with twocolumns which are start position and end position}
+  \item{region}{Genomic positions. It can be a data frame with two columns which are start positions and end positions on a single chromosome. It can also be a bed-format data frame which contains the chromosome column.}
   \item{window.size}{Window size to calculate genomic density}
   \item{overlap}{Whether two neighbouring windows have half overlap}
 
@@ -20,7 +20,9 @@ genomicDensity(region, window.size = 10000000, overlap = TRUE)
 It calculate the percent of each genomic windows that is covered by the input regions.
 }
 \value{
-a data frame with three columns: start position, end position and percent of overlapping.
+If the input is a two-column data frame, the function returns a data frame with three columns: 
+start position, end position and percent of overlapping. And if the input is a bed-format
+data frame, there will be an additionally chromosome name column.
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.

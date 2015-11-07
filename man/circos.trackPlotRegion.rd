@@ -17,20 +17,20 @@ circos.trackPlotRegion(factors = NULL, x = NULL, y = NULL, ylim = NULL,
 }
 \arguments{
 
-  \item{factors}{Factors which represent categories of data, if it is \code{NULL}, then it uses the whole sector index.}
+  \item{factors}{Factors which represent categories of data, if it is \code{NULL},  then it uses the whole sector index.}
   \item{x}{Data on x-axis. It is only used if \code{panel.fun} is set.}
   \item{y}{Data on y-axis}
   \item{ylim}{Range of data on y-axis}
-  \item{force.ylim}{Whether to force all cells in the track to share the same \code{ylim}. Normally,all cells on a same track should have same \code{ylim}.}
-  \item{track.index}{Index for the track which is going to be created/updated. If the specified track has alreadybeen created, this function just updated corresponding track with new plot. If the specified trackis \code{NULL} or has not been created, this function just created it. Note the value for thisargument should not exceed maximum track index plus 1.}
-  \item{track.height}{Height of the track. It is the percentage to the radius of the unit circles.If updating a track (with proper \code{track.index} value), this argument is ignored.}
+  \item{force.ylim}{Whether to force all cells in the track to share the same \code{ylim}. Normally, all cells on a same track should have same \code{ylim}.}
+  \item{track.index}{Index for the track which is going to be created/updated. If the specified track has already been created, this function just updated corresponding track with new plot. If the specified track is \code{NULL} or has not been created, this function just created it. Note the value for this argument should not exceed maximum track index plus 1.}
+  \item{track.height}{Height of the track. It is the percentage to the radius of the unit circles. If updating a track (with proper \code{track.index} value), this argument is ignored.}
   \item{track.margin}{only affect current track}
   \item{cell.padding}{only affect current track}
   \item{bg.col}{Background color for the plotting regions. It can be vector which has the same length of sectors.}
   \item{bg.border}{Color for the border of the plotting regions. It can be vector which has the same length of sectors.}
   \item{bg.lty}{Line style for the border of the plotting regions. It can be vector which has the same length of sectors.}
   \item{bg.lwd}{Line width for the border of the plotting regions. It can be vector which has the same length of sectors.}
-  \item{panel.fun}{Panel function to add graphics in each cell, see "details" sectionand vignette for explanation.}
+  \item{panel.fun}{Panel function to add graphics in each cell, see "details" section and vignette for explanation.}
 
 }
 \details{
@@ -74,4 +74,8 @@ of the plotting region can not be changed.
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
 
+}
+\examples{
+# There is no example
+NULL
 }

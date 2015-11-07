@@ -13,9 +13,9 @@ read.chromInfo(chromInfo = paste0(system.file(package = "circlize"),
 \arguments{
 
   \item{chromInfo}{Path of the chromInfo file or a data frame that already contains chromInfo data}
-  \item{species}{Abbreviations of species. e.g. hg19 for human, mm10 for mouse. If thisvalue is specified, the function will download \code{chromInfo.txt.gz} fromUCSC website automatically.}
+  \item{species}{Abbreviations of species. e.g. hg19 for human, mm10 for mouse. If this value is specified, the function will download \code{chromInfo.txt.gz} from UCSC website automatically.}
   \item{chromosome.index}{subset of chromosomes, also used to re-set chromosome orders.}
-  \item{sort.chr}{Whether chromosome names should be sorted (first sort by numbers then by letters).If \code{chromosome.index} is set, this argument is enforced to \code{FALSE}#}
+  \item{sort.chr}{Whether chromosome names should be sorted (first sort by numbers then by letters). If \code{chromosome.index} is set, this argument is enforced to \code{FALSE}#}
 
 }
 \details{
@@ -38,4 +38,8 @@ important since the order of chromosomes will be used to control the order of se
   \item{chromosome}{Sorted chromosome names}
   \item{chr.len}{Length of chromosomes. Order are same as \code{chromosome}}
 }
+}
+\examples{
+# There is no example
+NULL
 }

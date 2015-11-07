@@ -13,9 +13,9 @@ read.cytoband(cytoband = paste0(system.file(package = "circlize"),
 \arguments{
 
   \item{cytoband}{Path of the cytoband file or a data frame that already contains cytoband data}
-  \item{species}{Abbreviations of species. e.g. hg19 for human, mm10 for mouse. If thisvalue is specified, the function will download \code{cytoBand.txt.gz} or \code{chromInfo.txt.gz} fromUCSC website automatically.}
+  \item{species}{Abbreviations of species. e.g. hg19 for human, mm10 for mouse. If this value is specified, the function will download \code{cytoBand.txt.gz} or \code{chromInfo.txt.gz} from UCSC website automatically.}
   \item{chromosome.index}{subset of chromosomes, also used to re-set chromosome orders.}
-  \item{sort.chr}{Whether chromosome names should be sorted (first sort by numbers then by letters).If \code{chromosome.index} is set, this argument is enforced to \code{FALSE}}
+  \item{sort.chr}{Whether chromosome names should be sorted (first sort by numbers then by letters). If \code{chromosome.index} is set, this argument is enforced to \code{FALSE}}
 
 }
 \details{

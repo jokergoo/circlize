@@ -17,3 +17,7 @@ circos.track(...)
 \details{
 shortcut function of \code{\link{circos.trackPlotRegion}}.
 }
+\examples{
+# There is no example
+NULL
+}

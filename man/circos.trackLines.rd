@@ -23,7 +23,7 @@ circos.trackLines(factors, x, y, track.index = get.cell.meta.data("track.index")
   \item{lty}{line style}
   \item{type}{line type, similar as \code{type} argument in \code{\link[graphics]{lines}}, but only in \code{c("l", "o", "h", "s")}}
   \item{straight}{whether draw straight lines between points}
-  \item{area}{whether to fill the area below the lines. If it is set to \code{TRUE}, \code{col} controls the filled colorin the area and \code{border} controls the color of the line.}
+  \item{area}{whether to fill the area below the lines. If it is set to \code{TRUE}, \code{col} controls the filled color in the area and \code{border} controls the color of the line.}
   \item{area.baseline}{deprecated, use \code{baseline} instead.}
   \item{baseline}{the base line to draw area, pass to \code{\link{circos.lines}}.}
   \item{border}{color for border of the area}
@@ -41,4 +41,8 @@ This function can be replaced by a \code{for} loop containing \code{\link{circos
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
 
+}
+\examples{
+# There is no example
+NULL
 }

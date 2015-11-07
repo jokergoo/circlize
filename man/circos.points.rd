@@ -40,3 +40,7 @@ and \code{cex} which have same meaning as those in the \code{\link[graphics]{par
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
 
 }
+\examples{
+# There is no example
+NULL
+}

@@ -27,3 +27,7 @@ indicates which data frame is being used. Please see the vignette to get a more 
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
 
 }
+\examples{
+# There is no example
+NULL
+}

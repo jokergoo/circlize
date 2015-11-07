@@ -20,3 +20,7 @@ If you meet some errors when re-drawing the circos plot, try running this functi
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
 
 }
+\examples{
+# There is no example
+NULL
+}

@@ -14,7 +14,7 @@ circos.genomicRainfall(data, ylim = c(0, 9), col = "black", pch = par("pch"),
 
   \item{data}{A bed-file-like data frame or a list of data frames}
   \item{ylim}{ylim for rainfall plot track. It's value should be log10(inter-distance+1)}
-  \item{col}{Color of points. It should be length of one. If \code{data} is a list, the length of \code{col}can also be the length of the list.}
+  \item{col}{Color of points. It should be length of one. If \code{data} is a list, the length of \code{col} can also be the length of the list.}
   \item{pch}{Style of points}
   \item{cex}{Size of points}
   \item{...}{Pass to \code{\link{circos.trackPlotRegion}}}

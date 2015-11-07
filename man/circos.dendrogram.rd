@@ -13,7 +13,7 @@ circos.dendrogram(dend, facing = c("outside", "inside"), max_height = NULL)
 
   \item{dend}{A \code{\link[stats]{dendrogram}} object.}
   \item{facing}{Is the dendromgrams facing inside to the circle or outside.}
-  \item{max_height}{Maximum height of the dendrogram. This is important if more than one dendrogramsare drawn in one track and making them comparable.}
+  \item{max_height}{Maximum height of the dendrogram. This is important if more than one dendrograms are drawn in one track and making them comparable.}
 
 }
 \details{

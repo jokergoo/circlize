@@ -16,7 +16,7 @@ circos.genomicInitialize(data, sector.names = NULL, major.by = NULL,
   \item{data}{A data frame containing genomic data.}
   \item{sector.names}{Labels for each sectors which will be drawn along each sector. It will not modify values of sector index.}
   \item{major.by}{Increment of major ticks. It is calculated automatically if the value is not set (about every 10 degrees there is a major tick).}
-  \item{plotType}{If it is not \code{NULL}, there will create a new track containing axis and names for sectors.This argument controls which part should be drawn, \code{axis} for genomic axis and \code{labels} for chromosome names}
+  \item{plotType}{If it is not \code{NULL}, there will create a new track containing axis and names for sectors. This argument controls which part should be drawn, \code{axis} for genomic axis and \code{labels} for chromosome names}
   \item{tickLabelsStartFromZero}{Whether axis tick labels start from 0? This will only affect the axis labels while not affect x-values in cells.}
   \item{track.height}{If \code{PlotType} is not \code{NULL}, height of the annotation track.}
   \item{...}{Pass to \code{\link{circos.initialize}}}

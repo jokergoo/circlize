@@ -22,3 +22,7 @@ circos.segments(x0, y0, x1, y1, sector.index = get.cell.meta.data("sector.index"
   \item{...}{pass to \code{\link[graphics]{lines}}}
 
 }
+\examples{
+# There is no example
+NULL
+}

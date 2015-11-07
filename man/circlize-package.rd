@@ -88,3 +88,7 @@ Finally, function that draws chord diagram:
 
 Please refer to the vignettes to find out how to draw basic and advanced circular plots by this package.
 }
+\examples{
+# There is no example
+NULL
+}

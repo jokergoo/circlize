@@ -38,3 +38,7 @@ This function can be replaced by a \code{for} loop containing \code{\link{circos
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
 
 }
+\examples{
+# There is no example
+NULL
+}

@@ -14,7 +14,7 @@ circos.initialize(factors, x = NULL, xlim = NULL, sector.width = NULL)
   \item{factors}{Factors which represent data categories}
   \item{x}{Data on x-axis, a vector}
   \item{xlim}{Limitations for values on x-axis}
-  \item{sector.width}{Width for each sector. The length of the vector should be either 1 which meansall sectors have same width or as same as the number of sectors. Values forthe vector are relative, and they will be scaled by dividing their summation.By default, it is \code{NULL} which means the width of sectors correspond to the datarange in sectors which is calculated internally.}
+  \item{sector.width}{Width for each sector. The length of the vector should be either 1 which means all sectors have same width or as same as the number of sectors. Values for the vector are relative, and they will be scaled by dividing their summation. By default, it is \code{NULL} which means the width of sectors correspond to the data range in sectors which is calculated internally.}
 
 }
 \details{

@@ -17,8 +17,8 @@ circos.trackHist(factors, x, track.height = circos.par("track.height"),
 
   \item{factors}{Factors which represent the categories of data}
   \item{x}{Data on the x-axis}
-  \item{track.index}{Index for the track which is going to be updated. Setting it to \code{NULL} meanscreating the plotting regions in the next newest track.}
-  \item{track.height}{Height of the track. It is the percentage to the radius of the unit circle.If to update a track, this argument is disabled.}
+  \item{track.index}{Index for the track which is going to be updated. Setting it to \code{NULL} means creating the plotting regions in the next newest track.}
+  \item{track.height}{Height of the track. It is the percentage to the radius of the unit circle. If to update a track, this argument is disabled.}
   \item{force.ylim}{Whether to force all cells in the track to share the same \code{ylim}. Btw, \code{ylim} is calculated automatically.}
   \item{col}{Filled color for histogram}
   \item{border}{Border color for histogram}

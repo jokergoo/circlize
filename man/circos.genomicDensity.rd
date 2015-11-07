@@ -17,7 +17,7 @@ circos.genomicDensity(data, ylim.force = FALSE, window.size = NULL, overlap = TR
   \item{ylim.force}{Whether to force upper bound of \code{ylim} to be 1.}
   \item{window.size}{Pass to \code{\link{genomicDensity}}}
   \item{overlap}{Pass to \code{\link{genomicDensity}}}
-  \item{col}{Colors. It should be length of one. If \code{data} is a list of data frames, the length of \code{col}can also be the length of the list.}
+  \item{col}{Colors. It should be length of one. If \code{data} is a list of data frames, the length of \code{col} can also be the length of the list.}
   \item{lwd}{Width of lines}
   \item{lty}{Style of lines}
   \item{type}{Type of lines, see \code{\link{circos.lines}}}

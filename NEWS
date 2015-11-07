@@ -3,7 +3,8 @@ Changes in version 0.3.3
 
 * `rainfallTransform()` and `genomicDensity()`: can be applied on the bed-format
   data frame directly.
-
+* add `col2rgb()` which transforms back to the original value based on the color 
+  mapping function.
 
 Changes in version 0.3.2
 -----------------------------------------------------------------------------

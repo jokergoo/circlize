@@ -230,7 +230,8 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB") {
   }
   
   colors = t(col2rgb(colors)/255)
-  
+
+  attr = list(breaks = breaks, colors = colors, transparency = transparency, space = space)
 
   if(space == "LUV") {
     i = which(apply(colors, 1, function(x) all(x == 0)))
@@ -258,11 +259,11 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB") {
       res_col[l] = .get_color(x[l], breaks[i], breaks[i+1], colors[i, ], colors[i+1, ], space = space)
     }
     res_col = paste(res_col, transparency_str[1], sep = "")
-    attributes(res_col) = att
+    
     return(res_col)
   }
   
-  attr(fun, "breaks") = breaks
+  attributes(fun) = attr
   return(fun)
 }
 
@@ -279,8 +280,8 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB") {
 # rgb2 vector with 3 elements
 .get_color = function(x, break1, break2, col1, col2, space) {
 
-  col1 = coords(as(RGB(col1[1], col1[2], col1[3]), space))
-  col2 = coords(as(RGB(col2[1], col2[2], col2[3]), space))
+  col1 = coords(as(sRGB(col1[1], col1[2], col1[3]), space))
+  col2 = coords(as(sRGB(col2[1], col2[2], col2[3]), space))
 
   res_col = matrix(ncol = 3, nrow = length(x))
   for(i in seq_along(x)) {
@@ -289,11 +290,11 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB") {
   }
   
   res_col = eval(parse(text = paste0(space, "(res_col)")))
-  res_col = coords(as(res_col, "RGB"))
+  res_col = coords(as(res_col, "sRGB"))
   res_col[, 1] = .restrict_in(res_col[,1], 0, 1)
   res_col[, 2] = .restrict_in(res_col[,2], 0, 1)
   res_col[, 3] = .restrict_in(res_col[,3], 0, 1)
-  hex(RGB(res_col))
+  hex(sRGB(res_col))
 }
 
 # will be considered in the future

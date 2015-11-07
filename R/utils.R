@@ -242,7 +242,7 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB") {
   transparency_str = sprintf("%X", round(transparency*255))
   if(nchar(transparency_str) == 1) transparency_str = paste0("0", transparency_str)
   
-  fun = function(x = NULL) {
+  fun = function(x = NULL, return_rgb = FALSE, max_value = 1) {
     if(is.null(x)) {
       stop("Please specify `x`\n")
     }
@@ -260,6 +260,9 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB") {
     }
     res_col = paste(res_col, transparency_str[1], sep = "")
     
+    if(return_rgb) {
+      res_col = t(col2rgb(res_col, alpha = TRUE)/255)
+    }
     return(res_col)
   }
   

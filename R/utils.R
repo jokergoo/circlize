@@ -259,9 +259,10 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB") {
       res_col[l] = .get_color(x[l], breaks[i], breaks[i+1], colors[i, ], colors[i+1, ], space = space)
     }
     res_col = paste(res_col, transparency_str[1], sep = "")
+    attributes(res_col) = att
     
     if(return_rgb) {
-      res_col = t(col2rgb(res_col, alpha = TRUE)/255)
+      res_col = t(col2rgb(as.vector(res_col), alpha = TRUE)/255)
     }
     return(res_col)
   }

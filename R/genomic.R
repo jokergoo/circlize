@@ -1274,7 +1274,8 @@ circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, o
 # data frame, there will be an additionally chromosome name column.
 genomicDensity = function(region, window.size = 10000000, overlap = TRUE) {
 	
-	if(is.character(region[, 1])) {
+	if(is.character(region[, 1]) || is.factor(region[, 1])) {
+		region[, 1] = as.vector(region[, 1])
 		return(do.call("rbind", lapply(unique(region[, 1]), function(chr) {
 			l = region[,1] == chr
 			df = genomicDensity(region[l, 2:3, drop = FALSE], window.size = window.size, overlap = overlap)
@@ -1489,7 +1490,8 @@ rainfallTransform = function(region, mode = c("min", "max", "mean")) {
 	
 	mode = match.arg(mode)[1]
 
-	if(is.character(region[, 1])) {
+	if(is.character(region[, 1]) || is.factor(region[, 1])) {
+		region[, 1] = as.vector(region[, 1])
 		return(do.call("rbind", lapply(unique(region[, 1]), function(chr) {
 			l = region[, 1] == chr
 			df = rainfallTransform(region[l, 2:3, drop = FALSE], mode = mode)

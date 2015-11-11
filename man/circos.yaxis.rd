@@ -12,7 +12,7 @@ circos.yaxis(side = c("left", "right"), at = NULL, labels = TRUE, tick = TRUE,
     track.index = get.cell.meta.data("track.index"),
     labels.font = par("font"), labels.cex = par("cex"),
     labels.niceFacing = TRUE,
-    tick.length = 1, lwd = par("lwd"))
+    tick.length = 0.5, lwd = par("lwd"))
 }
 \arguments{
 
@@ -36,4 +36,5 @@ for y-axis.
 \examples{
 # There is no example
 NULL
+
 }

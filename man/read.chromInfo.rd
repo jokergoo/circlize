@@ -42,4 +42,5 @@ important since the order of chromosomes will be used to control the order of se
 \examples{
 # There is no example
 NULL
+
 }

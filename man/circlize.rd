@@ -27,4 +27,5 @@ A matrix with two columns (\code{theta} and \code{rou})
 \examples{
 # There is no example
 NULL
+
 }

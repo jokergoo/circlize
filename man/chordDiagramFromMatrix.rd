@@ -59,4 +59,5 @@ Internally, the matrix is transformed to a data frame and sent to \code{\link{ch
 \examples{
 # There is no example
 NULL
+
 }

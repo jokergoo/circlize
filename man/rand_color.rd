@@ -21,4 +21,5 @@ a vector of colors
 \examples{
 # There is no example
 NULL
+
 }

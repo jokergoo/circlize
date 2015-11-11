@@ -91,4 +91,5 @@ Please refer to the vignettes to find out how to draw basic and advanced circula
 \examples{
 # There is no example
 NULL
+
 }

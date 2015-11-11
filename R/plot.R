@@ -1098,8 +1098,6 @@ circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.d
 # == details
 # It can only draw axes on x-direction.
 #
-# Currently, this package doesn't provide a function to add axes on y-direction. But it is easy
-# to implement by users with `circos.lines` and `circos.text`.
 circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
 	sector.index = get.cell.meta.data("sector.index"),
 	track.index = get.cell.meta.data("track.index"),
@@ -1242,6 +1240,16 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	return(invisible(NULL))
 }
 
+# == title
+# Draw x-axis
+#
+# == param
+# -... all pass to `circos.axis`
+#
+circos.xaxis = function(...) {
+	circos.axis(...)
+}
+
 .default.major.by = function(sector.index = get.cell.meta.data("sector.index"),
 	track.index = get.cell.meta.data("track.index")) {
 	# start.degree - end.degree is always a positive value.
@@ -1252,7 +1260,94 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	digits = as.numeric(gsub("^.*e([+-]\\d+)$", "\\1", sprintf("%e", major.by)))
 	major.by = round(major.by, digits = -1*digits)
 	return(major.by)
-}	
+}
+
+# == title
+# Draw y-axis
+#
+# == param
+# -side add the y-axis on the left or right of the cell
+# -at         If it is numeric vector, it identifies the positions
+#                   of the ticks. It can exceed ``ylim`` value and the exceeding part
+#                   would be trimmed automatically.
+# -labels           labels of the ticks. Also, the exceeding part would be trimmed automatically.
+# -tick       Whether to draw ticks.
+# -sector.index     Index for the sector
+# -track.index      Index for the track
+# -labels.font      font style for the axis labels
+# -labels.cex       font size for the axis labels
+# -labels.niceFacing Should facing of axis labels be human-easy
+# -tick.length      length of the tick, measured by degree
+# -lwd              line width for ticks
+#
+# == details
+# Note, you need to set the gap between sectors manually by `circos.par` to make sure there is enough space
+# for y-axis.
+#
+circos.yaxis = function(side = c("left", "right"), at = NULL, labels = TRUE, tick = TRUE,
+	sector.index = get.cell.meta.data("sector.index"),
+	track.index = get.cell.meta.data("track.index"),
+	labels.font = par("font"), labels.cex = par("cex"),
+	labels.niceFacing = TRUE,
+	tick.length = 1, lwd = par("lwd")) {
+	
+	ylim = get.cell.meta.data("ylim", sector.index, track.index)
+		
+	side = match.arg(side)[1]
+	if(side == "left") {
+		v = get.cell.meta.data("cell.xlim", sector.index, track.index)[1]
+	} else if(side == "right") {
+		v = get.cell.meta.data("cell.xlim", sector.index, track.index)[2]
+	}
+	
+	if(is.null(at)) {
+		at = grid.pretty(ylim)
+		labels = at
+	}
+	
+	ylim2 = ylim
+	# circos.lines(c(ifelse(at[1] >= ylim2[1], at[1], ylim2[1]),
+	#                ifelse(at[length(at)] <= ylim2[2], at[length(at)], ylim2[2])), 
+	# 			 c(v, v), sector.index = sector.index, track.index = track.index, lwd = lwd)
+	
+	# ticks
+	yrange = get.cell.meta.data("yrange", sector.index, track.index)
+	tick.length = tick.length/abs(get.cell.meta.data("cell.start.degree", sector.index, track.index) - get.cell.meta.data("cell.end.degree", sector.index, track.index)) * yrange
+			
+	
+	op = circos.par("points.overflow.warning")
+	circos.par("points.overflow.warning" = FALSE)
+	l = at >= ylim2[1] & at <= ylim2[2]
+	if(tick) {
+		circos.segments(rep(v, sum(l)), at[l], rep(v, sum(l)) + tick.length*ifelse(side == "right", 1, -1), at[l], straight = TRUE,
+			             sector.index = sector.index, track.index = track.index, lwd = lwd)
+	}
+		
+	labels.adj = NULL
+	if(side == "left") {
+		labels.adj = c(1, 0.5)
+	} else {
+		labels.adj = c(0, 0.5)
+	}
+	
+	if(is.logical(labels) && labels) {
+		circos.text(rep(v, sum(l)) + (tick.length*1.2)*ifelse(side == "right", 1, -1), at[l], 
+		           labels = at[l], adj = labels.adj,
+		           font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
+		           facing = "inside", niceFacing = labels.niceFacing)
+	} else if(is.logical(labels) && !labels) {
+                      
+    } else if(length(labels)) {
+		circos.text(rep(v, sum(l)) + (tick.length*1.2)*ifelse(side == "right", 1, -1), at[l],
+		            labels = labels[l], adj = labels.adj,
+		            font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
+			        facing = "inside", niceFacing = labels.niceFacing)
+	}				
+	
+	circos.par("points.overflow.warning" = op)
+	return(invisible(NULL))
+}
+
 		
 #####################################################################
 #

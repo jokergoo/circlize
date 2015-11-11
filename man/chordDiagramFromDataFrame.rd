@@ -56,4 +56,5 @@ chordDiagramFromDataFrame(df, grid.col = NULL, grid.border = NA, transparency = 
 \examples{
 # There is no example
 NULL
+
 }

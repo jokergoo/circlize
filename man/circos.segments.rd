@@ -25,4 +25,5 @@ circos.segments(x0, y0, x1, y1, sector.index = get.cell.meta.data("sector.index"
 \examples{
 # There is no example
 NULL
+
 }

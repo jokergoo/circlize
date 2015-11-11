@@ -709,7 +709,7 @@ the position and direction of the axis labels and the position of the x-axis.
 
 In figure \ref{fig:circlize_axis}, axis styles in different sectors are :
 
-<<circlize_axis, echo = FALSE, out.width = "0.8\\textwidth", fig.cap = "Axes">>=
+<<circlize_axis, echo = FALSE, out.width = "0.6\\textwidth", out.height = "1.2\\textwidth", fig.width = 6, fig.height = 12, fig.cap = "Axes">>=
 source("src/intro-11-axis.R")
 @
 
@@ -738,8 +738,13 @@ circos.axis(h, major.at, labels, major.tick, minor.ticks,
             major.tick.percentage, lwd)
 @
 
-If you really want the y-axes, you can implement one by yourself. It is just a combination
-of lines and text by using {\tt circos.lines} and {\tt circos.text}.
+Y-axis is also supported (figure \ref{fig:circlize_axis}), but you need to set {\tt gap.degree} in {\tt circos.par} 
+to make sure there are enough spaces for y-axes.
+
+<<eval = FALSE>>=
+circos.yaxis(side)
+circos.yaxis(at, labels, sector.index, track.index)
+@
 
 \subsection{Links}
 {\tt circos.link} draws links from points and intervals (figure \ref{fig:circlize_link} A). 

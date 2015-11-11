@@ -5,6 +5,7 @@ Changes in version 0.3.3
   data frame directly.
 * add `col2rgb()` which transforms back to the original value based on the color 
   mapping function.
+* add `circos.yaxis()`
 
 Changes in version 0.3.2
 -----------------------------------------------------------------------------

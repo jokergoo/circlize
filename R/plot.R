@@ -1289,7 +1289,7 @@ circos.yaxis = function(side = c("left", "right"), at = NULL, labels = TRUE, tic
 	track.index = get.cell.meta.data("track.index"),
 	labels.font = par("font"), labels.cex = par("cex"),
 	labels.niceFacing = TRUE,
-	tick.length = 1, lwd = par("lwd")) {
+	tick.length = 0.5, lwd = par("lwd")) {
 	
 	ylim = get.cell.meta.data("ylim", sector.index, track.index)
 		
@@ -1312,8 +1312,8 @@ circos.yaxis = function(side = c("left", "right"), at = NULL, labels = TRUE, tic
 	
 	# ticks
 	yrange = get.cell.meta.data("yrange", sector.index, track.index)
-	tick.length = tick.length/abs(get.cell.meta.data("cell.start.degree", sector.index, track.index) - get.cell.meta.data("cell.end.degree", sector.index, track.index)) * yrange
-			
+	xrange = get.cell.meta.data("xrange", sector.index, track.index)
+	tick.length = tick.length/abs(get.cell.meta.data("cell.start.degree", sector.index, track.index) - get.cell.meta.data("cell.end.degree", sector.index, track.index)) * xrange
 	
 	op = circos.par("points.overflow.warning")
 	circos.par("points.overflow.warning" = FALSE)

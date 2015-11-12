@@ -1331,14 +1331,14 @@ circos.yaxis = function(side = c("left", "right"), at = NULL, labels = TRUE, tic
 	}
 	
 	if(is.logical(labels) && labels) {
-		circos.text(rep(v, sum(l)) + (tick.length*1.2)*ifelse(side == "right", 1, -1), at[l], 
+		circos.text(rep(v, sum(l)) + (tick.length*1.5)*ifelse(side == "right", 1, -1), at[l], 
 		           labels = at[l], adj = labels.adj,
 		           font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
 		           facing = "inside", niceFacing = labels.niceFacing)
 	} else if(is.logical(labels) && !labels) {
                       
     } else if(length(labels)) {
-		circos.text(rep(v, sum(l)) + (tick.length*1.2)*ifelse(side == "right", 1, -1), at[l],
+		circos.text(rep(v, sum(l)) + (tick.length*1.5)*ifelse(side == "right", 1, -1), at[l],
 		            labels = labels[l], adj = labels.adj,
 		            font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
 			        facing = "inside", niceFacing = labels.niceFacing)

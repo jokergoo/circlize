@@ -2,6 +2,7 @@ Changes in version 0.3.4
 ----------------------------------------------------------------------------
 
 * `circos.genomicLink()`: ordering is cancled when normalizing the data frames
+* export `smartAlign()`
 
 Changes in version 0.3.3
 ----------------------------------------------------------------------------

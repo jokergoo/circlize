@@ -1611,7 +1611,16 @@ posTransform.text = function(region, y, labels, cex = 1, font = par("font"),
 	return(smartAlign(x1_new, x2_new, xlim = xlim))
 }
 
-# x1 should be sorted
+# == title
+# Adjust positions of text
+#
+# == param
+# -x1 position which corresponds to the top of the text
+# -x2 position which corresponds to the bottom of the text 
+# -xlim ranges on x-axis
+#
+# == details
+# used internally
 smartAlign = function(x1, x2, xlim) {
 	
 	ncluster.before = -1

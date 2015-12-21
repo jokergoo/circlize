@@ -225,8 +225,8 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB") {
   } 
 
 
-  if(! space %in% c("RGB", "HSV", "HLS", "LAB", "XYZ", "sRGB", "LUV")) {
-    stop("`space` should be in 'RGB', 'HSV', 'HLS', 'LAB', 'XYZ', 'sRGB', 'LUV'")
+  if(! space %in% c("RGB", "HSV", "LAB", "XYZ", "sRGB", "LUV")) {
+    stop("`space` should be in 'RGB', 'HSV', 'LAB', 'XYZ', 'sRGB', 'LUV'")
   }
   
   colors = t(col2rgb(colors)/255)

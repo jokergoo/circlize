@@ -24,7 +24,7 @@ circos.clear()
 
 circos.par(gap.degree = 5)
 circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.15)
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.3)
 
 for(a in letters[2:4]) {
 	circos.yaxis(side = "left", sector.index = a)

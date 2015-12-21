@@ -38,7 +38,7 @@ col_fun = colorRamp2(c(log10(0.0001), log10(0.05), log10(1)), c("green", "white"
 col_fun(log10(c(0.000001, 0.0012, 0.012, 0.2)))
 
 # compare different color space
-space = c("RGB", "HSV", "HLS", "LAB", "XYZ", "sRGB", "LUV")
+space = c("RGB", "HSV", "LAB", "XYZ", "sRGB", "LUV")
 
 par(xpd = NA)
 plot(NULL, xlim = c(-1, 1), ylim = c(0, length(space)+1), type = "n")

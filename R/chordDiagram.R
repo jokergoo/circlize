@@ -203,6 +203,7 @@ mat2df = function(mat) {
 # -link.lwd width for link borders, single scalar or a matrix with names or a data frame with three columns
 # -link.lty style for link borders, single scalar or a matrix with names or a data frame with three columns
 # -link.sort whether sort links on every sector based on the width of the links on it.
+# -link.largest.ontop sort all links based on width, plotting the largest on top and smallest on the bottom.
 # -link.decreasing for ``link.sort``
 # -link.arr.length pass to `circos.link`, same settings as ``link.lwd``.
 # -link.arr.width pass to `shape::Arrowhead`, same settings as ``link.lwd``.
@@ -498,6 +499,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 # -link.lwd width for link borders, single scalar or a vector which has the same length as nrows of ``df``
 # -link.lty style for link borders, single scalar or a vector which has the same length as nrows of ``df``
 # -link.sort whether sort links on every sector based on the width of the links on it.
+# -link.largest.ontop sort all links based on width, plotting the largest on top and smallest on the bottom.
 # -link.decreasing for ``link.sort``
 # -link.arr.length pass to `circos.link`, same settings as ``link.lwd``.
 # -link.arr.width pass to `shape::Arrowhead`, same settings as ``link.lwd``.
@@ -808,6 +810,23 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 			rou1[i] = rou
 			rou2[i] = rou
 		}
+	}
+	if(link.largest.ontop){
+	    col <- col[order(df$value)]
+	    rou1 <- rou1[order(df$value)]
+	    rou2 <- rou2[order(df$value)]
+	    link.border <- link.border[order(df$value)]
+	    link.lwd <- link.lwd[order(df$value)]
+	    link.lty <- link.lty[order(df$value)]
+	    directional <- directional[order(df$value)]
+	    directional.type <- directional.type[order(df$value)]
+	    link.arr.length <-  link.arr.length[order(df$value)]
+	    link.arr.width <- link.arr.width[order(df$value)]
+	    link.arr.type <- link.arr.type[order(df$value)]
+	    link.arr.col <- link.arr.col[order(df$value)]
+	    link.arr.lty <- link.arr.lty[order(df$value)]
+	    link.arr.lwd <- link.arr.lwd[order(df$value)]
+	    df <- df[order(df$value),]
 	}
 
 	for(k in seq_len(nrow(df))) {

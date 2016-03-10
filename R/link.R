@@ -44,7 +44,7 @@
 circos.link = function(sector.index1, point1, sector.index2, point2,
     rou = get_most_inside_radius(),
     rou1 = rou, rou2 = rou, h = NULL, w = 1, h2 = h, w2 = w,
-    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA,
+    col = "black", lwd = par("lwd"), lty = par("lty"), border = col,
     directional = 0, arr.length = ifelse(arr.type == "big.arrow", 0.02, 0.4), 
     arr.width = arr.length/2, arr.type = "triangle", arr.lty = lty, 
     arr.lwd = lwd, arr.col = col) {

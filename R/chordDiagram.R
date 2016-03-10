@@ -21,6 +21,7 @@ chordDiagram = function(x, ...) {
 		if(ncol(x) > 3) {
 			if(all(sapply(x, inherits, "numeric"))) {
 				warning("It seems your input data is an adjacency matrix, maybe you need to convert it to 'matrix' explicitely.")
+				return(chordDiagramFromMatrix(as.matrix(x, ...)))
 			}
 		}
 		chordDiagramFromDataFrame(x, ...)

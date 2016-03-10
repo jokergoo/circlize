@@ -982,7 +982,7 @@ circos.genomicText = function(region, value = NULL, y = NULL, labels = NULL, lab
 # If you want to have more controls on links, please use `circos.link` directly.
 circos.genomicLink = function(region1, region2, 
 	rou = get_most_inside_radius(), rou1 = rou, rou2 = rou,
-    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA, ...) {
+    col = "black", lwd = par("lwd"), lty = par("lty"), border = col, ...) {
 	
 	region1 = normalizeToDataFrame(region1, sort = FALSE)
 	region2 = normalizeToDataFrame(region2, sort = FALSE)
@@ -1007,7 +1007,7 @@ circos.genomicLink = function(region1, region2,
 	lwd = .normalizeGraphicalParam(lwd, 1, nr, "lwd")
 	lty = .normalizeGraphicalParam(lty, 1, nr, "lty")
 	border = .normalizeGraphicalParam(border, 1, nr, "border")
-	
+
 	for(i in seq_len(nr)) {
 		if(region1[i, 2] == region1[i, 3]) {
 			point1 = region1[i, 2]

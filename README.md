@@ -3,7 +3,18 @@
 
 ## circlize: circular visualization in R
 
-This package aims to implement circular layout in R.
+Circular layout is an efficient way for the visualization of huge 
+    amounts of information. Here the circlize package provides an implementation 
+    of circular layout generation in R as well as an enhancement of available 
+    software. The flexibility of this package is based on the usage of low-level 
+    graphics functions such that self-defined high-level graphics can be easily 
+    implemented by users for specific purposes. Together with the seamless 
+    connection between the powerful computational and visual environment in R, 
+    circlize givesa users more convenience and freedom to design figures for 
+    better understanding complex patterns behind multi-dimensional data.
+
+
+### Basic designs
 
 Since most of the figures are composed of points, lines and polygons, 
 we just need to implement functions for drawing points, lines and polygons.
@@ -65,7 +76,6 @@ Finally, function that draws chord diagram:
 
 Please refer to the vignettes to find out how to draw basic and advanced circos plots by this package.
 
-
 ### Install
 
 The package has been submitted to CRAN, so you can install it through:
@@ -74,7 +84,14 @@ The package has been submitted to CRAN, so you can install it through:
 
 Together with the package there are several vignettes which provide detailed description and examples.
 
+### Citatition
+
+Zuguang Gu, Lei Gu, Roland Eils, Matthias Schlesner, Benedikt Brors, circlize Implements and enhances circular visualization in R. Bioinformatics (Oxford, England) 2014. [PubMed](http://www.ncbi.nlm.nih.gov/pubmed/24930139)
+
+### License
+
+GPL (>= 2)
 
 ### Examples
 
-For examples of circlize package, please visit http://jokergoo.github.io/circlize .
+For examples of circlize package, please visit http://jokergoo.github.io/circlize.

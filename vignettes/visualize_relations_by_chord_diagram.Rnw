@@ -424,7 +424,7 @@ chordDiagram(mat, grid.col = grid.col, link.border = 1,
 text(-0.9, 0.9, "B", cex = 1.5)
 @
 
-<<chord_diagram_link_order, echo = FALSE, fig.align = "center", out.width = "\\textwidth", out.height = "0.5\\textwidth", fig.width = 7, fig.height = 3.5, fig.cap = "Orders of links. A) set {\\tt self.decreasing} to {\\tt TRUE}; B) set {\\tt self.decreasing} to {\\tt FALSE}.">>=
+<<chord_diagram_link_order, echo = FALSE, fig.align = "center", out.width = "\\textwidth", out.height = "0.5\\textwidth", fig.width = 7, fig.height = 3.5, fig.cap = "Orders of links. A) set {\\tt link.decreasing} to {\\tt TRUE}; B) set {\\tt link.decreasing} to {\\tt FALSE}.">>=
 par(mfrow = c(1, 2))
 <<chord_diagram_link_order1>>
 par(mfrow = c(1, 1))

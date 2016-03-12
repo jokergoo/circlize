@@ -13,6 +13,9 @@ Circular layout is an efficient way for the visualization of huge
     circlize givesa users more convenience and freedom to design figures for 
     better understanding complex patterns behind multi-dimensional data.
 
+### Citatition
+
+Zuguang Gu, Lei Gu, Roland Eils, Matthias Schlesner, Benedikt Brors, circlize Implements and enhances circular visualization in R. Bioinformatics (Oxford, England) 2014. [PubMed](http://www.ncbi.nlm.nih.gov/pubmed/24930139)
 
 ### Basic designs
 
@@ -83,10 +86,6 @@ The package has been submitted to CRAN, so you can install it through:
     install.packages("circlize")
 
 Together with the package there are several vignettes which provide detailed description and examples.
-
-### Citatition
-
-Zuguang Gu, Lei Gu, Roland Eils, Matthias Schlesner, Benedikt Brors, circlize Implements and enhances circular visualization in R. Bioinformatics (Oxford, England) 2014. [PubMed](http://www.ncbi.nlm.nih.gov/pubmed/24930139)
 
 ### License
 

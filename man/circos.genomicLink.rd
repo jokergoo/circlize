@@ -9,7 +9,7 @@ Add links from two sets of genomic positions
 \usage{
 circos.genomicLink(region1, region2,
     rou = get_most_inside_radius(), rou1 = rou, rou2 = rou,
-    col = "black", lwd = par("lwd"), lty = par("lty"), border = NA, ...)
+    col = "black", lwd = par("lwd"), lty = par("lty"), border = col, ...)
 }
 \arguments{
 

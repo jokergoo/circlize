@@ -414,7 +414,7 @@ Also add link from original chromosome to the zoomed chromosome.
 <<genomic_zoom_3, eval = FALSE>>=
 circos.link("chr1", get.cell.meta.data("cell.xlim", sector.index = "chr1"),
     "zoom_chr1", get.cell.meta.data("cell.xlim", sector.index = "zoom_chr1"),
-    col = "#00000020")
+    col = "#00000020", border = NA)
 circos.clear()
 @
 

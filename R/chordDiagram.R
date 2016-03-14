@@ -3,8 +3,37 @@
 # Plot Chord Diagram
 #
 # == param
-# -x a matrix or a data frame. The function will pass all argument to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame` depending on the type of ``x``
-# -... pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`.
+# -x a matrix or a data frame. The function will pass all argument to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame` depending on the type of ``x``,
+#    also format of other arguments depends of the type of ``x``.
+# -grid.col pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -grid.border  pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -transparency pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -col pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -row.col pass to `chordDiagramFromMatrix`
+# -column.col pass to `chordDiagramFromMatrix`
+# -order  pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -directional pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -symmetric pass to `chordDiagramFromMatrix`
+# -keep.diagonal  pass to `chordDiagramFromMatrix`
+# -direction.type pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -diffHeight pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -reduce pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -self.link pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -preAllocateTracks pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -annotationTrack pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -annotationTrackHeight pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -link.border pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -link.lwd pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -link.lty pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -link.sort pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -link.decreasing pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -link.arr.length pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -link.arr.width  pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -link.arr.type  pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -link.arr.lty pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -link.arr.lwd pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -link.arr.col pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -... pass to `circos.link`.
 #
 # == details
 # Chord diagram is a way to visualize numeric tables ( http://circos.ca/intro/tabular_visualization/ ), especially useful
@@ -13,18 +42,51 @@
 #
 # This function is flexible and contains some settings that may be a little difficult to understand. 
 # Please refer to vignette for better explanation.
-chordDiagram = function(x, ...) {
+#
+chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5,
+	col = NULL, row.col = NULL, column.col = NULL, 
+	order = NULL, directional = 0,
+	symmetric = FALSE, keep.diagonal = FALSE, 
+	direction.type = "diffHeight", diffHeight = 0.04, reduce = 1e-5, self.link = 2,
+	preAllocateTracks = NULL,
+	annotationTrack = c("name", "grid", "axis"), annotationTrackHeight = c(0.05, 0.05),
+	link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), 
+	link.sort = FALSE, link.decreasing = TRUE,
+	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4), 
+	link.arr.width = link.arr.length/2, 
+	link.arr.type = "triangle", link.arr.lty = par("lty"), 
+	link.arr.lwd = par("lwd"), link.arr.col = par("col"), ...) {
 	
 	if(inherits(x, "matrix")) {
-		chordDiagramFromMatrix(x, ...)
+		chordDiagramFromMatrix(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
+			col = col, row.col = row.col, column.col = column.col, order = order, directional = directional,
+			symmetric = symmetric, keep.diagonal = keep.diagonal, direction.type = direction.type,
+			diffHeight = diffHeight, reduce = reduce, self.link = self.link,
+			preAllocateTracks = preAllocateTracks, annotationTrack = annotationTrack, annotationTrackHeight = annotationTrackHeight,
+			link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
+			link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
+			link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, ...)
 	} else if(inherits(x, "data.frame")) {
 		if(ncol(x) > 3) {
 			if(all(sapply(x, inherits, "numeric"))) {
 				warning("It seems your input data is an adjacency matrix, maybe you need to convert it to 'matrix' explicitely.")
-				return(chordDiagramFromMatrix(as.matrix(x, ...)))
+				return(chordDiagramFromMatrix(as.matrix(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
+					col = col, row.col = row.col, column.col = column.col, order = order, directional = directional,
+					symmetric = symmetric, keep.diagonal = keep.diagonal, direction.type = direction.type,
+					diffHeight = diffHeight, reduce = reduce, self.link = self.link,
+					preAllocateTracks = preAllocateTracks, annotationTrack = annotationTrack, annotationTrackHeight = annotationTrackHeight,
+					link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
+					link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
+					link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, ...)))
 			}
 		}
-		chordDiagramFromDataFrame(x, ...)
+		chordDiagramFromDataFrame(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
+			col = col, order = order, directional = directional, direction.type = direction.type,
+			diffHeight = diffHeight, reduce = reduce, self.link = self.link,
+			preAllocateTracks = preAllocateTracks, annotationTrack = annotationTrack, annotationTrackHeight = annotationTrackHeight,
+			link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
+			link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
+			link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, ...)
 	} else {
 		stop("`x` can only be a matrix or a data frame.")
 	}

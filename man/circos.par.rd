@@ -7,13 +7,14 @@ Parameters for circos layout
 Parameters for circos layout
 }
 \usage{
-circos.par(..., RESET = FALSE, READ.ONLY = NULL)
+circos.par(..., RESET = FALSE, READ.ONLY = NULL, LOCAL = FALSE)
 }
 \arguments{
 
   \item{...}{Arguments for the parameters, see "details" section}
   \item{RESET}{reset to default values}
   \item{READ.ONLY}{whether only return read-only options}
+  \item{LOCAL}{switch local mode}
 
 }
 \details{

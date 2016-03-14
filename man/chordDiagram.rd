@@ -7,12 +7,52 @@ Plot Chord Diagram
 Plot Chord Diagram
 }
 \usage{
-chordDiagram(x, ...)
+chordDiagram(x, grid.col = NULL, grid.border = NA, transparency = 0.5,
+    col = NULL, row.col = NULL, column.col = NULL,
+    order = NULL, directional = 0,
+    symmetric = FALSE, keep.diagonal = FALSE,
+    direction.type = "diffHeight", diffHeight = 0.04, reduce = 1e-5, self.link = 2,
+    preAllocateTracks = NULL,
+    annotationTrack = c("name", "grid", "axis"), annotationTrackHeight = c(0.05, 0.05),
+    link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"),
+    link.sort = FALSE, link.decreasing = TRUE,
+    link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4),
+    link.arr.width = link.arr.length/2,
+    link.arr.type = "triangle", link.arr.lty = par("lty"),
+    link.arr.lwd = par("lwd"), link.arr.col = par("col"), ...)
 }
 \arguments{
 
-  \item{x}{a matrix or a data frame. The function will pass all argument to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}} depending on the type of \code{x}}
-  \item{...}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}.}
+  \item{x}{a matrix or a data frame. The function will pass all argument to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}} depending on the type of \code{x}, also format of other arguments depends of the type of \code{x}.}
+  \item{grid.col}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{grid.border}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{transparency}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{col}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{row.col}{pass to \code{\link{chordDiagramFromMatrix}}}
+  \item{column.col}{pass to \code{\link{chordDiagramFromMatrix}}}
+  \item{order}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{directional}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{symmetric}{pass to \code{\link{chordDiagramFromMatrix}}}
+  \item{keep.diagonal}{pass to \code{\link{chordDiagramFromMatrix}}}
+  \item{direction.type}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{diffHeight}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{reduce}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{self.link}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{preAllocateTracks}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{annotationTrack}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{annotationTrackHeight}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{link.border}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{link.lwd}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{link.lty}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{link.sort}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{link.decreasing}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{link.arr.length}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{link.arr.width}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{link.arr.type}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{link.arr.lty}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{link.arr.lwd}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{link.arr.col}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{...}{pass to \code{\link{circos.link}}.}
 
 }
 \details{

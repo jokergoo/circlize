@@ -3,6 +3,7 @@ Changes in version 0.3.5
 
 * `chordDiagram()`: if the corresponding value is zero, nothing happens.
 * border of links are same as filled by default
+* explicitely put all arguments in `chordDiagram()` instead of just using `...`
 
 Changes in version 0.3.4
 ----------------------------------------------------------------------------

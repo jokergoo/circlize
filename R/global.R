@@ -19,6 +19,7 @@ resetGlobalVariable()
 # -... Arguments for the parameters, see "details" section
 # -RESET reset to default values
 # -READ.ONLY whether only return read-only options
+# -LOCAL switch local mode
 # 
 # == details
 # Global parameters for the circos layout. Currently supported parameters are:
@@ -68,7 +69,7 @@ resetGlobalVariable()
 # adding sectors on the circle. The left and right padding for ``cell.padding`` will also be
 # ignored after the initialization because all cells in a sector would share the same
 # left and right paddings. 
-circos.par = function(..., RESET = FALSE, READ.ONLY = NULL) {}
+circos.par = function(..., RESET = FALSE, READ.ONLY = NULL, LOCAL = FALSE) {}
 circos.par = setGlobalOptions(
 	start.degree = list(
 		.value = 0,

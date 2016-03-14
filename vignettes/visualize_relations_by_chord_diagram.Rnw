@@ -897,6 +897,8 @@ mat[2, ] = 1e-10
 mat[, 3] = 1e-10
 @
 
+If you only want to remove some of the links, set corresponding values to 0.
+
 In the Chord Diagram, categories corresponding to the second row and the third column will
 be removed (figure \ref{fig:chord_diagram_reduce} A).
 

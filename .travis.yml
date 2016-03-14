@@ -6,9 +6,11 @@ sudo: required
 warnings_are_errors: true
 
 r-packages:
-- GlobalOptions
 - shape 
 - knitr
+
+r_github_packages:
+- jokergoo/GlobalOptions
 
 r_check_args: --no-vignettes --no-build-vignettes
 

@@ -874,6 +874,8 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	}
 
 	for(k in seq_len(nrow(df))) {
+		if (df$value[k]/sum(df$value) < 1e-6) next
+
 		if(setequal(direction.type, c("diffHeight"))) {
 			circos.link(df$rn[k], c(df$x1[k] - abs(df$value[k]), df$x1[k]),
 					df$cn[k], c(df$x2[k] - abs(df$value[k]), df$x2[k]),

@@ -273,7 +273,7 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 
 	# now `data` is either a data frame or a list of data frame
 	data = normalizeToDataFrame(data)
-	
+
 	# excluding the first three columns
 	if(!is.null(numeric.column)) {
 		if(is.numeric(numeric.column)) {
@@ -325,7 +325,7 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 	if(!(length(args) == 3 && names(args)[3] == "...")) {
 		stop("The `panel.fun` need a third argument `...` to pass special parameters to graphical functions.\n")
 	}
-	
+
 	if(stack) {
 	
 		if(is.dataFrameList(data)) {
@@ -393,7 +393,6 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 		}			
 		
 	} else {
-	
 		# auto calculate ylim
 		if(is.null(ylim)) {
 			if(is.dataFrameList(data)) {
@@ -411,7 +410,6 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 				ylim = range(unlist(lapply(data[-(1:3)][numeric.column], range)))
 			}
 		}
-		
 		if(is.dataFrameList(data)) {
 			circos.trackPlotRegion(ylim = ylim, panel.fun = function(x, y) {
 					
@@ -1382,10 +1380,10 @@ is.dataFrameList = function(data) {
 }
 
 
-normalizeToDataFrame = function(data, sort = TRUE) {
+normalizeToDataFrame = function(data, sort = FALSE) {
 
 	all.chr = get.all.sector.index()
-	
+
 	if(is.data.frame(data)) {
 		if(ncol(data) < 3) {
 			stop("Your data frame is less than 3 column!.\n")
@@ -1404,6 +1402,7 @@ normalizeToDataFrame = function(data, sort = TRUE) {
 			if(sort) {
 				gr = gr[order(gr[[1]], gr[[2]]), ]
 			}
+			return(gr)
 		})
 		return(df)
 	} else {

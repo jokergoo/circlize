@@ -668,6 +668,14 @@ setting {\tt niceFacing} to {\tt TRUE}. This option only works for {\tt facing} 
 and {\tt adj} will be re-defined according to the position of the texts in the circle.
 Please refer to figure \ref{fig:circlize_text_easy} for examples.
 
+By default, {\tt adj} adjusts text positions either horizontally or vertically. The adjustment can also be set
+as a degree that the text rotates by wrapping by {\tt degree} function, then the other value in {\tt adj} corresponds to
+the adjustment in radical direction. Which one in  {\tt adj} should be set as the degree value depends on the {\tt facing} setting.
+
+<<eval = FALSE>>=
+circos.text(x, y, labels, adj = c(0, degree(5)), facing = "clockwise")
+@
+
 <<circlize_text_easy, echo = FALSE, out.width = "0.6\\textheight", out.height = "0.9\\textheight", fig.width = 6, fig.height = 9, fig.cap = "Human easy text facing. When {\\tt niceFacing} is on, settings in the same row are actually identical. Red dots represent positions of the texts.">>=
 source("src/intro-09-text-niceFacing.R")
 @

@@ -23,11 +23,11 @@ circos.text(x, y, labels, sector.index = get.cell.meta.data("sector.index"),
   \item{direction}{deprecated, use \code{facing} instead.}
   \item{facing}{Facing of text. Please refer to vignette for different settings }
   \item{niceFacing}{Should the facing of text be adjusted to fit human eyes?}
-  \item{adj}{Adjustment for text}
+  \item{adj}{Adjustment for text. By default the text position adjustment is either horizontal or vertical in the canvas coordinate system. If the value which corresponds to the circular direction is wrapped by \code{\link{degree}}, the adjustment value is the degree that the text rotates. The sign of the degree is positive if the text rotates reverse clockwise and vice versa.}
+  \item{...}{Pass to \code{\link[graphics]{text}}}
   \item{cex}{Font size}
   \item{col}{Font color}
   \item{font}{Font style}
-  \item{...}{Pass to \code{\link[graphics]{text}}}
 
 }
 \details{

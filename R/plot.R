@@ -823,11 +823,14 @@ circos.segments = function(x0, y0, x1, y1, sector.index = get.cell.meta.data("se
 # -direction    deprecated, use ``facing`` instead.
 # -facing       Facing of text. Please refer to vignette for different settings 
 # -niceFacing   Should the facing of text be adjusted to fit human eyes?
-# -adj          Adjustment for text
+# -adj          Adjustment for text. By default the text position adjustment is either horizontal or vertical
+#           in the canvas coordinate system. If the value which corresponds to the circular direction is wrapped by `degree`, the adjustment
+#           value is the degree that the text rotates.
+#           The sign of the degree is positive if the text rotates reverse clockwise and vice versa.
+# -...       Pass to `graphics::text`
 # -cex          Font size
 # -col          Font color
 # -font         Font style
-# -...          Pass to `graphics::text`
 #
 # == details
 # The function is similar to `graphics::text`. All you need to note is the ``facing`` settings.
@@ -860,11 +863,6 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 
 	labels = as.vector(labels)
 	
-    # whether the points that are out of the plotting region.
-    check.points.position(x, y, sector.index, track.index)
-    
-    d = circlize(x, y, sector.index, track.index)
-    
     ## check direction or facing
     if(!is.null(direction)) {
         warning("`direction` is deprecated, please use `facing` instead.\n")
@@ -879,11 +877,56 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
             stop("Wrong `direction` value, please use `facing` instead.\n")
         }
     }
+
     facing = match.arg(facing)[1]
     if(facing == "bending") {
     	facing = "bending.inside"
     }
 
+    d = circlize(x, y, sector.index, track.index)
+
+    # adjust positions by `adj`
+    if(inherits(adj, "list")) {
+	    labels_width = strwidth(labels, cex = cex, font = font)
+	    labels_height = strheight(labels, cex = cex, font = font)
+	    if(facing == "clockwise") {
+	    	rou_offset = -(adj[[1]] - 0.5) * labels_width
+	    	#theta_offset = as.degree(asin(-(adj[2] - 0.5)*labels_height/2/d[, "rou"]))
+	    	theta_offset = adj[[2]]
+	    	if(!inherits(theta_offset, "degree")) stop("The second item in `adj` should be wrapped by `degree()` if facing is clockwise.")
+	    } else if(facing == "reverse.clockwise") {
+	    	rou_offset = (adj[[1]] - 0.5) * labels_width
+	    	#theta_offset = as.degree(asin((adj[2] - 0.5)*labels_height/2/d[, "rou"]))
+	    	theta_offset = adj[[2]]
+	    	if(!inherits(theta_offset, "degree")) stop("The second item in `adj` should be wrapped by `degree()` if facing is reverse clockwise.")
+	    } else if(facing == "inside") {
+	    	rou_offset = -(adj[[2]] - 0.5) * labels_height
+	    	#theta_offset = as.degree(asin(-(adj[1] - 0.5)*labels_width/2/d[, "rou"]))
+	    	theta_offset = adj[[1]]
+	    	if(!inherits(theta_offset, "degree")) stop("The first item in `adj` should be wrapped by `degree()` if facing is inside.")
+	    } else if(facing == "outside") {
+	    	rou_offset = (adj[[2]] - 0.5) * labels_height
+	    	#theta_offset = as.degree(asin((adj[1] - 0.5)*labels_width/2/d[, "rou"]))
+	    	theta_offset = adj[[1]]
+	    	if(!inherits(theta_offset, "degree")) stop("The first item in `adj` should be wrapped by `degree()` if facing is outside.")
+	    }
+
+	    if(facing %in% c("clockwise", "reverse.clockwise", "inside", "outside")) {
+			d2 = d
+			d2[, "rou"] = d[, "rou"] + rou_offset
+			d2[, "theta"] = d[, "theta"] + theta_offset
+			dd = reverse.circlize(d2[, "theta"], d2[, "rou"], sector.index, track.index)
+			x = dd[, 1]
+			y = dd[, 2]
+			#circos.points(x, y)
+			adj = c(0.5, 0.5)
+			d = circlize(x, y, sector.index, track.index)
+	    }
+	}
+
+    # whether the points that are out of the plotting region.
+    check.points.position(x, y, sector.index, track.index)
+    
 	if(niceFacing && facing %in% c("clockwise", "reverse.clockwise", "inside", "outside", "bending.inside", "bending.outside")) {
 		if(facing %in% c("clockwise", "reverse.clockwise")) {
 			degree = circlize(x, y, sector.index = sector.index, track.index = track.index)[, 1]
@@ -1002,6 +1045,20 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
     }
 	
     return(invisible(NULL))
+}
+
+# == title
+# mark the value is degree value
+#
+# == param
+# -x degree value
+#
+# == value
+# a list which only contains a single element
+#
+degree = function(x) {
+	class(x) = "degree"
+	list(x)
 }
 
 # == title

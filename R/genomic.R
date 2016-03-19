@@ -954,7 +954,7 @@ circos.genomicText = function(region, value = NULL, y = NULL, labels = NULL, lab
 
 	circos.text( (region[[1]] + region[[2]])/2, value[[ numeric.column ]], value[[labels.column]],
 		facing = facing, niceFacing = niceFacing, adj = adj, cex = cex, col = col, font = font,
-		sector.index = sector.index, track.index = track.index )
+		sector.index = sector.index, track.index = track.index)
 
 }
 

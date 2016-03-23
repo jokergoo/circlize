@@ -191,11 +191,11 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 				}
 				
 			
-				if(any(plotType %in% "axis")) {
+				if(all(c("axis", "labels") %in% plotType)) {
 					circos.axis(h = 0, major.at = major.at, labels = major.tick.labels, labels.cex = 0.3*par("cex"), labels.facing = "clockwise", major.tick.percentage = 0.2)
-				}
-				if(any(plotType %in% "labels")) {
 					circos.text(mean(xlim), 1.2, labels = sector.names[sector.index], cex = par("cex"), adj = c(0.5, 0), niceFacing = TRUE)
+				} else if("labels" %in% plotType) {
+					circos.text(mean(xlim), 0, labels = sector.names[sector.index], cex = par("cex"), adj = c(0.5, 0), niceFacing = TRUE)
 				}
 			}
 		)

@@ -5,6 +5,8 @@ Changes in version 0.3.5
 * border of links are same as filled by default
 * explicitely put all arguments in `chordDiagram()` instead of just using `...`
 * `adj` in `circos.text()` can also adjust text rotations.
+* 'circos.genomicInitialize()': gap between labels and ideograms is adjusted
+  if there is no axis
 
 Changes in version 0.3.4
 ----------------------------------------------------------------------------

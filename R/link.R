@@ -60,24 +60,32 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
         theta2 = circlize(point2, 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
         
 		d = getQuadraticPoints(theta1, theta2, rou1, rou2, h = h, w = w)
-        lines(d, col = col, lwd = lwd, lty = lty)
+        nr = nrow(d)
+        if(directional == 0) {
+        	lines(d, col = col, lwd = lwd, lty = lty, lend = "butt")
+        } else if(directional == 1) {
+			lines(d[-nr, , drop = FALSE], col = col, lwd = lwd, lty = lty, lend = "butt")
+		} else if(directional == -1) {
+			lines(d[-1, , drop = FALSE], col = col, lwd = lwd, lty = lty, lend = "butt")
+		} else if(directional == 2) {
+			lines(d[-c(1, nr), , drop = FALSE], col = col, lwd = lwd, lty = lty, lend = "butt")
+		}
+
         if(nrow(d) > 1) {
 	        if(directional %in% c(1,2)) {  # point1 to point2
-	        	nr = nrow(d)
 	        	alpha = line_degree(d[nr-1, 1], d[nr-1, 2], d[nr, 1], d[nr, 2])
 	        	oljoin = par("ljoin")
 	        	par(ljoin = "mitre")
 	        	Arrowhead(d[nr, 1], d[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
-	        		arr.adj = 1, arr.type = arr.type, arr.col = col, lcol = col)
+	        		arr.adj = 1, arr.lwd = 0.1, arr.type = arr.type, arr.col = col, lcol = col)
 	        	par(ljoin = oljoin)
 	        } 
 	        if(directional %in% c(-1,2)) {  # point2 to point2
-	        	nr = nrow(d)
 	        	alpha = line_degree(d[2, 1], d[2, 2], d[1, 1], d[1,2])
 	        	oljoin = par("ljoin")
 	        	par(ljoin = "mitre")
 	        	Arrowhead(d[1, 1], d[1, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
-	        		arr.adj = 1, arr.type = arr.type, arr.col = col, lcol = col)
+	        		arr.adj = 1, arr.lwd = 0.1, arr.type = arr.type, arr.col = col, lcol = col)
 	        	par(ljoin = oljoin)
 	        }
 	    }
@@ -123,24 +131,28 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 			
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 			if(nrow(dcenter) > 1 & arr.type != "big.arrow") {
-		        if(directional %in% c(1, 2)) {  # point1 to point2
-		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
-		        	nr = nrow(dcenter)
+		        nr = nrow(dcenter)
+				if(directional == 1) {
+					lines(dcenter[-nr, , drop = FALSE], col = arr.col, lwd = arr.lwd, lty = arr.lty, lend = "butt")
+				} else if(directional == -1) {
+					lines(dcenter[-1, , drop = FALSE], col = arr.col, lwd = arr.lwd, lty = arr.lty, lend = "butt")
+				} else if(directional == 2) {
+					lines(dcenter[-c(1, nr), , drop = FALSE], col = arr.col, lwd = arr.lwd, lty = arr.lty, lend = "butt")
+				}
+				if(directional %in% c(1, 2)) {  # point1 to point2
 		        	alpha = line_degree(dcenter[nr-1, 1], dcenter[nr-1, 2], dcenter[nr, 1], dcenter[nr, 2])
 		        	oljoin = par("ljoin")
 	        		par(ljoin = "mitre")
 		        	Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
-		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
+		        		arr.adj = 1, arr.lwd = 0.1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
 		        	par(ljoin = oljoin)
 		        } 
 		        if(directional %in% c(-1,2)) {  # point2 to point1
-		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
-		        	nr = nrow(dcenter)
 		        	alpha = line_degree(dcenter[2, 1], dcenter[2, 2], dcenter[1, 1], dcenter[1,2])
 		        	oljoin = par("ljoin")
 		        	par(ljoin = "mitre")
 		        	Arrowhead(dcenter[1, 1], dcenter[1, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
-		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
+		        		arr.adj = 1, arr.lwd = 0.1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
 		        	par(ljoin = oljoin)
 		        }
 		    }
@@ -187,24 +199,28 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 			}
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 			if(nrow(dcenter) > 1 && arr.type != "big.arrow") {
+				nr = nrow(dcenter)
+				if(directional == 1) {
+					lines(dcenter[-nr, , drop = FALSE], col = arr.col, lwd = arr.lwd, lty = arr.lty, lend = "butt")
+				} else if(directional == -1) {
+					lines(dcenter[-1, , drop = FALSE], col = arr.col, lwd = arr.lwd, lty = arr.lty, lend = "butt")
+				} else if(directional == 2) {
+					lines(dcenter[-c(1, nr), , drop = FALSE], col = arr.col, lwd = arr.lwd, lty = arr.lty, lend = "butt")
+				}
 		        if(directional %in% c(1,2)) {  # point1 to point2
-		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
-		        	nr = nrow(dcenter)
 		        	alpha = line_degree(dcenter[nr-1, 1], dcenter[nr-1, 2], dcenter[nr, 1], dcenter[nr, 2])
 		        	oljoin = par("ljoin")
 	        		par(ljoin = "mitre")
 	        		Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
-		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
+		        		arr.adj = 1, arr.lwd = 0.1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
 	        		par(ljoin = oljoin)
 		        } 
-		        if(directional %in% c(-1,2)) {  # point2 to point2
-		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
-		        	nr = nrow(dcenter)
+		        if(directional %in% c(-1,2)) {  # point2 to point1
 		        	alpha = line_degree(dcenter[2, 1], dcenter[2, 2], dcenter[1, 1], dcenter[1,2])
 		        	oljoin = par("ljoin")
 		        	par(ljoin = "mitre")
 		        	Arrowhead(dcenter[1, 1], dcenter[1, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
-		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
+		        		arr.adj = 1, arr.lwd = 0.1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
 		        	par(ljoin = oljoin)
 		        }
 		    }
@@ -292,24 +308,28 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 		    }
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 			if(nrow(dcenter) > 1 && arr.type != "big.arrow") {
+				nr = nrow(dcenter)
+				if(directional == 1) {
+					lines(dcenter[-nr, , drop = FALSE], col = arr.col, lwd = arr.lwd, lty = arr.lty, lend = "butt")
+				} else if(directional == -1) {
+					lines(dcenter[-1, , drop = FALSE], col = arr.col, lwd = arr.lwd, lty = arr.lty, lend = "butt")
+				} else if(directional == 2) {
+					lines(dcenter[-c(1, nr), , drop = FALSE], col = arr.col, lwd = arr.lwd, lty = arr.lty, lend = "butt")
+				}
 		        if(directional %in% c(1,2)) {  # point1 to point2
-		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
-		        	nr = nrow(dcenter)
 		        	alpha = line_degree(dcenter[nr-1, 1], dcenter[nr-1, 2], dcenter[nr, 1], dcenter[nr, 2])
 		        	oljoin = par("ljoin")
 	        		par(ljoin = "mitre")
 		        	Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
-		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
+		        		arr.adj = 1.5, arr.lwd = 0.1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
 		        	par(ljoin = oljoin)
 		        } 
-		        if(directional %in% c(-1,2)) {  # point2 to point2
-		        	lines(dcenter, col = arr.col, lwd = arr.lwd, lty = arr.lty)
-		        	nr = nrow(dcenter)
+		        if(directional %in% c(-1,2)) {  # point2 to point1
 		        	alpha = line_degree(dcenter[2, 1], dcenter[2, 2], dcenter[1, 1], dcenter[1,2])
 		        	oljoin = par("ljoin")
 		        	par(ljoin = "mitre")
 		        	Arrowhead(dcenter[1, 1], dcenter[1, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
-		        		arr.adj = 1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
+		        		arr.adj = 1, arr.lwd = 0.1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
 		        	par(ljoin = oljoin)
 		        }
 		    }

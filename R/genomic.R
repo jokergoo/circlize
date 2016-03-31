@@ -81,21 +81,20 @@ circos.initializeWithIdeogram = function(cytoband = paste(system.file(package = 
 	# we do not need 'chr' prefix if it exits, it holds too much space.
 	sn = gsub("chr", "", sn)
 	
+	o.cell.padding = circos.par("cell.padding")
+	circos.par(cell.padding = c(o.cell.padding[1], 0, o.cell.padding[3], 0))
+	
 	circos.genomicInitialize(df, sector.names = sn, major.by = major.by, plotType = plotType, track.height = track.height, ...)
 
 	if(any(plotType %in% "ideogram")) {
-		o.cell.padding = circos.par("cell.padding")
-		circos.par(cell.padding = c(0, 0, 0, 0))
-	
 		circos.genomicTrackPlotRegion(df, ylim = c(0, 1), bg.border = NA, track.height = ideogram.height,
 			panel.fun = function(region, value, ...) {
 				col = cytoband.col(value[[2]])
 				circos.genomicRect(region, value, ybottom = 0, ytop = 1, col = col, border = NA, ...)
 				xlim = get.cell.meta.data("xlim")
 				circos.rect(xlim[1], 0, xlim[2], 1, border = "black")
-			}
+			}, cell.padding = c(0, 0, 0, 0)
 		)
-		circos.par("cell.padding" = o.cell.padding)
 	}
 }
 

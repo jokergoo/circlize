@@ -6,7 +6,7 @@ Date: 2016-3-28
 Author: Zuguang Gu
 Maintainer: Zuguang Gu <z.gu@dkfz.de>
 Depends: R (>= 2.10.0), graphics
-Imports: GlobalOptions (>= 0.0.9), shape, grDevices, utils, stats, 
+Imports: GlobalOptions (>= 0.0.10), shape, grDevices, utils, stats, 
     colorspace, methods, grid
 Suggests: knitr, dendextend (>= 1.0.1)
 VignetteBuilder: knitr

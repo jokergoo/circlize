@@ -3,7 +3,6 @@ Changes in version 0.3.6
 
 * positions of arrows in chordDiagram() have been adjusted.
 * fixed a bug that negative value was not shown
-* `circos.initialize`: if `factors` is a vector, the order of sectors is not changed
 
 Changes in version 0.3.5
 ----------------------------------------------------------------------------

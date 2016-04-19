@@ -219,7 +219,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 	}
 	
     if(! is.factor(factors)) {
-        factors = factor(factors, levels = factors)
+        factors = factor(factors)
     }
     le = levels(factors)
     

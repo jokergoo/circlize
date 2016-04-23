@@ -1033,6 +1033,8 @@ circos.clear()
 If the purpose is simply highlight complete cells, there is a shortcut function
 {\tt highlight.sector} for which you only need to specify index for sectors
 and tracks that you want to to highlight (figure \ref{fig:circlize_highlight} B).
+It also supports to add text in the middle of a list of neighbouring sectors. Here
+{\tt text.vjust} can be used to adjust the position of the text in the radical direction.
 
 <<circlize_highlight_sector, eval = FALSE>>=
 factors = letters[1:8]
@@ -1042,7 +1044,8 @@ for(i in 1:4) {
 }
 circos.info(plot = TRUE)
 
-highlight.sector(c("a", "h"), track.index = 1)
+highlight.sector(c("a", "h"), track.index = 1, text = "a and h belong to a same group",
+    facing = "bending.inside", niceFacing = TRUE, text.vjust = -3)
 highlight.sector("c", col = "#00FF0040")
 highlight.sector("d", col = NA, border = "red", lwd = 2)
 highlight.sector("e", col = "#0000FF40", track.index = c(2, 3))

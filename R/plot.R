@@ -1710,8 +1710,9 @@ highlight.sector = function(sector.index, track.index = get.all.track.index(),
 
 			if(!is.null(text)) {
 				# map to most recent cell
-				pos = reverse.circlize((start.degree + end.degree)/2, (rou1 + rou2)/2)
+				pos = reverse.circlize((start.degree + end.degree)/2 + ifelse(start.degree < end.degree, 180, 0), (rou1 + rou2)/2)
 				op_warning = circos.par("points.overflow.warning")
+				circos.par("points.overflow.warning" = FALSE)
         		circos.text(pos[1,1], pos[1,2], text, adj = c(0.5, text.vjust), col = text.col, ...)
         		circos.par(points.overflow.warning = op_warning)
 			}
@@ -1740,12 +1741,13 @@ highlight.sector = function(sector.index, track.index = get.all.track.index(),
 				end.degree = end.degree + d1*padding[4]
 				rou1 = rou1 + d2*padding[3]
 				rou2 = rou2 - d2*padding[1]
-				
+
 				draw.sector(start.degree = start.degree, end.degree = end.degree, rou1 = rou1, rou2 = rou2, col = col, border = border, lwd = lwd, lty = lty)
 				if(!is.null(text)) {
 					# map to most recent cell
-					pos = reverse.circlize((start.degree + end.degree)/2, (rou1 + rou2)/2)
+					pos = reverse.circlize((start.degree + end.degree)/2 + ifelse(start.degree < end.degree, 180, 0), (rou1 + rou2)/2)
 					op_warning = circos.par("points.overflow.warning")
+					circos.par("points.overflow.warning" = FALSE)
 	        		circos.text(pos[1,1], pos[1,2], text, adj = c(0.5, text.vjust), col = text.col, ...)
 	        		circos.par(points.overflow.warning = op_warning)
 				}

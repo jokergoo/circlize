@@ -1116,7 +1116,7 @@ circos.trackPlotRegion(ylim = c(0.5, length(percent)+0.5), , track.height = 0.8,
 
         for(i in seq_along(percent)) {
             circos.text(xlim[1], i, paste0(category[i], " - ", percent[i], "%"), 
-                adj = c(1.1, 0.5)) 
+                facing = "downward", adj = c(1.1, 0.5)) 
         }
 
         breaks = seq(0, 90, by = 5)

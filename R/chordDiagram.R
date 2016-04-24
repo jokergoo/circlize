@@ -43,6 +43,17 @@
 # This function is flexible and contains some settings that may be a little difficult to understand. 
 # Please refer to vignette for better explanation.
 #
+# == value
+# A data frame which contains positions of links, columns are:
+#
+# -rn sector name corresponding to rows in the adjacency matrix or the first column in the adjacency list
+# -cn sector name corresponding to columns in the adjacency matrix or the second column in the adjacency list
+# -value value for the interaction or relation
+# -o1 order of the link on the "from" sector
+# -o2 order of the link on the "to" sector
+# -x1 and position of the link on the "from" sector, the interval for the link on the "from" sector is ``c(x1-abs(value), x1)``
+# -x2 and position of the link on the "to" sector, the interval for the link on the "from" sector is ``c(x2-abs(value), x2)``
+# 
 chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5,
 	col = NULL, row.col = NULL, column.col = NULL, 
 	order = NULL, directional = 0,
@@ -277,6 +288,9 @@ mat2df = function(mat) {
 #
 # == details
 # Internally, the matrix is transformed to a data frame and sent to `chordDiagramFromDataFrame`.
+#
+# == value
+# A data frame which contains positions of links, see explanation in `chordDiagram`.
 #
 chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transparency = 0.5,
 	col = NULL, row.col = NULL, column.col = NULL, order = NULL, directional = 0,
@@ -569,6 +583,9 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 # -link.arr.lwd line width ofthe single line link which is put in the center of the belt, same settings as ``link.lwd``.
 # -link.arr.lty line type of the single line link which is put in the center of the belt, same settings as ``link.lwd``.
 # -... pass to `circos.link`
+#
+# == value
+# A data frame which contains positions of links, see explanation in `chordDiagram`.
 #
 chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, transparency = 0.5,
 	col = NULL, order = NULL, directional = 0,
@@ -896,6 +913,7 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
     }
 	
 	circos.par("cell.padding" = o.cell.padding)
+	return(invisible(df))
 }
 
 psubset = function(mat, ri, ci) {

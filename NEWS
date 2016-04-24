@@ -1,3 +1,8 @@
+Changes in version 0.3.7
+----------------------------------------------------------------------------
+
+* chordDiagram() now returns a data frame which contains positions of all links
+
 Changes in version 0.3.6
 ----------------------------------------------------------------------------
 

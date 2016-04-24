@@ -2,6 +2,7 @@ Changes in version 0.3.7
 ----------------------------------------------------------------------------
 
 * chordDiagram() now returns a data frame which contains positions of all links
+* chordDiagram() track.margin is also taken into settings of preAllocateTracks
 
 Changes in version 0.3.6
 ----------------------------------------------------------------------------

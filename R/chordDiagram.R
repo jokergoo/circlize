@@ -111,7 +111,8 @@ parsePreAllocateTracksValue = function(preAllocateTracks) {
 			  bg.col = NA,
 			  bg.border = NA,
 			  bg.lty = par("lty"),
-			  bg.lwd = par("lwd"))
+			  bg.lwd = par("lwd"),
+			  track.margin = circos.par("track.margin"))
 	if(length(preAllocateTracks) && is.numeric(preAllocateTracks)) {
 		res = vector("list", length = preAllocateTracks)
 		for(i in seq_len(preAllocateTracks)) {
@@ -819,7 +820,8 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 		for(i in seq_along(pa)) {
 			va = pa[[i]]
 			circos.trackPlotRegion(ylim = va$ylim, track.height = va$track.height,
-				bg.col = va$bg.col, bg.border = va$bg.border, bg.lty = va$bg.lty, bg.lwd = va$bg.lwd)
+				bg.col = va$bg.col, bg.border = va$bg.border, bg.lty = va$bg.lty, bg.lwd = va$bg.lwd,
+				track.margin = va$track.margin)
 		}
 	}
 	if("name" %in% annotationTrack) {

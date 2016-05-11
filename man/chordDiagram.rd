@@ -63,6 +63,19 @@ visualize tables in a circular way.
 This function is flexible and contains some settings that may be a little difficult to understand. 
 Please refer to vignette for better explanation.
 }
+\value{
+A data frame which contains positions of links, columns are:
+
+\describe{
+  \item{rn}{sector name corresponding to rows in the adjacency matrix or the first column in the adjacency list}
+  \item{cn}{sector name corresponding to columns in the adjacency matrix or the second column in the adjacency list}
+  \item{value}{value for the interaction or relation}
+  \item{o1}{order of the link on the "from" sector}
+  \item{o2}{order of the link on the "to" sector}
+  \item{x1}{and position of the link on the "from" sector, the interval for the link on the "from" sector is \code{c(x1-abs(value), x1)}}
+  \item{x2}{and position of the link on the "to" sector, the interval for the link on the "from" sector is \code{c(x2-abs(value), x2)}}
+}
+}
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
 

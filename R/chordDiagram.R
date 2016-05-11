@@ -277,7 +277,8 @@ mat2df = function(mat) {
 # -link.border border for links, single scalar or a matrix with names or a data frame with three columns
 # -link.lwd width for link borders, single scalar or a matrix with names or a data frame with three columns
 # -link.lty style for link borders, single scalar or a matrix with names or a data frame with three columns
-# -link.sort whether sort links on every sector based on the width of the links on it.
+# -link.sort whether sort links on every sector based on the width of the links on it. If it is set to "overall", all links are sorted regardless
+#            whether they are from rows or columns.
 # -link.decreasing for ``link.sort``
 # -link.arr.length pass to `circos.link`, same settings as ``link.lwd``.
 # -link.arr.width pass to `shape::Arrowhead`, same settings as ``link.lwd``.
@@ -575,7 +576,8 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 # -link.border border for links, single scalar or a vector which has the same length as nrows of ``df``
 # -link.lwd width for link borders, single scalar or a vector which has the same length as nrows of ``df``
 # -link.lty style for link borders, single scalar or a vector which has the same length as nrows of ``df``
-# -link.sort whether sort links on every sector based on the width of the links on it.
+# -link.sort whether sort links on every sector based on the width of the links on it. If it is set to "overall", all links are sorted regardless
+#            whether they are from the first column or the second column.
 # -link.decreasing for ``link.sort``
 # -link.arr.length pass to `circos.link`, same settings as ``link.lwd``.
 # -link.arr.width pass to `shape::Arrowhead`, same settings as ``link.lwd``.
@@ -768,46 +770,76 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	if(length(link.sort) == 1) link.sort = rep(link.sort, 2)
 	if(length(link.decreasing) == 1) link.decreasing = rep(link.decreasing, 2)
 
-	# position of root 1
-	od = tapply(abs(df$value), df$rn, .order, link.sort[1], link.decreasing[1])
-	for(nm in names(od)) {  # for each sector
-		l = df$rn == nm # rows in df that correspond to current sector
-		df$o1[l] = od[[nm]] # adjust rows according to the order in current sector
-		df$x1[l][od[[nm]]] = cumsum(abs(df$value[l])[od[[nm]]]) # position
+	if(is.logical(link.sort)) {
+		# position of root 1
+		od = tapply(abs(df$value), df$rn, .order, link.sort[1], link.decreasing[1])
+		for(nm in names(od)) {  # for each sector
+			l = df$rn == nm # rows in df that correspond to current sector
+			df$o1[l] = od[[nm]] # adjust rows according to the order in current sector
+			df$x1[l][od[[nm]]] = cumsum(abs(df$value[l])[od[[nm]]]) # position
 
-		l2 = df$rn == nm & df$cn == nm 
-		if(sum(l2)) { # there is a self link
-			if(self.link == 1) {
-				df$x2[l2] = df$x1[l2]+abs(df$value[l2])*0.000001
+			l2 = df$rn == nm & df$cn == nm 
+			if(sum(l2)) { # there is a self link
+				if(self.link == 1) {
+					df$x2[l2] = df$x1[l2]+abs(df$value[l2])*0.000001
+				}
 			}
 		}
-	}
-	max_o1 = sapply(od, max)
-	sum_1 = tapply(abs(df$value), df$rn, sum)
-	# position of root 2
-	od = tapply(abs(df$value), df$cn, .order, link.sort[2], link.decreasing[2])
-	for(nm in names(od)) {
-		if(!is.na(max_o1[nm])) { # if cn already in rn
-			l = df$cn == nm
-			if(self.link == 1) {
-				l2 = ! df$rn[l] == nm # self link
-				od[[nm]] = order(od[[nm]][l2])
+		max_o1 = sapply(od, max)
+		sum_1 = tapply(abs(df$value), df$rn, sum)
+		# position of root 2
+		od = tapply(abs(df$value), df$cn, .order, link.sort[2], link.decreasing[2])
+		for(nm in names(od)) {
+			if(!is.na(max_o1[nm])) { # if cn already in rn
+				l = df$cn == nm
+				if(self.link == 1) {
+					l2 = ! df$rn[l] == nm # self link
+					od[[nm]] = order(od[[nm]][l2])
+				} else {
+					l2 = rep(TRUE, sum(l))
+				}
+				df$o2[l][l2] = od[[nm]] + max_o1[nm]
+				df$x2[l][l2][ od[[nm]] ] = cumsum(abs(df$value[l][l2])[ od[[nm]] ]) + sum_1[nm]
 			} else {
-				l2 = rep(TRUE, sum(l))
+				l = df$cn == nm
+				df$o2[l] = od[[nm]]
+				df$x2[l][od[[nm]]] = cumsum(abs(df$value[l])[od[[nm]]])
 			}
-			df$o2[l][l2] = od[[nm]] + max_o1[nm]
-			df$x2[l][l2][ od[[nm]] ] = cumsum(abs(df$value[l][l2])[ od[[nm]] ]) + sum_1[nm]
-		} else {
-			l = df$cn == nm
-			df$o2[l] = od[[nm]]
-			df$x2[l][od[[nm]]] = cumsum(abs(df$value[l])[od[[nm]]])
+		}
+		if(self.link == 1) {
+			l = df$rn == df$cn
+			df$x1[l] = pmin(df$x1[l], df$x2[l])
+			df$x2[l] = pmin(df$x1[l], df$x2[l])
+		}
+	} else {
+		for(nm in unique(c(df$rn, df$cn))) {
+			l = df$rn == nm | df$cn == nm
+			od = order(abs(df$value[l]), decreasing = link.decreasing[1])
+			cum_pos = cumsum(abs(df$value[l])[od])
+			if(self.link == 2) {
+				ii = which(df$rn[l] == nm & df$cn[l] == nm)
+				if(length(ii)) {
+					iii = which(od == ii)
+					if(iii < length(cum_pos)) {
+						cum_pos[(iii+1):length(cum_pos)] = cum_pos[(iii+1):length(cum_pos)] + df$value[l][ii]
+					}
+				}
+			}
+			xx = NULL
+			xx[od] = cum_pos
+			l1 = df$rn == nm
+			l2 = l & !l1
+			df$x1[l1] = xx[l1[l]]
+			df$x2[l2] = xx[l2[l]]
+		}
+		l = df$rn == df$cn
+		if(self.link == 1) {
+			df$x2[l] = df$x1[l]
+		} else if(self.link == 2) {
+			df$x2[l] = df$x1[l] + abs(df$value[l])
 		}
 	}
-	if(self.link == 1) {
-		l = df$rn == df$cn
-		df$x1[l] = pmin(df$x1[l], df$x2[l])
-		df$x2[l] = pmin(df$x1[l], df$x2[l])
-	}
+
 	#######################################
 
 	o.cell.padding = circos.par("cell.padding")

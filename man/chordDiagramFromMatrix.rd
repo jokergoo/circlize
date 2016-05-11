@@ -42,7 +42,7 @@ chordDiagramFromMatrix(mat, grid.col = NULL, grid.border = NA, transparency = 0.
   \item{link.border}{border for links, single scalar or a matrix with names or a data frame with three columns}
   \item{link.lwd}{width for link borders, single scalar or a matrix with names or a data frame with three columns}
   \item{link.lty}{style for link borders, single scalar or a matrix with names or a data frame with three columns}
-  \item{link.sort}{whether sort links on every sector based on the width of the links on it.}
+  \item{link.sort}{whether sort links on every sector based on the width of the links on it. If it is set to "overall", all links are sorted regardless whether they are from rows or columns.}
   \item{link.decreasing}{for \code{link.sort}}
   \item{link.arr.length}{pass to \code{\link{circos.link}}, same settings as \code{link.lwd}.}
   \item{link.arr.width}{pass to \code{\link[shape]{Arrowhead}}, same settings as \code{link.lwd}.}
@@ -55,6 +55,9 @@ chordDiagramFromMatrix(mat, grid.col = NULL, grid.border = NA, transparency = 0.
 }
 \details{
 Internally, the matrix is transformed to a data frame and sent to \code{\link{chordDiagramFromDataFrame}}.
+}
+\value{
+A data frame which contains positions of links, see explanation in \code{\link{chordDiagram}}.
 }
 \examples{
 # There is no example

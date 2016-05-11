@@ -3,6 +3,8 @@ Changes in version 0.3.7
 
 * chordDiagram() now returns a data frame which contains positions of all links
 * chordDiagram() track.margin is also taken into settings of preAllocateTracks
+* chrodDiagram(): link.sort adds a new option: "overall" which sort links
+  regardless of rows or columns
 
 Changes in version 0.3.6
 ----------------------------------------------------------------------------

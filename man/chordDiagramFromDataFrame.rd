@@ -38,7 +38,7 @@ chordDiagramFromDataFrame(df, grid.col = NULL, grid.border = NA, transparency = 
   \item{link.border}{border for links, single scalar or a vector which has the same length as nrows of \code{df}}
   \item{link.lwd}{width for link borders, single scalar or a vector which has the same length as nrows of \code{df}}
   \item{link.lty}{style for link borders, single scalar or a vector which has the same length as nrows of \code{df}}
-  \item{link.sort}{whether sort links on every sector based on the width of the links on it.}
+  \item{link.sort}{whether sort links on every sector based on the width of the links on it. If it is set to "overall", all links are sorted regardless whether they are from the first column or the second column.}
   \item{link.decreasing}{for \code{link.sort}}
   \item{link.arr.length}{pass to \code{\link{circos.link}}, same settings as \code{link.lwd}.}
   \item{link.arr.width}{pass to \code{\link[shape]{Arrowhead}}, same settings as \code{link.lwd}.}
@@ -48,6 +48,9 @@ chordDiagramFromDataFrame(df, grid.col = NULL, grid.border = NA, transparency = 
   \item{link.arr.lty}{line type of the single line link which is put in the center of the belt, same settings as \code{link.lwd}.}
   \item{...}{pass to \code{\link{circos.link}}}
 
+}
+\value{
+A data frame which contains positions of links, see explanation in \code{\link{chordDiagram}}.
 }
 \details{
 ...

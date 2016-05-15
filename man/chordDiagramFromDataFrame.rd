@@ -17,7 +17,8 @@ chordDiagramFromDataFrame(df, grid.col = NULL, grid.border = NA, transparency = 
     link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4),
     link.arr.width = link.arr.length/2,
     link.arr.type = "triangle", link.arr.lty = par("lty"),
-    link.arr.lwd = par("lwd"), link.arr.col = par("col"), ...)
+    link.arr.lwd = par("lwd"), link.arr.col = par("col"),
+    link.largest.ontop = FALSE, ...)
 }
 \arguments{
 
@@ -46,6 +47,7 @@ chordDiagramFromDataFrame(df, grid.col = NULL, grid.border = NA, transparency = 
   \item{link.arr.col}{color or the single line link which is put in the center of the belt, same settings as \code{link.lwd}.}
   \item{link.arr.lwd}{line width ofthe single line link which is put in the center of the belt, same settings as \code{link.lwd}.}
   \item{link.arr.lty}{line type of the single line link which is put in the center of the belt, same settings as \code{link.lwd}.}
+  \item{link.largest.ontop}{controls the order of adding links, whether based on the absolute value?}
   \item{...}{pass to \code{\link{circos.link}}}
 
 }

@@ -33,6 +33,7 @@
 # -link.arr.lty pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
 # -link.arr.lwd pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
 # -link.arr.col pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -link.largest.ontop  pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
 # -... pass to `circos.link`.
 #
 # == details
@@ -66,7 +67,8 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4), 
 	link.arr.width = link.arr.length/2, 
 	link.arr.type = "triangle", link.arr.lty = par("lty"), 
-	link.arr.lwd = par("lwd"), link.arr.col = par("col"), ...) {
+	link.arr.lwd = par("lwd"), link.arr.col = par("col"), 
+	link.largest.ontop = FALSE, ...) {
 	
 	if(inherits(x, "matrix")) {
 		chordDiagramFromMatrix(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
@@ -76,7 +78,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 			preAllocateTracks = preAllocateTracks, annotationTrack = annotationTrack, annotationTrackHeight = annotationTrackHeight,
 			link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 			link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
-			link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, ...)
+			link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, ...)
 	} else if(inherits(x, "data.frame")) {
 		if(ncol(x) > 3) {
 			if(all(sapply(x, inherits, "numeric"))) {
@@ -88,7 +90,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 					preAllocateTracks = preAllocateTracks, annotationTrack = annotationTrack, annotationTrackHeight = annotationTrackHeight,
 					link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 					link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
-					link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, ...)))
+					link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, ...)))
 			}
 		}
 		chordDiagramFromDataFrame(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
@@ -97,7 +99,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 			preAllocateTracks = preAllocateTracks, annotationTrack = annotationTrack, annotationTrackHeight = annotationTrackHeight,
 			link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 			link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
-			link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, ...)
+			link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, ...)
 	} else {
 		stop("`x` can only be a matrix or a data frame.")
 	}
@@ -286,6 +288,7 @@ mat2df = function(mat) {
 # -link.arr.col color or the single line link which is put in the center of the belt, same settings as ``link.lwd``.
 # -link.arr.lwd line width ofthe single line link which is put in the center of the belt, same settings as ``link.lwd``.
 # -link.arr.lty line type of the single line link which is put in the center of the belt, same settings as ``link.lwd``.
+# -link.largest.ontop controls the order of adding links, whether based on the absolute value?
 # -... pass to `circos.link`
 #
 # == details
@@ -304,7 +307,8 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4), 
 	link.arr.width = link.arr.length/2, 
 	link.arr.type = "triangle", link.arr.lty = par("lty"), 
-	link.arr.lwd = par("lwd"), link.arr.col = par("col"), ...) {
+	link.arr.lwd = par("lwd"), link.arr.col = par("col"), 
+	link.largest.ontop = FALSE, ...) {
 	
 	if(!is.matrix(mat)) {
 		stop("`mat` can only be a matrix.\n")
@@ -530,6 +534,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 		link.arr.lwd = psubset(link.arr.lwd, df$ri, df$ci),
 		link.arr.lty = psubset(link.arr.lty, df$ri, df$ci),
 		link.arr.col = psubset(link.arr.col, df$ri, df$ci),
+		link.largest.ontop = link.largest.ontop,
 		...)
 	
 }
@@ -585,6 +590,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 # -link.arr.col color or the single line link which is put in the center of the belt, same settings as ``link.lwd``.
 # -link.arr.lwd line width ofthe single line link which is put in the center of the belt, same settings as ``link.lwd``.
 # -link.arr.lty line type of the single line link which is put in the center of the belt, same settings as ``link.lwd``.
+# -link.largest.ontop controls the order of adding links, whether based on the absolute value?
 # -... pass to `circos.link`
 #
 # == value
@@ -600,7 +606,8 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4), 
 	link.arr.width = link.arr.length/2, 
 	link.arr.type = "triangle", link.arr.lty = par("lty"), 
-	link.arr.lwd = par("lwd"), link.arr.col = par("col"), ...) {
+	link.arr.lwd = par("lwd"), link.arr.col = par("col"), 
+	link.largest.ontop = FALSE, ...) {
 
 	if(nrow(df) != 2) {
 		if(identical(direction.type, c("diffHeight", "arrows")) || identical(direction.type, c("arrows", "diffHeight"))) {
@@ -924,7 +931,13 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 		}
 	}
 
-	for(k in seq_len(nrow(df))) {
+	if(link.largest.ontop) {
+		link_order = order(df$value, decreasing = FALSE)
+	} else {
+		link_order = seq_len(nrow(df))
+	}
+	
+	for(k in link_order) {
 		if (abs(df$value[k])/sum(abs(df$value)) < 1e-6) next
 
 		if(setequal(direction.type, c("diffHeight"))) {

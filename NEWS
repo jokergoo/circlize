@@ -1,3 +1,9 @@
+Changes in version 0.3.8
+----------------------------------------------------------------------------
+
+* chordDiagram(): if not all sectors are specified in grid.col, remaining will
+  be filled by random colors
+
 Changes in version 0.3.7
 ----------------------------------------------------------------------------
 

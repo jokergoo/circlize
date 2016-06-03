@@ -447,15 +447,16 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 		grid.col = rand_color(n)
 		names(grid.col) = factors
 	} else {
-		if(length(grid.col) == 1) {
-			grid.col = rep(grid.col, length(factors))
-			names(grid.col) = factors
-		} else if(!is.null(names(grid.col))) {
-			if(length(setdiff(factors, names(grid.col))) > 0) {
-				stop("Since your ``grid.col`` is a named vector, all sectors should have corresponding colors.\n")
+		if(!is.null(names(grid.col))) {
+			unnamed_grid = setdiff(factors, names(grid.col))
+			if(length(unnamed_grid) > 0) {
+				grid.col = c(grid.col, structure(rand_color(length(unnamed_grid)), names = unnamed_grid))
+				# stop("Since your ``grid.col`` is a named vector, all sectors should have corresponding colors.\n")
 			}
-			
 			grid.col = grid.col[as.vector(factors)]
+		} else if(length(grid.col) == 1) {
+			grid.col = rep(grid.col, n)
+			names(grid.col) = factors
 		} else if(length(grid.col) == length(factors)) {
 			names(grid.col) = factors
 		} else {
@@ -656,15 +657,16 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 		grid.col = rand_color(n)
 		names(grid.col) = cate
 	} else {
-		if(length(grid.col) == 1) {
+		if(!is.null(names(grid.col))) {
+			unnamed_grid = setdiff(cate, names(grid.col))
+			if(length(unnamed_grid) > 0) {
+				grid.col = c(grid.col, structure(rand_color(length(unnamed_grid)), names = unnamed_grid))
+				# stop("Since your ``grid.col`` is a named vector, all sectors should have corresponding colors.\n")
+			}
+			grid.col = grid.col[as.vector(cate)]
+		} else if(length(grid.col) == 1) {
 			grid.col = rep(grid.col, n)
 			names(grid.col) = cate
-		} else if(!is.null(names(grid.col))) {
-			if(length(setdiff(cate, names(grid.col))) > 0) {
-				stop("Since your ``grid.col`` is a named vector, all sectors should have corresponding colors.\n")
-			}
-			
-			grid.col = grid.col[as.vector(cate)]
 		} else if(length(grid.col) == length(cate)) {
 			names(grid.col) = cate
 		} else {

@@ -324,6 +324,10 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("track
 	if(cell.padding[1] + cell.padding[3] >= track.height) {
 		stop("Summation of cell padding on y-direction are larger than the height of the cells.\n")
 	}
+
+	if(ylim[2] == ylim[1]) {
+		stop("range of `ylim` should be different.")
+	}
 	
 	yl = numeric(2)
 	yl[1] = ylim[1] - (ylim[2] - ylim[1])*cell.padding[1] / track.height

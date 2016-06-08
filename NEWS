@@ -3,6 +3,7 @@ Changes in version 0.3.8
 
 * chordDiagram(): if not all sectors are specified in grid.col, remaining will
   be filled by random colors
+* if `ylim` has same values for upper and lower bound, throw errors.
 
 Changes in version 0.3.7
 ----------------------------------------------------------------------------

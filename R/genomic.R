@@ -1260,6 +1260,7 @@ circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, o
 #     columns which are start positions and end positions on a single chromosome.
 #     It can also be a bed-format data frame which contains the chromosome column.
 # -window.size Window size to calculate genomic density
+# -n.window number of windows, if it is specified, ``window.size`` is ignored
 # -overlap Whether two neighbouring windows have half overlap
 #
 # == details
@@ -1269,7 +1270,7 @@ circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, o
 # If the input is a two-column data frame, the function returns a data frame with three columns: 
 # start position, end position and percent of overlapping. And if the input is a bed-format
 # data frame, there will be an additionally chromosome name column.
-genomicDensity = function(region, window.size = 10000000, overlap = TRUE) {
+genomicDensity = function(region, window.size = 1e7, n.window = NULL, overlap = TRUE) {
 	
 	if(is.character(region[, 1]) || is.factor(region[, 1])) {
 		region[, 1] = as.vector(region[, 1])
@@ -1298,16 +1299,30 @@ genomicDensity = function(region, window.size = 10000000, overlap = TRUE) {
 	region = reduce_region(region)
 
 	# make a segmentation
+	max_pos = max(region[[2]])
 	if(overlap) {
-		b = seq(1, max(region[[2]]), by = window.size/2)
-		s = b[-length(b)]
-		s = s[-length(s)]
-		e = s + window.size - 1
-		
+		if(missing(n.window)) {
+			b = seq(1, max_pos, by = window.size/2)
+			s = b[-length(b)]
+			s = s[-length(s)]
+			e = s + window.size - 1
+		} else {
+			b = seq(1, max_pos, length = 2*n.window - 1)
+			s = b[-length(b)]
+			s = s[-length(s)]
+			e = s + b[3] - b[1] - 1
+		}
 	} else {
-		b = seq(1, max(region[[2]]), by = window.size)
-		s = b[-length(b)]
-		e = s + window.size - 1
+		if(missing(n.window)) {
+			b = seq(1, max_pos, by = window.size)
+			s = b[-length(b)]
+			e = s + window.size - 1
+		} else {
+			b = seq(1, max_pos, length = n.window)
+			s = b[-length(b)]
+			e = s + b[2] - b[1]	
+		}
+		
 	}
 
 	s = as.integer(s)

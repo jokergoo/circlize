@@ -7,12 +7,13 @@ Calculate genomic region density
 Calculate genomic region density
 }
 \usage{
-genomicDensity(region, window.size = 10000000, overlap = TRUE)
+genomicDensity(region, window.size = 1e7, n.window = NULL, overlap = TRUE)
 }
 \arguments{
 
   \item{region}{Genomic positions. It can be a data frame with two columns which are start positions and end positions on a single chromosome. It can also be a bed-format data frame which contains the chromosome column.}
   \item{window.size}{Window size to calculate genomic density}
+  \item{n.window}{number of windows, if it is specified, \code{window.size} is ignored}
   \item{overlap}{Whether two neighbouring windows have half overlap}
 
 }

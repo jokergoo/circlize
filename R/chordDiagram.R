@@ -626,10 +626,14 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	if(ncol(df) == 2) {
 		df$value = rep(1, nrow(df))
 	}
-	df = df[1:3]
-	df[[1]] = as.character(df[[1]])
-	df[[2]] = as.character(df[[2]])
-	colnames(df) = c("rn", "cn", "value")
+	df2 = df[1:3]
+	df2[[1]] = as.character(df2[[1]])
+	df2[[2]] = as.character(df2[[2]])
+	colnames(df2) = c("rn", "cn", "value")
+	if(!is.null(df$rank)) {
+		df2$rank = df$rank
+	}
+	df = df2
 	nr = nrow(df)
 
 	transparency = ifelse(transparency < 0, 0, ifelse(transparency > 1, 1, transparency))
@@ -934,9 +938,13 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	}
 
 	if(link.largest.ontop) {
-		link_order = order(df$value, decreasing = FALSE)
+		link_order = order(abs(df$value), decreasing = FALSE)
 	} else {
-		link_order = seq_len(nrow(df))
+		if(is.null(df$rank)) {
+			link_order = seq_len(nrow(df))
+		} else {
+			link_order = order(df$rank)
+		}
 	}
 	
 	for(k in link_order) {
@@ -961,6 +969,8 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 		}
     }
 	
+	df$col = col
+
 	circos.par("cell.padding" = o.cell.padding)
 	return(invisible(df))
 }

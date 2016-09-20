@@ -1,3 +1,9 @@
+Changes in version 0.3.9
+----------------------------------------------------------------------------
+
+* `chordDiagramFromDataFrame()`: now recognize a `rank` column which defines
+  the order of adding links
+
 Changes in version 0.3.8
 ----------------------------------------------------------------------------
 

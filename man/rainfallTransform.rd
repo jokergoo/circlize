@@ -7,7 +7,7 @@ Calculate inter-distance of genomic regions
 Calculate inter-distance of genomic regions
 }
 \usage{
-rainfallTransform(region, mode = c("min", "max", "mean"))
+rainfallTransform(region, mode = c("min", "max", "mean", "left", "right"))
 }
 \arguments{
 

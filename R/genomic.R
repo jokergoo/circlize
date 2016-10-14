@@ -1503,7 +1503,7 @@ circos.genomicRainfall = function(data, ylim = c(0, 9), col = "black", pch = par
 # == values
 # If the input is a two-column data frame, the function returnes a data frame with three columns: start position, end position and distance.
 # And if the input is a bed-format data frame, there will be the chromosome column added.
-rainfallTransform = function(region, mode = c("min", "max", "mean")) {
+rainfallTransform = function(region, mode = c("min", "max", "mean", "left", "right")) {
 	
 	mode = match.arg(mode)[1]
 
@@ -1545,12 +1545,22 @@ rainfallTransform = function(region, mode = c("min", "max", "mean")) {
 			dist[2:(n-1)] = pmin(d1, d2)
 		} else if(mode == "max") {
 			dist[2:(n-1)] = pmax(d1, d2)
-		} else {
+		} else if(mode == "mean") {
 			dist[2:(n-1)] = apply(cbind(d1, d2), 1, mean)
+		} else if (mode == "left") {
+			dist[2:(n - 1)] = d2
+		} else if (mode == "right") {
+			dist[2:(n - 1)] = d1
 		}
 	}
 		
 	dist = ifelse(dist < 0, 0, dist)
+
+	if(mode == "left") {
+		dist[1] = NA
+	} else if(mode == "right") {
+		dist[n] = NA
+	}
 	
 	return(data.frame(start = region[, 1], end = region[, 2], dist = dist))
 }

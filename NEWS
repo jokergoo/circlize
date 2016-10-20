@@ -3,6 +3,7 @@ Changes in version 0.3.10
 
 * `chordDiagram()`: fixed a bug when the input matrix is stored as a data frame
 * `rainfallTransform()`: add "left" and "right" modes
+* `circos.genomicInitialize()`: it can only plots axes now.
 
 Changes in version 0.3.9
 ----------------------------------------------------------------------------

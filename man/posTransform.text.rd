@@ -9,7 +9,8 @@ Genomic position transformation function specifically for text
 \usage{
 posTransform.text(region, y, labels, cex = 1, font = par("font"),
     sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"), padding = 0, ...)
+    track.index = get.cell.meta.data("track.index"), padding = 0,
+    extend = 0, ...)
 }
 \arguments{
 
@@ -21,6 +22,7 @@ posTransform.text(region, y, labels, cex = 1, font = par("font"),
   \item{sector.index}{sector index}
   \item{track.index}{track index}
   \item{padding}{padding of text}
+  \item{extend}{extend to allow labels to be put in an region which is wider than the current chromosome. The value should be a proportion value and the length is either one or two.}
   \item{...}{other arguments}
 
 }

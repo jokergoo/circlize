@@ -4,6 +4,8 @@ Changes in version 0.3.10
 * `chordDiagram()`: fixed a bug when the input matrix is stored as a data frame
 * `rainfallTransform()`: add "left" and "right" modes
 * `circos.genomicInitialize()`: it can only plots axes now.
+* `posTransform.text()`: add `extend` option to control the extension of chromsomes
+  to allow to put more labels
 
 Changes in version 0.3.9
 ----------------------------------------------------------------------------

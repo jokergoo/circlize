@@ -1601,6 +1601,8 @@ posTransform.default = function(region, ...) {
 # -sector.index sector index
 # -track.index track index
 # -padding padding of text
+# -extend extend to allow labels to be put in an region which is wider than the current chromosome.
+#    The value should be a proportion value and the length is either one or two.
 # -... other arguments
 #
 # == details
@@ -1608,10 +1610,14 @@ posTransform.default = function(region, ...) {
 # Under the transformation, texts will be as close as possible to the original positions.
 posTransform.text = function(region, y, labels, cex = 1, font = par("font"),
 	sector.index = get.cell.meta.data("sector.index"),
-	track.index = get.cell.meta.data("track.index"), padding = 0, ...) {
+	track.index = get.cell.meta.data("track.index"), padding = 0, 
+	extend = 0, ...) {
 	
 	if(length(y) == 1) y = rep(y, nrow(region))
 	if(length(labels) == 1) labels = rep(labels, nrow(region))
+
+	if(length(extend) == 1) extend = rep(extend, 2)
+	if(length(extend) > 2) extend = extend[1:2]
 	
 	od = order(region[[1]])
 	region = region[od, ]
@@ -1627,6 +1633,8 @@ posTransform.text = function(region, y, labels, cex = 1, font = par("font"),
 	x2 = reverse.circlize(alpha2, d[, "rou"], sector.index = sector.index, track.index = track.index)[, "x"]
 	
 	xlim = get.cell.meta.data("xlim", sector.index = sector.index, track.index = track.index)
+	xrange = xlim[2] - xlim[1]
+	xlim = c(xlim[1] - extend[1]*xrange, xlim[2] + extend[2]*xrange)
 	
 	x1_new = x1
 	x2_new = x2

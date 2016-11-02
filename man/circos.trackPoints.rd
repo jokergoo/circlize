@@ -8,7 +8,7 @@ Add points to the plotting regions in a same track
 }
 \usage{
 circos.trackPoints(factors = NULL, x, y, track.index = get.cell.meta.data("track.index"),
-    pch = par("pch"), col = par("col"), cex = par("cex"))
+    pch = par("pch"), col = par("col"), cex = par("cex"), bg = par("bg"))
 }
 \arguments{
 
@@ -19,6 +19,7 @@ circos.trackPoints(factors = NULL, x, y, track.index = get.cell.meta.data("track
   \item{pch}{Point type}
   \item{col}{Point color}
   \item{cex}{Point size}
+  \item{bg}{backgrond color}
 
 }
 \details{

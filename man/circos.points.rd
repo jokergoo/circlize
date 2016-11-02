@@ -9,7 +9,7 @@ Add points to a plotting region
 \usage{
 circos.points(x, y, sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"),
-    pch = par("pch"), col = par("col"), cex = par("cex"))
+    pch = par("pch"), col = par("col"), cex = par("cex"), bg = par("bg"))
 }
 \arguments{
 
@@ -20,6 +20,7 @@ circos.points(x, y, sector.index = get.cell.meta.data("sector.index"),
   \item{pch}{Point type}
   \item{col}{Point color}
   \item{cex}{Point size}
+  \item{bg}{backgrond of points}
 
 }
 \details{

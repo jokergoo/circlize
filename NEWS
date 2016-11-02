@@ -6,6 +6,7 @@ Changes in version 0.3.10
 * `circos.genomicInitialize()`: it can only plots axes now.
 * `posTransform.text()`: add `extend` option to control the extension of chromsomes
   to allow to put more labels
+* `ciros.points()`: add `bg` option to control background color
 
 Changes in version 0.3.9
 ----------------------------------------------------------------------------

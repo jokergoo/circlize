@@ -507,7 +507,7 @@ getI = function(...) {
 circos.genomicPoints = function(region, value, numeric.column = NULL, 
 	sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
-	pch = par("pch"), col = par("col"), cex = par("cex"), ...) {
+	pch = par("pch"), col = par("col"), cex = par("cex"), bg = par("bg"), ...) {
 	
 	nr = nrow(region)
 	
@@ -560,15 +560,16 @@ circos.genomicPoints = function(region, value, numeric.column = NULL,
 	pch = .normalizeGraphicalParam(pch, nc, nr, "pch")
 	col = .normalizeGraphicalParam(col, nc, nr, "col")
 	cex = .normalizeGraphicalParam(cex, nc, nr, "cex")
+	bg = .normalizeGraphicalParam(bg, nc, nr, "cex")
 	
 	if(nc == 1) {
 		circos.points( (region[[1]] + region[[2]])/2, value[[ numeric.column ]], 
-			pch = pch, col = col, cex = cex, 
+			pch = pch, col = col, cex = cex, bg = bg,
 			sector.index = sector.index, track.index = track.index )
 	} else {
 		for(i in seq_len(nc)) {
 			circos.points( (region[[1]] + region[[2]])/2, value[[ numeric.column[i] ]], 
-				pch = pch[i], col = col[i], cex = cex[i], 
+				pch = pch[i], col = col[i], cex = cex[i], bg = bg[i],
 				sector.index = sector.index, track.index = track.index ) 
 		}
 	}

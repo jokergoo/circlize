@@ -368,6 +368,7 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("track
 # -pch          Point type
 # -col          Point color
 # -cex          Point size
+# -bg           backgrond of points
 #
 # == details
 # This function can only add points in one specified cell. Pretending a low-level plotting 
@@ -384,7 +385,7 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("track
 # and ``cex`` which have same meaning as those in the `graphics::par`.
 circos.points = function(x, y, sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"),
-    pch = par("pch"), col = par("col"), cex = par("cex")) {
+    pch = par("pch"), col = par("col"), cex = par("cex"), bg = par("bg")) {
     
     if(!has.cell(sector.index, track.index)) {
         stop("'circos.points' can only be used after the plotting region has been created\n")
@@ -399,7 +400,7 @@ circos.points = function(x, y, sector.index = get.cell.meta.data("sector.index")
     check.points.position(x, y, sector.index, track.index)
     
     d = circlize(x, y, sector.index, track.index)
-    points(polar2Cartesian(d), pch = pch, col = col, cex = cex)
+    points(polar2Cartesian(d), pch = pch, col = col, cex = cex, bg = bg)
     return(invisible(NULL))
 }
 
@@ -414,6 +415,7 @@ circos.points = function(x, y, sector.index = get.cell.meta.data("sector.index")
 # -pch          Point type
 # -col          Point color
 # -cex          Point size
+# -bg           backgrond color
 #
 # == details
 # The function adds points in multiple cells by first splitting data into several parts in which
@@ -424,7 +426,7 @@ circos.points = function(x, y, sector.index = get.cell.meta.data("sector.index")
 #
 # This function can be replaced by a ``for`` loop containing `circos.points`.
 circos.trackPoints = function(factors = NULL, x, y, track.index = get.cell.meta.data("track.index"),
-    pch = par("pch"), col = par("col"), cex = par("cex")) {
+    pch = par("pch"), col = par("col"), cex = par("cex"), bg = par("bg")) {
     
     # basic check here
     if(length(x) != length(factors) || length(y) != length(factors)) {
@@ -447,6 +449,7 @@ circos.trackPoints = function(factors = NULL, x, y, track.index = get.cell.meta.
     pch = recycle.with.factors(pch, factors)
     col = recycle.with.factors(col, factors)
     cex = recycle.with.factors(cex, factors)
+    bg = recycle.with.factors(bg, factors)
     
     for(i in seq_along(le)) {
         l = factors == le[i]
@@ -456,9 +459,10 @@ circos.trackPoints = function(factors = NULL, x, y, track.index = get.cell.meta.
         npch = pch[l]
         ncol = col[l]
         ncex = cex[l]
+        nbg = bg[l]
         circos.points(nx, ny, sector.index = le[i],
                       track.index = track.index,
-                      pch = npch, col = ncol, cex = ncex)
+                      pch = npch, col = ncol, cex = ncex, bg = nbg)
             
     }
     return(invisible(NULL))

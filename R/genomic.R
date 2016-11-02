@@ -500,6 +500,7 @@ getI = function(...) {
 #      Pass to `circos.points`
 # -pch Type of points. Settings are similar as ``col``. Pass to `circos.points`
 # -cex Size of points. Settings are similar as ``col``. Pass to `circos.points`
+# -bg background colors for points.
 # -... Mysterious parameters
 #
 # == details

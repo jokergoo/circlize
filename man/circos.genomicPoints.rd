@@ -23,6 +23,7 @@ circos.genomicPoints(region, value, numeric.column = NULL,
   \item{col}{color of points. If there is only one numeric column, the length of \code{col} can be either one or number of rows of \code{region}. If there are more than one numeric column, the length of \code{col} can be either one or number of numeric columns. Pass to \code{\link{circos.points}}}
   \item{pch}{Type of points. Settings are similar as \code{col}. Pass to \code{\link{circos.points}}}
   \item{cex}{Size of points. Settings are similar as \code{col}. Pass to \code{\link{circos.points}}}
+  \item{bg}{background colors for points.}
   \item{...}{Mysterious parameters}
 
 }

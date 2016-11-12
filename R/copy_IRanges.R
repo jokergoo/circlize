@@ -5,6 +5,10 @@ sort_region = function(region) {
 	region[order(region[[1]], region[[2]]), , drop = FALSE]
 }
 
+order_region = function(region) {
+	order(region[[1]], region[[2]])
+}
+
 # region has been sorted
 reduce_region = function(region) {
 	nr = nrow(region)

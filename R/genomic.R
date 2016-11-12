@@ -1507,36 +1507,43 @@ circos.genomicRainfall = function(data, ylim = c(0, 9), col = "black", pch = par
 # == values
 # If the input is a two-column data frame, the function returnes a data frame with three columns: start position, end position and distance.
 # And if the input is a bed-format data frame, there will be the chromosome column added.
+#
+# The row order of the returned data frame is as same as the input one.
 rainfallTransform = function(region, mode = c("min", "max", "mean", "left", "right")) {
 	
 	mode = match.arg(mode)[1]
 
 	if(is.character(region[, 1]) || is.factor(region[, 1])) {
 		region[, 1] = as.vector(region[, 1])
-		return(do.call("rbind", lapply(unique(region[, 1]), function(chr) {
+		region = region[1:3]
+		region$dist = NA
+		for(chr in unique(region[, 1])) {
 			l = region[, 1] == chr
 			df = rainfallTransform(region[l, 2:3, drop = FALSE], mode = mode)
-			cbind(chr = rep(chr, nrow(df)), df)
-		})))
+			region$dist[l] = df$dist
+		}
+		return(region)
 	}
 	if(ncol(region) >= 3) {
 		if(is.numeric(region[, 1])) {
 			if(max(region[, 1]) < 100) {
-				return(do.call("rbind", lapply(unique(region[, 1]), function(chr) {
-					l = region[, 1] == chr
-					df = rainfallTransform(region[l, 2:3, drop = FALSE], mode = mode)
-					cbind(chr = rep(chr, nrow(df)), df)
-				})))
+				region = as.data.frame(region)
+				region[[1]] = as.character(region[[1]])
+				rainfallTransform(region, ...)
 			}
 		}
 	}
 	
-	region = as.data.frame(sort_region(region[1:2]))
+	region_order = order_region(region[1:2])
+	region_bk = as.data.frame(region[1:2])
+	region = as.data.frame(region[region_order, ])
 	n = nrow(region)
 	dist = numeric(n)
 		
 	if(n < 2) {
-		return(data.frame(start = numeric(0), end = numeric(0), dist = numeric(0)))
+		region = region_bk
+		region$dist = NA
+		return(region)
 	}
 		
 	dist[1] = region[2, 1] - region[1, 2]
@@ -1565,8 +1572,11 @@ rainfallTransform = function(region, mode = c("min", "max", "mean", "left", "rig
 	} else if(mode == "right") {
 		dist[n] = NA
 	}
+
+	region = region_bk
+	region$dist[region_order] = dist
 	
-	return(data.frame(start = region[, 1], end = region[, 2], dist = dist))
+	return(region)
 }
 
 # == title

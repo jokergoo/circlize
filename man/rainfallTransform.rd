@@ -18,6 +18,8 @@ rainfallTransform(region, mode = c("min", "max", "mean", "left", "right"))
 \value{
 If the input is a two-column data frame, the function returnes a data frame with three columns: start position, end position and distance.
 And if the input is a bed-format data frame, there will be the chromosome column added.
+
+The row order of the returned data frame is as same as the input one.
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.

@@ -17,7 +17,7 @@ Circular layout is an efficient way for the visualization of huge
 
 Zuguang Gu, Lei Gu, Roland Eils, Matthias Schlesner, Benedikt Brors, circlize Implements and enhances circular visualization in R. Bioinformatics (Oxford, England) 2014. [PubMed](http://www.ncbi.nlm.nih.gov/pubmed/24930139)
 
-### Basic designs
+### Basic design
 
 Since most of the figures are composed of points, lines and polygons, 
 we just need to implement functions for drawing points, lines and polygons.
@@ -87,10 +87,12 @@ The package has been submitted to CRAN, so you can install it through:
 
 Together with the package there are several vignettes which provide detailed description and examples.
 
+### Example
+
+See http://jokergoo.github.io/circlize.
+
+<img width="408" alt="circlize_example" src="https://cloud.githubusercontent.com/assets/449218/20597169/7a50d29e-b242-11e6-8b2f-ba49a2d3be40.png">
+
 ### License
 
 GPL (>= 2)
-
-### Examples
-
-For examples of circlize package, please visit http://jokergoo.github.io/circlize.

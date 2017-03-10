@@ -875,7 +875,7 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 			df$x2[l] = df$x1[l] + abs(df$value[l])
 		}
 	}
-return(NULL)
+
 	#######################################
 
 	o.cell.padding = circos.par("cell.padding")

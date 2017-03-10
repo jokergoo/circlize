@@ -1529,7 +1529,7 @@ rainfallTransform = function(region, mode = c("min", "max", "mean", "left", "rig
 			if(max(region[, 1]) < 100) {
 				region = as.data.frame(region)
 				region[[1]] = as.character(region[[1]])
-				rainfallTransform(region, ...)
+				rainfallTransform(region, mode = mode)
 			}
 		}
 	}

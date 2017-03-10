@@ -20,7 +20,7 @@ chordDiagram(x, grid.col = NULL, grid.border = NA, transparency = 0.5,
     link.arr.width = link.arr.length/2,
     link.arr.type = "triangle", link.arr.lty = par("lty"),
     link.arr.lwd = par("lwd"), link.arr.col = par("col"),
-    link.largest.ontop = FALSE, ...)
+    link.largest.ontop = FALSE, link.visible = TRUE, ...)
 }
 \arguments{
 
@@ -54,6 +54,7 @@ chordDiagram(x, grid.col = NULL, grid.border = NA, transparency = 0.5,
   \item{link.arr.lwd}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{link.arr.col}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{link.largest.ontop}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{link.visible}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{...}{pass to \code{\link{circos.link}}.}
 
 }

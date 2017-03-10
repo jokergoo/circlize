@@ -388,6 +388,12 @@ transparency to the links that you want to ignore.
 Again, for adjacency list, you only need to construct a vector of colors according to
 what links you want to highlight.
 
+From version 0.3.10, {\tt chordDiagram()} accepts a {\tt link.visible} argument which controls whether to plot
+corresponding links. It is faster than using full transparent color because actually no plotting is applied when
+values in {\tt link.visible} is {\tt FALES}. The value for {\tt link.visible} is a logical matrix if the input
+variable is a matrix and a logial vector is the input variable is a data frame. When corresponding values in 
+{\tt link.visible} is {\tt FALSE}, no link is plotted but the position of the link is still occupied.
+
 <<eval = FALSE>>=
 # code is not run when building the vignette
 col = rand_color(nrow(df))
@@ -415,7 +421,7 @@ But sometimes sorting links according to the width on the sector is useful for d
 features. {\tt link.sort} and {\tt link.decreasing} can be set to control
 the link orders (figure \ref{fig:chord_diagram_link_order}).
 
-<<chord_diagram_link_order1, eval = FALSE, echo = c(1, 3)>>=
+<<chord_diagram_link_order1, eval = FALSE>>=
 chordDiagram(mat, grid.col = grid.col, link.border = 1, 
     link.sort = TRUE, link.decreasing = TRUE)
 text(-0.9, 0.9, "A", cex = 1.5)

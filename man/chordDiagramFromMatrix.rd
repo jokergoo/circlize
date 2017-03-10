@@ -18,7 +18,7 @@ chordDiagramFromMatrix(mat, grid.col = NULL, grid.border = NA, transparency = 0.
     link.arr.width = link.arr.length/2,
     link.arr.type = "triangle", link.arr.lty = par("lty"),
     link.arr.lwd = par("lwd"), link.arr.col = par("col"),
-    link.largest.ontop = FALSE, ...)
+    link.largest.ontop = FALSE, link.visible = TRUE, ...)
 }
 \arguments{
 
@@ -45,13 +45,14 @@ chordDiagramFromMatrix(mat, grid.col = NULL, grid.border = NA, transparency = 0.
   \item{link.lty}{style for link borders, single scalar or a matrix with names or a data frame with three columns}
   \item{link.sort}{whether sort links on every sector based on the width of the links on it. If it is set to "overall", all links are sorted regardless whether they are from rows or columns.}
   \item{link.decreasing}{for \code{link.sort}}
-  \item{link.arr.length}{pass to \code{\link{circos.link}}, same settings as \code{link.lwd}.}
-  \item{link.arr.width}{pass to \code{\link[shape]{Arrowhead}}, same settings as \code{link.lwd}.}
-  \item{link.arr.type}{pass to \code{\link{circos.link}}, same settings as \code{link.lwd}. Default value is \code{triangle}.}
-  \item{link.arr.col}{color or the single line link which is put in the center of the belt, same settings as \code{link.lwd}.}
-  \item{link.arr.lwd}{line width ofthe single line link which is put in the center of the belt, same settings as \code{link.lwd}.}
-  \item{link.arr.lty}{line type of the single line link which is put in the center of the belt, same settings as \code{link.lwd}.}
+  \item{link.arr.length}{pass to \code{\link{circos.link}}. The format of this argument is same as \code{link.lwd}.}
+  \item{link.arr.width}{pass to \code{\link[shape]{Arrowhead}}. The format of this argument is same as \code{link.lwd}.}
+  \item{link.arr.type}{pass to \code{\link{circos.link}}, same format as \code{link.lwd}. Default value is \code{triangle}.}
+  \item{link.arr.col}{color or the single line link which is put in the center of the belt. The format of this argument is same as \code{link.lwd}.}
+  \item{link.arr.lwd}{line width ofthe single line link which is put in the center of the belt. The format of this argument is same as \code{link.lwd}.}
+  \item{link.arr.lty}{line type of the single line link which is put in the center of the belt. The format of this argument is same as \code{link.lwd}.}
   \item{link.largest.ontop}{controls the order of adding links, whether based on the absolute value?}
+  \item{link.visible}{whether plot the link. The value is logical, if it is set to \code{FALSE}, the corresponding link will not  plotted, but the space is still ocuppied. The format of this argument is same as \code{link.lwd}}
   \item{...}{pass to \code{\link{circos.link}}}
 
 }

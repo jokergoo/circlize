@@ -1,4 +1,4 @@
-% \VignetteIndexEntry{3. Visualize relations by Chord diagram}
+% \VignetteIndexEntry{Visualize relations by Chord diagram}
 % \VignetteDepends{circlize}
 % \VignetteKeywords{circos R}
 % \VignetteKeywords{Chord Diagram}

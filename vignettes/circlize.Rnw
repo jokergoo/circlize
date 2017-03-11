@@ -1,4 +1,4 @@
-% \VignetteIndexEntry{1. Introduction to circlize package}
+% \VignetteIndexEntry{Introduction to circlize package}
 % \VignetteDepends{circlize}
 % \VignetteKeywords{circos R}
 % \VignetteKeywords{ideogram}

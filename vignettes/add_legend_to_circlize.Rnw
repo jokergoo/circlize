@@ -1,4 +1,4 @@
-% \VignetteIndexEntry{4. Add legends to circlize plot}
+% \VignetteIndexEntry{Add legends to circlize plot}
 % \VignetteDepends{circlize}
 % \VignetteKeywords{circos R}
 % \VignetteKeywords{circlize}

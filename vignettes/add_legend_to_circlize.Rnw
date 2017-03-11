@@ -107,7 +107,6 @@ lgd_links = Legend(at = c(-1, -0.5, 0, 0.5, 1), col_fun = col_fun,
     title_position = "topleft", title = "Links")
 
 lgd_list_vertical = packLegend(lgd_points, lgd_lines, lgd_links)
-lgd_list_vertical
 @
 
 {\tt lgd\_points}, {\tt lgd\_lines}, {\tt lgd\_links} and {\tt lgd\_list\_vertical} are all {\tt grob} objects (graphical objects), 

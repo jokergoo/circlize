@@ -1,4 +1,4 @@
-% \VignetteIndexEntry{Circular phylogenetic tree}
+% \VignetteIndexEntry{5. Circular phylogenetic tree}
 % \VignetteDepends{circlize}
 % \VignetteKeywords{circos R}
 % \VignetteKeywords{Phylogenetic tree}

@@ -7,8 +7,8 @@ Read/parse cytoband data from a data frame/file/UCSC database
 Read/parse cytoband data from a data frame/file/UCSC database
 }
 \usage{
-read.cytoband(cytoband = paste0(system.file(package = "circlize"),
-    "/extdata/cytoBand.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE)
+read.cytoband(cytoband = system.file(package = "circlize",
+    "extdata", "cytoBand.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE)
 }
 \arguments{
 

@@ -29,21 +29,26 @@
 # -chromosome Sorted chromosome names
 # -chr.len    Length of chromosomes. Orders are same as ``chromosome``
 #
-read.cytoband = function(cytoband = paste0(system.file(package = "circlize"),
-    "/extdata/cytoBand.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE) {
+read.cytoband = function(cytoband = system.file(package = "circlize",
+    "extdata", "cytoBand.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE) {
 
 	# this function should also take charge of the order of chromosome
 	if(!is.null(chromosome.index)) sort.chr = FALSE
 	
 	# `species` is prior to `cytoband`
 	if(!is.null(species)) {
-		url = paste("http://hgdownload.soe.ucsc.edu/goldenPath/", species, "/database/cytoBand.txt.gz", sep = "")
+		url = paste("http://hgdownload.cse.ucsc.edu/goldenPath/", species, "/database/cytoBand.txt.gz", sep = "")
 		cytoband = paste0(circos.par("__tempdir__"), "/", species, "_cytoBand.txt.gz")
 		if(!file.exists(cytoband)) {
 			e = try(suppressWarnings(download.file(url, destfile = cytoband, quiet = TRUE)), silent = TRUE)
 			if(class(e) == "try-error") {
 				file.remove(cytoband)
-				stop("It seems your species name is wrong or UCSC does not provide cytoband data\nfor your species or internet connection was interrupted.\nIf possible, download cytoBand file from\n", url, "\nand use `read.cytoband(file)`.\n")
+				cytoband_list = readRDS(system.file("extdata", "cytoband_list.rds", package = "circlize"))
+				if(species %in% names(cytoband_list)) {
+					cytoband = cytoband_list[[species]]
+				} else {
+					stop("It seems your species name is wrong or UCSC does not provide cytoband data\nfor your species or internet connection was interrupted.\nIf possible, download cytoBand file from\n", url, "\nand use `read.cytoband(file)`.\n")
+				}
 			}
 		}
 	}
@@ -129,20 +134,25 @@ read.cytoband = function(cytoband = paste0(system.file(package = "circlize"),
 # -chromosome Sorted chromosome names
 # -chr.len    Length of chromosomes. Order are same as ``chromosome``
 #
-read.chromInfo = function(chromInfo = paste0(system.file(package = "circlize"),
-    "/extdata/chromInfo.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE) {
+read.chromInfo = function(chromInfo = system.file(package = "circlize",
+    "extdata", "chromInfo.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE) {
 	
 	# this function should also take charge of the order of chromosome
 	if(!is.null(chromosome.index)) sort.chr = FALSE
 	
 	if(!is.null(species)) {
-		url = paste("http://hgdownload.soe.ucsc.edu/goldenPath/", species, "/database/chromInfo.txt.gz", sep = "")
+		url = paste("http://hgdownload.cse.ucsc.edu/goldenPath/", species, "/database/chromInfo.txt.gz", sep = "")
 		chromInfo = paste0(circos.par("__tempdir__"), "/", species, "_chromInfo.txt.gz")
 		if(!file.exists(chromInfo)) {
 			e = try(suppressWarnings(download.file(url, destfile = chromInfo, quiet = TRUE)), silent = TRUE)
 			if(class(e) == "try-error") {
 				file.remove(chromInfo)
-				stop("It seems your species name is wrong or UCSC does not provide chromInfo data\nfor your species or internet connection was interrupted.\nIf possible, download chromInfo file from\n", url, "\nand use `read.chromInfo(file)`.\n")
+				chrom_info_list = readRDS(system.file("extdata", "chrom_info_list.rds", package = "circlize"))
+				if(species %in% names(chrom_info_list)) {
+					chromInfo = chrom_info_list[[species]]
+				} else {
+					stop("It seems your species name is wrong or UCSC does not provide chromInfo data\nfor your species or internet connection was interrupted.\nIf possible, download chromInfo file from\n", url, "\nand use `read.chromInfo(file)`.\n")
+				}
 			}
 		}
 	}

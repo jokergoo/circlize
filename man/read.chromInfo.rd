@@ -7,8 +7,8 @@ Read/parse chromInfo data from a data frame/file/UCSC database
 Read/parse chromInfo data from a data frame/file/UCSC database
 }
 \usage{
-read.chromInfo(chromInfo = paste0(system.file(package = "circlize"),
-    "/extdata/chromInfo.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE)
+read.chromInfo(chromInfo = system.file(package = "circlize",
+    "extdata", "chromInfo.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE)
 }
 \arguments{
 

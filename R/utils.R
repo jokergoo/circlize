@@ -478,5 +478,98 @@ col2value = function(r, g, b, col_fun) {
   return(v)
 }
 
+# == title
+# Convert units
+#
+# == param
+# -x a numeric vector
+# -unit supported units, only "mm", "cm", "inches"
+#
+# == details
+# This function coverts mm/cm/inches units to units measured in the data coordinate,
+# e.g. how much is it in the data coordinate for 1 mm/cm/inches. Since the plotting
+# region for circular plot is always square, it does not matter whether to convert
+# units from the first dimension or the second, If the plotting regions is not square
+# the convertion is applied in the longer dimension.
+#
+# == seealso
+# `convert_height`, `convert_width`
+#
+# == author
+# Zuguang Gu <z.gu@dkfz.de>
+#
+# == example
+# plot(1, 1)
+# rect(0.8, 0.8, 1.2, 0.8 + convert_height(10, "mm"), col = "#FF000080")
+# rect(0.8, 0.8, 0.8 + convert_width(10, "mm"), 1.2, col = "#00FF0080")
+convert_unit = function(x, unit = c("mm", "cm", "inches")) {
+	pin = par("pin")
+	unit = match.arg(unit)
 
+	pmax = max(pin)
+	if(pmax == 1) {
+		convert_width(x, unit)
+	} else {
+		convert_height(x, unit)
+	}
+}
 
+# == title
+# Convert units
+#
+# == param
+# -x a numeric vector
+# -unit supported units, only "mm", "cm", "inches"
+#
+# == details
+# This function coverts units from the first dimension in the data coordinate.
+#
+# == author
+# Zuguang Gu <z.gu@dkfz.de>
+convert_width = function(x, unit = c("mm", "cm", "inches")) {
+	pin = par("pin")
+	usr = par("usr")
+
+	unit = match.arg(unit)
+
+	pt_per_inche = (usr[2] - usr[1])/pin[1]
+
+	inche_per_mm = 0.0393700787401575
+	if(unit == "inches") {
+		x * pt_per_inche
+	} else if(unit == "mm") {
+		x * pt_per_inche * inche_per_mm
+	} else if(unit == "cm") {
+		x * pt_per_inche * inche_per_mm * 10
+	}
+}
+
+# == title
+# Convert units
+#
+# == param
+# -x a numeric vector
+# -unit supported units, only "mm", "cm", "inches"
+#
+# == details
+# This function coverts units from the second dimension in the data coordinate.
+#
+# == author
+# Zuguang Gu <z.gu@dkfz.de>
+convert_height = function(x, unit = c("mm", "cm", "inches")) {
+	pin = par("pin")
+	usr = par("usr")
+
+	unit = match.arg(unit)
+
+	pt_per_inche = (usr[4] - usr[3])/pin[2]
+
+	inche_per_mm = 0.0393700787401575
+	if(unit == "inches") {
+		x * pt_per_inche
+	} else if(unit == "mm") {
+		x * pt_per_inche * inche_per_mm
+	} else if(unit == "cm") {
+		x * pt_per_inche * inche_per_mm * 10
+	}
+}

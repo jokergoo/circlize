@@ -1,4 +1,4 @@
-% \VignetteIndexEntry{Make genomic plots}
+% \VignetteIndexEntry{2. Make genomic plots}
 % \VignetteDepends{circlize}
 % \VignetteKeywords{circos R}
 % \VignetteKeywords{circlize}

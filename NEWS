@@ -2,6 +2,8 @@ Changes in version 0.3.11
 ----------------------------------------------------------------------------
 
 * add `link.visible` argument in `chordDiagram()`
+* add cytoband files and chromInfo files for a list of species locally
+* add a new vignette "Add legends to circlize"
 
 Changes in version 0.3.10
 ----------------------------------------------------------------------------

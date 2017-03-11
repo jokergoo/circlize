@@ -1,4 +1,4 @@
-% \VignetteIndexEntry{Some interesting graphics}
+% \VignetteIndexEntry{6. Some interesting graphics}
 % \VignetteDepends{circlize}
 % \VignetteKeywords{circos R}
 % \VignetteKeywords{circlize}

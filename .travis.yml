@@ -11,6 +11,7 @@ r-packages:
 
 r_github_packages:
 - jokergoo/GlobalOptions
+- jokergoo/ComplexHeatmap
 
 r_check_args: --no-vignettes --no-build-vignettes
 

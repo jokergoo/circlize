@@ -7,10 +7,24 @@ warnings_are_errors: true
 
 r-packages:
 - shape 
+- colorspace
+- RColorBrewer
+- testthat
 - knitr
+- markdown
+- dendextend
+- circlize
+
+bioc_packages:
+- GenomicRanges
+- HilbertVis
 
 r_github_packages:
 - jokergoo/GlobalOptions
+- jokergoo/GetoptLong
+- jokergoo/HilbertCurve
+- jimhester/covr
+- jokergoo/ComplexHeatmap
 
 r_check_args: --no-vignettes --no-build-vignettes
 

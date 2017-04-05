@@ -1,10 +1,10 @@
 \name{circos.info}
 \alias{circos.info}
 \title{
-Get information of the circos plot
+Get information of the circular plot
 }
 \description{
-Get information of the circos plot
+Get information of the circular plot
 }
 \usage{
 circos.info(sector.index = NULL, track.index = NULL, plot = FALSE)

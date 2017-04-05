@@ -7,21 +7,21 @@ Convert units
 Convert units
 }
 \usage{
-convert_height(x, unit = c("mm", "cm", "inches"))
+convert_height(...)
 }
 \arguments{
 
-  \item{x}{a numeric vector}
-  \item{unit}{supported units, only "mm", "cm", "inches"}
+  \item{...}{pass to \code{\link{convert_length}}}
 
 }
 \details{
-This function coverts units from the second dimension in the data coordinate.
+This function is same as \code{\link{convert_length}}. The reason for naming this function
+is \code{\link{convert_length}} is mostely used for defining the height of tracks and track margins.
 }
 \author{
 Zuguang Gu <z.gu@dkfz.de>
 }
 \examples{
-# There is no example
+# see example in `convert_length` page
 NULL
 }

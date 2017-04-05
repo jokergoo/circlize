@@ -2,10 +2,10 @@
 \docType{package}
 \alias{circlize-package}
 \title{
-Circular layout in R
+Circular visualization in R
 }
 \description{
-Circular layout in R
+Circular visualization in R
 }
 \details{
 This package aims to implement circular layout in R.
@@ -20,8 +20,9 @@ Current there are following low-level graphical functions:
   \item \code{\link{circos.lines}}
   \item \code{\link{circos.rect}}
   \item \code{\link{circos.polygon}}
+  \item \code{\link{circos.segments}}
   \item \code{\link{circos.text}}
-  \item \code{\link{circos.axis}}
+  \item \code{\link{circos.axis}}, \code{\link{circos.xaxis}}, \code{\link{circos.yaxis}}
   \item \code{\link{circos.link}}, This maybe the unique feature for circular layout to represent relationships between elements.
 }
 

@@ -21,25 +21,25 @@ get.cell.meta.data(name, sector.index = get.current.sector.index(),
 The following meta information for a cell can be obtained:
 
 \describe{
-  \item{sector.index}{The name (index) for the sector}
-  \item{sector.numeric.index}{Numeric index for the sector}
-  \item{track.index}{Numeric index for the track}
-  \item{xlim}{Minimal and maximal values on the x-axis}
-  \item{ylim}{Minimal and maximal values on the y-axis}
-  \item{xrange}{Range of \code{xlim}. It equals to \code{xlim[2] - xlim[1]} }
-  \item{yrange}{Range of \code{ylim}}
-  \item{xcenter}{Center of x-axis. It equals to \code{(xlim[2] + xlim[1])/2} }
-  \item{ycenter}{Center of y-axis}
-  \item{cell.xlim}{Minimal and maximal values on the x-axis extended by cell paddings}
-  \item{cell.ylim}{Minimal and maximal values on the y-axis extended by cell paddings}
-  \item{xplot}{Degrees for right and left borders of the cell.}
-  \item{yplot}{Radius for top and bottom borders of the cell.}
-  \item{cell.start.degree}{Same as \code{xplot[1]}}
-  \item{cell.end.degree}{Same as \code{xplot[2]}}
-  \item{cell.bottom.radius}{Same as \code{yplot[1]}}
-  \item{cell.top.radius}{Same as \code{yplot[2]}}
-  \item{track.margin}{Margin for the cell}
-  \item{cell.padding}{Padding for the cell}
+  \item{\code{sector.index}}{The name (index) for the sector}
+  \item{\code{sector.numeric.index}}{Numeric index for the sector}
+  \item{\code{track.index}}{Numeric index for the track}
+  \item{\code{xlim}}{Minimal and maximal values on the x-axis}
+  \item{\code{ylim}}{Minimal and maximal values on the y-axis}
+  \item{\code{xrange}}{Range of \code{xlim}. It equals to \code{xlim[2] - xlim[1]} }
+  \item{\code{yrange}}{Range of \code{ylim}}
+  \item{\code{xcenter}}{Center of x-axis. It equals to \code{(xlim[2] + xlim[1])/2} }
+  \item{\code{ycenter}}{Center of y-axis}
+  \item{\code{cell.xlim}}{Minimal and maximal values on the x-axis extended by cell paddings}
+  \item{\code{cell.ylim}}{Minimal and maximal values on the y-axis extended by cell paddings}
+  \item{\code{xplot}}{Degrees for right and left borders of the cell.}
+  \item{\code{yplot}}{Radius for top and bottom borders of the cell.}
+  \item{\code{cell.start.degree}}{Same as \code{xplot[1]}}
+  \item{\code{cell.end.degree}}{Same as \code{xplot[2]}}
+  \item{\code{cell.bottom.radius}}{Same as \code{yplot[1]}}
+  \item{\code{cell.top.radius}}{Same as \code{yplot[2]}}
+  \item{\code{track.margin}}{Margin for the cell}
+  \item{\code{cell.padding}}{Padding for the cell}
 }
 
 The function is useful when using \code{panel.fun} in \code{\link{circos.trackPlotRegion}} to

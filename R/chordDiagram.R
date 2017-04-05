@@ -4,7 +4,8 @@
 #
 # == param
 # -x a matrix or a data frame. The function will pass all argument to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame` depending on the type of ``x``,
-#    also format of other arguments depends of the type of ``x``.
+#    also format of other arguments depends of the type of ``x``. If it is in the form of a matrix,
+#    it should be an adjacency matrix. If it is in the form of a data frame, it should be an adjacency list.
 # -grid.col pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
 # -grid.border  pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
 # -transparency pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
@@ -48,21 +49,23 @@
 # == value
 # A data frame which contains positions of links, columns are:
 #
-# -rn sector name corresponding to rows in the adjacency matrix or the first column in the adjacency list
-# -cn sector name corresponding to columns in the adjacency matrix or the second column in the adjacency list
-# -value value for the interaction or relation
-# -o1 order of the link on the "from" sector
-# -o2 order of the link on the "to" sector
-# -x1 and position of the link on the "from" sector, the interval for the link on the "from" sector is ``c(x1-abs(value), x1)``
-# -x2 and position of the link on the "to" sector, the interval for the link on the "from" sector is ``c(x2-abs(value), x2)``
+# -``rn`` sector name corresponding to rows in the adjacency matrix or the first column in the adjacency list
+# -``cn`` sector name corresponding to columns in the adjacency matrix or the second column in the adjacency list
+# -``value`` value for the interaction or relation
+# -``o1`` order of the link on the "from" sector
+# -``o2`` order of the link on the "to" sector
+# -``x1`` and position of the link on the "from" sector, the interval for the link on the "from" sector is ``c(x1-abs(value), x1)``
+# -``x2`` and position of the link on the "to" sector, the interval for the link on the "from" sector is ``c(x2-abs(value), x2)``
 # 
 chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5,
 	col = NULL, row.col = NULL, column.col = NULL, 
 	order = NULL, directional = 0,
 	symmetric = FALSE, keep.diagonal = FALSE, 
-	direction.type = "diffHeight", diffHeight = 0.04, reduce = 1e-5, self.link = 2,
+	direction.type = "diffHeight", diffHeight = convert_height(2, "mm"), 
+	reduce = 1e-5, self.link = 2,
 	preAllocateTracks = NULL,
-	annotationTrack = c("name", "grid", "axis"), annotationTrackHeight = c(0.05, 0.05),
+	annotationTrack = c("name", "grid", "axis"), 
+	annotationTrackHeight = convert_height(c(3, 2), "mm"),
 	link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), 
 	link.sort = FALSE, link.decreasing = TRUE,
 	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4), 
@@ -155,7 +158,7 @@ parsePreAllocateTracksValue = function(preAllocateTracks) {
 			return(list(lt2))
 		}
 	} else {
-		stop("Wrong `preAllocateTracks` value.\n")
+		stop("Wrong `preAllocateTracks` value.")
 	}
 }
 
@@ -180,7 +183,7 @@ parsePreAllocateTracksValue = function(preAllocateTracks) {
 				mat[ value[i, 1], value[i, 2] ] = value[i, 3]
 			}
 		} else {
-			stop(paste0("If ", var_name, " is set as a data frame, it should have three columns."))
+			stop("If ", var_name, " is set as a data frame, it should have three columns.")
 		}
 	} else if(is.atomic(value) && length(value) == 1) {
 		mat[,] = value
@@ -195,7 +198,7 @@ parsePreAllocateTracksValue = function(preAllocateTracks) {
 				rownames(mat) = rn
 				colnames(mat) = cn
 			} else {
-				stop(paste0("If ", var_name, " is a matrix, it should have both rownames and colnames.\n"))
+				stop("If ", var_name, " is a matrix, it should have both rownames and colnames.")
 			}
 		}
 	}
@@ -247,7 +250,7 @@ mat2df = function(mat) {
 }
 
 # == title
-# Plot Chord Diagram from a matrix
+# Plot Chord Diagram from an adjacency matrix
 #
 # == param
 # -mat A table which represents as a numeric matrix.
@@ -315,9 +318,11 @@ mat2df = function(mat) {
 #
 chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transparency = 0.5,
 	col = NULL, row.col = NULL, column.col = NULL, order = NULL, directional = 0,
-	direction.type = "diffHeight", diffHeight = 0.04, reduce = 1e-5, self.link = 2,
+	direction.type = "diffHeight", diffHeight = convert_height(2, "mm"), 
+	reduce = 1e-5, self.link = 2,
 	symmetric = FALSE, keep.diagonal = FALSE, preAllocateTracks = NULL,
-	annotationTrack = c("name", "grid", "axis"), annotationTrackHeight = c(0.05, 0.05),
+	annotationTrack = c("name", "grid", "axis"), 
+	annotationTrackHeight = convert_height(c(3, 2), "mm"),
 	link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), 
 	link.sort = FALSE, link.decreasing = TRUE,
 	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4), 
@@ -327,7 +332,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 	link.largest.ontop = FALSE, link.visible = TRUE, ...) {
 	
 	if(!is.matrix(mat)) {
-		stop("`mat` can only be a matrix.\n")
+		stop("`mat` can only be a matrix.")
 	}
 
 	if(length(mat) != 2) {
@@ -340,7 +345,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 
 	if(symmetric) {
 		if(nrow(mat) != ncol(mat)) {
-			stop("`mat` should be a square matrix.\n")
+			stop("`mat` should be a square matrix.")
 		}
 
 		for(i in 1:10) {
@@ -348,7 +353,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 			ir = n[1]
 			ic = n[2]
 			if(abs(mat[ir, ic] - mat[ic, ir]) > 1e-8) {
-				stop("Is `mat` really a symmetric matrix?\n")
+				stop("Is `mat` really a symmetric matrix?")
 			}
 		}
 
@@ -358,7 +363,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 		}
 
 		if(!setequal(rownames(mat), colnames(mat))) {
-			stop("Since you specified a symmetric matrix, rownames and colnames should be the same.\n")
+			stop("Since you specified a symmetric matrix, rownames and colnames should be the same.")
 		}
 
 		mat[upper.tri(mat, diag = !keep.diagonal)] = 0
@@ -369,10 +374,10 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 
 	if(!is.null(order)) {
 		if(is.null(rownames(mat)) || is.null(colnames(mat))) {
-			stop("Since you specified `order`, your matrix should have rowname and colname.\n")
+			stop("Since you specified `order`, your matrix should have rowname and colname.")
 		}
 		if(!setequal(order, union(rownames(mat), colnames(mat)))) {
-			stop("Elements in `order` should be same as in `union(rownames(mat), colnames(mat))`.\n")
+			stop("Elements in `order` should be same as in `union(rownames(mat), colnames(mat))`.")
 		}
 	}
 	
@@ -476,7 +481,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 		} else if(length(grid.col) == length(factors)) {
 			names(grid.col) = factors
 		} else {
-			stop("Since you set ``grid.col``, the length should be either 1 or number of sectors,\nor set your ``grid.col`` as vector with names.\n")
+			stop_wrap("Since you set ``grid.col``, the length should be either 1 or number of sectors, or set your ``grid.col`` as vector with names.")
 		}
 	}
 
@@ -614,14 +619,18 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 #            plotted, but the space is still ocuppied. The format of this argument is same as ``link.lwd``
 # -... pass to `circos.link`
 #
+# == details
+# The data frame can have a column named "rank" which is used to control the order of adding links to the diagram.
+#
 # == value
 # A data frame which contains positions of links, see explanation in `chordDiagram`.
 #
 chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, transparency = 0.5,
 	col = NULL, order = NULL, directional = 0,
-	direction.type = "diffHeight", diffHeight = 0.04, reduce = 1e-5, self.link = 2,
-	preAllocateTracks = NULL,
-	annotationTrack = c("name", "grid", "axis"), annotationTrackHeight = c(0.05, 0.05),
+	direction.type = "diffHeight", diffHeight = convert_height(2, "mm"), 
+	reduce = 1e-5, self.link = 2, preAllocateTracks = NULL,
+	annotationTrack = c("name", "grid", "axis"), 
+	annotationTrackHeight = convert_height(c(3, 2), "mm"),
 	link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"), 
 	link.sort = FALSE, link.decreasing = TRUE,
 	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4), 
@@ -666,7 +675,7 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 		}
 		if(is.numeric(order)) {
 			if(!setequal(order, seq_along(cate))) {
-				stop(paste0("`order` needs to be integers ranging from 1 to", length(cate)))
+				stop("`order` needs to be integers ranging from 1 to", length(cate))
 			}
 			cate = cate[order]
 		} else {
@@ -695,7 +704,7 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 		} else if(length(grid.col) == length(cate)) {
 			names(grid.col) = cate
 		} else {
-			stop("Since you set ``grid.col``, the length should be either 1 or number of sectors,\nor set your ``grid.col`` as vector with names.\n")
+			stop_wrap("Since you set ``grid.col``, the length should be either 1 or number of sectors, or set your ``grid.col`` as vector with names.")
 		}
 	}
 
@@ -914,7 +923,7 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 				}
 				circos.rect(xlim[1], 0, xlim[2], 1, col = grid.col[current.sector.index], border = border.col)
 				if("axis" %in% annotationTrack) {
-					circos.axis("top", labels.cex = 0.5, major.tick.percentage = 0.3)
+					circos.axis("top", labels.cex = 0.5)
 				}
 			}, track.height = annotationTrackHeight[which(annotationTrack %in% "grid")])
 	}

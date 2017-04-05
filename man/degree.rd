@@ -15,7 +15,7 @@ degree(x)
 
 }
 \value{
-a list which only contains a single element
+a \code{degree} object
 }
 \examples{
 # There is no example

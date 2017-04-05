@@ -10,7 +10,7 @@ Get index for all tracks
 get.all.track.index()
 }
 \details{
-Simple function returning a vector of all track index.
+It simply returns a vector of all track index.
 }
 \examples{
 \dontrun{

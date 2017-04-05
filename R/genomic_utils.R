@@ -4,9 +4,9 @@
 # == param
 # -cytoband Path of the cytoband file or a data frame that already contains cytoband data
 # -species  Abbreviations of species. e.g. hg19 for human, mm10 for mouse. If this
-#          value is specified, the function will download ``cytoBand.txt.gz`` or ``chromInfo.txt.gz`` from
+#          value is specified, the function will download ``cytoBand.txt.gz`` from
 #          UCSC website automatically.
-# -chromosome.index subset of chromosomes, also used to re-set chromosome orders.
+# -chromosome.index subset of chromosomes, also used to reorder chromosomes.
 # -sort.chr Whether chromosome names should be sorted (first sort by numbers then by letters).
 #           If ``chromosome.index`` is set, this argument is enforced to ``FALSE``
 #
@@ -14,7 +14,7 @@
 # The function read the cytoband data, sort the chromosome names and calculate the length of each chromosome. 
 # By default, it is human hg19 cytoband data.
 #
-# You can find the data structure for the cytoband data from http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/cytoBand.txt.gz
+# You can find the data structure of the cytoband data from http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/cytoBand.txt.gz
 #
 # If ``sort.chr`` is not set and ``chromosome.index`` is not specified, there would be several circumstances when 
 # determining the order of chromosomes. Assuming ``chromosome`` is the first column in the cytoband data frame,
@@ -25,9 +25,9 @@
 # important since the order of chromosomes will be used to control the order of sectors when initializing the circos plot.
 #
 # == values
-# -df         Data frame for cytoband data (rows are sorted if ``sort.chr`` is set to ``TRUE``)
-# -chromosome Sorted chromosome names
-# -chr.len    Length of chromosomes. Orders are same as ``chromosome``
+# -``df``         Data frame for cytoband data (rows are sorted if ``sort.chr`` is set to ``TRUE``)
+# -``chromosome`` Sorted chromosome names
+# -``chr.len``    Length of chromosomes. Orders are same as ``chromosome``
 #
 read.cytoband = function(cytoband = system.file(package = "circlize",
     "extdata", "cytoBand.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE) {
@@ -47,7 +47,7 @@ read.cytoband = function(cytoband = system.file(package = "circlize",
 				if(species %in% names(cytoband_list)) {
 					cytoband = cytoband_list[[species]]
 				} else {
-					stop("It seems your species name is wrong or UCSC does not provide cytoband data\nfor your species or internet connection was interrupted.\nIf possible, download cytoBand file from\n", url, "\nand use `read.cytoband(file)`.\n")
+					stop_wrap("It seems your species name is wrong or UCSC does not provide cytoband data for your species or internet connection was interrupted. If possible, download cytoBand file from ", url, " and use `read.cytoband(file)`.")
 				}
 			}
 		}
@@ -74,7 +74,7 @@ read.cytoband = function(cytoband = system.file(package = "circlize",
 	}
 
 	if(nrow(d) == 0) {
-		stop("Cannot find any chromosome. It is probably related to your chromosome names having or not having 'chr' prefix.")
+		stop_wrap("Cannot find any chromosome. It is probably related to your chromosome names having or not having 'chr' prefix.")
 	}
 	
 	if(is.null(chromosome.index)) {
@@ -111,9 +111,9 @@ read.cytoband = function(cytoband = system.file(package = "circlize",
 # -species  Abbreviations of species. e.g. hg19 for human, mm10 for mouse. If this
 #          value is specified, the function will download ``chromInfo.txt.gz`` from
 #          UCSC website automatically.
-# -chromosome.index subset of chromosomes, also used to re-set chromosome orders.
+# -chromosome.index subset of chromosomes, also used to reorder chromosomes.
 # -sort.chr Whether chromosome names should be sorted (first sort by numbers then by letters).
-#           If ``chromosome.index`` is set, this argument is enforced to ``FALSE``#
+#           If ``chromosome.index`` is set, this argument is enforced to ``FALSE``
 #
 # == details
 # The function read the chromInfo data, sort the chromosome names and calculate the length of each chromosome. 
@@ -130,9 +130,9 @@ read.cytoband = function(cytoband = system.file(package = "circlize",
 # important since the order of chromosomes will be used to control the order of sectors when initializing the circos plot.
 #
 # == values
-# -df         Data frame for chromInfo data (rows are sorted if ``sort.chr`` is set to ``TRUE``)
-# -chromosome Sorted chromosome names
-# -chr.len    Length of chromosomes. Order are same as ``chromosome``
+# -``df``         Data frame for chromInfo data (rows are sorted if ``sort.chr`` is set to ``TRUE``)
+# -``chromosome`` Sorted chromosome names
+# -``chr.len``    Length of chromosomes. Order are same as ``chromosome``
 #
 read.chromInfo = function(chromInfo = system.file(package = "circlize",
     "extdata", "chromInfo.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE) {
@@ -151,7 +151,7 @@ read.chromInfo = function(chromInfo = system.file(package = "circlize",
 				if(species %in% names(chrom_info_list)) {
 					chromInfo = chrom_info_list[[species]]
 				} else {
-					stop("It seems your species name is wrong or UCSC does not provide chromInfo data\nfor your species or internet connection was interrupted.\nIf possible, download chromInfo file from\n", url, "\nand use `read.chromInfo(file)`.\n")
+					stop_wrap("It seems your species name is wrong or UCSC does not provide chromInfo data for your species or internet connection was interrupted. If possible, download chromInfo file from ", url, " and use `read.chromInfo(file)`.")
 				}
 			}
 		}
@@ -178,7 +178,7 @@ read.chromInfo = function(chromInfo = system.file(package = "circlize",
 	}
 
 	if(nrow(d) == 0) {
-		stop("Cannot find any chromosome. It is probably related to your chromosome names having or not having 'chr' prefix.")
+		stop_wrap("Cannot find any chromosome. It is probably related to your chromosome names having or not having 'chr' prefix.")
 	}
 	
 	# now cytoband data is normalized to `d`
@@ -268,7 +268,7 @@ generateRandomBed = function(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0
 						  end = breaks[seq_along(breaks) %% 2 == 0],
 						  stringsAsFactors = FALSE)
 		for(k in seq_len(nc)) {
-			res = cbind(res, value = fun(length(breaks)/2))
+			res = cbind(res, value = fun(length(breaks)/2), stringsAsFactors = FALSE)
 		}
 		res
 	})

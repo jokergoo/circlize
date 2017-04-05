@@ -729,7 +729,7 @@ source("src/intro-11-axis.R")
   \item e: Self-defined major ticks.
   \item f: Self-defined major ticks and tick labels, no minor ticks.
   \item g: No ticks for both major and minor ones, facing of tick labels is set to {\tt reverse.clockwise}.
-  \item h: Number of minor ticks between two major ticks is set to 2. Length of ticks is longer and axis labels are more away from ticks. Facing of tick labels is set to {\tt clockwise}.
+  \item h: Number of minor ticks between two major ticks is set to 2. Length of ticks is longer. Facing of tick labels is set to {\tt clockwise}.
 \end{itemize}
 
 The facing of labels text can also be optimized by {\tt labels.niceFacing} (by default it is {\tt TRUE}).
@@ -741,9 +741,9 @@ circos.axis(h)
 circos.axis(h, sector.index, track.index)
 circos.axis(h, major.at, labels, major.tick)
 circos.axis(h, major.at, labels, major.tick, labels.font, labels.cex,
-            labels.facing, labels.away.percentage)
+            labels.facing)
 circos.axis(h, major.at, labels, major.tick, minor.ticks,
-            major.tick.percentage, lwd)
+            major.tick.length, lwd)
 @
 
 Y-axis is also supported (figure \ref{fig:circlize_axis}), but you need to set {\tt gap.degree} in {\tt circos.par} 

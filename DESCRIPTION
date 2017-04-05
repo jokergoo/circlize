@@ -1,12 +1,12 @@
 Package: circlize
 Type: Package
 Title: Circular Visualization
-Version: 0.3.11
+Version: 0.4.0
 Date: 2017-3-10
 Author: Zuguang Gu
 Maintainer: Zuguang Gu <z.gu@dkfz.de>
 Depends: R (>= 2.10.0), graphics
-Imports: GlobalOptions (>= 0.0.10), shape, grDevices, utils, stats, 
+Imports: GlobalOptions (>= 0.0.12), shape, grDevices, utils, stats, 
     colorspace, methods, grid
 Suggests: knitr, dendextend (>= 1.0.1), ComplexHeatmap (>= 1.13.2), gridBase
 VignetteBuilder: knitr

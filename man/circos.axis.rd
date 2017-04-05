@@ -14,13 +14,14 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
     labels.facing = "inside", labels.direction = NULL, labels.niceFacing = TRUE,
     direction = c("outside", "inside"), minor.ticks = 4,
     major.tick.percentage = 0.1, labels.away.percentage = major.tick.percentage/2,
+    major.tick.length = convert_y(1, "mm", sector.index, track.index),
     lwd = par("lwd"))
 }
 \arguments{
 
   \item{h}{Position of the x-axis, can be "top", "bottom" or a numeric value}
   \item{major.at}{If it is numeric vector, it identifies the positions of the major ticks. It can exceed \code{xlim} value and the exceeding part would be trimmed automatically. If it is \code{NULL}, about every 10 degrees there is a major tick.}
-  \item{labels}{labels of the major ticks. Also, the exceeding part would be trimmed automatically.}
+  \item{labels}{labels of the major ticks. Also, the exceeding part would be trimmed automatically. The value can also be logical (either an atomic value or a vector) which represents which labels to show.}
   \item{major.tick}{Whether to draw major tick. If it is set to \code{FALSE}, there would be no minor ticks.}
   \item{sector.index}{Index for the sector}
   \item{track.index}{Index for the track}
@@ -31,13 +32,17 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
   \item{labels.niceFacing}{Should facing of axis labels be human-easy}
   \item{direction}{whether the axis ticks point to the outside or inside of the circle.}
   \item{minor.ticks}{Number of minor ticks between two close major ticks.}
-  \item{major.tick.percentage}{Length of the major ticks. It is the percentage to the height of the cell.}
-  \item{labels.away.percentage}{The distance for the axis labels to the major ticks. It is the percentage to the height of the cell.}
+  \item{major.tick.percentage}{not used. Length of the major ticks. It is the percentage to the height of the cell.}
+  \item{labels.away.percentage}{not used. The distance for the axis labels to the major ticks. It is the percentage to the height of the cell.}
+  \item{major.tick.length}{length of the major ticks, measured in "current" data coordinate. \code{\link{convert_y}} can be used to convert an absolute unit to the data coordinate.}
   \item{lwd}{line width for ticks}
 
 }
 \details{
 It can only draw axes on x-direction.
+}
+\seealso{
+\code{\link{circos.yaxis}} draws axes on y-direction.
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.

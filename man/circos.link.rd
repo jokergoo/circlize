@@ -1,10 +1,10 @@
 \name{circos.link}
 \alias{circos.link}
 \title{
-Draw links between points or intervals
+Draw links between points or/and intervals
 }
 \description{
-Draw links between points or intervals
+Draw links between points or/and intervals
 }
 \usage{
 circos.link(sector.index1, point1, sector.index2, point2,
@@ -17,14 +17,14 @@ circos.link(sector.index1, point1, sector.index2, point2,
 }
 \arguments{
 
-  \item{sector.index1}{Index for the first sector}
+  \item{sector.index1}{Index for the first sector where one root locates}
   \item{point1}{A single value or a numeric vector of length 2. If it is a 2-elements vector, then the link would be a belt/ribbon.}
-  \item{sector.index2}{Index for the other sector}
+  \item{sector.index2}{Index for the other sector where the other root locates}
   \item{point2}{A single value or a numeric vector of length 2. If it is a 2-elements vector, then the link would be a belt/ribbon.}
-  \item{rou}{The position of the 'root' of the link. It is the percentage of the radius of the unit circle. By default its value is the position of bottom margin of the most inner track.}
+  \item{rou}{The position of the 'root' of the link (if \code{rou1} and \code{rou2} are not set). It is the percentage of the radius of the unit circle. By default its value is the position of bottom margin of the most inner track.}
   \item{rou1}{The position of root 1 of the link. }
   \item{rou2}{The position of root 2 of the link.}
-  \item{h}{Height of the link. }
+  \item{h}{Height of the link, measured as percent to the radius to the unit circle. By default it is automatically infered.}
   \item{w}{Since the link is a Bezier curve, it controls the shape of Bezier curve.}
   \item{h2}{Height of the bottom edge of the link if it is a ribbon.}
   \item{w2}{Shape of the bottom edge of the link if it is a ribbon.}
@@ -32,17 +32,17 @@ circos.link(sector.index1, point1, sector.index2, point2,
   \item{lwd}{Line (or border) width}
   \item{lty}{Line (or border) style}
   \item{border}{If the link is a ribbon, then it is the color for the ribbon border.}
-  \item{directional}{0 for no direction, 1 for direction from point1 to point2, -1 for direction from point2 to point1. 2 for two directional}
-  \item{arr.length}{Length of the arrows, measured in 'cm', pass to \code{\link[shape]{Arrowhead}}. If \code{arr.type} is set to \code{big.arrow}, the value is percent to the radius of the unit circle.}
+  \item{directional}{0 for no direction, 1 for direction from point1 to point2, -1 for direction from point2 to point1. 2 for two directional. The direction is important when arrow heads are added.}
   \item{arr.width}{Width of the arrows, pass to \code{\link[shape]{Arrowhead}}.}
-  \item{arr.type}{Type of the arrows, pass to \code{\link[shape]{Arrowhead}}. Default value is \code{triangle}. There is an additional option that is not passed to \code{\link[shape]{Arrowhead}} (\code{big.arrow}).}
+  \item{arr.type}{Type of the arrows, pass to \code{\link[shape]{Arrowhead}}. Default value is \code{triangle}. There is an additional option \code{big.arrow}.}
+  \item{arr.length}{Length of the arrows, measured in 'cm', pass to \code{\link[shape]{Arrowhead}}. If \code{arr.type} is set to \code{big.arrow}, the value is percent to the radius of the unit circle.}
   \item{arr.col}{Color of the arrows, pass to \code{\link[shape]{Arrowhead}}.}
   \item{arr.lwd}{Line width of arrows, pass to \code{\link[shape]{Arrowhead}}.}
   \item{arr.lty}{Line type of arrows, pass to \code{\link[shape]{Arrowhead}}.}
 
 }
 \details{
-Links are implemented as quadratic Bezier curves.
+Links are implemented as quadratic Bezier curves (\url{https://en.wikipedia.org/wiki/B\%C3\%A9zier_curve#Rational_B.C3.A9zier_curves} ).
 
 Drawing links does not create any track. So you can think it is independent of the tracks.
 

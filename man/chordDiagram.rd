@@ -11,9 +11,11 @@ chordDiagram(x, grid.col = NULL, grid.border = NA, transparency = 0.5,
     col = NULL, row.col = NULL, column.col = NULL,
     order = NULL, directional = 0,
     symmetric = FALSE, keep.diagonal = FALSE,
-    direction.type = "diffHeight", diffHeight = 0.04, reduce = 1e-5, self.link = 2,
+    direction.type = "diffHeight", diffHeight = convert_height(2, "mm"),
+    reduce = 1e-5, self.link = 2,
     preAllocateTracks = NULL,
-    annotationTrack = c("name", "grid", "axis"), annotationTrackHeight = c(0.05, 0.05),
+    annotationTrack = c("name", "grid", "axis"),
+    annotationTrackHeight = convert_height(c(3, 2), "mm"),
     link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"),
     link.sort = FALSE, link.decreasing = TRUE,
     link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4),
@@ -24,7 +26,7 @@ chordDiagram(x, grid.col = NULL, grid.border = NA, transparency = 0.5,
 }
 \arguments{
 
-  \item{x}{a matrix or a data frame. The function will pass all argument to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}} depending on the type of \code{x}, also format of other arguments depends of the type of \code{x}.}
+  \item{x}{a matrix or a data frame. The function will pass all argument to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}} depending on the type of \code{x}, also format of other arguments depends of the type of \code{x}. If it is in the form of a matrix, it should be an adjacency matrix. If it is in the form of a data frame, it should be an adjacency list.}
   \item{grid.col}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{grid.border}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{transparency}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
@@ -70,13 +72,13 @@ Please refer to vignette for better explanation.
 A data frame which contains positions of links, columns are:
 
 \describe{
-  \item{rn}{sector name corresponding to rows in the adjacency matrix or the first column in the adjacency list}
-  \item{cn}{sector name corresponding to columns in the adjacency matrix or the second column in the adjacency list}
-  \item{value}{value for the interaction or relation}
-  \item{o1}{order of the link on the "from" sector}
-  \item{o2}{order of the link on the "to" sector}
-  \item{x1}{and position of the link on the "from" sector, the interval for the link on the "from" sector is \code{c(x1-abs(value), x1)}}
-  \item{x2}{and position of the link on the "to" sector, the interval for the link on the "from" sector is \code{c(x2-abs(value), x2)}}
+  \item{\code{rn}}{sector name corresponding to rows in the adjacency matrix or the first column in the adjacency list}
+  \item{\code{cn}}{sector name corresponding to columns in the adjacency matrix or the second column in the adjacency list}
+  \item{\code{value}}{value for the interaction or relation}
+  \item{\code{o1}}{order of the link on the "from" sector}
+  \item{\code{o2}}{order of the link on the "to" sector}
+  \item{\code{x1}}{and position of the link on the "from" sector, the interval for the link on the "from" sector is \code{c(x1-abs(value), x1)}}
+  \item{\code{x2}}{and position of the link on the "to" sector, the interval for the link on the "from" sector is \code{c(x2-abs(value), x2)}}
 }
 }
 \references{

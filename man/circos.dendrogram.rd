@@ -1,10 +1,10 @@
 \name{circos.dendrogram}
 \alias{circos.dendrogram}
 \title{
-Add circlized dendrograms
+Add circular dendrograms
 }
 \description{
-Add circlized dendrograms
+Add circular dendrograms
 }
 \usage{
 circos.dendrogram(dend, facing = c("outside", "inside"), max_height = NULL)

@@ -1,17 +1,19 @@
 \name{chordDiagramFromMatrix}
 \alias{chordDiagramFromMatrix}
 \title{
-Plot Chord Diagram from a matrix
+Plot Chord Diagram from an adjacency matrix
 }
 \description{
-Plot Chord Diagram from a matrix
+Plot Chord Diagram from an adjacency matrix
 }
 \usage{
 chordDiagramFromMatrix(mat, grid.col = NULL, grid.border = NA, transparency = 0.5,
     col = NULL, row.col = NULL, column.col = NULL, order = NULL, directional = 0,
-    direction.type = "diffHeight", diffHeight = 0.04, reduce = 1e-5, self.link = 2,
+    direction.type = "diffHeight", diffHeight = convert_height(2, "mm"),
+    reduce = 1e-5, self.link = 2,
     symmetric = FALSE, keep.diagonal = FALSE, preAllocateTracks = NULL,
-    annotationTrack = c("name", "grid", "axis"), annotationTrackHeight = c(0.05, 0.05),
+    annotationTrack = c("name", "grid", "axis"),
+    annotationTrackHeight = convert_height(c(3, 2), "mm"),
     link.border = NA, link.lwd = par("lwd"), link.lty = par("lty"),
     link.sort = FALSE, link.decreasing = TRUE,
     link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4),

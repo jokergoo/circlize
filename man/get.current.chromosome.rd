@@ -10,7 +10,7 @@ Get current chromosome name
 get.current.chromosome()
 }
 \details{
-The function is a simple wrapper of \code{get.cell.meta.data("sector.index")} and
+The function is same as \code{\link{get.current.sector.index}} and
 should only be put inside \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}.
 }
 \references{

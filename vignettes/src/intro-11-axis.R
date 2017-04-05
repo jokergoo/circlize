@@ -19,7 +19,7 @@ circos.axis(labels.niceFacing = FALSE, sector.index = "d", h = "bottom", directi
 circos.axis(labels.niceFacing = FALSE, sector.index = "e", h = 5, major.at = c(1, 3, 5, 7, 9))
 circos.axis(labels.niceFacing = FALSE, sector.index = "f", h = 5, major.at = c(1, 3, 5, 7, 9), labels = c("a", "c", "e", "g", "f"), minor.ticks = 0)
 circos.axis(labels.niceFacing = FALSE, sector.index = "g", h = 5, major.at = c(1, 3, 5, 7, 9), labels = c("a1", "c1", "e1", "g1", "f1"), major.tick = FALSE, labels.facing = "reverse.clockwise")
-circos.axis(labels.niceFacing = FALSE, sector.index = "h", h = 2, major.at = c(1, 3, 5, 7, 9), labels = c("a1", "c1", "e1", "g1", "f1"), major.tick.percentage = 0.3, labels.away.percentage = 0.2, minor.ticks = 2, labels.facing = "clockwise")
+circos.axis(labels.niceFacing = FALSE, sector.index = "h", h = 2, major.at = c(1, 3, 5, 7, 9), labels = c("a1", "c1", "e1", "g1", "f1"), major.tick.length = convert_y(5, "mm"), minor.ticks = 2, labels.facing = "clockwise")
 circos.clear()
 
 circos.par(gap.degree = 5)

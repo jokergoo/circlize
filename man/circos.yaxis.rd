@@ -12,20 +12,21 @@ circos.yaxis(side = c("left", "right"), at = NULL, labels = TRUE, tick = TRUE,
     track.index = get.cell.meta.data("track.index"),
     labels.font = par("font"), labels.cex = par("cex"),
     labels.niceFacing = TRUE,
-    tick.length = 0.5, lwd = par("lwd"))
+    tick.length = convert_x(1, "mm", sector.index, track.index),
+    lwd = par("lwd"))
 }
 \arguments{
 
   \item{side}{add the y-axis on the left or right of the cell}
   \item{at}{If it is numeric vector, it identifies the positions of the ticks. It can exceed \code{ylim} value and the exceeding part would be trimmed automatically.}
-  \item{labels}{labels of the ticks. Also, the exceeding part would be trimmed automatically.}
+  \item{labels}{labels of the ticks. The exceeding part would be trimmed automatically. The value can also be logical (either an atomic value or a vector) which represents which labels to show.}
   \item{tick}{Whether to draw ticks.}
   \item{sector.index}{Index for the sector}
   \item{track.index}{Index for the track}
   \item{labels.font}{font style for the axis labels}
   \item{labels.cex}{font size for the axis labels}
   \item{labels.niceFacing}{Should facing of axis labels be human-easy}
-  \item{tick.length}{length of the tick, measured by degree}
+  \item{tick.length}{length of the tick}
   \item{lwd}{line width for ticks}
 
 }

@@ -22,7 +22,7 @@ highlight.sector(sector.index, track.index = get.all.track.index(),
   \item{lty}{Style of borders}
   \item{padding}{Padding for the highlighted region. It should contain four values representing ratios of the width or height of the highlighted region}
   \item{text}{text added in the highlight region, only support plotting one string at a time}
-  \item{text.vjust}{adjustment on 'vertical' (radical) direction}
+  \item{text.vjust}{adjustment on 'vertical' (radical) direction. Besides to set it as numeric values, the value can also be a string contain absoute unit, e.g. "2.1mm", "-1 inche", but only "mm", "cm", "inches"/"inche" are allowed.}
   \item{text.col}{color for the text}
   \item{...}{pass to \code{\link{circos.text}}}
 

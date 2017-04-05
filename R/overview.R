@@ -1,6 +1,6 @@
 
 # == title (package:circlize)
-# Circular layout in R
+# Circular visualization in R
 #
 # == details
 #
@@ -15,8 +15,9 @@
 # - `circos.lines`
 # - `circos.rect`
 # - `circos.polygon`
+# - `circos.segments`
 # - `circos.text`
-# - `circos.axis`
+# - `circos.axis`, `circos.xaxis`, `circos.yaxis`
 # - `circos.link`, This maybe the unique feature for circular layout to represent relationships between elements.
 #  
 # For drawing points, lines and text through the whole track (among several sectors), the following 

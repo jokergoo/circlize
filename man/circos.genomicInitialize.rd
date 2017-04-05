@@ -1,15 +1,15 @@
 \name{circos.genomicInitialize}
 \alias{circos.genomicInitialize}
 \title{
-Initialize circos plot with any genomic data
+Initialize circular plot with any genomic data
 }
 \description{
-Initialize circos plot with any genomic data
+Initialize circular plot with any genomic data
 }
 \usage{
 circos.genomicInitialize(data, sector.names = NULL, major.by = NULL,
     plotType = c("axis", "labels"), tickLabelsStartFromZero = TRUE,
-    track.height = 0.05, ...)
+    track.height = convert_height(3, "mm"), ...)
 }
 \arguments{
 
@@ -23,7 +23,7 @@ circos.genomicInitialize(data, sector.names = NULL, major.by = NULL,
 
 }
 \details{
-The function will initialize circos plot from genomic data. If \code{plotType} is set with value in \code{axis} or \code{labels}, there will
+The function will initialize circular plot from genomic data. If \code{plotType} is set with value in \code{axis} or \code{labels}, there will
 create a new track.
 
 The order of sectors related to data structure of \code{data}. If the first column in \code{data} is a factor, the order of sectors

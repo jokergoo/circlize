@@ -1,9 +1,18 @@
-Changes in version 0.3.11
+Changes in version 0.4.0
 ----------------------------------------------------------------------------
 
 * add `link.visible` argument in `chordDiagram()`
 * add cytoband files and chromInfo files for a list of species locally
 * add a new vignette "Add legends to circlize"
+* add a new function `convert_*()` which convert an absolute unit to
+  measurement in different coordinates
+* enforce asp = 1 when calling plot.default
+* length of axes ticks are set to 2mm by default
+* in axis, the first axis label is shifted if it is exceed the axis and 
+  so is for the last axis label.
+* text.vjust accepts strings as "2mm", "-2.1 cm" to represent offsets
+* `circos.segments()`: graphic parameters can be set as vectors
+* add `circos.genomicIdeogram()`, `circos.genomicHeatmap()`, `circos.genomicLabels()`
 
 Changes in version 0.3.10
 ----------------------------------------------------------------------------

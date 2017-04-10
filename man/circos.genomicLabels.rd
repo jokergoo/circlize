@@ -23,7 +23,7 @@ circos.genomicLabels(bed, labels = NULL, labels.column = NULL,
   \item{cex}{size of the labels}
   \item{font}{font of the labels}
   \item{padding}{padding of the labels, the value is the ratio to the height of the label}
-  \item{connection_height}{}
+  \item{connection_height}{height of the connection track}
   \item{line_col}{color for the connection lines}
   \item{line_lwd}{line width for the connection lines}
   \item{line_lty}{line type for the connectioin lines}

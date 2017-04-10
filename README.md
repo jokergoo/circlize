@@ -103,7 +103,7 @@ devtools::install_github("jokergoo/circlize")
 
 See http://jokergoo.github.io/circlize.
 
-<img width="408" alt="circlize_example" src="http://jokergoo.github.io/circlize_book/book/images/ciclize_examples.jpg">
+<img width="700" alt="circlize_example" src="http://jokergoo.github.io/circlize_book/book/images/ciclize_examples.jpg">
 
 ### Documents
 

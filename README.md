@@ -2,6 +2,14 @@
 [![CRAN](http://www.r-pkg.org/badges/version/circlize)](https://cran.r-project.org/web/packages/circlize/index.html) 
 [![CRAN](https://cranlogs.r-pkg.org/badges/grand-total/circlize)](https://cran.r-project.org/web/packages/circlize/index.html) 
 
+<style>
+img {
+    float:right;
+}
+</style>
+
+<img src="http://zuguang.de/circlize_book/book/images/circlize_cover.jpg" width=200>
+
 ## circlize: circular visualization in R
 
 Circular layout is an efficient way for the visualization of huge 

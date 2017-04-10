@@ -565,7 +565,7 @@ convert_length = function(x, unit = c("mm", "cm", "inches")) {
     pt_per_inche1 = (usr[2] - usr[1])/pin[1]
 	pt_per_inche2 = (usr[4] - usr[3])/pin[2]
 
-    if(abs(pt_per_inche1 - pt_per_inche2) > 1e-6) {
+    if(abs(pt_per_inche1 - pt_per_inche2) > 1e-3) {
         warning("`convert_length()` only works when aspect of the coordinate is 1.")
     }
 
@@ -635,7 +635,7 @@ convert_unit_in_data_coordinate = function(x, unit = c("mm", "cm", "inches"),
     pt_per_inche1 = (usr[2] - usr[1])/pin[1]
     pt_per_inche2 = (usr[4] - usr[3])/pin[2]
 
-    if(abs(pt_per_inche1 - pt_per_inche2) > 1e-6) {
+    if(abs(pt_per_inche1 - pt_per_inche2) > 1e-3) {
         warning("`convert_unit_in_data_coordinate()` only works when aspect of the coordinate is 1.")
     }
 

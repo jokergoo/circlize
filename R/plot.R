@@ -1550,6 +1550,7 @@ circos.yaxis = function(side = c("left", "right"), at = NULL, labels = TRUE, tic
 # -include.lowest see `graphics::hist`
 # -right          see `graphics::hist`
 # -draw.density   whether draw density lines instead of histogram bars.
+# -bin.size size of the bins of the histogram
 # 
 # == details
 # It draw histogram in cells among a whole track. It is also an example to show how to add self-defined

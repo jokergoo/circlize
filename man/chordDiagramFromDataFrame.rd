@@ -19,7 +19,8 @@ chordDiagramFromDataFrame(df, grid.col = NULL, grid.border = NA, transparency = 
     link.arr.width = link.arr.length/2,
     link.arr.type = "triangle", link.arr.lty = par("lty"),
     link.arr.lwd = par("lwd"), link.arr.col = par("col"),
-    link.largest.ontop = FALSE, link.visible = link.visible, ...)
+    link.largest.ontop = FALSE, link.visible = link.visible,
+    link.rank = seq_len(nrow(df)), ...)
 }
 \arguments{
 
@@ -50,6 +51,7 @@ chordDiagramFromDataFrame(df, grid.col = NULL, grid.border = NA, transparency = 
   \item{link.arr.lty}{line type of the single line link which is put in the center of the belt. The format of this argument is same as \code{link.lwd}.}
   \item{link.largest.ontop}{controls the order of adding links, whether based on the absolute value?}
   \item{link.visible}{whether plot the link. The value is logical, if it is set to \code{FALSE}, the corresponding link will not  plotted, but the space is still ocuppied. The format of this argument is same as \code{link.lwd}}
+  \item{link.rank}{order to add links to the circle, a large value means to add it later.}
   \item{...}{pass to \code{\link{circos.link}}}
 
 }

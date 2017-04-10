@@ -23,13 +23,13 @@ circos.genomicLabels(bed, labels = NULL, labels.column = NULL,
   \item{cex}{size of the labels}
   \item{font}{font of the labels}
   \item{padding}{padding of the labels, the value is the ratio to the height of the label}
+  \item{connection_height}{}
   \item{line_col}{color for the connection lines}
   \item{line_lwd}{line width for the connection lines}
   \item{line_lty}{line type for the connectioin lines}
   \item{labels_height}{height of the labels track}
   \item{side}{side of the labels track, is it in the inside of the track where the regions are marked?}
   \item{track.margin}{bottom and top margins}
-  \item{...}{}
 
 }
 \details{

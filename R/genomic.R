@@ -95,15 +95,17 @@ circos.initializeWithIdeogram = function(cytoband = system.file(package = "circl
 # Add an ideogram track
 #
 # == param
-# -cytoBand a data frame or a file path, pass to `read.cytoband`
+# -cytoband a data frame or a file path, pass to `read.cytoband`
 # -species Abbreviations of species, pass to `read.cytoband`
 # -track.height height of the ideogram track
+# -track.margin margins for the track
 #
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
 #
 circos.genomicIdeogram = function(cytoband = system.file(package = "circlize",
-	"extdata", "cytoBand.txt"), species = NULL, track.height = convert_height(2, "mm")) {
+	"extdata", "cytoBand.txt"), species = NULL, track.height = convert_height(2, "mm"),
+	track.margin = circos.par("track.margin")) {
 
 	chromosome.index = get.all.sector.index()
 	e = try(cytoband <- read.cytoband(cytoband, species = species, chromosome.index = chromosome.index), silent = TRUE)
@@ -118,7 +120,7 @@ circos.genomicIdeogram = function(cytoband = system.file(package = "circlize",
 			circos.genomicRect(region, value, ybottom = 0, ytop = 1, col = col, border = NA, ...)
 			xlim = get.cell.meta.data("xlim")
 			circos.rect(xlim[1], 0, xlim[2], 1, border = "black")
-		}, cell.padding = c(0, 0, 0, 0)
+		}, cell.padding = c(0, 0, 0, 0), track.margin = track.margin
 	)
 }
 
@@ -1792,13 +1794,13 @@ circos.genomicHeatmap = function(bed, col, border = NA, border_lwd = par("lwd"),
 # -cex size of the labels
 # -font font of the labels
 # -padding padding of the labels, the value is the ratio to the height of the label
+# -connection_height height of the connection track
 # -line_col color for the connection lines
 # -line_lwd line width for the connection lines
 # -line_lty line type for the connectioin lines
 # -labels_height height of the labels track
 # -side side of the labels track, is it in the inside of the track where the regions are marked?
 # -track.margin bottom and top margins
-# -...
 #
 # == details
 # The function adds labels for the specified regions. The positions of labels are arranged

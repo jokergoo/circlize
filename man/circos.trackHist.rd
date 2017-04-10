@@ -33,6 +33,7 @@ circos.trackHist(factors, x, track.height = circos.par("track.height"),
   \item{include.lowest}{see \code{\link[graphics]{hist}}}
   \item{right}{see \code{\link[graphics]{hist}}}
   \item{draw.density}{whether draw density lines instead of histogram bars.}
+  \item{bin.size}{size of the bins of the histogram}
 
 }
 \details{

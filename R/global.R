@@ -28,7 +28,7 @@ resetGlobalVariable()
 #     in the standard polar coordinate which means it is always reverse-clockwise.
 # -``gap.degree``             Gap between two neighbour sectors. It can be a single value or a vector. If it is a vector,
 #                          the first value corresponds to the gap after the first sector.
-# -``gap.after`` identical to ``gap.degree`` option, but a more understandable name. Modifying this option will also affect ``gap.degree`.
+# -``gap.after`` identical to ``gap.degree`` option, but a more understandable name. Modifying this option will also affect ``gap.degree``.
 # -``track.margin``            Like ``margin`` in Cascading Style Sheets (CSS), it is the blank area
 #     out of the plotting region, also outside of the borders. Since left and right margin are controlled
 #     by ``gap.degree``, only bottom and top margin need to be set. And all cells in a same track share the same margins, and
@@ -245,7 +245,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
         
         min.value = rep(xlim[1], length(le))
         max.value = rep(xlim[2], length(le))
-    } else if(is.matrix(xlim)) {
+    } else if(is.matrix(xlim) || is.data.frame(xlim)) {
         if(dim(xlim)[1] != length(le) || dim(xlim)[2] != 2) {
             stop_wrap("Since `xlim` is a matrix, it should have same number of rows as the length of the level of `factors` and number of columns of 2.")
         }

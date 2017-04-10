@@ -13,6 +13,7 @@ Changes in version 0.4.0
 * text.vjust accepts strings as "2mm", "-2.1 cm" to represent offsets
 * `circos.segments()`: graphic parameters can be set as vectors
 * add `circos.genomicIdeogram()`, `circos.genomicHeatmap()`, `circos.genomicLabels()`
+* add `circos.nestes()`
 
 Changes in version 0.3.10
 ----------------------------------------------------------------------------

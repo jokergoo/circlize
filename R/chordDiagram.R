@@ -36,6 +36,7 @@
 # -link.arr.col pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
 # -link.largest.ontop  pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
 # -link.visible pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -link.rank order to add links to the circle, a large value means to add it later.
 # -... pass to `circos.link`.
 #
 # == details
@@ -72,7 +73,8 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 	link.arr.width = link.arr.length/2, 
 	link.arr.type = "triangle", link.arr.lty = par("lty"), 
 	link.arr.lwd = par("lwd"), link.arr.col = par("col"), 
-	link.largest.ontop = FALSE, link.visible = TRUE, ...) {
+	link.largest.ontop = FALSE, link.visible = TRUE, 
+	link.rank = NULL, ...) {
 	
 	if(inherits(x, "matrix")) {
 		chordDiagramFromMatrix(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
@@ -83,7 +85,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 			link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 			link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 			link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
-			link.visible = link.visible, ...)
+			link.visible = link.visible, link.rank = link.rank, ...)
 	} else if(inherits(x, "data.frame")) {
 		if(ncol(x) > 3) {
 			if(all(sapply(x, inherits, "numeric"))) {
@@ -96,7 +98,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 					link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 					link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 					link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
-					link.visible = link.visible, ...)))
+					link.visible = link.visible, link.rank = link.rank, ...)))
 			} else {
 				chordDiagramFromDataFrame(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
 					col = col, order = order, directional = directional, direction.type = direction.type,
@@ -105,7 +107,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 					link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 					link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 					link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
-					link.visible = link.visible, ...)
+					link.visible = link.visible, link.rank = link.rank, ...)
 			}
 		} else {
 			chordDiagramFromDataFrame(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
@@ -115,7 +117,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 				link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 				link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 				link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
-				link.visible = link.visible, ...)
+				link.visible = link.visible, link.rank = link.rank, ...)
 		}
 	} else {
 		stop("`x` can only be a matrix or a data frame.")
@@ -187,6 +189,8 @@ parsePreAllocateTracksValue = function(preAllocateTracks) {
 		}
 	} else if(is.atomic(value) && length(value) == 1) {
 		mat[,] = value
+	} else if(length(value) == length(rn) * length(cn)) {
+		mat[,] = value
 	} else {
 		if(!is.null(rownames(value)) && !is.null(colnames(value))) {
 			common_rn = intersect(rownames(value), rn)
@@ -233,7 +237,6 @@ normalizeChordDiagramGap = function(mat1, gap.degree = circos.par("gap.degree"),
 	}
 	blank.degree = (360 - sum(gap.degree)) * (1 - percent)
 	big.gap = (blank.degree - sum(rep()))/2
-	gap.degree = 
 	return(blank.degree)
 }
 
@@ -308,6 +311,7 @@ mat2df = function(mat) {
 # -link.largest.ontop controls the order of adding links, whether based on the absolute value?
 # -link.visible whether plot the link. The value is logical, if it is set to ``FALSE``, the corresponding link will not 
 #            plotted, but the space is still ocuppied. The format of this argument is same as ``link.lwd``
+# -link.rank order to add links to the circle, a large value means to add it later.
 # -... pass to `circos.link`
 #
 # == details
@@ -329,7 +333,8 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 	link.arr.width = link.arr.length/2, 
 	link.arr.type = "triangle", link.arr.lty = par("lty"), 
 	link.arr.lwd = par("lwd"), link.arr.col = par("col"), 
-	link.largest.ontop = FALSE, link.visible = TRUE, ...) {
+	link.largest.ontop = FALSE, link.visible = TRUE, 
+	link.rank = NULL, ...) {
 	
 	if(!is.matrix(mat)) {
 		stop("`mat` can only be a matrix.")
@@ -339,6 +344,10 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 		if(identical(direction.type, c("diffHeight", "arrows")) || identical(direction.type, c("arrows", "diffHeight"))) {
 			direction.type = "diffHeight+arrows"
 		}
+	}
+
+	if(is.null(link.rank)) {
+		link.rank = 1
 	}
 
 	transparency = ifelse(transparency < 0, 0, ifelse(transparency > 1, 1, transparency))
@@ -532,10 +541,10 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 	link.arr.lwd = .normalize_to_mat(link.arr.lwd, rn, cn, default = 1)
 	link.arr.col = .normalize_to_mat(link.arr.col, rn, cn, default = NA)
 	link.visible = .normalize_to_mat(link.visible, rn, cn, default = NA)
+	link.rank = .normalize_to_mat(link.rank, rn, cn, default = NA)
 
 	directional = .normalize_to_mat(directional, rn, cn, default = 0)
 	direction.type = .normalize_to_mat(direction.type, rn, cn, default = "diffHeight")
-	diffHeight = .normalize_to_mat(diffHeight, rn, cn, default = 0.04)
 
 	df = mat2df(mat)
 
@@ -543,7 +552,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 		col = psubset(col, df$ri, df$ci), order = order, 
 		directional = psubset(directional, df$ri, df$ci),
 		direction.type = psubset(direction.type, df$ri, df$ci), 
-		diffHeight = psubset(diffHeight, df$ri, df$ci), 
+		diffHeight = diffHeight, 
 		reduce = 0, self.link = self.link,
 		preAllocateTracks = preAllocateTracks,
 		annotationTrack = annotationTrack, annotationTrackHeight = annotationTrackHeight,
@@ -559,6 +568,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 		link.arr.col = psubset(link.arr.col, df$ri, df$ci),
 		link.largest.ontop = link.largest.ontop,
 		link.visible = link.visible,
+		link.rank = link.rank,
 		...)
 	
 }
@@ -617,6 +627,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 # -link.largest.ontop controls the order of adding links, whether based on the absolute value?
 # -link.visible whether plot the link. The value is logical, if it is set to ``FALSE``, the corresponding link will not 
 #            plotted, but the space is still ocuppied. The format of this argument is same as ``link.lwd``
+# -link.rank order to add links to the circle, a large value means to add it later.
 # -... pass to `circos.link`
 #
 # == details
@@ -637,7 +648,8 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	link.arr.width = link.arr.length/2, 
 	link.arr.type = "triangle", link.arr.lty = par("lty"), 
 	link.arr.lwd = par("lwd"), link.arr.col = par("col"), 
-	link.largest.ontop = FALSE, link.visible = link.visible, ...) {
+	link.largest.ontop = FALSE, link.visible = link.visible, 
+	link.rank = seq_len(nrow(df)), ...) {
 
 	if(nrow(df) != 2) {
 		if(identical(direction.type, c("diffHeight", "arrows")) || identical(direction.type, c("arrows", "diffHeight"))) {
@@ -659,11 +671,12 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	df2[[1]] = as.character(df2[[1]])
 	df2[[2]] = as.character(df2[[2]])
 	colnames(df2) = c("rn", "cn", "value")
-	if(!is.null(df$rank)) {
-		df2$rank = df$rank
-	}
 	df = df2
 	nr = nrow(df)
+
+	if(is.null(link.rank)) {
+		link.rank = seq_len(nrow(df))
+	}
 
 	transparency = ifelse(transparency < 0, 0, ifelse(transparency > 1, 1, transparency))
 
@@ -740,7 +753,6 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	link.visible = rep(link.visible, nr)[1:nr]
 	directional = rep(directional, nr)[1:nr]
 	direction.type = rep(direction.type, nr)[1:nr]
-	diffHeight = rep(diffHeight, nr)[1:nr]
 
 	#### reduce the data frame
 	xsum = structure(rep(0, length(cate)), names = cate)
@@ -773,9 +785,9 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	link.arr.lty = link.arr.lty[l]
 	link.arr.col = link.arr.col[l]
 	link.visible = link.visible[l]
+	link.rank = link.rank[l]
 	directional = directional[l]
 	direction.type = direction.type[l]
-	diffHeight = diffHeight[l]
 
 	nr = nrow(df)
 	# re-calcualte xsum
@@ -935,28 +947,28 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 		if(directional[i]) {
 			if(grepl("diffHeight", direction.type[i])) {
 				if(directional[i] == 1) {
-					if(diffHeight[i] > 0) {
-						rou1[i] = rou - diffHeight[i]
+					if(diffHeight > 0) {
+						rou1[i] = rou - diffHeight
 						rou2[i] = rou
 					} else {
 						rou1[i] = rou
-						rou2[i] = rou + diffHeight[i]
+						rou2[i] = rou + diffHeight
 					}
 				} else if(directional[i] == -1) {
-					if(diffHeight[i] > 0) {
+					if(diffHeight > 0) {
 						rou1[i] = rou
-						rou2[i] = rou - diffHeight[i]
+						rou2[i] = rou - diffHeight
 					} else {
-						rou1[i] = rou + diffHeight[i]
+						rou1[i] = rou + diffHeight
 						rou2[i] = rou
 					}
 				} else  if(directional[i] == 2) {
-					if(diffHeight[i] > 0) {
-						rou1[i] = rou - diffHeight[i]
-						rou2[i] = rou - diffHeight[i]
+					if(diffHeight > 0) {
+						rou1[i] = rou - diffHeight
+						rou2[i] = rou - diffHeight
 					} else {
-						rou1[i] = rou + diffHeight[i]
-						rou2[i] = rou + diffHeight[i]
+						rou1[i] = rou + diffHeight
+						rou2[i] = rou + diffHeight
 					}
 				}
 			} else {
@@ -972,11 +984,7 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	if(link.largest.ontop) {
 		link_order = order(abs(df$value), decreasing = FALSE)
 	} else {
-		if(is.null(df$rank)) {
-			link_order = seq_len(nrow(df))
-		} else {
-			link_order = order(df$rank)
-		}
+		link_order = order(link.rank)
 	}
 
 	for(k in link_order) {

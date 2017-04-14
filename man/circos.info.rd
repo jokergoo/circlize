@@ -22,7 +22,7 @@ and \code{track.index} are set to \code{NULL}, the function would print index fo
 all sectors and all tracks. If \code{sector.index} and/or \code{track.index} are set,
 the function would print \code{xlim}, \code{ylim}, \code{cell.xlim}, \code{cell.ylim},
 \code{xplot}, \code{yplot}, \code{track.margin} and \code{cell.padding} for every cell in specified sectors and tracks.
-Also, the function will print index for your current sector and current track.
+Also, the function will print index of your current sector and current track.
 
 If \code{plot} is set to \code{TRUE}, the function will plot the index of the sector and the track 
 for each cell on the figure.
@@ -32,8 +32,6 @@ Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioi
 
 }
 \examples{
-\dontrun{
-library(circlize)
 factors = letters[1:4]
 circos.initialize(factors, xlim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1))
@@ -46,6 +44,5 @@ circos.info(track.index = 1)
 circos.info()
 circos.info(plot = TRUE)
 circos.clear()
-}
 
 }

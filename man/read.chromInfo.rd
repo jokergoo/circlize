@@ -22,15 +22,7 @@ read.chromInfo(chromInfo = system.file(package = "circlize",
 The function read the chromInfo data, sort the chromosome names and calculate the length of each chromosome. 
 By default, it is human hg19 chromInfo data.
 
-You can find the data structure for the cytoband data from \url{http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/chromInfo.txt.gz}
-
-If \code{sort.chr} is not set and \code{chromosome.index} is not specified, there would be several circumstances when determining the order of chromosomes. 
-Assuming \code{chromosome} is the first column in the chromInfo data frame,
-then, if \code{chromInfo} is defined as a file path, or \code{species} is set, the order of chromosomes is \code{unique(chromosome)} 
-which is read from the file; If \code{chromInfo}
-is set as a data frame and the first column is a factor, the order of chromosomes is \code{levels(chromosome)}; If \code{chromInfo} is a data frame
-and the first column is just a character vector, the order of chromosomes is \code{unique(chromosome)}. Please not this concept is really
-important since the order of chromosomes will be used to control the order of sectors when initializing the circos plot.
+You can find the data structure for the chromInfo data from \url{http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/chromInfo.txt.gz}
 }
 \value{
 \describe{
@@ -40,7 +32,9 @@ important since the order of chromosomes will be used to control the order of se
 }
 }
 \examples{
-# There is no example
-NULL
-
+data = read.chromInfo(species = "hg19")
+data = read.chromInfo(chromInfo = system.file(package = "circlize", "extdata", "chromInfo.txt"))
+chromInfo = read.table(system.file(package = "circlize", "extdata", "chromInfo.txt"), 
+    colClasses = c("character", "numeric"), sep = "\t")
+data = read.chromInfo(chromInfo = chromInfo)
 }

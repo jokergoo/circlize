@@ -37,11 +37,8 @@ Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioi
 }
 \examples{
 \dontrun{
-library(circlize)
 
-par(mar = c(1, 1, 1, 1))
-
-load(paste(system.file(package = "circlize"), "/extdata/DMR.RData", sep=""))
+load(system.file(package = "circlize", "extdata", "DMR.RData"))
 
 # rainfall
 circos.initializeWithIdeogram(plotType = c("axis", "labels"))

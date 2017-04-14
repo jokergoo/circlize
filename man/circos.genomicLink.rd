@@ -38,9 +38,6 @@ Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioi
 \dontrun{
 set.seed(123)
 
-library(circlize)
-
-par(mar = c(1, 1, 1, 1))
 bed1 = generateRandomBed(nr = 100)
 bed1 = bed1[sample(nrow(bed1), 20), ]
 bed2 = generateRandomBed(nr = 100)

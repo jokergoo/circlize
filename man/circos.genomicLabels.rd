@@ -11,7 +11,8 @@ circos.genomicLabels(bed, labels = NULL, labels.column = NULL,
     col = par("col"), cex = 0.8, font = par("font"), padding = 0.4,
     connection_height = convert_height(5, "mm"),
     line_col = par("col"), line_lwd = par("lwd"), line_lty = par("lty"),
-    labels_height = min(c(convert_height(1.5, "cm"), max(strwidth(labels, cex = cex, font = font)))),
+    labels_height = min(c(convert_height(1.5, "cm"),
+    max(strwidth(labels, cex = cex, font = font)))),
     side = c("inside", "outside"), track.margin = circos.par("track.margin"))
 }
 \arguments{
@@ -40,6 +41,7 @@ so that they are not overlapping to each other.
 Zuguang Gu <z.gu@dkfz.de>
 }
 \examples{
+\dontrun{
 circos.initializeWithIdeogram(plotType = c("labels", "axis"))
 bed = generateRandomBed(nr = 100, fun = function(k) sample(letters, k, replace = TRUE))
 bed[1, 4] = "aaaaaaaa"
@@ -47,4 +49,5 @@ circos.genomicLabels(bed, labels.column = 4, side = "inside",
     col = as.numeric(factor(bed[[1]])))
 circos.genomicLabels(bed, labels.column = 4, side = "outside",
     line_col = as.numeric(factor(bed[[1]])))
+}
 }

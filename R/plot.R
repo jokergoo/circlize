@@ -2,8 +2,8 @@
 # Create plotting regions for a whole track
 #
 # == param
-# -factors      Factors which represent categories of data, if it is ``NULL``, 
-#               then it uses the whole sector index.
+# -factors      A `factor` or a character vector which represents categories of data, if it is ``NULL``, 
+#               then it uses all sector index.
 # -x            Data on x-axis. It is only used if ``panel.fun`` is set.
 # -y            Data on y-axis
 # -ylim         Range of data on y-axis
@@ -13,7 +13,7 @@
 #               been created, this function just updated corresponding track with new plot. If the specified track
 #               is ``NULL`` or has not been created, this function just creates it. Note the value for this
 #               argument should not exceed maximum track index plus 1.
-# -track.height Height of the track. It is the percentage to the radius of the unit circles.
+# -track.height Height of the track. It is the percentage to the radius of the unit circles. The value can be set by `uh` to an absolute unit.
 #               If updating a track (with proper ``track.index`` value), this argument is ignored.
 # -track.margin only affect current track
 # -cell.padding only affect current track
@@ -33,9 +33,9 @@
 # Currently, all the cells that are created in a same track sharing same height, which means,
 # there is no cell has larger height than others.
 #
-# Since limitation for values on x-axis has already been defined by `circos.initialize`, only
-# limitation for values on y-axis should be specified in this function. 
-# There are two ways to identify the limitation for values on y-axes either by ``y``
+# Since ranges for values on x-axis has already been defined by `circos.initialize`, only
+# ranges for values on y-axis should be specified in this function. 
+# There are two ways to identify the ranges for values on y-axes either by ``y``
 # or ``ylim``. If ``y`` is set, it must has the same length as ``factors`` and the ``ylim`` for each cell is calculated
 # from y values. Also, the ylim can be specified from ``ylim`` which can be a two-element vector or a matrix which
 # has two columns and the number of rows is the same as the length of the levels of the factors.
@@ -63,6 +63,8 @@
 # 
 # See vignette for examples of how to use this feature.
 #
+# == seealso
+# http://jokergoo.github.io/circlize_book/book/circular-layout.html
 circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NULL,
     force.ylim = TRUE, track.index = NULL,
 	track.height = circos.par("track.height"),
@@ -270,9 +272,9 @@ circos.track = function(...) {
 #
 # == details
 # You can update an existed cell by this function by erasing all the graphics.
-# But the ``xlim`` and ``ylim`` inside the cell still remains unchanged. 
+# But the ``xlim`` and ``ylim`` inside the cell still remain unchanged. 
 #
-# Note if you use `circos.trackPlotRegion` to update an already created track, 
+# Note if you use `circos.track` to update an already created track, 
 # you can re-define ``ylim`` in these cells.
 circos.updatePlotRegion = function(sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"),
@@ -414,7 +416,7 @@ circos.points = function(x, y, sector.index = get.cell.meta.data("sector.index")
 # Add points to the plotting regions in a same track
 #
 # == param
-# -factors      Factors which represent the categories of data
+# -factors      A `factor` or a character vector which represents the categories of data
 # -x            Data points on x-axis
 # -y            Data points on y-axis
 # -track.index  Index for the track
@@ -431,6 +433,7 @@ circos.points = function(x, y, sector.index = get.cell.meta.data("sector.index")
 # factors.
 #
 # This function can be replaced by a ``for`` loop containing `circos.points`.
+#
 circos.trackPoints = function(factors = NULL, x, y, track.index = get.cell.meta.data("track.index"),
     pch = par("pch"), col = par("col"), cex = par("cex"), bg = par("bg")) {
     
@@ -598,7 +601,7 @@ circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
 # Add lines to the plotting regions in a same track
 #
 # == param
-# -factors      Factors which represent the categories of data
+# -factors      A `factor` or a character vector which represents the categories of data
 # -x            Data points on x-axis
 # -y            Data points on y-axis
 # -track.index  Index for the track
@@ -698,8 +701,7 @@ circos.trackLines = function(factors, x, y, track.index = get.cell.meta.data("tr
 # because if you imagine the plotting region as Cartesian coordinate, then it is rectangle.
 # in the polar coordinate, the up and bottom edge become two arcs.
 #
-# You just need to specify the coordinates of two diagonal points just similar as 
-# `graphics::rect` does.
+# This function can be vectorized.
 circos.rect = function(xleft, ybottom, xright, ytop,
 	sector.index = get.cell.meta.data("sector.index"), 
 	track.index = get.cell.meta.data("track.index"), ...) {
@@ -892,6 +894,9 @@ circos.segments = function(x0, y0, x1, y1, sector.index = get.cell.meta.data("se
 #
 # == details
 # The function is similar to `graphics::text`. All you need to note is the ``facing`` settings.
+#
+# == seealso
+# http://jokergoo.github.io/circlize_book/book/graphics.html#text
 circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), direction = NULL,
     facing = c("inside", "outside", "reverse.clockwise", "clockwise",
@@ -1106,7 +1111,7 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 }
 
 # == title
-# mark the value is degree value
+# Mark the value as a degree value
 #
 # == param
 # -x degree value
@@ -1123,7 +1128,7 @@ degree = function(x) {
 # Draw text in cells among the whole track
 #
 # == param
-# -factors      Factors which represent the categories of data
+# -factors      A `factor` or a character vector which represents the categories of data
 # -x            Data points on x-axis
 # -y            Data points on y-axis
 # -labels       Labels

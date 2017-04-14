@@ -34,17 +34,13 @@ Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioi
 
 }
 \examples{
-\dontrun{
-library(circlize)
-par(mar = c(1, 1, 1, 1))
-plot(c(-1, 1), c(-1, 1), type = "n", axes = FALSE, ann = FALSE)
+plot(c(-1, 1), c(-1, 1), type = "n", axes = FALSE, ann = FALSE, asp = 1)
 draw.sector(20, 0)
 draw.sector(30, 60, rou1 = 0.8, rou2 = 0.5, clock.wise = FALSE, col = "#FF000080")
 draw.sector(350, 1000, col = "#00FF0080", border = NA)
 draw.sector(0, 180, rou1 = 0.25, center = c(-0.5, 0.5), border = 2, lwd = 2, lty = 2)
 draw.sector(0, 360, rou1 = 0.7, rou2 = 0.6, col = "#0000FF80")
 
-par(mar = c(1, 1, 1, 1))
 factors = letters[1:8]
 circos.initialize(factors, xlim = c(0, 1))
 for(i in 1:3) {
@@ -71,6 +67,5 @@ pos = circlize(c(0.2, 0.8), c(0.2, 0.8), sector.index = "h", track.index = 2)
 draw.sector(pos[1, "theta"], pos[2, "theta"], pos[1, "rou"], pos[2, "rou"], 
     clock.wise = TRUE, col = "#00FFFF40")
 circos.clear()
-}
 
 }

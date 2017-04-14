@@ -46,9 +46,6 @@ Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioi
 
 }
 \examples{
-\dontrun{
-library(circlize)
-par(mar = c(1, 1, 1, 1), cex = 0.6)
 factors = letters[1:9]
 circos.par(points.overflow.warning = FALSE)
 circos.initialize(factors = factors, xlim = c(0, 10))
@@ -82,8 +79,5 @@ circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "i", area = TRUE, b
 circos.text(5, 9, "type = 'l', area = TRUE\nbaseline = 'top'", sector.index = "i")
 
 circos.clear()
-par(cex = 1)
-
-}
 
 }

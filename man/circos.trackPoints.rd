@@ -12,7 +12,7 @@ circos.trackPoints(factors = NULL, x, y, track.index = get.cell.meta.data("track
 }
 \arguments{
 
-  \item{factors}{Factors which represent the categories of data}
+  \item{factors}{A \code{\link{factor}} or a character vector which represents the categories of data}
   \item{x}{Data points on x-axis}
   \item{y}{Data points on y-axis}
   \item{track.index}{Index for the track}
@@ -36,7 +36,11 @@ Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioi
 
 }
 \examples{
-# There is no example
-NULL
+circos.initialize(letters[1:8], xlim = c(0, 1))
+df = data.frame(fa = sample(letters[1:8], 100, replace = TRUE),
+                x = runif(100), y = runif(100))
+circos.track(ylim = c(0, 1))
+circos.trackPoints(df$fa, x = df$x, y = df$y, pch = 16, col = as.numeric(factor(df$fa)))
+circos.clear()
 
 }

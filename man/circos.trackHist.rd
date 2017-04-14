@@ -46,22 +46,16 @@ Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioi
 }
 \examples{
 \dontrun{
-library(circlize)
-par(mar = c(1, 1, 1, 1))
-x = rnorm(2600)
-factors = sample(letters, 2600, replace = TRUE)
+x = rnorm(1600)
+factors = sample(letters[1:16], 1600, replace = TRUE)
 circos.initialize(factors = factors, x = x)
-circos.trackHist(factors = factors, x = x, track.height = 0.1,
-    col = "#999999", border = "#999999")
-circos.trackHist(factors = factors, x = x, force.ylim = FALSE, 
-    track.height = 0.1, col = "#999999", border = "#999999")
-circos.trackHist(factors = factors, x = x, draw.density = TRUE,
-    track.height = 0.1, col = "#999999", border = "#999999")
-circos.trackHist(factors = factors, x = x, draw.density = TRUE,
-    force.ylim = FALSE, track.height = 0.1, col = "#999999", border = "#999999")
-
+circos.trackHist(factors = factors, x = x, col = "#999999", 
+  border = "#999999")
+circos.trackHist(factors = factors, x = x, bin.size = 0.1, 
+  col = "#999999", border = "#999999")
+circos.trackHist(factors = factors, x = x, draw.density = TRUE, 
+  col = "#999999", border = "#999999")
 circos.clear()
-
 }
 
 }

@@ -22,7 +22,6 @@ Colors are randomly generated from RGB color space through uniform distributions
 a vector of colors
 }
 \examples{
-# There is no example
-NULL
-
+rand_color(10)
+rand_color(10, transparency = 0.5)
 }

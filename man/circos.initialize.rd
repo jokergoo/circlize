@@ -11,10 +11,10 @@ circos.initialize(factors, x = NULL, xlim = NULL, sector.width = NULL)
 }
 \arguments{
 
-  \item{factors}{Factors which represent data categories}
+  \item{factors}{A \code{\link{factor}} variable or a character vector which represent data categories}
   \item{x}{Data on x-axes, a vector}
   \item{xlim}{Ranges for values on x-axes, see "details" section for explanation of the format}
-  \item{sector.width}{Width for each sector. The length of the vector should be either 1 which means all sectors have same width or as same as the number of sectors. Values for the vector are relative, and they will be scaled by dividing their summation. It is encouraged to manually set \code{sector.width}. By default, it is \code{NULL} which means the width of sectors correspond to the data range in sectors which is calculated internally.}
+  \item{sector.width}{Width for each sector. The length of the vector should be either 1 which means all sectors have same width or as same as the number of sectors. Values for the vector are relative, and they will be scaled by dividing their summation.  By default, it is \code{NULL} which means the width of sectors correspond to the data range in sectors.}
 
 }
 \details{
@@ -36,25 +36,29 @@ for which row names cover all sector names, \code{xlim} is automatically adjuste
 
 Normally, width of sectors will be calculated internally according to the data range in sectors. But you can
 still set the width manually. However, it is not always a good idea to change the default sector width since
-the width can reflect the range of data in sectors. Anyway, in some cases, it is useful to manually set
-the width such as you want to zoom in some part of the sectors.
+the width can reflect the range of data in sectors. However, in some cases, it is useful to manually set
+the width such as you want to zoom some part of the sectors.
 
-The function finally calls \code{\link[graphics]{plot}} with enforing aspect ratio being 1 and be ready for adding graphics.
+The function finally calls \code{\link[graphics]{plot}} with enforing aspect ratio to be 1 and be ready for adding graphics.
+}
+\seealso{
+\url{http://jokergoo.github.io/circlize_book/book/circular-layout.html}
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
 
 }
 \examples{
-\dontrun{
 circos.initialize(factors = sample(letters[1:4], 20, replace = TRUE), xlim = c(0, 1))
+circos.info()
 circos.clear()
 
 circos.initialize(factors = sample(letters[1:4], 20, replace = TRUE), xlim = cbind(1:4, 1:4*2))
+circos.info()
 circos.clear()
 
 circos.initialize(factors = sample(letters[1:4], 20, replace = TRUE), x = rnorm(20))
+circos.info()
 circos.clear()
-}
 
 }

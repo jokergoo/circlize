@@ -10,7 +10,8 @@ Convert unit on x direction in data coordinate
 convert_x(x, unit = c("mm", "cm", "inches"),
     sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"),
-    h = get.cell.meta.data("ycenter", sector.index = sector.index, track.index = track.index))
+    h = get.cell.meta.data("ycenter", sector.index = sector.index,
+    track.index = track.index))
 }
 \arguments{
 
@@ -18,7 +19,7 @@ convert_x(x, unit = c("mm", "cm", "inches"),
   \item{unit}{supported units, only "mm", "cm", "inches"}
   \item{sector.index}{index for the sector where the conversion is applied}
   \item{track.index}{index for the track where the conversion is applied}
-  \item{h}{since the width of the cell is not the same from the top to the bottom in the cell, the position on y direction (the position of a horizontal line) needs to be specified. By default it is at the middle point on y-axis}
+  \item{h}{since the width of the cell is not identical from the top to the bottom in the cell, the position on y direction needs to be specified. By default it is at the middle point on y-axis}
 
 }
 \value{

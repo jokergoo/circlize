@@ -2,24 +2,24 @@
 # Nested zooming with two circular plots
 #
 # == param
-# -f1 a self-defined function with no argument for making the first circular plot
-# -f2 a self-defined function with no argument for making the second circular plot
+# -f1 a self-defined function for making the first circular plot. The function should have no argument.
+# -f2 a self-defined function for making the second circular plot. The function should have no argument.
 # -correspondance a six-column data frame which contains correspondance between the
 #               coordinates in two circular plots
-# -connection_height the height of the connections, measured as the percent to the radius of the unit circle.
+# -connection_height the height of the connection track, measured as the percent to the radius of the unit circle.
 #         The value can be specified by `uh` or `convert_height` with absolute units.
-# -connection_col filled color for the connection polygons. The value can be a vector with same length as number of rows of ``correspondance``
-# -connection_border border color for the connection polygons
-# -connection_lty line style for the connection polygon borders
-# -connection_lwd connection polygon border width
-# -adjust_start_degree If ``start.degree`` is not set in ``f2()``, the start degree for the second
+# -connection_col filled color of the connection track. The value can be a vector with same length as number of rows of ``correspondance``
+# -connection_border border color of the connection track.
+# -connection_lty line style of the connection track borders
+# -connection_lwd line width of the connection track borders
+# -adjust_start_degree If ``circos.par(start.degree = ...)`` is not set in ``f2()``, the start degree for the second
 #       circular plot will be adjusted to make the distance of sectors between the two plots to the minimal.
 #
 # == details
 # The function visualizes zoomings by combining two circular plots into one page where
-# one is the normal circular plot and the other one only contains regions need to be zoomed.
+# one is the normal circular plot and the other one only contains regions that need to be zoomed.
 # This function automatically arranges the two plots to make it easy to correspond between
-# the original and the zoomed plots.
+# the original and the zoomed sectors.
 #
 # Since the function needs to know the information of the two circular plots, please do not call
 # `circos.clear` in either ``f1()`` or ``f2()``. It will be called internally in `circos.nested`.
@@ -27,6 +27,9 @@
 # If ``adjust_start_degree`` is set to ``TRUE``, ``start.degree`` should not be set in ``f2()``.
 # Also ``canvas.xlim`` and ``canvas.ylim`` are reset in ``f2()``, they should not be set in ``f2()``
 # either.
+#
+# == seealso
+# http://jokergoo.github.io/circlize_book/book/nested-zooming.html
 #
 # == author
 # Zuguang Gu <z.gu@dkfz.de>

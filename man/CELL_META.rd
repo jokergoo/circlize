@@ -18,7 +18,11 @@ Basically you can simply replace  e.g. \code{get.cell.meta.data("sector.index")}
 \code{\link{get.cell.meta.data}}
 }
 \examples{
-# There is no example
-NULL
-
+pdf(NULL)
+circos.initialize("a", xlim = c(0, 1))
+circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
+	print(CELL_META$sector.index)
+	print(CELL_META$xlim)
+})
+dev.off()
 }

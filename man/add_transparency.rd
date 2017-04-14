@@ -19,7 +19,7 @@ add_transparency(col, transparency = 0)
 A vector of colors
 }
 \examples{
-# There is no example
-NULL
-
+add_transparency("red", 0.5)
+add_transparency(1, 0.5)
+add_transparency("#FF000080", 0.2)
 }

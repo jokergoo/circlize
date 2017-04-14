@@ -38,8 +38,6 @@ op = par(no.readonly = TRUE)
 set.seed(123458)
 
 par(mfrow = c(2, 2))
-par(mar = c(1, 1, 1, 1))
-
 
 bed = generateRandomBed(nr = 400, fun = function(k) rep("text", k))
 bed = bed[-(9:13), ]

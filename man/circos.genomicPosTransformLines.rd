@@ -40,10 +40,8 @@ Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioi
 }
 \examples{
 \dontrun{
-library(circlize)
 
 par(mfrow = c(2, 1))
-par(mar = c(1, 1, 1, 1))
 ### rect matrix
 circos.par(cell.padding = c(0, 0, 0, 0))
 circos.initializeWithIdeogram()

@@ -12,7 +12,7 @@ convert_length(x, unit = c("mm", "cm", "inches"))
 \arguments{
 
   \item{x}{a numeric vector}
-  \item{unit}{supported units, only "mm", "cm", "inches"}
+  \item{unit}{supported units, only "mm", "cm", "inches".}
 
 }
 \details{

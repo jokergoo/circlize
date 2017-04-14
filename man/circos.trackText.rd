@@ -14,7 +14,7 @@ circos.trackText(factors, x, y, labels, track.index = get.cell.meta.data("track.
 }
 \arguments{
 
-  \item{factors}{Factors which represent the categories of data}
+  \item{factors}{A \code{\link{factor}} or a character vector which represents the categories of data}
   \item{x}{Data points on x-axis}
   \item{y}{Data points on y-axis}
   \item{labels}{Labels}

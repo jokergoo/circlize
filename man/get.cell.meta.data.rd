@@ -42,16 +42,17 @@ The following meta information for a cell can be obtained:
   \item{\code{cell.padding}}{Padding for the cell}
 }
 
-The function is useful when using \code{panel.fun} in \code{\link{circos.trackPlotRegion}} to
+The function is useful when using \code{panel.fun} in \code{\link{circos.track}} to
 get detailed information of the current cell.
+}
+\seealso{
+\code{\link{CELL_META}} is a short version of \code{\link{get.cell.meta.data}}.
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
 
 }
 \examples{
-\dontrun{
-library(circlize)
 factors = letters[1:4]
 circos.initialize(factors, xlim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
@@ -59,6 +60,4 @@ circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
 })
 print(get.cell.meta.data("xlim", sector.index = "a", track.index = 1))
 circos.clear()
-}
-
 }

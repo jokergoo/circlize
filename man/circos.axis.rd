@@ -49,10 +49,6 @@ Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioi
 
 }
 \examples{
-\dontrun{
-library(circlize)
-
-par(mar = c(1, 1, 1, 1))
 factors = letters[1:8]
 circos.par(points.overflow.warning = FALSE)
 circos.initialize(factors = factors, xlim = c(0, 10))
@@ -78,11 +74,10 @@ circos.axis(sector.index = "h", h = 2, major.at = c(1, 3, 5, 7, 9),
     labels.away.percentage = 0.2, minor.ticks = 2, labels.facing = "clockwise")
 circos.clear()
 
+\dontrun{
 
 ############### real-time clock #################
 factors = letters[1]
-par(mar = c(1, 1, 1, 1))
-
 
 circos.par("gap.degree" = 0, "cell.padding" = c(0, 0, 0, 0), "start.degree" = 90)
 circos.initialize(factors = factors, xlim = c(0, 12))

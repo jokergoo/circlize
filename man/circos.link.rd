@@ -17,13 +17,13 @@ circos.link(sector.index1, point1, sector.index2, point2,
 }
 \arguments{
 
-  \item{sector.index1}{Index for the first sector where one root locates}
+  \item{sector.index1}{Index for the first sector where one link end locates}
   \item{point1}{A single value or a numeric vector of length 2. If it is a 2-elements vector, then the link would be a belt/ribbon.}
-  \item{sector.index2}{Index for the other sector where the other root locates}
+  \item{sector.index2}{Index for the other sector where the other link end locates}
   \item{point2}{A single value or a numeric vector of length 2. If it is a 2-elements vector, then the link would be a belt/ribbon.}
-  \item{rou}{The position of the 'root' of the link (if \code{rou1} and \code{rou2} are not set). It is the percentage of the radius of the unit circle. By default its value is the position of bottom margin of the most inner track.}
-  \item{rou1}{The position of root 1 of the link. }
-  \item{rou2}{The position of root 2 of the link.}
+  \item{rou}{The position of the the link ends (if \code{rou1} and \code{rou2} are not set). It is the percentage of the radius of the unit circle. By default its value is the position of bottom margin of the most inner track.}
+  \item{rou1}{The position of end 1 of the link. }
+  \item{rou2}{The position of end 2 of the link.}
   \item{h}{Height of the link, measured as percent to the radius to the unit circle. By default it is automatically infered.}
   \item{w}{Since the link is a Bezier curve, it controls the shape of Bezier curve.}
   \item{h2}{Height of the bottom edge of the link if it is a ribbon.}
@@ -32,7 +32,7 @@ circos.link(sector.index1, point1, sector.index2, point2,
   \item{lwd}{Line (or border) width}
   \item{lty}{Line (or border) style}
   \item{border}{If the link is a ribbon, then it is the color for the ribbon border.}
-  \item{directional}{0 for no direction, 1 for direction from point1 to point2, -1 for direction from point2 to point1. 2 for two directional. The direction is important when arrow heads are added.}
+  \item{directional}{0 for no direction, 1 for direction from \code{point1} to \code{point2}, -1 for direction from \code{point2} to \code{point1}. 2 for two directional. The direction is important when arrow heads are added.}
   \item{arr.width}{Width of the arrows, pass to \code{\link[shape]{Arrowhead}}.}
   \item{arr.type}{Type of the arrows, pass to \code{\link[shape]{Arrowhead}}. Default value is \code{triangle}. There is an additional option \code{big.arrow}.}
   \item{arr.length}{Length of the arrows, measured in 'cm', pass to \code{\link[shape]{Arrowhead}}. If \code{arr.type} is set to \code{big.arrow}, the value is percent to the radius of the unit circle.}
@@ -49,43 +49,36 @@ Drawing links does not create any track. So you can think it is independent of t
 By default you only need to set \code{sector.index1}, \code{point1}, \code{sector.index2} and \code{point2}. The
 links would look nice.
 
-See vignette for detailed explanation.
+Please refer to the vignette for detailed explanation.
+}
+\seealso{
+\url{http://jokergoo.github.io/circlize_book/book/graphics.html#links}
 }
 \references{
 Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
 
 }
 \examples{
-\dontrun{
-
-par(mar = c(1, 1, 1, 1))
 factors = letters[1:8]
+circos.par(points.overflow.warning = FALSE)
 circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey",
+circos.track(factors = factors, ylim = c(0, 1), bg.col = "grey", 
     bg.border = NA, track.height = 0.05)
-circos.info(plot = TRUE)
-#circos.link("a", 5, "c", 5, rou1 = 0.4, rou2 = 0.6, col = "black")
-circos.link("a", 5, "g", 5, col = "black", h = 0.5, w = -0.25)
-circos.link("c", 10, "d", c(1, 4), col = "#00000040", border = "black")
-circos.link("a", c(2, 8), "g", c(4, 4.5), rou1 = 0.9, rou2 = 0.8, 
-    col = "#00000040", border = "black")
-circos.link("b", c(1, 10), "a", c(1, 10), rou1 = 0.9, rou2 = 0.4,  
-    col = "#00000040", border = "black")
+circos.link("a", 5, "c", 5, border = 1)
+circos.link("b", 5, "d", c(4, 6), border = 1)
+circos.link("a", c(2, 3), "f", c(4, 6), border = 1)
+circos.link("e", c(2, 3), "g", 5, border = 1)
 circos.clear()
 
-par(mar = c(1, 1, 1, 1))
-factors = letters[1:8]
-circos.par("canvas.xlim" = c(-2, 2), "canvas.ylim" = c(-2, 2))
+circos.par(points.overflow.warning = FALSE)
 circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.col = "grey", 
+circos.track(factors = factors, ylim = c(0, 1), bg.col = "grey", 
     bg.border = NA, track.height = 0.05)
-circos.info(plot = TRUE)
-circos.link("a", 5, "b", 5, col = "black", w = 1)
-circos.link("b", 5, "c", 5, col = "black", w = 2)
-circos.link("c", 5, "d", 5, col = "black", w = 0.25)
-circos.link("d", 5, "e", 5, col = "black", w = -0.25)
+circos.link("a", 5, "b", 5, directional = 1, arr.length = 0.2)
+circos.link("c", c(3, 7), "d", c(3, 7), directional = 1, 
+    arr.col = "white", arr.length = 0.2)
+circos.link("e", c(4, 6), "f", c(4, 6), directional = 1, 
+    arr.type = "big.arrow", arr.length = 0.04)
 circos.clear()
-
-}
 
 }

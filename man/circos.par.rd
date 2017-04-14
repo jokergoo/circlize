@@ -13,8 +13,8 @@ circos.par(..., RESET = FALSE, READ.ONLY = NULL, LOCAL = FALSE)
 
   \item{...}{Arguments for the parameters, see "details" section}
   \item{RESET}{reset to default values}
-  \item{READ.ONLY}{whether only return read-only options}
-  \item{LOCAL}{switch local mode}
+  \item{READ.ONLY}{please ignore}
+  \item{LOCAL}{please ignore}
 
 }
 \details{

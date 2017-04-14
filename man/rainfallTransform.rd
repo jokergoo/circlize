@@ -26,10 +26,8 @@ Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioi
 
 }
 \examples{
-\dontrun{
 bed = generateRandomBed()
 bed = subset(bed, chr == "chr1")
-rainfallTransform(bed[2:3])
-}
+head(rainfallTransform(bed))
 
 }

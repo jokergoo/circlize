@@ -44,8 +44,8 @@ Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioi
 \dontrun{
 circos.initializeWithIdeogram()
 
-cytoband.file = paste(system.file(package = "circlize"),
-    "/extdata/cytoBand.txt", sep = "")
+cytoband.file = system.file(package = "circlize"),
+    "extdata", "cytoBand.txt")
 circos.initializeWithIdeogram(cytoband.file)
 
 cytoband.df = read.table(cytoband.file, colClasses = c("character", "numeric",

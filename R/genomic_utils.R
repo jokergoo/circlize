@@ -16,19 +16,17 @@
 #
 # You can find the data structure of the cytoband data from http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/cytoBand.txt.gz
 #
-# If ``sort.chr`` is not set and ``chromosome.index`` is not specified, there would be several circumstances when 
-# determining the order of chromosomes. Assuming ``chromosome`` is the first column in the cytoband data frame,
-# then, if ``cytoband`` is defined as a file path, or ``species`` is set, the order of chromosomes is ``unique(chromosome)`` 
-# which is read from the file; If ``cytoband``
-# is set as a data frame and the first column is a factor, the order of chromosomes is ``levels(chromosome)``; If ``cytoband`` is a data frame
-# and the first column is just a character vector, the order of chromosomes is ``unique(chromosome)``. Please not this concept is really
-# important since the order of chromosomes will be used to control the order of sectors when initializing the circos plot.
-#
 # == values
 # -``df``         Data frame for cytoband data (rows are sorted if ``sort.chr`` is set to ``TRUE``)
 # -``chromosome`` Sorted chromosome names
 # -``chr.len``    Length of chromosomes. Orders are same as ``chromosome``
 #
+# == example
+# data = read.cytoband(species = "hg19")
+# data = read.cytoband(cytoband = system.file(package = "circlize", "extdata", "cytoBand.txt"))
+# cytoband = read.table(system.file(package = "circlize", "extdata", "cytoBand.txt"), 
+#     colClasses = c("character", "numeric", "numeric", "character", "character"), sep = "\t")
+# data = read.cytoband(cytoband = cytoband)
 read.cytoband = function(cytoband = system.file(package = "circlize",
     "extdata", "cytoBand.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE) {
 
@@ -119,21 +117,19 @@ read.cytoband = function(cytoband = system.file(package = "circlize",
 # The function read the chromInfo data, sort the chromosome names and calculate the length of each chromosome. 
 # By default, it is human hg19 chromInfo data.
 #
-# You can find the data structure for the cytoband data from http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/chromInfo.txt.gz
-#
-# If ``sort.chr`` is not set and ``chromosome.index`` is not specified, there would be several circumstances when determining the order of chromosomes. 
-# Assuming ``chromosome`` is the first column in the chromInfo data frame,
-# then, if ``chromInfo`` is defined as a file path, or ``species`` is set, the order of chromosomes is ``unique(chromosome)`` 
-# which is read from the file; If ``chromInfo``
-# is set as a data frame and the first column is a factor, the order of chromosomes is ``levels(chromosome)``; If ``chromInfo`` is a data frame
-# and the first column is just a character vector, the order of chromosomes is ``unique(chromosome)``. Please not this concept is really
-# important since the order of chromosomes will be used to control the order of sectors when initializing the circos plot.
+# You can find the data structure for the chromInfo data from http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/chromInfo.txt.gz
 #
 # == values
 # -``df``         Data frame for chromInfo data (rows are sorted if ``sort.chr`` is set to ``TRUE``)
 # -``chromosome`` Sorted chromosome names
 # -``chr.len``    Length of chromosomes. Order are same as ``chromosome``
 #
+# == example
+# data = read.chromInfo(species = "hg19")
+# data = read.chromInfo(chromInfo = system.file(package = "circlize", "extdata", "chromInfo.txt"))
+# chromInfo = read.table(system.file(package = "circlize", "extdata", "chromInfo.txt"), 
+#     colClasses = c("character", "numeric"), sep = "\t")
+# data = read.chromInfo(chromInfo = chromInfo)
 read.chromInfo = function(chromInfo = system.file(package = "circlize",
     "extdata", "chromInfo.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE) {
 	

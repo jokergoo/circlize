@@ -47,6 +47,9 @@
 # This function is flexible and contains some settings that may be a little difficult to understand. 
 # Please refer to vignette for better explanation.
 #
+# == seealso
+# http://jokergoo.github.io/circlize_book/book/the-chorddiagram-function.html
+#
 # == value
 # A data frame which contains positions of links, columns are:
 #

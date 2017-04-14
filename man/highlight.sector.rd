@@ -33,7 +33,6 @@ You can use \code{\link{circos.info}} to find out index for all sectors and all 
 The function calls \code{\link{draw.sector}}.
 }
 \examples{
-\dontrun{
 factors = letters[1:8]
 circos.initialize(factors, xlim = c(0, 1))
 for(i in 1:4) {
@@ -49,6 +48,5 @@ highlight.sector(c("f", "g"), col = NA, border = "green",
     lwd = 2, track.index = c(2, 3))
 highlight.sector(factors, col = "#FFFF0040", track.index = 4)
 circos.clear()
-}
 
 }

@@ -13,7 +13,7 @@ This package aims to implement circular layout in R.
 Since most of the figures are composed of points, lines and polygons, 
 we just need to implement low-level functions for drawing points, lines and polygons.
 
-Current there are following low-level graphical functions:
+Current there are following low-level graphic functions:
 
 \itemize{
   \item \code{\link{circos.points}}
@@ -23,7 +23,7 @@ Current there are following low-level graphical functions:
   \item \code{\link{circos.segments}}
   \item \code{\link{circos.text}}
   \item \code{\link{circos.axis}}, \code{\link{circos.xaxis}}, \code{\link{circos.yaxis}}
-  \item \code{\link{circos.link}}, This maybe the unique feature for circular layout to represent relationships between elements.
+  \item \code{\link{circos.link}}
 }
 
 For drawing points, lines and text through the whole track (among several sectors), the following 
@@ -38,8 +38,9 @@ functions are available:
 Functions to arrange circular layout:
 
 \itemize{
-  \item \code{\link{circos.trackPlotRegion}}
-  \item \code{\link{circos.updatePlotRegion}}
+  \item \code{\link{circos.initialize}}
+  \item \code{\link{circos.track}}
+  \item \code{\link{circos.update}}
   \item \code{\link{circos.par}}
   \item \code{\link{circos.info}}
   \item \code{\link{circos.clear}}
@@ -59,7 +60,7 @@ Functions to initialize circos plot with genomic coordinates:
 Functions to arrange genomic circular layout:
 
 \itemize{
-  \item \code{\link{circos.genomicTrackPlotRegion}}
+  \item \code{\link{circos.genomicTrack}}
 }
 
 Functions to add basic graphics in genomic scale:
@@ -77,17 +78,18 @@ Functions with specific purpose:
 \itemize{
   \item \code{\link{circos.genomicDensity}}
   \item \code{\link{circos.genomicRainfall}}
+  \item \code{\link{circos.genomicIdeogram}}
+  \item \code{\link{circos.genomicHeatmap}}
+  \item \code{\link{circos.genomicLabels}}
 }
 
-Finally, function that draws chord diagram:
+Finally, function that draws Chord diagram:
 
 \itemize{
   \item \code{\link{chordDiagram}}
-  \item \code{\link{chordDiagramFromMatrix}}
-  \item \code{\link{chordDiagramFromDataFrame}}
 }
 
-Please refer to the vignettes to find out how to draw basic and advanced circular plots by this package.
+Please refer to the vignettes (\url{http://jokergoo.github.io/circlize_book/book/} ) to find out how to draw basic and advanced circular plots by this package.
 }
 \examples{
 # There is no example

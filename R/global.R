@@ -18,8 +18,8 @@ resetGlobalVariable()
 # == param
 # -... Arguments for the parameters, see "details" section
 # -RESET reset to default values
-# -READ.ONLY whether only return read-only options
-# -LOCAL switch local mode
+# -READ.ONLY please ignore
+# -LOCAL please ignore
 # 
 # == details
 # Global parameters for the circular layout. Currently supported parameters are:
@@ -180,15 +180,14 @@ is.circos.initialized = function() {
 # Initialize the circular layout
 #
 # == param
-# -factors Factors which represent data categories
+# -factors A `factor` variable or a character vector which represent data categories
 # -x       Data on x-axes, a vector
 # -xlim    Ranges for values on x-axes, see "details" section for explanation of the format
 # -sector.width Width for each sector. The length of the vector should be either 1 which means
 #          all sectors have same width or as same as the number of sectors. Values for
-#          the vector are relative, and they will be scaled by dividing their summation. It is
-#          encouraged to manually set ``sector.width``.
+#          the vector are relative, and they will be scaled by dividing their summation. 
 #          By default, it is ``NULL`` which means the width of sectors correspond to the data
-#          range in sectors which is calculated internally.
+#          range in sectors.
 #
 # == details
 # The function allocates the sectors according to the values on x-axis.
@@ -209,10 +208,13 @@ is.circos.initialized = function() {
 #
 # Normally, width of sectors will be calculated internally according to the data range in sectors. But you can
 # still set the width manually. However, it is not always a good idea to change the default sector width since
-# the width can reflect the range of data in sectors. Anyway, in some cases, it is useful to manually set
-# the width such as you want to zoom in some part of the sectors.
+# the width can reflect the range of data in sectors. However, in some cases, it is useful to manually set
+# the width such as you want to zoom some part of the sectors.
 #
-# The function finally calls `graphics::plot` with enforing aspect ratio being 1 and be ready for adding graphics.
+# The function finally calls `graphics::plot` with enforing aspect ratio to be 1 and be ready for adding graphics.
+#
+# == seealso
+# http://jokergoo.github.io/circlize_book/book/circular-layout.html
 circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL) {
 
     resetGlobalVariable()
@@ -395,12 +397,12 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 }
 
 # == title
-# Reset the circos layout parameters
+# Reset the circular layout parameters
 #
 # == details
 # Because there are several
 # parameters for the circular plot which can only be set before `circos.initialize`. So before you draw the next
-# circular plot, you need to reset these parameters.
+# circular plot, you need to reset all these parameters.
 #
 # If you meet some errors when re-drawing the circular plot, try running this function and it will solve most of the problems.
 circos.clear = function() {
@@ -528,7 +530,7 @@ has.cell = function(sector.index, track.index) {
 # all sectors and all tracks. If ``sector.index`` and/or ``track.index`` are set,
 # the function would print ``xlim``, ``ylim``, ``cell.xlim``, ``cell.ylim``,
 # ``xplot``, ``yplot``, ``track.margin`` and ``cell.padding`` for every cell in specified sectors and tracks.
-# Also, the function will print index for your current sector and current track.
+# Also, the function will print index of your current sector and current track.
 #
 # If ``plot`` is set to ``TRUE``, the function will plot the index of the sector and the track 
 # for each cell on the figure.
@@ -643,8 +645,20 @@ show.index = function() {
 # -``track.margin``         Margin for the cell
 # -``cell.padding``         Padding for the cell
 #
-# The function is useful when using ``panel.fun`` in `circos.trackPlotRegion` to
+# The function is useful when using ``panel.fun`` in `circos.track` to
 # get detailed information of the current cell.
+#
+# == seealso
+# `CELL_META` is a short version of `get.cell.meta.data`.
+#
+# == example
+# factors = letters[1:4]
+# circos.initialize(factors, xlim = c(0, 1))
+# circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
+#     print(get.cell.meta.data("xlim"))
+# })
+# print(get.cell.meta.data("xlim", sector.index = "a", track.index = 1))
+# circos.clear()
 get.cell.meta.data = function(name, sector.index = get.current.sector.index(), 
                               track.index = get.current.track.index()) {
 	if(length(sector.index) == 0) {
@@ -750,6 +764,15 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 #
 # == seealso
 # `get.cell.meta.data`
+#
+# == example
+# pdf(NULL)
+# circos.initialize("a", xlim = c(0, 1))
+# circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
+# 	print(CELL_META$sector.index)
+# 	print(CELL_META$xlim)
+# })
+# dev.off()
 CELL_META = "don't use me directly"
 class(CELL_META) = "CELL_META"
 

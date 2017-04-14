@@ -3,16 +3,16 @@
 # Draw links between points or/and intervals
 #
 # == param
-# -sector.index1 Index for the first sector where one root locates
+# -sector.index1 Index for the first sector where one link end locates
 # -point1        A single value or a numeric vector of length 2. If it is a 2-elements vector, then
 #                the link would be a belt/ribbon.
-# -sector.index2 Index for the other sector where the other root locates
+# -sector.index2 Index for the other sector where the other link end locates
 # -point2        A single value or a numeric vector of length 2. If it is a 2-elements vector, then
 #                the link would be a belt/ribbon.
-# -rou           The position of the 'root' of the link (if ``rou1`` and ``rou2`` are not set). It is the percentage of the radius of the unit circle.
+# -rou           The position of the the link ends (if ``rou1`` and ``rou2`` are not set). It is the percentage of the radius of the unit circle.
 #                By default its value is the position of bottom margin of the most inner track.
-# -rou1          The position of root 1 of the link. 
-# -rou2          The position of root 2 of the link.
+# -rou1          The position of end 1 of the link. 
+# -rou2          The position of end 2 of the link.
 # -h             Height of the link, measured as percent to the radius to the unit circle. By default it is automatically infered.
 # -w             Since the link is a Bezier curve, it controls the shape of Bezier curve.
 # -h2            Height of the bottom edge of the link if it is a ribbon.
@@ -21,7 +21,7 @@
 # -lwd           Line (or border) width
 # -lty           Line (or border) style
 # -border        If the link is a ribbon, then it is the color for the ribbon border.
-# -directional   0 for no direction, 1 for direction from point1 to point2, -1 for direction from point2 to point1.
+# -directional   0 for no direction, 1 for direction from ``point1`` to ``point2``, -1 for direction from ``point2`` to ``point1``.
 #                2 for two directional. The direction is important when arrow heads are added.
 # -arr.width     Width of the arrows, pass to `shape::Arrowhead`.
 # -arr.type      Type of the arrows, pass to `shape::Arrowhead`. Default value is ``triangle``. There is an additional option
@@ -40,7 +40,11 @@
 # By default you only need to set ``sector.index1``, ``point1``, ``sector.index2`` and ``point2``. The
 # links would look nice. 
 #
-# See vignette for detailed explanation.
+# Please refer to the vignette for detailed explanation.
+#
+# == seealso
+# http://jokergoo.github.io/circlize_book/book/graphics.html#links
+#
 circos.link = function(sector.index1, point1, sector.index2, point2,
     rou = get_most_inside_radius(),
     rou1 = rou, rou2 = rou, h = NULL, w = 1, h2 = h, w2 = w,

@@ -1,4 +1,4 @@
-<img src="http://zuguang.de/circlize_book/book/images/circlize_cover.jpg" width=240 align="right" >
+<a href="http://jokergoo.github.io/circlize_book/book/"><img src="http://zuguang.de/circlize_book/book/images/circlize_cover.jpg" width=240 align="right" ></a>
 
 [![Build Status](https://travis-ci.org/jokergoo/circlize.svg)](https://travis-ci.org/jokergoo/circlize)
 [![CRAN](http://www.r-pkg.org/badges/version/circlize)](https://cran.r-project.org/web/packages/circlize/index.html) 
@@ -99,13 +99,13 @@ or directly from GitHub:
 devtools::install_github("jokergoo/circlize")
 ```
 
-### Example
+### Examples
 
 See http://jokergoo.github.io/circlize.
 
 <img width="700" alt="circlize_example" src="http://jokergoo.github.io/circlize_book/book/images/ciclize_examples.jpg">
 
-### Documents
+### Documentation
 
 The full documentations are available at http://jokergoo.github.io/circlize_book/book/.
 

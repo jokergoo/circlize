@@ -490,6 +490,30 @@ set.current.sector.index = function(x) {
     return(invisible(NULL))
 }
 
+# == title
+# Set flag to current cell
+#
+# == param
+# -sector.index sector index
+# -track.index track index
+#
+# == details
+# After setting the current cell, all functions which need ``sector.index`` and ``track.index``
+# arguments and are applied to the current cell do not need to specify the two arguments explicitly.
+#
+# == example
+# pdf(NULL)
+# circos.initialize(letters[1:8], xlim = c(0, 1))
+# circos.track(ylim = c(0, 1))
+# circos.info()
+# set.current.cell("b", 1)
+# circos.info()
+# circos.clear()
+# dev.off()
+set.current.cell = function(sector.index, track.index) {
+	set.current.sector.index(sector.index)
+	set.current.track.index(track.index)
+}
 
 get.cell.data = function(sector.index = get.current.sector.index(), track.index = get.current.track.index()) {
 	.CELL.DATA = get(".CELL.DATA", envir = .CIRCOS.ENV)

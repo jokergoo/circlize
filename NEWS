@@ -16,6 +16,7 @@ Changes in version 0.4.0
 * add `circos.nestes()`
 * vignette has been moved to http://jokergoo.github.io/circlize_book/book/index.html
 * add `set.current.cell()`
+* add `h.ratio` argument in `circos.link()`
 
 Changes in version 0.3.10
 ----------------------------------------------------------------------------

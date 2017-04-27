@@ -14,6 +14,7 @@
 # -rou1          The position of end 1 of the link. 
 # -rou2          The position of end 2 of the link.
 # -h             Height of the link, measured as percent to the radius to the unit circle. By default it is automatically infered.
+# -h.ratio       systematically change the link height. The value is between 0 and 1.
 # -w             Since the link is a Bezier curve, it controls the shape of Bezier curve.
 # -h2            Height of the bottom edge of the link if it is a ribbon.
 # -w2            Shape of the bottom edge of the link if it is a ribbon.
@@ -47,7 +48,7 @@
 #
 circos.link = function(sector.index1, point1, sector.index2, point2,
     rou = get_most_inside_radius(),
-    rou1 = rou, rou2 = rou, h = NULL, w = 1, h2 = h, w2 = w,
+    rou1 = rou, rou2 = rou, h = NULL, h.height = 0.5, w = 1, h2 = h, w2 = w,
     col = "black", lwd = par("lwd"), lty = par("lty"), border = col,
     directional = 0, arr.length = ifelse(arr.type == "big.arrow", 0.02, 0.4), 
     arr.width = arr.length/2, arr.type = "triangle", arr.lty = lty, 
@@ -63,7 +64,7 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
         theta1 = circlize(point1, 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
         theta2 = circlize(point2, 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
         
-		d = getQuadraticPoints(theta1, theta2, rou1, rou2, h = h, w = w)
+		d = getQuadraticPoints(theta1, theta2, rou1, rou2, h = h, h.ratio = h.ratio, w = w)
         nr = nrow(d)
         if(directional == 0) {
         	lines(d, col = col, lwd = lwd, lty = lty, lend = "butt")
@@ -100,23 +101,23 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 
         if(degreeDiff2(theta1, theta21) <= degreeDiff(theta22, theta21) &
            degreeDiff2(theta22, theta1) <= degreeDiff(theta22, theta21)) {
-			d = getQuadraticPoints(theta22, theta21, max(rou1,rou2), max(rou1,rou2), h = h, w = w)
+			d = getQuadraticPoints(theta22, theta21, max(rou1,rou2), max(rou1,rou2), h = h, h.ratio = h.ratio, w = w)
 			r = arc.points(theta22, theta21, rou2)
 			d = rbind(d, revMat(r))
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 		} else {
 	        if(degreeDiff(theta1, theta21) > degreeDiff(theta1, theta22)) {
-	        	d1 = getQuadraticPoints(theta1, theta21, rou1, rou2, h = h, w = w)
-	        	d2 = getQuadraticPoints(theta1, theta22, rou1, rou2, h = h2, w = w2)
-	        	d1x = getQuadraticPoints(theta1, theta21, rou1, rou2 - arr.length, h = h, w = w)
-	        	d2x = getQuadraticPoints(theta1, theta22, rou1, rou2 - arr.length, h = h2, w = w2)
-	        	dcenter = getQuadraticPoints(theta1, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
+	        	d1 = getQuadraticPoints(theta1, theta21, rou1, rou2, h = h, h.ratio = h.ratio, w = w)
+	        	d2 = getQuadraticPoints(theta1, theta22, rou1, rou2, h = h2, h.ratio = h.ratio, h.ratio = h.ratio, w = w2)
+	        	d1x = getQuadraticPoints(theta1, theta21, rou1, rou2 - arr.length, h = h, h.ratio = h.ratio, w = w)
+	        	d2x = getQuadraticPoints(theta1, theta22, rou1, rou2 - arr.length, h = h2, h.ratio = h.ratio, w = w2)
+	        	dcenter = getQuadraticPoints(theta1, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, h.ratio = h.ratio, w = (w+w2)/2)
 	        } else {
-		        d1 = getQuadraticPoints(theta1, theta21, rou1, rou2, h = h2, w = w2)
-		        d2 = getQuadraticPoints(theta1, theta22, rou1, rou2, h = h, w = w)
-	        	d1x = getQuadraticPoints(theta1, theta21, rou1, rou2 - arr.length, h = h2, w = w2)
-		        d2x = getQuadraticPoints(theta1, theta22, rou1, rou2 - arr.length, h = h, w = w)
-	        	dcenter = getQuadraticPoints(theta1, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
+		        d1 = getQuadraticPoints(theta1, theta21, rou1, rou2, h = h2, h.ratio = h.ratio, w = w2)
+		        d2 = getQuadraticPoints(theta1, theta22, rou1, rou2, h = h, h.ratio = h.ratio, w = w)
+	        	d1x = getQuadraticPoints(theta1, theta21, rou1, rou2 - arr.length, h = h2, h.ratio = h.ratio, w = w2)
+		        d2x = getQuadraticPoints(theta1, theta22, rou1, rou2 - arr.length, h = h, h.ratio = h.ratio, w = w)
+	        	dcenter = getQuadraticPoints(theta1, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, h.ratio = h.ratio, w = (w+w2)/2)
 		    }
 		   	r2 = arc.points(theta22, theta21, rou2)
 			if(arr.type == "big.arrow" && directional == 1) {
@@ -169,23 +170,23 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
         
         if(degreeDiff2(theta2, theta11) <= degreeDiff2(theta12, theta11) &
            degreeDiff2(theta12, theta2) <= degreeDiff2(theta12, theta11)) {
-			d = getQuadraticPoints(theta12, theta11, max(rou1,rou2), max(rou1,rou2), h = h, w = w)
+			d = getQuadraticPoints(theta12, theta11, max(rou1,rou2), max(rou1,rou2), h = h, h.ratio = h.ratio, w = w)
 			r = arc.points(theta12, theta11, rou1)
 			d = rbind(d, revMat(r))
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 		} else {
 	        if(degreeDiff(theta2, theta11) > degreeDiff(theta2, theta12)) {
-		        d1 = getQuadraticPoints(theta11, theta2, rou1, rou2, h = h, w = w)
-		        d2 = getQuadraticPoints(theta12, theta2, rou1, rou2, h = h2, w = w2)
-	        	d1x = getQuadraticPoints(theta11, theta2, rou1 - arr.length, rou2, h = h, w = w)
-		        d2x = getQuadraticPoints(theta12, theta2, rou1 - arr.length, rou2, h = h2, w = w2)
-	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, theta2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
+		        d1 = getQuadraticPoints(theta11, theta2, rou1, rou2, h = h, h.ratio = h.ratio, w = w)
+		        d2 = getQuadraticPoints(theta12, theta2, rou1, rou2, h = h2, h.ratio = h.ratio, w = w2)
+	        	d1x = getQuadraticPoints(theta11, theta2, rou1 - arr.length, rou2, h = h, h.ratio = h.ratio, w = w)
+		        d2x = getQuadraticPoints(theta12, theta2, rou1 - arr.length, rou2, h = h2, h.ratio = h.ratio, w = w2)
+	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, theta2, rou1, rou2, h = (h+h2)/2, h.ratio = h.ratio, w = (w+w2)/2)
 		    } else {
-		    	d1 = getQuadraticPoints(theta11, theta2, rou1, rou2, h = h2, w = w2)
-		        d2 = getQuadraticPoints(theta12, theta2, rou1, rou2, h = h, w = w)
-	        	d1x = getQuadraticPoints(theta11, theta2, rou1 - arr.length, rou2, h = h2, w = w2)
-		        d2x = getQuadraticPoints(theta12, theta2, rou1 - arr.length, rou2, h = h, w = w)
-	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, theta2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
+		    	d1 = getQuadraticPoints(theta11, theta2, rou1, rou2, h = h2, h.ratio = h.ratio, w = w2)
+		        d2 = getQuadraticPoints(theta12, theta2, rou1, rou2, h = h, h.ratio = h.ratio, w = w)
+	        	d1x = getQuadraticPoints(theta11, theta2, rou1 - arr.length, rou2, h = h2, h.ratio = h.ratio, w = w2)
+		        d2x = getQuadraticPoints(theta12, theta2, rou1 - arr.length, rou2, h = h, h.ratio = h.ratio, w = w)
+	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, theta2, rou1, rou2, h = (h+h2)/2, h.ratio = h.ratio, w = (w+w2)/2)
 		    }
 			r1 = arc.points(theta12, theta11, rou1)
 			if(arr.type == "big.arrow" && directional == -1) {
@@ -239,40 +240,40 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 
 		if(degreeDiff2(theta12, theta21) <= degreeDiff2(theta22, theta21) + degreeDiff2(theta12, theta11) &
 		   degreeDiff2(theta12, theta21) >= degreeDiff2(theta22, theta11) && abs(rou1 - rou2) < 1e-5) {
-			d = getQuadraticPoints(theta12, theta21, max(rou1,rou2), max(rou1,rou2), h = h, w = w)
+			d = getQuadraticPoints(theta12, theta21, max(rou1,rou2), max(rou1,rou2), h = h, h.ratio = h.ratio, w = w)
 			r = arc.points(theta12, theta21, max(rou1,rou2))
 			d = rbind(d, revMat(r))
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 		} else if(degreeDiff2(theta22, theta11) <= degreeDiff2(theta12, theta11) + degreeDiff2(theta22, theta21) &
 			      degreeDiff2(theta22, theta11) >= degreeDiff2(theta12, theta21) && abs(rou1 - rou2) < 1e-5) {
-			d = getQuadraticPoints(theta22, theta11, max(rou1,rou2), max(rou1,rou2), h = h, w = w)
+			d = getQuadraticPoints(theta22, theta11, max(rou1,rou2), max(rou1,rou2), h = h, h.ratio = h.ratio, w = w)
 			r = arc.points(theta22, theta11, max(rou1,rou2))
 			d = rbind(d, revMat(r))
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 		} else {
 
 			if(degreeDiff(theta11, theta22) > degreeDiff(theta12, theta21)) {
-				d1 = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h, w = w)
-		        d2 = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h2, w = w2)
+				d1 = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h, h.ratio = h.ratio, w = w)
+		        d2 = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h2, h.ratio = h.ratio, w = w2)
 		        if(directional == 1) {
-		        	d1x = getQuadraticPoints(theta11, theta22, rou1, rou2 - arr.length, h = h, w = w)
-			        d2x = getQuadraticPoints(theta12, theta21, rou1, rou2 - arr.length, h = h2, w = w2)
+		        	d1x = getQuadraticPoints(theta11, theta22, rou1, rou2 - arr.length, h = h, h.ratio = h.ratio, w = w)
+			        d2x = getQuadraticPoints(theta12, theta21, rou1, rou2 - arr.length, h = h2, h.ratio = h.ratio, w = w2)
 			    } else if(directional == -1) {
-			    	d1x = getQuadraticPoints(theta11, theta22, rou1 - arr.length, rou2, h = h, w = w)
-		        	d2x = getQuadraticPoints(theta12, theta21, rou1 - arr.length, rou2, h = h2, w = w2)
+			    	d1x = getQuadraticPoints(theta11, theta22, rou1 - arr.length, rou2, h = h, h.ratio = h.ratio, w = w)
+		        	d2x = getQuadraticPoints(theta12, theta21, rou1 - arr.length, rou2, h = h2, h.ratio = h.ratio, w = w2)
 			    }
-	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
+	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, h.ratio = h.ratio, w = (w+w2)/2)
 		    } else {
-		    	d1 = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h2, w = w2)
-		        d2 = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h, w = w)
+		    	d1 = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h2, h.ratio = h.ratio, w = w2)
+		        d2 = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h, h.ratio = h.ratio, w = w)
 		        if(directional == 1) {
-		        	d1x = getQuadraticPoints(theta11, theta22, rou1, rou2 - arr.length, h = h2, w = w2)
-			        d2x = getQuadraticPoints(theta12, theta21, rou1, rou2 - arr.length, h = h, w = w)
+		        	d1x = getQuadraticPoints(theta11, theta22, rou1, rou2 - arr.length, h = h2, h.ratio = h.ratio, w = w2)
+			        d2x = getQuadraticPoints(theta12, theta21, rou1, rou2 - arr.length, h = h, h.ratio = h.ratio, w = w)
 	        	} else if(directional == -1) {
-		        	d1x = getQuadraticPoints(theta11, theta22, rou1 - arr.length, rou2, h = h2, w = w2)
-			        d2x = getQuadraticPoints(theta12, theta21, rou1 - arr.length, rou2, h = h, w = w)
+		        	d1x = getQuadraticPoints(theta11, theta22, rou1 - arr.length, rou2, h = h2, h.ratio = h.ratio, w = w2)
+			        d2x = getQuadraticPoints(theta12, theta21, rou1 - arr.length, rou2, h = h, h.ratio = h.ratio, w = w)
 			    }
-	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, w = (w+w2)/2)
+	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, h.ratio = h.ratio, w = (w+w2)/2)
 		    }
 			r2 = arc.points(theta22, theta21, rou2)
 			r1 = arc.points(theta12, theta11, rou1)
@@ -371,7 +372,7 @@ arc.midpoint = function(theta1, theta2, rou) {
 # points from theta1 to theta2
 # first calcualte bezier curve of which two end points are located at (-d, 0), (d, 0)
 # and the summit is located at (0, 2h)
-getQuadraticPoints = function(theta1, theta2, rou1, rou2, h = NULL, w = 1) {
+getQuadraticPoints = function(theta1, theta2, rou1, rou2, h = NULL, h.ratio = h.ratio, w = 1) {
 
 	# enforce theta1 is always less than theta 2 (reverse-clockwise)
 	theta1 = theta1 %% 360
@@ -396,7 +397,7 @@ getQuadraticPoints = function(theta1, theta2, rou1, rou2, h = NULL, w = 1) {
 	# determin h
 	beta = (theta1 - theta2) %% 360
 	if(beta > 180) beta = 360 - beta
-	h_auto = rou_min*(1-0.5*cos(as.radian(beta/2)))
+	h_auto = rou_min*(1-h.ratio*cos(as.radian(beta/2)))
 	
 	if(is.null(h)) {
 		h = h_auto

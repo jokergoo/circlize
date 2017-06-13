@@ -81,6 +81,7 @@ export(ux)
 export(uy)
 
 S3method(print, CELL_META)
+S3method("$", CELL_META)
 import(graphics)
 importFrom("GlobalOptions", setGlobalOptions)
 importFrom("colorspace", HLS)

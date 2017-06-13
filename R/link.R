@@ -108,7 +108,7 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 		} else {
 	        if(degreeDiff(theta1, theta21) > degreeDiff(theta1, theta22)) {
 	        	d1 = getQuadraticPoints(theta1, theta21, rou1, rou2, h = h, h.ratio = h.ratio, w = w)
-	        	d2 = getQuadraticPoints(theta1, theta22, rou1, rou2, h = h2, h.ratio = h.ratio, h.ratio = h.ratio, w = w2)
+	        	d2 = getQuadraticPoints(theta1, theta22, rou1, rou2, h = h2, h.ratio = h.ratio, w = w2)
 	        	d1x = getQuadraticPoints(theta1, theta21, rou1, rou2 - arr.length, h = h, h.ratio = h.ratio, w = w)
 	        	d2x = getQuadraticPoints(theta1, theta22, rou1, rou2 - arr.length, h = h2, h.ratio = h.ratio, w = w2)
 	        	dcenter = getQuadraticPoints(theta1, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, h.ratio = h.ratio, w = (w+w2)/2)

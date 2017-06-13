@@ -91,7 +91,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 			link.visible = link.visible, link.rank = link.rank, ...)
 	} else if(inherits(x, "data.frame")) {
 		if(ncol(x) > 3) {
-			if(all(sapply(x, inherits, "numeric"))) {
+			if(all(sapply(x, inherits, c("numeric", "integer")))) {
 				warning("It seems your input data is an adjacency matrix, maybe you need to convert it to 'matrix' explicitely.")
 				return(chordDiagramFromMatrix(as.matrix(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
 					col = col, row.col = row.col, column.col = column.col, order = order, directional = directional,

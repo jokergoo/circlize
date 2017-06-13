@@ -1,34 +1,57 @@
 
-# if facing  %in% c("bending.inside", "bending.outside"), width and height
-# can be numeric values
-# else facing should be a string like "2cm"
-
-image = system.file("img", "Rlogo.png", package = "png")
-
-circos.initialize(letters[1:8], xlim = c(0, 1))
-circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
-	circos.raster(image, CELL_META$xcenter, CELL_META$ycenter, width = 1, 
-		height = 1, facing = "bending.inside")
-})
-circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
-	circos.raster(image, CELL_META$xcenter, CELL_META$ycenter, width = runif(1, 0.5, 1), 
-		height = runif(1, 0.5, 1), facing = "bending.inside", niceFacing = TRUE)
-})
-
+# == title
+# Add raster images
+#
+# == param
+# -image a ``raster`` object, or an object that can be converted by `graphics::as.raster`
+# -x position of the center of the raster image, measued in the data coordinate in the cell
+# -y position of the center of the raster image, measued in the data coordinate in the cell
+# -width width of the raster image. When ``facing`` is one of "inside", "outside", "clockwise"
+#        and "reverse.clockwise", the image should have absolute size where the value of ``width``
+#        should be specified as ``20mm``, ``1cm`` or ``0.5inche``. When ``facing`` is one of
+#        ``bending.inside`` and ``bending.outside``, the value of ``width`` is measured in the data
+#         coordinate in the cell.
+# -height height of the raster image. Same format as ``width``. If the value of ``height`` is omit, 
+#         default height is calculated by taking the aspect ratio of the original image.
+# -facing facing of the raster image
+# -niceFacing facing of text. Please refer to vignette for different settings
+# -sector.index index for the sector
+# -track.index index for the track
+# -scaling scaling factor to resize the raster image. The size measured in pixel is calculated according
+#          to the size in the final plot. The size can be adjusted by multiplying ``scaling``.
+#
+# == author
+# Zuguang Gu <z.gu@dkfz.de>
+#
+# == example
+# require(png)
+# image = system.file("img", "Rlogo.png", package = "png")
+# image = as.raster(readPNG(image))
+# circos.initialize(letters[1:8], xlim = c(0, 1))
+# circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
+# 	circos.raster(image, CELL_META$xcenter, CELL_META$ycenter, width = "2cm", 
+# 		facing = "inside", niceFacing = TRUE)
+# })
+#
+# \dontrun{
+# circos.initialize(letters[1:8], xlim = c(0, 1))
+# circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
+# 	circos.raster(image, CELL_META$xcenter, CELL_META$ycenter, width = 1, 
+# 		height = 1, facing = "bending.inside")
+# })
+# }
 circos.raster = function(image, x, y, width, height, 
 	facing = c("inside", "outside", "reverse.clockwise", "clockwise",
-        "downward", "bending", "bending.inside", "bending.outside"),
+        "downward", "bending.inside", "bending.outside"),
     niceFacing = FALSE, sector.index = get.cell.meta.data("sector.index"), 
     track.index = get.cell.meta.data("track.index"), 
-    resolution = ifelse(grepl("bend", facing), 0.5, 1)) {
+    scaling = ifelse(grepl("bend", facing), 0.5, 1)) {
 
-	# convert image to Image class (in EBImage package)
-	if(inherits(image, "character")) {
-		image = readImage(image)
-	} else if(!inherits(image, "Image")) {
-		image = as.Image(image)
+	# convert image to raster class
+	if(!inherits(image, "raster")) {
+		image = as.raster(image)
 	}
-	asp = dim(img)[1]/dim(img)[2]
+	asp = dim(image)[1]/dim(image)[2]
 
 	facing = match.arg(facing)
 	if(facing %in% c("bending.inside", "bending.outside")) {
@@ -64,8 +87,7 @@ circos.raster = function(image, x, y, width, height,
 	    height_in_px = round(height_in_native/pt_per_inche1*96)
 
 		# resize according to the size on the image
-		image = resize(image, w = width_in_px*resolution, h = height_in_px*resolution)
-		image = as.raster(image)
+		image = resize_image(image, w = width_in_px*scaling, h = height_in_px*scaling)
 
 		# make circular rectangles
 		xlim = get.cell.meta.data("xlim", sector.index = sector.index, track.index = track.index)
@@ -119,7 +141,7 @@ circos.raster = function(image, x, y, width, height,
 			height_in_native = convert_length(height, height_unit)
 		}
 
-		if(missig(width)) {
+		if(missing(width)) {
 			width_in_px = round(height_in_px*asp)
 			width_in_native = width_in_native*asp
 		}
@@ -134,28 +156,86 @@ circos.raster = function(image, x, y, width, height,
 		y0 = df2[1, 2]
 
 		# resize accoring to the width and height
-		image = resize(image, w = width_in_px, h = height_in_px)
+		image = resize_image(image, w = width_in_px*scaling, h = height_in_px*scaling)
 
-		theta = df1[1, 1] - 90
 		coor_mat = cbind(c(x0 - width_in_native/2, y0 - height_in_native/2),
-			             c(x0 + width_in_native/2, y0 + height_in_native/2))
+			             c(x0 - width_in_native/2, y0 + height_in_native/2),
+			             c(x0 + width_in_native/2, y0 + height_in_native/2),
+			             c(x0 + width_in_native/2, y0 - height_in_native/2))
 
-		points(corr_mat[, 1], corr_mat[, 2], pch = 16, col = "red")
+		# polygon(coor_mat[1, ], coor_mat[2, ], border = "red")
+		if(facing %in% c("downward")) {
+			rasterImage(image, coor_mat[1, 1], coor_mat[2, 1], coor_mat[1, 3], coor_mat[2, 3])
+		} else {
 
-		# since rasterImage() rotate image at the left bottom corner,
-		# here we move the image to let it rotate at the center of the image
-		rot_mat1 = cbind(c( cos(as.radian(theta)),  sin(as.radian(theta))),
-			             c(-sin(as.radian(theta)),  cos(as.radian(theta))))
-		rot_mat2 = cbind(c( cos(as.radian(-theta)), sin(as.radian(-theta))),
-			             c(-sin(as.radian(-theta)), cos(as.radian(-theta))))
-		coor_mat = coor_mat %*% rot_mat1
-		corr_mat[, 1] = corr_mat[, 1] - width_in_native/2
-		corr_mat[, 2] = corr_mat[, 2] - height_in_native/2
-		corr_mat = corr_mat %*% rot_mat2
-		rasterImage(image, corr_mat[1, 1], corr_mat[1, 2], corr_mat[2, 1], corr_mat[2, 2], angle = theta)
-		points(corr_mat[, 1], corr_mat[, 2], pch = 16, col = "red")
+			if(niceFacing) {
+				degree = circlize(x, y, sector.index = sector.index, track.index = track.index)[, 1]
+				degree = degree %% 360
+				if(facing %in% c("inside", "outside")) {
+					if(degree > 180 & degree < 360) {
+						if(facing == "inside") {
+							facing = "outside"
+						} else {
+							facing = "inside"
+						}
+					}
+				} else {
+					if(facing == "clockwise") {
+						if(degree > 90 & degree < 270) {
+							facing = "reverse.clockwise"
+						}
+					} else  if(facing == "reverse.clockwise") { 
+						if(degree < 90 | degree > 270) {
+							facing = "clockwise"
+						}
+					}
+				}
+			} 
+
+			# rotate the rectangle, and find the coordiante of the left bottom angle and top right angle
+			if(facing == "inside") {
+				theta = df1[1, 1] - 90
+			} else if(facing == "outside") {
+				theta = df1[1, 1] - 90 + 180
+			} else if(facing == "clockwise") {
+				theta = df1[1, 1]
+			} else if(facing == "reverse.clockwise") {
+				theta = df1[1, 1] + 180
+			}
+			offset_x = mean(coor_mat[1, ])
+			offset_y = mean(coor_mat[2, ])
+			coor_mat[1, ] = coor_mat[1, ] - offset_x
+			coor_mat[2, ] = coor_mat[2, ] - offset_y
+			# polygon(coor_mat[1, ], coor_mat[2, ], border = "blue")
+			rot_mat = cbind(c( cos(as.radian(theta)),  sin(as.radian(theta))),
+				            c(-sin(as.radian(theta)),  cos(as.radian(theta))))
+			coor_mat = rot_mat %*% coor_mat
+			coor_mat[1, ] = coor_mat[1, ] + offset_x
+			coor_mat[2, ] = coor_mat[2, ] + offset_y
+			# polygon(coor_mat[1, ], coor_mat[2, ], border = "green")
+
+			rasterImage(image, coor_mat[1, 1], coor_mat[2, 1], coor_mat[1, 1] + width_in_native, coor_mat[2, 1] + height_in_native,
+				angle = theta)
+			# points(coor_mat[1, 1], coor_mat[2, 1], pch = 16, col = "red")
+		}
 	}
 }
 
 
-# a function convert unit in data coordinate to absolute unit
+resize_image = function(m, w, h = round(w*(ncol(m)/nrow(m)))) {
+	
+	w0 = nrow(m)
+	h0 = ncol(m)
+
+	w_ratio = w0/w
+	h_ratio = h0/h
+
+ 	# Do resizing -- select appropriate indices
+ 	if(length(dim(m)) == 2) {
+ 		out = m[ ceiling(w_ratio* 1:w), ceiling(h_ratio* 1:h)]
+ 	} else {
+ 		out = m[ ceiling(w_ratio* 1:w), ceiling(h_ratio* 1:h), , drop = FALSE]
+ 	}
+ 	return(out)
+}
+

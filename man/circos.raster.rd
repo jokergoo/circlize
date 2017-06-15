@@ -16,7 +16,7 @@ circos.raster(image, x, y, width, height,
 }
 \arguments{
 
-  \item{image}{a \code{raster} object, or an object that can be converted by \code{\link[graphics]{as.raster}}}
+  \item{image}{a \code{raster} object, or an object that can be converted by \code{\link[grDevices]{as.raster}}}
   \item{x}{position of the center of the raster image, measued in the data coordinate in the cell}
   \item{y}{position of the center of the raster image, measued in the data coordinate in the cell}
   \item{width}{width of the raster image. When \code{facing} is one of "inside", "outside", "clockwise" and "reverse.clockwise", the image should have absolute size where the value of \code{width} should be specified as \code{20mm}, \code{1cm} or \code{0.5inche}. When \code{facing} is one of \code{bending.inside} and \code{bending.outside}, the value of \code{width} is measured in the data coordinate in the cell.}
@@ -33,7 +33,7 @@ Zuguang Gu <z.gu@dkfz.de>
 }
 \examples{
 require(png)
-image = system.file("img", "Rlogo.png", package = "png")
+image = system.file("extdata", "Rlogo.png", package = "circlize")
 image = as.raster(readPNG(image))
 circos.initialize(letters[1:8], xlim = c(0, 1))
 circos.track(ylim = c(0, 1), panel.fun = function(x, y) {

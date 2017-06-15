@@ -3,49 +3,60 @@
 # Add raster images
 #
 # == param
-# -image a ``raster`` object, or an object that can be converted by `graphics::as.raster`
+# -image a ``raster`` object, or an object that can be converted by `grDevices::as.raster`
 # -x position of the center of the raster image, measued in the data coordinate in the cell
 # -y position of the center of the raster image, measued in the data coordinate in the cell
 # -width width of the raster image. When ``facing`` is one of "inside", "outside", "clockwise"
 #        and "reverse.clockwise", the image should have absolute size where the value of ``width``
-#        should be specified as ``20mm``, ``1cm`` or ``0.5inche``. When ``facing`` is one of
+#        should be specified like ``20mm``, ``1cm`` or ``0.5inche``. When ``facing`` is one of
 #        ``bending.inside`` and ``bending.outside``, the value of ``width`` is measured in the data
 #         coordinate in the cell.
 # -height height of the raster image. Same format as ``width``. If the value of ``height`` is omit, 
-#         default height is calculated by taking the aspect ratio of the original image.
+#         default height is calculated by taking the aspect ratio of the original image. But when
+#         ``facing`` is one of ``bending.inside`` and ``bending.outside``, ``height`` is mandatory to set.
 # -facing facing of the raster image
 # -niceFacing facing of text. Please refer to vignette for different settings
 # -sector.index index for the sector
 # -track.index index for the track
-# -scaling scaling factor to resize the raster image. The size measured in pixel is calculated according
-#          to the size in the final plot. The size can be adjusted by multiplying ``scaling``.
+# -scaling scaling factor to resize the raster image.
 #
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
 #
 # == example
 # require(png)
-# image = system.file("img", "Rlogo.png", package = "png")
+# image = system.file("extdata", "Rlogo.png", package = "circlize")
 # image = as.raster(readPNG(image))
 # circos.initialize(letters[1:8], xlim = c(0, 1))
 # circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
-# 	circos.raster(image, CELL_META$xcenter, CELL_META$ycenter, width = "2cm", 
-# 		facing = "inside", niceFacing = TRUE)
+#     circos.raster(image, CELL_META$xcenter, CELL_META$ycenter, width = "2cm", 
+#         facing = "inside", niceFacing = TRUE)
 # })
-#
+# circos.clear()
+
 # \dontrun{
-# circos.initialize(letters[1:8], xlim = c(0, 1))
+# # NOTE: following takes quite a long time to run
+# load(system.file("extdata", "doodle.RData", package = "circlize"))
+# circos.par("cell.padding" = c(0, 0, 0, 0))
+# circos.initialize(letters[1:16], xlim = c(0, 1))
 # circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
-# 	circos.raster(image, CELL_META$xcenter, CELL_META$ycenter, width = 1, 
-# 		height = 1, facing = "bending.inside")
-# })
+#     img = img_list[[CELL_META$sector.numeric.index]]
+#     circos.raster(img, CELL_META$xcenter, CELL_META$ycenter, width = 1, 
+#         height = 1, facing = "bending.inside")
+# }, track.height = 0.25, bg.border = NA)
+# circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
+#     img = img_list[[CELL_META$sector.numeric.index + 16]]
+#     circos.raster(img, CELL_META$xcenter, CELL_META$ycenter, width = 1, 
+#         height = 1, facing = "bending.inside")
+# }, track.height = 0.25, bg.border = NA)
+# circos.clear()
 # }
 circos.raster = function(image, x, y, width, height, 
 	facing = c("inside", "outside", "reverse.clockwise", "clockwise",
         "downward", "bending.inside", "bending.outside"),
     niceFacing = FALSE, sector.index = get.cell.meta.data("sector.index"), 
     track.index = get.cell.meta.data("track.index"), 
-    scaling = ifelse(grepl("bend", facing), 0.5, 1)) {
+    scaling = 1) {
 
 	# convert image to raster class
 	if(!inherits(image, "raster")) {
@@ -81,13 +92,13 @@ circos.raster = function(image, x, y, width, height,
 	    height_in_native = height/(cell.ylim[2] - cell.ylim[1]) * (yplot[2] - yplot[1])
 
 	    r = yplot[1] + (y - cell.ylim[1])/(cell.ylim[2] - cell.ylim[1]) * (yplot[2] - yplot[1])
-	    width_in_native = pi*as.radian(width_in_degree)*r
+	    width_in_native = as.radian(width_in_degree)*r
 
 	    width_in_px = round(width_in_native/pt_per_inche1*96)
 	    height_in_px = round(height_in_native/pt_per_inche1*96)
 
 		# resize according to the size on the image
-		image = resize_image(image, w = width_in_px*scaling, h = height_in_px*scaling)
+		image = resize_image(image, w = ncol(image)*scaling, h = nrow(image)*scaling)
 
 		# make circular rectangles
 		xlim = get.cell.meta.data("xlim", sector.index = sector.index, track.index = track.index)
@@ -108,10 +119,12 @@ circos.raster = function(image, x, y, width, height,
 		}
 		xv = x - width/2 + xv*width
 		yv = y - height/2 + yv*height
-		l = !grepl("^#FFFFFF", image)
+		l = !grepl("^#FFFFFF00", image)
+		op = circos.par("points.overflow.warning")
+		circos.par(points.overflow.warning = FALSE)
 		circos.rect(xv[l] - width/nc/2, yv[l] - height/nr/2, xv[l] + width/nc/2, yv[l] + height/nr/2,
 			col = image[l], border = image[l], sector.index = sector.index, track.index = track.index)
-
+		circos.par(points.overflow.warning = op)
 	} else {
 		if(missing(width) && missing(height)) {
 			stop("at least one of `width` and `height` should be specified")
@@ -156,7 +169,7 @@ circos.raster = function(image, x, y, width, height,
 		y0 = df2[1, 2]
 
 		# resize accoring to the width and height
-		image = resize_image(image, w = width_in_px*scaling, h = height_in_px*scaling)
+		image = resize_image(image, w = ncol(image)*scaling, h = nrow(image)*scaling)
 
 		coor_mat = cbind(c(x0 - width_in_native/2, y0 - height_in_native/2),
 			             c(x0 - width_in_native/2, y0 + height_in_native/2),

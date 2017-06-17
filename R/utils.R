@@ -197,8 +197,10 @@ check.points.position = function(x, y, sector.index = get.cell.meta.data("sector
     x = x[!l]
     y = y[!l]
 
-    l1 = x < cell.xlim[1] | x > cell.xlim[2]
-    l2 = y < cell.ylim[1] | y > cell.ylim[2]
+    xrange = cell.xlim[2] - cell.xlim[1]
+    yrange = cell.ylim[2] - cell.ylim[1]
+    l1 = abs(x - cell.xlim[1])/xrange < 1e-6 | abs(x - cell.xlim[2])/xrange < 1e-6
+    l2 = abs(y - cell.ylim[1])/yrange < 1e-6 | abs(y - cell.ylim[2])/yrange < 1e-6
     l = l1 | l2
     if(sum(l) && circos.par("points.overflow.warning")) {
         message(paste("Note: ", sum(l), " point", ifelse(sum(l) == 1, " is", "s are"), " out of plotting region in sector '", sector.index, "', track '", track.index, "'.\n", sep = ""))

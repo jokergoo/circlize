@@ -33,7 +33,7 @@
 #         facing = "inside", niceFacing = TRUE)
 # })
 # circos.clear()
-
+#
 # \dontrun{
 # # NOTE: following takes quite a long time to run
 # load(system.file("extdata", "doodle.RData", package = "circlize"))

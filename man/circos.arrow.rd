@@ -49,7 +49,8 @@ circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
 }, bg.border = NA, track.height = 0.4)
 
 ########## cell cycle ###########
-cell_cycle = data.frame(phase = c("M", "G1", "S", "G2"),
+cell_cycle = data.frame(phase = factor(c("M", "G1", "S", "G2"), 
+                                    levels = c("M", "G1", "S", "G2")),
 	                      hour = c(1, 11, 8, 4))
 color = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3")
 circos.par(start.degree = 90)

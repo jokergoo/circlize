@@ -50,11 +50,10 @@ circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
 
 ########## cell cycle ###########
 cell_cycle = data.frame(phase = c("M", "G1", "S", "G2"),
-	                    time = c(1, 11, 8, 4))
-
+	                      hour = c(1, 11, 8, 4))
 color = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3")
 circos.par(start.degree = 90)
-circos.initialize(cell_cycle$phase, xlim = cbind(rep(0, 4), cell_cycle$time))
+circos.initialize(cell_cycle$phase, xlim = cbind(rep(0, 4), cell_cycle$hour))
 circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
 	circos.arrow(CELL_META$xlim[1], CELL_META$xlim[2], 
 		arrow.head.width = CELL_META$yrange*0.8, arrow.head.length = ux(1, "cm"),

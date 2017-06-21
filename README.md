@@ -34,6 +34,8 @@ Current there are following low-level graphic functions:
 - `circos.polygon()`
 - `circos.text()`
 - `circos.axis()`
+- `circos.raster()`
+- `circos.arrow()`
 - `circos.link()`, This maybe the unique feature for circos layout to represent relationships between elements.
  
 For drawing points, lines and text through the whole track (among several sectors), the following 

@@ -370,26 +370,6 @@ circos.approx = function(x, y, resolution = 0.1, sector.index = get.cell.meta.da
 }
 
 # == title
-# Generate random colors
-#
-# == param
-# -n number of colors
-# -transparency transparency, numeric value between 0 and 1
-#
-# == details
-# Colors are randomly generated from RGB color space through uniform distributions.
-#
-# == value
-# a vector of colors
-#
-# == example
-# rand_color(10)
-# rand_color(10, transparency = 0.5)
-rand_color = function(n = 1, transparency = 0) {
-    return(rgb(runif(n), runif(n), runif(n), 1 - transparency))
-}
-
-# == title
 # Add transparency to colors
 #
 # == param

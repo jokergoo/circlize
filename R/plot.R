@@ -509,7 +509,7 @@ circos.trackPoints = function(factors = NULL, x, y, track.index = get.cell.meta.
 # ``area`` to ``TURE``.
 circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"),
-    col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l",
+    col = ifelse(area, "grey", par("col")), lwd = par("lwd"), lty = par("lty"), type = "l",
 	straight = FALSE, area = FALSE, area.baseline = NULL, border = "black",
 	baseline = "bottom", pt.col = par("col"), cex = par("cex"), pch = par("pch")) {
     
@@ -625,7 +625,7 @@ circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
 #
 # This function can be replaced by a ``for`` loop containing `circos.lines`.
 circos.trackLines = function(factors, x, y, track.index = get.cell.meta.data("track.index"),
-    col = "black", lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
+    col = par("col"), lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
 	area = FALSE, area.baseline = NULL, border = "black", baseline = "bottom",
     pt.col = par("col"), cex = par("cex"), pch = par("pch")) {
     
@@ -901,7 +901,7 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
     track.index = get.cell.meta.data("track.index"), direction = NULL,
     facing = c("inside", "outside", "reverse.clockwise", "clockwise",
 	"downward", "bending", "bending.inside", "bending.outside"), niceFacing = FALSE, 
-	adj = par("adj"), cex = 1, col = "black", font = par("font"), ...) {
+	adj = par("adj"), cex = 1, col = par("col"), font = par("font"), ...) {
     
 	if(length(x) != length(y)) {
 		stop("Length of x and y differ.")
@@ -1149,7 +1149,7 @@ degree = function(x) {
 circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.data("track.index"),
     direction = NULL, facing = c("inside", "outside", "reverse.clockwise", "clockwise",
 	"downward", "bending", "bending.inside", "bending.outside"), niceFacing = FALSE, 
-    adj = par("adj"), cex = 1, col = "black", font = par("font")) {
+    adj = par("adj"), cex = 1, col = par("col"), font = par("font")) {
     
     # basic check here
     if(length(x) != length(factors) || length(y) != length(factors)) {
@@ -1218,6 +1218,8 @@ circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.d
 # -major.tick.length length of the major ticks, measured in "current" data coordinate. `convert_y` can be
 #                   used to convert an absolute unit to the data coordinate.
 # -lwd              line width for ticks
+# -col              color for the axes
+# -labels.col       color for the labels
 #
 # == details
 # It can only draw axes on x-direction.
@@ -1232,7 +1234,7 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	direction = c("outside", "inside"), minor.ticks = 4,
 	major.tick.percentage = 0.1, labels.away.percentage = major.tick.percentage/2, 
 	major.tick.length = convert_y(1, "mm", sector.index, track.index),
-	lwd = par("lwd")) {
+	lwd = par("lwd"), col = par("col"), labels.col = par("col")) {
 	
     if(!is.null(labels.direction)) {
         labels.facing = switch(labels.direction[1], 
@@ -1278,7 +1280,7 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	xlim2 = xlim
 	circos.lines(c(ifelse(major.at[1] >= xlim2[1], major.at[1], xlim2[1]),
 	               ifelse(major.at[length(major.at)] <= xlim2[2], major.at[length(major.at)], xlim2[2])), 
-				 c(h, h), sector.index = sector.index, track.index = track.index, lwd = lwd)
+				 c(h, h), sector.index = sector.index, track.index = track.index, lwd = lwd, col = col)
 	
 	# ticks
 	yrange = get.cell.meta.data("yrange", sector.index, track.index)
@@ -1290,7 +1292,7 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 	l = major.at >= xlim2[1] & major.at <= xlim2[2]
 	if(major.tick) {
 		circos.segments(major.at[l], rep(h, sum(l)), major.at[l], rep(h, sum(l)) + major.tick.length*ifelse(direction == "outside", 1, -1), straight = TRUE,
-			             sector.index = sector.index, track.index = track.index, lwd = lwd)
+			             sector.index = sector.index, track.index = track.index, lwd = lwd, col = col)
 	}
 	#for(i in seq_along(major.at)) {
 		
@@ -1334,7 +1336,7 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 		}
 	}
 
-	add_axis_labels = function(x, y, labels, h, ...) {
+	add_axis_labels = function(x, y, labels, h, col, ...) {
 		arg_list = list(...)
 
 		n = length(x)
@@ -1366,14 +1368,14 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 		}
 
 		if(n == 1) {
-			circos.text(x + ifelse(offset.first > 0, offset.first, 0), y, labels, ...)
+			circos.text(x + ifelse(offset.first > 0, offset.first, 0), y, labels, col = col, ...)
 		} else if(n == 2) {
-			circos.text(x[1] + ifelse(offset.first > 0, offset.first, 0), y[1], labels[1], ...)
-			circos.text(x[2] - ifelse(offset.last > 0, offset.last, 0), y[2], labels[2], ...)
+			circos.text(x[1] + ifelse(offset.first > 0, offset.first, 0), y[1], labels[1], col = col, ...)
+			circos.text(x[2] - ifelse(offset.last > 0, offset.last, 0), y[2], labels[2], col = col, ...)
 		} else if(n > 2) {
-			circos.text(x[1] + ifelse(offset.first > 0, offset.first, 0), y[1], labels[1], ...)
-			circos.text(x[2:(n-1)], y[2:(n-1)], labels[2:(n-1)], ...)
-			circos.text(x[n] - ifelse(offset.last > 0, offset.last, 0), y[n], labels[n], ...)
+			circos.text(x[1] + ifelse(offset.first > 0, offset.first, 0), y[1], labels[1], col = col, ...)
+			circos.text(x[2:(n-1)], y[2:(n-1)], labels[2:(n-1)], col = col, ...)
+			circos.text(x[n] - ifelse(offset.last > 0, offset.last, 0), y[n], labels[n], col = col, ...)
 		}
 
 		# circos.text(x, y, labels, ...)
@@ -1383,14 +1385,14 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 		add_axis_labels(major.at[l], rep(h, sum(l)) + (major.tick.length + convert_y(0.5, "mm", sector.index, track.index))*ifelse(direction == "outside", 1, -1),
 		           labels = major.at[l], adj = labels.adj,
 		           font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
-		           facing = labels.facing, niceFacing = labels.niceFacing, h = h)
+		           facing = labels.facing, niceFacing = labels.niceFacing, h = h, col = labels.col)
 	} else if(is.logical(labels) && !labels) {
                       
     } else if(length(labels)) {
 		add_axis_labels(major.at[l], rep(h, sum(l)) + (major.tick.length + convert_y(0.5, "mm", sector.index, track.index))*ifelse(direction == "outside", 1, -1),
 		            labels = labels[l], adj = labels.adj,
 		            font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
-			        facing = labels.facing, niceFacing = labels.niceFacing, h = h)
+			        facing = labels.facing, niceFacing = labels.niceFacing, h = h, col = labels.col)
 	}				
 		
 	#}
@@ -1406,7 +1408,7 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 
 		l = minor.at >= xlim2[1] & minor.at <= xlim2[2]
 		circos.segments(minor.at[l], rep(h, sum(l)), minor.at[l], rep(h, sum(l)) + major.tick.length/2*ifelse(direction == "outside", 1, -1), straight = TRUE,
-			sector.index = sector.index, track.index = track.index, lwd = lwd)
+			sector.index = sector.index, track.index = track.index, lwd = lwd, col = col)
 	}
 	
 	circos.par("points.overflow.warning" = op)
@@ -1454,6 +1456,8 @@ circos.xaxis = function(...) {
 # -labels.niceFacing Should facing of axis labels be human-easy
 # -tick.length      length of the tick
 # -lwd              line width for ticks
+# -col              color for the axes
+# -labels.col       color for the labels
 #
 # == details
 # Note, you need to set the gap between sectors manually by `circos.par` to make sure there is enough space
@@ -1465,7 +1469,7 @@ circos.yaxis = function(side = c("left", "right"), at = NULL, labels = TRUE, tic
 	labels.font = par("font"), labels.cex = par("cex"),
 	labels.niceFacing = TRUE,
 	tick.length = convert_x(1, "mm", sector.index, track.index), 
-	lwd = par("lwd")) {
+	lwd = par("lwd"), col = par("col"), labels.col = par("col")) {
 	
 	ylim = get.cell.meta.data("ylim", sector.index, track.index)
 		
@@ -1497,7 +1501,7 @@ circos.yaxis = function(side = c("left", "right"), at = NULL, labels = TRUE, tic
 	l = at >= ylim2[1] & at <= ylim2[2]
 	if(tick) {
 		circos.segments(rep(v, sum(l)), at[l], rep(v, sum(l)) + tick.length*ifelse(side == "right", 1, -1), at[l], straight = TRUE,
-			             sector.index = sector.index, track.index = track.index, lwd = lwd)
+			             sector.index = sector.index, track.index = track.index, lwd = lw, col = col)
 	}
 		
 	labels.adj = NULL
@@ -1511,14 +1515,14 @@ circos.yaxis = function(side = c("left", "right"), at = NULL, labels = TRUE, tic
 		circos.text(rep(v, sum(l)) + (tick.length + convert_x(0.5, "mm", sector.index, track.index))*ifelse(side == "right", 1, -1), at[l], 
 		           labels = at[l], adj = labels.adj,
 		           font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
-		           facing = "inside", niceFacing = labels.niceFacing)
+		           facing = "inside", niceFacing = labels.niceFacing, col = labels.col)
 	} else if(is.logical(labels) && !labels) {
                       
     } else if(length(labels)) {
 		circos.text(rep(v, sum(l)) + (tick.length + convert_x(0.5, "mm", sector.index, track.index))*ifelse(side == "right", 1, -1), at[l],
 		            labels = labels[l], adj = labels.adj,
 		            font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
-			        facing = "inside", niceFacing = labels.niceFacing)
+			        facing = "inside", niceFacing = labels.niceFacing, col = labels.col)
 	}				
 	
 	circos.par("points.overflow.warning" = op)

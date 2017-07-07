@@ -8,7 +8,7 @@ Add lines to the plotting regions in a same track
 }
 \usage{
 circos.trackLines(factors, x, y, track.index = get.cell.meta.data("track.index"),
-    col = "black", lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
+    col = par("col"), lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
     area = FALSE, area.baseline = NULL, border = "black", baseline = "bottom",
     pt.col = par("col"), cex = par("cex"), pch = par("pch"))
 }

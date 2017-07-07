@@ -9,7 +9,7 @@ Add lines to the plotting region
 \usage{
 circos.lines(x, y, sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"),
-    col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l",
+    col = ifelse(area, "grey", par("col")), lwd = par("lwd"), lty = par("lty"), type = "l",
     straight = FALSE, area = FALSE, area.baseline = NULL, border = "black",
     baseline = "bottom", pt.col = par("col"), cex = par("cex"), pch = par("pch"))
 }

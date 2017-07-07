@@ -15,7 +15,7 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
     direction = c("outside", "inside"), minor.ticks = 4,
     major.tick.percentage = 0.1, labels.away.percentage = major.tick.percentage/2,
     major.tick.length = convert_y(1, "mm", sector.index, track.index),
-    lwd = par("lwd"))
+    lwd = par("lwd"), col = par("col"), labels.col = par("col"))
 }
 \arguments{
 
@@ -36,6 +36,8 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
   \item{labels.away.percentage}{not used. The distance for the axis labels to the major ticks. It is the percentage to the height of the cell.}
   \item{major.tick.length}{length of the major ticks, measured in "current" data coordinate. \code{\link{convert_y}} can be used to convert an absolute unit to the data coordinate.}
   \item{lwd}{line width for ticks}
+  \item{col}{color for the axes}
+  \item{labels.col}{color for the labels}
 
 }
 \details{

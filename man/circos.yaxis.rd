@@ -13,7 +13,7 @@ circos.yaxis(side = c("left", "right"), at = NULL, labels = TRUE, tick = TRUE,
     labels.font = par("font"), labels.cex = par("cex"),
     labels.niceFacing = TRUE,
     tick.length = convert_x(1, "mm", sector.index, track.index),
-    lwd = par("lwd"))
+    lwd = par("lwd"), col = par("col"), labels.col = par("col"))
 }
 \arguments{
 
@@ -28,6 +28,8 @@ circos.yaxis(side = c("left", "right"), at = NULL, labels = TRUE, tick = TRUE,
   \item{labels.niceFacing}{Should facing of axis labels be human-easy}
   \item{tick.length}{length of the tick}
   \item{lwd}{line width for ticks}
+  \item{col}{color for the axes}
+  \item{labels.col}{color for the labels}
 
 }
 \details{

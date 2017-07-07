@@ -1501,7 +1501,7 @@ circos.yaxis = function(side = c("left", "right"), at = NULL, labels = TRUE, tic
 	l = at >= ylim2[1] & at <= ylim2[2]
 	if(tick) {
 		circos.segments(rep(v, sum(l)), at[l], rep(v, sum(l)) + tick.length*ifelse(side == "right", 1, -1), at[l], straight = TRUE,
-			             sector.index = sector.index, track.index = track.index, lwd = lw, col = col)
+			             sector.index = sector.index, track.index = track.index, lwd = lwd, col = col)
 	}
 		
 	labels.adj = NULL

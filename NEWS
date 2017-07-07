@@ -4,6 +4,7 @@ Changes in version 0.4.1
 * add `circos.raster()`
 * add `circos.arrow()`
 * re-implement `rand_color()`
+* support `col` in `circos.axis()`
 
 Changes in version 0.4.0
 ----------------------------------------------------------------------------

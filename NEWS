@@ -5,6 +5,7 @@ Changes in version 0.4.1
 * add `circos.arrow()`
 * re-implement `rand_color()`
 * support `col` in `circos.axis()`
+* `circos.genomicLabels()`: regions are automatically sorted in advance
 
 Changes in version 0.4.0
 ----------------------------------------------------------------------------

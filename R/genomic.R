@@ -1846,7 +1846,11 @@ circos.genomicLabels = function(bed, labels = NULL, labels.column = NULL,
 		labels = bed[[labels.column]]
 	}
 	bed[[4]] = as.vector(labels)
+	bed[[1]] = factor(as.vector(bed[[1]]), levels = get.all.sector.index())
+	bed = bed[order(bed[[1]], bed[[2]]), , drop = FALSE]
 	bed[[1]] = as.vector(bed[[1]])
+
+	# order `bed`
 
 	if(length(col) == 1) col = rep(col, nrow(bed))
 	if(length(cex) == 1) cex = rep(cex, nrow(bed))

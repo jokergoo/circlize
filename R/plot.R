@@ -509,9 +509,10 @@ circos.trackPoints = function(factors = NULL, x, y, track.index = get.cell.meta.
 # ``area`` to ``TURE``.
 circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"),
-    col = ifelse(area, "grey", par("col")), lwd = par("lwd"), lty = par("lty"), type = "l",
-	straight = FALSE, area = FALSE, area.baseline = NULL, border = "black",
-	baseline = "bottom", pt.col = par("col"), cex = par("cex"), pch = par("pch")) {
+    col = ifelse(area, "grey", par("col")), lwd = par("lwd"), lty = par("lty"), 
+    type = "l", straight = FALSE, area = FALSE, area.baseline = NULL, 
+    border = "black", baseline = "bottom", pt.col = par("col"), cex = par("cex"), 
+    pch = par("pch")) {
     
 	if(!is.null(area.baseline)) {
 		baseline = area.baseline

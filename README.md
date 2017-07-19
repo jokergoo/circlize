@@ -20,6 +20,10 @@ Circular layout is an efficient way for the visualization of huge
 
 Zuguang Gu, Lei Gu, Roland Eils, Matthias Schlesner, Benedikt Brors, circlize Implements and enhances circular visualization in R. Bioinformatics (Oxford, England) 2014. [PubMed](http://www.ncbi.nlm.nih.gov/pubmed/24930139)
 
+### Documentation
+
+The full documentations are available at http://jokergoo.github.io/circlize_book/book/.
+
 ### Basic design
 
 Since most of the figures are composed of points, lines and polygons, 
@@ -79,7 +83,7 @@ Functions with specific purpose:
 
 - `circos.genomicIdeogram()`
 - `circos.genomicHeatmap()`
-- `circos.genomiclabels()`
+- `circos.genomicLabels()`
 - `circos.genomicDensity()`
 - `circos.genomicRainfall()`
 
@@ -107,9 +111,6 @@ See http://jokergoo.github.io/circlize.
 
 <img width="700" alt="circlize_example" src="http://jokergoo.github.io/circlize_book/book/images/ciclize_examples.jpg">
 
-### Documentation
-
-The full documentations are available at http://jokergoo.github.io/circlize_book/book/.
 
 ### License
 

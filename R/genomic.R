@@ -1733,7 +1733,7 @@ circos.genomicHeatmap = function(bed, col, numeric.column = NULL,
 	heatmap_height = 0.15, side = c("inside", "outside"), 
 	track.margin = circos.par("track.margin")) {
 
-	mat = bed[, -(1:3)]
+	mat = bed[, -(1:3), drop = FALSE]
 	if(is.null(numeric.column)) {
 		numeric.column = which(apply(mat, 2, "is.numeric"))
 		if(length(numeric.column) == 0) {

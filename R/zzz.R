@@ -3,7 +3,7 @@ setLoadActions(function(ns) {
 })
 
 .onAttach = function(lib, pkg, ...) {
-	msg = paste0("circlize ", utils::packageDescription("dendextend")$Version, "\n",
+	msg = paste0("circlize ", utils::packageDescription("circlize")$Version, "\n",
 		"Documentation: http://jokergoo.github.io/circlize_book/book\n",
 		"Examples: http://jokergoo.github.io/circlize\n",
 		"Citation: Gu Z, circlize implements and enhances circular visualization in R, Bioinformatics 2014.")

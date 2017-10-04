@@ -615,9 +615,9 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 # -annotationTrack Which annotation track should be plotted? By default, a track containing sector names and a track
 #                  containing grid will be created.
 # -annotationTrackHeight Track height corresponding to values in ``annotationTrack``.
-# -link.border border for links, single scalar or a vector which has the same length as nrows of ``df``
-# -link.lwd width for link borders, single scalar or a vector which has the same length as nrows of ``df``
-# -link.lty style for link borders, single scalar or a vector which has the same length as nrows of ``df``
+# -link.border border for links, single scalar or a vector which has the same length as nrows of ``df`` or a data frame
+# -link.lwd width for link borders, single scalar or a vector which has the same length as nrows of ``df`` or a data frame
+# -link.lty style for link borders, single scalar or a vector which has the same length as nrows of ``df`` or a data frame
 # -link.sort whether sort links on every sector based on the width of the links on it. If it is set to "overall", all links are sorted regardless
 #            whether they are from the first column or the second column.
 # -link.decreasing for ``link.sort``
@@ -744,18 +744,37 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 		col = rgb(rgb_mat, maxColorValue = 255, alpha = rgb_mat[, 4])
 	}
 
-	link.border = rep(link.border, nr)[1:nr]
-	link.lwd = rep(link.lwd, nr)[1:nr]
-	link.lty = rep(link.lty, nr)[1:nr] 
-	link.arr.length = rep(link.arr.length, nr)[1:nr]
-	link.arr.width = rep(link.arr.width, nr)[1:nr]
-	link.arr.type = rep(link.arr.type, nr)[1:nr]
-	link.arr.lwd = rep(link.arr.lwd, nr)[1:nr]
-	link.arr.lty = rep(link.arr.lty, nr)[1:nr]
-	link.arr.col = rep(link.arr.col, nr)[1:nr]
-	link.visible = rep(link.visible, nr)[1:nr]
-	directional = rep(directional, nr)[1:nr]
-	direction.type = rep(direction.type, nr)[1:nr]
+	.normalize_to_vector = function(x, link, default) {
+		n = nrow(link)
+		if(inherits(x, "data.frame")) {
+			y = rep(default, n)
+			xv = x[[3]]
+			names(xv) = paste(x[[1]], x[[2]], sep = "$%^")
+			lv = paste(link[[1]], link[[2]], sep = "$%^")
+			names(y) = lv
+			y[names(xv)] = xv
+			y
+		} else if(length(x) == 1) {
+			rep(x, n)
+		} else {
+			x
+		}
+	}
+
+	link.border = .normalize_to_vector(link.border, df[1:2], default = NA)
+	link.lwd = .normalize_to_vector(link.lwd, df[1:2], default = 1)
+	link.lty = .normalize_to_vector(link.lty, df[1:2], default = 1)
+	link.arr.length = .normalize_to_vector(link.arr.length, df[1:2], default = 0.4)
+	link.arr.width = .normalize_to_vector(link.arr.width, df[1:2], default = 0.2)
+	link.arr.type = .normalize_to_vector(link.arr.type, df[1:2], default = "triangle")
+	link.arr.lty = .normalize_to_vector(link.arr.lty, df[1:2], default = 1)
+	link.arr.lwd = .normalize_to_vector(link.arr.lwd, df[1:2], default = 1)
+	link.arr.col = .normalize_to_vector(link.arr.col, df[1:2], default = NA)
+	link.visible = .normalize_to_vector(link.visible, df[1:2], default = NA)
+	link.rank = .normalize_to_vector(link.rank, df[1:2], default = NA)
+	directional = .normalize_to_vector(directional, df[1:2], default = 0)
+	direction.type = .normalize_to_vector(direction.type, df[1:2], default = "diffHeight")
+
 
 	#### reduce the data frame
 	xsum = structure(rep(0, length(cate)), names = cate)

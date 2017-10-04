@@ -38,9 +38,9 @@ chordDiagramFromDataFrame(df, grid.col = NULL, grid.border = NA, transparency = 
   \item{preAllocateTracks}{Pre-allocate empty tracks before drawing Chord diagram. It can be a single number indicating how many empty tracks needed to be created or a list containing settings for empty tracks. Please refer to vignette for details.}
   \item{annotationTrack}{Which annotation track should be plotted? By default, a track containing sector names and a track containing grid will be created.}
   \item{annotationTrackHeight}{Track height corresponding to values in \code{annotationTrack}.}
-  \item{link.border}{border for links, single scalar or a vector which has the same length as nrows of \code{df}}
-  \item{link.lwd}{width for link borders, single scalar or a vector which has the same length as nrows of \code{df}}
-  \item{link.lty}{style for link borders, single scalar or a vector which has the same length as nrows of \code{df}}
+  \item{link.border}{border for links, single scalar or a vector which has the same length as nrows of \code{df} or a data frame}
+  \item{link.lwd}{width for link borders, single scalar or a vector which has the same length as nrows of \code{df} or a data frame}
+  \item{link.lty}{style for link borders, single scalar or a vector which has the same length as nrows of \code{df} or a data frame}
   \item{link.sort}{whether sort links on every sector based on the width of the links on it. If it is set to "overall", all links are sorted regardless whether they are from the first column or the second column.}
   \item{link.decreasing}{for \code{link.sort}}
   \item{link.arr.length}{pass to \code{\link{circos.link}}. The format of this argument is same as \code{link.lwd}.}

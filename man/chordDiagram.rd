@@ -9,7 +9,7 @@ Plot Chord Diagram
 \usage{
 chordDiagram(x, grid.col = NULL, grid.border = NA, transparency = 0.5,
     col = NULL, row.col = NULL, column.col = NULL,
-    order = NULL, directional = 0,
+    order = NULL, directional = 0, xmax = NULL,
     symmetric = FALSE, keep.diagonal = FALSE,
     direction.type = "diffHeight", diffHeight = convert_height(2, "mm"),
     reduce = 1e-5, self.link = 2,
@@ -36,6 +36,7 @@ chordDiagram(x, grid.col = NULL, grid.border = NA, transparency = 0.5,
   \item{column.col}{pass to \code{\link{chordDiagramFromMatrix}}}
   \item{order}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{directional}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{xmax}{maximum value on x-axes, the value should be a named vector.}
   \item{symmetric}{pass to \code{\link{chordDiagramFromMatrix}}}
   \item{keep.diagonal}{pass to \code{\link{chordDiagramFromMatrix}}}
   \item{direction.type}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}

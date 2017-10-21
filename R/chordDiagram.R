@@ -14,6 +14,7 @@
 # -column.col pass to `chordDiagramFromMatrix`
 # -order  pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
 # -directional pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
+# -xmax maximum value on x-axes, the value should be a named vector.
 # -symmetric pass to `chordDiagramFromMatrix`
 # -keep.diagonal  pass to `chordDiagramFromMatrix`
 # -direction.type pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
@@ -63,7 +64,7 @@
 # 
 chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5,
 	col = NULL, row.col = NULL, column.col = NULL, 
-	order = NULL, directional = 0,
+	order = NULL, directional = 0, xmax = NULL,
 	symmetric = FALSE, keep.diagonal = FALSE, 
 	direction.type = "diffHeight", diffHeight = convert_height(2, "mm"), 
 	reduce = 1e-5, self.link = 2,
@@ -83,7 +84,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 		chordDiagramFromMatrix(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
 			col = col, row.col = row.col, column.col = column.col, order = order, directional = directional,
 			symmetric = symmetric, keep.diagonal = keep.diagonal, direction.type = direction.type,
-			diffHeight = diffHeight, reduce = reduce, self.link = self.link,
+			diffHeight = diffHeight, reduce = reduce, self.link = self.link, xmax = xmax,
 			preAllocateTracks = preAllocateTracks, annotationTrack = annotationTrack, annotationTrackHeight = annotationTrackHeight,
 			link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 			link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
@@ -96,7 +97,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 				return(chordDiagramFromMatrix(as.matrix(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
 					col = col, row.col = row.col, column.col = column.col, order = order, directional = directional,
 					symmetric = symmetric, keep.diagonal = keep.diagonal, direction.type = direction.type,
-					diffHeight = diffHeight, reduce = reduce, self.link = self.link,
+					diffHeight = diffHeight, reduce = reduce, self.link = self.link, xmax = xmax,
 					preAllocateTracks = preAllocateTracks, annotationTrack = annotationTrack, annotationTrackHeight = annotationTrackHeight,
 					link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 					link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
@@ -105,7 +106,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 			} else {
 				chordDiagramFromDataFrame(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
 					col = col, order = order, directional = directional, direction.type = direction.type,
-					diffHeight = diffHeight, reduce = reduce, self.link = self.link,
+					diffHeight = diffHeight, reduce = reduce, self.link = self.link, xmax = xmax,
 					preAllocateTracks = preAllocateTracks, annotationTrack = annotationTrack, annotationTrackHeight = annotationTrackHeight,
 					link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 					link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
@@ -278,6 +279,7 @@ mat2df = function(mat) {
 # -order Order of sectors. Default order is ``union(df[[1]], df[[2]])``.
 # -directional Whether links have directions. 1 means the direction is from the first column in ``df`` to the second column, -1
 #              is the reverse, 0 is no direction, and 2 for two directional. Same setting as ``link.border``.
+# -xmax maximum value on x-axes, the value should be a named vector.
 # -direction.type type for representing directions. Can be one or two values in "diffHeight" and "arrows". If the value contains "diffHeight",
 #            different heights of the links are used to represent the directions for which starting root has long height to give people feeling
 #            that something is comming out. If the value contains "arrows", users can customize arrows with following arguments.
@@ -326,7 +328,7 @@ mat2df = function(mat) {
 chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transparency = 0.5,
 	col = NULL, row.col = NULL, column.col = NULL, order = NULL, directional = 0,
 	direction.type = "diffHeight", diffHeight = convert_height(2, "mm"), 
-	reduce = 1e-5, self.link = 2,
+	reduce = 1e-5, xmax = NULL, self.link = 2,
 	symmetric = FALSE, keep.diagonal = FALSE, preAllocateTracks = NULL,
 	annotationTrack = c("name", "grid", "axis"), 
 	annotationTrackHeight = convert_height(c(3, 2), "mm"),
@@ -552,7 +554,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 	df = mat2df(mat)
 
 	chordDiagramFromDataFrame(df[c(1, 2, 5)], grid.col = grid.col, grid.border = grid.border, transparency = NA,
-		col = psubset(col, df$ri, df$ci), order = order, 
+		col = psubset(col, df$ri, df$ci), order = order, xmax = xmax,
 		directional = psubset(directional, df$ri, df$ci),
 		direction.type = psubset(direction.type, df$ri, df$ci), 
 		diffHeight = diffHeight, 
@@ -597,6 +599,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 # -order Order of sectors. Default order is ``union(df[[1]], df[[2]])``.
 # -directional Whether links have directions. 1 means the direction is from the first column in ``df`` to the second column, -1
 #              is the reverse, 0 is no direction, and 2 for two directional. The value can be a vector which has same length as number of rows in ``df``.
+# -xmax maximum value on x-axes, the value should be a named vector.
 # -direction.type type for representing directions. Can be one or two values in "diffHeight" and "arrows". If the value contains "diffHeight",
 #            different heights of the links are used to represent the directions for which starting root has long height to give people feeling
 #            that something is comming out. If the value contains "arrows", users can customize arrows with following arguments. 
@@ -640,7 +643,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 # A data frame which contains positions of links, see explanation in `chordDiagram`.
 #
 chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, transparency = 0.5,
-	col = NULL, order = NULL, directional = 0,
+	col = NULL, order = NULL, directional = 0, xmax = NULL,
 	direction.type = "diffHeight", diffHeight = convert_height(2, "mm"), 
 	reduce = 1e-5, self.link = 2, preAllocateTracks = NULL,
 	annotationTrack = c("name", "grid", "axis"), 
@@ -920,6 +923,15 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	}
 
 	#######################################
+
+	if(!is.null(xmax)) {
+		overlap = intersect(names(xmax), names(xsum))
+		xmax = xmax[overlap]
+		xmax = xmax[xmax > xsum[overlap]]
+		if(length(xmax)) {
+			xsum[names(xmax)] = xmax
+		}
+	}
 
 	o.cell.padding = circos.par("cell.padding")
 	circos.par(cell.padding = c(0, 0, 0, 0))

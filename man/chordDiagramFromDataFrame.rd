@@ -8,7 +8,7 @@ Plot Chord Diagram from a data frame
 }
 \usage{
 chordDiagramFromDataFrame(df, grid.col = NULL, grid.border = NA, transparency = 0.5,
-    col = NULL, order = NULL, directional = 0,
+    col = NULL, order = NULL, directional = 0, xmax = NULL,
     direction.type = "diffHeight", diffHeight = convert_height(2, "mm"),
     reduce = 1e-5, self.link = 2, preAllocateTracks = NULL,
     annotationTrack = c("name", "grid", "axis"),
@@ -31,6 +31,7 @@ chordDiagramFromDataFrame(df, grid.col = NULL, grid.border = NA, transparency = 
   \item{col}{Colors for links. It can be a vector which corresponds to connections in \code{df}, or a function which generate colors  according to values (the third column) in \code{df}, or a single value which means colors for all links are the same. You may use \code{\link{colorRamp2}} to generate a function which maps values to colors.}
   \item{order}{Order of sectors. Default order is \code{union(df[[1]], df[[2]])}.}
   \item{directional}{Whether links have directions. 1 means the direction is from the first column in \code{df} to the second column, -1 is the reverse, 0 is no direction, and 2 for two directional. The value can be a vector which has same length as number of rows in \code{df}.}
+  \item{xmax}{maximum value on x-axes, the value should be a named vector.}
   \item{direction.type}{type for representing directions. Can be one or two values in "diffHeight" and "arrows". If the value contains "diffHeight", different heights of the links are used to represent the directions for which starting root has long height to give people feeling that something is comming out. If the value contains "arrows", users can customize arrows with following arguments.  The value can be a vector which has same length as number of rows in \code{df}. Note if you want to set both \code{diffHeight} and \code{arrows} for certain links, you need to embed these two options into one string such as \code{"diffHeight+arrows"}.}
   \item{diffHeight}{The difference of height between two 'roots' if \code{directional} is set to \code{TRUE}. If the value is set to a positive value, start root is shorter than end root and if it is set to a negative value, start root is longer than the end root. The value can be a vector which has same length as number of rows in \code{df}.}
   \item{reduce}{if the ratio of the width of certain grid compared to the whole circle is less than this value, the grid is removed on the plot. Set it to value less than zero if you want to keep all tiny grid.}

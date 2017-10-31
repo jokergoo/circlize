@@ -105,5 +105,5 @@ importFrom("shape", Arrowhead)
 importFrom("stats", rnorm)
 importFrom("stats", runif)
 importFrom("utils", download.file)
-importFrom("utils", read.table)
+importFrom("utils", read.table, packageDescription)
 

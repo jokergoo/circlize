@@ -233,6 +233,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
             factors = factor(factors)
         }
     }
+    levels(factors) = intersect(levels(factors), as.character(factors))
     le = levels(factors)
     
     # initialize .SECTOR.DATA

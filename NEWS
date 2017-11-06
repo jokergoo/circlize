@@ -4,6 +4,7 @@ Changes in version 0.4.2
 * add startup message
 * add `xmax` argument in `chordDiagram()`
 * first column is refactorized in `circos.initialize()`
+* add names for CELL_META
 
 Changes in version 0.4.1
 ---------------------------------------------------------------------------

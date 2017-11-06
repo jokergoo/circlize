@@ -129,6 +129,7 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 			track.height = get.cell.meta.data("track.height", sector.index = factors[1], track.index = track.index)
 			# ignore track.margin 
 			circos.par("track.margin" = get.cell.meta.data("track.margin", sector.index = factors[1], track.index = track.index))
+			circos.par("cell.padding" = get.cell.meta.data("cell.padding", sector.index = factors[1], track.index = track.index))
 		}
         if(is.null(ylim) && is.null(y)) {
             for(sid in get.all.sector.index()) {

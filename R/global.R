@@ -800,10 +800,12 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 # dev.off()
 CELL_META = "don't use me directly"
 class(CELL_META) = "CELL_META"
-attr(CELL_META, "names") = c("xlim", "ylim", "xrange", "yrange", "xcenter", "ycenter", "cell.xlim", "cell.ylim",
-	                         "sector.numeric.index", "sector.index", "track.index", "xplot", "yplot", "track.margin", "cell.padding",
-	                         "cell.start.degree", "cell.end.degree", "cell.bottom.radius", "cell.top.radius", "bg.col", "bg.border",
-	                         "bg.lty", "bg.lwd", "track.height")
+names.CELL_META = function(x) {
+	c("xlim", "ylim", "xrange", "yrange", "xcenter", "ycenter", "cell.xlim", "cell.ylim",
+     "sector.numeric.index", "sector.index", "track.index", "xplot", "yplot", "track.margin", "cell.padding",
+     "cell.start.degree", "cell.end.degree", "cell.bottom.radius", "cell.top.radius", "bg.col", "bg.border",
+     "bg.lty", "bg.lwd", "track.height")
+}
 
 # == title
 # Easy to way to get meta data in the current cell

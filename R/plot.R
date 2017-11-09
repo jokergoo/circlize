@@ -514,7 +514,7 @@ circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
     type = "l", straight = FALSE, area = FALSE, area.baseline = NULL, 
     border = "black", baseline = "bottom", pt.col = par("col"), cex = par("cex"), 
     pch = par("pch")) {
-    
+
 	if(!is.null(area.baseline)) {
 		baseline = area.baseline
 		warning("`area.baseline` is deprecated, please use `baseline` instead.")
@@ -583,7 +583,7 @@ circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
     } else {
         d = lines.expand(x, y, sector.index, track.index)
     }
-	
+
 	if(area) {
 		ylim = get.cell.meta.data("ylim", sector.index, track.index)
 		d = rbind(d, c(d[nrow(d), 1], baseline))

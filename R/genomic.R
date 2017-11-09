@@ -301,6 +301,14 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 	# now `data` is either a data frame or a list of data frame
 	data = normalizeToDataFrame(data)
 
+	if(is.dataFrameList(data)) {
+		for(i in seq_along(data)) {
+			data[[i]][[1]] = as.character(data[[i]][[1]])
+		}
+	} else {
+		data[[1]] = as.character(data[[1]])
+	}
+
 	# excluding the first three columns
 	if(!is.null(numeric.column)) {
 		if(is.numeric(numeric.column)) {
@@ -310,7 +318,7 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 			stop_wrap("Wrong value in `numeric.column`, they should be larger than 3 or character index.")
 		}
 	}
-	
+
 	# auto calcualte numeric column
 	if(is.dataFrameList(data)) {
 		if(!is.null(numeric.column)) {
@@ -442,7 +450,7 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 					
 					chr = get.current.chromosome()
 					for(i in seq_along(data)) {
-						l = data[[i]] == chr
+						l = data[[i]][, 1] == chr
 						df = data[[i]][l, , drop = FALSE]
 						if(nrow(df)) {
 							.param = new.env()
@@ -643,7 +651,6 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 		baseline = area.baseline
 		warning("`area.baseline` is deprecated, please use `baseline` instead.")
 	}
-	
 	nr = nrow(region)
 	if(is.atomic(value) && length(value) == 1) {
 		value = data.frame(value = rep(value, nr))
@@ -1277,11 +1284,18 @@ circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, o
 	} else {
 		ymax = max(sapply(df, function(gr) max(gr[[4]])))
 	}
-	circos.genomicTrackPlotRegion(df, ylim = c(0, ymax), panel.fun = function(region, value, ...) {
-		i = getI(...)
-		circos.genomicLines(region, value, col = col[i], lwd = lwd[i], lty = lty[i], type = type[i], 
-			border = border[i], area = area[i], baseline = baseline[i]) 
-	}, ...)
+	if(length(df) == 1) {
+		circos.genomicTrackPlotRegion(df[[1]], ylim = c(0, ymax), panel.fun = function(region, value, ...) {
+			circos.genomicLines(region, value, col = col, lwd = lwd, lty = lty, type = type, 
+				border = border, area = area, baseline = baseline) 
+		}, ...)
+	} else {
+		circos.genomicTrackPlotRegion(df, ylim = c(0, ymax), panel.fun = function(region, value, ...) {
+			i = getI(...)
+			circos.genomicLines(region, value, col = col[i], lwd = lwd[i], lty = lty[i], type = type[i], 
+				border = border[i], area = area[i], baseline = baseline[i]) 
+		}, ...)
+	}
 }
 
 # == title

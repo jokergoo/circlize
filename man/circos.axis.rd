@@ -15,7 +15,7 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
     direction = c("outside", "inside"), minor.ticks = 4,
     major.tick.percentage = 0.1, labels.away.percentage = major.tick.percentage/2,
     major.tick.length = convert_y(1, "mm", sector.index, track.index),
-    lwd = par("lwd"), col = par("col"), labels.col = par("col"))
+    lwd = par("lwd"), col = par("col"), labels.col = par("col"), labels.pos.adjust = TRUE)
 }
 \arguments{
 
@@ -38,6 +38,7 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
   \item{lwd}{line width for ticks}
   \item{col}{color for the axes}
   \item{labels.col}{color for the labels}
+  \item{labels.pos.adjust}{whether to adjust the positions of the first label and the last label}
 
 }
 \details{

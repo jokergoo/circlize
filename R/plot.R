@@ -1222,7 +1222,8 @@ circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.d
 # -lwd              line width for ticks
 # -col              color for the axes
 # -labels.col       color for the labels
-# -labels.pos.adjust  whether to adjust the positions of the first label and the last label
+# -labels.pos.adjust  whether to adjust the positions of the first label and the last label. The value can be a vector
+#                    of length two which correspond to the first label and the last label.
 #
 # == details
 # It can only draw axes on x-direction.
@@ -1370,8 +1371,11 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 			offset.last = last_label_width/2 - abs(x[n] - get.cell.meta.data("cell.xlim", sector.index, track.index)[2])
 		}
 
-		if(!labels.pos.adjust) {
+		if(length(labels.pos.adjust) == 1) labels.pos.adjust = rep(labels.pos.adjust, 2)
+		if(!labels.pos.adjust[1]) {
 			offset.first = 0
+		}
+		if(!labels.pos.adjust[2]) {
 			offset.last = 0
 		}
 

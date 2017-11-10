@@ -1103,6 +1103,7 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 		}
 
 		m = polar2Cartesian(d)
+		
 		for(i in seq_along(x)) {
 			text(m[i, 1], m[i, 2], labels = labels[i], srt = srt[i],
 				 cex = cex[i], col = col[i], font = font[i], adj = adj, ...)
@@ -1110,6 +1111,16 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
     }
 	
     return(invisible(NULL))
+}
+
+# == title
+# Convert fontsize to cex
+#
+# == param
+# -x value for fontsize
+#
+fontsize = function(x) {
+	x/par("ps")
 }
 
 # == title

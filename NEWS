@@ -6,6 +6,7 @@ Changes in version 0.4.2
 * first column is refactorized in `circos.initialize()`
 * add names for CELL_META
 * add `labels.pos.adjust` in `circos.axis()`
+* add `fontsize()` function
 
 Changes in version 0.4.1
 ---------------------------------------------------------------------------

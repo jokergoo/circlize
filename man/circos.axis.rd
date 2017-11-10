@@ -38,7 +38,7 @@ circos.axis(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
   \item{lwd}{line width for ticks}
   \item{col}{color for the axes}
   \item{labels.col}{color for the labels}
-  \item{labels.pos.adjust}{whether to adjust the positions of the first label and the last label}
+  \item{labels.pos.adjust}{whether to adjust the positions of the first label and the last label. The value can be a vector of length two which correspond to the first label and the last label.}
 
 }
 \details{

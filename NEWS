@@ -7,6 +7,7 @@ Changes in version 0.4.2
 * add names for CELL_META
 * add `labels.pos.adjust` in `circos.axis()`
 * add `fontsize()` function
+* `circos.nested()`: check whether sector order in the two circular plots are consistent
 
 Changes in version 0.4.1
 ---------------------------------------------------------------------------

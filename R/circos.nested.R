@@ -47,6 +47,7 @@ circos.nested = function(f1, f2, correspondance, connection_height = convert_hei
 		if(!is.circos.initialized()) {
 			stop("Do not call `circos.clear()` in `f2`.")
 		}
+
 		param2 = circos.par()
 		correspondance[[1]] = as.vector(correspondance[[1]])
 		correspondance[[4]] = as.vector(correspondance[[4]])
@@ -75,9 +76,27 @@ circos.nested = function(f1, f2, correspondance, connection_height = convert_hei
 				stop("Do not modify circos.par('start.degree') when adjust_start_degree = TRUE in `f2()`.")
 			}
 		}
+
+		rownames(correspondance) = correspondance[, 4]
+		correspondance = correspondance[all_sn, ]
 	})
 	circos.clear()
-	dev.off()
+	dev.off2()
+
+	if(any(tapply(correspondance[all_sn, 2], correspondance[all_sn, 1], is.unsorted))) {
+		warning(strwrap2("Sectors in `f2()` which belongs to one single sector in `f1()` should be sorted by positions, or else connection lines may overlap."))
+	}
+	if(!all(tapply(seq_along(all_sn), correspondance[all_sn, 1], function(x) {
+		if(length(x) == 1) {
+			TRUE
+		} else {
+			all(diff(x) == 1)
+		}
+ 	}))) {
+		warning(strwrap2("Sectors in `f2()` should be sorted by the sector order in `f1()`, or else connection lines may overlap."))
+ 	}
+
+	f2_od = unique(correspondance[all_sn, 1])
 
 	circos.par(points.overflow.warning = FALSE)
 	f1()
@@ -193,4 +212,20 @@ circos.nested = function(f1, f2, correspondance, connection_height = convert_hei
 	f2()
 	circos.clear()
 	par(new = op)
+
+	if(!identical(intersect(all_sn, f2_od), f2_od)) {
+		warning(strwrap2("Sector order in `f2()` should be the same as in `f1()`, or else connection lines may overlap."))
+	}
+}
+
+dev.off2 = function () {
+    i1 = dev.prev()
+    i2 = dev.cur()
+    if (i1 > 1)
+        dev.set(i1)
+    dev.off(i2)
+}
+
+strwrap2 = function(x) {
+	paste(strwrap(x), collapse = "\n")
 }

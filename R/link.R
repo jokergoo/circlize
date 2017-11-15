@@ -321,6 +321,7 @@ circos.link = function(sector.index1, point1, sector.index2, point2,
 				} else if(directional == 2) {
 					lines(dcenter[-c(1, nr), , drop = FALSE], col = arr.col, lwd = arr.lwd, lty = arr.lty, lend = "butt")
 				}
+
 		        if(directional %in% c(1,2)) {  # point1 to point2
 		        	alpha = line_degree(dcenter[nr-1, 1], dcenter[nr-1, 2], dcenter[nr, 1], dcenter[nr, 2])
 		        	oljoin = par("ljoin")
@@ -372,11 +373,15 @@ arc.midpoint = function(theta1, theta2, rou) {
 # points from theta1 to theta2
 # first calcualte bezier curve of which two end points are located at (-d, 0), (d, 0)
 # and the summit is located at (0, 2h)
-getQuadraticPoints = function(theta1, theta2, rou1, rou2, h = NULL, h.ratio = h.ratio, w = 1) {
+getQuadraticPoints = function(theta1, theta2, rou1, rou2, h = NULL, h.ratio = 0.5, w = 1) {
 
 	# enforce theta1 is always less than theta 2 (reverse-clockwise)
 	theta1 = theta1 %% 360
 	theta2 = theta2 %% 360
+
+	if(abs(abs(theta2 - theta1) - 180) < 1e-3) {
+		theta1 = theta1 + 1e-3
+	}
 
     if (abs(theta2 - theta1) > 180) {
         theta_mid = (theta2 + theta1)/2 - 180

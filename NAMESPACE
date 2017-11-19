@@ -107,4 +107,4 @@ importFrom("stats", rnorm)
 importFrom("stats", runif)
 importFrom("utils", download.file)
 importFrom("utils", read.table, packageDescription)
-
+importFrom("grDevices", "dev.cur", "dev.prev", "dev.set")

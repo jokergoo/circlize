@@ -1,8 +1,8 @@
 Package: circlize
 Type: Package
 Title: Circular Visualization
-Version: 0.4.2
-Date: 2017-10-31
+Version: 0.4.3
+Date: 2017-11-17
 Author: Zuguang Gu
 Maintainer: Zuguang Gu <z.gu@dkfz.de>
 Depends: R (>= 3.0.0), graphics
@@ -22,6 +22,6 @@ Description: Circular layout is an efficient way for the visualization of huge
     better understanding complex patterns behind multiple dimensional data.
 URL: https://github.com/jokergoo/circlize, http://jokergoo.github.io/circlize_book/book/
 License: GPL (>= 2)
-Packaged: 2017-10-31 00:00:00 UTC; Administrator
+Packaged: 2017-11-17 00:00:00 UTC; Administrator
 Repository: CRAN
-Date/Publication: 2017-10-31 00:00:00
+Date/Publication: 2017-11-17 00:00:00

@@ -1,6 +1,8 @@
 Changes in version 0.4.3
 --------------------------------------------------------------------------
 
+* `circos.trackHist()`: add `area` argument to add filled color under density lines.
+
 Changes in version 0.4.2
 ---------------------------------------------------------------------------
 

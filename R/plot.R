@@ -1584,6 +1584,7 @@ circos.yaxis = function(side = c("left", "right"), at = NULL, labels = TRUE, tic
 # -include.lowest see `graphics::hist`
 # -right          see `graphics::hist`
 # -draw.density   whether draw density lines instead of histogram bars.
+# -area           whether to fill the area below the density lines. If it is set to ``TRUE``, ``col`` controls the filled color in the area and ``border`` controls color of the line. 
 # -bin.size size of the bins of the histogram
 # 
 # == details
@@ -1594,7 +1595,7 @@ circos.trackHist = function(factors, x, track.height = circos.par("track.height"
 	border = "black", lty = par("lty"), lwd = par("lwd"),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
     breaks = "Sturges", include.lowest = TRUE, right = TRUE, draw.density = FALSE,
-    bin.size = NULL) {
+    bin.size = NULL, area = FALSE) {
     
     # basic check here
     if(length(x) != length(factors)) {
@@ -1662,7 +1663,7 @@ circos.trackHist = function(factors, x, track.height = circos.par("track.height"
     
     if(draw.density) {
         circos.trackLines(factors = fa, xx, yy, track.index = track.index,
-                          col = col, lty = lty, lwd = lwd)
+                          col = col, lty = lty, lwd = lwd, area = area, border = border)
     } else {
         # in each cell, draw rectangles
         col = recycle.with.levels(col, le)

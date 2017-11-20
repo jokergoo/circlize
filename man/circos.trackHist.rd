@@ -12,7 +12,7 @@ circos.trackHist(factors, x, track.height = circos.par("track.height"),
     border = "black", lty = par("lty"), lwd = par("lwd"),
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
     breaks = "Sturges", include.lowest = TRUE, right = TRUE, draw.density = FALSE,
-    bin.size = NULL)
+    bin.size = NULL, area = FALSE)
 }
 \arguments{
 
@@ -33,6 +33,7 @@ circos.trackHist(factors, x, track.height = circos.par("track.height"),
   \item{include.lowest}{see \code{\link[graphics]{hist}}}
   \item{right}{see \code{\link[graphics]{hist}}}
   \item{draw.density}{whether draw density lines instead of histogram bars.}
+  \item{area}{whether to fill the area below the density lines. If it is set to \code{TRUE}, \code{col} controls the filled color in the area and \code{border} controls color of the line. }
   \item{bin.size}{size of the bins of the histogram}
 
 }

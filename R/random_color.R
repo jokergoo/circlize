@@ -167,7 +167,7 @@ getColorInfo = function(hue) {
 		hue = hue - 360
 	}
 
-	for (colorName in names(colorDictionary)) {
+	for (colorName in ls(envir = colorDictionary)) {
 	   color = colorDictionary[[colorName]]
 	   if (!is.null(color$hueRange) && hue >= color$hueRange[1] && hue <= color$hueRange[2]) {
 	      return(colorDictionary[[colorName]])

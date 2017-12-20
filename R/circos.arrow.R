@@ -64,7 +64,7 @@ circos.arrow = function(x1, x2, y = get.cell.meta.data("ycenter", sector.index, 
 	track.index = track.index
 
 	if(x2 <= x1) {
-		stop("`x2` should be larger than `x1`.")
+		stop("`x2` should be larger than `x1`. Set `arrow.position = 'start'`\nto get reverse clockwise arrows.")
 	}
 	
 	if(abs(x2 - x1 - arrow.head.length) < 1e-6) {

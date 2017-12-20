@@ -3,6 +3,7 @@ Changes in version 0.4.3
 
 * `circos.trackHist()`: add `area` argument to add filled color under density lines.
 * `getColorInfo()`: use `ls(envir)` to get the names of variables in the environment.
+* `circos.arrows`: add instructions of making reverse clockwise arrows.
 
 Changes in version 0.4.2
 ---------------------------------------------------------------------------

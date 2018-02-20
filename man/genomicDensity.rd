@@ -7,7 +7,7 @@ Calculate genomic region density
 Calculate genomic region density
 }
 \usage{
-genomicDensity(region, window.size = 1e7, n.window = NULL, overlap = TRUE)
+genomicDensity(region, window.size = 1e7, n.window = NULL, overlap = TRUE, chr.len = NULL)
 }
 \arguments{
 
@@ -15,6 +15,7 @@ genomicDensity(region, window.size = 1e7, n.window = NULL, overlap = TRUE)
   \item{window.size}{Window size to calculate genomic density}
   \item{n.window}{number of windows, if it is specified, \code{window.size} is ignored}
   \item{overlap}{Whether two neighbouring windows have half overlap}
+  \item{chr.len}{the chromosome length. The value should be named vector}
 
 }
 \details{

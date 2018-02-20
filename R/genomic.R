@@ -1271,13 +1271,7 @@ circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, o
 	
 	df = vector("list", length = length(data))
 	for(i in seq_along(data)) {
-		all.chr = unique(data[[i]][[1]])
-		for(chr in all.chr) {
-			region = data[[i]][data[[i]][[1]] == chr, 2:3, drop = FALSE]
-			dn = genomicDensity(region, window.size = window.size, overlap = overlap)
-			dn = cbind(rep(chr, nrow(dn)), dn)
-			df[[i]] = rbind(df[[i]], dn)
-		}
+		df[[i]] = genomicDensity(data[[i]], window.size = window.size, overlap = overlap)
 	}
 	if(ylim.force) {
 		ymax = 1

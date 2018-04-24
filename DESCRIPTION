@@ -21,7 +21,7 @@ Description: Circular layout is an efficient way for the visualization of huge
     it gives users more convenience and freedom to design figures for 
     better understanding complex patterns behind multiple dimensional data.
 URL: https://github.com/jokergoo/circlize, http://jokergoo.github.io/circlize_book/book/
-License: MIT
+License: MIT + file LICENSE
 Packaged: 2018-2-20 00:00:00 UTC; Administrator
 Repository: CRAN
 Date/Publication: 2018-2-20 00:00:00

@@ -20,6 +20,7 @@ resetGlobalVariable()
 # -RESET reset to default values
 # -READ.ONLY please ignore
 # -LOCAL please ignore
+# -ADD please ignore
 # 
 # == details
 # Global parameters for the circular layout. Currently supported parameters are:

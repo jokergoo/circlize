@@ -7,7 +7,7 @@ Parameters for the circular layout
 Parameters for the circular layout
 }
 \usage{
-circos.par(..., RESET = FALSE, READ.ONLY = NULL, LOCAL = FALSE)
+circos.par(..., RESET = FALSE, READ.ONLY = NULL, LOCAL = FALSE, ADD = FALSE)
 }
 \arguments{
 

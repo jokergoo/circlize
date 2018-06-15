@@ -134,6 +134,8 @@ circos.genomicIdeogram = function(cytoband = system.file(package = "circlize",
 # -plotType     If it is not ``NULL``, there will create a new track containing axis and names for sectors.
 #               This argument controls which part should be drawn, ``axis`` for genomic axis and ``labels`` for chromosome names
 # -tickLabelsStartFromZero Whether axis tick labels start from 0? This will only affect the axis labels while not affect x-values in cells.
+# -axis.labels.cex the font size for the axis tick labels.
+# -labels.cex   the font size for the labels.
 # -track.height If ``PlotType`` is not ``NULL``, height of the annotation track.
 # -...          Pass to `circos.initialize`
 #
@@ -146,7 +148,8 @@ circos.genomicIdeogram = function(cytoband = system.file(package = "circlize",
 #
 # For more details on initializing genomic plot, please refer to the vignettes.
 circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
-	plotType = c("axis", "labels"), tickLabelsStartFromZero = TRUE, 
+	plotType = c("axis", "labels"), tickLabelsStartFromZero = TRUE,
+	axis.labels.cex = 0.4*par("cex"), labels.cex = par("cex"), 
 	track.height = convert_height(3, "mm"), ...) {
 	
 	if(is.factor(data[[1]])) {
@@ -217,12 +220,12 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 				
 			
 				if(all(c("axis", "labels") %in% plotType)) {
-					circos.axis(h = 0, major.at = major.at, labels = major.tick.labels, labels.cex = 0.4*par("cex"))
-					circos.text(mean(xlim), 1.3, labels = sector.names[sector.index], cex = par("cex"), adj = c(0.5, 0), niceFacing = TRUE)
+					circos.axis(h = 0, major.at = major.at, labels = major.tick.labels, labels.cex = axis.labels.cex)
+					circos.text(mean(xlim), 1.3, labels = sector.names[sector.index], cex = labels.cex, adj = c(0.5, 0), niceFacing = TRUE)
 				} else if("labels" %in% plotType) {
-					circos.text(mean(xlim), 0, labels = sector.names[sector.index], cex = par("cex"), adj = c(0.5, 0), niceFacing = TRUE)
+					circos.text(mean(xlim), 0, labels = sector.names[sector.index], cex = labels.cex, adj = c(0.5, 0), niceFacing = TRUE)
 				} else if("axis" %in% plotType) {
-					circos.axis(h = 0, major.at = major.at, labels = major.tick.labels, labels.cex = 0.4*par("cex"))
+					circos.axis(h = 0, major.at = major.at, labels = major.tick.labels, labels.cex = axis.labels.cex)
 				}
  			}
 		)

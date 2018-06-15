@@ -15,7 +15,8 @@ circos.par(..., RESET = FALSE, READ.ONLY = NULL, LOCAL = FALSE, ADD = FALSE)
   \item{RESET}{reset to default values}
   \item{READ.ONLY}{please ignore}
   \item{LOCAL}{please ignore}
-  \item{ADD}{please ignore}
+  \item{ADD}{please ignore}
+
 }
 \details{
 Global parameters for the circular layout. Currently supported parameters are:

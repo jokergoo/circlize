@@ -1,11 +1,11 @@
 Changes in version 0.4.5
--------------------------------------------------------------------------
-
-* update denpendency of GlobalOptions package
+------------------------------------------------------------------------
+* add `axis.labels.cex` and `labels.cex` in `circos.genomicInitialize()`.
 
 Changes in version 0.4.4
 -------------------------------------------------------------------------
 
+* update denpendency of GlobalOptions package
 * `genomicDensity()`: add `chr.len` argument.
 
 Changes in version 0.4.3

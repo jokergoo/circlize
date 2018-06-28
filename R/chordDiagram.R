@@ -655,7 +655,8 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	link.arr.type = "triangle", link.arr.lty = par("lty"), 
 	link.arr.lwd = par("lwd"), link.arr.col = par("col"), 
 	link.largest.ontop = FALSE, link.visible = link.visible, 
-	link.rank = seq_len(nrow(df)), ...) {
+	link.rank = seq_len(nrow(df)), 
+	scale = FALSE, ...) {
 
 	if(nrow(df) != 2) {
 		if(identical(direction.type, c("diffHeight", "arrows")) || identical(direction.type, c("arrows", "diffHeight"))) {
@@ -671,12 +672,20 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 		stop("`df` should have at least have two columns.")
 	}
 	if(ncol(df) == 2) {
-		df$value = rep(1, nrow(df))
+		df[, 3] = rep(1, nrow(df))
+		df[, 4] = df[, 3]
+	} else if(ncol(df) == 3) {
+		df[, 4] = df[, 3]
 	}
-	df2 = df[1:3]
+	if(scale) {
+		for(nm in unique(df[, 1])) df[ df[, 1] == nm, 4] = df[ df[, 1] == nm, 3]/sum(df[ df[, 1] == nm, 3])
+		for(nm in unique(df[, 2])) df[ df[, 2] == nm, 5] = df[ df[, 2] == nm, 3]/sum(df[ df[, 2] == nm, 3])
+		df = df[, -3]
+	}
+	df2 = df[1:4]
 	df2[[1]] = as.character(df2[[1]])
 	df2[[2]] = as.character(df2[[2]])
-	colnames(df2) = c("rn", "cn", "value")
+	colnames(df2) = c("rn", "cn", "value1", "value2")
 	df = df2
 	nr = nrow(df)
 
@@ -732,7 +741,7 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 		col = grid.col[df[[1]]]
 	} else {
 		if(is.function(col)) {
-			col = col(df[[3]])
+			col = col(pmax(df$value1, df$value2))
 		} else {
 			col = rep(col, nr)[1:nr]
 		}
@@ -783,13 +792,13 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	xsum = structure(rep(0, length(cate)), names = cate)
 	for(i in seq_len(nr)) {
 		if(df$rn[i] == df$cn[i]) {
-			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value[i])
+			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value1[i])
 			if(self.link == 2) {
-				xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value[i])  # <<- self-link!!!!!
+				xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value2[i])  # <<- self-link!!!!!
 			}
 		} else {
-			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value[i])
-			xsum[df$cn[i]] = xsum[df$cn[i]] + abs(df$value[i])
+			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value1[i])
+			xsum[df$cn[i]] = xsum[df$cn[i]] + abs(df$value2[i])
 		}
 	}
 
@@ -819,13 +828,13 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	xsum = structure(rep(0, length(cate)), names = cate)
 	for(i in seq_len(nr)) {
 		if(df$rn[i] == df$cn[i]) {
-			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value[i])
+			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value1[i])
 			if(self.link == 2) {
-				xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value[i])  # <<- self-link!!!!!
+				xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value2[i])  # <<- self-link!!!!!
 			}
 		} else {
-			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value[i])
-			xsum[df$cn[i]] = xsum[df$cn[i]] + abs(df$value[i])
+			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value1[i])
+			xsum[df$cn[i]] = xsum[df$cn[i]] + abs(df$value2[i])
 		}
 	}
 
@@ -854,23 +863,23 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 
 	if(is.logical(link.sort)) {
 		# position of root 1
-		od = tapply(abs(df$value), df$rn, .order, link.sort[1], link.decreasing[1])
+		od = tapply(abs(df$value1), df$rn, .order, link.sort[1], link.decreasing[1])
 		for(nm in names(od)) {  # for each sector
 			l = df$rn == nm # rows in df that correspond to current sector
 			df$o1[l] = od[[nm]] # adjust rows according to the order in current sector
-			df$x1[l][od[[nm]]] = cumsum(abs(df$value[l])[od[[nm]]]) # position
+			df$x1[l][od[[nm]]] = cumsum(abs(df$value1[l])[od[[nm]]]) # position
 
 			l2 = df$rn == nm & df$cn == nm 
 			if(sum(l2)) { # there is a self link
 				if(self.link == 1) {
-					df$x2[l2] = df$x1[l2]+abs(df$value[l2])*0.000001
+					df$x2[l2] = df$x1[l2]+abs(df$value1[l2])*0.000001
 				}
 			}
 		}
 		max_o1 = sapply(od, max)
-		sum_1 = tapply(abs(df$value), df$rn, sum)
+		sum_1 = tapply(abs(df$value2), df$rn, sum)
 		# position of root 2
-		od = tapply(abs(df$value), df$cn, .order, link.sort[2], link.decreasing[2])
+		od = tapply(abs(df$value2), df$cn, .order, link.sort[2], link.decreasing[2])
 		for(nm in names(od)) {
 			if(!is.na(max_o1[nm])) { # if cn already in rn
 				l = df$cn == nm
@@ -881,11 +890,11 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 					l2 = rep(TRUE, sum(l))
 				}
 				df$o2[l][l2] = od[[nm]] + max_o1[nm]
-				df$x2[l][l2][ od[[nm]] ] = cumsum(abs(df$value[l][l2])[ od[[nm]] ]) + sum_1[nm]
+				df$x2[l][l2][ od[[nm]] ] = cumsum(abs(df$value2[l][l2])[ od[[nm]] ]) + sum_1[nm]
 			} else {
 				l = df$cn == nm
 				df$o2[l] = od[[nm]]
-				df$x2[l][od[[nm]]] = cumsum(abs(df$value[l])[od[[nm]]])
+				df$x2[l][od[[nm]]] = cumsum(abs(df$value2[l])[od[[nm]]])
 			}
 		}
 		if(self.link == 1) {
@@ -896,7 +905,7 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	} else {
 		for(nm in unique(c(df$rn, df$cn))) {
 			l = df$rn == nm | df$cn == nm
-			od = order(abs(df$value[l]), decreasing = link.decreasing[1])
+			od = order(abs(df$value1[l]), decreasing = link.decreasing[1])
 			cum_pos = cumsum(abs(df$value[l])[od])
 			if(self.link == 2) {
 				ii = which(df$rn[l] == nm & df$cn[l] == nm)
@@ -1016,23 +1025,23 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	}
 
 	if(link.largest.ontop) {
-		link_order = order(abs(df$value), decreasing = FALSE)
+		link_order = order(pmax(abs(df$value1), abs(df$value2)), decreasing = FALSE)
 	} else {
 		link_order = order(link.rank)
 	}
 
 	for(k in link_order) {
-		if(abs(df$value[k])/sum(abs(df$value)) < 1e-6) next
+		if(abs(df$value1[k])/sum(abs(df$value1)) < 1e-6 && abs(df$value2[k])/sum(abs(df$value2)) < 1e-6) next
 		if(link.visible[k]) {
 			if(setequal(direction.type, c("diffHeight"))) {
-				circos.link(df$rn[k], c(df$x1[k] - abs(df$value[k]), df$x1[k]),
-						df$cn[k], c(df$x2[k] - abs(df$value[k]), df$x2[k]),
+				circos.link(df$rn[k], c(df$x1[k] - abs(df$value1[k]), df$x1[k]),
+						df$cn[k], c(df$x2[k] - abs(df$value2[k]), df$x2[k]),
 						directional = 0, col = col[k], rou1 = rou1[k], rou2 = rou2[k], 
 						border = link.border[k], lwd = link.lwd[k], lty = link.lty[k],
 						...)	
 			} else if(grepl("arrows", direction.type[k])) {
-				circos.link(df$rn[k], c(df$x1[k] - abs(df$value[k]), df$x1[k]),
-							df$cn[k], c(df$x2[k] - abs(df$value[k]), df$x2[k]),
+				circos.link(df$rn[k], c(df$x1[k] - abs(df$value1[k]), df$x1[k]),
+							df$cn[k], c(df$x2[k] - abs(df$value2[k]), df$x2[k]),
 							directional = directional[k], col = col[k], rou1 = rou1[k], rou2 = rou2[k], 
 							border = link.border[k], 
 							lwd = link.lwd[k], lty = link.lty[k], 

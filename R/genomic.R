@@ -780,7 +780,6 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 # -col The length of ``col`` can be either one or number of rows of ``region``. Pass to `circos.rect`
 # -border Settings are similar as ``col``. Pass to `circos.rect`
 # -lty Settings are similar as ``col``. Pass to `circos.rect`
-# -lwd Settings are similar as ``col``. Pass to `circos.rect`
 # -... Mysterious parameters
 #
 # == details
@@ -789,7 +788,7 @@ circos.genomicRect = function(region, value = NULL,
 	ytop = NULL, ybottom = NULL, ytop.column = NULL, ybottom.column = NULL,
 	sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
-	col = NA, border = "black", lty = par("lty"), lwd = par("lwd"), ...) {
+	col = NA, border = "black", lty = par("lty"), ...) {
 	
 	nr = nrow(region)
 	
@@ -859,7 +858,6 @@ circos.genomicRect = function(region, value = NULL,
 
 	col = .normalizeGraphicalParam(col, 1, nr, "col")
 	border = .normalizeGraphicalParam(border, 1, nr, "border")
-	lwd = .normalizeGraphicalParam(lwd, 1, nr, "lwd")
 	lty = .normalizeGraphicalParam(lty, 1, nr, "lty")
 	
 	# for(i in seq_len(nr)) {
@@ -869,7 +867,7 @@ circos.genomicRect = function(region, value = NULL,
 	# }
 	circos.rect(region[, 1], value[, ybottom.column], region[, 2], value[, ytop.column],
 		            sector.index = sector.index, track.index = track.index,
-					col = col, border = border, lwd = lwd, lty = lty)
+					col = col, border = border, lty = lty)
 
 }
 

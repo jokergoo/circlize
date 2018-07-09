@@ -11,7 +11,7 @@ circos.genomicRect(region, value = NULL,
     ytop = NULL, ybottom = NULL, ytop.column = NULL, ybottom.column = NULL,
     sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), posTransform = NULL,
-    col = NA, border = "black", lty = par("lty"), lwd = par("lwd"), ...)
+    col = NA, border = "black", lty = par("lty"), ...)
 }
 \arguments{
 
@@ -27,7 +27,6 @@ circos.genomicRect(region, value = NULL,
   \item{col}{The length of \code{col} can be either one or number of rows of \code{region}. Pass to \code{\link{circos.rect}}}
   \item{border}{Settings are similar as \code{col}. Pass to \code{\link{circos.rect}}}
   \item{lty}{Settings are similar as \code{col}. Pass to \code{\link{circos.rect}}}
-  \item{lwd}{Settings are similar as \code{col}. Pass to \code{\link{circos.rect}}}
   \item{...}{Mysterious parameters}
 
 }

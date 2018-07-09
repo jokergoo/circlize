@@ -20,7 +20,8 @@ chordDiagramFromDataFrame(df, grid.col = NULL, grid.border = NA, transparency = 
     link.arr.type = "triangle", link.arr.lty = par("lty"),
     link.arr.lwd = par("lwd"), link.arr.col = par("col"),
     link.largest.ontop = FALSE, link.visible = link.visible,
-    link.rank = seq_len(nrow(df)), ...)
+    link.rank = seq_len(nrow(df)),
+    scale = FALSE, ...)
 }
 \arguments{
 

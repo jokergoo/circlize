@@ -1,4 +1,4 @@
-<a href="http://jokergoo.github.io/circlize_book/book/"><img src="http://zuguang.de/circlize_book/book/images/circlize_cover.jpg" width=240 align="right" ></a>
+<a href="http://jokergoo.github.io/circlize_book/book/"><img src="http://jokergoo.github.io/circlize_book/book/images/circlize_cover.jpg" width=240 align="right" ></a>
 
 [![Build Status](https://travis-ci.org/jokergoo/circlize.svg)](https://travis-ci.org/jokergoo/circlize)
 [![CRAN](http://www.r-pkg.org/badges/version/circlize)](https://cran.r-project.org/web/packages/circlize/index.html) 

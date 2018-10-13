@@ -1,5 +1,6 @@
 \name{$.CELL_META}
 \alias{$.CELL_META}
+\alias{Subset.CELL_META}
 \title{
 Easy to way to get meta data in the current cell
 }

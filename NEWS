@@ -2,6 +2,8 @@ Changes in version 0.4.5
 ------------------------------------------------------------------------
 * add `axis.labels.cex` and `labels.cex` in `circos.genomicInitialize()`.
 * remove `lwd` in `circos.genomicRect()` because `lwd` is not allowed to be vector.
+* fixed a bug when self.link = 1 in chordDiagram()
+* add `scale` in chordDiagram()
 
 Changes in version 0.4.4
 -------------------------------------------------------------------------

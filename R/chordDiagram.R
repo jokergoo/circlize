@@ -889,7 +889,10 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 				l = df$cn == nm
 				if(self.link == 1) {
 					l2 = ! df$rn[l] == nm # self link
-					od[[nm]][l2] = order(od[[nm]][l2])
+					# od[[nm]][l2] = order(od[[nm]][l2])
+					if(sum(l2)) {
+						od[[nm]] = order(od[[nm]][l2])
+					}
 				} else {
 					l2 = rep(TRUE, sum(l))
 				}

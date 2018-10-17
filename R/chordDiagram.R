@@ -117,7 +117,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 		} else {
 			chordDiagramFromDataFrame(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
 				col = col, order = order, directional = directional, direction.type = direction.type,
-				diffHeight = diffHeight, reduce = reduce, self.link = self.link,
+				diffHeight = diffHeight, reduce = reduce, self.link = self.link, xmax = xmax,
 				preAllocateTracks = preAllocateTracks, annotationTrack = annotationTrack, annotationTrackHeight = annotationTrackHeight,
 				link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 				link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,

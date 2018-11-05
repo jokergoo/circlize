@@ -68,7 +68,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 	order = NULL, directional = 0, xmax = NULL,
 	symmetric = FALSE, keep.diagonal = FALSE, 
 	direction.type = "diffHeight", diffHeight = convert_height(2, "mm"), 
-	reduce = 1e-5, self.link = 2,
+	reduce = 1e-5, self.link = 2, 
 	preAllocateTracks = NULL,
 	annotationTrack = c("name", "grid", "axis"), 
 	annotationTrackHeight = convert_height(c(3, 2), "mm"),
@@ -79,8 +79,14 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 	link.arr.type = "triangle", link.arr.lty = par("lty"), 
 	link.arr.lwd = par("lwd"), link.arr.col = par("col"), 
 	link.largest.ontop = FALSE, link.visible = TRUE, 
-	link.rank = NULL, scale = FALSE, ...) {
-	
+	link.rank = NULL, scale = FALSE, gap.degree = NULL, ...) {
+		
+	if(inherits(x, "table"))  {
+		if(length(dim(x)) == 2) {
+			class(x) = "matrix"
+		}
+	}
+
 	if(inherits(x, "matrix")) {
 		chordDiagramFromMatrix(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
 			col = col, row.col = row.col, column.col = column.col, order = order, directional = directional,
@@ -90,7 +96,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 			link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 			link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 			link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
-			link.visible = link.visible, link.rank = link.rank, scale = scale, ...)
+			link.visible = link.visible, link.rank = link.rank, scale = scale, gap.degree = gap.degree, ...)
 	} else if(inherits(x, "data.frame")) {
 		if(ncol(x) > 3) {
 			if(all(sapply(x, inherits, c("numeric", "integer")))) {
@@ -103,7 +109,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 					link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 					link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 					link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
-					link.visible = link.visible, link.rank = link.rank, scale = scale, ...)))
+					link.visible = link.visible, link.rank = link.rank, scale = scale, gap.degree = gap.degree, ...)))
 			} else {
 				chordDiagramFromDataFrame(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
 					col = col, order = order, directional = directional, direction.type = direction.type,
@@ -112,7 +118,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 					link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 					link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 					link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
-					link.visible = link.visible, link.rank = link.rank, scale = scale, ...)
+					link.visible = link.visible, link.rank = link.rank, scale = scale, gap.degree = gap.degree, ...)
 			}
 		} else {
 			chordDiagramFromDataFrame(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
@@ -122,7 +128,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 				link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 				link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 				link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
-				link.visible = link.visible, link.rank = link.rank, scale = scale, ...)
+				link.visible = link.visible, link.rank = link.rank, scale = scale, gap.degree = gap.degree, ...)
 		}
 	} else {
 		stop("`x` can only be a matrix or a data frame.")
@@ -341,7 +347,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 	link.arr.type = "triangle", link.arr.lty = par("lty"), 
 	link.arr.lwd = par("lwd"), link.arr.col = par("col"), 
 	link.largest.ontop = FALSE, link.visible = TRUE, 
-	link.rank = NULL, scale = FALSE, ...) {
+	link.rank = NULL, scale = FALSE, gap.degree = NULL, ...) {
 	
 	if(!is.matrix(mat)) {
 		stop("`mat` can only be a matrix.")
@@ -577,6 +583,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 		link.visible = link.visible,
 		link.rank = link.rank,
 		scale = scale,
+		gap.degree = gap.degree,
 		...)
 	
 }
@@ -660,7 +667,9 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	link.arr.lwd = par("lwd"), link.arr.col = par("col"), 
 	link.largest.ontop = FALSE, link.visible = TRUE, 
 	link.rank = seq_len(nrow(df)), 
-	scale = FALSE, ...) {
+	scale = FALSE, 
+	gap.degree = NULL, 
+	...) {
 
 	if(nrow(df) != 2) {
 		if(identical(direction.type, c("diffHeight", "arrows")) || identical(direction.type, c("arrows", "diffHeight"))) {
@@ -752,12 +761,16 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	} 
 
 	rgb_mat = t(col2rgb(col, alpha = TRUE))
-	if(is.na(transparency)) {
-		col = rgb(rgb_mat, maxColorValue = 255, alpha = rgb_mat[, 4])
-	} else if(all(rgb_mat[, 4] == 255)) {
+	if(length(transparency) == nrow(rgb_mat)) {
 		col = rgb(rgb_mat, maxColorValue = 255, alpha = (1-transparency)*255)
 	} else {
-		col = rgb(rgb_mat, maxColorValue = 255, alpha = rgb_mat[, 4])
+		if(is.na(transparency)) {
+			col = rgb(rgb_mat, maxColorValue = 255, alpha = rgb_mat[, 4])
+		} else if(all(rgb_mat[, 4] == 255)) {
+			col = rgb(rgb_mat, maxColorValue = 255, alpha = (1-transparency)*255)
+		} else {
+			col = rgb(rgb_mat, maxColorValue = 255, alpha = rgb_mat[, 4])
+		}
 	}
 
 	.normalize_to_vector = function(x, link, default) {
@@ -949,8 +962,17 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 		}
 	}
 
+
 	o.cell.padding = circos.par("cell.padding")
 	circos.par(cell.padding = c(0, 0, 0, 0))
+    
+	if(!is.null(gap.degree)) {
+		if(length(intersect(df[, 1], df[, 2])) == 0) {
+			n_df1 = length(unique(df[, 1]))
+			n_df2 = length(unique(df[, 2]))
+			circos.par(start.degree = -gap.degree/2, gap.after = c(rep(1, n_df1 - 1), gap.degree, rep(1, n_df2 - 1), gap.degree))
+		}
+	}
     circos.initialize(factors = factor(cate, levels = cate), xlim = cbind(rep(0, length(xsum)), xsum))
 
 	# pre allocate track

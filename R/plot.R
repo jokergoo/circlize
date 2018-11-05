@@ -1511,9 +1511,8 @@ circos.yaxis = function(side = c("left", "right"), at = NULL, labels = TRUE, tic
 	}
 	
 	ylim2 = ylim
-	# circos.lines(c(ifelse(at[1] >= ylim2[1], at[1], ylim2[1]),
-	#                ifelse(at[length(at)] <= ylim2[2], at[length(at)], ylim2[2])), 
-	# 			 c(v, v), sector.index = sector.index, track.index = track.index, lwd = lwd)
+	circos.lines(c(CELL_META$cell.xlim[1], CELL_META$cell.xlim[1]),
+		CELL_META$cell.ylim, sector.index = sector.index, track.index = track.index, lwd = lwd)
 	
 	# ticks
 	yrange = get.cell.meta.data("yrange", sector.index, track.index)

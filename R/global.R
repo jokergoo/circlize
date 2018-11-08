@@ -236,6 +236,10 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
     }
     levels(factors) = intersect(levels(factors), as.character(factors))
     le = levels(factors)
+
+    if(!is.null(x)) {
+    	x = as.numeric(x)
+    }
     
     # initialize .SECTOR.DATA
     # you can think it as the global x axis configuration
@@ -246,6 +250,8 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
         if(length(xlim) != 2) {
             stop("Since `xlim` is vector, it should have length of 2.")
         }    
+
+        xlim = as.numeric(xlim)
         
         min.value = rep(xlim[1], length(le))
         max.value = rep(xlim[2], length(le))
@@ -259,6 +265,11 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
         		xlim = xlim[le, ,drop = FALSE]
         	}
         }
+        if(is.data.frame(xlim)) xlim = as.matrix(xlim)
+        xlim2 = as.numeric(xlim)
+    	dim(xlim2) = dim(xlim)
+    	dimnames(xlim2) = dimnames(xlim)
+    	xlim = xlim2
         
         min.value = apply(xlim, 1, function(x) x[1])
         max.value = apply(xlim, 1, function(x) x[2])

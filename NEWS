@@ -5,6 +5,7 @@ Changes in version 0.4.5
 * remove `lwd` in `circos.genomicRect()` because `lwd` is not allowed to be vector.
 * fixed a bug when self.link = 1 in chordDiagram()
 * add `scale` in chordDiagram()
+* `circos.initialize()`: convert xlim and x to numeric
 
 Changes in version 0.4.4
 -------------------------------------------------------------------------

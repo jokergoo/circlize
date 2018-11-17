@@ -323,12 +323,12 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB") {
   col2 = coords(as(sRGB(col2[1], col2[2], col2[3]), space))
 
   res_col = matrix(ncol = 3, nrow = length(x))
-  for(i in seq_along(x)) {
-    xx = (x[i] - break2)*(col2 - col1) / (break2 - break1) + col2
-    res_col[i,] = xx
+  for(j in 1:3) {
+    xx = (x - break2)*(col2[j] - col1[j]) / (break2 - break1) + col2[j]
+    res_col[, j] = xx
   }
   
-  res_col = eval(parse(text = paste0(space, "(res_col)")))
+  res_col = get(space)(res_col)
   res_col = coords(as(res_col, "sRGB"))
   res_col[, 1] = .restrict_in(res_col[,1], 0, 1)
   res_col[, 2] = .restrict_in(res_col[,2], 0, 1)

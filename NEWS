@@ -6,6 +6,7 @@ Changes in version 0.4.5
 * fixed a bug when self.link = 1 in chordDiagram()
 * add `scale` in chordDiagram()
 * `circos.initialize()`: convert xlim and x to numeric
+* `colorRamp2()` is faster now.
 
 Changes in version 0.4.4
 -------------------------------------------------------------------------

@@ -23,7 +23,7 @@ chordDiagram(x, grid.col = NULL, grid.border = NA, transparency = 0.5,
     link.arr.type = "triangle", link.arr.lty = par("lty"),
     link.arr.lwd = par("lwd"), link.arr.col = par("col"),
     link.largest.ontop = FALSE, link.visible = TRUE,
-    link.rank = NULL, scale = FALSE, ...)
+    link.rank = NULL, scale = FALSE, big.gap = 10, small.gap = 1, ...)
 }
 \arguments{
 
@@ -61,6 +61,8 @@ chordDiagram(x, grid.col = NULL, grid.border = NA, transparency = 0.5,
   \item{link.visible}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{link.rank}{order to add links to the circle, a large value means to add it later.}
   \item{scale}{scale each sector to same width}
+  \item{big.gap}{Gap between the two sets of sectors. If the input is a matrix, the two sets are row sectors and column sectors. If the input is a data frame, the two sets correspond to the first column and the second column. It only works when there is no intersection between the two sets.}
+  \item{small.gap}{Small gap between sectors.}
   \item{...}{pass to \code{\link{circos.link}}.}
 
 }

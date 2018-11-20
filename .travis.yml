@@ -1,30 +1,30 @@
-language: r
+## Sample .travis.yml file for use with metacran/r-builder
+## See https://github.com/metacran/r-builder for details.
 
+language: c
 sudo: required
 
-# Be strict when checking our package
-warnings_are_errors: true
+before_install:
+  - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
+  - chmod 755 pkg-build.sh
+  - ./pkg-build.sh bootstrap
 
-r-packages:
-- shape 
-- colorspace
-- RColorBrewer
-- testthat
-- knitr
-- markdown
-- dendextend
-- circlize
+install:
+  - ./pkg-build.sh install_deps
 
-bioc_packages:
-- GenomicRanges
-- HilbertVis
+script:
+  - ./pkg-build.sh run_tests
 
-r_github_packages:
-- jokergoo/GlobalOptions
-- jokergoo/GetoptLong
-- jokergoo/HilbertCurve
-- jimhester/covr
-- jokergoo/ComplexHeatmap
+after_failure:
+  - ./pkg-build.sh dump_logs
 
-r_check_args: --no-vignettes --no-build-vignettes
+notifications:
+  email:
+    on_success: change
+    on_failure: change
 
+env:
+  matrix:
+    - RVERSION=oldrel
+    - RVERSION=release
+    - RVERSION=devel

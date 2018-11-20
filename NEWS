@@ -7,6 +7,8 @@ Changes in version 0.4.5
 * add `scale` in chordDiagram()
 * `circos.initialize()`: convert xlim and x to numeric
 * `colorRamp2()` is faster now.
+* add `circos.genomicAxis()`.
+* add `calc_gap()`.
 
 Changes in version 0.4.4
 -------------------------------------------------------------------------

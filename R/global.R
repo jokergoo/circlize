@@ -234,7 +234,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
             factors = factor(factors)
         }
     }
-    levels(factors) = intersect(levels(factors), as.character(factors))
+    factors = factor(as.character(factors), intersect(levels(factors), as.character(factors)))
     le = levels(factors)
 
     if(!is.null(x)) {

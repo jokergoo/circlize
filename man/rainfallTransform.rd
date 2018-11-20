@@ -7,12 +7,14 @@ Calculate inter-distance of genomic regions
 Calculate inter-distance of genomic regions
 }
 \usage{
-rainfallTransform(region, mode = c("min", "max", "mean", "left", "right"))
+rainfallTransform(region, mode = c("min", "max", "mean", "left", "right"),
+    normalize_to_width = FALSE)
 }
 \arguments{
 
   \item{region}{Genomic positions. It can be a data frame with two columns which are start positions and end positions on a single chromosome. It can also be a bed-format data frame which contains the chromosome column.}
   \item{mode}{How to calculate inter-distance. For a region, there is a distance to the  prevous region and also there is a distance to the next region. \code{mode} controls how to merge these two distances into one value.}
+  \item{normalize_to_width}{If it is \code{TRUE}, the value is the relative distance divided by the width of the region.}
 
 }
 \value{

@@ -9,8 +9,8 @@ Initialize circular plot with any genomic data
 \usage{
 circos.genomicInitialize(data, sector.names = NULL, major.by = NULL,
     plotType = c("axis", "labels"), tickLabelsStartFromZero = TRUE,
-    axis.labels.cex = 0.4*par("cex"), labels.cex = par("cex"),
-    track.height = convert_height(3, "mm"), ...)
+    axis.labels.cex = 0.4*par("cex"), labels.cex = 0.8*par("cex"),
+    track.height = NULL, ...)
 }
 \arguments{
 

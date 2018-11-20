@@ -620,7 +620,7 @@ uh = function(...) {
     convert_length(...)
 }
 
-convert_unit_in_data_coordinate = function(x, unit = c("mm", "cm", "inches"),
+convert_unit_in_data_coordinate = function(x, unit = c("mm", "cm", "inches", "canvas"),
     direction = c("x", "y"),
     sector.index = get.current.sector.index(),
     track.index = get.current.track.index(),
@@ -649,6 +649,8 @@ convert_unit_in_data_coordinate = function(x, unit = c("mm", "cm", "inches"),
         len = x * pt_per_inche1 * inche_per_mm
     } else if(unit == "cm") {
         len = x * pt_per_inche1 * inche_per_mm * 10
+    } else if(unit == "canvas") {
+        len = x
     }
 
     xlim = get.cell.meta.data("xlim", sector.index = sector.index, track.index = track.index)
@@ -790,6 +792,32 @@ convert_y = function(x, unit = c("mm", "cm", "inches"),
 # NULL
 uy = function(...) {
     convert_y(...)
+}
+
+convert_unit_in_canvas_coordinate = function(x, unit = c("mm", "cm", "inches")) {
+
+    pin = par("pin")
+    usr = par("usr")
+
+    unit = match.arg(unit)
+
+    pt_per_inche1 = (usr[2] - usr[1])/pin[1]
+    pt_per_inche2 = (usr[4] - usr[3])/pin[2]
+
+    if(abs(pt_per_inche1 - pt_per_inche2) > 1e-3) {
+        warning("`convert_unit_in_data_coordinate()` only works when aspect of the coordinate is 1.")
+    }
+
+    inche_per_mm = 0.0393700787401575
+    # length in the data coordinate
+    if(unit == "inches") {
+        len = x * pt_per_inche1
+    } else if(unit == "mm") {
+        len = x * pt_per_inche1 * inche_per_mm
+    } else if(unit == "cm") {
+        len = x * pt_per_inche1 * inche_per_mm * 10
+    }
+    return(len)
 }
 
 stop_wrap = function(...) {

@@ -39,6 +39,11 @@
 # -link.visible pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
 # -link.rank order to add links to the circle, a large value means to add it later.
 # -scale scale each sector to same width
+# -big.gap Gap between the two sets of sectors. If the input is a matrix, the two sets
+#      are row sectors and column sectors. If the input is a data frame, the two sets
+#      correspond to the first column and the second column. It only works when there
+#      is no intersection between the two sets.
+# -small.gap Small gap between sectors.
 # -... pass to `circos.link`.
 #
 # == details
@@ -79,7 +84,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 	link.arr.type = "triangle", link.arr.lty = par("lty"), 
 	link.arr.lwd = par("lwd"), link.arr.col = par("col"), 
 	link.largest.ontop = FALSE, link.visible = TRUE, 
-	link.rank = NULL, scale = FALSE, gap.degree = NULL, ...) {
+	link.rank = NULL, scale = FALSE, big.gap = 10, small.gap = 1, ...) {
 		
 	if(inherits(x, "table"))  {
 		if(length(dim(x)) == 2) {
@@ -96,7 +101,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 			link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 			link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 			link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
-			link.visible = link.visible, link.rank = link.rank, scale = scale, gap.degree = gap.degree, ...)
+			link.visible = link.visible, link.rank = link.rank, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)
 	} else if(inherits(x, "data.frame")) {
 		if(ncol(x) > 3) {
 			if(all(sapply(x, inherits, c("numeric", "integer")))) {
@@ -109,7 +114,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 					link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 					link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 					link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
-					link.visible = link.visible, link.rank = link.rank, scale = scale, gap.degree = gap.degree, ...)))
+					link.visible = link.visible, link.rank = link.rank, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)))
 			} else {
 				chordDiagramFromDataFrame(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
 					col = col, order = order, directional = directional, direction.type = direction.type,
@@ -118,7 +123,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 					link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 					link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 					link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
-					link.visible = link.visible, link.rank = link.rank, scale = scale, gap.degree = gap.degree, ...)
+					link.visible = link.visible, link.rank = link.rank, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)
 			}
 		} else {
 			chordDiagramFromDataFrame(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
@@ -128,7 +133,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 				link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 				link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 				link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
-				link.visible = link.visible, link.rank = link.rank, scale = scale, gap.degree = gap.degree, ...)
+				link.visible = link.visible, link.rank = link.rank, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)
 		}
 	} else {
 		stop("`x` can only be a matrix or a data frame.")
@@ -325,6 +330,8 @@ mat2df = function(mat) {
 #            plotted, but the space is still ocuppied. The format of this argument is same as ``link.lwd``
 # -link.rank order to add links to the circle, a large value means to add it later.
 # -scale scale each sector to same width
+# -big.gap Gap between row sectors and column sectors.
+# -small.gap Small gap between sectors.
 # -... pass to `circos.link`
 #
 # == details
@@ -347,7 +354,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 	link.arr.type = "triangle", link.arr.lty = par("lty"), 
 	link.arr.lwd = par("lwd"), link.arr.col = par("col"), 
 	link.largest.ontop = FALSE, link.visible = TRUE, 
-	link.rank = NULL, scale = FALSE, gap.degree = NULL, ...) {
+	link.rank = NULL, scale = FALSE, big.gap = 10, small.gap = 1, ...) {
 	
 	if(!is.matrix(mat)) {
 		stop("`mat` can only be a matrix.")
@@ -583,7 +590,8 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 		link.visible = link.visible,
 		link.rank = link.rank,
 		scale = scale,
-		gap.degree = gap.degree,
+		big.gap = big.gap,
+		small.gap = small.gap,
 		...)
 	
 }
@@ -645,6 +653,8 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 #            plotted, but the space is still ocuppied. The format of this argument is same as ``link.lwd``
 # -link.rank order to add links to the circle, a large value means to add it later.
 # -scale scale each sector to same width
+# -big.gap Gaps between the sectors in the first column of ``df`` and sectors in the second column in ``df``.
+# -small.gap Small gap between sectors.
 # -... pass to `circos.link`
 #
 # == details
@@ -668,7 +678,7 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	link.largest.ontop = FALSE, link.visible = TRUE, 
 	link.rank = seq_len(nrow(df)), 
 	scale = FALSE, 
-	gap.degree = NULL, 
+	big.gap = 10, small.gap = 1,
 	...) {
 
 	if(nrow(df) != 2) {
@@ -965,13 +975,30 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 
 	o.cell.padding = circos.par("cell.padding")
 	circos.par(cell.padding = c(0, 0, 0, 0))
-    
-	if(!is.null(gap.degree)) {
+    o.start.degree = circos.par("start.degree")
+    o.gap.after = circos.par("gap.after")
+
+	if((identical(circos.par("gap.after"), 1))) {  # gap.after is not set in circos.par()
 		if(length(intersect(df[, 1], df[, 2])) == 0) {
 			n_df1 = length(unique(df[, 1]))
 			n_df2 = length(unique(df[, 2]))
-			circos.par(start.degree = -gap.degree/2, gap.after = c(rep(1, n_df1 - 1), gap.degree, rep(1, n_df2 - 1), gap.degree))
+			n_sector = n_df1 + n_df2
+			s1 = sum(abs(df[, 3]))
+			s2 = sum(abs(df[, 4]))
+			d1 =  (360 - small.gap*(n_sector - 2) - big.gap*2) * (s1/(s1 + s2)) + small.gap*(n_df1-1)
+			if(circos.par$start.degree == 1) circos.par$start.degree = 0
+			if(circos.par$clock.wise) {
+				start_degree = circos.par$start.degree - (180 - d1)/2
+			} else {
+				start_degree = circos.par$start.degree + (180 - d1)/2
+			}
+			suppressWarnings(circos.par(start.degree = start_degree, 
+				gap.after = c(rep(small.gap, n_df1 - 1), big.gap, rep(small.gap, n_df2 - 1), big.gap)))
+		} else {
+			# warning("The two sets of sectors overlap, ignore `gap.degree`.")
 		}
+	} else {
+		# warning("You have changed the default value of circos.par('gap.degree') or circos.par('gap.after').\nIgnore `gap.degree` argument.")
 	}
     circos.initialize(factors = factor(cate, levels = cate), xlim = cbind(rep(0, length(xsum)), xsum))
 
@@ -1084,10 +1111,56 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	
 	df$col = col
 
-	circos.par("cell.padding" = o.cell.padding)
+	suppressWarnings(circos.par("cell.padding" = o.cell.padding, "start.degree" = o.start.degree,
+		"gap.after" = o.gap.after))
 	return(invisible(df))
 }
 
 psubset = function(mat, ri, ci) {
 	return(mat[ri + (ci - 1) * nrow(mat)])
 }
+
+# == title
+# Calculate gap to make two Chord diagram with same scale
+#
+# == param
+# -x1 The matrix or the data frame for the first Chord diagram.
+# -x2 The matrix or the data frame for the second Chord diagram.
+# -big.gap ``big.gap`` for the first Chord diagram.
+# -small.gap ``small.gap`` for both Chord diagrams.
+#
+# == details
+# There should be no overlap between the two sets of sectors.
+#
+# == value
+# A numeric value which can be directly set to ``big.gap`` in the second Chord diagram.
+#
+calc_gap = function(x1, x2, big.gap = 10, small.gap = 1) {
+	if(is.matrix(x1)) {
+		sum1 = sum(abs(x1))
+		n1 = nrow(x1)
+		n2 = ncol(x1)
+	} else {
+		sum1 = sum(abs(x1[, 3]))
+		n1 = length(unique(x1[, 1]))
+		n2 = length(unique(x1[, 2]))
+	}
+	sum_gap1 = sum(c(rep(small.gap, n1 - 1), big.gap, rep(small.gap, n2 - 1), big.gap))
+		
+	if(is.matrix(x2)) {
+		sum2 = sum(abs(x2))
+		n1 = nrow(x2)
+		n2 = ncol(x2)
+	} else {
+		sum2 = sum(abs(x2[, 3]))
+		n1 = length(unique(x2[, 1]))
+		n2 = length(unique(x2[, 2]))
+	}
+	sum_gap2 = sum(rep(small.gap, n1 + n2 - 2))
+
+	percent = sum2 / sum1
+	blank.degree = (360 - sum_gap1) * (1 - percent)
+
+	(blank.degree - sum_gap2)/2
+}
+

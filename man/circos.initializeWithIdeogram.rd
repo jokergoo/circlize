@@ -11,7 +11,7 @@ circos.initializeWithIdeogram(cytoband = system.file(package = "circlize",
     "extdata", "cytoBand.txt"), species = NULL, sort.chr = TRUE,
     chromosome.index = NULL, major.by = NULL,
     plotType = c("ideogram", "axis", "labels"),
-    track.height = convert_height(3, "mm"), ideogram.height = convert_height(2, "mm"),
+    track.height = NULL, ideogram.height = convert_height(2, "mm"),
     ...)
 }
 \arguments{
@@ -24,7 +24,7 @@ circos.initializeWithIdeogram(cytoband = system.file(package = "circlize",
   \item{plotType}{Which tracks should be drawn. \code{ideogram} for ideogram rectangle, \code{axis} for genomic axis and \code{labels} for chromosome names. If there is no ideogram for specified species, \code{ideogram} will be enforced to be excluded. If it is set to \code{NULL}, the function just initialize the plot but draw nothing.}
   \item{track.height}{Height of the track which contains "axis" and "labels".}
   \item{ideogram.height}{Height of the ideogram track}
-  \item{...}{Pass to \code{\link{circos.initialize}}}
+  \item{...}{Pass to \code{\link{circos.genomicInitialize}}.}
 
 }
 \details{

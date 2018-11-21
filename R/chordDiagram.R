@@ -103,6 +103,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 			link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
 			link.visible = link.visible, link.rank = link.rank, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)
 	} else if(inherits(x, "data.frame")) {
+		x = as.data.frame(x)
 		if(ncol(x) > 3) {
 			if(all(sapply(x, inherits, c("numeric", "integer")))) {
 				warning("It seems your input data is an adjacency matrix, maybe you need to convert it to 'matrix' explicitely.")
@@ -691,6 +692,7 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	if(!inherits(df, "data.frame")) {
 		stop("`df` must be a data frame.")
 	}
+	df = as.data.frame(df)
 	if(ncol(df) < 2) {
 		stop("`df` should have at least have two columns.")
 	}

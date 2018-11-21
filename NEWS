@@ -9,6 +9,7 @@ Changes in version 0.4.5
 * `colorRamp2()` is faster now.
 * add `circos.genomicAxis()`.
 * add `calc_gap()`.
+* `chordDiagram()`: consider tibble format as input.
 
 Changes in version 0.4.4
 -------------------------------------------------------------------------

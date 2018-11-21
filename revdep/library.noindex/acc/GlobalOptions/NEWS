@@ -1,0 +1,88 @@
+Changes in version 0.1.0
+
+* add `print.GlobalOptionsFun()` and `dump_opt()`.
+* add `.DollarNames.GlobalOptionsFun()` to allow auto completion after `$`.
+* add `.v()` and `.v$..` to access other option values when configuring 
+  current option.
+* add `set_opt()` to replace `setGlobalOptions()`
+* add `ADD` argument in the option function to add new options after the 
+  option function is created.
+-------------------------------------------------------------------------
+
+Changes in version 0.0.13
+
+* register S3 method in NAMESPACE
+
+-------------------------------------------------------------------------
+
+Changes in version 0.0.12
+
+* add .synonymous option
+
+---------------------------------------------------------------------------
+
+Changes in version 0.0.11
+
+* improved docs
+* opt$nm can be set to NULL now
+* `failed_msg` are wrapped
+
+---------------------------------------------------------------------------
+
+Changes in version 0.0.10
+
+* `$<-GlobalOptionsFun` are now invoked in right environment
+
+----------------------------------------------------------------------------
+
+Changes in version 0.0.9
+-----------------------------------------------------------------------------
+
+* support local mode
+
+Changes in version 0.0.8
+-----------------------------------------------------------------------------
+
+* assign a class for the generated functions
+* option value can be assigned by '$' symbol
+
+Changes in version 0.0.6
+------------------------------------------------------------------------------
+
+* re-construct by reference class
+* default value for `.filter` and `.validate` are set to `NULL`
+* private value will not be reset if calling environment is not same as generating
+  environment
+
+Changes in version 0.0.5
+------------------------------------------------------------------------------
+
+* change interval options to `__generatedNamespace__`
+
+Changes in version 0.0.4
+------------------------------------------------------------------------------
+
+* completely replace `is` with `inherits`
+
+Changes in version 0.0.3
+------------------------------------------------------------------------------
+
+* remove dependency of `methods` package
+* `value_fun` is deleted after setting every option
+* function is attached to the value if option values is set as a dynamic function
+  so that opt(opt(READ.ONLY = FALSE)) will be correct if there are option values 
+  set as dynamic functions.
+
+Changes in version 0.0.2
+------------------------------------------------------------------------------
+
+* use knitr to build the vignette.
+* add .private and .visible fields for making options specification. Private options
+  can only be modified if the namespace in which the options function is generated and the
+  namespace where the options function is called is the same namespace. Invisible options
+  will not be returned when getting the option values.
+
+Changes in version 0.0.1
+------------------------------------------------------------------------------
+
+* the first release

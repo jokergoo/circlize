@@ -1,0 +1,9 @@
+importFrom("grDevices", "col2rgb", "dev.new", "rgb")
+importFrom("graphics", "arrows", "lines", "mtext", "par", "plot",
+           "polygon", "rect", "segments", "text")
+importFrom("stats", "approx")
+export(A4, Arrowhead, Arrows, colorlegend, cylindersegment, drapecol, emptyplot, femmecol, 
+       filledcircle, filledcylinder, filledellipse, filledmultigonal, filledrectangle, filledshape, 
+       getellipse, graycol, greycol, intpalette, plotcircle, plotellipse, rotatexy, roundrect, 
+       shadepalette, writelabel, textflag)
+

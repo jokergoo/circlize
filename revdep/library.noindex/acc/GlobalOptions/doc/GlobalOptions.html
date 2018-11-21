@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Generate Global Options</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+<style type="text/css">
+#toc {
+  position: fixed;
+  left: 0;
+  top: 20px;
+  width: 200px;
+  height: 100%;
+  overflow:auto;
+  padding: 0px 10px 0px 10px;
+}
+#toc_header {
+  display: none;
+}
+#toc ul {
+  margin: 0px;
+  padding: 0px;
+}
+#toc ul li {
+  list-style-type: none;
+}
+
+#toc ul li ul li {
+  margin-left: 15px;
+  list-style-type: circle;
+}
+body, td {
+   font-family: Arial,Helvetica,sans-serif;
+   background-color: white;
+   font-size: 13px;
+  max-width: 800px;
+  margin: auto;
+  margin-left:210px;
+  padding: 0px 10px 0px 10px;
+  border-left: 1px solid #EEEEEE;
+  line-height: 150%;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, 
+
+monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<div id="toc">
+<div id="toc_header">Table of Contents</div>
+<ul>
+<li>
+<a href="#toc_0">Generate Global Options</a>
+<ul>
+<li>
+<a href="#toc_1">General usage</a>
+</li>
+<li>
+<a href="#toc_2">Advanced usage</a>
+<ul>
+<li>
+<a href="#toc_3">Simple validation</a>
+</li>
+<li>
+<a href="#toc_4">Read-only options</a>
+</li>
+<li>
+<a href="#toc_5">User-defined validation</a>
+</li>
+<li>
+<a href="#toc_6">Filter the option values</a>
+</li>
+<li>
+<a href="#toc_7">Dynamic querying the option value</a>
+</li>
+<li>
+<a href="#toc_8">Interaction between options</a>
+</li>
+<li>
+<a href="#toc_9">Local options</a>
+</li>
+<li>
+<a href="#toc_10">Synonymous options</a>
+</li>
+<li>
+<a href="#toc_11">Print the object</a>
+</li>
+<li>
+<a href="#toc_12">Add new options</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_13">Features for package development</a>
+</li>
+<li>
+<a href="#toc_14">Misc</a>
+</li>
+<li>
+<a href="#toc_15">Session info</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+<!--
+%\VignetteEngine{knitr}
+%\VignetteIndexEntry{Generate Global Options}
+-->
+
+<h1 id="toc_0">Generate Global Options</h1>
+
+<p><strong>Author</strong>: Zuguang Gu ( <a href="mailto:z.gu@dkfz.de">z.gu@dkfz.de</a> )</p>
+
+<p><strong>Date</strong>: 2018-06-06</p>
+
+<hr/>
+
+<p>Global option function such as <code>options()</code> and <code>par()</code> provides a way to
+control global settings. Here the <strong>GlobalOptions</strong> package provides a more
+general and controlable way to generate such functions, which can:</p>
+
+<ol>
+<li>validate the values (e.g. class, length and self-defined validations);</li>
+<li>set read-only options;</li>
+<li>set invisible options;</li>
+<li>set private options which are only accessable in a certain namespace.</li>
+<li>support local options and global options</li>
+</ol>
+
+<h2 id="toc_1">General usage</h2>
+
+<p>The most simple use is to generate an option function with default values by
+callling <code>setGlobalOptions()</code> or its short versoin <code>set_opt()</code>:</p>
+
+<pre><code class="r">library(GlobalOptions)
+opt = set_opt(
+    a = 1,
+    b = &quot;text&quot;
+)
+</code></pre>
+
+<p>The returned value <code>opt</code> is an option function which can be used to get or set
+options. Options in <code>opt</code> can be accessed either by specifying as arguments or
+by using the <code>$</code> operator.</p>
+
+<pre><code class="r">opt()
+</code></pre>
+
+<pre><code>## $a
+## [1] 1
+## 
+## $b
+## [1] &quot;text&quot;
+</code></pre>
+
+<pre><code class="r">opt(&quot;a&quot;)
+</code></pre>
+
+<pre><code>## [1] 1
+</code></pre>
+
+<pre><code class="r">opt$a
+</code></pre>
+
+<pre><code>## [1] 1
+</code></pre>
+
+<pre><code class="r">op = opt()
+op
+</code></pre>
+
+<pre><code>## $a
+## [1] 1
+## 
+## $b
+## [1] &quot;text&quot;
+</code></pre>
+
+<pre><code class="r">opt(a = 2, b = &quot;new text&quot;)
+opt()
+</code></pre>
+
+<pre><code>## $a
+## [1] 2
+## 
+## $b
+## [1] &quot;new text&quot;
+</code></pre>
+
+<pre><code class="r">opt$b = &quot;&quot;
+opt()
+</code></pre>
+
+<pre><code>## $a
+## [1] 2
+## 
+## $b
+## [1] &quot;&quot;
+</code></pre>
+
+<pre><code class="r">opt(op)
+opt()
+</code></pre>
+
+<pre><code>## $a
+## [1] 1
+## 
+## $b
+## [1] &quot;text&quot;
+</code></pre>
+
+<p><code>opt</code> generated by <code>set_opt()</code> contains an argument <code>RESET</code> which is used to
+reset the options to the default:</p>
+
+<pre><code class="r">opt(a = 2, b = &quot;new text&quot;)
+opt(RESET = TRUE)
+opt()
+</code></pre>
+
+<pre><code>## $a
+## [1] 1
+## 
+## $b
+## [1] &quot;text&quot;
+</code></pre>
+
+<p>Simply printing <code>opt</code> gives a summary of all options.</p>
+
+<pre><code class="r">opt
+</code></pre>
+
+<pre><code>##  Option Value
+##       a     1
+##       b  text
+</code></pre>
+
+<h2 id="toc_2">Advanced usage</h2>
+
+<p>If option values are set as lists, more configurations can be customized. </p>
+
+<h3 id="toc_3">Simple validation</h3>
+
+<p>There are two basic fields that are used to check the input option values:</p>
+
+<pre><code class="r">opt = set_opt(
+    a = list(.value = 1,
+             .length = c(1, 3),
+             .class = &quot;numeric&quot;)
+)
+</code></pre>
+
+<p>In above code, <code>.value</code> is the default value for the option <code>a</code>. The length of
+the value is controlled by <code>.length</code> and the length should be either 1 or 3.
+The class of the value should be <code>numeric</code>. If the input value does not fit
+these criterions, there will be an error. The value of <code>.length</code> or <code>.class</code>
+is a vector and the checking will be passed if one of the value fits user&#39;s
+input.</p>
+
+<pre><code class="r">opt(a = 1:2)  # there will be error because the length is 2
+</code></pre>
+
+<pre><code>## Error: Length of &#39;a&#39; should be one of 1, 3.
+</code></pre>
+
+<pre><code class="r">opt(a = &quot;text&quot;)  # there will be error because the input is character
+</code></pre>
+
+<pre><code>## Error: Class of &#39;a&#39; should be &#39;numeric&#39;.
+</code></pre>
+
+<h3 id="toc_4">Read-only options</h3>
+
+<p>The value can be set as read-only by <code>.read.only</code> field and modifying such
+option will cause an error.</p>
+
+<pre><code class="r">opt = set_opt(
+    a = list(.value = 1,
+             .read.only = TRUE)
+)
+opt(a = 2)  # there will be error because a is read-only
+</code></pre>
+
+<pre><code>## Error: &#39;a&#39; is a read-only option.
+</code></pre>
+
+<p>There is also a pre-defined argument <code>READ.ONLY</code> in <code>opt()</code> which controls
+whether to return only the read-only options or not.</p>
+
+<pre><code class="r">opt = set_opt(
+    a = list(.value = 1,
+             .read.only = TRUE),
+    b = 2
+)
+opt(READ.ONLY = TRUE)
+</code></pre>
+
+<pre><code>## $a
+## [1] 1
+</code></pre>
+
+<pre><code class="r">opt(READ.ONLY = FALSE)
+</code></pre>
+
+<pre><code>## $b
+## [1] 2
+</code></pre>
+
+<pre><code class="r">opt(READ.ONLY = NULL)  # default, to return both
+</code></pre>
+
+<pre><code>## $a
+## [1] 1
+## 
+## $b
+## [1] 2
+</code></pre>
+
+<h3 id="toc_5">User-defined validation</h3>
+
+<p>More customized validation of the option values can be controlled by
+<code>.validate</code> field. The value of <code>.validate</code> should be a function. The input of
+the validation function is the input option value and the function should only
+return a logical value.</p>
+
+<p><code>a</code> should only between 0 and 10 in following example.</p>
+
+<pre><code class="r">opt = set_opt(
+    a = list(.value = 1,
+             .validate = function(x) x &gt; 0 &amp;&amp; x &lt; 10
+    )
+)
+opt(a = 20)  # This will cause an error
+</code></pre>
+
+<pre><code>## Error: a didn&#39;t pass the validation. Your option is invalid.
+</code></pre>
+
+<p><code>.failed_msg</code> is used to configure the error message once validation is failed.</p>
+
+<pre><code class="r">opt = set_opt(
+    a = list(.value = 1,
+             .validate = function(x) x &gt; 0 &amp;&amp; x &lt; 10,
+             .failed_msg = &quot;&#39;a&#39; should be in (0, 10).&quot;
+    )
+)
+opt(a = 20)  # This will cause an error
+</code></pre>
+
+<pre><code>## Error: a didn&#39;t pass the validation. &#39;a&#39; should be in (0, 10).
+</code></pre>
+
+<h3 id="toc_6">Filter the option values</h3>
+
+<p>Filtering on the option values can be controlled by <code>.filter</code> field. This is
+useful when the input option value is not valid but it is not necessary to
+throw errors. More proper way is to modify the value silently. For example,
+there is an option to control whether to print messages or not and it should
+be set to <code>TRUE</code> or <code>FALSE</code>. However, users may set some other type of values
+such as <code>NULL</code> or <code>NA</code>. In this case, non-<code>TRUE</code> values can be converted to
+logical values by <code>.filter</code>. Similar as <code>.validate</code>, the input value for
+filter function is the input option value, and it should return a filtered
+option value.</p>
+
+<pre><code class="r">opt = set_opt(
+    verbose = 
+        list(.value = TRUE,
+             .filter = function(x) {
+                 if(is.null(x)) {
+                     return(FALSE)
+                 } else if(is.na(x)) {
+                     return(FALSE)
+                 } else {
+                     return(x)
+                 }
+              })
+)
+opt(verbose = FALSE); opt(&quot;verbose&quot;)
+</code></pre>
+
+<pre><code>## [1] FALSE
+</code></pre>
+
+<pre><code class="r">opt(verbose = NA); opt(&quot;verbose&quot;)
+</code></pre>
+
+<pre><code>## [1] FALSE
+</code></pre>
+
+<pre><code class="r">opt(verbose = NULL); opt(&quot;verbose&quot;)
+</code></pre>
+
+<pre><code>## [1] FALSE
+</code></pre>
+
+<p>Another example is when there is an option which controls four margin values
+of a plot, the length of the value can either be 1, 2, or 4. With <code>.filter</code>,
+length can be normaliezd to 4 consistently.</p>
+
+<pre><code class="r">opt = set_opt(
+    margin = 
+        list(.value = c(1, 1, 1, 1),
+             .length = c(1, 2, 4),
+             .filter = function(x) {
+                if(length(x) == 1) {
+                    return(rep(x, 4))
+                } else if(length(x) == 2) {
+                    return(rep(x, 2))
+                } else {
+                    return(x)
+                }
+            })
+)
+opt(margin = 2); opt(&quot;margin&quot;)
+</code></pre>
+
+<pre><code>## [1] 2 2 2 2
+</code></pre>
+
+<pre><code class="r">opt(margin = c(2, 4)); opt(&quot;margin&quot;)
+</code></pre>
+
+<pre><code>## [1] 2 4 2 4
+</code></pre>
+
+<h3 id="toc_7">Dynamic querying the option value</h3>
+
+<p>The input option value can be set dynamicly by setting it as a function. When
+the option value is set as a function and class of the option is non-function,
+it will be executed when querying the option. In the following example, the
+<code>prefix</code> option corresponds to the prefix of log messages. The returned option
+value is the string after the execution of the input function.</p>
+
+<pre><code class="r">opt = set_opt(
+    prefix = &quot;&quot;
+)
+opt(prefix = function() paste(&quot;[&quot;, Sys.time(), &quot;] &quot;, sep = &quot; &quot;))
+opt(&quot;prefix&quot;)  # or opt$prefix
+</code></pre>
+
+<pre><code>## [1] &quot;[ 2018-06-06 10:28:51 ] &quot;
+</code></pre>
+
+<pre><code class="r">Sys.sleep(2)
+opt(&quot;prefix&quot;)
+</code></pre>
+
+<pre><code>## [1] &quot;[ 2018-06-06 10:28:53 ] &quot;
+</code></pre>
+
+<p>If the value of the option is a real function and users don&#39;t want to execute
+it, just set <code>.class</code> to contain <code>function</code>, then the function will be treated
+as a simple value.</p>
+
+<pre><code class="r">opt = set_opt(
+    test_fun = list(.value = function(x1, x2) t.test(x1, x2)$p.value,
+                    .class = &quot;function&quot;)
+)
+opt(test_fun = function(x1, x2) cor.test(x1, x2)$p.value)
+opt(&quot;test_fun&quot;)  # or opt$test_fun
+</code></pre>
+
+<pre><code>## function(x1, x2) cor.test(x1, x2)$p.value
+</code></pre>
+
+<h3 id="toc_8">Interaction between options</h3>
+
+<p>The self-defined function (i.e. value function, validation function or filter
+function) is applied per-option independently. But sometimes we want to set
+one option based on values of other options. In this case, we need a function
+which can get other option values. <code>.v()</code> can be used to access other option
+values defined beforehand. <code>.v(&quot;a&quot;)</code> can also be written as <code>.v(a)</code> or <code>.v$a</code>.</p>
+
+<pre><code class="r">opt = set_opt(
+    a = 1,
+    b = function() 2 * .v$a
+)
+opt(&quot;b&quot;)  # or opt$b
+</code></pre>
+
+<pre><code>## [1] 2
+</code></pre>
+
+<pre><code class="r">opt(a = 2)
+opt(&quot;b&quot;)
+</code></pre>
+
+<pre><code>## [1] 4
+</code></pre>
+
+<p>However, you can still overwrite option <code>b</code>:</p>
+
+<pre><code class="r">opt(a = 2, b = 3) # b was overwriiten and will not be 2*a
+opt()
+</code></pre>
+
+<pre><code>## $a
+## [1] 2
+## 
+## $b
+## [1] 3
+</code></pre>
+
+<p><code>.v</code> can also be used in <code>.validate</code> and <code>.filter</code> fields. In the second
+example, sign of <code>b</code> should be as same as sign of <code>a</code>.</p>
+
+<pre><code class="r">opt = set_opt(
+    a = 1,
+    b = list(.value = 0,
+             .validate = function(x) {
+                 if(.v$a &gt; 0) x &gt; 0
+                 else x &lt; 0
+             },
+             .filter = function(x) {
+                 x + .v$a
+             },
+             .failed_msg = &quot;&#39;b&#39; should have same sign as &#39;a&#39;.&quot;)
+)
+opt(b = 1)
+opt(&quot;b&quot;)
+</code></pre>
+
+<pre><code>## [1] 2
+</code></pre>
+
+<pre><code class="r">opt(a = 1, b = -1)  # this should cause an error
+</code></pre>
+
+<pre><code>## Error: b didn&#39;t pass the validation. &#39;b&#39; should have same sign as &#39;a&#39;.
+</code></pre>
+
+<h3 id="toc_9">Local options</h3>
+
+<p>The option funtion also has a <code>LOCAL</code> argument which switches local mode and
+global mode. When <code>LOCAL</code> is set to <code>TRUE</code>, a copy of current options is
+generated and all queries are applied on the copy version. The local mode is
+turned off when <code>LOCAL</code> is explicitely specified to <code>FALSE</code>.</p>
+
+<pre><code class="r">opt = set_opt(
+    a = 1
+)
+
+opt(LOCAL = TRUE)
+opt(a = 2)
+opt$a
+</code></pre>
+
+<pre><code>## [1] 2
+</code></pre>
+
+<pre><code class="r">opt(LOCAL = FALSE)
+opt$a
+</code></pre>
+
+<pre><code>## [1] 1
+</code></pre>
+
+<p>Local mode will be automatically turned off when enrivonment changes. In
+following example, local mode only works inside <code>f1()</code> and <code>f2()</code> functions
+and the local copies are independent in <code>f1()</code> and <code>f2()</code>. Note when leaving
+e.g. <code>f1()</code>, the copy of the option is deleted.</p>
+
+<pre><code class="r">opt = set_opt(
+    a = 1
+)
+
+f1 = function() {
+    opt(LOCAL = TRUE)
+    opt(a = 2)
+    return(opt$a)
+}
+f1()
+</code></pre>
+
+<pre><code>## [1] 2
+</code></pre>
+
+<pre><code class="r">opt$a
+</code></pre>
+
+<pre><code>## [1] 1
+</code></pre>
+
+<pre><code class="r">f2 = function() {
+    opt(LOCAL = TRUE)
+    opt(a = 4)
+    return(opt$a)
+}
+f2()
+</code></pre>
+
+<pre><code>## [1] 4
+</code></pre>
+
+<pre><code class="r">opt$a
+</code></pre>
+
+<pre><code>## [1] 1
+</code></pre>
+
+<p>If <code>f1()</code> calls <code>f2()</code>, <code>f2()</code> will be in the same local mode as <code>f1()</code>. In other word,
+all children frames are in a same local mode if the parent frame is in local mode.</p>
+
+<pre><code class="r">opt = set_opt(
+    a = 1
+)
+
+f1 = function() {
+    opt(LOCAL = TRUE)
+    opt(a = 2)
+    return(f2())
+}
+
+f2 = function() {
+    opt$a
+}
+
+f1()
+</code></pre>
+
+<pre><code>## [1] 2
+</code></pre>
+
+<pre><code class="r">opt$a
+</code></pre>
+
+<pre><code>## [1] 1
+</code></pre>
+
+<h3 id="toc_10">Synonymous options</h3>
+
+<p>It can be possible that several weeks later, developers have better names for
+the options. They want to use the new option names but still do not want to
+disable the old ones. In this case, <code>.synonymous</code> field can be set to let the
+new option and old option reference to a same internal option object (which
+means all other configuration specified for this option is ignored). The change of
+values of either one will also affect the companions correspondingly.</p>
+
+<pre><code class="r">opt = set_opt(
+    old = 1,
+    new = list(.value = 1,
+               .synonymous = &quot;old&quot;)
+)
+opt()
+</code></pre>
+
+<pre><code>## $old
+## [1] 1
+## 
+## $new
+## [1] 1
+</code></pre>
+
+<pre><code class="r">opt$old = 2
+opt()
+</code></pre>
+
+<pre><code>## $old
+## [1] 2
+## 
+## $new
+## [1] 2
+</code></pre>
+
+<pre><code class="r">opt$new = 3
+opt()
+</code></pre>
+
+<pre><code>## $old
+## [1] 3
+## 
+## $new
+## [1] 3
+</code></pre>
+
+<h3 id="toc_11">Print the object</h3>
+
+<p>There is a <code>.description</code> field for each option which is only used when
+printing the summary of options. As shown before, simply entering the option
+object gives a summary table for all options.</p>
+
+<pre><code class="r">opt = set_opt(
+    a = 1,
+    b = &quot;b&quot;,
+    c = list(.value = letters[1:4],
+             .class = &quot;character&quot;,
+             .description = &quot;26 letters&quot;),
+    d = list(.value = c(0, 0),
+             .class = &quot;numeric&quot;,
+             .validate = function(x) x[1]^2 + x[2]^2 &lt;= 1,
+             .failed_msg = &quot;The point should be in the unit circle&quot;,
+             .description = &quot;start points in the unit circle&quot;),
+    e = list(.value = rnorm,
+             .class = &quot;function&quot;,
+             .description = &quot;distribution to generate random numbers&quot;)
+)
+opt
+</code></pre>
+
+<pre><code>##  Option                   Value                             Description
+##       a                       1                                      &quot;&quot;
+##       b                       b                                      &quot;&quot;
+##       c              a, b, c, d                              26 letters
+##       d                    0, 0         start points in the unit circle
+##       e a user-defined function distribution to generate random numbers
+</code></pre>
+
+<p>Use <code>dump_opt()</code> to get summary for each option.</p>
+
+<pre><code class="r">dump_opt(opt, &quot;a&quot;)
+</code></pre>
+
+<pre><code>##                    Field                   Value
+##                     name                       a
+##            default_value                       1
+##            current_value                       1
+##                   length                no limit
+##                    class                no limit
+##                 validate a user-defined function
+##               failed_msg Your option is invalid.
+##                   filter a user-defined function
+##                read.only                   FALSE
+##                  private                   FALSE
+##                  visible                    TRUE
+##              description                      &quot;&quot;
+##  __generated_namespace__             R_GlobalEnv
+</code></pre>
+
+<pre><code class="r">dump_opt(opt, &quot;d&quot;)
+</code></pre>
+
+<pre><code>##                    Field                                  Value
+##                     name                                      d
+##            default_value                                   0, 0
+##            current_value                                   0, 0
+##                   length                               no limit
+##                    class                                numeric
+##                 validate                a user-defined function
+##               failed_msg The point should be in the unit circle
+##                   filter                a user-defined function
+##                read.only                                  FALSE
+##                  private                                  FALSE
+##                  visible                                   TRUE
+##              description        start points in the unit circle
+##  __generated_namespace__                            R_GlobalEnv
+</code></pre>
+
+<h3 id="toc_12">Add new options</h3>
+
+<p>New options can be added after the option function is created by explicitely
+specifying <code>ADD = TRUE</code>:</p>
+
+<pre><code class="r">opt = set_opt(a = 1)
+opt(b = 2, ADD = TRUE)
+opt
+</code></pre>
+
+<pre><code>##  Option Value
+##       a     1
+##       b     2
+</code></pre>
+
+<p>Note you cannot add new options by using <code>$</code> (or more precisely <code>$&lt;-</code>)
+operator because <code>$</code> can only access options that have already been created.</p>
+
+<pre><code class="r">opt$c = 3
+</code></pre>
+
+<pre><code>## Error: No such option: &#39;c&#39;. If you want to add this new option, please use your_opt_fun(c = ...,
+## ADD = TRUE)
+</code></pre>
+
+<p>Like using a complex configuration list when creating a new option in <code>set_opt()</code>, 
+here you can also use configuration list with <code>ADD = TRUE</code>.</p>
+
+<pre><code class="r">opt(c = list(.value = &quot;c&quot;, 
+             .class = &quot;character&quot;), 
+    ADD = TRUE)
+opt
+</code></pre>
+
+<pre><code>##  Option Value
+##       a     1
+##       b     2
+##       c     c
+</code></pre>
+
+<pre><code class="r">opt$c = 1
+</code></pre>
+
+<pre><code>## Error: Class of &#39;c&#39; should be &#39;character&#39;.
+</code></pre>
+
+<h2 id="toc_13">Features for package development</h2>
+
+<p>Two additional fields may be helpful when developing packages. <code>.visible</code>
+controls whether options are visible to users. The invisible option can only
+be queried or modified by specifying its option name (just like you can
+only open the door with the correct unique key). This would be helpful if
+users want to put some secret options while do not want others to access. Is
+this case, they can assign names with complex strings like
+<code>.__MY_PRIVATE_KEY__.</code> as their secret options and afterwards they can access
+it with this special key.</p>
+
+<pre><code class="r">opt = set_opt(
+    a = list(.value = 1,
+             .visible = FALSE),
+    b = 2
+)
+opt()
+</code></pre>
+
+<pre><code>## $b
+## [1] 2
+</code></pre>
+
+<pre><code class="r">opt$a
+</code></pre>
+
+<pre><code>## [1] 1
+</code></pre>
+
+<pre><code class="r">opt$a = 2
+opt$a
+</code></pre>
+
+<pre><code>## [1] 2
+</code></pre>
+
+<pre><code class="r">opt()
+</code></pre>
+
+<pre><code>## $b
+## [1] 2
+</code></pre>
+
+<p>Another field <code>.private</code> controls whether the option is only private to the
+namespace (e.g. packages). If it is set to <code>TRUE</code>, the option can only be
+modified in the same namespace (or top environment) where the option function
+is generated. E.g, if you are writing a package named <strong>foo</strong> and generating
+an option function <code>foo_opt()</code>, by setting the option with <code>.private</code> to
+<code>TRUE</code>, the value for such options can only be modified inside <strong>foo</strong> package
+while it is not permitted outside <strong>foo</strong>. At the same time, private options
+become read-only options if querying outside <strong>foo</strong> package.</p>
+
+<p>In following example, we manually modify the namespace where
+<code>set_opt()</code> is called in <code>stats</code> package.</p>
+
+<pre><code class="r">opt = set_opt(
+    a = list(.value = 1,
+             .private = TRUE)
+)
+require(stats)
+ns = getNamespace(&quot;stats&quot;)
+environment(opt)$options$a$`__generated_namespace__` = ns
+</code></pre>
+
+<p>There will be error if trying to modify <code>a</code> which is private in <code>stats</code> namespace.</p>
+
+<pre><code class="r">opt$a = 2
+</code></pre>
+
+<pre><code>## Error: &#39;a&#39; is a private option and it can only be modified inside &#39;stats&#39; namespace while not
+## &#39;R_GlobalEnv&#39;.
+</code></pre>
+
+<p>But you can still access it.</p>
+
+<pre><code class="r">opt$a
+</code></pre>
+
+<pre><code>## [1] 1
+</code></pre>
+
+<p>The option object generated by <code>set_opt()</code> is actually a function. It contains four arguments:
+<code>...</code>, <code>RESET</code>, <code>READ.ONLY</code>, <code>LOCAL</code>, <code>ADD</code>. If you want to put the option function
+into a package, remember to document all the four arguments:</p>
+
+<pre><code class="r">args(opt)
+</code></pre>
+
+<pre><code>## function (..., RESET = FALSE, READ.ONLY = NULL, LOCAL = FALSE, 
+##     ADD = FALSE) 
+## NULL
+</code></pre>
+
+<h2 id="toc_14">Misc</h2>
+
+<p>The order of validation when modifying an option value is <code>.read.only</code>,
+<code>.private</code>, <code>.length</code>, <code>.class</code>, <code>.validate</code>, <code>.filter</code>, <code>.length</code>, <code>.class</code>.
+Note validation on length and class of the option values will be applied again
+after filtering.</p>
+
+<p>Global options are stored in private environments. Each time when generating a
+option function, there will be new environments created. Thus global options
+will not conflict if they come from different option functions.</p>
+
+<pre><code class="r">opt1 = set_opt(
+    a = list(.value = 1)
+)
+opt2 = set_opt(
+    a = list(.value = 1)
+)
+opt1$a = 2
+opt1$a
+</code></pre>
+
+<pre><code>## [1] 2
+</code></pre>
+
+<pre><code class="r">opt2$a
+</code></pre>
+
+<pre><code>## [1] 1
+</code></pre>
+
+<p>Note the option values can also be set as a list, so for the list containing configurations, 
+names of the field is started with a dot <code>.</code> to be distinguished from the normal list.</p>
+
+<pre><code class="r">opt = set_opt(
+    list = list(a = 1,
+                b = 2)
+)
+opt()
+</code></pre>
+
+<pre><code>## $list
+## $list$a
+## [1] 1
+## 
+## $list$b
+## [1] 2
+</code></pre>
+
+<pre><code class="r">opt = set_opt(
+    list = list(.value = list(a = 1, b = 2),
+                .class = &quot;list&quot;)
+)
+opt()
+</code></pre>
+
+<pre><code>## $list
+## $list$a
+## [1] 1
+## 
+## $list$b
+## [1] 2
+</code></pre>
+
+<pre><code class="r">opt$list = 1  # this will cause an error
+</code></pre>
+
+<pre><code>## Error: Class of &#39;list&#39; should be &#39;list&#39;.
+</code></pre>
+
+<p>If you made a type of the field names when configurating the options (e.g.
+forgot to type the leading dot), there will be a warning and the whole
+configuration list is treated as a normal list for this option.</p>
+
+<pre><code class="r">opt = set_opt(
+  a = list(.value = 1,
+           class = &quot;numeric&quot;)  # &lt;- here it should be .class
+)
+</code></pre>
+
+<pre><code>## Warning: Your definition for &#39;a&#39; is mixed. It should only contain .value, .class, .length,
+## .validate, .failed_msg, .filter, .read.only, .private, .visible, .synonymous,
+## .description. Ignore the setting and use the whole list as the default value.
+</code></pre>
+
+<pre><code class="r">opt$a
+</code></pre>
+
+<pre><code>## $.value
+## [1] 1
+## 
+## $class
+## [1] &quot;numeric&quot;
+</code></pre>
+
+<p>The final and the most important thing is the validation by <code>.class</code>,
+<code>.length</code>, <code>.validate</code>, <code>.filter</code> will not be applied on default values
+because users who design their option functions should know whether the
+default values are valid or not.</p>
+
+<pre><code class="r">opt = set_opt(
+    a = list(.value = -1,
+             .validate = function(x) x &gt; 0)
+)
+opt$a
+</code></pre>
+
+<pre><code>## [1] -1
+</code></pre>
+
+<h2 id="toc_15">Session info</h2>
+
+<pre><code class="r">sessionInfo()
+</code></pre>
+
+<pre><code>## R version 3.4.4 (2018-03-15)
+## Platform: x86_64-apple-darwin15.6.0 (64-bit)
+## Running under: macOS High Sierra 10.13.2
+## 
+## Matrix products: default
+## BLAS: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] C/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] GlobalOptions_0.1.0 knitr_1.20          markdown_0.8       
+## 
+## loaded via a namespace (and not attached):
+## [1] compiler_3.4.4  magrittr_1.5    tools_3.4.4     stringi_1.2.2   stringr_1.3.1   evaluate_0.10.1
+</code></pre>
+
+</body>
+
+</html>

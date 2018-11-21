@@ -1,0 +1,43 @@
+addStates               Adds a bar representing state sequence.
+dmvnorm.hsmm            Emission ensity function for a multivariate
+                        normal emission distribution
+dnorm.hsmm              Emission density function for normal emission
+                        distribution
+dpois.hsmm              Emission density function for Poisson emission
+                        distribution
+gammafit                Parameter estimation for the Gamma distribution
+hmmfit                  fit a hidden Markov model
+hmmspec                 Specificatin of HMMs
+hsmmfit                 fit a hidden semi-Markov model
+hsmmspec                Hidden semi-Markov model specification
+mstep.mvnorm            Performs re-estimation (the M-step) for a
+                        multivariate normal emission distribution
+mstep.norm              Performs re-estimation (the M-step) for a
+                        normal emission distribution
+mstep.pois              Performs re-estimation (the M-step) for a
+                        Poisson emission distribution
+plot.hsmm               Plot function for hsmms
+plot.hsmm.data          Plot function for hsmm data
+predict.hmm             Prediction function for hmm
+predict.hmmspec         Prediction function for hmmspec
+predict.hsmm            Prediction for hsmms
+predict.hsmmspec        Prediction for hsmmspec
+print.hmm               Print method for hmm objects
+print.hmmspec           Print function for hmmspec
+print.hsmmspec          Print function for hsmmspec
+reproai                 Artificial insemination times for seven cows
+reprocows               Reproductive data from seven dairy cows
+reproppa                Observed lengths of post-partum anoestrus for
+                        73 dairy cows
+rmvnorm.hsmm            Random number generation from a multivariate
+                        normal distributed emission distribution
+rnorm.hsmm              Random number generation from a normally
+                        distributed emission distribution
+rpois.hsmm              Random number generation from a Poisson
+                        distributed emission distribution
+sim.mc                  Markov chain simulation
+simulate.hmmspec        Simulation of hidden Markov models
+simulate.hsmmspec       Simulation for HSMMs
+smooth.discrete         Smoothing a discrete time series.
+summary.hmm             Summary method for hmm objects
+summary.hsmm            Summary function for hsmm

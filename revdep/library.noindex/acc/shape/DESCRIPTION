@@ -1,0 +1,19 @@
+Package: shape
+Version: 1.4.4
+Title: Functions for Plotting Graphical Shapes, Colors
+Author: Karline Soetaert <karline.soetaert@nioz.nl>
+Maintainer: Karline Soetaert <karline.soetaert@nioz.nl>
+Depends: R (>= 2.01)
+Imports: stats, graphics, grDevices
+Description: Functions for plotting graphical shapes
+  such as ellipses, circles, cylinders, arrows, ...
+License: GPL (>= 3)
+LazyData: yes
+Repository: CRAN
+Repository/R-Forge/Project: diagram
+Repository/R-Forge/Revision: 82
+Repository/R-Forge/DateTimeStamp: 2018-02-06 18:09:53
+Date/Publication: 2018-02-07 16:21:49 UTC
+NeedsCompilation: no
+Packaged: 2018-02-06 18:25:15 UTC; rforge
+Built: R 3.4.3; ; 2018-02-10 06:34:57 UTC; unix

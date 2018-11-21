@@ -1,0 +1,12 @@
+$.GlobalOptionsFun	Subset.GlobalOptionsFun
+$.InternalOptionValue	Subset.InternalOptionValue
+$<-.GlobalOptionsFun	Assign.GlobalOptionsFun
+.DollarNames.GlobalOptionsFun	Dot.DollarNames.GlobalOptionsFun
+.v	Dot.v
+dump_opt	dump_opt
+print.GlobalOptionsFun	print.GlobalOptionsFun
+setGlobalOptions	setGlobalOptions
+set_opt	set_opt
+[.GlobalOptionsFun	Extract.GlobalOptionsFun
+[[.GlobalOptionsFun	ExtractExtract.GlobalOptionsFun
+[[<-.GlobalOptionsFun	ExtractExtractAssign.GlobalOptionsFun

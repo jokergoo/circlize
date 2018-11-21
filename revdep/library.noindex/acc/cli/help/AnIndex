@@ -1,0 +1,16 @@
+boxx	boxx
+cat_boxx	cat_line
+cat_bullet	cat_line
+cat_line	cat_line
+cat_print	cat_line
+cat_rule	cat_line
+cli_sitrep	cli_sitrep
+console_width	console_width
+demo_spinners	demo_spinners
+get_spinner	get_spinner
+is_utf8_output	is_utf8_output
+list_border_styles	boxx
+list_spinners	list_spinners
+rule	rule
+symbol	symbol
+tree	tree

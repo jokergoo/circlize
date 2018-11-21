@@ -1,0 +1,171 @@
+% \VignetteIndexEntry{Smoothing discrete data (I) - smooth.discrete()}
+% \VignetteDepends{mhsmm}
+% \VignetteKeyword{Hidden Markov Model}
+
+\documentclass{article}
+\usepackage[top=1in,left=1in,bottom=1in,right=1in]{geometry}
+%\usepackage{a4wide}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+
+\title{Smoothing discrete data (I)\\ -- using the \texttt{smooth.discrete()} function in the
+  \texttt{mhsmm} package}
+\author{S{\o}ren H{\o}jsgaard and Jared O'Connell}
+
+\def\code#1{\texttt{#1}}
+
+\begin{document}
+
+\SweaveOpts{prefix.string=fig/smooth} 
+\setkeys{Gin}{width=0.5\textwidth,height=2in}
+\renewenvironment{Schunk}{\linespread{.85}\small}{}
+
+\maketitle
+
+\parindent0pt\parskip5pt
+
+\tableofcontents
+
+@ 
+<<print=F,echo=F>>=
+options("width"=80)
+library(mhsmm)
+@ %def 
+
+
+\section{Introduction}
+
+
+The \verb'smooth.discrete()' function provides a simple smoothing of a
+time series of discrete values measured at equidistant times.
+Under the hood of  \verb'smooth.discrete()' is a hidden Markov model.
+
+More details -- and an additional example -- is provided in the
+vignette ``Smoothing discrete data (II)''
+
+\section{Using \texttt{smooth.discrete()}}
+
+For example consider the data:
+@ 
+<<>>=
+y1 <- c(1,1,1,1,2,1,1,NA,1,1,2,1,1,1,2,1,1,1,1,1,2,2,2,2,1,2,2,2,1,2,2,2,1,1,1,1,1,1,1,1,2,2,2,1,1) 
+@ %def 
+
+Calling \verb'smooth.discrete()' on these data gives 
+@ 
+<<print=T>>=
+obj <- smooth.discrete(y1)
+@ %def 
+
+The \verb's' slot of the object contains the smoothed values. We
+illustrate the results in Figure~\ref{fig:smooth1}.
+
+@ 
+<<smooth1, fig=F>>=
+plot(y1, ylim=c(0.8,2))
+addStates(obj$s)
+@ %def 
+
+\begin{figure}[h]
+  \centering
+  \includegraphics{fig/smooth-smooth1}
+  \caption{Observed and smoothed discrete time time series.}
+  \label{fig:smooth1}
+\end{figure}
+
+The smoothed sequence of states is by default the jointly most likely
+sequence of states as obtained by the Viterbi algorithm.
+
+A smooth of a new time series is produced as
+@ 
+<<>>=
+y2 <- c(1,1,1,1,2,2,2,1,1,2,1,1,1,2,1,1,1,1,1,2,2,2,NA,1,1,1,2,2,1,2,2,2)
+predict(obj,x=y2)
+@ %def 
+
+Here the smoothed values are in the \verb's' slot.
+Again, the sequence is by default the jointly most likely
+sequence of states. 
+
+
+The estimated parameters are:
+@ 
+<<>>=
+summary(obj)
+@ %def 
+
+
+\section{The arguments to \texttt{smooth.discrete()}}
+\label{sec:xxx}
+
+
+
+The arguments of \verb'smooth.discrete()' are
+@ 
+<<>>=
+args(smooth.discrete)
+@ %def 
+
+\begin{itemize}
+
+\item \code{init} is a vector of initial probabilities for the Markov
+chain. 
+If \code{init=NULL} then the initial distribution is taken to be
+the relative frequencies in data, that is
+@ 
+<<>>=
+table(y1)/sum(table(y1))
+@ %def 
+
+\item \code{trans} is the transition matrix for the Markov chain.
+If \code{trans=NULL} then the transition matrix is derived from data as:
+@ 
+<<>>=
+ttt<-table(y1[-length(y1)],y1[-1])
+ttt
+sweep(ttt, 1, rowSums(ttt), "/")
+@ %def 
+
+If \code{trans} is a vector (of numbers smaller than $1$) then these
+are taken to be the diagonal of the transition matrix and the
+off--diagonal elements are then, within each row, taken to be
+identical so that the rows sum to $1$. Elements of \code{trans} are
+recycled so as to make the dimensions match. Under the hood, the
+matrix is created as, for example:
+
+@ 
+<<>>=
+createTransition(c(0.8,0.9),2)
+@ %def 
+
+\item \code{parms.emission} is a matrix describing the conditional
+  probabilities of the observed states given the latent states. If
+  \code{parms.emission} is a vector then the matrix is created
+  following the same scheme as for the transition matrix described
+  above. 
+
+
+\item The \verb'method' argument is either
+\verb'"viterbi"' (which produces the jointly most likely
+sequence of states). The alternative method is \verb'smoothed' which
+produces the individually most likely states. 
+
+
+\item The dotted arguments are
+passed on the the \verb'hmmfit' function. For example, one may specify
+\code{lock.transition=TRUE} in which case the transition matrix is not
+estimated from data.
+
+\end{itemize}
+
+
+
+
+
+
+\end{document}
+
+
+
+
+

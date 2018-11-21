@@ -1,0 +1,6 @@
+useDynLib(nleqslv, .registration=TRUE, .fixes="C_")
+export(nleqslv)
+export(testnslv)
+export(searchZeros)
+
+S3method(print,test.nleqslv)

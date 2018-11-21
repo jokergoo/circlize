@@ -1,0 +1,106 @@
+
+R version 3.1.3 (2015-03-09) -- "Smooth Sidewalk"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin10.8.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> # Dennis & Schnabel,1996,"Numerical methods for unconstrained optimization and nonlinear equations", SIAM
+> # example 6.5.1 page 149
+> 
+> library(nleqslv)
+> packageVersion("nleqslv")
+[1] '2.8'
+> .libPaths()
+[1] "/Users/berendhasselman/Documents/Programming/R/Packages/NonLinearEq.Package/nleqslv.Rcheck"
+[2] "/Users/berendhasselman/Library/R/3.1/library"                                              
+[3] "/Library/Frameworks/R.framework/Versions/3.1/Resources/library"                            
+> 
+> dslnex <- function(x) {
++     y <- numeric(2)
++     y[1] <- x[1]^2 + x[2]^2 - 2
++     y[2] <- exp(x[1]-1) + x[2]^3 - 2
++     y
++ }
+> 
+> jacdsln <- function(x) {
++     n <- length(x)
++     Df <- matrix(numeric(n*n),n,n)
++     Df[1,1] <- 2*x[1]
++     Df[1,2] <- 2*x[2]
++     Df[2,1] <- exp(x[1]-1)
++     Df[2,2] <- 3*x[2]^2
++ 
++     Df
++ }
+> 
+> xstart <- c(2,0.5)
+> 
+> # \section{Report for the double dogleg global method}
+> nleqslv(xstart,dslnex, global="dbldog", jacobian=TRUE, control=list(trace=1,delta="cauchy"))
+  Algorithm parameters
+  --------------------
+  Method: Broyden  Global strategy: double dogleg (initial trust region = -1)
+  Maximum stepsize = 1.79769e+308
+  Scaling: fixed
+  ftol = 1e-08 xtol = 1e-08 btol = 0.001 cndtol = 1e-12
+
+  Iteration report
+  ----------------
+  Iter         Jac     Lambda      Eta     Dlt0     Dltn         Fnorm   Largest |f|
+     0                                                    2.886812e+00  2.250000e+00
+     1  N(9.6e-03) C            0.9544   0.4671   0.9343* 1.699715e-01  5.421673e-01
+     1             W   0.0833   0.9544   0.9343   0.4671  1.699715e-01  5.421673e-01
+     2  B(1.1e-02) W   0.1154   0.4851   0.4671   0.4671  1.277667e-01  5.043571e-01
+     3  B(7.3e-02) W   0.7879   0.7289   0.4671   0.0759  5.067893e-01  7.973542e-01
+     3             C            0.7289   0.0759   0.1519  5.440250e-02  2.726084e-01
+     4  B(8.3e-02) W   0.5307   0.3271   0.1519   0.3037  3.576547e-02  2.657553e-01
+     5  B(1.8e-01) N            0.6674   0.2191   0.4383  6.566182e-03  8.555110e-02
+     6  B(1.8e-01) N            0.9801   0.0376   0.0752  4.921645e-04  3.094104e-02
+     7  B(1.9e-01) N            0.7981   0.0157   0.0313  4.960629e-06  2.826064e-03
+     8  B(1.6e-01) N            0.3942   0.0029   0.0058  1.545503e-08  1.757498e-04
+     9  B(1.5e-01) N            0.6536   0.0001   0.0003  2.968676e-11  5.983765e-06
+    10  B(1.5e-01) N            0.4730   0.0000   0.0000  4.741792e-14  2.198380e-07
+    11  B(1.5e-01) N            0.9787   0.0000   0.0000  6.451792e-19  8.118586e-10
+$x
+[1] 1 1
+
+$fvec
+[1]  8.118586e-10 -7.945087e-10
+
+$termcd
+[1] 1
+
+$message
+[1] "Function criterion near zero"
+
+$scalex
+[1] 1 1
+
+$nfcnt
+[1] 13
+
+$njcnt
+[1] 1
+
+$iter
+[1] 11
+
+$jac
+          [,1]     [,2]
+[1,] 2.0616260 2.103239
+[2,] 0.9400911 2.899639
+
+> 

@@ -1,0 +1,17 @@
+$.GlobalOptionsFun      Get option value by dollar symbol
+$.InternalOptionValue   Get value of other options
+$<-.GlobalOptionsFun    Set option value by dollar symbol
+.DollarNames.GlobalOptionsFun
+                        The .DollarNames method for the
+                        GlobalOptionsFun class
+.v                      Get value of other options
+[.GlobalOptionsFun      Get a single GlobalOption object
+[[.GlobalOptionsFun     Get option value by subset operator
+[[<-.GlobalOptionsFun   Set option value by subset operator
+dump_opt                Print all fields of a single option
+print.GlobalOptionsFun
+                        Print the GlobalOptionsFun object
+setGlobalOptions        Produce a function which can get or set global
+                        options
+set_opt                 Produce a function which can get or set global
+                        options

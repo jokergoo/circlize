@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>R: Circular Visualization</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+<h1> Circular Visualization
+<img class="toplogo" src="../../../doc/html/Rlogo.svg" alt="[R logo]" />
+</h1>
+<hr/>
+<div style="text-align: center;">
+<a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
+<a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
+</div><h2>Documentation for package &lsquo;circlize&rsquo; version 0.4.4</h2>
+
+<ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
+<li><a href="../doc/index.html">User guides, package vignettes and other documentation.</a></li>
+<li><a href="../demo">Code demos</a>.  Use <a href="../../utils/help/demo">demo()</a> to run them.</li>
+<li><a href="../NEWS">Package NEWS</a>.</li>
+</ul>
+
+<h2>Help Pages</h2>
+
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="circlize-package.html">circlize-package</a></td>
+<td>Circular visualization in R</td></tr>
+<tr><td style="width: 25%;"><a href="Subset.CELL_META.html">$.CELL_META</a></td>
+<td>Easy to way to get meta data in the current cell</td></tr>
+<tr><td style="width: 25%;"><a href="add_transparency.html">add_transparency</a></td>
+<td>Add transparency to colors</td></tr>
+<tr><td style="width: 25%;"><a href="adjacencyList2Matrix.html">adjacencyList2Matrix</a></td>
+<td>Convert adjacency list to adjacency matrix</td></tr>
+<tr><td style="width: 25%;"><a href="CELL_META.html">CELL_META</a></td>
+<td>Easy to way to get meta data in the current cell</td></tr>
+<tr><td style="width: 25%;"><a href="chordDiagram.html">chordDiagram</a></td>
+<td>Plot Chord Diagram</td></tr>
+<tr><td style="width: 25%;"><a href="chordDiagramFromDataFrame.html">chordDiagramFromDataFrame</a></td>
+<td>Plot Chord Diagram from a data frame</td></tr>
+<tr><td style="width: 25%;"><a href="chordDiagramFromMatrix.html">chordDiagramFromMatrix</a></td>
+<td>Plot Chord Diagram from an adjacency matrix</td></tr>
+<tr><td style="width: 25%;"><a href="circlize.html">circlize</a></td>
+<td>Convert to polar coordinate system</td></tr>
+<tr><td style="width: 25%;"><a href="circos.arrow.html">circos.arrow</a></td>
+<td>Draw arrow which is paralle to the circle</td></tr>
+<tr><td style="width: 25%;"><a href="circos.axis.html">circos.axis</a></td>
+<td>Draw x-axis</td></tr>
+<tr><td style="width: 25%;"><a href="circos.clear.html">circos.clear</a></td>
+<td>Reset the circular layout parameters</td></tr>
+<tr><td style="width: 25%;"><a href="circos.dendrogram.html">circos.dendrogram</a></td>
+<td>Add circular dendrograms</td></tr>
+<tr><td style="width: 25%;"><a href="circos.genomicDensity.html">circos.genomicDensity</a></td>
+<td>Calculate and add genomic density track</td></tr>
+<tr><td style="width: 25%;"><a href="circos.genomicHeatmap.html">circos.genomicHeatmap</a></td>
+<td>Add heatmaps for selected regions</td></tr>
+<tr><td style="width: 25%;"><a href="circos.genomicIdeogram.html">circos.genomicIdeogram</a></td>
+<td>Add an ideogram track</td></tr>
+<tr><td style="width: 25%;"><a href="circos.genomicInitialize.html">circos.genomicInitialize</a></td>
+<td>Initialize circular plot with any genomic data</td></tr>
+<tr><td style="width: 25%;"><a href="circos.genomicLabels.html">circos.genomicLabels</a></td>
+<td>Add labels to specified genomic regions</td></tr>
+<tr><td style="width: 25%;"><a href="circos.genomicLines.html">circos.genomicLines</a></td>
+<td>Add lines to a plotting region, specifically for genomic graphics</td></tr>
+<tr><td style="width: 25%;"><a href="circos.genomicLink.html">circos.genomicLink</a></td>
+<td>Add links from two sets of genomic positions</td></tr>
+<tr><td style="width: 25%;"><a href="circos.genomicPoints.html">circos.genomicPoints</a></td>
+<td>Add points to a plotting region, specifically for genomic graphics</td></tr>
+<tr><td style="width: 25%;"><a href="circos.genomicPosTransformLines.html">circos.genomicPosTransformLines</a></td>
+<td>Add genomic position transformation lines between tracks</td></tr>
+<tr><td style="width: 25%;"><a href="circos.genomicRainfall.html">circos.genomicRainfall</a></td>
+<td>Genomic rainfall plot</td></tr>
+<tr><td style="width: 25%;"><a href="circos.genomicRect.html">circos.genomicRect</a></td>
+<td>Draw rectangle-like grid, specifically for genomic graphics</td></tr>
+<tr><td style="width: 25%;"><a href="circos.genomicText.html">circos.genomicText</a></td>
+<td>Draw text in a cell, specifically for genomic graphics</td></tr>
+<tr><td style="width: 25%;"><a href="circos.genomicTrack.html">circos.genomicTrack</a></td>
+<td>Create a track for genomic graphics</td></tr>
+<tr><td style="width: 25%;"><a href="circos.genomicTrackPlotRegion.html">circos.genomicTrackPlotRegion</a></td>
+<td>Create a track for genomic graphics</td></tr>
+<tr><td style="width: 25%;"><a href="circos.info.html">circos.info</a></td>
+<td>Get information of the circular plot</td></tr>
+<tr><td style="width: 25%;"><a href="circos.initialize.html">circos.initialize</a></td>
+<td>Initialize the circular layout</td></tr>
+<tr><td style="width: 25%;"><a href="circos.initializeWithIdeogram.html">circos.initializeWithIdeogram</a></td>
+<td>Initialize the circular layout with an ideogram</td></tr>
+<tr><td style="width: 25%;"><a href="circos.lines.html">circos.lines</a></td>
+<td>Add lines to the plotting region</td></tr>
+<tr><td style="width: 25%;"><a href="circos.link.html">circos.link</a></td>
+<td>Draw links between points or/and intervals</td></tr>
+<tr><td style="width: 25%;"><a href="circos.nested.html">circos.nested</a></td>
+<td>Nested zooming with two circular plots</td></tr>
+<tr><td style="width: 25%;"><a href="circos.par.html">circos.par</a></td>
+<td>Parameters for the circular layout</td></tr>
+<tr><td style="width: 25%;"><a href="circos.points.html">circos.points</a></td>
+<td>Add points to a plotting region</td></tr>
+<tr><td style="width: 25%;"><a href="circos.polygon.html">circos.polygon</a></td>
+<td>Draw polygon</td></tr>
+<tr><td style="width: 25%;"><a href="circos.raster.html">circos.raster</a></td>
+<td>Add raster images</td></tr>
+<tr><td style="width: 25%;"><a href="circos.rect.html">circos.rect</a></td>
+<td>Draw rectangle-like grid</td></tr>
+<tr><td style="width: 25%;"><a href="circos.segments.html">circos.segments</a></td>
+<td>Draw segments through pairwise of points</td></tr>
+<tr><td style="width: 25%;"><a href="circos.text.html">circos.text</a></td>
+<td>Draw text in a cell</td></tr>
+<tr><td style="width: 25%;"><a href="circos.track.html">circos.track</a></td>
+<td>Create plotting regions for a whole track</td></tr>
+<tr><td style="width: 25%;"><a href="circos.trackHist.html">circos.trackHist</a></td>
+<td>Draw histogram in cells among a whole track</td></tr>
+<tr><td style="width: 25%;"><a href="circos.trackLines.html">circos.trackLines</a></td>
+<td>Add lines to the plotting regions in a same track</td></tr>
+<tr><td style="width: 25%;"><a href="circos.trackPlotRegion.html">circos.trackPlotRegion</a></td>
+<td>Create plotting regions for a whole track</td></tr>
+<tr><td style="width: 25%;"><a href="circos.trackPoints.html">circos.trackPoints</a></td>
+<td>Add points to the plotting regions in a same track</td></tr>
+<tr><td style="width: 25%;"><a href="circos.trackText.html">circos.trackText</a></td>
+<td>Draw text in cells among the whole track</td></tr>
+<tr><td style="width: 25%;"><a href="circos.update.html">circos.update</a></td>
+<td>Create plotting regions for a whole track</td></tr>
+<tr><td style="width: 25%;"><a href="circos.updatePlotRegion.html">circos.updatePlotRegion</a></td>
+<td>Update the plotting region in an existed cell</td></tr>
+<tr><td style="width: 25%;"><a href="circos.xaxis.html">circos.xaxis</a></td>
+<td>Draw x-axis</td></tr>
+<tr><td style="width: 25%;"><a href="circos.yaxis.html">circos.yaxis</a></td>
+<td>Draw y-axis</td></tr>
+<tr><td style="width: 25%;"><a href="col2value.html">col2value</a></td>
+<td>Transform back from colors to values</td></tr>
+<tr><td style="width: 25%;"><a href="colorRamp2.html">colorRamp2</a></td>
+<td>Color interpolation</td></tr>
+<tr><td style="width: 25%;"><a href="convert_height.html">convert_height</a></td>
+<td>Convert units</td></tr>
+<tr><td style="width: 25%;"><a href="convert_length.html">convert_length</a></td>
+<td>Convert units</td></tr>
+<tr><td style="width: 25%;"><a href="convert_x.html">convert_x</a></td>
+<td>Convert unit on x direction in data coordinate</td></tr>
+<tr><td style="width: 25%;"><a href="convert_y.html">convert_y</a></td>
+<td>Convert unit on y direction in data coordinate</td></tr>
+<tr><td style="width: 25%;"><a href="cytoband.col.html">cytoband.col</a></td>
+<td>Assign colors to cytogenetic band (hg19) according to the Giemsa stain results</td></tr>
+<tr><td style="width: 25%;"><a href="degree.html">degree</a></td>
+<td>Mark the value as a degree value</td></tr>
+<tr><td style="width: 25%;"><a href="draw.sector.html">draw.sector</a></td>
+<td>Draw sectors or rings in a circle</td></tr>
+<tr><td style="width: 25%;"><a href="fontsize.html">fontsize</a></td>
+<td>Convert fontsize to cex</td></tr>
+<tr><td style="width: 25%;"><a href="generateRandomBed.html">generateRandomBed</a></td>
+<td>Generate random genomic data</td></tr>
+<tr><td style="width: 25%;"><a href="genomicDensity.html">genomicDensity</a></td>
+<td>Calculate genomic region density</td></tr>
+<tr><td style="width: 25%;"><a href="get.all.sector.index.html">get.all.sector.index</a></td>
+<td>Get index for all sectors</td></tr>
+<tr><td style="width: 25%;"><a href="get.all.track.index.html">get.all.track.index</a></td>
+<td>Get index for all tracks</td></tr>
+<tr><td style="width: 25%;"><a href="get.cell.meta.data.html">get.cell.meta.data</a></td>
+<td>Get the meta data of a cell</td></tr>
+<tr><td style="width: 25%;"><a href="get.current.chromosome.html">get.current.chromosome</a></td>
+<td>Get current chromosome name</td></tr>
+<tr><td style="width: 25%;"><a href="get.current.sector.index.html">get.current.sector.index</a></td>
+<td>Get current sector index</td></tr>
+<tr><td style="width: 25%;"><a href="get.current.track.index.html">get.current.track.index</a></td>
+<td>Get current track index</td></tr>
+<tr><td style="width: 25%;"><a href="getI.html">getI</a></td>
+<td>Which data that 'panel.fun' is using</td></tr>
+<tr><td style="width: 25%;"><a href="highlight.chromosome.html">highlight.chromosome</a></td>
+<td>Highlight chromosomes</td></tr>
+<tr><td style="width: 25%;"><a href="highlight.sector.html">highlight.sector</a></td>
+<td>Highlight sectors and tracks</td></tr>
+<tr><td style="width: 25%;"><a href="posTransform.default.html">posTransform.default</a></td>
+<td>Genomic position transformation function</td></tr>
+<tr><td style="width: 25%;"><a href="posTransform.text.html">posTransform.text</a></td>
+<td>Genomic position transformation function specifically for text</td></tr>
+<tr><td style="width: 25%;"><a href="print.CELL_META.html">print.CELL_META</a></td>
+<td>Print CELL_META</td></tr>
+<tr><td style="width: 25%;"><a href="rainfallTransform.html">rainfallTransform</a></td>
+<td>Calculate inter-distance of genomic regions</td></tr>
+<tr><td style="width: 25%;"><a href="rand_color.html">rand_color</a></td>
+<td>Generate random colors</td></tr>
+<tr><td style="width: 25%;"><a href="read.chromInfo.html">read.chromInfo</a></td>
+<td>Read/parse chromInfo data from a data frame/file/UCSC database</td></tr>
+<tr><td style="width: 25%;"><a href="read.cytoband.html">read.cytoband</a></td>
+<td>Read/parse cytoband data from a data frame/file/UCSC database</td></tr>
+<tr><td style="width: 25%;"><a href="reverse.circlize.html">reverse.circlize</a></td>
+<td>Convert to data coordinate system</td></tr>
+<tr><td style="width: 25%;"><a href="set.current.cell.html">set.current.cell</a></td>
+<td>Set flag to current cell</td></tr>
+<tr><td style="width: 25%;"><a href="show.index.html">show.index</a></td>
+<td>Label the sector index and the track index on each cell</td></tr>
+<tr><td style="width: 25%;"><a href="smartAlign.html">smartAlign</a></td>
+<td>Adjust positions of text</td></tr>
+<tr><td style="width: 25%;"><a href="uh.html">uh</a></td>
+<td>Convert units</td></tr>
+<tr><td style="width: 25%;"><a href="ux.html">ux</a></td>
+<td>Convert unit on x direction in data coordinate</td></tr>
+<tr><td style="width: 25%;"><a href="uy.html">uy</a></td>
+<td>Convert unit on y direction in data coordinate</td></tr>
+</table>
+</body></html>

@@ -1,0 +1,29 @@
+Package: glue
+Title: Interpreted String Literals
+Version: 1.3.0
+Authors@R: person("Jim", "Hester", email = "james.f.hester@gmail.com", role = c("aut", "cre"))
+Description: An implementation of interpreted string literals, inspired by
+  Python's Literal String Interpolation <https://www.python.org/dev/peps/pep-0498/> and Docstrings
+  <https://www.python.org/dev/peps/pep-0257/> and Julia's Triple-Quoted String Literals
+  <https://docs.julialang.org/en/stable/manual/strings/#triple-quoted-string-literals>.
+Depends: R (>= 3.1)
+Imports: methods
+Suggests: testthat, covr, magrittr, crayon, knitr, rmarkdown, DBI,
+        RSQLite, R.utils, forcats, microbenchmark, rprintf, stringr,
+        ggplot2, dplyr, withr
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
+URL: https://github.com/tidyverse/glue
+BugReports: https://github.com/tidyverse/glue/issues
+VignetteBuilder: knitr
+ByteCompile: true
+NeedsCompilation: yes
+Packaged: 2018-07-17 14:19:58 UTC; jhester
+Author: Jim Hester [aut, cre]
+Maintainer: Jim Hester <james.f.hester@gmail.com>
+Repository: CRAN
+Date/Publication: 2018-07-17 19:10:02 UTC
+Built: R 3.4.4; x86_64-apple-darwin15.6.0; 2018-07-18 08:52:52 UTC; unix
+Archs: glue.so.dSYM

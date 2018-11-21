@@ -1,0 +1,342 @@
+Changes in version 0.4.4
+-------------------------------------------------------------------------
+
+* update denpendency of GlobalOptions package
+* `genomicDensity()`: add `chr.len` argument.
+
+Changes in version 0.4.3
+--------------------------------------------------------------------------
+
+* `circos.trackHist()`: add `area` argument to add filled color under density lines.
+* `getColorInfo()`: use `ls(envir)` to get the names of variables in the environment.
+* `circos.arrows`: add instructions of making reverse clockwise arrows.
+
+Changes in version 0.4.2
+---------------------------------------------------------------------------
+
+* add startup message
+* add `xmax` argument in `chordDiagram()`
+* first column is refactorized in `circos.initialize()`
+* add names for CELL_META
+* add `labels.pos.adjust` in `circos.axis()`
+* add `fontsize()` function
+* `circos.nested()`: check whether sector order in the two circular plots are consistent
+* `getQuadraticPoints()`: add tiny offset when the curve is actually a straight line
+
+Changes in version 0.4.1
+---------------------------------------------------------------------------
+
+* add `circos.raster()`
+* add `circos.arrow()`
+* re-implement `rand_color()`
+* support `col` in `circos.axis()`
+* `circos.genomicLabels()`: regions are automatically sorted in advance
+
+Changes in version 0.4.0
+----------------------------------------------------------------------------
+
+* add `link.visible` argument in `chordDiagram()`
+* add cytoband files and chromInfo files for a list of species locally
+* add a new vignette "Add legends to circlize"
+* add a new function `convert_*()` which convert an absolute unit to
+  measurement in different coordinates
+* enforce asp = 1 when calling plot.default
+* length of axes ticks are set to 2mm by default
+* in axis, the first axis label is shifted if it is exceed the axis and 
+  so is for the last axis label.
+* text.vjust accepts strings as "2mm", "-2.1 cm" to represent offsets
+* `circos.segments()`: graphic parameters can be set as vectors
+* add `circos.genomicIdeogram()`, `circos.genomicHeatmap()`, `circos.genomicLabels()`
+* add `circos.nestes()`
+* vignette has been moved to http://jokergoo.github.io/circlize_book/book/index.html
+* add `set.current.cell()`
+* add `h.ratio` argument in `circos.link()`
+
+Changes in version 0.3.10
+----------------------------------------------------------------------------
+
+* `chordDiagram()`: fixed a bug when the input matrix is stored as a data frame
+* `rainfallTransform()`: add "left" and "right" modes, and now the row order of 
+   the output data frame is as same as the input one.
+* `circos.genomicInitialize()`: it can only plot axes now.
+* `posTransform.text()`: add `extend` option to control the extension of chromsomes
+  to allow to put more labels
+* `ciros.points()`: add `bg` option to control background color
+
+Changes in version 0.3.9
+----------------------------------------------------------------------------
+
+* `chordDiagramFromDataFrame()`: now recognize a `rank` column which defines
+  the order of adding links
+
+Changes in version 0.3.8
+----------------------------------------------------------------------------
+
+* chordDiagram(): if not all sectors are specified in grid.col, remaining will
+  be filled by random colors
+* if `ylim` has same values for upper and lower bound, throw errors.
+
+Changes in version 0.3.7
+----------------------------------------------------------------------------
+
+* chordDiagram() now returns a data frame which contains positions of all links
+* chordDiagram() track.margin is also taken into settings of preAllocateTracks
+* chordDiagram(): link.sort adds a new option: "overall" which sort links
+  regardless of rows or columns
+* chordDiagram(): add `link.largest.ontop` which controls the order of adding links
+
+Changes in version 0.3.6
+----------------------------------------------------------------------------
+
+* positions of arrows in chordDiagram() have been adjusted.
+* fixed a bug that negative value was not shown
+* circos.initialize: if `factors` are unique and is a vector, the order of sectors
+  will be the same as `factors`.
+* `highlight.sector`: text are now in correct position if sectors are over theta = 0
+
+Changes in version 0.3.5
+----------------------------------------------------------------------------
+
+* `chordDiagram()`: if the corresponding value is zero, nothing happens.
+* border of links are same as filled by default
+* explicitely put all arguments in `chordDiagram()` instead of just using `...`
+* `adj` in `circos.text()` can also adjust text rotations.
+* 'circos.genomicInitialize()': gap between labels and ideograms is adjusted
+  if there is no axis
+
+Changes in version 0.3.4
+----------------------------------------------------------------------------
+
+* `circos.genomicLink()`: ordering is cancled when normalizing the data frames
+* export `smartAlign()`
+
+Changes in version 0.3.3
+----------------------------------------------------------------------------
+
+* `rainfallTransform()` and `genomicDensity()`: can be applied on the bed-format
+  data frame directly.
+* add `col2rgb()` which transforms back to the original value based on the color 
+  mapping function.
+* add `circos.yaxis()`
+
+Changes in version 0.3.2
+-----------------------------------------------------------------------------
+
+* `chrodDiagram`: add warning if users use data frame as ajacency matrix
+* `circos.genomicTrackPlotRegion`: data frame will be sorted
+
+
+Changes in version 0.3.1
+-----------------------------------------------------------------------------
+
+* fixed a bug for `chordDiagramFromDataFrame` when there is the third column in the data frame
+* `colorRamp2`: colors are interpolated linearly in Lab color space
+* `chordDiagram`: directional, direction.type and diffHeight can also be vector
+
+Changes in version 0.3.0
+-----------------------------------------------------------------------------
+
+* `chordDiagramFromMatrix`: automatically replace NA to 0 in the input matrix
+* add `chordDiagramFromMatrix` and `chordDiagramFromDataFrame`
+* by default there is axis on chord diagram
+* add `quadratic.bezier.length` that calculates the approximate length of bezier curve
+* normalize link-related functions to make sure the direction is always from
+  the first argument to the second argument, reverse clockwise.
+
+Changes in version 0.2.5
+-----------------------------------------------------------------------------
+
+* `circos.rect` and `circos.polygon` are vectorized
+* `circos.dendrogram`: supports graphical settings for nodes
+* `circos.link`: support 'big.arrow' mode for links
+* `circos.text`: graphical settings are subsetted correctly in `niceFacing` is set
+* add shortcut functions: `circos.track`, `circos.update` and `circos.genomicTrack`
+* add `normalizeChordDiagramGap`
+* fixed type in `get.cell.meta.data`
+
+Changes in version 0.2.4
+------------------------------------------------------------------------------
+
+* 'chrodDiagram`: If graphic parameters for links are different, the value can be
+   specified as a three-column data frame.
+* `chordDiagram`: arrows can be used to identify directions
+* ·circos.link`: arrows can be used to identify directions
+* `chordDiagram`: width of self-links are not duplicated. 
+* `circos.link`: if two roots for a link overlaps, the link is de-generated
+  as an area with a quadratic curve and an arc.
+* add `circos.dendrogram` which draw dendrograms (dendrogram can be rendered by
+  `dendextend` package)
+
+Changes in version 0.2.3
+------------------------------------------------------------------------------
+
+* add `link.order` argument in `chordDiagram` to control order of links on
+  sectors
+* add `highlight.sector`
+* `chromosome.index` can set the order of chromosomes
+* add `read.chromInfo()` to read chromInfo file from UCSC
+* if downloading cytoband file failed, try to download chromInfo file
+* `chromosome.index` can be set in `read.cytoband()` and `read.chromInfo()`
+
+Changes in version 0.2.2
+------------------------------------------------------------------------------
+
+* change `.onLoad` to `setLoadActions`
+* `circos.clear`: __tempdir__ will not be reset
+
+Changes in version 0.2.1
+------------------------------------------------------------------------------
+
+* If par("mar") is using default, it will be changed to par(mar = c(1, 1, 1, 1))
+  internally and will be recovered after calling circos.clear()
+* `circos.text`: add two options ('bending.inside' which is identical to original
+  'bending' and 'bending.outside'), both support `niceFacing`
+* circos.par('__tempdir__') is initialized by `tempdir()`
+* `.get_color`: there will be no negative value due to 0.000 - 0.000
+* `chordDiagram`: `grid.col` is correctly reduced if rownames and colnames overlap
+* `circos.text`: `font` is passed to `text` function
+* `colorRamp2`: returned function has an attribute: `breaks`
+* `chordDiagram`: assign same names for rows and columns if the input matrix
+  is specified symmetric while has no names
+* `chordDiagram`: also check rownames and colnames if the matrix is specified as
+  symmetric.
+* don't remove temporary folder
+* `value` can be scalar or vector in `circos.genomicPoints`, `circos.genomicLines`, ...
+
+Changes in version 0.2.0
+------------------------------------------------------------------------------
+
+* `draw.sector` is modified, now accepts an argument `clock.wise` to control
+  the direction of sectors.
+* `highlight.chromosome` can highlight more than one chromosomes now.
+* vignettes are rendered by `knitr`
+* set default transparency to 0.5 in `chordDiagram`
+* `circlize` returns value when track.index == 0
+* fixed a bug when text facing is 'bending', all text are plotted in one cell
+* different colors for each rows can be set to `circos.genomicLines` if 
+  type %in% c("segment", "h")
+* pre-allocate the matrix in `.get_color`
+
+Changes in version 0.1.3
+------------------------------------------------------------------------------
+
+* add `jitter` for adding points under `stack` mode
+* value in `panel.fun` can be selected by character index
+* change default temporary dir to `tempdir()`
+
+Changes in version 0.1.3
+------------------------------------------------------------------------------
+
+* temporary add dependency of `methods` until bugs in `GlobalOptions` fixed
+* add `reduce` argument in `chordDiagram` to control whether to remove tiny categories
+* add `species` argument in `generateRandomBed`
+* change use of posTransform.text
+* add names for `chr.len` in `read.cytoband`
+* cytoband files are cached
+* `row.col`, `column.col`, `col`, `grid.col` and circos.par('gap.degree') will
+  also be reduced if the matrix is reduced
+
+Changes in version 0.1.2
+------------------------------------------------------------------------------
+
+* global options are controlled by `GlobalOptions` package
+* set `par("lend")` and `par("ljoin")` to their default values.
+* add more example codes in genomic_plot vignette
+
+Changes in version 0.1.1
+------------------------------------------------------------------------------
+
+* fixed the bug that if start position is not zero when calling `circos.genomicIntialize`,
+  ``major.at`` is wrongly calculated.
+
+Changes in version 0.1.0
+------------------------------------------------------------------------------
+
+* height(h) and shape(w) can be set for Bezier curve (in `circos.link`)
+* add examples in man/
+* add ``fromRows`` options in `chordDiagram` to control the direction of links
+* Now the ``major.by`` are the same in all sectors
+* define ``min.data`` and ``max.data`` in internal variable ``SECTOR.DATA``
+* check that sector names cannot be empty strings ("")
+* check whether circos plot has been initialized when calling `circos.trackPlotRegion`
+* add ``niceFacing`` in `circos.text` to make the facing more human easy
+* height of ideogram and annotation track in `circos.initializeWithIdeogram` and `circos.genomicInitialize` can be set
+* some example code in examples/vignettes has been changed according to changes in the package source code
+* add `posTransform.text` which can smartly put text on the circle
+* ``track.margin`` and ``cell.padding`` can be set in `circos.trackPlotRegion` as a local setting
+
+Changes in version 0.0.9
+------------------------------------------------------------------------------
+
+* links are now implemented by Bezier curve
+* baseline can be set when ``type == "h"`` `in circos.lines`
+* add a new function `chordDiagram` which support chord diagram
+* add `facing` argument to replace `direction` in `circos.text`
+* `circos.trackPlotRegion` can be used to update a track without re-setting ylim
+* move demo to http://jokergoo.github.io/circlize
+* re-implement `colorRamp2`
+
+Changes in version 0.0.8
+------------------------------------------------------------------------------
+
+* axes labels will not draw when setting labels = FALSE
+* add many functions supporting genomic visualization
+* add a new vignette to show how to plot genomic circos plot with new functions
+* add `circos.info`
+
+Changes in version 0.0.7
+------------------------------------------------------------------------------
+
+* add an example in demo codes
+* improved vignettes
+
+Change in version 0.0.6
+------------------------------------------------------------------------------
+
+* order will not change in `circos.trackPlotRegion` when not specifying `factors`, bug fixed
+* add an example in 'draw relation' vignette
+* add a new vignette focusing on phylogenetic tree
+* support directly downloading cytoBand file from UCSC 
+
+Changes in version 0.0.5
+------------------------------------------------------------------------------
+
+* support self-define width of sectors when initializing sectors
+* add simple functions to read and manuplate cytoband file
+* add several new figures in the vignettes and vignettes have been improved.
+* ``cell.padding`` in `circos.par` now using degree as its measurement.
+* ``track.margin`` in `circos.par` now using percentage of radius as its measurement.
+
+Changes in version 0.0.4
+------------------------------------------------------------------------------
+
+* number of points to simulate quadratic curves decreased
+* labels on axis in `circos.initializeWithIdeogram` is now 'vertical_right' by default
+* size of the vignettes reduced
+* add example of drawing heatmap and cluster dendrogram in the main vignette
+* add example of drawing error area of lines by `circos.polygon`
+* vignette improved
+* ``gap.degree`` in `circos.par` can be a vector which means different degrees for gaps can be set
+* export core function `circlize` now
+* track.margin now is in correct order
+* links are optimized (although not so perfect)
+* no point overflow warnings when drawing axes
+
+Changes in version 0.0.3
+------------------------------------------------------------------------------
+
+* vignettes has been improved
+* ``xplot`` in `get.cell.meta.data` is now corresponding to the data direction in the cell
+* number of points to draw links decreased.
+* `get.cell.meta.data` can provide more meta data for a cell
+* start degree and end degree now consistent with the data axis.
+* the first sector is drawn first now.
+* add `draw.sector`
+
+Changes in version 0.0.2
+------------------------------------------------------------------------------
+
+* add `draw.sector` so it would be more straightforward to highlight sectors
+* add ``track.margin``, ``cell.padding``, ``cell.xlim`` and ``cell.ylim`` in `get.cell.meta.data` function
+* figures in vignettes are all generated automatically
+* vignettes have been imporved

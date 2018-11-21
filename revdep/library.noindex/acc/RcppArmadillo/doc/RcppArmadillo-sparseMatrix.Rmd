@@ -1,0 +1,550 @@
+---
+title: |
+       | \pkg{RcppArmadillo}: Sparse Matrix Support
+
+author:
+  - name: Binxiang Ni
+    affilition: a
+  - name: Dmitriy Selivanov
+    affilition: b
+  - name: Dirk Eddelbuettel
+    affiliation: c
+  - name: Qiang Kou
+    affiliation: d
+address:
+  - code: a
+    address: \url{https://github.com/binxiangni}
+  - code: b
+    address: \url{https://github.com/dselivanov}
+  - code: c
+    address: \url{http://dirk.eddelbuettel.com}
+  - code: d
+    address: \url{https://github.com/thirdwing}
+    
+lead_author_surname: Ni, Selivanov, Eddelbuettel and Kou
+    
+doi: "https://cran.r-project.org/package=RcppArmadillo"
+
+footer_contents: "RcppArmadillo Vignette"
+
+numbersections: true
+
+secnumdepth: 4
+
+one_column: true
+
+fontsize: 11pt
+
+output: pinp::pinp
+
+bibliography: RcppArmadillo.bib
+
+header-includes:
+  \newcommand{\proglang}[1]{\textsf{#1}}
+  \newcommand{\pkg}[1]{\textbf{#1}}
+  \newcommand{\R}{\proglang{R}\ } 
+  \newcommand{\Rns}{\proglang{R}} 
+
+vignette: >
+  %\VignetteIndexEntry{RcppArmadillo-sparseMatrix}
+  %\VignetteKeywords{R, C++, Armadillo, linear algebra, sparse matrix}
+  %\VignettePackage{RcppArmadillo}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r init, echo=FALSE}
+library(RcppArmadillo)
+library(Matrix)
+```
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+# Introduction
+
+The documentation is intended for the convenience of RcppArmadillo sparse matrix users based on
+integration of the documentation of library
+[Matrix](https://cran.r-project.org/web/packages/Matrix/Matrix.pdf) \citep{CRAN:Matrix} and
+[Armadillo](http://arma.sourceforge.net/docs.html#SpMat)
+\citep{Sanderson:2010:Armadillo,Sanderson+Curtin:2016}.
+
+There are 31 types of sparse matrices in the [Matrix](https://cran.r-project.org/package=Matrix)
+package that can be used directly. But for now, only 12 of them are supported in RcppArmadillo:
+`dgCMatrix`, `dtCMatrix`, `dsCMatrix`, `dgTMatrix`, `dtTMatrix`, `dsTMatrix`, `dgRMatrix`,
+`dtRMatrix`, `dsRMatrix`, `indMatrix`, `pMatrix`, `ddiMatrix`.
+
+In the [Armadillo](http://arma.sourceforge.net/docs.html#SpMat) library, sparse matrix content is
+currently stored as
+[CSC](https://en.wikipedia.org/wiki/Sparse_matrix#Compressed_sparse_column_.28CSC_or_CCS.29)
+format. Such kind of format is quite similar to numeric column-oriented sparse matrix in the library
+[Matrix](https://cran.r-project.org/package=Matrix) (including `dgCMatrix`, `dtCMatrix` and
+`dsCMatrix`). When a sparse matrix from the package
+[Matrix](https://cran.r-project.org/package=Matrix) is passed through the
+[RcppArmadillo](https://cran.r-project.org/package=RcppArmadillo)) package
+\citep{Eddelbuettel+Sanderson:2014:RcppArmadillo,CRAN:RcppArmadillo}, it will be converted or mapped to
+CSC format, then undertaken operations on, and finally ouput as a `dgCMatrix` in R.
+
+
+In what follows, we will always assume this common header:
+
+```cpp
+#include <RcppArmadillo.h>
+// [[Rcpp::depends(RcppArmadillo)]]
+
+using namespace Rcpp;
+using namespace arma;
+```
+but not generally show it.
+
+# Sparse Matrix
+
+## dgCMatrix
+
+### Synopsis
+
+- Description: general column-oriented numeric sparse matrix.
+- Constructor\
+    - `new("dgCMatrix", ...)` \
+    - `Matrix(*, sparse = TRUE)` \
+    - `sparseMatrix()`
+- Coercion\
+    - `as(*, "CsparseMatrix")` \
+    - `as(*, "dgCMatrix")` \
+
+### C++ Code
+
+```cpp
+// [[Rcpp::export]]
+sp_mat sqrt_(sp_mat X) {
+  return sqrt(X);
+}
+```
+
+### R Code
+
+```r
+R> i <- c(1,3:8)
+R> j <- c(2,9,6:10)
+R> x <- 7 * (1:7)
+R> A <- sparseMatrix(i, j, x = x) 
+R> sqrt_(A)
+8 x 10 sparse Matrix of class "dgCMatrix"
+  
+[1,] . 2.645751 . . . .        .        .       .        .
+[2,] . .        . . . .        .        .       .        .
+[3,] . .        . . . .        .        .       3.741657 .
+[4,] . .        . . . 4.582576 .        .       .        .
+[5,] . .        . . . .        5.291503 .       .        .
+[6,] . .        . . . .        .        5.91608 .        .
+[7,] . .        . . . .        .        .       6.480741 .
+[8,] . .        . . . .        .        .       .        7
+```
+
+## dtCMatrix
+
+### Synopsis
+
+- Description: triangular column-oriented numeric sparse matrix.
+- Constructor\
+    - `new("dtCMatrix", ...)` \
+    - `Matrix(*, sparse = TRUE)` \
+    - `sparseMatrix(*, triangular=TRUE)`
+- Coercion\
+    - `as(*, "triangularMatrix")` \
+    - `as(*, "dtCMatrix")` 
+    
+
+### C++ Code
+
+```cpp
+// [[Rcpp::export]]
+sp_mat symmatl_(sp_mat X) {
+  return symmatl(X);
+}
+```
+
+### R Code
+
+```r
+R> dtC <- new("dtCMatrix", Dim = c(5L, 5L), uplo = "L",
+              x = c(10, 1, 3, 10, 1, 10, 1, 10, 10),
+              i = c(0L, 2L, 4L, 1L, 3L,2L, 4L, 3L, 4L),
+              p = c(0L, 3L, 5L, 7:9))
+R> symmatl_(dtC)
+5 x 5 sparse Matrix of class "dtCMatrix"
+
+[1,] 10  .  1  .  3
+[2,]  . 10  .  1  .
+[3,]  1  . 10  .  1
+[4,]  .  1  . 10  .
+[5,]  3  .  1  . 10
+```
+
+## dsCMatrix
+
+### Synopsis
+
+- Description: symmetric column-oriented numeric sparse matrix.
+- Constructor\
+    - `new("dsCMatrix", ...)` \
+    - `Matrix(*, sparse = TRUE)` \
+    - `sparseMatrix(*, symmetric = TRUE)`
+- Coercion\
+    - `as(*, "symmetricMatrix")`\
+    - `as(*, "dsCMatrix")`
+
+### C++ Code
+
+```cpp 
+// [[Rcpp::export]]
+sp_mat trimatu_(sp_mat X) {
+  return trimatu(X);
+}
+```
+
+### R Code
+
+```r
+R> i <- c(1,3:8)
+R> j <- c(2,9,6:10)
+R> x <- 7 * (1:7)
+R> dsC <- sparseMatrix(i, j, x = x, symmetric = TRUE)
+R> trimatu_(dsC)
+10 x 10 sparse Matrix of class "dgCMatrix"
+  
+[1,] . 7 . . .  .  .  .  .  .
+[2,] . . . . .  .  .  .  .  .
+[3,] . . . . .  .  .  . 14  .
+[4,] . . . . . 21  .  .  .  .
+[5,] . . . . .  . 28  .  .  .
+[6,] . . . . .  .  . 35  .  .
+[7,] . . . . .  .  .  . 42  .
+[8,] . . . . .  .  .  .  . 49
+[9,] . . . . .  .  .  .  .  .
+[10,] . . . . .  .  .  .  .  .
+```
+
+
+## dgTMatrix
+
+### Synopsis
+
+- Description: general numeric sparse matrix in triplet form.
+- Constructor\
+    - `new("dgTMatrix", ...)` \
+    - `sparseMatrix(*, giveCsparse=FALSE)` \
+    - `spMatrix()`
+- Coercion\
+    - `as(*, "TsparseMatrix")`\
+    - `as(*, "dgTMatrix")`
+
+### C++ Code
+
+```cpp
+// [[Rcpp::export]]
+sp_mat multiply(sp_mat A, sp_mat B) {
+  return A * B;
+}
+
+// [[Rcpp::export]]
+sp_mat trans_(sp_mat X) {
+  return trans(X);
+}
+
+// [[Rcpp::export]]
+int trace_(sp_mat X) {
+  return trace(X);
+}
+```
+
+### R Code
+
+```r
+R> dgT <- new("dgTMatrix",
+              i = c(1L,1L,0L,3L,3L),
+              j = c(2L,2L,4L,0L,0L), 
+              x=10*1:5, Dim=4:5)
+R> dgT_t <- trans_(dgT)
+R> prod <- multiply(dgT, dgT_t)
+R> trace_(prod)
+[1] 9900
+```
+
+
+## dtTMatrix
+
+### Synopsis
+
+- Description: triangular numeric sparse matrix in triplet form.
+- Constructor \
+    - `new("dtTMatrix", ...)` \
+    - `code{sparseMatrix(*, triangular=TRUE, giveCsparse=FALSE)` 
+- Coercion\
+    - `as(*, "triangularMatrix")`\
+    - `as(*, "dtTMatrix")`\
+
+### C++ Code
+
+```cpp
+// [[Rcpp::export]]
+sp_mat diag_ones(sp_mat X) {
+  X.diag().ones();
+  return X;
+}
+```
+
+### R Code
+
+```r
+R> dtT <- new("dtTMatrix", x= c(3,7), 
+              i= 0:1, j=3:2, Dim= as.integer(c(4,4)))
+R> diag_ones(dtT)
+4 x 4 sparse Matrix of class "dgCMatrix"
+
+[1,] 1 . . 3
+[2,] . 1 7 .
+[3,] . . 1 .
+[4,] . . . 1
+```
+
+
+## dsTMatrix
+
+### Synopsis
+
+- Description: symmetric numeric sparse matrix in triplet form.
+- Constructor \
+    - `new("dsTMatrix", ...)` \
+    - `sparseMatrix(*, symmetric=TRUE, giveCsparse=FALSE)`
+- Coercion\
+    - `as(*, "symmetricMatrix")`\
+    - `as(*, "dsTMatrix")`\
+
+### C++ Code
+
+```cpp
+// [[Rcpp::export]]
+int trace_(sp_mat X) {
+  return trace(X);
+}
+```
+
+### R Code
+
+```r
+R> mm <- Matrix(toeplitz(c(10, 0, 1, 0, 3)), 
+                sparse = TRUE)
+R> mT <- as(mm, "dgTMatrix")
+R> dsT <- as(mT, "symmetricMatrix")
+R> trace_(dsT)
+[1] 50
+```
+
+## dgRMatrix
+
+### Synopsis
+
+- Description: general row-oriented numeric sparse matrix.
+- Constructor\
+    - `new("dgRMatrix", ...)`
+- Coercion\
+    - `as(*, "RsparseMatrix")`\
+    - `as(*, "dgRatrix")` \
+
+### C++ Code
+
+```cpp
+// [[Rcpp::export]]
+sp_mat square_(sp_mat X) {
+  return square(X);
+}
+```
+
+### R Code
+
+```r
+R> dgR <- new("dgRMatrix", j=c(0L,2L,1L,3L),
+              p=c(0L,2L,3L,3L,4L),
+              x=c(3,1,2,1),
+              Dim=rep(4L,2))
+R> square_(dgR)
+4 x 4 sparse Matrix of class "dgCMatrix"
+
+[1,] 9 . 1 .
+[2,] . 4 . .
+[3,] . . . .
+[4,] . . . 1
+```
+
+## dtRMatrix
+
+### Synopsis
+
+- Description: triangular row-oriented numeric sparse matrix.
+- Constructor\
+    - `new("dtRMatrix", ...)` \
+
+### C++ Code
+
+```cpp
+// [[Rcpp::export]]
+sp_mat repmat_(sp_mat X, int i, int j) {
+  return repmat(X, i, j);
+}
+```
+
+### R Code
+
+```r
+R> dtR <- new("dtRMatrix", Dim = c(2L,2L),
+              x = c(5, 1:2), p = c(0L,2:3), j= c(0:1,1L))
+R> repmat_(dtR, 2, 2)
+4 x 4 sparse Matrix of class "dgCMatrix"
+
+[1,] 5 1 5 1
+[2,] . 2 . 2
+[3,] 5 1 5 1
+[4,] . 2 . 2
+```
+
+
+## dsRMatrix
+
+### Synopsis
+
+- Description: symmetric row-oriented numeric sparse matrix.
+- Constructor \
+    - `new("dsRMatrix", ...)`
+- Coercion \
+    - `as("dsCMatrix", "dsRMatrix")`
+
+### C++ Code
+
+```cpp
+// [[Rcpp::export]]
+sp_mat sign_(sp_mat X) {
+  return sign(X);
+}
+```
+
+### R Code
+
+```r
+R> dsR <- new("dsRMatrix", Dim = c(2L,2L),
+              x = c(-3,1), j = c(1L,1L), p = 0:2)
+R> sign_(dsR)
+2 x 2 sparse Matrix of class "dgCMatrix"
+
+[1,]  . -1
+[2,] -1  1
+```
+
+
+## indMatrix
+
+### Synopsis
+
+- Description: index matrix.
+- Constructor \
+    - new("indMatrix", ...)\
+- Coercion \
+    - `as(*, "indMatrix")`\
+
+### C++ Code
+
+
+```cpp
+// [[Rcpp::export]]
+sp_mat multiply(sp_mat A, sp_mat B) {
+  return A * B;
+}
+```
+
+### R Code
+
+```r
+R> ind <- as(2:4, "indMatrix")
+R> dgT <- new("dgTMatrix",
+              i = c(1L,1L,0L,3L,3L),
+              j = c(2L,2L,4L,0L,0L), 
+              x=10*1:5, Dim=4:5)
+R> multiply(ind, dgT)
+3 x 5 sparse Matrix of class "dgCMatrix"
+
+[1,]  . . 30 . .
+[2,]  . .  . . .
+[3,] 90 .  . . .
+```
+
+
+## pMatrix
+
+### Synopsis
+
+- Description: permutation matrix.
+- Constructor\
+    - `new("pMatrix", ...)`
+- Coercion \
+    - `as(*, "pMatrix")`
+
+### C++ Code
+
+
+```cpp
+// [[Rcpp::export]]
+sp_mat multiply(sp_mat A, sp_mat B) {
+  return A * B;
+}
+```
+
+### R Code
+
+```r
+R> pM <- as(c(2,3,1,4), "pMatrix")
+R> dgT <- new("dgTMatrix",
+              i = c(1L,1L,0L,3L,3L),
+              j = c(2L,2L,4L,0L,0L), 
+              x=10*1:5, Dim=4:5)
+R> multiply(pM, dgT)
+4 x 5 sparse Matrix of class "dgCMatrix"
+
+[1,]  . . 30 .  .
+[2,]  . .  . .  .
+[3,]  . .  . . 30
+[4,] 90 .  . .  .
+```
+
+## ddiMatrix
+
+### Synopsis
+
+- Description: numeric diagonal Matrix.
+- Constructor\
+    - `new("ddiMatrix", ...)`\
+    - `Diagonal(*)`\
+
+### C++ Code
+
+```cpp
+// [[Rcpp::export]]
+sp_mat multiply(sp_mat A, sp_mat B) {
+  return A * B;
+}
+```
+
+### R Code
+
+```r
+R> ddi <- Diagonal(4)
+R> dgR <- new("dgRMatrix", j=c(0L,2L,1L,3L),
+              p=c(0L,2L,3L,3L,4L),
+              x=c(3,1,2,1),
+              Dim=rep(4L,2))
+R> multiply(ddi, dgR)
+4 x 4 sparse Matrix of class "dgCMatrix"
+
+[1,] 3 . 1 .
+[2,] . 2 . .
+[3,] . . . .
+[4,] . . . 1
+```

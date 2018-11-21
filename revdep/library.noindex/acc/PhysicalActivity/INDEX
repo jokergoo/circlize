@@ -1,0 +1,21 @@
+PhysicalActivity-package
+                        Process Accelerometer Data for Physical
+                        Activity Measurement
+dataCollapser           Collapse Accelerometer Data to a Dataset with a
+                        Longer Epoch
+dataSec                 Accelerometer Data Example
+deliveryData            Data Example for Mail Delivery Day
+                        Classification
+markDelivery            Classify Mail Delivery and Non-Delivery Days
+                        for Accelerometer Data
+markPAI                 Mark Physical Activity Intensity (PAI) Level
+markingTime             Mark Days
+plotData                Plot Accelerometer Data over Time
+queryActigraph          Query ActiGraph File
+readActigraph           Read ActiGraph Accelerometer Data
+readCountsData          Convert Accelerometer Output Data to a Correct
+                        Data Format
+sumVct                  Summarize Wear and Nonwear Time Interval
+summaryData             Summarize Classified Wear Time by Daily Basis
+wearingMarking          Classify Wear and Nonwear Time for
+                        Accelerometer Data

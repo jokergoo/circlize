@@ -1,0 +1,20 @@
+Package: mhsmm
+Type: Package
+Title: Inference for Hidden Markov and Semi-Markov Models
+Version: 0.4.16
+Date: 2017-01-15
+Author: Jared O'Connell <jaredoconnell@gmail.com>, Søren Højsgaard
+        <sorenh@math.aau.dk>
+Maintainer: Jared O'Connell <jaredoconnell@gmail.com>
+Description: Parameter estimation and prediction for hidden Markov and semi-Markov models for data with multiple observation sequences.  Suitable for equidistant time series data, with multivariate and/or missing data. Allows user defined emission distributions.
+License: GPL (>= 2)
+URL: https://github.com/jaredo/mhsmm
+LazyLoad: yes
+Depends: mvtnorm
+Repository: CRAN
+Encoding: latin1
+NeedsCompilation: yes
+Packaged: 2017-01-15 11:09:36 UTC; joconnell
+Date/Publication: 2017-01-15 17:21:14
+Built: R 3.4.0; x86_64-apple-darwin15.6.0; 2017-04-20 17:42:46 UTC; unix
+Archs: mhsmm.so.dSYM

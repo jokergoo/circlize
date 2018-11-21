@@ -1,0 +1,920 @@
+
+\documentclass[preprint,authoryear,times]{elsarticle}
+%\VignetteIndexEntry{RcppArmadillo-introduction}
+%\VignetteKeywords{R, C++, Armadillo, linear algebra, kalman filter}
+%\VignettePackage{RcppArmadillo}
+
+\usepackage{url}                 % break URLs
+\usepackage{booktabs}            % fancier tables
+\usepackage{color}               % color use
+
+\usepackage{listings}
+\definecolor{darkgray}{rgb}{0.975,0.975,0.975}
+\lstset{ %
+  %basicstyle=\small,             % the size of the fonts that are used for the code
+  numbers=left,                   % where to put the line-numbers
+  numberstyle=\tiny,              % the size of the fonts that are used for the line-numbers
+  stepnumber=2,                   % the step between two line-numbers. If it's 1, each line
+                                  % will be numbered
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{darkgray}, % choose the background color. Must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  %frame=single,                  % adds a frame around the code
+  tabsize=2,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+  %title=\lstname,                % show the filename of files included with \lstinputlisting;
+                                  % also try caption instead of title
+  %escapeinside={\%*}{*)},        % if you want to add a comment within your code
+  %morekeywords={*,...}           % if you want to add more keywords to the set
+  %
+  basicstyle=\ttfamily\small,
+  commentstyle=\textsl,
+  keywordstyle=\ttfamily\small
+  %keywordstyle=\color{black}\bfseries\tt
+}
+
+\usepackage[colorlinks]{hyperref}% for \href
+\definecolor{link}{rgb}{0,0,0.3} % next few lines courtesy of RJournal.sty
+\hypersetup{
+    colorlinks,%
+    citecolor=link,%
+    filecolor=link,%
+    linkcolor=link,%
+    urlcolor=link
+}
+
+%%% from jss.cls defs
+\makeatletter
+\newcommand\code{\bgroup\@makeother\_\@makeother\~\@makeother\$\@codex}
+\def\@codex#1{{\normalfont\ttfamily\hyphenchar\font=-1 #1}\egroup}
+\makeatother
+%\newcommand{\proglang}[1]{\textsf{#1}}
+\newcommand{\proglang}[1]{#1}   % also neutering the proglang macro
+\newcommand{\R}{\proglang{R}\ } % NB forces a space so not good before % fullstop etc.
+\newcommand{\Rns}{\proglang{R}} % without the space
+\newcommand{\Cpp}{\proglang{C++}\ }
+
+%\newcommand{\pkg}[1]{{\fontseries{b}\selectfont #1}\index{#1}}
+ %\newcommand{\pkg}[1]{{\it #1}}
+\newcommand{\pkg}[1]{{#1}}  % null op for now
+
+\journal{Computational Statistics and Data Analysis}
+
+
+<<echo=FALSE,print=FALSE>>=
+prettyVersion <- packageDescription("RcppArmadillo")$Version #$
+prettyDate <- format(Sys.Date(), "%B %e, %Y")
+@
+
+\begin{document}
+
+\begin{frontmatter}
+
+  \title{RcppArmadillo: Accelerating R \\with High-Performance C++ Linear Algebra\footnote{
+      This vignette corresponds to a
+      \href{http://dx.doi.org/10.1016/j.csda.2013.02.005}{paper published} in
+      \href{http://www.journals.elsevier.com/computational-statistics-and-data-analysis/}{Computational Statistics and Data Analysis}.
+      Currently still identical to the paper, this vignette version may over time receive minor updates.
+      For citations, please use \citet{Eddelbuettel+Sanderson:2014:RcppArmadillo} as provided by \code{citation("RcppArmadillo")}.
+      %
+      This version corresponds to \pkg{RcppArmadillo} version \Sexpr{prettyVersion} and was
+      typeset on \Sexpr{prettyDate}.
+    }
+  }
+
+  \author[de]{Dirk Eddelbuettel}%\corref{cor}}
+  %\ead[de]{edd@debian.org}
+  % \ead[de,url]{http://dirk.eddelbuettel.com}
+  %\cortext[cor]{Corresponding author. Email: \url{edd@debian.org}.}% Postal address: 711 Monroe Avenue,
+    %River Forest, IL 60305, USA. } %he \pkg{RcppArmadillo} package is available
+    %with the electronic version of this article, as well as via every CRAN mirror.}
+  \address[de]{Debian Project, \url{http://www.debian.org}}
+
+  \author[cs1,cs2]{Conrad Sanderson}
+  %\ead[cs1]{nowhere}  % CS i'd prefer to leave out my email address
+  %\ead[cs1,url]{http://www.nicta.com.au/people/sandersonc}
+  %\ead[cs2,url]{http://itee.uq.edu.au/~conrad/}
+  \address[cs1]{NICTA, PO Box 6020, St Lucia, QLD 4067, Australia}
+  \address[cs2]{Queensland University of Technology (QUT), Brisbane, QLD 4000, Australia}
+
+  \begin{abstract}
+
+    \noindent
+    The \proglang{R} statistical environment and language has demonstrated
+    particular strengths for interactive development of statistical
+    algorithms, as well as data modelling and visualisation.  Its current
+    implementation has an interpreter at its core which may result in a
+    performance penalty in comparison to directly executing user algorithms
+    in the native machine code of the host CPU.  In contrast, the
+    \proglang{C++} language has no built-in visualisation capabilities,
+    handling of linear algebra or even basic statistical algorithms; however,
+    user programs are converted to high-performance machine code, ahead of
+    execution.
+    %
+    A new method avoids possible speed penalties in
+    \proglang{R} by using the \pkg{Rcpp} extension package in conjunction
+    with the \pkg{Armadillo} \Cpp matrix library.  In addition to the
+    inherent performance advantages of compiled code, \pkg{Armadillo}
+    provides an easy-to-use template-based meta-programming framework,
+    allowing the automatic pooling of several linear algebra operations into
+    one, which in turn can lead to further speedups.
+    With the aid of \pkg{Rcpp} and \pkg{Armadillo}, conversion of linear
+    algebra centered algorithms from \proglang{R} to \proglang{C++} becomes
+    straightforward. The algorithms retains the overall structure as
+    well as readability, all while maintaining a bidirectional link with the
+    host R environment.  Empirical timing comparisons of \proglang{R} and
+    \proglang{C++} implementations of a Kalman filtering algorithm indicate a
+    speedup of several orders of magnitude.
+
+  \end{abstract}
+
+  \begin{keyword}
+    Software \sep R \sep C++ \sep linear algebra
+  \end{keyword}
+
+\end{frontmatter}
+
+
+\section{Overview}
+
+Linear algebra is a cornerstone of statistical computing and statistical
+software systems.  Various matrix decompositions, linear program solvers, and
+eigenvalue / eigenvector computations are key to many estimation and analysis
+routines.  As generally useful procedures, these are often abstracted and
+regrouped in specific libraries for linear algebra which statistical
+programmers have provided for various programming languages and environments.
+
+One such environment and statistical programming language is R
+\citep{R:Main}.  It has become a tool of choice for data analysis and applied
+statistics \citep{Morandat_2012}.  While R has particular strengths
+at fast prototyping and easy visualisation of data, its
+implementation has an interpreter at its core.  In comparison to running user
+algorithms in the native machine code of the host CPU, the use of an
+interpreter often results in a performance penalty for non-trivial algorithms
+that perform elaborate data manipulation \citep{Morandat_2012}.  With user
+algorithms becoming more complex and increasing in functionality, as well as
+with data sets which continue to increase in size, the issue of execution
+speed becomes more important.
+
+The \Cpp language offers a complementary set of attributes: while it has no
+built-in visualisation capabilities nor handling of linear algebra or
+statistical methods, user programs are converted to high-performance machine
+code ahead of execution.  It is also inherently flexible. One key feature is
+\textit{operator overloading} which allows the programmer to define custom
+behaviour for mathematical operators such as $+$, $-$, $*$
+\citep{Meyers:2005:EffectiveC++}.  \Cpp also provides language constructs
+known as {\it templates}, originally intended to easily allow the reuse of
+algorithms for various object types, and later extended to a programming
+construct in its own right called \textit{template meta-programming}
+\citep{Vandevoorde_2002,Abrahams_2004}
+
+Operator overloading allows mathematical operations to be extended to
+user-defined objects, such as matrices.  This in turn allows linear algebra
+expressions to be written in a more natural manner (eg.~\mbox{$X = 0.1*A +
+  0.2*B$}), rather than the far less readable traditional function call
+syntax, eg.~\mbox{$X = \mbox{\it add}(\mbox{\it multiply}(0.1,A), \mbox{\it
+    multiply}(0.2,B))$}.
+
+Template meta-programming is the process of inducing the \Cpp compiler to
+execute, at compile time, Turing-complete programs written in a somewhat
+opaque subset of the \Cpp language~\citep{Vandevoorde_2002,Abrahams_2004}.
+These meta-programs in effect generate further \Cpp code (often specialised
+for particular object types), which is finally converted into machine code.
+
+An early and influential example of exploiting both meta-programming and
+overloading of mathematical operators was provided by the Blitz++ library
+\citep{Veldhuizen:1998:Blitz}, targeted for efficient processing of arrays.
+Blitz++ employed elaborate meta-programming to avoid the generation of
+temporary array objects during the evaluation of mathematical expressions.
+However, the library's capabilities and usage were held back at the time by
+the limited availability of compilers correctly implementing all the
+necessary features and nuances of the \Cpp language.
+
+We present a new method of avoiding the speed penalty in R by
+using the Rcpp extension package \citep{Eddelbuettel+Francois:2011:Rcpp,
+  CRAN:Rcpp,Eddelbuettel:2013:Rcpp} in conjunction with the \pkg{Armadillo} \Cpp linear algebra
+library \citep{Sanderson:2010:Armadillo}.  Similar to Blitz++,
+\pkg{Armadillo} uses operator overloading and various template
+meta-programming techniques to attain efficiency.  However, it has been
+written to target modern \Cpp compilers as well as providing a much larger
+set of linear algebra operations than Blitz++.  R programs augmented to use
+\pkg{Armadillo} retain the overall structure as well as readability, all
+while retaining a bidirectional link with the host R environment.
+
+Section~\ref{sec:arma} provides an overview of \pkg{Armadillo}, followed by
+its integration with the Rcpp extension package.  Section~\ref{sec:kalman}
+shows an example of an R program and its conversion to \Cpp via Rcpp and
+\pkg{Armadillo}.  Section~\ref{sec:speed} discusses an empirical timing
+comparison between the R and \Cpp versions before
+Section~\ref{sec:conclusion} concludes.
+
+
+\section{Armadillo}
+\label{sec:arma}
+
+The \pkg{Armadillo} \Cpp library provides vector, matrix and cube types
+(supporting integer, floating point and complex numbers) as well as a subset
+of trigonometric and statistics functions~\citep{Sanderson:2010:Armadillo}.
+In addition to elementary operations such as addition and matrix
+multiplication, various matrix factorisations and submatrix manipulation
+operations are provided.  The corresponding application programming interface
+(syntax) enables the programmer to write code which is both concise and
+easy-to-read to those familiar with scripting languages such as
+\proglang{Matlab} and \proglang{R}.  Table~\ref{tab:arma} lists a few common
+\pkg{Armadillo} functions.
+
+Matrix multiplication and factorisations are accomplished through integration
+with the underlying operations stemming from standard numerical libraries
+such as BLAS and LAPACK~\citep{Demmel_1997}.  Similar to how environments
+such as R are implemented, these underlying libraries can be replaced in a
+transparent manner with variants that are optimised to the specific hardware
+platform and/or multi-threaded to automatically take advantage of the
+now-common multi-core platforms~\citep{Kurzak_2010}.
+
+\begin{table}[!b]
+  \centering
+  \footnotesize
+  \begin{tabular}{ll}
+    \toprule
+    \textbf{Armadillo function} \phantom{XXXXXXX}    &  \textbf{Description}  \\
+    \midrule
+    \code{X(1,2) = 3} & Assign value 3 to element at location (1,2) of matrix $X$ \\ % DE shortened to fit on \textwidth
+    \code{X = A + B}    & Add matrices $A$ and $B$ \\
+    \code{X( span(1,2), span(3,4) )} & Provide read/write access to submatrix of $X$ \\
+    \code{zeros(rows [, cols [, slices]))} & Generate vector (or matrix or cube) of zeros\\
+    \code{ones(rows [, cols [, slices]))} & Generate vector (or matrix or cube) of ones\\
+    \code{eye(rows, cols)}  & Matrix diagonal set to 1, off-diagonal elements set to 0 \\
+    %\code{linspace(start, end, N=100)} & $N$ element vector with elements from start to end \\
+    \code{repmat(X, row_copies, col_copies)}  & Replicate matrix $X$ in block-like manner \\
+    \code{det(X)} & Returns the determinant of matrix $X$\\
+    %\code{dot(A, B)} & Dot-product of confirming vectors $A$ and $B$ \\
+    \code{norm(X, p)} & Compute the $p$-norm of matrix or vector $X$\\
+    \code{rank(X)} & Compute the rank of matrix $X$ \\
+    %\code{trace(X)} & Compute the trace of matrix $X$ \\
+    %\code{diagvec(X, k=0)} & Extracts the $k$-th diagnonal from matrix $X$\\
+    \code{min(X, dim=0)};~ \code{max(X, dim=0)} & Extremum value of each column~of $X$~(row if \code{dim=1}) \\
+    \code{trans(X)} ~or~ \code{X.t()} & Return transpose of $X$ \\
+    \code{R = chol(X)} & Cholesky decomposition of $X$ such that $R^{T} R = X$ \\
+    \code{inv(X)} ~or~ \code{X.i()} & Returns the inverse of square matrix $X$ \\
+    \code{pinv(X)} & Returns the pseudo-inverse of matrix $X$ \\
+    \code{lu(L, U, P, X)} & LU decomp.~with partial pivoting; also \code{lu(L, U, X)} \\
+    %\code{lu(L, U, P, X)} & LU decomposition with partial pivoting \\
+    \code{qr(Q, R, X)} & QR decomp.~into orthogonal $Q$ and right-triangular $R$\\
+    \code{X = solve(A, B)} & Solve system $AX = B$ for $X$ \\
+    \code{s = svd(X); svd(U, s, V, X)} & Singular-value decomposition of $X$ \\
+    \bottomrule
+  \end{tabular}
+\caption{Selected \pkg{Armadillo} functions with brief descriptions; see
+  \texttt{http://arma.sf.net/docs.html} for more complete
+  documentation. Several optional additional arguments have been omitted
+  here for brevity.\label{tab:arma}}
+\end{table}
+
+\pkg{Armadillo} uses a delayed evaluation approach to combine several
+operations into one and reduce (or eliminate) the need for temporary objects.
+In contrast to brute-force evaluations, delayed evaluation can provide
+considerable performance improvements as well as reduced memory usage.
+The delayed evaluation machinery is accomplished through template
+meta-programming~\citep{Vandevoorde_2002,Abrahams_2004}, where the \Cpp
+compiler is induced to reason about mathematical expressions at {\it compile
+  time}.  Where possible, the \Cpp compiler can generate machine code that is
+tailored for each expression.
+
+As an example of the possible efficiency gains, let us consider the
+expression \mbox{$X = A - B + C$}, where $A$, $B$ and $C$ are matrices.  A
+brute-force implementation would evaluate $A-B$ first and store the result in
+a temporary matrix $T$.  The next operation would be \mbox{$T + C$}, with the
+result finally stored in $X$.  The creation of the temporary matrix, and
+using two separate loops for the subtraction and addition of matrix elements
+is suboptimal from an efficiency point of view.
+
+Through the overloading of mathematical operators, \pkg{Armadillo} avoids the
+generation of the temporary matrix by first converting the expression into a
+set of lightweight \code{Glue} objects, which only store references to the
+matrices and \pkg{Armadillo}'s representations of mathematical expressions
+(eg.~other \code{Glue} objects).  To indicate that an operation comprised of
+subtraction and addition is required, the exact type of the \code{Glue}
+objects is automatically inferred from the given expression through template
+meta-programming.  More specifically, given the expression \mbox{$X = A - B +
+  C$}, \pkg{Armadillo} automatically induces the compiler to generate an
+instance of the lightweight \code{Glue} storage object with the following
+\Cpp {\it type}:
+
+\centerline{~}
+\centerline{\code{Glue< Glue<Mat, Mat, glue\_minus>, Mat, glue\_plus>}}
+\centerline{~}
+
+\noindent
+where \code{Glue<...>} indicates that \code{Glue} is a C++ template class,
+with the items between `\code{<}' and `\code{>}' specifying template
+parameters; the outer \code{Glue<..., Mat, glue\_plus>} is the \code{Glue}
+object indicating an addition operation, storing a reference to a matrix as
+well as a reference to another \code{Glue} object; the inner \code{Glue<Mat,
+  Mat, glue\_minus>} stores references to two matrices and indicates a
+subtraction operation.  In both the inner and outer \code{Glue}, the type
+\code{Mat} specifies that a reference to a matrix object is to be held.
+
+The expression evaluator in \pkg{Armadillo} is then automatically invoked
+through the ``\code{=}'' operation, which interprets (at compile time) the
+template parameters of the compound \code{Glue} object and generates \Cpp
+code equivalent to:
+
+\centerline{~}
+\centerline{\code{for(int i=0; i<N; i++) \{ X[i] = (A[i] - B[i]) + C[i]; \}}}
+\centerline{~}
+
+\noindent
+where $N$ is the number of elements in $A$, $B$ and $C$, with \code{A[i]}
+indicating the $i$-th element in $A$.  As such, apart from the lightweight
+\code{Glue} objects (for which memory is pre-allocated at compile time), no
+other temporary object is generated, and only one loop is required instead of
+two.  Given a sufficiently advanced \Cpp compiler, the lightweight
+\code{Glue} objects can be optimised away, as they are automatically
+generated by the compiler and only contain compile-time generated references;
+the resultant machine code can appear as if the \code{Glue} objects never
+existed in the first place.
+
+Note that due to the ability of the \code{Glue} object to hold references to
+other \code{Glue} objects, far longer and more complicated operations can be
+easily accommodated.  Further discussion of template meta-programming is
+beyond the scope of this paper; for more details, the interested reader is
+referred to~\cite{Vandevoorde_2002} as well as~\cite{Abrahams_2004}.
+\citet{Reddy_2013} provide a recent application of \proglang{Armadillo}
+in computer vision and pattern recognition.
+
+\section{RcppArmadillo}
+\label{sec:rcpparma}
+
+The \pkg{RcppArmadillo} package \citep{CRAN:RcppArmadillo} employs the Rcpp
+package \citep{Eddelbuettel+Francois:2011:Rcpp,CRAN:Rcpp,Eddelbuettel:2013:Rcpp} to provide a
+bidirectional interface between \R and \Cpp at the object level.  Using
+templates, \R objects such as vectors and matrices can be mapped directly to
+the corresponding \pkg{Armadillo} objects.
+
+\lstset{
+  language=R,
+  caption={Integrating \pkg{Armadillo}-based C++ code via the \mbox{RcppArmadillo} package.},
+  label={code:RcppArmaEx}
+}
+\begin{lstlisting}[frame=tb]
+R> library(inline)
+R>
+R> g <- cxxfunction(signature(vs="numeric"),
++                   plugin="RcppArmadillo", body='
++     arma::vec v = Rcpp::as<arma::vec>(vs);
++     arma::mat op = v * v.t();
++     double ip = arma::as_scalar(v.t() * v);
++     return Rcpp::List::create(Rcpp::Named("outer")=op,
++                               Rcpp::Named("inner")=ip);
++')
+R> g(7:11)
+$outer
+     [,1] [,2] [,3] [,4] [,5]
+[1,]   49   56   63   70   77
+[2,]   56   64   72   80   88
+[3,]   63   72   81   90   99
+[4,]   70   80   90  100  110
+[5,]   77   88   99  110  121
+
+$inner
+[1] 415
+\end{lstlisting}
+
+Consider the simple example in Listing~\ref{code:RcppArmaEx}.  Given a
+vector, the \code{g()} function returns both the outer and inner products.
+We load the inline package \citep{CRAN:inline}, which provides
+\code{cxxfunction()} that we use to compile, link and load the \Cpp code
+which is passed as the \code{body} argument.  We declare the function
+signature to contain a single argument named `\code{vs}'.  On line five, this
+argument is used to instantiate an \pkg{Armadillo} column vector object named
+`\code{v}' (using the templated conversion function \code{as()} from Rcpp).
+In lines six and seven, the outer and inner product of the column vector
+are calculated by appropriately multiplying the vector with its transpose.
+This shows how the \code{*} operator for multiplication has been overloaded
+to provide the appropriate operation for the types implemented by
+\pkg{Armadillo}.  The inner product creates a scalar variable, and in
+contrast to \R where each object is a vector type (even if of length one), we
+have to explicitly convert using \code{as_scalar()} to assign the value to a
+variable of type \code{double}.
+
+
+Finally, the last line creates an \R named list type containing both results.
+As a result of calling \code{cxxfunction()}, a new function is created. It
+contains a reference to the native code, compiled on the fly based on the
+\Cpp code provided to \code{cxxfunction()} and makes it available directly
+from \R under a user-assigned function name, here \code{g()}.  The listing
+also shows how the \code{Rcpp} and \code{arma} namespaces are used to
+disambiguate symbols from the two libraries; the \code{::} operator is
+already familiar to R programmers who use the NAMESPACE directive in \R in a
+similar fashion.
+
+The listing also demonstrates how the new function \code{g()} can be called
+with a suitable argument.  Here we create a vector of five elements,
+containing values ranging from 7 to 11.  The function's output, here the list
+containing both outer and inner product, is then displayed as it is not
+assigned to a variable.
+
+This simple example illustrates how \R objects can be transferred directly
+into corresponding \pkg{Armadillo} objects using the interface code provided
+by \pkg{Rcpp}.  It also shows how deployment of \pkg{RcppArmadillo} is
+straightforward, even for interactive work where functions can be compiled on
+the fly.  Similarly, usage in packages is also uncomplicated and follows the
+documentation provided with \pkg{Rcpp}~\citep{CRAN:Rcpp,Eddelbuettel:2013:Rcpp}.
+
+
+\section{Kalman Filtering Example}
+\label{sec:kalman}
+
+The Kalman filter is ubiquitous in many engineering disciplines as well as in
+statistics and econometrics~\citep{Tusell:2010:Kalman}. A recent example of an
+application is volatility extraction in a diffusion option pricing model~\citep{Li_CSDA_2013}.
+Even in its simplest linear form, the Kalman filter can provide simple estimates
+by recursively applying linear updates which are robust to noise and can cope
+with missing data.  Moreover, the estimation process is lightweight and fast,
+and consumes only minimal amounts of memory as few state variables are required.
+%
+We discuss a standard example below.  The (two-dimensional) position of an
+object is estimated based on past values.  A $6 \times 1$ state vector
+includes $X$ and $Y$ coordinates determining the position, two variables for
+speed (or velocity) $V_X$ and $V_Y$ relative to the two coordinates, as well
+as two acceleration variables $A_X$ and $A_Y$.
+
+We have the positions being updated as a function of the velocity
+
+\begin{displaymath}
+   X  = X_0 + V_X dt
+   \mbox{\phantom{XX} and \phantom{XX}}
+   Y  =  Y_0 + V_Y dt,
+\end{displaymath}
+
+\noindent
+and the velocity being updated as a function of the (unobserved) acceleration:
+
+\begin{displaymath}
+   V_x  =  V_{X,0} + A_X dt
+   \mbox{\phantom{XX} and \phantom{XX}}
+   V_y  = V_{Y,0} + A_Y dt.
+\end{displaymath}
+
+% \begin{eqnarray*}
+%   X   & = & X_0 + V_x dt \\
+%   Y   & = & Y_0 + V_y dt \\
+%   V_x & = & V_{x,0} + A_x dt \\
+%   V_y & = & V_{y,0} + A_y dt \\
+% \end{eqnarray*}
+
+With covariance matrices $Q$ and $R$ for (Gaussian) error terms, the standard
+Kalman filter estimation involves a linear prediction step resulting in a new
+predicted state vector, and a new covariance estimate.  This leads to a
+residuals vector and a covariance matrix for residuals which are used to
+determine the (optimal) Kalman gain, which is then used to update the state
+estimate and covariance matrix.
+
+All of these steps involve only matrix multiplication and inversions, making
+the algorithm very suitable for an implementation in any language which
+can use matrix expressions. An example for \proglang{Matlab} is provided on
+the Mathworks website\footnote{See
+  \url{http://www.mathworks.com/products/matlab-coder/demos.html?file=/products/demos/shipping/coder/coderdemo_kalman_filter.html}.}
+and shown in Listing~\ref{code:matlabkalman}.
+
+\lstset{
+  language=matlab,
+  basicstyle=\ttfamily\footnotesize,
+  caption={Basic Kalman filter in \proglang{Matlab}.},
+  label={code:matlabkalman}
+}
+\begin{lstlisting}[frame=tb]
+% Copyright 2010 The MathWorks, Inc.
+function y = kalmanfilter(z)
+  dt=1;
+  % Initialize state transition matrix
+  A=[ 1 0 dt 0 0 0; 0 1 0 dt 0 0;...  % [x ], [y ]
+      0 0 1 0 dt 0; 0 0 0 1 0 dt;...  % [Vx], [Vy]
+      0 0 0 0 1 0 ; 0 0 0 0 0 1 ];    % [Ax], [Ay]
+  H = [ 1 0 0 0 0 0; 0 1 0 0 0 0 ];   % Init. measuremnt mat
+  Q = eye(6);
+  R = 1000 * eye(2);
+  persistent x_est p_est              % Init. state cond.
+  if isempty(x_est)
+    x_est = zeros(6, 1);              % x_est=[x,y,Vx,Vy,Ax,Ay]'
+    p_est = zeros(6, 6);
+  end
+
+  x_prd = A * x_est;                  % Predicted state + covar.
+  p_prd = A * p_est * A' + Q;
+
+  S = H * p_prd' * H' + R;            % Estimation
+  B = H * p_prd';
+  klm_gain = (S \ B)';
+
+  % Estimated state and covariance
+  x_est = x_prd + klm_gain * (z - H * x_prd);
+  p_est = p_prd - klm_gain * H * p_prd;
+  y = H * x_est;                      % Comp. estim. measurements
+end                                   % of the function
+\end{lstlisting}
+% function x = kalmanExample
+%  load pos.txt;			      % renamed here
+%  x = kalmanM(pos);
+
+
+\lstset{
+  language=R,
+  basicstyle=\ttfamily\small,
+  caption={Basic Kalman filter in \Rns ~ (referred to as {\it FirstKalmanR}).},
+  label={code:FirstKalmanR}
+}
+\begin{lstlisting}[frame=tb]
+FirstKalmanR <- function(pos) {
+
+    kalmanfilter <- function(z) {
+        dt <- 1
+        A <- matrix(c( 1, 0, dt, 0, 0, 0, 0, 1, 0, dt, 0, 0,  # x,  y
+                       0, 0, 1, 0, dt, 0, 0, 0, 0, 1, 0, dt,  # Vx, Vy
+                       0, 0, 0, 0, 1,  0, 0, 0, 0, 0, 0,  1), # Ax, Ay
+                    6, 6, byrow=TRUE)
+        H <- matrix( c(1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0),
+                    2, 6, byrow=TRUE)
+        Q <- diag(6)
+        R <- 1000 * diag(2)
+
+        xprd <- A %*% xest		    # predicted state and covriance
+        pprd <- A %*% pest %*% t(A) + Q
+
+        S <- H %*% t(pprd) %*% t(H) + R     # estimation
+        B <- H %*% t(pprd)
+        kalmangain <- t(solve(S, B))
+
+        ## estimated state and covariance, assign to vars in parent env
+        xest <<- xprd + kalmangain %*% (z - H %*% xprd)
+        pest <<- pprd - kalmangain %*% H %*% pprd
+
+        ## compute the estimated measurements
+        y <- H %*% xest
+    }
+    xest <- matrix(0, 6, 1)
+    pest <- matrix(0, 6, 6)
+
+    N <- nrow(pos)
+    y <- matrix(NA, N, 2)
+    for (i in 1:N) {
+        y[i,] <- kalmanfilter(t(pos[i,,drop=FALSE]))
+    }
+    invisible(y)
+}
+\end{lstlisting}
+
+A straightforward \R implementation can be written as a close transcription
+of the \proglang{Matlab} version; we refer to this version as
+\code{FirstKalmanR}. It is shown in Listing~\ref{code:FirstKalmanR}.
+A slightly
+improved version (where several invariant statements are moved out of the
+repeatedly-called function) is provided in Listing~\ref{code:Rkalman} on
+page~\pageref{code:Rkalman} showing the function \code{KalmanR}.  The
+estimates of the state vector and its covariance matrix are updated
+iteratively.  The \proglang{Matlab} implementation uses two variables
+declared `persistent' for this.  In \Rns, which does not have such an
+attribute for variables, we store them in the enclosing environment of the
+outer function \code{KalmanR}, which contains an inner function
+\code{kalmanfilter} that is called for each observation.
+
+\pkg{Armadillo} provides efficient vector and matrix classes to implement the
+Kalman filter.  In Listing~\ref{code:CppKalmanClass} on
+page~\pageref{code:CppKalmanClass}, we show a simple \Cpp class containing a
+basic constructor as well as one additional member function.  The constructor
+can be used to initialise all variables as we are guaranteed that the code in
+the class constructor will be executed exactly once when this class is
+instantiated.  A class also makes it easy to add `persistent' local
+variables, which is a feature we need here.  Given such a class, the
+estimation can be accessed from \R via a short and simple routine such as the
+one shown in Listing~\ref{code:InlineKalman}.
+
+\lstset{
+  language=R,
+  basicstyle=\ttfamily\small,
+  caption={An improved Kalman filter implemented in \Rns ~ (referred to as {\it KalmanR}).},
+  label={code:Rkalman}
+}
+\begin{lstlisting}[frame=tb]
+KalmanR <- function(pos) {
+
+    kalmanfilter <- function(z) {
+        ## predicted state and covariance
+        xprd <- A %*% xest
+        pprd <- A %*% pest %*% t(A) + Q
+
+        ## estimation
+        S <- H %*% t(pprd) %*% t(H) + R
+        B <- H %*% t(pprd)
+
+        kalmangain <- t(solve(S, B))
+
+        ## estimated state and covariance
+        ## assigned to vars in parent env
+        xest <<- xprd + kalmangain %*% (z - H %*% xprd)
+        pest <<- pprd - kalmangain %*% H %*% pprd
+
+        ## compute the estimated measurements
+        y <- H %*% xest
+    }
+
+    dt <- 1
+    A <- matrix( c( 1, 0, dt, 0, 0, 0,  # x
+                   0, 1, 0, dt, 0, 0,   # y
+                   0, 0, 1, 0, dt, 0,   # Vx
+                   0, 0, 0, 1, 0, dt,   # Vy
+                   0, 0, 0, 0, 1,  0,   # Ax
+                   0, 0, 0, 0, 0,  1),  # Ay
+                6, 6, byrow=TRUE)
+    H <- matrix( c(1, 0, 0, 0, 0, 0,
+                   0, 1, 0, 0, 0, 0),
+                2, 6, byrow=TRUE)
+    Q <- diag(6)
+    R <- 1000 * diag(2)
+    N <- nrow(pos)
+    Y <- matrix(NA, N, 2)
+
+    xest <- matrix(0, 6, 1)
+    pest <- matrix(0, 6, 6)
+
+    for (i in 1:N) {
+        Y[i,] <- kalmanfilter(t(pos[i,,drop=FALSE]))
+    }
+    invisible(Y)
+}
+\end{lstlisting}
+
+\lstset{
+  language=C++,
+  basicstyle=\ttfamily\small,
+  caption={A Kalman filter class in \proglang{C++}, using \pkg{Armadillo} classes.},
+  label={code:CppKalmanClass}
+}
+\begin{lstlisting}[frame=tb]
+using namespace arma;
+
+class Kalman {
+private:
+    mat A, H, Q, R, xest, pest;
+    double dt;
+
+public:
+    // constructor, sets up data structures
+    Kalman() : dt(1.0) {
+        A.eye(6,6);
+        A(0,2) = A(1,3) = A(2,4) = A(3,5) = dt;
+        H.zeros(2,6);
+        H(0,0) = H(1,1) = 1.0;
+        Q.eye(6,6);
+        R = 1000 * eye(2,2);
+        xest.zeros(6,1);
+        pest.zeros(6,6);
+    }
+
+    // sole member function: estimate model
+    mat estimate(const mat & Z) {
+       unsigned int n = Z.n_rows, k = Z.n_cols;
+       mat Y = zeros(n, k);
+       mat xprd, pprd, S, B, kalmangain;
+       colvec z, y;
+
+       for (unsigned int i = 0; i<n; i++) {
+           z = Z.row(i).t();
+           // predicted state and covariance
+           xprd = A * xest;
+           pprd = A * pest * A.t() + Q;
+           // estimation
+           S = H * pprd.t() * H.t() + R;
+           B = H * pprd.t();
+           kalmangain = (solve(S, B)).t();
+           // estimated state and covariance
+           xest = xprd + kalmangain * (z - H * xprd);
+           pest = pprd - kalmangain * H * pprd;
+           // compute the estimated measurements
+           y = H * xest;
+           Y.row(i) = y.t();
+       }
+       return Y;
+    }
+};
+\end{lstlisting}
+
+\lstset{
+  language=R,
+  basicstyle=\ttfamily\small,
+  caption={A Kalman filter function implemented in a mixture of \proglang{R}
+    and \proglang{C++} code, using the \pkg{RcppArmadillo} package to embed
+    \pkg{Armadillo} based \proglang{C++} code (using the {\it Kalman} class from
+    Listing~\ref{code:CppKalmanClass}) within R code.
+    The resulting program is referred to as {\it KalmanCpp}.},
+  label={code:InlineKalman}
+}
+\begin{lstlisting}[frame=tb]
+R> kalmanSrc <- '
++  mat Z = as<mat>(ZS);       // passed from R
++  Kalman K;
++  mat Y = K.estimate(Z);
++  return wrap(Y);'
+R> KalmanCpp <- cxxfunction(signature(ZS="numeric"),
++                           body=kalmanSrc, include=kalmanClass,
++                           plugin="RcppArmadillo")
+\end{lstlisting}
+
+The content of Listing~\ref{code:CppKalmanClass} is assigned to a variable
+\code{kalmanClass} which (on line seven) is passed to the \code{include=}
+argument. This provides the required class declaration and definition.
+The four lines of code in lines two to five, assigned to \code{kalmanSrc},
+provide the function body required by \code{cxxfunction()}.
+From both these elements and the function signature argument,
+\code{cxxfunction()} creates a very simple yet efficient
+\Cpp implementation of the Kalman filter which we can access from \Rns.
+Given a vector of observations $Z$, it estimates a vector of position
+estimates $Y$.
+
+\begin{figure}[!tb]
+  \centerline{\includegraphics[width=0.75\columnwidth]{kalmanExample.pdf}}
+  % for eps:  \centerline{\includegraphics[width=0.85\columnwidth]{kalmanExample}}
+  \caption{An example of object trajectory and the corresponding Kalman
+    filter estimate.\label{fig:kalmanexample}
+  }
+\end{figure}
+
+This is illustrated in Figure~\ref{fig:kalmanexample} which
+displays the original object trajectory (using light-coloured square
+symbols) as well as the position estimates provided by the Kalman filter
+(using dark-coloured circles). This uses the same dataset provided by the
+Mathworks for their example; the data is believed to be simulated.
+
+We note that this example is meant to be illustrative and does not attempt to
+provide a reference implementation of a Kalman filter.  \proglang{R} contains
+several packages providing various implementations, as discussed in the
+survey provided by \cite{Tusell:2010:Kalman}.
+
+
+\section{Empirical Speed Comparison}
+\label{sec:speed}
+
+\lstset{
+  language=R,
+  basicstyle=\ttfamily\small,
+  caption={R code for timing comparison of Kalman filter implementations.},
+  label={code:BenchmarkKalman}
+}
+\begin{lstlisting}[frame=tb]
+R> require(rbenchmark)
+R> require(compiler)
+R>
+R> FirstKalmanRC <- cmpfun(FirstKalmanR)
+R> KalmanRC <- cmpfun(KalmanR)
+R>
+R> ## Read data, ensure identical results
+R> pos <- as.matrix(read.table("pos.txt", header=FALSE,
++                              col.names=c("x","y")))
+R> stopifnot(all.equal(KalmanR(pos), KalmanRC(pos)),
++            all.equal(KalmanR(pos), KalmanCpp(pos)),
++            all.equal(FirstKalmanR(pos), FirstKalmanRC(pos)),
++            all.equal(KalmanR(pos), FirstKalmanR(pos)))
+R>
+R> res <- benchmark(KalmanR(pos), KalmanRC(pos),
++                   FirstKalmanR(pos), FirstKalmanRC(pos),
++                   KalmanCpp(pos),
++                   columns = c("test", "replications",
++                               "elapsed", "relative"),
++                   order="relative",
++                   replications=100)
+\end{lstlisting}
+
+Listing~\ref{code:BenchmarkKalman} contains the code for creating a simple
+benchmarking exercise.  It compares several functions for implementing the
+Kalman filter, all executed within the \R environment.  Specifically, we
+examine the initial \R version \code{FirstKalmanR} shown in
+Listing~\ref{code:FirstKalmanR}, a refactored version \code{KalmanR} shown in
+Listing~\ref{code:Rkalman}, an improved version\footnote{The improved version
+  replaces explicit transpose and multiplication with the \code{crossprod}
+  function.}  due to an anonymous referee (not shown, but included in the
+package), as well as byte-compiled versions (designated with a trailing `C')
+created by using the byte-code compiler introduced with \R version 2.13.0
+\citep{Tierney:2012:ByteCompiler}.
+Finally, the \Cpp version shown in Listings~\ref{code:CppKalmanClass} and
+\ref{code:InlineKalman} is used.  Also shown are the \R statements for
+creating the byte-compiled variants via calls to \code{cmpfun()}.  This is
+followed by a test to ensure that all variants provide the same
+results. Next, the actual benchmark is executed before the result is
+displayed.
+
+
+
+
+
+%R> print(res)
+%                test replications elapsed relative
+%5     KalmanCpp(pos)          100   0.087   1.0000
+%2      KalmanRC(pos)          100   5.774  66.3678
+%1       KalmanR(pos)          100   6.448  74.1149
+%4 FirstKalmanRC(pos)          100   8.153  93.7126
+%3  FirstKalmanR(pos)          100   8.901 102.3103
+
+% more recent results:
+%                test replications elapsed  relative
+%6    KalmanCpp3(pos)          100   0.098  1.000000
+%5     KalmanCpp(pos)          100   0.104  1.061224
+%2      KalmanRC(pos)          100   5.579 56.928571
+%1       KalmanR(pos)          100   5.807 59.255102
+%4 FirstKalmanRC(pos)          100   8.196 83.632653
+%3  FirstKalmanR(pos)          100   8.686 88.632653
+
+\begin{table}[t!]
+  \begin{center}
+    \begin{small}
+      \begin{tabular}{lrr}
+        \toprule
+        {\bf Implementation \phantom{XXX}} & {\bf Time in seconds} & {\bf Relative to best solution} \\
+        \cmidrule(r){1-3}
+        KalmanCpp                          &   0.73  &  1.0 \\
+        KalmanRimpC                        &  21.10  & 29.0 \\
+        KalmanRimp                         &  22.01  & 30.2 \\
+        KalmanRC                           &  28.64  & 39.3 \\
+        KalmanR                            &  31.30  & 43.0 \\
+        FirstKalmanRC                      &  49.40  & 67.9 \\
+        FirstKalmanR                       &  64.00  & 88.0 \\
+        \bottomrule
+      \end{tabular}
+    \end{small}
+
+    \caption{Performance comparison of various implementations of a Kalman
+      filter.  KalmanCpp is the \mbox{\pkg{RcppArmadillo}} based
+      implementation in \Cpp shown in Listings~\ref{code:CppKalmanClass} and
+      \ref{code:InlineKalman}. KalmanRimp is an improved version supplied by
+      an anonymous referee which uses the \code{crossprod} function instead of
+      explicit transpose and multiplication. KalmanR is the \R implementation
+      shown in Listing~\ref{code:Rkalman}; FirstKalmanR is a direct
+      translation of the original Matlab implementation shown in Listing~\ref{code:FirstKalmanR}.
+      In all cases, the trailing `C' denotes a byte-compiled variant of the
+      corresponding R code.  Timings are averaged over 500 replications.
+      The comparison was made using \proglang{R} version 2.15.2, \pkg{Rcpp}
+      version 0.10.2 and \pkg{RcppArmadillo} version 0.3.6.1 on Ubuntu 12.10
+      running in 64-bit mode on a 2.67 GHz Intel i7 processor.
+      \label{tab:benchmark}
+    }
+  \end{center}
+\end{table}
+
+The results are shown in Table~\ref{tab:benchmark}.  Optimising and improving
+the \proglang{R} code has merits: we notice a steady improvement from the
+slowest \proglang{R} version to the fastest \proglang{R} version.
+Byte-compiling R code provides an additional performance gain which is more
+pronounced for the slower variant than the fastest implementation in
+\proglang{R}.  However, the \code{KalmanCpp} function created using
+\mbox{\pkg{RcppArmadillo}} clearly outperforms all other variants,
+underscoring the principal point of this paper.
+
+These results are consistent with the empirical observations made by
+\cite{Morandat_2012}, who also discuss several reasons for the slow speed of
+R compared to the C language, a close relative of C++.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+This paper introduced the \pkg{RcppArmadillo} package for use within the R
+statistical environment.  By using the \pkg{Rcpp} interface package,
+\pkg{RcppArmadillo} brings the speed of \Cpp along with the highly expressive
+\pkg{Armadillo} linear algebra library to the \R language.
+%
+A small example implementing a Kalman filter illustrated two key aspects.
+First, orders of magnitude of performance gains can be obtained by deploying
+\Cpp code along with \Rns.  Second, the ease of use and readability of the
+corresponding C++ code is similar to the \R code from which it was derived.
+
+This combination makes \pkg{RcppArmadillo} a compelling tool in the arsenal
+of applied researchers deploying computational methods in statistical
+computing and data analysis.
+As of early-2013, about 30 \proglang{R} packages on CRAN deploy
+\pkg{RcppArmadillo}\footnote{See
+  \url{http://cran.r-project.org/package=RcppArmadillo} for more details.},
+showing both the usefulness of \proglang{Armadillo} and its acceptance by
+the \proglang{R} community.
+
+
+\section*{Acknowledgements}
+
+NICTA is funded by the Australian Government as represented by the Department
+of Broadband, Communications and the Digital Economy, as well as the
+Australian Research Council through the ICT Centre of Excellence program.
+
+Adam M.~Johansen provided helpful comments on an earlier draft.  Comments by
+two anonymous referees and one editor further improved the paper and are gratefully
+acknowledged.
+
+\bibliographystyle{elsarticle-harv}
+\bibliography{RcppArmadillo}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

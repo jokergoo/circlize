@@ -1,5 +1,0 @@
-* installing *source* package ‘acc’ ...
-** package ‘acc’ successfully unpacked and MD5 sums checked
-** libs
-clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I"/Users/jokergoo/project/circlize/revdep/library.noindex/acc/Rcpp/include" -I"/Users/jokergoo/project/circlize/revdep/library.noindex/acc/RcppArmadillo/include" -I/usr/local/include   -fPIC  -Wall -g -O2  -c RcppExports.cpp -o RcppExports.o
-clang++ -I/Library/Frameworks/R.framework/Resources/include -DNDEBUG  -I"/Users/jokergoo/project/circlize/revdep/library.noindex/acc/Rcpp/include" -I"/Users/jokergoo/project/circlize/revdep/library.noindex/acc/RcppArmadillo/include" -I/usr/local/include   -fPIC  -Wall -g -O2  -c estep.cpp -o estep.o

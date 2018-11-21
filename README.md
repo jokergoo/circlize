@@ -114,4 +114,4 @@ See http://jokergoo.github.io/circlize.
 
 ### License
 
-GPL (>= 2)
+MIT @ Zuguang Gu

@@ -2027,16 +2027,19 @@ circos.genomicLabels = function(bed, labels = NULL, labels.column = NULL,
 	circos.par("points.overflow.warning" = op)
 }
 # == title
-# Adjust positions of text
+# Adjust positions of rectanglar shapes
 #
 # == param
-# -x1 position which corresponds to the top of the text
-# -x2 position which corresponds to the bottom of the text 
+# -bottom position which corresponds to the bottom of the rectangle-shapes
+# -top position which corresponds to the top of the rectanglar shapes
 # -xlim ranges on x-axis
 #
 # == details
-# used internally
-smartAlign = function(x1, x2, xlim) {
+# It adjust the position of the rectangular shapes to make them do not overlap
+smartAlign = function(bottom, top, xlim) {
+
+	x1 = bottom
+	x2 = top
 	
 	ncluster.before = -1
 	ncluster = length(x1)

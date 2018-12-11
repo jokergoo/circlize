@@ -1,23 +1,23 @@
 \name{smartAlign}
 \alias{smartAlign}
 \title{
-Adjust positions of text
+Adjust positions of rectanglar shapes
 }
 \description{
-Adjust positions of text
+Adjust positions of rectanglar shapes
 }
 \usage{
-smartAlign(x1, x2, xlim)
+smartAlign(bottom, top, xlim)
 }
 \arguments{
 
-  \item{x1}{position which corresponds to the top of the text}
-  \item{x2}{position which corresponds to the bottom of the text }
+  \item{bottom}{position which corresponds to the bottom of the rectangle-shapes}
+  \item{top}{position which corresponds to the top of the rectanglar shapes}
   \item{xlim}{ranges on x-axis}
 
 }
 \details{
-used internally
+It adjust the position of the rectangular shapes to make them do not overlap
 }
 \examples{
 # There is no example

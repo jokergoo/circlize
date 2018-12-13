@@ -2026,63 +2026,18 @@ circos.genomicLabels = function(bed, labels = NULL, labels.column = NULL,
 	}
 	circos.par("points.overflow.warning" = op)
 }
+
 # == title
-# Adjust positions of rectanglar shapes
+# Adjust positions of text
 #
 # == param
-# -start position which corresponds to the start (bottom or left) of the rectangle-shapes.
-# -end position which corresponds to the end (top or right) of the rectanglar shapes.
-# -range data ranges (the minimal and maximal values)
+# -x1 position which corresponds to the top of the text
+# -x2 position which corresponds to the bottom of the text 
+# -xlim ranges on x-axis
 #
 # == details
-# It adjusts the positions of the rectangular shapes to make them do not overlap
-#
-# == example
-# make_plot = function(pos1, pos2, range) {
-# 	oxpd = par("xpd")
-# 	par(xpd = NA)
-# 	plot(NULL, xlim = c(0, 4), ylim = range, ann = FALSE)
-# 	col = rand_color(nrow(pos1), transparency = 0.5)
-# 	rect(0.5, pos1[, 1], 1.5, pos1[, 2], col = col)
-# 	rect(2.5, pos2[, 1], 3.5, pos2[, 2], col = col)
-# 	segments(1.5, rowMeans(pos1), 2.5, rowMeans(pos2))
-# 	par(xpd = oxpd)
-# }
-#
-# range = c(0, 10)
-# pos1 = rbind(c(1, 2), c(5, 6))
-# make_plot(pos1, smartAlign(pos1, range = range), range)
-#
-# pos1 = rbind(c(1, 2), c(3, 4), c(5, 6), c(7, 8))
-# par(mfrow = c(3, 3))
-# for(i in 1:9) {
-# 	ind = sample(4, 4)
-# 	make_plot(pos1[ind, ], smartAlign(pos1[ind, ], range = range), range)
-# }
-# par(mfrow = c(1, 1))
-#
-# pos1 = rbind(c(3, 6), c(4, 7))
-# make_plot(pos1, smartAlign(pos1, range = range), range)
-#
-# pos1 = rbind(c(1, 8), c(3, 10))
-# make_plot(pos1, smartAlign(pos1, range = range), range)
-#
-smartAlign = function(start, end, range) {
-
-	if(missing(end)) {
-		x1 = start[, 1]
-		x2 = start[, 2]
-	} else {
-		x1 = start
-		x2 = end
-	}
-
-	od = order(x1)
-	rk = rank(x1, ties.method = "random")
-	x1 = x1[od]
-	x2 = x2[od]
-	ox1 = x1
-	ox2 = x2
+# used internally
+smartAlign = function(x1, x2, xlim) {
 	
 	ncluster.before = -1
 	ncluster = length(x1)
@@ -2111,12 +2066,12 @@ smartAlign = function(start, end, range) {
 			index = which(cluster == i_cluster)
 			total_len = sum(x2[index] - x1[index])
 			mid = (min(x1[index]) + max(x2[index]))/2
-			if(total_len > range[2] - range[1]) {
-				tp = seq(range[1], range[2], length = length(index) + 1)
-			} else if(mid - total_len/2 < range[1]) {
-				tp = seq(range[1], range[1] + total_len, length = length(index) + 1)
-			} else if(mid + total_len/2 > range[2]) {
-				tp = seq(range[2] - total_len, range[2], length = length(index) + 1)
+			if(total_len > xlim[2] - xlim[1]) {
+				tp = seq(xlim[1], xlim[2], length = length(index) + 1)
+			} else if(mid - total_len/2 < xlim[1]) {
+				tp = seq(xlim[1], xlim[1] + total_len, length = length(index) + 1)
+			} else if(mid + total_len/2 > xlim[2]) {
+				tp = seq(xlim[2] - total_len, xlim[2], length = length(index) + 1)
 			} else {
 				tp = seq(mid - total_len/2, mid + total_len/2, length = length(index)+1)
 			}
@@ -2128,9 +2083,6 @@ smartAlign = function(start, end, range) {
 		x2 = new_x2
 	}
 	
-	h = abs(ox2 - ox1)
-	mid = (x1 + x2)/2
-	df = data.frame(start = mid - h/2, end = mid + h/2)
-	df[rk, , drop = FALSE]
+	return(data.frame(start = x1, end = x2))
 }
 

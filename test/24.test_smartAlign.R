@@ -19,6 +19,11 @@ range = c(0, 10)
 pos1 = rbind(c(1, 2), c(5, 6))
 make_plot(pos1, smartAlign(pos1, range = range), range)
 
+range = c(0, 10)
+pos1 = rbind(c(-0.5, 2), c(5, 6))
+make_plot(pos1, smartAlign(pos1, range = range), range)
+
+
 pos1 = rbind(c(1, 2), c(3, 4), c(5, 6), c(7, 8))
 par(mfrow = c(3, 3))
 for(i in 1:9) {
@@ -32,3 +37,7 @@ make_plot(pos1, smartAlign(pos1, range = range), range)
 
 pos1 = rbind(c(1, 8), c(3, 10))
 make_plot(pos1, smartAlign(pos1, range = range), range)
+
+pos1 = cbind(c(-0.0005832292,  0.2559116024,  0.6293272145,  0.9496636073),
+	         c(0.3105832, 0.4940884, 0.7906728, 1.0303364))
+make_plot(pos1, smartAlign(pos1, range = c(0, 1)), c(0, 1))

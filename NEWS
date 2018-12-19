@@ -1,6 +1,8 @@
 Changes in version 0.4.6
 ------------------------------------------------------------------------
 * smartAlign(): the order of values won't affect the realignment now.
+* `circos.rect()`, `circos.segments()`, `circos.points()`, `circos.text()`:
+  x and y are recycled if the length of the variable is 1.
 
 Changes in version 0.4.5
 ------------------------------------------------------------------------

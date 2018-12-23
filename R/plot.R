@@ -831,7 +831,7 @@ circos.segments = function(x0, y0, x1, y1, sector.index = get.cell.meta.data("se
     if(n1 == 1) x0 = rep(x0, n)
     if(n2 == 1) y0 = rep(y0, n)
     if(n3 == 1) x1 = rep(x1, n)
-    if(n4 == 1) x2 = rep(x2, n)
+    if(n4 == 1) y1 = rep(y1, n)
 
 	if(! (length(x0) == length(y0) && length(y0) == length(x1) && length(x1) == length(y1)) ) {
 		stop("x0, y0, x1, y1 should have same length.")

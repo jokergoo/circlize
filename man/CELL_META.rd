@@ -2,10 +2,10 @@
 \docType{data}
 \alias{CELL_META}
 \title{
-Easy to way to get meta data in the current cell
+Easy way to get meta data in the current cell
 }
 \description{
-Easy to way to get meta data in the current cell
+Easy way to get meta data in the current cell
 }
 \usage{
 CELL_META

@@ -1,5 +1,7 @@
 S3method("$", "CELL_META")
 export("$.CELL_META")
+S3method("names", "CELL_META")
+export("names.CELL_META")
 S3method("print", "CELL_META")
 export("print.CELL_META")
 export("CELL_META")

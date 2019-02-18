@@ -793,7 +793,7 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 }
 
 # == title (variable:CELL_META)
-# Easy to way to get meta data in the current cell
+# Easy way to get meta data in the current cell
 #
 # == details
 # The variable `CELL_META` can only be used to get meta data of the "current" cell.
@@ -812,6 +812,15 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 # dev.off()
 CELL_META = "don't use me directly"
 class(CELL_META) = "CELL_META"
+
+# == title 
+# Names of all meta data in the current cell
+#
+# == param
+# -x use `CELL_META`.
+#
+# == example
+# names(CELL_META)
 names.CELL_META = function(x) {
 	c("xlim", "ylim", "xrange", "yrange", "xcenter", "ycenter", "cell.xlim", "cell.ylim",
      "sector.numeric.index", "sector.index", "track.index", "xplot", "yplot", "track.margin", "cell.padding",

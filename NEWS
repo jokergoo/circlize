@@ -5,6 +5,7 @@ Changes in version 0.4.6
   x and y are recycled if the length of the variable is 1.
 * fixed a bug of the position of vertical line in `circos.yaxis()`
 * add `facing` and `niceFacing` to `circos.genomicLabels()`
+* `posTransform.text()`: linking lines will not be overlapping anymore.
 
 Changes in version 0.4.5
 ------------------------------------------------------------------------

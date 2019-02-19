@@ -12,7 +12,7 @@ circos.genomicText(region, value = NULL, y = NULL, labels = NULL, labels.column 
     track.index = get.cell.meta.data("track.index"), posTransform = NULL,
     direction = NULL, facing = "inside", niceFacing = FALSE,
     adj = par("adj"), cex = 1, col = "black", font = par("font"), padding = 0,
-    extend = 0, ...)
+    extend = 0, align_to = "region", ...)
 }
 \arguments{
 
@@ -34,6 +34,7 @@ circos.genomicText(region, value = NULL, y = NULL, labels = NULL, labels.column 
   \item{font}{Pass to \code{\link{circos.text}}. Settings are similar as \code{col}}
   \item{padding}{pass to \code{posTransform} if it is set as \code{\link{posTransform.text}}}
   \item{extend}{pass to \code{posTransform} if it is set as \code{\link{posTransform.text}}}
+  \item{align_to}{pass to \code{posTransform} if it is set as \code{\link{posTransform.text}}}
   \item{...}{Mysterious parameters}
 
 }

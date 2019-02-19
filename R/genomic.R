@@ -937,6 +937,7 @@ circos.genomicRect = function(region, value = NULL,
 # -font Pass to `circos.text`. Settings are similar as ``col``
 # -padding pass to ``posTransform`` if it is set as `posTransform.text`
 # -extend pass to ``posTransform`` if it is set as `posTransform.text`
+# -align_to pass to ``posTransform`` if it is set as `posTransform.text`
 # -... Mysterious parameters
 #
 # == details
@@ -946,7 +947,7 @@ circos.genomicText = function(region, value = NULL, y = NULL, labels = NULL, lab
 	track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
 	direction = NULL, facing = "inside", niceFacing = FALSE,
 	adj = par("adj"), cex = 1, col = "black", font = par("font"), padding = 0,
-	extend = 0, ...) {
+	extend = 0, align_to = "region", ...) {
 	
 	if(!is.null(direction)) {
 		facing = direction
@@ -1021,11 +1022,10 @@ circos.genomicText = function(region, value = NULL, y = NULL, labels = NULL, lab
 			if(! facing %in% c("clockwise", "reverse.clockwise")) {
 				stop("Only support `facing` in c('clockwise', 'reverse.clockwise') if `posTransform` is `posTransform.text`.")
 			}
-			region = posTransform(region, value[[ numeric.column ]], value[[labels.column]], cex, font, padding = padding, extend = extend)
+			region = posTransform(region, value[[ numeric.column ]], value[[labels.column]], cex, font, padding = padding, extend = extend, align_to = align_to)
 		} else {
 			region = posTransform(region)
 		}
-		
 	}
 	
 	nc = length(numeric.column)
@@ -1759,9 +1759,11 @@ posTransform.text = function(region, y, labels, cex = 1, font = par("font"),
 
 	if(length(extend) == 1) extend = rep(extend, 2)
 	if(length(extend) > 2) extend = extend[1:2]
-	
-	od = order(region[[1]])
-	region = region[od, ]
+
+	od = order(region[, 1] + region[, 2])
+	od_back = NULL
+	od_back[od] = seq_along(od)
+	region = region[od, ,drop = FALSE]
 	y = y[od]
 	labels = labels[od]
 
@@ -1782,7 +1784,8 @@ posTransform.text = function(region, y, labels, cex = 1, font = par("font"),
 	l = x2 - x1 >= xlim[2] - xlim[1]; x1_new[l] = xlim[1]; x2_new[l] = xlim[2]
 	l = x1 < xlim[1]; x1_new[l] = xlim[1]; x2_new[l] = x2[l] + xlim[1] - x1[l]
 	l = x2 > xlim[2]; x1_new[l] = x1[l] - (x2[l] - xlim[2]); x2_new[l] = xlim[2]
-	return(smartAlign(x1_new, x2_new, xlim = xlim))
+	df = smartAlign(x1_new, x2_new, xlim = xlim)
+	return(df[od_back, ,drop = FALSE])
 }
 
 

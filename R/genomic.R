@@ -21,8 +21,8 @@
 # -...    Pass to `circos.genomicInitialize`.
 #
 # == details
-# The function will initialize the circular plot in which each sector corresponds to a chromosome. You can control the order of 
-# chromosomes by ``chromosome.index`` or by ``sort.chr``, or by setting a special format of ``cytoband`` (please refer to `read.cytoband` 
+# The function will initialize the circular plot in which each sector corresponds to a chromosome. You can control the order of
+# chromosomes by ``chromosome.index`` or by ``sort.chr``, or by setting a special format of ``cytoband`` (please refer to `read.cytoband`
 # to find out how to control a proper ``cytoband``).
 #
 # The function finally pass data to `circos.genomicInitialize` to initialize the circular plot.
@@ -31,10 +31,10 @@
 circos.initializeWithIdeogram = function(cytoband = system.file(package = "circlize",
 	"extdata", "cytoBand.txt"), species = NULL, sort.chr = TRUE,
 	chromosome.index = NULL, major.by = NULL,
-	plotType = c("ideogram", "axis", "labels"), 
-	track.height = NULL, ideogram.height = convert_height(2, "mm"), 
+	plotType = c("ideogram", "axis", "labels"),
+	track.height = NULL, ideogram.height = convert_height(2, "mm"),
 	...) {
-	
+
 	# proper order will be returned depending on cytoband and sort.chr
 	e = try(cytoband <- read.cytoband(cytoband, species = species, sort.chr = sort.chr, chromosome.index = chromosome.index), silent = TRUE)
 	if(class(e) == "try-error" && !is.null(species)) {  # if species is defined
@@ -60,30 +60,30 @@ circos.initializeWithIdeogram = function(cytoband = system.file(package = "circl
 	                chromosome = chromInfo$chromosome
 	            }
 	            cytoband = read.chromInfo(species = species, chromosome.index = chromosome, sort.chr = sort.chr)
-	        } 
+	        }
 		}
 	} else if(class(e) == "try-error") {
 		stop(e)
 	}
 	df = cytoband$df
 	chromosome = cytoband$chromosome
-	
+
 	if(is.null(chromosome.index)) {
 		chromosome.index = chromosome
 	}
 
 	# here df[[1]] is quite important, should be re-factered
 	df[[1]] = factor(as.vector(df[[1]]), levels = chromosome.index)
-	
+
 	# sn for sector names, but not for sector index
 	sn = unique(as.vector(df[[1]]))
 
 	# we do not need 'chr' prefix if it exits, it holds too much space.
 	sn = gsub("chr", "", sn)
-	
+
 	o.cell.padding = circos.par("cell.padding")
 	circos.par(cell.padding = c(o.cell.padding[1], 0, o.cell.padding[3], 0))
-	
+
 	circos.genomicInitialize(df, sector.names = sn, major.by = major.by, plotType = plotType, track.height = track.height, ...)
 
 	if(any(plotType %in% "ideogram")) {
@@ -113,7 +113,7 @@ circos.genomicIdeogram = function(cytoband = system.file(package = "circlize",
 		stop(e)
 	}
 	df = cytoband$df
-	
+
 	circos.genomicTrackPlotRegion(df, ylim = c(0, 1), bg.border = NA, track.height = track.height,
 		panel.fun = function(region, value, ...) {
 			col = cytoband.col(value[[2]])
@@ -149,15 +149,15 @@ circos.genomicIdeogram = function(cytoband = system.file(package = "circlize",
 # For more details on initializing genomic plot, please refer to the vignettes.
 circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 	plotType = c("axis", "labels"), tickLabelsStartFromZero = TRUE,
-	axis.labels.cex = 0.4*par("cex"), labels.cex = 0.8*par("cex"), 
+	axis.labels.cex = 0.4*par("cex"), labels.cex = 0.8*par("cex"),
 	track.height = NULL, ...) {
-	
+
 	if(is.factor(data[[1]])) {
 		fa = levels(data[[1]])
 	} else {
 		fa = unique(data[[1]])
 	}
-	
+
 	if(!is.null(sector.names)) {
 		if(length(sector.names) != length(fa)) {
 			stop("length of `sector.names` and length of sectors differ.")
@@ -165,13 +165,13 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 	} else {
 		sector.names = fa
 	}
-	
+
 	names(sector.names) = fa
-	
+
 	# calculate xlim
 	x1 = tapply(data[[2]], data[[1]], min)[fa]
 	x2 = tapply(data[[3]], data[[1]], max)[fa]
-	
+
 	op = circos.par("cell.padding")
 	ow = circos.par("points.overflow.warning")
 	circos.par(cell.padding = c(0, 0, 0, 0), points.overflow.warning = FALSE)
@@ -179,7 +179,7 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 
 	if(is.null(track.height)) {
 		if(all(c("axis", "labels") %in% plotType)) {
-			track.height = convert_unit_in_canvas_coordinate(1.5, "mm") + strheight("0", cex = axis.labels.cex) + 
+			track.height = convert_unit_in_canvas_coordinate(1.5, "mm") + strheight("0", cex = axis.labels.cex) +
 				convert_unit_in_canvas_coordinate(0.5, "mm") + strheight("chr", cex = labels.cex)
 		} else if("labels" %in% plotType) {
 			track.height = strheight("chr", cex = labels.cex)
@@ -196,10 +196,10 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 			panel.fun = function(region, value, ...) {
 				sector.index = get.cell.meta.data("sector.index")
 				xlim = get.cell.meta.data("xlim")
-				
+
 				if(all(c("axis", "labels") %in% plotType)) {
 					circos.genomicAxis(h = "bottom", major.by = major.by, tickLabelsStartFromZero = tickLabelsStartFromZero, labels.cex = axis.labels.cex)
-					circos.text(mean(xlim), convert_y(1.5, "mm") + convert_y(strheight("chr", cex = axis.labels.cex), "canvas") + convert_y(0.5, "mm"), 
+					circos.text(mean(xlim), convert_y(1.5, "mm") + convert_y(strheight("chr", cex = axis.labels.cex), "canvas") + convert_y(0.5, "mm"),
 						labels = sector.names[sector.index], cex = labels.cex, adj = c(0.5, 0), niceFacing = TRUE)
 				} else if("labels" %in% plotType) {
 					circos.text(mean(xlim), 0, labels = sector.names[sector.index], cex = labels.cex, adj = c(0.5, 0), niceFacing = TRUE)
@@ -209,7 +209,7 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
  			}
 		)
 	}
-	
+
 	circos.par("cell.padding" = op, "points.overflow.warning" = ow)
 	return(invisible(NULL))
 }
@@ -228,7 +228,7 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 #
 # == details
 # It assigns proper tick labels under genomic coordinate.
-# 
+#
 # == example
 # circos.initializeWithIdeogram(plotType = NULL)
 # circos.track(ylim = c(0, 1), panel.fun = function(x, y) circos.genomicAxis())
@@ -243,7 +243,7 @@ circos.genomicAxis = function(h = "top", major.by = NULL, tickLabelsStartFromZer
 	}
 
 	xlim = get.cell.meta.data("xlim", sector.index = sector.index, track.index = track.index)
-	
+
 	if(tickLabelsStartFromZero) {
 		offset = xlim[1]
 		if(is.null(major.by)) {
@@ -251,7 +251,7 @@ circos.genomicAxis = function(h = "top", major.by = NULL, tickLabelsStartFromZer
 		}
 		major.at = seq(xlim[1], xlim[2], by = major.by)
 		major.at = c(major.at, major.at[length(major.at)] + major.by)
-		
+
 		if(major.by > 1e6) {
 			major.tick.labels = paste((major.at-offset)/1000000, "MB", sep = "")
 		} else if(major.by > 1e3) {
@@ -259,14 +259,14 @@ circos.genomicAxis = function(h = "top", major.by = NULL, tickLabelsStartFromZer
 		} else {
 			major.tick.labels = paste((major.at-offset), "bp", sep = "")
 		}
-		
+
 	} else {
 		if(is.null(major.by)) {
 			major.by = .default.major.by()
 		}
 		major.at = seq(floor(xlim[1]/major.by)*major.by, xlim[2], by = major.by)
 		major.at = c(major.at, major.at[length(major.at)] + major.by)
-		
+
 		if(major.by > 1e6) {
 			major.tick.labels = paste(major.at/1000000, "MB", sep = "")
 		} else if(major.by > 1e3) {
@@ -276,7 +276,7 @@ circos.genomicAxis = function(h = "top", major.by = NULL, tickLabelsStartFromZer
 		}
 	}
 	circos.axis(h = h, major.at = major.at, labels = major.tick.labels, labels.cex = labels.cex,
-		sector.index = sector.index, track.index = track.index, ...)				
+		sector.index = sector.index, track.index = track.index, ...)
 }
 
 # == title
@@ -286,7 +286,7 @@ circos.genomicAxis = function(h = "top", major.by = NULL, tickLabelsStartFromZer
 # -data A bed-file-like data frame or a list of data frames
 # -ylim If it is ``NULL``, the value will be calculated from data. If ``stack`` is set to ``TRUE``, this value is ignored.
 # -stack whether to plot in a "stack" mode.
-# -numeric.column Columns of numeric values in ``data`` that will be used for plotting. 
+# -numeric.column Columns of numeric values in ``data`` that will be used for plotting.
 #                 If ``data`` is a data frame list, ``numeric.column`` should be either length of one or length of ``data``.
 #                 If value of ``numeric.column`` is not set, its value will depend on the structure of ``data``.
 #                 If ``data`` is a data frame, the default value for ``numeric.column`` is all the numeric column starting from the fourth column.
@@ -295,10 +295,10 @@ circos.genomicAxis = function(h = "top", major.by = NULL, tickLabelsStartFromZer
 # -jitter Numeric. Only works for adding points in ``circos.genomicTrackPlotRegion`` under ``stack`` mode
 # -panel.fun Self-defined function which will be applied on each sector. Please not it is different
 #            from that in `circos.trackPlotRegion`. In this function, there are two arguments (``region`` and ``value``) plus ``...``.
-#            In them, ``region`` is a two-column data frame with start positions and end positions in current genomic category (e.g. chromosome). 
-#            ``value`` is a data frame which is derived from ``data`` but excluding the first three columns. Rows in ``value`` correspond to 
+#            In them, ``region`` is a two-column data frame with start positions and end positions in current genomic category (e.g. chromosome).
+#            ``value`` is a data frame which is derived from ``data`` but excluding the first three columns. Rows in ``value`` correspond to
 #            rows in ``region``. ``...`` is mandatory and is used to pass internal parameters to other functions. The definition of
-#            ``value`` will be different according to different input data (data frame or list of data frame) and different settings (stacked or not), 
+#            ``value`` will be different according to different input data (data frame or list of data frame) and different settings (stacked or not),
 #            please refer to 'details' section and vignettes to detailed explanation.
 # -... Pass to `circos.trackPlotRegion`.
 #
@@ -309,17 +309,17 @@ circos.genomicAxis = function(h = "top", major.by = NULL, tickLabelsStartFromZer
 # When ``data`` is a single data frame, ``region`` in ``panel.fun`` is a data frame containing the second and third column in ``data`` in 'current` genomic category (e.g. current chromosome).
 # ``value`` is also a data frame containing columns in ``data`` excluding the first three columns.
 #
-# When ``data`` is a list containing data frames, ``panel.fun`` will be applied iteratively on each data frame, thus, 
+# When ``data`` is a list containing data frames, ``panel.fun`` will be applied iteratively on each data frame, thus,
 # ``region`` is extracted from the data frame which is in the current iteration. For example, if ``data`` contains two data frames, ``panel.fun``
 # will be applied with the first data frame in current chromosome and then applied with the second data frame in the same chromosome.
 #
 # If ``stack`` is set to ``TRUE``, ``ylim`` will be re-defined. in ``stack`` mode, the y-axis will be splitted into several part
 # with equal height and graphics will be drawn on each 'horizontal' lines (y = 1, 2, ...). In this case:
 #
-# When ``data`` is a single data frame containing one or more numeric columns, each numeric column defined in ``numeric.column`` will be treated as a single unit. 
+# When ``data`` is a single data frame containing one or more numeric columns, each numeric column defined in ``numeric.column`` will be treated as a single unit.
 # ``ylim`` is re-defined to ``c(0.5, n+0.5)`` in which ``n`` is number of numeric columns. ``panel.fun`` will be applied iteratively on each numeric column. In each
 # iteration, in ``panel.fun``, ``region`` is still the genomic regions in current genomic category, but ``value`` contains current numeric column plus all non-numeric columns.
-# Under ``stack`` mode, in ``panel.fun``, all low-level genomic graphical functions will draw on the 'horizontal line' ``y = i`` in which ``i`` is the index of current numeric column 
+# Under ``stack`` mode, in ``panel.fun``, all low-level genomic graphical functions will draw on the 'horizontal line' ``y = i`` in which ``i`` is the index of current numeric column
 # and the value of ``i`` can be obtained by `getI`.
 #
 # When ``data`` is a list containing data frames, each data frame will be treated as a single unit. The situation is quite similar as described in previous paragraph.
@@ -333,14 +333,14 @@ circos.genomicAxis = function(h = "top", major.by = NULL, tickLabelsStartFromZer
 circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE,
 	numeric.column = NULL, jitter = 0,
 	panel.fun = function(region, value, ...)  {NULL}, ... ) {
-	
+
 	if(is.null(data)) {
 		all.sector.index = get.all.sector.index()
 		data = data.frame(all.sector.index,
 		           rep(0, length(all.sector.index)),
 				   rep(0, length(all.sector.index)))
 	}
-	
+
 	# re-define panel.fun
 	genomicPanelFun = panel.fun
 
@@ -371,7 +371,7 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 			if(length(numeric.column) == 1) {
 				numeric.column = rep(list(numeric.column), length(data))
 			} else if(length(numeric.column) == length(data)) {
-				
+
 			} else {
 				stop_wrap("Length of `numeric.column` should only be one or length of ``data`` if it is a list of data frames.")
 			}
@@ -390,7 +390,7 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 								}
 							})
 		}
-		
+
 	} else {
 		# check numeric.column
 		if(is.null(numeric.column)) {
@@ -401,19 +401,19 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 			}
 		}
 	}
-	
+
 	args = formals(genomicPanelFun)
 	if(!(length(args) == 3 && names(args)[3] == "...")) {
 		stop_wrap("The `panel.fun` need a third argument `...` to pass special parameters to graphical functions.")
 	}
 
 	if(stack) {
-	
+
 		if(is.dataFrameList(data)) {
 			n = length(data)
-			
+
 			circos.trackPlotRegion(ylim = c(0.5, n + 0.5), panel.fun = function(x, y) {
-						
+
 					chr = get.current.chromosome()
 					for(i in seq_len(n)) {
 						l = data[[i]][[1]] == chr
@@ -434,11 +434,11 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 		} else {
 			n = length(numeric.column)
 			non.numeric.column = setdiff(seq_along(data[-(1:3)]), numeric.column)
-			
+
 			# if there is no numeric column
 			if(n == 0) {
 				circos.trackPlotRegion(ylim = c(0.5, 1 + 0.5), panel.fun = function(x, y) {
-							
+
 						chr = get.current.chromosome()
 						l = data[[1]] == chr
 						df = data[l, , drop = FALSE]
@@ -454,7 +454,7 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 					}, ...)
 			} else {
 				circos.trackPlotRegion(ylim = c(0.5, n + 0.5), panel.fun = function(x, y) {
-							
+
 						chr = get.current.chromosome()
 						for(i in seq_len(n)) {
 							l = data[[1]] == chr
@@ -471,8 +471,8 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 
 					}, ...)
 			}
-		}			
-		
+		}
+
 	} else {
 		# auto calculate ylim
 		if(is.null(ylim)) {
@@ -493,7 +493,7 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 		}
 		if(is.dataFrameList(data)) {
 			circos.trackPlotRegion(ylim = ylim, panel.fun = function(x, y) {
-					
+
 					chr = get.current.chromosome()
 					for(i in seq_along(data)) {
 						l = data[[i]][, 1] == chr
@@ -510,7 +510,7 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 				}, ...)
 		} else {
 			circos.trackPlotRegion(ylim = ylim, panel.fun = function(x, y) {
-					
+
 					chr = get.current.chromosome()
 					df = data[data[[1]] == chr, , drop = FALSE]
 					if(nrow(df)) {
@@ -524,7 +524,7 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 				}, ...)
 		}
 	}
-	
+
 }
 
 # == title
@@ -585,13 +585,13 @@ getI = function(...) {
 #
 # == details
 # The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
-circos.genomicPoints = function(region, value, numeric.column = NULL, 
+circos.genomicPoints = function(region, value, numeric.column = NULL,
 	sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
+    track.index = get.cell.meta.data("track.index"), posTransform = NULL,
 	pch = par("pch"), col = par("col"), cex = par("cex"), bg = par("bg"), ...) {
-	
+
 	nr = nrow(region)
-	
+
 	if(is.atomic(value) && length(value) == 1) {
 		value = data.frame(value = rep(value, nr))
 	}
@@ -599,7 +599,7 @@ circos.genomicPoints = function(region, value, numeric.column = NULL,
 		value = data.frame(value = value)
 	}
 	if(!is.data.frame(value)) stop("`value` should be a data frame.")
-	
+
 	args = list(...)
 	if(!is.null(args$.param)) {
 		.param = args$.param
@@ -616,7 +616,7 @@ circos.genomicPoints = function(region, value, numeric.column = NULL,
 			numeric.column = .param$numeric.column
 		}
 	}
-	
+
 	if(is.vector(value) && !is.list(value) && length(value) == 1) {
 		value = data.frame(value = rep(value, nr))
 		numeric.column = 1
@@ -624,34 +624,34 @@ circos.genomicPoints = function(region, value, numeric.column = NULL,
 		value = data.frame(value = value)
 		numeric.column = 1
 	}
-	
+
 	if(!is.null(posTransform)) {
 		region = posTransform(region)
 	}
-	
+
 	if(is.null(numeric.column)) {
 		numeric.column = which(as.logical(sapply(value, is.numeric)))
 		if(length(numeric.column) == 0) {
 			stop("Cannot find numeric column.")
 		}
 	}
-	
+
 	nc = length(numeric.column)
 
 	pch = .normalizeGraphicalParam(pch, nc, nr, "pch")
 	col = .normalizeGraphicalParam(col, nc, nr, "col")
 	cex = .normalizeGraphicalParam(cex, nc, nr, "cex")
 	bg = .normalizeGraphicalParam(bg, nc, nr, "cex")
-	
+
 	if(nc == 1) {
-		circos.points( (region[[1]] + region[[2]])/2, value[[ numeric.column ]], 
+		circos.points( (region[[1]] + region[[2]])/2, value[[ numeric.column ]],
 			pch = pch, col = col, cex = cex, bg = bg,
 			sector.index = sector.index, track.index = track.index )
 	} else {
 		for(i in seq_len(nc)) {
-			circos.points( (region[[1]] + region[[2]])/2, value[[ numeric.column[i] ]], 
+			circos.points( (region[[1]] + region[[2]])/2, value[[ numeric.column[i] ]],
 				pch = pch[i], col = col[i], cex = cex[i], bg = bg[i],
-				sector.index = sector.index, track.index = track.index ) 
+				sector.index = sector.index, track.index = track.index )
 		}
 	}
 }
@@ -668,12 +668,12 @@ circos.genomicPoints = function(region, value, numeric.column = NULL,
 # -track.index Pass to `circos.lines`
 # -posTransform Self-defined function to transform genomic positions, see `posTransform.default` for explaination
 # -col col of lines/areas. If there are more than one numeric column, the length of ``col`` can be either one or number of numeric columns.
-#      If there is only one numeric column and type is either ``segment`` or ``h``, 
+#      If there is only one numeric column and type is either ``segment`` or ``h``,
 #      the length of ``col`` can be either one or number of rows of ``region``.
 #      pass to `circos.lines`
 # -lwd Settings are similar as ``col``. Pass to `circos.lines`
 # -lty Settings are similar as ``col``. Pass to `circos.lines`
-# -type There is an additional option ``segment`` which plot segment lines from start position to end position. Settings are similar as ``col``. Pass to `circos.lines`. 
+# -type There is an additional option ``segment`` which plot segment lines from start position to end position. Settings are similar as ``col``. Pass to `circos.lines`.
 # -area Settings are similar as ``col``. Pass to `circos.lines`
 # -area.baseline Deprecated, use ``baseline`` instead.
 # -baseline Settings are similar as ``col``. Pass to `circos.lines`
@@ -685,14 +685,14 @@ circos.genomicPoints = function(region, value, numeric.column = NULL,
 #
 # == details
 # The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
-circos.genomicLines = function(region, value, numeric.column = NULL, 
+circos.genomicLines = function(region, value, numeric.column = NULL,
 	sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
+    track.index = get.cell.meta.data("track.index"), posTransform = NULL,
 	col = ifelse(area, "grey", "black"), lwd = par("lwd"),
     lty = par("lty"), type = "l",
     area = FALSE, area.baseline = NULL, border = "black", baseline = "bottom",
     pt.col = par("col"), cex = par("cex"), pch = par("pch"), ...) {
-	
+
 	if(!is.null(area.baseline)) {
 		baseline = area.baseline
 		warning("`area.baseline` is deprecated, please use `baseline` instead.")
@@ -705,7 +705,7 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 		value = data.frame(value = value)
 	}
 	if(!is.data.frame(value)) stop("`value` should be a data frame.")
-	
+
 	args = list(...)
 	if(!is.null(args$.param)) {
 		.param = args$.param
@@ -719,7 +719,7 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 			numeric.column = .param$numeric.column
 		}
 	}
-	
+
 	if(is.vector(value) && !is.list(value) && length(value) == 1) {
 		value = data.frame(value = rep(value, nr))
 		numeric.column = 1
@@ -741,7 +741,7 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 	}
 
 	nc = length(numeric.column)
-	
+
 	if(all(type %in% c("h", "segment"))) {
 		col = .normalizeGraphicalParam(col, nc, nr, "col")
 		lwd = .normalizeGraphicalParam(lwd, nc, nr, "col")
@@ -761,27 +761,27 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 
 	if(!is.null(args$hline)) {
 		# for(i in seq_len(nr)) {
-		# 	circos.lines( c(region[i, 1], region[i, 2]), c(value[i, numeric.column], value[i, numeric.column]), 
+		# 	circos.lines( c(region[i, 1], region[i, 2]), c(value[i, numeric.column], value[i, numeric.column]),
 		# 		col = col, lwd = lwd, lty = lty, type = "l",
 		# 		sector.index = sector.index, track.index = track.index )
 		# }
-		circos.segments( region[, 1], value[, numeric.column], region[, 2], value[, numeric.column], 
-				col = col, lwd = lwd, lty = lty, 
+		circos.segments( region[, 1], value[, numeric.column], region[, 2], value[, numeric.column],
+				col = col, lwd = lwd, lty = lty,
 				sector.index = sector.index, track.index = track.index )
 	} else if(nc == 1) {
 		if(type == "segment") {
 			# for(i in seq_len(nr)) {
-			# 	circos.lines( c(region[i, 1], region[i, 2]), c(value[i, numeric.column], value[i, numeric.column]), 
+			# 	circos.lines( c(region[i, 1], region[i, 2]), c(value[i, numeric.column], value[i, numeric.column]),
 			# 		col = col[i], lwd = lwd[i], lty = lty[i], type = "l",
 			# 		sector.index = sector.index, track.index = track.index )
 			# }
-			circos.segments( region[, 1], value[, numeric.column], region[, 2], value[, numeric.column], 
-					col = col, lwd = lwd, lty = lty, 
+			circos.segments( region[, 1], value[, numeric.column], region[, 2], value[, numeric.column],
+					col = col, lwd = lwd, lty = lty,
 					sector.index = sector.index, track.index = track.index )
 		} else {
-			circos.lines( (region[[1]] + region[[2]])/2, value[[ numeric.column ]], 
-				col = col, lwd = lwd, lty = lty, type = type, 
-				area = area, baseline = baseline, 
+			circos.lines( (region[[1]] + region[[2]])/2, value[[ numeric.column ]],
+				col = col, lwd = lwd, lty = lty, type = type,
+				area = area, baseline = baseline,
 				border = border, pt.col = pt.col, cex = cex, pch = pch,
 				sector.index = sector.index, track.index = track.index )
 		}
@@ -789,23 +789,23 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 		for(i in seq_len(nc)) {
 			if(type[i] == "segment") {
 				# for(k in seq_len(nr)) {
-				# 	circos.lines( c(region[k, 1], region[k, 2]), c(value[k, numeric.column[i] ], value[k, numeric.column[i] ]), 
+				# 	circos.lines( c(region[k, 1], region[k, 2]), c(value[k, numeric.column[i] ], value[k, numeric.column[i] ]),
 				# 		col = col[i], lwd = lwd[i], lty = lty[i], type = "l",
 				# 		sector.index = sector.index, track.index = track.index )
 				# }
-				circos.segments( region[, 1], value[, numeric.column[i] ], region[, 2], value[, numeric.column[i] ], 
+				circos.segments( region[, 1], value[, numeric.column[i] ], region[, 2], value[, numeric.column[i] ],
 						col = col[i], lwd = lwd[i], lty = lty[i], type = "l",
 						sector.index = sector.index, track.index = track.index )
 			} else {
-				circos.lines( (region[[1]] + region[[2]])/2, value[[ numeric.column[i] ]], 
-					col = col[i], lwd = lwd[i], lty = lty[i], type = type[i], 
-					area = area[i], baseline = baseline[i], 
+				circos.lines( (region[[1]] + region[[2]])/2, value[[ numeric.column[i] ]],
+					col = col[i], lwd = lwd[i], lty = lty[i], type = type[i],
+					area = area[i], baseline = baseline[i],
 					border = border[i], pt.col = pt.col[i], cex = cex[i], pch = pch[i],
 					sector.index = sector.index, track.index = track.index )
 			}
 		}
 	}
-}	
+}
 
 # == title
 # Draw rectangle-like grid, specifically for genomic graphics
@@ -827,14 +827,14 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 #
 # == details
 # The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
-circos.genomicRect = function(region, value = NULL, 
+circos.genomicRect = function(region, value = NULL,
 	ytop = NULL, ybottom = NULL, ytop.column = NULL, ybottom.column = NULL,
 	sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
+    track.index = get.cell.meta.data("track.index"), posTransform = NULL,
 	col = NA, border = "black", lty = par("lty"), ...) {
-	
+
 	nr = nrow(region)
-	
+
 	args = list(...)
 	if(!is.null(args$.param)) {
 		.param = args$.param
@@ -845,17 +845,17 @@ circos.genomicRect = function(region, value = NULL,
 			}
 		}
 	}
-	
+
 	if(is.atomic(value) && length(value) == 1) {
 		value = data.frame(value = rep(value, nr))
 	}
 	if(is.atomic(value) && length(value) == nr) {
 		value = data.frame(value = value)
 	}
-	
+
 	# 1. check ytop and ybottom
 	# 2. check ytop.colum and ybottom.column
-	
+
 	if(!is.null(ytop)) {
 		if(length(ytop) == 1) {
 			ytop = rep(ytop, nr)
@@ -863,7 +863,7 @@ circos.genomicRect = function(region, value = NULL,
 		value = cbind(value, ytop)
 		ytop.column = ncol(value)
 	}
-	
+
 	if(!is.null(ybottom)) {
 		if(length(ybottom) == 1) {
 			ybottom = rep(ybottom, nr)
@@ -873,7 +873,7 @@ circos.genomicRect = function(region, value = NULL,
 	}
 	if(is.matrix(value)) value = as.data.frame(value)
 	if(!is.data.frame(value)) stop("`value` should be a data frame.")
-	
+
 	ylim = get.cell.meta.data("ylim", sector.index = sector.index, track.index = track.index)
 	if(is.null(ybottom.column) && is.null(ytop.column)) {
 		# if no ybottom and ytop column are set, the rect will draw along whole ylim
@@ -891,7 +891,7 @@ circos.genomicRect = function(region, value = NULL,
 	if(!is.null(posTransform)) {
 		region = posTransform(region)
 	}
-	
+
 	if(length(ytop.column) > 1) {
 		stop("Only one ytop columns is allowed.")
 	}
@@ -902,7 +902,7 @@ circos.genomicRect = function(region, value = NULL,
 	col = .normalizeGraphicalParam(col, 1, nr, "col")
 	border = .normalizeGraphicalParam(border, 1, nr, "border")
 	lty = .normalizeGraphicalParam(lty, 1, nr, "lty")
-	
+
 	# for(i in seq_len(nr)) {
 	# 	circos.rect(region[i, 1], value[i, ybottom.column], region[i, 2], value[i, ytop.column],
 	# 	            sector.index = sector.index, track.index = track.index,
@@ -928,9 +928,9 @@ circos.genomicRect = function(region, value = NULL,
 # -sector.index Pass to `circos.rect`
 # -track.index Pass to `circos.rect`
 # -posTransform Self-defined function to transform genomic positions, see `posTransform.default` for explanation
-# -facing Passing to `circos.text`. Settings are similar as ``col`` 
+# -facing Passing to `circos.text`. Settings are similar as ``col``
 # -niceFacing   Should the facing of text be adjusted to fit human eyes?
-# -direction Deprecated, use ``facing`` instead. 
+# -direction Deprecated, use ``facing`` instead.
 # -adj Pass to `circos.text`. Settings are similar as ``col``
 # -cex Pass to `circos.text`. Settings are similar as ``col``
 # -col Pass to `circos.text`. The length of ``col`` can be either one or number of rows of ``region``.
@@ -943,19 +943,19 @@ circos.genomicRect = function(region, value = NULL,
 # == details
 # The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
 circos.genomicText = function(region, value = NULL, y = NULL, labels = NULL, labels.column = NULL,
-	numeric.column = NULL, sector.index = get.cell.meta.data("sector.index"), 
-	track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
+	numeric.column = NULL, sector.index = get.cell.meta.data("sector.index"),
+	track.index = get.cell.meta.data("track.index"), posTransform = NULL,
 	direction = NULL, facing = "inside", niceFacing = FALSE,
 	adj = par("adj"), cex = 1, col = "black", font = par("font"), padding = 0,
 	extend = 0, align_to = "region", ...) {
-	
+
 	if(!is.null(direction)) {
 		facing = direction
 		warning("`direction` is deprecated, please use `facing` instead.")
 	}
-	
+
 	nr = nrow(region)
-	
+
 	if(is.vector(value) && !is.list(value) && length(value) == 1) {
 		value = data.frame(value = rep(value, nr))
 		numeric.column = 1
@@ -964,7 +964,7 @@ circos.genomicText = function(region, value = NULL, y = NULL, labels = NULL, lab
 		value = data.frame(value = value)
 		numeric.column = 1
 	}
-	
+
 	args = list(...)
 	if(!is.null(args$.param)) {
 		.param = args$.param
@@ -977,7 +977,7 @@ circos.genomicText = function(region, value = NULL, y = NULL, labels = NULL, lab
 			numeric.column = .param$numeric.column
 		}
 	}
-	
+
 	if(!is.null(y)) {
 		if(length(y) == 1) {
 			y = rep(y, nr)
@@ -991,7 +991,7 @@ circos.genomicText = function(region, value = NULL, y = NULL, labels = NULL, lab
 	if(is.null(labels) && is.null(labels.column)) {
 		stop("You should either specify `labels` or `labels.column`.")
 	}
-	
+
 	if(!is.null(labels)) {
 		if(is.vector(labels) && !is.list(labels) && length(labels) == 1) {
 			value = cbind(value, labels = rep(labels, nr))
@@ -1010,13 +1010,13 @@ circos.genomicText = function(region, value = NULL, y = NULL, labels = NULL, lab
 		}
 		numeric.column = numeric.column[1]
 	}
-	
+
 	if(length(numeric.column) > 1) {
 		stop("You can only have one numeric column.")
 	}
-	
+
 	if(!is.null(posTransform)) {
-	
+
 		# check settings when it is text-specific transformation
 		if(identical(posTransform, posTransform.text)) {
 			if(! facing %in% c("clockwise", "reverse.clockwise")) {
@@ -1027,7 +1027,7 @@ circos.genomicText = function(region, value = NULL, y = NULL, labels = NULL, lab
 			region = posTransform(region)
 		}
 	}
-	
+
 	nc = length(numeric.column)
 
 	col = .normalizeGraphicalParam(col, nc, nr, "col")
@@ -1060,27 +1060,27 @@ circos.genomicText = function(region, value = NULL, y = NULL, labels = NULL, lab
 # Of course, number of rows should be same in ``region1`` and ``region2``.
 #
 # If you want to have more controls on links, please use `circos.link` directly.
-circos.genomicLink = function(region1, region2, 
+circos.genomicLink = function(region1, region2,
 	rou = get_most_inside_radius(), rou1 = rou, rou2 = rou,
     col = "black", lwd = par("lwd"), lty = par("lty"), border = col, ...) {
-	
+
 	region1 = normalizeToDataFrame(region1, sort = FALSE)
 	region2 = normalizeToDataFrame(region2, sort = FALSE)
-	
+
 	if(is.dataFrameList(region1)) {
 		stop("`region1` can not be a region list.")
 	}
-	
+
 	if(is.dataFrameList(region1)) {
 		stop("`region1` can not be a region list.")
 	}
-	
+
 	if(nrow(region1) != nrow(region2)) {
 		stop("nrow of `region1` and `region2` differ.")
 	}
-	
+
 	nr = nrow(region1)
-	
+
 	rou1 = .normalizeGraphicalParam(rou1, 1, nr, "rou")
 	rou2 = .normalizeGraphicalParam(rou2, 1, nr, "rou")
 	col = .normalizeGraphicalParam(col, 1, nr, "col")
@@ -1114,9 +1114,9 @@ circos.genomicLink = function(region1, region2,
 # -data A data frame containing genomic data
 # -track.height Height of the track
 # -posTransform Genomic position transformation function, see `posTransform.default` for an example.
-# -horizontalLine Whether to draw horizontal lines which indicate region width 
+# -horizontalLine Whether to draw horizontal lines which indicate region width
 # -track.margin Margin of tracks
-# -direction Type of the transformation. ``inside`` means position transformed track are located inside 
+# -direction Type of the transformation. ``inside`` means position transformed track are located inside
 #       and ``outside`` means position transformed track are located outside.
 # -col Color of lines, can be length of one or nrow of ``data``
 # -lwd Width of lines
@@ -1124,25 +1124,25 @@ circos.genomicLink = function(region1, region2,
 # -... pass to `circos.trackPlotRegion`
 #
 # == details
-# There is one representative situation when such position transformation needs to be applied. 
+# There is one representative situation when such position transformation needs to be applied.
 # For example, there are two sets of regions in a chromosome in which regions in one set regions are
 # quite densely to each other and regions in other set are far from others. Heatmap or text is going
 # to be drawn on the next track. If there is no position transformation, heatmap or text for those
 # dense regions would be overlapped and hard to identify, also ugly to visualize. Thus, a way
-# to transform original positions to new positions would help for the visualization. 
-circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransform = NULL, 
+# to transform original positions to new positions would help for the visualization.
+circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransform = NULL,
 	horizontalLine = c("none", "top", "bottom", "both"), track.margin = c(0, 0),
 	direction = c("inside", "outside"), col = "black", lwd = par("lwd"),
     lty = par("lty"), ...) {
-	
+
 	horizontalLine = match.arg(horizontalLine)[1]
 
 	data = normalizeToDataFrame(data)
-	
+
 	if(is.dataFrameList(data)) {
 		stop("`data` can not be list of regions.")
 	}
-	
+
 	nr = nrow(data)
 	if(length(col) == 1) {
 		col = rep(col, nr)
@@ -1153,14 +1153,14 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 	if(length(lty) == 1) {
 		lty = rep(lty, nr)
 	}
-	
+
 	o.track.margin = circos.par("track.margin")
 	circos.par(track.margin = track.margin)
-	
+
 	if(direction[1] == "default") direction = "outside"
 	if(direction[1] == "reverse") direction = "inside"
 	direction = match.arg(direction)[1]
-	
+
 	if(direction == "inside") {
 		circos.genomicTrackPlotRegion(data, ylim = c(0, 1), bg.border = NA, track.height = track.height, panel.fun = function(region, value, ...) {
 			chr = get.current.chromosome()
@@ -1177,7 +1177,7 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 			} else {
 				region_new  = region
 			}
-			
+
 			# for(i in seq_len(nrow(region))) {
 			# 	if(horizontalLine == "both" || horizontalLine == "top") {
 			# 		circos.lines(c(region[i, 1], region[i, 2]), c(1, 1), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
@@ -1219,7 +1219,7 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 			} else {
 				region_new  = region
 			}
-			
+
 			# for(i in seq_len(nrow(region))) {
 			# 	if(horizontalLine == "both" || horizontalLine == "bottom") {
 			# 		circos.lines(c(region[i, 1], region[i, 2]), c(0, 0), col = col[l][i], lwd = lwd[l][i], lty = lty[l][i])
@@ -1245,7 +1245,7 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 			circos.segments(mid_new, rep(2/3, nr), mid_new, rep(1, nr), col = col[l], lwd = lwd[l], lty = lty[l])
 		}, ...)
 	}
-	
+
 	circos.par(track.margin = o.track.margin)
 }
 
@@ -1270,21 +1270,21 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 #
 # == details
 # This function is a high-level graphical function, and it will create a new track.
-circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, overlap = TRUE, 
+circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, overlap = TRUE,
 	col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l",
 	area = TRUE, area.baseline = NULL, baseline = 0, border = NA, ...) {
-	
+
 	if(!is.null(area.baseline)) {
 		baseline = area.baseline
 		warning("`area.baseline` is deprecated, please use `baseline` instead.")
 	}
-	
+
 	data = normalizeToDataFrame(data)
-	
+
 	if(!is.dataFrameList(data)) {
 		data = list(data)
 	}
-	
+
 	if(length(col) == 1) {
 		col = rep(col, length(data))
 	}
@@ -1312,7 +1312,7 @@ circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, o
 		window.size = 10^nchar(sum(s))/1000  # around 100 major ticks
 		#cat(window.size, "is choosen as the window size.\n")
 	}
-	
+
 	df = vector("list", length = length(data))
 	for(i in seq_along(data)) {
 		df[[i]] = genomicDensity(data[[i]], window.size = window.size, overlap = overlap)
@@ -1324,14 +1324,14 @@ circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, o
 	}
 	if(length(df) == 1) {
 		circos.genomicTrackPlotRegion(df[[1]], ylim = c(0, ymax), panel.fun = function(region, value, ...) {
-			circos.genomicLines(region, value, col = col, lwd = lwd, lty = lty, type = type, 
-				border = border, area = area, baseline = baseline) 
+			circos.genomicLines(region, value, col = col, lwd = lwd, lty = lty, type = type,
+				border = border, area = area, baseline = baseline)
 		}, ...)
 	} else {
 		circos.genomicTrackPlotRegion(df, ylim = c(0, ymax), panel.fun = function(region, value, ...) {
 			i = getI(...)
-			circos.genomicLines(region, value, col = col[i], lwd = lwd[i], lty = lty[i], type = type[i], 
-				border = border[i], area = area[i], baseline = baseline[i]) 
+			circos.genomicLines(region, value, col = col[i], lwd = lwd[i], lty = lty[i], type = type[i],
+				border = border[i], area = area[i], baseline = baseline[i])
 		}, ...)
 	}
 }
@@ -1352,11 +1352,11 @@ circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, o
 # It calculate the percent of each genomic windows that is covered by the input regions.
 #
 # == values
-# If the input is a two-column data frame, the function returns a data frame with three columns: 
+# If the input is a two-column data frame, the function returns a data frame with three columns:
 # start position, end position and percent of overlapping. And if the input is a bed-format
 # data frame, there will be an additionally chromosome name column.
 genomicDensity = function(region, window.size = 1e7, n.window = NULL, overlap = TRUE, chr.len = NULL) {
-	
+
 	if(is.character(region[, 1]) || is.factor(region[, 1])) {
 		region[, 1] = as.vector(region[, 1])
 		all_chr = unique(region[, 1])
@@ -1372,7 +1372,7 @@ genomicDensity = function(region, window.size = 1e7, n.window = NULL, overlap = 
 				if(is.circos.initialized()) {
 					if(chr %in% get.all.sector.index()) {
 						max_rg = get.sector.data(sector.index = chr)["max.data"]
-					} 
+					}
 				}
 			} else {
 				if(chr %in% names(chr.len)) {
@@ -1385,7 +1385,7 @@ genomicDensity = function(region, window.size = 1e7, n.window = NULL, overlap = 
 			cbind(chr = rep(chr, nrow(df)), df)
 		})))
 	}
-	
+
 	if(ncol(region) >= 3) {
 		if(is.numeric(region[, 1])) {
 			if(max(region[, 1]) < 100) {
@@ -1399,7 +1399,7 @@ genomicDensity = function(region, window.size = 1e7, n.window = NULL, overlap = 
 	}
 
 	region = region[, 1:2]
-	
+
 	region = sort_region(region)
 	region = reduce_region(region)
 
@@ -1429,9 +1429,9 @@ genomicDensity = function(region, window.size = 1e7, n.window = NULL, overlap = 
 		} else {
 			b = seq(1, max_pos, length = n.window)
 			s = b[-length(b)]
-			e = s + b[2] - b[1]	
+			e = s + b[2] - b[1]
 		}
-		
+
 	}
 
 	s = as.integer(s)
@@ -1439,11 +1439,11 @@ genomicDensity = function(region, window.size = 1e7, n.window = NULL, overlap = 
 
 	y = rep(0, length(s))
 	names(y) = paste(s, e, sep = ",")
-	
+
 	windows = data.frame(start = s, end = e)
-	
+
 	op = overlap_region(windows, region)
-	
+
 	res = data.frame(start = s, end = e, pct = op)
 	return(res)
 }
@@ -1458,7 +1458,7 @@ genomicDensity = function(region, window.size = 1e7, n.window = NULL, overlap = 
 # This is only a shortcut function of `highlight.sector`.
 #
 highlight.chromosome = function(...) {
-	
+
 	highlight.sector(...)
 }
 
@@ -1471,7 +1471,7 @@ continuousIndexSegment = function(x, n = NULL, loop = FALSE) {
 		for(i in seq_along(k)[-length(k)]) {
 			lt[[i]] = x[(k[i] + 1):(k[i+1])]
 		}
-		
+
 		if(loop && length(lt) > 1) {
 			first = lt[[1]]
 			last = lt[[length(lt)]]
@@ -1480,7 +1480,7 @@ continuousIndexSegment = function(x, n = NULL, loop = FALSE) {
 				lt = lt[-length(lt)]
 			}
 		}
-		
+
 		return(lt)
 	}
 }
@@ -1577,15 +1577,15 @@ normalizeToDataFrame = function(data, sort = FALSE) {
 # the plot, it means there is a cluster of regions at that area.
 #
 # On the plot, y-axis are log10-transformed.
-circos.genomicRainfall = function(data, mode = "min", ylim = NULL, col = "black", 
+circos.genomicRainfall = function(data, mode = "min", ylim = NULL, col = "black",
 	pch = par("pch"), cex = par("cex"), normalize_to_width = FALSE, ...) {
-	
+
 	data = normalizeToDataFrame(data)
-	
+
 	if(!is.dataFrameList(data)) {
 		data = list(data)
 	}
-	
+
 	if(length(col) == 1) {
 		col = rep(col, length(data))
 	}
@@ -1603,7 +1603,7 @@ circos.genomicRainfall = function(data, mode = "min", ylim = NULL, col = "black"
 			ylim = c(0, 9)
 		}
  	}
-	
+
 	circos.genomicTrackPlotRegion(data, ylim = ylim, panel.fun = function(region, value, ...) {
 		df = rainfallTransform(region, mode = mode, normalize_to_width = normalize_to_width)
 		i = getI(...)
@@ -1613,7 +1613,7 @@ circos.genomicRainfall = function(data, mode = "min", ylim = NULL, col = "black"
 			circos.genomicPoints(df[1:2], log10(df[3]+1), col = col[i], cex = cex[i], pch = pch[i])
 		}
 	}, ...)
-	
+
 }
 
 # == title
@@ -1623,7 +1623,7 @@ circos.genomicRainfall = function(data, mode = "min", ylim = NULL, col = "black"
 # -region Genomic positions. It can be a data frame with two
 #     columns which are start positions and end positions on a single chromosome.
 #     It can also be a bed-format data frame which contains the chromosome column.
-# -mode How to calculate inter-distance. For a region, there is a distance to the 
+# -mode How to calculate inter-distance. For a region, there is a distance to the
 #       prevous region and also there is a distance to the next region. ``mode``
 #       controls how to merge these two distances into one value.
 # -normalize_to_width If it is ``TRUE``, the value is the relative distance divided by the width of the region.
@@ -1635,7 +1635,7 @@ circos.genomicRainfall = function(data, mode = "min", ylim = NULL, col = "black"
 # The row order of the returned data frame is as same as the input one.
 rainfallTransform = function(region, mode = c("min", "max", "mean", "left", "right"),
 	normalize_to_width = FALSE) {
-	
+
 	mode = match.arg(mode)[1]
 
 	if(is.character(region[, 1]) || is.factor(region[, 1])) {
@@ -1658,22 +1658,22 @@ rainfallTransform = function(region, mode = c("min", "max", "mean", "left", "rig
 			}
 		}
 	}
-	
+
 	region_order = order_region(region[1:2])
 	region_bk = as.data.frame(region[1:2])
 	region = as.data.frame(region[region_order, ])
 	n = nrow(region)
 	dist = numeric(n)
-		
+
 	if(n < 2) {
 		region = region_bk
 		region$dist = NA
 		return(region)
 	}
-		
+
 	dist[1] = region[2, 1] - region[1, 2]
 	dist[n] = region[n, 1] - region[n-1, 2]
-			
+
 	if(n > 2) {
 		d1 = region[3:n, 1] - region[2:(n-1), 2]
 		d2 = region[2:(n-1), 1] - region[1:(n-2), 2]
@@ -1689,7 +1689,7 @@ rainfallTransform = function(region, mode = c("min", "max", "mean", "left", "rig
 			dist[2:(n - 1)] = d1
 		}
 	}
-		
+
 	dist = ifelse(dist < 0, 0, dist)
 
 	if(mode == "left") {
@@ -1704,7 +1704,7 @@ rainfallTransform = function(region, mode = c("min", "max", "mean", "left", "rig
 	if(normalize_to_width) {
 		region$dist = region$dist/(region[, 3] - region[, 2])
 	}
-	
+
 	return(region)
 }
 
@@ -1751,9 +1751,9 @@ posTransform.default = function(region, ...) {
 # Under the transformation, texts will be as close as possible to the original positions.
 posTransform.text = function(region, y, labels, cex = 1, font = par("font"),
 	sector.index = get.cell.meta.data("sector.index"),
-	track.index = get.cell.meta.data("track.index"), padding = 0, 
+	track.index = get.cell.meta.data("track.index"), padding = 0,
 	extend = 0, ...) {
-	
+
 	if(length(y) == 1) y = rep(y, nrow(region))
 	if(length(labels) == 1) labels = rep(labels, nrow(region))
 
@@ -1768,17 +1768,17 @@ posTransform.text = function(region, y, labels, cex = 1, font = par("font"),
 	labels = labels[od]
 
 	text_height = strheight(labels, cex = cex, font = font)*(1+padding)
-	
+
 	d = circlize( (region[[1]] + region[[2]])/2, y, sector.index = sector.index, track.index = track.index)
 	alpha1 = d[, "theta"] + as.degree(atan(text_height/2/d[, "rou"]))
 	alpha2 = d[, "theta"] - as.degree(atan(text_height/2/d[, "rou"]))
 	x1 = reverse.circlize(alpha1, d[, "rou"], sector.index = sector.index, track.index = track.index)[, "x"]
 	x2 = reverse.circlize(alpha2, d[, "rou"], sector.index = sector.index, track.index = track.index)[, "x"]
-	
+
 	xlim = get.cell.meta.data("xlim", sector.index = sector.index, track.index = track.index)
 	xrange = xlim[2] - xlim[1]
 	xlim = c(xlim[1] - extend[1]*xrange, xlim[2] + extend[2]*xrange)
-	
+
 	x1_new = x1
 	x2_new = x2
 	l = x2 - x1 >= xlim[2] - xlim[1]; x1_new[l] = xlim[1]; x2_new[l] = xlim[2]
@@ -1823,14 +1823,14 @@ posTransform.text = function(region, y, labels, cex = 1, font = par("font"),
 # bed = generateRandomBed(nr = 100, nc = 4)
 # col_fun = colorRamp2(c(-1, 0, 1), c("green", "black", "red"))
 # circos.genomicHeatmap(bed, col_fun, side = "inside", border = "white")
-# circos.genomicHeatmap(bed, col_fun, side = "outside", 
+# circos.genomicHeatmap(bed, col_fun, side = "outside",
 #     line_col = as.numeric(factor(bed[[1]])))
 # }
 circos.genomicHeatmap = function(bed, col, numeric.column = NULL,
-	border = NA, border_lwd = par("lwd"), 
+	border = NA, border_lwd = par("lwd"),
 	border_lty = par("lty"), connection_height = convert_height(5, "mm"),
 	line_col = par("col"), line_lwd = par("lwd"), line_lty = par("lty"),
-	heatmap_height = 0.15, side = c("inside", "outside"), 
+	heatmap_height = 0.15, side = c("inside", "outside"),
 	track.margin = circos.par("track.margin")) {
 
 	mat = bed[, -(1:3), drop = FALSE]
@@ -1866,34 +1866,34 @@ circos.genomicHeatmap = function(bed, col, numeric.column = NULL,
 		dim(border) = dim(col)
 	}
 	if(side == "inside") {
-		circos.genomicPosTransformLines(bed, posTransform = posTransform.default, 
+		circos.genomicPosTransformLines(bed, posTransform = posTransform.default,
 		    horizontalLine = "top", track.height = connection_height,
-		    track.margin = c(convert_height(1, "mm"), track.margin[2]), 
+		    track.margin = c(convert_height(1, "mm"), track.margin[2]),
 		    cell.padding = c(0, 0, 0, 0),
 		    col = line_col, lwd = line_lwd, lty = line_lty)
-		circos.genomicTrackPlotRegion(bed, stack = TRUE, 
+		circos.genomicTrackPlotRegion(bed, stack = TRUE,
 		    panel.fun = function(region, value, ...) {
 		    	l = bed[, 1] == CELL_META$sector.index
 		    	i = getI(...)
-		        circos.genomicRect(region, value, col = col[l, i], 
-		            border = border[l, i], lwd = border_lwd, lty = border_lty, 
+		        circos.genomicRect(region, value, col = col[l, i],
+		            border = border[l, i], lwd = border_lwd, lty = border_lty,
 		            posTransform = posTransform.default, ...)
 			}, bg.border = NA, track.height = heatmap_height, track.margin = c(track.margin[1], 0),
 			cell.padding = c(0, 0, 0, 0))
 	} else {
-		circos.genomicTrackPlotRegion(bed, stack = TRUE, 
+		circos.genomicTrackPlotRegion(bed, stack = TRUE,
 		    panel.fun = function(region, value, ...) {
 		    	l = bed[, 1] == CELL_META$sector.index
 		    	i = getI(...)
-		        circos.genomicRect(region, value, col = col[l, i], 
-		            border = border[l, i], lwd = border_lwd, lty = border_lty, 
+		        circos.genomicRect(region, value, col = col[l, i],
+		            border = border[l, i], lwd = border_lwd, lty = border_lty,
 		            posTransform = posTransform.default, ...)
 			}, bg.border = NA, track.height = heatmap_height, track.margin = c(0, track.margin[2]),
 			cell.padding = c(0, 0, 0, 0))
-		circos.genomicPosTransformLines(bed, posTransform = posTransform.default, 
+		circos.genomicPosTransformLines(bed, posTransform = posTransform.default,
 		    direction = "outside", horizontalLine = "bottom", track.height = connection_height,
-		    track.margin = c(track.margin[2], convert_height(1, "mm")), 
-		    cell.padding = c(0, 0, 0, 0), 
+		    track.margin = c(track.margin[2], convert_height(1, "mm")),
+		    cell.padding = c(0, 0, 0, 0),
 		    col = line_col, lwd = line_lwd, lty = line_lty)
 	}
 }
@@ -1925,7 +1925,7 @@ circos.genomicHeatmap = function(bed, col, numeric.column = NULL,
 #
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
-# 
+#
 # == example
 # \dontrun{
 # circos.initializeWithIdeogram(plotType = c("labels", "axis"))
@@ -1939,12 +1939,13 @@ circos.genomicHeatmap = function(bed, col, numeric.column = NULL,
 circos.genomicLabels = function(bed, labels = NULL, labels.column = NULL,
 	facing = "clockwise", niceFacing = TRUE,
 	col = par("col"), cex = 0.8, font = par("font"), padding = 0.4,
-	connection_height = convert_height(5, "mm"), 
+	connection_height = convert_height(5, "mm"),
 	line_col = par("col"), line_lwd = par("lwd"), line_lty = par("lty"),
-	labels_height = min(c(convert_height(1.5, "cm"), 
+	labels_height = min(c(convert_height(1.5, "cm"),
 		max(strwidth(labels, cex = cex, font = font)))),
 	side = c("inside", "outside"), track.margin = circos.par("track.margin")) {
 
+  bed = as.data.frame(bed)
 	if(is.null(labels)){
 		labels = bed[[labels.column]]
 	}
@@ -1987,8 +1988,8 @@ circos.genomicLabels = function(bed, labels = NULL, labels.column = NULL,
 	circos.par("points.overflow.warning" = FALSE)
 	if(side == "inside") {
 		# an empty track
-		circos.genomicTrackPlotRegion(bed2, ylim = c(0, 1), 
-			track.margin = c(convert_height(0.5, "mm"), track.margin[2]), 
+		circos.genomicTrackPlotRegion(bed2, ylim = c(0, 1),
+			track.margin = c(convert_height(0.5, "mm"), track.margin[2]),
 		    cell.padding = c(0, 0, 0, 0),
 		    track.height = connection_height, bg.border = NA)
 		i_track = get.cell.meta.data("track.index")
@@ -2002,10 +2003,10 @@ circos.genomicLabels = function(bed, labels = NULL, labels.column = NULL,
 		}, track.height = labels_height, bg.border = NA, track.margin = c(track.margin[1], 0),
 		cell.padding = c(0, 0, 0, 0))
 
-		circos.genomicPosTransformLines(bed2, 
+		circos.genomicPosTransformLines(bed2,
 			posTransform = function(region, value) {
 				l = bed2[[1]] == get.cell.meta.data("sector.index", track.index = i_track + 1)
-				posTransform.text(region, y = 1, labels = value[[1]], cex = cex[l], font = font[l], 
+				posTransform.text(region, y = 1, labels = value[[1]], cex = cex[l], font = font[l],
 					track.index = i_track + 1, padding = padding, extend = extend)
 			},
 			direction = "inside", horizontalLine = "top", track.index = i_track,
@@ -2022,15 +2023,15 @@ circos.genomicLabels = function(bed, labels = NULL, labels.column = NULL,
 		cell.padding = c(0, 0, 0, 0))
 		i_track = get.cell.meta.data("track.index")
 
-		circos.genomicPosTransformLines(bed2, 
+		circos.genomicPosTransformLines(bed2,
 			posTransform = function(region, value) {
 				l = bed2[[1]] == get.cell.meta.data("sector.index", track.index = i_track)
-				posTransform.text(region, y = 1, labels = value[[1]], cex = cex[l], font = font[l], 
+				posTransform.text(region, y = 1, labels = value[[1]], cex = cex[l], font = font[l],
 					track.index = i_track, padding = padding, extend = extend)
 			},
 			direction = "outside", horizontalLine = "bottom",
 			col = line_col, lwd = line_lwd, lty = line_lty, track.height = connection_height,
-			track.margin = c(track.margin[1], convert_height(0.5, "mm")), 
+			track.margin = c(track.margin[1], convert_height(0.5, "mm")),
 		    cell.padding = c(0, 0, 0, 0)
 		)
 	}
@@ -2042,13 +2043,13 @@ circos.genomicLabels = function(bed, labels = NULL, labels.column = NULL,
 #
 # == param
 # -x1 position which corresponds to the top of the text
-# -x2 position which corresponds to the bottom of the text 
+# -x2 position which corresponds to the bottom of the text
 # -xlim ranges on x-axis
 #
 # == details
 # used internally
 smartAlign = function(x1, x2, xlim) {
-	
+
 	ncluster.before = -1
 	ncluster = length(x1)
 	while(ncluster.before != ncluster) {
@@ -2066,9 +2067,9 @@ smartAlign = function(x1, x2, xlim) {
 			}
 		}
 		ncluster = length(unique(cluster))
-		
+
 		if(ncluster.before == ncluster) break
-		
+
 		# tile intervals in each cluster and re-assign x1 and x2
 		new_x1 = numeric(length(x1))
 		new_x2 = numeric(length(x2))
@@ -2088,11 +2089,11 @@ smartAlign = function(x1, x2, xlim) {
 			new_x1[index] = tp[-length(tp)]
 			new_x2[index] = tp[-1]
 		}
-		
+
 		x1 = new_x1
 		x2 = new_x2
 	}
-	
+
 	return(data.frame(start = x1, end = x2))
 }
 

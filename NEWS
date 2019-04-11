@@ -1,3 +1,8 @@
+Changes in version 0.4.7
+-----------------------------------------------------------------------
+* fixed a bug that the vertical line was wrongly put for `circos.yaxis()`.
+
+
 Changes in version 0.4.6
 ------------------------------------------------------------------------
 * smartAlign(): the order of values won't affect the realignment now.

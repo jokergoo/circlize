@@ -1541,6 +1541,7 @@ circos.yaxis = function(side = c("left", "right"), at = NULL, labels = TRUE, tic
 	}
 
 	ylim2 = ylim
+
 	circos.lines(rep(v, 2),
 		get.cell.meta.data("cell.ylim", sector.index, track.index),
 		sector.index = sector.index, track.index = track.index, lwd = lwd)

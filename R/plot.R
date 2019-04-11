@@ -1541,9 +1541,15 @@ circos.yaxis = function(side = c("left", "right"), at = NULL, labels = TRUE, tic
 	}
 	
 	ylim2 = ylim
-	circos.lines(rep(get.cell.meta.data("cell.xlim", sector.index, track.index)[1], 2),
-		get.cell.meta.data("cell.ylim", sector.index, track.index), 
-		sector.index = sector.index, track.index = track.index, lwd = lwd)
+	if(side == "left") {
+		circos.lines(rep(v, 2),
+			get.cell.meta.data("cell.ylim", sector.index, track.index), 
+			sector.index = sector.index, track.index = track.index, lwd = lwd)
+	} else {
+		circos.lines(rep(v, 2),
+			get.cell.meta.data("cell.ylim", sector.index, track.index), 
+			sector.index = sector.index, track.index = track.index, lwd = lwd)
+	}
 	
 	# ticks
 	yrange = get.cell.meta.data("yrange", sector.index, track.index)

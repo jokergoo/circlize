@@ -837,3 +837,18 @@ message_wrap = function(...) {
     x = paste(strwrap(x), collapse = "\n")
     message(x)
 }
+
+validate_data_frame = function(x) {
+    if(inherits(x, "data.frame")) {
+        return(x)
+    } else if(inherits(x, "GRanges")) {
+        x = as.data.frame(x)
+        return(x[, -(4:5), drop = FALSE])
+    } else {
+        oe = try(x <- as.data.frame(x))
+        if(inherits(oe, "try-error")) {
+            stop_wrap("The input should be a data frame or an object that can be converted to a data frame.")
+        }
+        return(x)
+    }
+}

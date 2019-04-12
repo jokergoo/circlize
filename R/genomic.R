@@ -151,6 +151,8 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 	plotType = c("axis", "labels"), tickLabelsStartFromZero = TRUE,
 	axis.labels.cex = 0.4*par("cex"), labels.cex = 0.8*par("cex"), 
 	track.height = NULL, ...) {
+
+	data = validate_data_frame(data)
 	
 	if(is.factor(data[[1]])) {
 		fa = levels(data[[1]])
@@ -340,6 +342,8 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 		           rep(0, length(all.sector.index)),
 				   rep(0, length(all.sector.index)))
 	}
+
+	data = validate_data_frame(data)
 	
 	# re-define panel.fun
 	genomicPanelFun = panel.fun
@@ -591,6 +595,9 @@ circos.genomicPoints = function(region, value, numeric.column = NULL,
 	pch = par("pch"), col = par("col"), cex = par("cex"), bg = par("bg"), ...) {
 	
 	nr = nrow(region)
+	if(ncol(region) > 2 && inherits(region[, 1], c("character", "factor"))) {
+		region = region[, -1, drop = FALSE]
+	}
 	
 	if(is.atomic(value) && length(value) == 1) {
 		value = data.frame(value = rep(value, nr))
@@ -698,6 +705,10 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 		warning("`area.baseline` is deprecated, please use `baseline` instead.")
 	}
 	nr = nrow(region)
+	if(ncol(region) > 2 && inherits(region[, 1], c("character", "factor"))) {
+		region = region[, -1, drop = FALSE]
+	}
+
 	if(is.atomic(value) && length(value) == 1) {
 		value = data.frame(value = rep(value, nr))
 	}
@@ -833,6 +844,9 @@ circos.genomicRect = function(region, value = NULL,
     track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
 	col = NA, border = "black", lty = par("lty"), ...) {
 	
+	if(ncol(region) > 2 && inherits(region[, 1], c("character", "factor"))) {
+		region = region[, -1, drop = FALSE]
+	}
 	nr = nrow(region)
 	
 	args = list(...)
@@ -954,6 +968,9 @@ circos.genomicText = function(region, value = NULL, y = NULL, labels = NULL, lab
 		warning("`direction` is deprecated, please use `facing` instead.")
 	}
 	
+	if(ncol(region) > 2 && inherits(region[, 1], c("character", "factor"))) {
+		region = region[, -1, drop = FALSE]
+	}
 	nr = nrow(region)
 	
 	if(is.vector(value) && !is.list(value) && length(value) == 1) {
@@ -1064,6 +1081,9 @@ circos.genomicLink = function(region1, region2,
 	rou = get_most_inside_radius(), rou1 = rou, rou2 = rou,
     col = "black", lwd = par("lwd"), lty = par("lty"), border = col, ...) {
 	
+	region1 = validate_data_frame(region1)
+	region2 = validate_data_frame(region2)
+
 	region1 = normalizeToDataFrame(region1, sort = FALSE)
 	region2 = normalizeToDataFrame(region2, sort = FALSE)
 	
@@ -1137,6 +1157,7 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 	
 	horizontalLine = match.arg(horizontalLine)[1]
 
+	data = validate_data_frame(data)
 	data = normalizeToDataFrame(data)
 	
 	if(is.dataFrameList(data)) {
@@ -1279,6 +1300,7 @@ circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, o
 		warning("`area.baseline` is deprecated, please use `baseline` instead.")
 	}
 	
+	data = validate_data_frame(data)
 	data = normalizeToDataFrame(data)
 	
 	if(!is.dataFrameList(data)) {
@@ -1357,6 +1379,8 @@ circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, o
 # data frame, there will be an additionally chromosome name column.
 genomicDensity = function(region, window.size = 1e7, n.window = NULL, overlap = TRUE, chr.len = NULL) {
 	
+	region = validate_data_frame(region)
+
 	if(is.character(region[, 1]) || is.factor(region[, 1])) {
 		region[, 1] = as.vector(region[, 1])
 		all_chr = unique(region[, 1])
@@ -1519,7 +1543,7 @@ normalizeToDataFrame = function(data, sort = FALSE) {
 	} else if(is.list(data) && all(sapply(data, is.data.frame))) {
 		df = lapply(data, function(gr) {
 			if(ncol(gr) < 3) {
-				stop("Your data frame is less than 3 column!.")
+				stop_wrap("Your data frame is less than 3 column!.")
 			}
 			gr = gr[gr[[1]] %in% all.chr, , drop = FALSE]
 			if(sort) {
@@ -1532,7 +1556,7 @@ normalizeToDataFrame = function(data, sort = FALSE) {
 		df = as.data.frame(df)
 		return(df)
 	} else {
-		stop("The format of `data` should only be a data frame or a list of data frames.")
+		stop_wrap("The format of `data` should only be a data frame or a list of data frames.")
 	}
 }
 
@@ -1580,6 +1604,7 @@ normalizeToDataFrame = function(data, sort = FALSE) {
 circos.genomicRainfall = function(data, mode = "min", ylim = NULL, col = "black", 
 	pch = par("pch"), cex = par("cex"), normalize_to_width = FALSE, ...) {
 	
+	data = validate_data_frame(data)
 	data = normalizeToDataFrame(data)
 	
 	if(!is.dataFrameList(data)) {
@@ -1638,6 +1663,7 @@ rainfallTransform = function(region, mode = c("min", "max", "mean", "left", "rig
 	
 	mode = match.arg(mode)[1]
 
+	region = validate_data_frame(region)
 	if(is.character(region[, 1]) || is.factor(region[, 1])) {
 		region[, 1] = as.vector(region[, 1])
 		region = region[1:3]
@@ -1833,6 +1859,8 @@ circos.genomicHeatmap = function(bed, col, numeric.column = NULL,
 	heatmap_height = 0.15, side = c("inside", "outside"), 
 	track.margin = circos.par("track.margin")) {
 
+	bed = validate_data_frame(bed)
+
 	mat = bed[, -(1:3), drop = FALSE]
 	if(is.null(numeric.column)) {
 		numeric.column = which(apply(mat, 2, "is.numeric"))
@@ -1945,6 +1973,7 @@ circos.genomicLabels = function(bed, labels = NULL, labels.column = NULL,
 		max(strwidth(labels, cex = cex, font = font)))),
 	side = c("inside", "outside"), track.margin = circos.par("track.margin")) {
 
+	bed = validate_data_frame(bed)
 	if(is.null(labels)){
 		labels = bed[[labels.column]]
 	}

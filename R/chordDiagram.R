@@ -91,6 +91,11 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 			class(x) = "matrix"
 		}
 	}
+	if(inherits(x, "matrix")) {
+		if(ncol(x) == 2 && nrow(x) > 10) {
+			x = as.data.frame(x)
+		}
+	}
 
 	if(inherits(x, "matrix")) {
 		chordDiagramFromMatrix(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
@@ -102,8 +107,8 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 			link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 			link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
 			link.visible = link.visible, link.rank = link.rank, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)
-	} else if(inherits(x, "data.frame")) {
-		x = as.data.frame(x)
+	} else {
+		x = validate_data_frame(x)
 		if(ncol(x) > 3) {
 			if(all(sapply(x, inherits, c("numeric", "integer")))) {
 				warning("It seems your input data is an adjacency matrix, maybe you need to convert it to 'matrix' explicitely.")
@@ -136,10 +141,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 				link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
 				link.visible = link.visible, link.rank = link.rank, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)
 		}
-	} else {
-		stop("`x` can only be a matrix or a data frame.")
-	}
-	
+	}	
 }
 
 # returns a list, each list containing settings for each new track

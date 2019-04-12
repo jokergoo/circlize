@@ -1,7 +1,7 @@
 Changes in version 0.4.7
 -----------------------------------------------------------------------
 * fixed a bug that the vertical line was wrongly put for `circos.yaxis()`.
-
+* validate input if it is should be a data frame.
 
 Changes in version 0.4.6
 ------------------------------------------------------------------------

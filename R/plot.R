@@ -1544,7 +1544,7 @@ circos.yaxis = function(side = c("left", "right"), at = NULL, labels = TRUE, tic
 
 	circos.lines(rep(v, 2),
 		get.cell.meta.data("cell.ylim", sector.index, track.index),
-		sector.index = sector.index, track.index = track.index, lwd = lwd)
+		sector.index = sector.index, track.index = track.index, lwd = lwd, col = col)
 
 	# ticks
 	yrange = get.cell.meta.data("yrange", sector.index, track.index)

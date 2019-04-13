@@ -342,8 +342,6 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 		           rep(0, length(all.sector.index)),
 				   rep(0, length(all.sector.index)))
 	}
-
-	data = validate_data_frame(data)
 	
 	# re-define panel.fun
 	genomicPanelFun = panel.fun
@@ -1300,7 +1298,6 @@ circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, o
 		warning("`area.baseline` is deprecated, please use `baseline` instead.")
 	}
 	
-	data = validate_data_frame(data)
 	data = normalizeToDataFrame(data)
 	
 	if(!is.dataFrameList(data)) {
@@ -1604,7 +1601,6 @@ normalizeToDataFrame = function(data, sort = FALSE) {
 circos.genomicRainfall = function(data, mode = "min", ylim = NULL, col = "black", 
 	pch = par("pch"), cex = par("cex"), normalize_to_width = FALSE, ...) {
 	
-	data = validate_data_frame(data)
 	data = normalizeToDataFrame(data)
 	
 	if(!is.dataFrameList(data)) {

@@ -1975,7 +1975,9 @@ circos.genomicLabels = function(bed, labels = NULL, labels.column = NULL,
 	}
 	bed[[4]] = as.vector(labels)
 	bed[[1]] = factor(as.vector(bed[[1]]), levels = get.all.sector.index())
-	bed = bed[order(bed[[1]], bed[[2]]), , drop = FALSE]
+
+	od = order(bed[[1]], bed[[2]])
+	bed = bed[od, , drop = FALSE]
 	bed[[1]] = as.vector(bed[[1]])
 
 	# order `bed`
@@ -1983,6 +1985,16 @@ circos.genomicLabels = function(bed, labels = NULL, labels.column = NULL,
 	if(length(col) == 1) col = rep(col, nrow(bed))
 	if(length(cex) == 1) cex = rep(cex, nrow(bed))
 	if(length(font) == 1) font = rep(font, nrow(bed))
+	if(length(line_col) == 1) line_col = rep(line_col, nrow(bed))
+	if(length(line_lwd) == 1) line_lwd = rep(line_lwd, nrow(bed))
+	if(length(line_lty) == 1) line_lty = rep(line_lty, nrow(bed))
+
+	col = col[od]
+	cex = cex[od]
+	font = font[od]
+	line_col = line_col[od]
+	line_lwd = line_lwd[od]
+	line_lty = line_lty[od]
 
 	# map all other chromosomes to the first chromosome
 	chr = get.all.sector.index()[1]

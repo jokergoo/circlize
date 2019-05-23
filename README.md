@@ -30,6 +30,20 @@ See http://jokergoo.github.io/circlize.
 
 <img width="700" alt="circlize_example" src="http://jokergoo.github.io/circlize_book/book/images/ciclize_examples.jpg">
 
+### Install
+
+The package can be installed from CRAN:
+
+```
+install.packages("circlize")
+```
+
+or directly from GitHub:
+
+```
+devtools::install_github("jokergoo/circlize")
+```
+
 ### Basic design
 
 Since most of the figures are composed of points, lines and polygons, 
@@ -97,19 +111,6 @@ Finally, function that draws Chord diagram:
 
 - `chordDiagram()`
 
-### Install
-
-The package can be installed from CRAN:
-
-```
-install.packages("circlize")
-```
-
-or directly from GitHub:
-
-```
-devtools::install_github("jokergoo/circlize")
-```
 
 ### License
 

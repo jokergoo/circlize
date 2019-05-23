@@ -24,6 +24,12 @@ Zuguang Gu, Lei Gu, Roland Eils, Matthias Schlesner, Benedikt Brors, circlize Im
 
 The full documentations are available at http://jokergoo.github.io/circlize_book/book/.
 
+### Examples
+
+See http://jokergoo.github.io/circlize.
+
+<img width="700" alt="circlize_example" src="http://jokergoo.github.io/circlize_book/book/images/ciclize_examples.jpg">
+
 ### Basic design
 
 Since most of the figures are composed of points, lines and polygons, 
@@ -104,13 +110,6 @@ or directly from GitHub:
 ```
 devtools::install_github("jokergoo/circlize")
 ```
-
-### Examples
-
-See http://jokergoo.github.io/circlize.
-
-<img width="700" alt="circlize_example" src="http://jokergoo.github.io/circlize_book/book/images/ciclize_examples.jpg">
-
 
 ### License
 

@@ -26,7 +26,7 @@ The full documentations are available at http://jokergoo.github.io/circlize_book
 
 ### Examples
 
-See http://jokergoo.github.io/circlize.
+See https://jokergoo.github.io/circlize_examples/.
 
 <img width="700" alt="circlize_example" src="http://jokergoo.github.io/circlize_book/book/images/ciclize_examples.jpg">
 

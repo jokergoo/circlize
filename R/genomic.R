@@ -221,7 +221,9 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 #
 # == param
 # -h Position of the axes. "top" or "bottom".
-# -major.by     Increment of major ticks. It is calculated automatically if the value is not set (about every 10 degrees there is a major tick).
+# -major.at Major breaks. If ``major.at`` is set, ``major.by`` is ignored.
+# -labels labels corresponding to ``major.at``. If ``labels`` is set, ``major.at`` must be set.
+# -major.by Increment of major ticks. It is calculated automatically if the value is not set (about every 10 degrees there is a major tick).
 # -tickLabelsStartFromZero Whether axis tick labels start from 0? This will only affect the axis labels while not affect x-values in cells.
 # -labels.cex the font size for the axis tick labels.
 # -sector.index Index for the sector
@@ -236,7 +238,8 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 # circos.track(ylim = c(0, 1), panel.fun = function(x, y) circos.genomicAxis())
 # circos.clear()
 #
-circos.genomicAxis = function(h = "top", major.by = NULL, tickLabelsStartFromZero = TRUE,
+circos.genomicAxis = function(h = "top", major.at = NULL, labels = NULL,
+	major.by = NULL, tickLabelsStartFromZero = TRUE,
 	labels.cex = 0.4*par("cex"), sector.index = get.cell.meta.data("sector.index"),
 	track.index = get.cell.meta.data("track.index"), ...) {
 
@@ -245,36 +248,58 @@ circos.genomicAxis = function(h = "top", major.by = NULL, tickLabelsStartFromZer
 	}
 
 	xlim = get.cell.meta.data("xlim", sector.index = sector.index, track.index = track.index)
-	
+
+	if(!is.null(major.at) && !is.null(labels)) {
+		if(length(major.at) != length(labels)) {
+			stop("Length of major.at and labels should be the same.")
+		}
+	}
+	if(is.null(major.at) && !is.null(labels)) {
+		stop("If labels is set, major.at should also be set.")
+	}
+
 	if(tickLabelsStartFromZero) {
 		offset = xlim[1]
 		if(is.null(major.by)) {
 			major.by = .default.major.by()
 		}
-		major.at = seq(xlim[1], xlim[2], by = major.by)
-		major.at = c(major.at, major.at[length(major.at)] + major.by)
+
+		if(is.null(major.at)) {
+			major.at = seq(xlim[1], xlim[2], by = major.by)
+			major.at = c(major.at, major.at[length(major.at)] + major.by)
+		}
 		
-		if(major.by > 1e6) {
-			major.tick.labels = paste((major.at-offset)/1000000, "MB", sep = "")
-		} else if(major.by > 1e3) {
-			major.tick.labels = paste((major.at-offset)/1000, "KB", sep = "")
+		if(is.null(labels)) {
+			if(major.by > 1e6) {
+				major.tick.labels = paste((major.at-offset)/1000000, "MB", sep = "")
+			} else if(major.by > 1e3) {
+				major.tick.labels = paste((major.at-offset)/1000, "KB", sep = "")
+			} else {
+				major.tick.labels = paste((major.at-offset), "bp", sep = "")
+			}
 		} else {
-			major.tick.labels = paste((major.at-offset), "bp", sep = "")
+			major.tick.labels = labels
 		}
 		
 	} else {
 		if(is.null(major.by)) {
 			major.by = .default.major.by()
 		}
-		major.at = seq(floor(xlim[1]/major.by)*major.by, xlim[2], by = major.by)
-		major.at = c(major.at, major.at[length(major.at)] + major.by)
-		
-		if(major.by > 1e6) {
-			major.tick.labels = paste(major.at/1000000, "MB", sep = "")
-		} else if(major.by > 1e3) {
-			major.tick.labels = paste(major.at/1000, "KB", sep = "")
+		if(is.null(major.at)) {
+			major.at = seq(floor(xlim[1]/major.by)*major.by, xlim[2], by = major.by)
+			major.at = c(major.at, major.at[length(major.at)] + major.by)
+		}
+
+		if(is.null(labels)) {
+			if(major.by > 1e6) {
+				major.tick.labels = paste(major.at/1000000, "MB", sep = "")
+			} else if(major.by > 1e3) {
+				major.tick.labels = paste(major.at/1000, "KB", sep = "")
+			} else {
+				major.tick.labels = paste(major.at, "bp", sep = "")
+			}
 		} else {
-			major.tick.labels = paste(major.at, "bp", sep = "")
+			major.tick.labels = labels
 		}
 	}
 	circos.axis(h = h, major.at = major.at, labels = major.tick.labels, labels.cex = labels.cex,

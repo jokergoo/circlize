@@ -21,7 +21,7 @@ circos.text(x, y, labels, sector.index = get.cell.meta.data("sector.index"),
   \item{sector.index}{Index for the sector}
   \item{track.index}{Index for the track}
   \item{direction}{deprecated, use \code{facing} instead.}
-  \item{facing}{Facing of text. Please refer to vignette for different settings }
+  \item{facing}{Facing of text. Please refer to vignette for different settings}
   \item{niceFacing}{Should the facing of text be adjusted to fit human eyes?}
   \item{adj}{offset for text. By default the text position adjustment is either horizontal or vertical in the canvas coordinate system. The "circular horizontal" offset can be set as a value in degree unit and the value should be wrapped by \code{\link{degree}}.}
   \item{...}{Pass to \code{\link[graphics]{text}}}

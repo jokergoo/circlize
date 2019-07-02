@@ -14,7 +14,7 @@ circos.segments(x0, y0, x1, y1, sector.index = get.cell.meta.data("sector.index"
 \arguments{
 
   \item{x0}{x coordinates for starting points}
-  \item{y0}{y coordinates for ending points }
+  \item{y0}{y coordinates for ending points}
   \item{x1}{x coordinates for starting points}
   \item{y1}{y coordinates for ending points}
   \item{sector.index}{Index for the sector}

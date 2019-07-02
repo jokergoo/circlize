@@ -24,7 +24,7 @@ circos.points(x, y, sector.index = get.cell.meta.data("sector.index"),
 
 }
 \details{
-This function can only add points in one specified cell. Pretending a low-level plotting 
+This function can only add points in one specified cell. Pretending a low-level plotting
 function, it can only be applied in plotting region which has been created.
 
 You can think the function similar as the normal \code{\link[graphics]{points}}

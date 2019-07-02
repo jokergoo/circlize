@@ -17,7 +17,7 @@ circos.trackPlotRegion(factors = NULL, x = NULL, y = NULL, ylim = NULL,
 }
 \arguments{
 
-  \item{factors}{A \code{\link{factor}} or a character vector which represents categories of data, if it is \code{NULL},  then it uses all sector index.}
+  \item{factors}{A \code{\link{factor}} or a character vector which represents categories of data, if it is \code{NULL}, then it uses all sector index.}
   \item{x}{Data on x-axis. It is only used if \code{panel.fun} is set.}
   \item{y}{Data on y-axis}
   \item{ylim}{Range of data on y-axis}
@@ -34,7 +34,7 @@ circos.trackPlotRegion(factors = NULL, x = NULL, y = NULL, ylim = NULL,
 
 }
 \details{
-This function tends to be a high-level plotting function, which means, 
+This function tends to be a high-level plotting function, which means,
 you must first call this function to create plotting regions, then those
 low-level graphic function such as \code{\link{circos.points}}, \code{\link{circos.lines}} can be
 applied.
@@ -43,7 +43,7 @@ Currently, all the cells that are created in a same track sharing same height, w
 there is no cell has larger height than others.
 
 Since ranges for values on x-axis has already been defined by \code{\link{circos.initialize}}, only
-ranges for values on y-axis should be specified in this function. 
+ranges for values on y-axis should be specified in this function.
 There are two ways to identify the ranges for values on y-axes either by \code{y}
 or \code{ylim}. If \code{y} is set, it must has the same length as \code{factors} and the \code{ylim} for each cell is calculated
 from y values. Also, the ylim can be specified from \code{ylim} which can be a two-element vector or a matrix which
@@ -61,7 +61,7 @@ is specified. If updating an existed track, those parameters related to the posi
 of the plotting region can not be changed.
 }
 \section{Panel}{
-\code{panel.fun} provides a convenient way to add graphics in each cell when initializing the 
+\code{panel.fun} provides a convenient way to add graphics in each cell when initializing the
 tracks. The self-defined function needs two arguments: \code{x} and \code{y} which correspond to the data points
 in the current cell. When \code{factors}, \code{x}, and \code{y} are set in \code{\link{circos.trackPlotRegion}}, a subset of \code{x}
 and \code{y} are split by \code{factors} and are sent to \code{panel.fun} in the "current" cell.

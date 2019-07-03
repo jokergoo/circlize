@@ -28,7 +28,8 @@
 #     colClasses = c("character", "numeric", "numeric", "character", "character"), sep = "\t")
 # data = read.cytoband(cytoband = cytoband)
 read.cytoband = function(cytoband = system.file(package = "circlize",
-    "extdata", "cytoBand.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE) {
+    "extdata", "cytoBand.txt"), species = NULL, chromosome.index = usable_chromosomes(species), 
+	sort.chr = TRUE) {
 
 	# this function should also take charge of the order of chromosome
 	if(!is.null(chromosome.index)) sort.chr = FALSE
@@ -40,7 +41,7 @@ read.cytoband = function(cytoband = system.file(package = "circlize",
 		if(!file.exists(cytoband)) {
 			e = try(suppressWarnings(download.file(url, destfile = cytoband, quiet = TRUE)), silent = TRUE)
 			if(class(e) == "try-error") {
-				file.remove(cytoband)
+				if(file.exists(cytoband)) file.remove(cytoband)
 				cytoband_list = readRDS(system.file("extdata", "cytoband_list.rds", package = "circlize"))
 				if(species %in% names(cytoband_list)) {
 					cytoband = cytoband_list[[species]]
@@ -131,7 +132,8 @@ read.cytoband = function(cytoband = system.file(package = "circlize",
 #     colClasses = c("character", "numeric"), sep = "\t")
 # data = read.chromInfo(chromInfo = chromInfo)
 read.chromInfo = function(chromInfo = system.file(package = "circlize",
-    "extdata", "chromInfo.txt"), species = NULL, chromosome.index = NULL, sort.chr = TRUE) {
+    "extdata", "chromInfo.txt"), species = NULL, chromosome.index = usable_chromosomes(species), 
+	sort.chr = TRUE) {
 	
 	# this function should also take charge of the order of chromosome
 	if(!is.null(chromosome.index)) sort.chr = FALSE
@@ -142,7 +144,7 @@ read.chromInfo = function(chromInfo = system.file(package = "circlize",
 		if(!file.exists(chromInfo)) {
 			e = try(suppressWarnings(download.file(url, destfile = chromInfo, quiet = TRUE)), silent = TRUE)
 			if(class(e) == "try-error") {
-				file.remove(chromInfo)
+				if(file.exists(chromInfo)) file.remove(chromInfo)
 				chrom_info_list = readRDS(system.file("extdata", "chrom_info_list.rds", package = "circlize"))
 				if(species %in% names(chrom_info_list)) {
 					chromInfo = chrom_info_list[[species]]
@@ -210,6 +212,20 @@ read.chromInfo = function(chromInfo = system.file(package = "circlize",
 	return(list(df = dnew, chromosome = chromosome, chr.len = chr.len))
 }
 
+
+usable_chromosomes = function(species) {
+	if(is.null(species)) return(NULL)
+
+	switch(gsub("\\d+$", "", species),
+		"hg" = paste0("chr", c(1:22, "X", "Y")),
+		"mm" = paste0("chr", c(1:19, "X", "Y")),
+		"rn" = paste0("chr", c(1:20, "X", "Y")),
+		"dm" = paste0("chr", c("2L", "2R", "3L", "3R", "4", "X")),
+		"ce" = paste0("chr", c("I", "II", "III", "IV", "V", "X")),
+		"sacCer" = paste0("chr", c("I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV")),
+		NULL
+	)
+}
 
 # == title
 # Assign colors to cytogenetic band (hg19) according to the Giemsa stain results

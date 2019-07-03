@@ -4,6 +4,7 @@ Changes in version 0.4.7
 * validate input if it is should be a data frame.
 * `colorRamp2()`: add HLS colorspace
 * add `major.at` and `labels` arguments to `circos.genomicAxis()`.
+* circos.initializeWithIdeogram(): manually select chromosomes for the common species
 
 Changes in version 0.4.6
 ------------------------------------------------------------------------

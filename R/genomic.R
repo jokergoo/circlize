@@ -30,7 +30,7 @@
 # The style of ideogram is almost fixed, but you can customize it with your self-sefined code. Refer to vignette for demonstration.
 circos.initializeWithIdeogram = function(cytoband = system.file(package = "circlize",
 	"extdata", "cytoBand.txt"), species = NULL, sort.chr = TRUE,
-	chromosome.index = NULL, major.by = NULL,
+	chromosome.index = usable_chromosomes(species), major.by = NULL,
 	plotType = c("ideogram", "axis", "labels"), 
 	track.height = NULL, ideogram.height = convert_height(2, "mm"), 
 	...) {
@@ -67,7 +67,7 @@ circos.initializeWithIdeogram = function(cytoband = system.file(package = "circl
 	}
 	df = cytoband$df
 	chromosome = cytoband$chromosome
-	
+
 	if(is.null(chromosome.index)) {
 		chromosome.index = chromosome
 	}
@@ -113,7 +113,10 @@ circos.genomicIdeogram = function(cytoband = system.file(package = "circlize",
 		stop(e)
 	}
 	df = cytoband$df
-	
+	if(all(cytoband.col(df[, 5]) == "#FFFFFF")) {
+		warning("Cannot map colors to cytobands. The ideogram won't be drawn.")
+		return(invisible(NULL))
+	}
 	circos.genomicTrackPlotRegion(df, ylim = c(0, 1), bg.border = NA, track.height = track.height,
 		panel.fun = function(region, value, ...) {
 			col = cytoband.col(value[[2]])

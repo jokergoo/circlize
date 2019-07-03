@@ -9,7 +9,7 @@ Initialize the circular layout with an ideogram
 \usage{
 circos.initializeWithIdeogram(cytoband = system.file(package = "circlize",
     "extdata", "cytoBand.txt"), species = NULL, sort.chr = TRUE,
-    chromosome.index = NULL, major.by = NULL,
+    chromosome.index = usable_chromosomes(species), major.by = NULL,
     plotType = c("ideogram", "axis", "labels"),
     track.height = NULL, ideogram.height = convert_height(2, "mm"),
     ...)

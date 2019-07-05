@@ -267,7 +267,7 @@ mat2df = function(mat) {
 	cn = rep(colnames(mat), each = nr)
 	ci = rep(seq_len(nc), each = nr)
 	v = as.vector(mat)
-	df = data.frame(rn = rn, cn = cn, ri = ri, ci = ci, value = v, stringsAsFactors = FALSE)
+	df = data.frame(rn = rn, cn = cn, value = v, ri = ri, ci = ci, stringsAsFactors = FALSE)
 	return(df)
 }
 
@@ -831,41 +831,48 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 
 
 	#### reduce the data frame
-	xsum = structure(rep(0, length(cate)), names = cate)
-	for(i in seq_len(nr)) {
-		if(df$rn[i] == df$cn[i]) {
-			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value1[i])
-			if(self.link == 2) {
-				xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value2[i])  # <<- self-link!!!!!
+	onr = nrow(df)
+	while(1) {
+		xsum = structure(rep(0, length(cate)), names = cate)
+		for(i in seq_len(nr)) {
+			if(df$rn[i] == df$cn[i]) {
+				xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value1[i])
+				if(self.link == 2) {
+					xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value2[i])  # <<- self-link!!!!!
+				}
+			} else {
+				xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value1[i])
+				xsum[df$cn[i]] = xsum[df$cn[i]] + abs(df$value2[i])
 			}
-		} else {
-			xsum[df$rn[i]] = xsum[df$rn[i]] + abs(df$value1[i])
-			xsum[df$cn[i]] = xsum[df$cn[i]] + abs(df$value2[i])
 		}
+
+		keep = names(xsum)[xsum / sum(xsum) >= reduce]
+		l = df$rn %in% keep & df$cn %in% keep
+
+		cate = intersect(cate, keep)
+		df = df[l, , drop = FALSE]
+		grid.col = grid.col[intersect(names(grid.col), keep)]
+		col = col[l]
+		link.border = link.border[l]
+		link.lwd = link.lwd[l]
+		link.lty = link.lty[l] 
+		link.arr.length = link.arr.length[l]
+		link.arr.width = link.arr.width[l]
+		link.arr.type = link.arr.type[l]
+		link.arr.lwd = link.arr.lwd[l]
+		link.arr.lty = link.arr.lty[l]
+		link.arr.col = link.arr.col[l]
+		link.visible = link.visible[l]
+		link.rank = link.rank[l]
+		directional = directional[l]
+		direction.type = direction.type[l]
+
+		nr = nrow(df)
+		reduce = 1e-10
+		if(nr == onr) break
+		onr = nr
 	}
 
-	keep = names(xsum)[xsum / sum(xsum) >= reduce]
-	l = df$rn %in% keep & df$cn %in% keep
-
-	cate = intersect(cate, keep)
-	df = df[l, , drop = FALSE]
-	grid.col = grid.col[intersect(names(grid.col), keep)]
-	col = col[l]
-	link.border = link.border[l]
-	link.lwd = link.lwd[l]
-	link.lty = link.lty[l] 
-	link.arr.length = link.arr.length[l]
-	link.arr.width = link.arr.width[l]
-	link.arr.type = link.arr.type[l]
-	link.arr.lwd = link.arr.lwd[l]
-	link.arr.lty = link.arr.lty[l]
-	link.arr.col = link.arr.col[l]
-	link.visible = link.visible[l]
-	link.rank = link.rank[l]
-	directional = directional[l]
-	direction.type = direction.type[l]
-
-	nr = nrow(df)
 	# re-calcualte xsum
 	xsum = structure(rep(0, length(cate)), names = cate)
 	for(i in seq_len(nr)) {

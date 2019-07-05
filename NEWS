@@ -5,6 +5,8 @@ Changes in version 0.4.7
 * `colorRamp2()`: add HLS colorspace
 * add `major.at` and `labels` arguments to `circos.genomicAxis()`.
 * circos.initializeWithIdeogram(): manually select chromosomes for the common species
+* `chordDiagram()`: fixed a bug that after reducing the matrix/data frame
+  by `reduce`, there might be sectors with zero width.
 
 Changes in version 0.4.6
 ------------------------------------------------------------------------

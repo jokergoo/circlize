@@ -441,7 +441,18 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 	keep_index = names(xlim)[xlim / sum(xlim) >= reduce]
 	ri = which(rownames(mat) %in% keep_index)
 	ci = which(colnames(mat) %in% keep_index)
-	
+
+	ri_zero_sum = ri[ rowSums(mat[ri, ci, drop = FALSE]) == 0]
+	ci_zero_sum = ci[ colSums(mat[ri, ci, drop = FALSE]) == 0]
+
+	while(length(ri_zero_sum) || length(ci_zero_sum)) {
+		ri = setdiff(ri, ri_zero_sum)
+		ci = setdiff(ci, ci_zero_sum)
+
+		ri_zero_sum = ri[ rowSums(mat[ri, ci, drop = FALSE]) == 0]
+		ci_zero_sum = ci[ colSums(mat[ri, ci, drop = FALSE]) == 0]
+	}
+
 	# if the matrix is reduced
 	if(sum(length(ri) + length(ci)) < sum(ncol(mat) + nrow(mat))) {
 		

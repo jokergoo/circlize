@@ -321,7 +321,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 		for(i in seq_len(n.sector)) {
 			
 			if(sector.range[i] == 0) {
-				stop("Range of the sector (", le[i] ,") cannot be 0.")
+				stop("Range of the sector ('", le[i] ,"') cannot be 0.")
 			}
 			
 			# only to ensure value are always increasing or decreasing with the absolute degree value

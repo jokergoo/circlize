@@ -74,7 +74,7 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
     panel.fun = function(x, y) {NULL}) {
 
     if(!is.circos.initialized()) {
-    	stop("Your circular plot has not been initialized yet!")
+    	stop_wrap("Your circular plot has not been initialized yet!")
     }
 
 	o.track.margin = circos.par("track.margin")
@@ -92,7 +92,7 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 	# have same length as ``factors``
     if(!is.null(y) && length(y) != length(factors) ||
 	   !is.null(x) && length(x) != length(factors)) {
-        stop("Length of data and length of factors differ.")
+        stop_wrap("Length of data and length of factors differ.")
     }
 
 	# need to be a factor
@@ -121,7 +121,7 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 		flag_createNewTrack = 1
 	} else {
 		if(track.index > last.track.index + 1) {
-			stop("Wrong track index: it should be no more than ", last.track.index + 1, ".")
+			stop_wrap("Wrong track index: it should be no more than ", last.track.index + 1, ".")
 		}
 		# update an existed track
 		if(track.index <= tracks[length(tracks)]) {
@@ -150,7 +150,7 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
      # whether to force ylim for all cells in a track same
     if(is.null(ylim)) {
 		if(is.null(y)) {
-			stop("You have to specify either `y` or `ylim`.")
+			stop_wrap("You have to specify either `y` or `ylim`.")
 		}
 
 		if(force.ylim) {
@@ -187,7 +187,7 @@ circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NUL
 		} else if(is.matrix(ylim) && ncol(ylim) == 2 && nrow(ylim) == length(le)) {
 
 		} else {
-			stop("Wrong `ylim` format.")
+			stop_wrap("Wrong `ylim` format.")
 		}
     }
 
@@ -282,7 +282,7 @@ circos.updatePlotRegion = function(sector.index = get.cell.meta.data("sector.ind
     bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd")) {
 
     if(!has.cell(sector.index, track.index)) {
-        stop("You can only update an existed cell.")
+        stop_wrap("You can only update an existed cell.")
     }
 
     cell.xlim = get.cell.meta.data("cell.xlim", sector.index = sector.index, track.index = track.index)
@@ -328,11 +328,11 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("track
 	xlim = c(sector.data["min.data"], sector.data["max.data"])
 
 	if(cell.padding[1] + cell.padding[3] >= track.height) {
-		stop("Summation of cell padding on y-direction are larger than the height of the cells.")
+		stop_wrap("Summation of cell padding on y-direction are larger than the height of the cells.")
 	}
 
 	if(ylim[2] == ylim[1]) {
-		stop("range of `ylim` should be different.")
+		stop_wrap("range of `ylim` should be different.")
 	}
 
 	yl = numeric(2)
@@ -397,7 +397,7 @@ circos.points = function(x, y, sector.index = get.cell.meta.data("sector.index")
     pch = par("pch"), col = par("col"), cex = par("cex"), bg = par("bg")) {
 
     if(!has.cell(sector.index, track.index)) {
-        stop("'circos.points' can only be used after the plotting region has been created")
+        stop_wrap("'circos.points' can only be used after the plotting region has been created")
     }
 
     len_x = length(x)
@@ -406,7 +406,7 @@ circos.points = function(x, y, sector.index = get.cell.meta.data("sector.index")
     if(len_y == 1) y = rep(y, len_x)
 
 	if(length(x) != length(y)) {
-		stop("Length of x and y differ.")
+		stop_wrap("Length of x and y differ.")
 	}
 
     # whether the points that are out of the plotting region.
@@ -445,7 +445,7 @@ circos.trackPoints = function(factors = NULL, x, y, track.index = get.cell.meta.
 
     # basic check here
     if(length(x) != length(factors) || length(y) != length(factors)) {
-        stop("Length of data and length of factors differ.\n")
+        stop_wrap("Length of data and length of factors differ.\n")
     }
 
     if(!is.factor(factors)) {
@@ -522,11 +522,11 @@ circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
 
 	if(!is.null(area.baseline)) {
 		baseline = area.baseline
-		warning("`area.baseline` is deprecated, please use `baseline` instead.")
+		warning_wrap("`area.baseline` is deprecated, please use `baseline` instead.")
 	}
 
 	if(length(x) != length(y)) {
-		stop("Length of x and y differ.")
+		stop_wrap("Length of x and y differ.")
 	}
 
 	if(baseline == "bottom") {
@@ -577,7 +577,7 @@ circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
     }
 
     if(!has.cell(sector.index, track.index)) {
-        stop("'circos.lines' can only be used after the plotting region been created.")
+        stop_wrap("'circos.lines' can only be used after the plotting region been created.")
     }
 
     # whether the points that are out of the plotting region.
@@ -638,12 +638,12 @@ circos.trackLines = function(factors, x, y, track.index = get.cell.meta.data("tr
 
 	if(!is.null(area.baseline)) {
 		baseline = area.baseline
-		warning("`area.baseline` is deprecated, please use `baseline` instead.")
+		warning_wrap("`area.baseline` is deprecated, please use `baseline` instead.")
 	}
 
     # basic check here
     if(length(x) != length(factors) || length(y) != length(factors)) {
-        stop("Length of data and length of factors differ.")
+        stop_wrap("Length of data and length of factors differ.")
     }
 
     if(!is.factor(factors)) {
@@ -721,7 +721,7 @@ circos.rect = function(xleft, ybottom, xright, ytop,
     # }
 
     if(!has.cell(sector.index, track.index)) {
-        stop("'circos.rect' can only be used after the plotting region been created.")
+        stop_wrap("'circos.rect' can only be used after the plotting region been created.")
     }
 
     n1 = length(xleft)
@@ -735,7 +735,7 @@ circos.rect = function(xleft, ybottom, xright, ytop,
     if(n4 == 1) ytop = rep(ytop, n)
 
     if(! (length(xleft) == length(ybottom) && length(ybottom) == length(xright) && length(xright) == length(ytop)) ) {
-		stop("xleft, ybottom, xright, ytop should have same length.")
+		stop_wrap("xleft, ybottom, xright, ytop should have same length.")
 	}
 
     # # no filled colors, just four edges, here edges colors are controled by ``border``
@@ -791,7 +791,7 @@ circos.polygon = function(x, y, sector.index = get.cell.meta.data("sector.index"
 	track.index = get.cell.meta.data("track.index"), ...) {
 
     if(!has.cell(sector.index, track.index)) {
-        stop("'circos.polygon' can only be used after the plotting region been created.")
+        stop_wrap("'circos.polygon' can only be used after the plotting region been created.")
     }
 
     # whether the points that are out of the plotting region.
@@ -834,7 +834,7 @@ circos.segments = function(x0, y0, x1, y1, sector.index = get.cell.meta.data("se
     if(n4 == 1) y1 = rep(y1, n)
 
 	if(! (length(x0) == length(y0) && length(y0) == length(x1) && length(x1) == length(y1)) ) {
-		stop("x0, y0, x1, y1 should have same length.")
+		stop_wrap("x0, y0, x1, y1 should have same length.")
 	}
 
 	if(length(col) == 1 && length(lwd) ==1 && length(lty) == 1) {
@@ -856,7 +856,7 @@ circos.segments = function(x0, y0, x1, y1, sector.index = get.cell.meta.data("se
 
 
 	if(!has.cell(sector.index, track.index)) {
-        stop("'circos.polygon' can only be used after the plotting region been created.")
+        stop_wrap("'circos.polygon' can only be used after the plotting region been created.")
     }
 
 	np = length(x0)
@@ -936,11 +936,11 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
     if(len_y == 1) y = rep(y, len_x)
 
 	if(length(x) != length(y)) {
-		stop("Length of x and y differ.")
+		stop_wrap("Length of x and y differ.")
 	}
 
     if(!has.cell(sector.index, track.index)) {
-        stop("'circos.text' can only be used after the plotting region been created.")
+        stop_wrap("'circos.text' can only be used after the plotting region been created.")
     }
 
 	if(length(cex) == 1) {
@@ -960,7 +960,7 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 
     ## check direction or facing
     if(!is.null(direction)) {
-        warning("`direction` is deprecated, please use `facing` instead.")
+        warning_wrap("`direction` is deprecated, please use `facing` instead.")
         facing = switch(direction[1],
                         default = "inside",
                         default2 = "outside",
@@ -969,7 +969,7 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
                         horizontal = "downward",
                         arc = "bending.inside")
         if(is.null(facing)) {
-            stop("Wrong `direction` value, please use `facing` instead.")
+            stop_wrap("Wrong `direction` value, please use `facing` instead.")
         }
     }
 
@@ -988,22 +988,22 @@ circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.i
 	    	rou_offset = -(adj[[1]] - 0.5) * labels_width
 	    	#theta_offset = as.degree(asin(-(adj[2] - 0.5)*labels_height/2/d[, "rou"]))
 	    	theta_offset = adj[[2]]
-	    	if(!inherits(theta_offset, "degree")) stop("The second item in `adj` should be wrapped by `degree()` if facing is clockwise.")
+	    	if(!inherits(theta_offset, "degree")) stop_wrap("The second item in `adj` should be wrapped by `degree()` if facing is clockwise.")
 	    } else if(facing == "reverse.clockwise") {
 	    	rou_offset = (adj[[1]] - 0.5) * labels_width
 	    	#theta_offset = as.degree(asin((adj[2] - 0.5)*labels_height/2/d[, "rou"]))
 	    	theta_offset = adj[[2]]
-	    	if(!inherits(theta_offset, "degree")) stop("The second item in `adj` should be wrapped by `degree()` if facing is reverse clockwise.")
+	    	if(!inherits(theta_offset, "degree")) stop_wrap("The second item in `adj` should be wrapped by `degree()` if facing is reverse clockwise.")
 	    } else if(facing == "inside") {
 	    	rou_offset = -(adj[[2]] - 0.5) * labels_height
 	    	#theta_offset = as.degree(asin(-(adj[1] - 0.5)*labels_width/2/d[, "rou"]))
 	    	theta_offset = adj[[1]]
-	    	if(!inherits(theta_offset, "degree")) stop("The first item in `adj` should be wrapped by `degree()` if facing is inside.")
+	    	if(!inherits(theta_offset, "degree")) stop_wrap("The first item in `adj` should be wrapped by `degree()` if facing is inside.")
 	    } else if(facing == "outside") {
 	    	rou_offset = (adj[[2]] - 0.5) * labels_height
 	    	#theta_offset = as.degree(asin((adj[1] - 0.5)*labels_width/2/d[, "rou"]))
 	    	theta_offset = adj[[1]]
-	    	if(!inherits(theta_offset, "degree")) stop("The first item in `adj` should be wrapped by `degree()` if facing is outside.")
+	    	if(!inherits(theta_offset, "degree")) stop_wrap("The first item in `adj` should be wrapped by `degree()` if facing is outside.")
 	    }
 
 	    if(facing %in% c("clockwise", "reverse.clockwise", "inside", "outside")) {
@@ -1196,7 +1196,7 @@ circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.d
 
     # basic check here
     if(length(x) != length(factors) || length(y) != length(factors)) {
-        stop("Length of data and length of factors differ.\n")
+        stop_wrap("Length of data and length of factors differ.\n")
     }
 
     if(!is.factor(factors)) {
@@ -1289,12 +1289,12 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
                         vertical_right = "clockwise",
                         horizontal = "downward",
                         arc = "bending")
-        warning("`labels.direction` is deprecated, please use `labels.facing` instead.")
+        warning_wrap("`labels.direction` is deprecated, please use `labels.facing` instead.")
     }
 
 	direction = direction[1]
 	if(! direction %in% c("outside", "inside")) {
-		stop("Direction should be in 'outside' and 'inside'.")
+		stop_wrap("Direction should be in 'outside' and 'inside'.")
 	}
 
 	xlim = get.cell.meta.data("xlim", sector.index, track.index)
@@ -1630,7 +1630,7 @@ circos.trackHist = function(factors, x, track.height = circos.par("track.height"
 
     # basic check here
     if(length(x) != length(factors)) {
-        stop("Length of data and length of factors differ.")
+        stop_wrap("Length of data and length of factors differ.")
     }
 
     if(!is.factor(factors)) {
@@ -1875,11 +1875,11 @@ highlight.sector = function(sector.index, track.index = get.all.track.index(),
 
 	sectors = get.all.sector.index()
 	if(!all(sector.index %in% sectors)) {
-		stop("`chr` contains index that does not beling to available sectors.")
+		stop_wrap("`chr` contains index that does not beling to available sectors.")
 	}
 	tracks = get.all.track.index()
 	if(!all(track.index %in% tracks)) {
-		stop("`track.index` contains index that does not belong to available tracks.")
+		stop_wrap("`track.index` contains index that does not belong to available tracks.")
 	}
 
 	y_offset = NULL
@@ -1970,7 +1970,7 @@ parse_unit = function(str) {
 		u = regmatches(str, m)
 		return(list(value = as.numeric(v), unit = u))
 	} else {
-		stop("Format of the unit is incorrect. It should be like '2mm', '-2.1 inches'.")
+		stop_wrap("Format of the unit is incorrect. It should be like '2mm', '-2.1 inches'.")
 	}
 }
 

@@ -173,16 +173,16 @@ check.track.position = function(track.index, track.start, track.height) {
     if(track.start - track.height - track.margin[2] < 0 ||
        track.start - track.height < 0 ||
        track.start < 0) {
-        stop(paste("not enough space for cells at track index '", track.index, "'.\n", sep = ""))
+        stop_wrap(paste("not enough space for cells at track index '", track.index, "'.\n", sep = ""))
     }
     if(track.start - track.margin[1] - track.height - track.margin[2] < 0) {
-        stop(paste("not enough space for bottom margin of cells at track index '", track.index, "'.\n", sep = ""))
+        stop_wrap(paste("not enough space for bottom margin of cells at track index '", track.index, "'.\n", sep = ""))
     }
     
     if(track.index > 1) {
         
         if(track.start > get.cell.meta.data("cell.bottom.radius", track.index = track.index - 1)) {
-            stop("Track overlaps with previous track.\n")
+            stop_wrap("Track overlaps with previous track.\n")
         }
     }
 }
@@ -203,7 +203,7 @@ check.points.position = function(x, y, sector.index = get.cell.meta.data("sector
     l2 = y < cell.ylim[1] | y > cell.ylim[2]
     l = l1 | l2
     if(sum(l) && circos.par("points.overflow.warning")) {
-        message(paste("Note: ", sum(l), " point", ifelse(sum(l) == 1, " is", "s are"), " out of plotting region in sector '", sector.index, "', track '", track.index, "'.\n", sep = ""))
+        message_wrap(paste("Note: ", sum(l), " point", ifelse(sum(l) == 1, " is", "s are"), " out of plotting region in sector '", sector.index, "', track '", track.index, "'.\n", sep = ""))
     }
 
     return(invisible(NULL))
@@ -243,7 +243,7 @@ as.degree = function(radian) {
 colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB") {
 
   if(length(breaks) != length(colors)) {
-    stop("Length of `breaks` should be equal to `colors`.\n")
+    stop_wrap("Length of `breaks` should be equal to `colors`.\n")
   }
   
   colors = colors[order(breaks)]
@@ -254,12 +254,12 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB") {
   colors = colors[!l]
 
   if(length(breaks) == 1) {
-    stop("You should have at least two distinct break values.")
+    stop_wrap("You should have at least two distinct break values.")
   } 
 
 
   if(! space %in% c("RGB", "HSV", "HLS", "LAB", "XYZ", "sRGB", "LUV")) {
-    stop("`space` should be in 'RGB', 'HSV', 'HLS', 'LAB', 'XYZ', 'sRGB', 'LUV'")
+    stop_wrap("`space` should be in 'RGB', 'HSV', 'HLS', 'LAB', 'XYZ', 'sRGB', 'LUV'")
   }
   
   colors = t(col2rgb(colors)/255)
@@ -277,29 +277,40 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB") {
   
   fun = function(x = NULL, return_rgb = FALSE, max_value = 1) {
     if(is.null(x)) {
-      stop("Please specify `x`\n")
+      stop_wrap("Please specify `x`\n")
     }
 
     att = attributes(x)
     if(is.data.frame(x)) x = as.matrix(x)
+
+    l_na = is.na(x)
+    if(all(l_na)) {
+      return(rep(NA, length(l_na)))
+    }
+
+    x2 = x[!l_na]
     
-    x = ifelse(x < breaks[1], breaks[1],
-               ifelse(x > breaks[length(breaks)], breaks[length(breaks)],
-                      x
+    x2 = ifelse(x2 < breaks[1], breaks[1],
+               ifelse(x2 > breaks[length(breaks)], breaks[length(breaks)],
+                      x2
                ))
-    ibin = .bincode(x, breaks, right = TRUE, include.lowest = TRUE)
-    res_col = character(length(x))
+    ibin = .bincode(x2, breaks, right = TRUE, include.lowest = TRUE)
+    res_col = character(length(x2))
     for(i in unique(ibin)) {
       l = ibin == i
-      res_col[l] = .get_color(x[l], breaks[i], breaks[i+1], colors[i, ], colors[i+1, ], space = space)
+      res_col[l] = .get_color(x2[l], breaks[i], breaks[i+1], colors[i, ], colors[i+1, ], space = space)
     }
     res_col = paste(res_col, transparency_str[1], sep = "")
-    attributes(res_col) = att
     
     if(return_rgb) {
       res_col = t(col2rgb(as.vector(res_col), alpha = TRUE)/255)
     }
-    return(res_col)
+    res_col2 = character(length(x))
+    res_col2[l_na] = NA
+    res_col2[!l_na] = res_col
+
+    attributes(res_col2) = att
+    return(res_col2)
   }
   
   attributes(fun) = attr
@@ -413,11 +424,11 @@ adjacencyList2Matrix = function(lt, square = FALSE) {
 		lt = cbind(lt, rep(1, nrow(lt)))
 	}
 	if(ncol(lt) < 3) {
-		stop("`lt` should be a data frame with three columns")
+		stop_wrap("`lt` should be a data frame with three columns")
 	}
 
 	if(!is.numeric(lt[[3]])) {
-		stop("Third column in `lt` should be numeric.")
+		stop_wrap("Third column in `lt` should be numeric.")
 	}
 
 	lt[[1]] = as.vector(lt[[1]])
@@ -565,7 +576,7 @@ convert_length = function(x, unit = c("mm", "cm", "inches")) {
 	pt_per_inche2 = (usr[4] - usr[3])/pin[2]
 
     if(abs(pt_per_inche1 - pt_per_inche2) > 1e-3) {
-        warning("`convert_length()` only works when aspect of the coordinate is 1.")
+        warning_wrap("`convert_length()` only works when aspect of the coordinate is 1.")
     }
 
 	inche_per_mm = 0.0393700787401575
@@ -636,7 +647,7 @@ convert_unit_in_data_coordinate = function(x, unit = c("mm", "cm", "inches", "ca
     pt_per_inche2 = (usr[4] - usr[3])/pin[2]
 
     if(abs(pt_per_inche1 - pt_per_inche2) > 1e-3) {
-        warning("`convert_unit_in_data_coordinate()` only works when aspect of the coordinate is 1.")
+        warning_wrap("`convert_unit_in_data_coordinate()` only works when aspect of the coordinate is 1.")
     }
 
     direction = match.arg(direction)
@@ -805,7 +816,7 @@ convert_unit_in_canvas_coordinate = function(x, unit = c("mm", "cm", "inches")) 
     pt_per_inche2 = (usr[4] - usr[3])/pin[2]
 
     if(abs(pt_per_inche1 - pt_per_inche2) > 1e-3) {
-        warning("`convert_unit_in_data_coordinate()` only works when aspect of the coordinate is 1.")
+        warning_wrap("`convert_unit_in_data_coordinate()` only works when aspect of the coordinate is 1.")
     }
 
     inche_per_mm = 0.0393700787401575
@@ -823,13 +834,13 @@ convert_unit_in_canvas_coordinate = function(x, unit = c("mm", "cm", "inches")) 
 stop_wrap = function(...) {
     x = paste0(...)
     x = paste(strwrap(x), collapse = "\n")
-    stop(x)
+    stop(x, call. = FALSE)
 }
 
 warning_wrap = function(...) {
     x = paste0(...)
     x = paste(strwrap(x), collapse = "\n")
-    warning(x)
+    warning(x, call. = FALSE)
 }
 
 message_wrap = function(...) {

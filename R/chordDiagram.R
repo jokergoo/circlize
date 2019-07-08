@@ -179,7 +179,7 @@ parsePreAllocateTracksValue = function(preAllocateTracks) {
 			return(list(lt2))
 		}
 	} else {
-		stop("Wrong `preAllocateTracks` value.")
+		stop_wrap("Wrong `preAllocateTracks` value.")
 	}
 }
 
@@ -204,7 +204,7 @@ parsePreAllocateTracksValue = function(preAllocateTracks) {
 				mat[ value[i, 1], value[i, 2] ] = value[i, 3]
 			}
 		} else {
-			stop("If ", var_name, " is set as a data frame, it should have three columns.")
+			stop_wrap("If ", var_name, " is set as a data frame, it should have three columns.")
 		}
 	} else if(is.atomic(value) && length(value) == 1) {
 		mat[,] = value
@@ -221,7 +221,7 @@ parsePreAllocateTracksValue = function(preAllocateTracks) {
 				rownames(mat) = rn
 				colnames(mat) = cn
 			} else {
-				stop("If ", var_name, " is a matrix, it should have both rownames and colnames.")
+				stop_wrap("If ", var_name, " is a matrix, it should have both rownames and colnames.")
 			}
 		}
 	}
@@ -267,7 +267,7 @@ mat2df = function(mat) {
 	cn = rep(colnames(mat), each = nr)
 	ci = rep(seq_len(nc), each = nr)
 	v = as.vector(mat)
-	df = data.frame(rn = rn, cn = cn, value = v, ri = ri, ci = ci, stringsAsFactors = FALSE)
+	df = data.frame(rn = rn, cn = cn, ri = ri, ci = ci, value = v, stringsAsFactors = FALSE)
 	return(df)
 }
 
@@ -360,7 +360,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 	link.rank = NULL, scale = FALSE, big.gap = 10, small.gap = 1, ...) {
 	
 	if(!is.matrix(mat)) {
-		stop("`mat` can only be a matrix.")
+		stop_wrap("`mat` can only be a matrix.")
 	}
 
 	if(length(mat) != 2) {
@@ -377,7 +377,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 
 	if(symmetric) {
 		if(nrow(mat) != ncol(mat)) {
-			stop("`mat` should be a square matrix.")
+			stop_wrap("`mat` should be a square matrix.")
 		}
 
 		for(i in 1:10) {
@@ -395,7 +395,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 		}
 
 		if(!setequal(rownames(mat), colnames(mat))) {
-			stop("Since you specified a symmetric matrix, rownames and colnames should be the same.")
+			stop_wrap("Since you specified a symmetric matrix, rownames and colnames should be the same.")
 		}
 
 		mat[upper.tri(mat, diag = !keep.diagonal)] = 0
@@ -406,10 +406,10 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 
 	if(!is.null(order)) {
 		if(is.null(rownames(mat)) || is.null(colnames(mat))) {
-			stop("Since you specified `order`, your matrix should have rowname and colname.")
+			stop_wrap("Since you specified `order`, your matrix should have rowname and colname.")
 		}
 		if(!setequal(order, union(rownames(mat), colnames(mat)))) {
-			stop("Elements in `order` should be same as in `union(rownames(mat), colnames(mat))`.")
+			stop_wrap("Elements in `order` should be same as in `union(rownames(mat), colnames(mat))`.")
 		}
 	}
 	
@@ -703,11 +703,11 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 
 	# check the format of the data frame
 	if(!inherits(df, "data.frame")) {
-		stop("`df` must be a data frame.")
+		stop_wrap("`df` must be a data frame.")
 	}
 	df = as.data.frame(df)
 	if(ncol(df) < 2) {
-		stop("`df` should have at least have two columns.")
+		stop_wrap("`df` should have at least have two columns.")
 	}
 	if(ncol(df) == 2) {
 		df[, 3] = rep(1, nrow(df))
@@ -737,16 +737,16 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	if(!is.null(order)) {
 		order = intersect(order, cate)
 		if(length(order) != length(cate)) {
-			stop("`order` should contain names of all sectors.")
+			stop_wrap("`order` should contain names of all sectors.")
 		}
 		if(is.numeric(order)) {
 			if(!setequal(order, seq_along(cate))) {
-				stop("`order` needs to be integers ranging from 1 to", length(cate))
+				stop_wrap("`order` needs to be integers ranging from 1 to", length(cate))
 			}
 			cate = cate[order]
 		} else {
 			if(!setequal(order, cate)) {
-				stop("`order` should only be picked from sectors.")	
+				stop_wrap("`order` should only be picked from sectors.")	
 			}
 			cate = order
 		}

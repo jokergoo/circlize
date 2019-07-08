@@ -127,7 +127,7 @@ circos.raster = function(image, x, y, width, height,
 		circos.par(points.overflow.warning = op)
 	} else {
 		if(missing(width) && missing(height)) {
-			stop("at least one of `width` and `height` should be specified")
+			stop_wrap("at least one of `width` and `height` should be specified")
 		}
 		if(!missing(width)) {
 			width_lt = parse_unit(width)

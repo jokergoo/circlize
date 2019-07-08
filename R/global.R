@@ -224,7 +224,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 	.CELL.DATA = get(".CELL.DATA", envir = .CIRCOS.ENV)
 	
 	if(any(factors == "")) {
-		stop("`factors` cannot contain empty strings.")
+		stop_wrap("`factors` cannot contain empty strings.")
 	}
 	
     if(! is.factor(factors)) {
@@ -248,7 +248,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 	# xlim is prior than x
     if(is.vector(xlim)) {
         if(length(xlim) != 2) {
-            stop("Since `xlim` is vector, it should have length of 2.")
+            stop_wrap("Since `xlim` is vector, it should have length of 2.")
         }    
 
         xlim = as.numeric(xlim)
@@ -276,12 +276,12 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
     } else if(is.vector(x)) {
     
         if(length(x) != length(factors)) {
-            stop("Length of `x` and length of `factors` differ.")
+            stop_wrap("Length of `x` and length of `factors` differ.")
         }
         min.value = tapply(x, factors, min)
         max.value = tapply(x, factors, max)
     } else {
-		stop("You should specify either `x` or `xlim`.")
+		stop_wrap("You should specify either `x` or `xlim`.")
 	}
     
     cell.padding = circos.par("cell.padding")
@@ -321,7 +321,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 		for(i in seq_len(n.sector)) {
 			
 			if(sector.range[i] == 0) {
-				stop("Range of the sector ('", le[i] ,"') cannot be 0.")
+				stop_wrap("Range of the sector ('", le[i] ,"') cannot be 0.")
 			}
 			
 			# only to ensure value are always increasing or decreasing with the absolute degree value
@@ -350,7 +350,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 		for(i in seq_len(n.sector)) {
 			
 			if(sector.range[i] == 0) {
-				stop("Range of the sector (", le[i] ,") cannot be 0.")
+				stop_wrap("Range of the sector (", le[i] ,") cannot be 0.")
 			}
 			
 			
@@ -456,7 +456,7 @@ get.all.track.index = function() {
 	if(is.null(.CELL.DATA)) {
 		return(integer(0))
 	} else {
-		return(seq_along(.CELL.DATA[[1]]))
+		return(seq_along(.CELL.DATA[[ which(sapply(.CELL.DATA, length) > 0)[1] ]]))
 	}
 }
 
@@ -496,7 +496,7 @@ get.current.sector.index = function() {
 set.current.sector.index = function(x) {
 	.CURRENT.SECTOR.INDEX = get(".CURRENT.SECTOR.INDEX", envir = .CIRCOS.ENV)
 	if(!x %in% get.all.sector.index()) {
-		stop(paste0("Cannot find ", x, " in all available sector names.\n"))
+		stop_wrap(paste0("Cannot find ", x, " in all available sector names.\n"))
 	}
     .CURRENT.SECTOR.INDEX = x
 	assign(".CURRENT.SECTOR.INDEX", .CURRENT.SECTOR.INDEX, envir = .CIRCOS.ENV)
@@ -648,7 +648,7 @@ circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 # This function is deprecated, please use `circos.info` instead.
 show.index = function() {
 	circos.info(plot = TRUE)
-	warning("`show.index` is deprecated, please use `circos.info` instead.")
+	warning_wrap("`show.index` is deprecated, please use `circos.info` instead.")
 }
 
 # == title
@@ -699,22 +699,22 @@ show.index = function() {
 get.cell.meta.data = function(name, sector.index = get.current.sector.index(), 
                               track.index = get.current.track.index()) {
 	if(length(sector.index) == 0) {
-		stop("It seems the circular plot has not been initialized.")
+		stop_wrap("It seems the circular plot has not been initialized.")
 	}
 	if(length(track.index) == 0) {
-		stop("It seems the track has not been created.")
+		stop_wrap("It seems the track has not been created.")
 	}
 	if(length(sector.index) != 1) {
-		stop("Length of `sector.index` should only be 1.")
+		stop_wrap("Length of `sector.index` should only be 1.")
 	}
 	if(length(track.index) != 1) {
-		stop("Length of `track.index` should only be 1.")
+		stop_wrap("Length of `track.index` should only be 1.")
 	}
 	if(!any(sector.index %in% get.all.sector.index())) {
-		stop("Cannot find sector: ", sector.index, ".")
+		stop_wrap("Cannot find sector: ", sector.index, ".")
 	}
 	if(!any(track.index %in% get.all.track.index())) {
-		stop("Cannot find track: ", track.index, ".")
+		stop_wrap("Cannot find track: ", track.index, ".")
 	}
 
 	current.sector.data = get.sector.data(sector.index)
@@ -722,7 +722,7 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 	cell.padding = current.cell.data$cell.padding
 	
 	if(length(name) != 1) {
-		stop("``name`` should only have length of 1.")
+		stop_wrap("``name`` should only have length of 1.")
 	}
 	
 	if(name == "xlim") {
@@ -787,7 +787,7 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 	} else if(name == "track.height") {
 		return(current.cell.data$track.height)
 	} else {
-		stop("Wrong cell meta name.")
+		stop_wrap("Wrong cell meta name.")
 	}
 	return(NULL)
 }

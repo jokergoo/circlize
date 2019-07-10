@@ -1385,12 +1385,16 @@ circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = T
 		arg_list = list(...)
 
 		n = length(x)
-		if(n >= 1) {
-			first_label_width = convert_x(strwidth(labels[1], units = "inches", cex = arg_list$cex), "inches", arg_list$sector.index, arg_list$track.index, h = h)
-			first_label_height = convert_x(strheight(labels[1], units = "inches", cex = arg_list$cex), "inches", arg_list$sector.index, arg_list$track.index, h = h)
+		first_label_width = convert_x(strwidth(labels[1], units = "inches", cex = arg_list$cex), "inches", arg_list$sector.index, arg_list$track.index, h = h)
+        first_label_height = convert_x(strheight(labels[1], units = "inches", cex = arg_list$cex), "inches", arg_list$sector.index, arg_list$track.index, h = h)
+            
+        if(n >= 1) {
 			last_label_width = convert_x(strwidth(labels[n], units = "inches", cex = arg_list$cex), "inches", arg_list$sector.index, arg_list$track.index, h = h)
 			last_label_height = convert_x(strheight(labels[n], units = "inches", cex = arg_list$cex), "inches", arg_list$sector.index, arg_list$track.index, h = h)
-		}
+		} else {
+            last_label_width = 0
+            last_label_height = 0
+        }
 
 		if(labels.facing == "inside") {
 			offset.first = first_label_width/2 - (x[1] - get.cell.meta.data("cell.xlim", sector.index, track.index)[1])

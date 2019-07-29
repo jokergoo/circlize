@@ -1986,6 +1986,7 @@ parse_unit = function(str) {
 # -facing Is the dendromgrams facing inside to the circle or outside.
 # -max_height Maximum height of the dendrogram. This is important if more than one dendrograms
 #             are drawn in one track and making them comparable.
+# -use_x_attr Whether use the ``x`` attribute to determine node positions in the dendrogram, used internally.
 #
 # == details
 # Assuming there are ``n`` nodes in the dendrogram, the positions for leaves on x-axis is ``0.5, 1.5, ..., n - 0.5``.
@@ -1993,7 +1994,7 @@ parse_unit = function(str) {
 #
 # You can use the ``dendextend`` package to render the dendrograms.
 #
-circos.dendrogram = function(dend, facing = c("outside", "inside"), max_height = NULL) {
+circos.dendrogram = function(dend, facing = c("outside", "inside"), max_height = NULL, use_x_attr = FALSE) {
 
 	facing = match.arg(facing)[1]
 
@@ -2009,6 +2010,8 @@ circos.dendrogram = function(dend, facing = c("outside", "inside"), max_height =
             leaf
         }
     }
+	
+    use_x_attr = use_x_attr
 
     lines_par = function(col = par("col"), lty = par("lty"), lwd = par("lwd"), ...) {
     	return(list(col = col, lty = lty, lwd = lwd))
@@ -2024,19 +2027,27 @@ circos.dendrogram = function(dend, facing = c("outside", "inside"), max_height =
         d2 = dend[[2]]  # child tree 2
         height = attr(dend, "height")
         midpoint = attr(dend, "midpoint")
-
-        if(is.leaf(d1)) {
-            x1 = x[as.character(attr(d1, "label"))]
-        } else {
-            x1 = attr(d1, "midpoint") + x[as.character(labels(d1))[1]]
+	
+	if(use_x_attr) {
+	    x1 = attr(d1, "x")	
+	} else {
+            if(is.leaf(d1)) {
+                x1 = x[as.character(attr(d1, "label"))]
+            } else {
+                x1 = attr(d1, "midpoint") + x[as.character(labels(d1))[1]]
+            }
         }
-        y1 = attr(d1, "height")
+	y1 = attr(d1, "height")
 
-        if(is.leaf(d2)) {
-            x2 = x[as.character(attr(d2, "label"))]
-        } else {
-            x2 = attr(d2, "midpoint") + x[as.character(labels(d2))[1]]
-        }
+	if(use_x_attr) {
+	    x2 = attr(d2, "x")	
+	} else {
+            if(is.leaf(d2)) {
+                x2 = x[as.character(attr(d2, "label"))]
+            } else {
+                x2 = attr(d2, "midpoint") + x[as.character(labels(d2))[1]]
+            }
+	}
         y2 = attr(d2, "height")
 
         # graphic parameter for current branch

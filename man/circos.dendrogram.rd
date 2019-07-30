@@ -7,13 +7,14 @@ Add circular dendrograms
 Add circular dendrograms
 }
 \usage{
-circos.dendrogram(dend, facing = c("outside", "inside"), max_height = NULL)
+circos.dendrogram(dend, facing = c("outside", "inside"), max_height = NULL, use_x_attr = FALSE)
 }
 \arguments{
 
   \item{dend}{A \code{\link[stats]{dendrogram}} object.}
   \item{facing}{Is the dendromgrams facing inside to the circle or outside.}
   \item{max_height}{Maximum height of the dendrogram. This is important if more than one dendrograms are drawn in one track and making them comparable.}
+  \item{use_x_attr}{Whether use the \code{x} attribute to determine node positions in the dendrogram, used internally.}
 
 }
 \details{

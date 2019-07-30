@@ -2028,26 +2028,26 @@ circos.dendrogram = function(dend, facing = c("outside", "inside"), max_height =
         height = attr(dend, "height")
         midpoint = attr(dend, "midpoint")
 	
-	if(use_x_attr) {
-	    x1 = attr(d1, "x")	
-	} else {
+        if(use_x_attr) {
+            x1 = attr(d1, "x")	
+        } else {
             if(is.leaf(d1)) {
                 x1 = x[as.character(attr(d1, "label"))]
             } else {
                 x1 = attr(d1, "midpoint") + x[as.character(labels(d1))[1]]
             }
         }
-	y1 = attr(d1, "height")
+        y1 = attr(d1, "height")
 
-	if(use_x_attr) {
-	    x2 = attr(d2, "x")	
-	} else {
+        if(use_x_attr) {
+            x2 = attr(d2, "x")	
+        } else {
             if(is.leaf(d2)) {
                 x2 = x[as.character(attr(d2, "label"))]
             } else {
                 x2 = attr(d2, "midpoint") + x[as.character(labels(d2))[1]]
             }
-	}
+        }
         y2 = attr(d2, "height")
 
         # graphic parameter for current branch

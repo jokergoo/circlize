@@ -396,6 +396,7 @@ circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL
 	
 	assign(".SECTOR.DATA", .SECTOR.DATA, envir = .CIRCOS.ENV)
 	assign(".CELL.DATA", .CELL.DATA, envir = .CIRCOS.ENV)
+	assign(".CURRENT.SECTOR.INDEX", .SECTOR.DATA[1, "factor"], envir = .CIRCOS.ENV)
     
     circos.par("__omar__" = FALSE)
 	if(identical(par("mar"), c(5.1, 4.1, 4.1, 2.1))) {
@@ -709,6 +710,9 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 	}
 	if(length(track.index) != 1) {
 		stop_wrap("Length of `track.index` should only be 1.")
+	}
+	if(track.index == 0) {
+		stop_wrap("It seems the track has not been created.")
 	}
 	if(!any(sector.index %in% get.all.sector.index())) {
 		stop_wrap("Cannot find sector: ", sector.index, ".")

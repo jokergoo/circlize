@@ -1,3 +1,7 @@
+Changes in version 0.4.8
+-----------------------------------------------------------------------
+* `colorRamp2()`: fixed a bug when the color mapping function returns RGB matrix.
+
 Changes in version 0.4.7
 -----------------------------------------------------------------------
 * fixed a bug that the vertical line was wrongly put for `circos.yaxis()`.

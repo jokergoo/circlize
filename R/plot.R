@@ -1994,7 +1994,8 @@ parse_unit = function(str) {
 #
 # You can use the ``dendextend`` package to render the dendrograms.
 #
-circos.dendrogram = function(dend, facing = c("outside", "inside"), max_height = NULL, use_x_attr = FALSE) {
+circos.dendrogram = function(dend, facing = c("outside", "inside"), 
+    max_height = NULL, use_x_attr = FALSE) {
 
 	facing = match.arg(facing)[1]
 

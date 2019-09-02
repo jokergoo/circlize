@@ -304,13 +304,15 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB") {
     
     if(return_rgb) {
       res_col = t(col2rgb(as.vector(res_col), alpha = TRUE)/255)
-    }
-    res_col2 = character(length(x))
-    res_col2[l_na] = NA
-    res_col2[!l_na] = res_col
+      return(res_col)
+    } else {
+      res_col2 = character(length(x))
+      res_col2[l_na] = NA
+      res_col2[!l_na] = res_col
 
-    attributes(res_col2) = att
-    return(res_col2)
+      attributes(res_col2) = att
+      return(res_col2)
+    }
   }
   
   attributes(fun) = attr

@@ -1,3 +1,7 @@
+Changes in version 0.4.8
+-----------------------------------------------------------------------
+* add `validate_regions()` to check the end positions and start positions.
+
 Changes in version 0.4.7
 -----------------------------------------------------------------------
 * fixed a bug that the vertical line was wrongly put for `circos.yaxis()`.

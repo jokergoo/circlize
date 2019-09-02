@@ -1,6 +1,8 @@
 Changes in version 0.4.8
 -----------------------------------------------------------------------
 * add `validate_regions()` to check the end positions and start positions.
+* `colorRamp2()`: fixed a bug when the color mapping function returns RGB matrix.
+* `circos.genomicHeatmap()`: add `na_col` argument.
 
 Changes in version 0.4.7
 -----------------------------------------------------------------------

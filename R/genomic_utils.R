@@ -28,8 +28,9 @@
 #     colClasses = c("character", "numeric", "numeric", "character", "character"), sep = "\t")
 # data = read.cytoband(cytoband = cytoband)
 read.cytoband = function(cytoband = system.file(package = "circlize",
-    "extdata", "cytoBand.txt"), species = NULL, chromosome.index = usable_chromosomes(species), 
-	sort.chr = TRUE) {
+    "extdata", "cytoBand.txt"), species = NULL, 
+    chromosome.index = usable_chromosomes(species), 
+    sort.chr = TRUE) {
 
 	# this function should also take charge of the order of chromosome
 	if(!is.null(chromosome.index)) sort.chr = FALSE
@@ -132,8 +133,9 @@ read.cytoband = function(cytoband = system.file(package = "circlize",
 #     colClasses = c("character", "numeric"), sep = "\t")
 # data = read.chromInfo(chromInfo = chromInfo)
 read.chromInfo = function(chromInfo = system.file(package = "circlize",
-    "extdata", "chromInfo.txt"), species = NULL, chromosome.index = usable_chromosomes(species), 
-	sort.chr = TRUE) {
+    "extdata", "chromInfo.txt"), species = NULL, 
+    chromosome.index = usable_chromosomes(species), 
+    sort.chr = TRUE) {
 	
 	# this function should also take charge of the order of chromosome
 	if(!is.null(chromosome.index)) sort.chr = FALSE

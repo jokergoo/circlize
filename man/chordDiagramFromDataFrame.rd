@@ -21,8 +21,8 @@ chordDiagramFromDataFrame(df, grid.col = NULL, grid.border = NA, transparency = 
     link.arr.lwd = par("lwd"), link.arr.col = par("col"),
     link.largest.ontop = FALSE, link.visible = TRUE,
     link.rank = seq_len(nrow(df)),
-    scale = FALSE,
-    big.gap = 10, small.gap = 1,
+    link.overlap = FALSE,
+    scale = FALSE, big.gap = 10, small.gap = 1,
     ...)
 }
 \arguments{
@@ -56,6 +56,7 @@ chordDiagramFromDataFrame(df, grid.col = NULL, grid.border = NA, transparency = 
   \item{link.largest.ontop}{controls the order of adding links, whether based on the absolute value?}
   \item{link.visible}{whether plot the link. The value is logical, if it is set to \code{FALSE}, the corresponding link will not  plotted, but the space is still ocuppied. The format of this argument is same as \code{link.lwd}}
   \item{link.rank}{order to add links to the circle, a large value means to add it later.}
+  \item{link.overlap}{if it is a directional Chord Diagram, whether the links that come or end in a same sector overlap?}
   \item{scale}{scale each sector to same width}
   \item{big.gap}{Gaps between the sectors in the first column of \code{df} and sectors in the second column in \code{df}.}
   \item{small.gap}{Small gap between sectors.}

@@ -38,6 +38,7 @@
 # -link.largest.ontop  pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
 # -link.visible pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
 # -link.rank order to add links to the circle, a large value means to add it later.
+# -link.overlap pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
 # -scale scale each sector to same width
 # -big.gap Gap between the two sets of sectors. If the input is a matrix, the two sets
 #      are row sectors and column sectors. If the input is a data frame, the two sets
@@ -84,7 +85,8 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 	link.arr.type = "triangle", link.arr.lty = par("lty"), 
 	link.arr.lwd = par("lwd"), link.arr.col = par("col"), 
 	link.largest.ontop = FALSE, link.visible = TRUE, 
-	link.rank = NULL, scale = FALSE, big.gap = 10, small.gap = 1, ...) {
+	link.rank = NULL, link.overlap = FALSE, 
+	scale = FALSE, big.gap = 10, small.gap = 1, ...) {
 		
 	if(inherits(x, "table"))  {
 		if(length(dim(x)) == 2) {
@@ -106,7 +108,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 			link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 			link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 			link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
-			link.visible = link.visible, link.rank = link.rank, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)
+			link.visible = link.visible, link.rank = link.rank, link.overlap = link.overlap, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)
 	} else {
 		x = validate_data_frame(x)
 		if(ncol(x) > 3) {
@@ -120,7 +122,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 					link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 					link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 					link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
-					link.visible = link.visible, link.rank = link.rank, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)))
+					link.visible = link.visible, link.rank = link.rank, link.overlap = link.overlap, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)))
 			} else {
 				chordDiagramFromDataFrame(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
 					col = col, order = order, directional = directional, direction.type = direction.type,
@@ -129,7 +131,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 					link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 					link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 					link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
-					link.visible = link.visible, link.rank = link.rank, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)
+					link.visible = link.visible, link.rank = link.rank, link.overlap = link.overlap, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)
 			}
 		} else {
 			chordDiagramFromDataFrame(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
@@ -139,7 +141,7 @@ chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5
 				link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 				link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 				link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
-				link.visible = link.visible, link.rank = link.rank, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)
+				link.visible = link.visible, link.rank = link.rank, link.overlap = link.overlap, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)
 		}
 	}	
 }
@@ -332,6 +334,7 @@ mat2df = function(mat) {
 # -link.visible whether plot the link. The value is logical, if it is set to ``FALSE``, the corresponding link will not 
 #            plotted, but the space is still ocuppied. The format of this argument is same as ``link.lwd``
 # -link.rank order to add links to the circle, a large value means to add it later.
+# -link.overlap if it is a directional Chord Diagram, whether the links that come or end in a same sector overlap?
 # -scale scale each sector to same width
 # -big.gap Gap between row sectors and column sectors.
 # -small.gap Small gap between sectors.
@@ -357,7 +360,8 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 	link.arr.type = "triangle", link.arr.lty = par("lty"), 
 	link.arr.lwd = par("lwd"), link.arr.col = par("col"), 
 	link.largest.ontop = FALSE, link.visible = TRUE, 
-	link.rank = NULL, scale = FALSE, big.gap = 10, small.gap = 1, ...) {
+	link.rank = NULL, link.overlap = FALSE,
+	scale = FALSE, big.gap = 10, small.gap = 1, ...) {
 	
 	if(!is.matrix(mat)) {
 		stop_wrap("`mat` can only be a matrix.")
@@ -603,6 +607,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 		link.largest.ontop = link.largest.ontop,
 		link.visible = link.visible,
 		link.rank = link.rank,
+		link.overlap = link.overlap,
 		scale = scale,
 		big.gap = big.gap,
 		small.gap = small.gap,
@@ -666,6 +671,7 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 # -link.visible whether plot the link. The value is logical, if it is set to ``FALSE``, the corresponding link will not 
 #            plotted, but the space is still ocuppied. The format of this argument is same as ``link.lwd``
 # -link.rank order to add links to the circle, a large value means to add it later.
+# -link.overlap if it is a directional Chord Diagram, whether the links that come or end in a same sector overlap?
 # -scale scale each sector to same width
 # -big.gap Gaps between the sectors in the first column of ``df`` and sectors in the second column in ``df``.
 # -small.gap Small gap between sectors.
@@ -691,8 +697,8 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	link.arr.lwd = par("lwd"), link.arr.col = par("col"), 
 	link.largest.ontop = FALSE, link.visible = TRUE, 
 	link.rank = seq_len(nrow(df)), 
-	scale = FALSE, 
-	big.gap = 10, small.gap = 1,
+	link.overlap = FALSE,
+	scale = FALSE, big.gap = 10, small.gap = 1,
 	...) {
 
 	if(nrow(df) != 2) {
@@ -994,6 +1000,12 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 		}
 	}
 
+	if(link.overlap) {
+		x1_sum = tapply(df$x1, df$rn, max)[names(xsum)]
+		x2_sum = tapply(df$x2, df$cn, max)[names(xsum)] - x1_sum
+		df$x2 = df$x2 - x1_sum[df$cn]
+		xsum = pmax(x1_sum, x2_sum)
+	}
 
 	o.cell.padding = circos.par("cell.padding")
 	circos.par(cell.padding = c(0, 0, 0, 0))

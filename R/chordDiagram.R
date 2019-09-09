@@ -1003,6 +1003,8 @@ chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, tran
 	if(link.overlap) {
 		x1_sum = tapply(df$x1, df$rn, max)[names(xsum)]
 		x2_sum = tapply(df$x2, df$cn, max)[names(xsum)] - x1_sum
+		x1_sum[is.na(x1_sum)] = 0; names(x1_sum) = names(xsum)
+		x2_sum[is.na(x2_sum)] = 0; names(x2_sum) = names(xsum)
 		df$x2 = df$x2 - x1_sum[df$cn]
 		xsum = pmax(x1_sum, x2_sum)
 	}

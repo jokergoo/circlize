@@ -1,3 +1,7 @@
+Changes in version 0.4.9
+-----------------------------------------------------------------------
+* `chordDiagram()`: fixed a bug when `link.overlap = TRUE` for sparse matrices.
+
 Changes in version 0.4.8
 -----------------------------------------------------------------------
 * add `validate_regions()` to check the end positions and start positions.

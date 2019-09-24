@@ -26,5 +26,4 @@ Basically you can simply replace  e.g. \code{get.cell.meta.data("sector.index")}
 \examples{
 # There is no example
 NULL
-
 }

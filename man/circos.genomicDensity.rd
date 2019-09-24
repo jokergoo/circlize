@@ -31,26 +31,7 @@ circos.genomicDensity(data, ylim.force = FALSE, window.size = NULL, overlap = TR
 \details{
 This function is a high-level graphical function, and it will create a new track.
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-
-}
 \examples{
-\dontrun{
-
-load(system.file(package = "circlize", "extdata", "DMR.RData"))
-
-# rainfall
-circos.initializeWithIdeogram(plotType = c("axis", "labels"))
-
-bed_list = list(DMR_hyper, DMR_hypo)
-circos.genomicRainfall(bed_list, pch = 16, cex = 0.4, col = c("#FF000080", "#0000FF80"))
-
-circos.genomicDensity(bed_list[[1]], col = c("#FF000080"), track.height = 0.1)
-circos.genomicDensity(bed_list[[2]], col = c("#0000FF80"), track.height = 0.1)
-
-circos.clear()
-
-}
-
+# There is no example
+NULL
 }

@@ -48,10 +48,6 @@ get detailed information of the current cell.
 \seealso{
 \code{\link{CELL_META}} is a short version of \code{\link{get.cell.meta.data}}.
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-
-}
 \examples{
 factors = letters[1:4]
 circos.initialize(factors, xlim = c(0, 1))

@@ -75,5 +75,4 @@ A data frame which contains positions of links, see explanation in \code{\link{c
 \examples{
 # There is no example
 NULL
-
 }

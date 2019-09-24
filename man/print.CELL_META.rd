@@ -18,5 +18,4 @@ Print CELL_META
 \examples{
 # There is no example
 NULL
-
 }

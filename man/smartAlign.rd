@@ -22,5 +22,4 @@ used internally
 \examples{
 # There is no example
 NULL
-
 }

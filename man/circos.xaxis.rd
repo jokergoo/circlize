@@ -17,5 +17,4 @@ circos.xaxis(...)
 \examples{
 # There is no example
 NULL
-
 }

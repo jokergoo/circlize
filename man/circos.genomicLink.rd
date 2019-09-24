@@ -30,24 +30,7 @@ Of course, number of rows should be same in \code{region1} and \code{region2}.
 
 If you want to have more controls on links, please use \code{\link{circos.link}} directly.
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-
-}
 \examples{
-\dontrun{
-set.seed(123)
-
-bed1 = generateRandomBed(nr = 100)
-bed1 = bed1[sample(nrow(bed1), 20), ]
-bed2 = generateRandomBed(nr = 100)
-bed2 = bed2[sample(nrow(bed2), 20), ]
-circos.par("track.height" = 0.1, cell.padding = c(0, 0, 0, 0))
-circos.initializeWithIdeogram()
-
-circos.genomicLink(bed1, bed2, col = sample(1:5, 20, replace = TRUE), border = NA)
-circos.clear()
-
-}
-
+# There is no example
+NULL
 }

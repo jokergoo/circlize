@@ -20,5 +20,4 @@ shortcut function of \code{\link{circos.genomicTrackPlotRegion}}.
 \examples{
 # There is no example
 NULL
-
 }

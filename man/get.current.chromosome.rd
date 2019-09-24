@@ -13,18 +13,7 @@ get.current.chromosome()
 The function is same as \code{\link{get.current.sector.index}} and
 should only be put inside \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}.
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-
-}
 \examples{
-\dontrun{
-library(circlize)
-circos.initializeWithIdeogram()
-circos.genomicTrackPlotRegion(ylim = c(0, 1), panel.fun = function(region, value, ...) {
-    print(get.current.chromosome())
-})
-circos.clear()
-}
-
+# There is no example
+NULL
 }

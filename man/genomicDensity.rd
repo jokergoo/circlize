@@ -26,13 +26,7 @@ If the input is a two-column data frame, the function returns a data frame with 
 start position, end position and percent of overlapping. And if the input is a bed-format
 data frame, there will be an additionally chromosome name column.
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-
-}
 \examples{
-bed = generateRandomBed()
-bed = subset(bed, chr == "chr1")
-head(genomicDensity(bed))
-
+# There is no example
+NULL
 }

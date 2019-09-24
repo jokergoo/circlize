@@ -26,5 +26,4 @@ A numeric value which can be directly set to \code{big.gap} in the second Chord 
 \examples{
 # There is no example
 NULL
-
 }

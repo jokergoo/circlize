@@ -33,10 +33,6 @@ You can find the data structure of the cytoband data from \url{http://hgdownload
   \item{\code{chr.len}}{Length of chromosomes. Orders are same as \code{chromosome}}
 }
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-
-}
 \examples{
 data = read.cytoband(species = "hg19")
 data = read.cytoband(cytoband = system.file(package = "circlize", "extdata", "cytoBand.txt"))

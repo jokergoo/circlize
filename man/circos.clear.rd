@@ -16,12 +16,7 @@ circular plot, you need to reset all these parameters.
 
 If you meet some errors when re-drawing the circular plot, try running this function and it will solve most of the problems.
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-
-}
 \examples{
 # There is no example
 NULL
-
 }

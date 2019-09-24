@@ -15,5 +15,4 @@ Simply returns the name of current sector
 \examples{
 # There is no example
 NULL
-
 }

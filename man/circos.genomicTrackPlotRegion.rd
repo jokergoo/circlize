@@ -51,12 +51,7 @@ Being different from \code{panel.fun} in \code{\link{circos.trackPlotRegion}}, t
 argument is used to pass hidden values to low-level graphical functions. So if you are using functions like \code{circos.genomicPoints}, you should also
 add \code{...} as an additional argument into \code{circos.genomicPoints}.
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-
-}
 \examples{
 # There is no example
 NULL
-
 }

@@ -46,12 +46,7 @@ adding sectors on the circle. The left and right padding for \code{cell.padding}
 ignored after the initialization because all cells in a sector would share the same
 left and right paddings.
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-
-}
 \examples{
 # There is no example
 NULL
-
 }

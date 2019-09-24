@@ -27,22 +27,7 @@ Also, the function will print index of your current sector and current track.
 If \code{plot} is set to \code{TRUE}, the function will plot the index of the sector and the track 
 for each cell on the figure.
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-
-}
 \examples{
-factors = letters[1:4]
-circos.initialize(factors, xlim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1))
-circos.trackPlotRegion(ylim = c(0, 1))
-circos.info(sector.index = "a", track.index = 1)
-circos.info(sector.index = "a", track.index = 1:2)
-circos.info(sector.index = c("a", "b"), track.index = 1)
-circos.info(sector.index = "a")
-circos.info(track.index = 1)
-circos.info()
-circos.info(plot = TRUE)
-circos.clear()
-
+# There is no example
+NULL
 }

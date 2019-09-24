@@ -15,5 +15,4 @@ Simply returns the numeric index for the current track.
 \examples{
 # There is no example
 NULL
-
 }

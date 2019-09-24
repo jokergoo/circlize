@@ -1,10 +1,11 @@
-<a href="http://jokergoo.github.io/circlize_book/book/"><img src="http://jokergoo.github.io/circlize_book/book/images/circlize_cover.jpg" width=240 align="right" ></a>
+
+
+# circlize: circular visualization in R <a href="http://jokergoo.github.io/circlize_book/book/"><img src="http://jokergoo.github.io/circlize_book/book/images/circlize_cover.jpg" width=240 align="right" ></a>
+
 
 [![Build Status](https://travis-ci.org/jokergoo/circlize.svg)](https://travis-ci.org/jokergoo/circlize)
 [![CRAN](http://www.r-pkg.org/badges/version/circlize)](https://cran.r-project.org/web/packages/circlize/index.html) 
 [![CRAN](https://cranlogs.r-pkg.org/badges/grand-total/circlize)](https://cran.r-project.org/web/packages/circlize/index.html) 
-
-## circlize: circular visualization in R
 
 Circular layout is an efficient way for the visualization of huge 
     amounts of information. Here the circlize package provides an implementation 
@@ -16,21 +17,21 @@ Circular layout is an efficient way for the visualization of huge
     circlize givesa users more convenience and freedom to design figures for 
     better understanding complex patterns behind multi-dimensional data.
 
-### Citation
+## Citation
 
 Zuguang Gu, Lei Gu, Roland Eils, Matthias Schlesner, Benedikt Brors, circlize Implements and enhances circular visualization in R. Bioinformatics (Oxford, England) 2014. [PubMed](http://www.ncbi.nlm.nih.gov/pubmed/24930139)
 
-### Documentation
+## Documentation
 
 The full documentations are available at http://jokergoo.github.io/circlize_book/book/.
 
-### Examples
+## Examples
 
 See https://jokergoo.github.io/circlize_examples/.
 
 <img width="700" alt="circlize_example" src="http://jokergoo.github.io/circlize_book/book/images/ciclize_examples.jpg">
 
-### Install
+## Install
 
 The package can be installed from CRAN:
 
@@ -44,7 +45,7 @@ or directly from GitHub:
 devtools::install_github("jokergoo/circlize")
 ```
 
-### Basic design
+## Basic design
 
 Since most of the figures are composed of points, lines and polygons, 
 we just need to implement functions for drawing points, lines and polygons,
@@ -112,6 +113,6 @@ Finally, function that draws Chord diagram:
 - `chordDiagram()`
 
 
-### License
+## License
 
 MIT @ Zuguang Gu

@@ -36,28 +36,7 @@ The function is similar to \code{\link[graphics]{text}}. All you need to note is
 \seealso{
 \url{http://jokergoo.github.io/circlize_book/book/graphics.html#text}
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-
-}
 \examples{
-factors = letters[1:4]
-circos.par(points.overflow.warning = FALSE)
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10), 
-  track.height = 0.5, panel.fun = function(x, y) {
-    circos.text(3, 1, "inside", facing = "inside", cex = 0.8)
-    circos.text(7, 1, "outside", facing = "outside", cex = 0.8)
-    circos.text(0, 5, "reverse.clockwise", facing = "reverse.clockwise", 
-        adj = c(0.5, 0), cex = 0.8)
-    circos.text(10, 5, "clockwise", facing = "clockwise", adj = c(0.5, 0), 
-        cex = 0.8)
-    circos.text(5, 5, "downward", facing = "downward", cex = 0.8)
-    circos.text(3, 9, "====bending.inside====", facing = "bending.inside", 
-        cex = 0.8)
-    circos.text(7, 9, "====bending.outside====", facing = "bending.outside", 
-        cex = 0.8)
-})
-circos.clear()
-
+# There is no example
+NULL
 }

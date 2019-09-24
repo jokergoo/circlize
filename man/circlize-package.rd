@@ -94,5 +94,4 @@ Please refer to the vignettes (\url{http://jokergoo.github.io/circlize_book/book
 \examples{
 # There is no example
 NULL
-
 }

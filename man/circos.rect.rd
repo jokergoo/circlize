@@ -29,12 +29,7 @@ in the polar coordinate, the up and bottom edge become two arcs.
 
 This function can be vectorized.
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-
-}
 \examples{
 # There is no example
 NULL
-
 }

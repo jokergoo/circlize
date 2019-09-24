@@ -22,13 +22,7 @@ generateRandomBed(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0.5),
 The function will uniformly sample positions from the genome. Chromosome names start with "chr"
 and positions are sorted. The final number of rows may not be exactly as same as \code{nr}.
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-
-}
 \examples{
-bed = generateRandomBed()
-bed = generateRandomBed(nr = 200, nc = 4)
-bed = generateRandomBed(fun = function(k) runif(k))
-
+# There is no example
+NULL
 }

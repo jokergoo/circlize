@@ -23,10 +23,6 @@ The code is adapted from randomColor.js (\url{https://github.com/davidmerfield/r
 \author{
 Zuguang Gu <z.gu@dkfz.de>
 }
-\value{
-a vector of colors
-
-}
 \examples{
 plot(NULL, xlim = c(1, 10), ylim = c(1, 8), axes = FALSE, ann = FALSE)
 points(1:10, rep(1, 10), pch = 16, cex = 5, 

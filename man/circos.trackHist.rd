@@ -41,22 +41,7 @@ circos.trackHist(factors, x, track.height = circos.par("track.height"),
 It draw histogram in cells among a whole track. It is also an example to show how to add self-defined
 high-level graphics by this package.
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-
-}
 \examples{
-\dontrun{
-x = rnorm(1600)
-factors = sample(letters[1:16], 1600, replace = TRUE)
-circos.initialize(factors = factors, x = x)
-circos.trackHist(factors = factors, x = x, col = "#999999", 
-  border = "#999999")
-circos.trackHist(factors = factors, x = x, bin.size = 0.1, 
-  col = "#999999", border = "#999999")
-circos.trackHist(factors = factors, x = x, draw.density = TRUE, 
-  col = "#999999", border = "#999999")
-circos.clear()
-}
-
+# There is no example
+NULL
 }

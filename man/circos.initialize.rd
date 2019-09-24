@@ -44,21 +44,7 @@ The function finally calls \code{\link[graphics]{plot}} with enforing aspect rat
 \seealso{
 \url{http://jokergoo.github.io/circlize_book/book/circular-layout.html}
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-
-}
 \examples{
-circos.initialize(factors = sample(letters[1:4], 20, replace = TRUE), xlim = c(0, 1))
-circos.info()
-circos.clear()
-
-circos.initialize(factors = sample(letters[1:4], 20, replace = TRUE), xlim = cbind(1:4, 1:4*2))
-circos.info()
-circos.clear()
-
-circos.initialize(factors = sample(letters[1:4], 20, replace = TRUE), x = rnorm(20))
-circos.info()
-circos.clear()
-
+# There is no example
+NULL
 }

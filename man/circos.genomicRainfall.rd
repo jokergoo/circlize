@@ -31,25 +31,7 @@ the plot, it means there is a cluster of regions at that area.
 
 On the plot, y-axis are log10-transformed.
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-
-}
 \examples{
-\dontrun{
-load(system.file(package = "circlize", "extdata", "DMR.RData"))
-
-# rainfall
-circos.initializeWithIdeogram(plotType = c("axis", "labels"))
-
-bed_list = list(DMR_hyper, DMR_hypo)
-circos.genomicRainfall(bed_list, pch = 16, cex = 0.4, col = c("#FF000080", "#0000FF80"))
-
-circos.genomicDensity(bed_list[[1]], col = c("#FF000080"), track.height = 0.1)
-circos.genomicDensity(bed_list[[2]], col = c("#0000FF80"), track.height = 0.1)
-
-circos.clear()
-
-}
-
+# There is no example
+NULL
 }

@@ -23,12 +23,7 @@ indicates which stack the function will be applied to.
 If \code{data} is a list of data frames, the value
 indicates which data frame is being used. Please see the vignette to get a more clear explanation.
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-
-}
 \examples{
 # There is no example
 NULL
-
 }

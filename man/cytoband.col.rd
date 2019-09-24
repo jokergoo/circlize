@@ -17,14 +17,7 @@ cytoband.col(x)
 \details{
 The color theme is from \url{http://circos.ca/tutorials/course/slides/session-2.pdf,} page 42.
 }
-\references{
-Gu, Z. (2014) circlize implements and enhances circular visualization in R. Bioinformatics.
-
-}
 \examples{
-\dontrun{
-cytoband = read.cytoband()
-cytoband.col(cytoband$df[[5]])
-}
-
+# There is no example
+NULL
 }

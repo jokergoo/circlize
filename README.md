@@ -23,7 +23,7 @@ Zuguang Gu, Lei Gu, Roland Eils, Matthias Schlesner, Benedikt Brors, circlize Im
 
 ## Documentation
 
-The full documentations are available at http://jokergoo.github.io/circlize_book/book/.
+The full documentations are available at http://jokergoo.github.io/circlize_book/book/ and the online website is at https://jokergoo.github.io/circlize/.
 
 ## Examples
 

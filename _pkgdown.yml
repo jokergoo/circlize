@@ -1,9 +1,1 @@
 destination: docs
-
-navbar:
-  title: ~
-  left:
-    - text: "Functions"
-      href: reference/index.html
-    - text: circlize book
-      href: https://jokergoo.github.io/circlize_book/book/

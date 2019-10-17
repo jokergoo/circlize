@@ -25,3 +25,8 @@ bioc_packages:
 
 r_check_args: --no-vignettes --no-build-vignettes
 
+r_github_packages:
+  - r-lib/covr
+after_success:
+  - Rscript -e 'covr::codecov()'
+  

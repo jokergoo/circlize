@@ -148,8 +148,12 @@
     <p>A numeric value which can be directly set to <code>big.gap</code> in the second Chord diagram.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># There is no example</span>
-<span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>123</span>)
+<span class='no'>mat1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>20</span>, <span class='fl'>25</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='fl'>5</span>)
+<span class='no'>mat2</span> <span class='kw'>=</span> <span class='no'>mat1</span> / <span class='fl'>2</span>
+<span class='no'>gap</span> <span class='kw'>=</span> <span class='fu'>calc_gap</span>(<span class='no'>mat1</span>, <span class='no'>mat2</span>, <span class='kw'>big.gap</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>small.gap</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='fu'><a href='chordDiagram.html'>chordDiagram</a></span>(<span class='no'>mat2</span>, <span class='kw'>directional</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>grid.col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>2</span>), <span class='kw'>transparency</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+    <span class='kw'>big.gap</span> <span class='kw'>=</span> <span class='no'>gap</span>, <span class='kw'>small.gap</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='calc_gap-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

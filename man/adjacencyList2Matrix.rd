@@ -21,4 +21,5 @@ Convert adjacency list to adjacency matrix.
 \examples{
 # There is no example
 NULL
+
 }

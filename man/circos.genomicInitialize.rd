@@ -34,7 +34,33 @@ is \code{levels(data[[1]])}; If the first column is just a simple vector, the or
 
 For more details on initializing genomic plot, please refer to the vignettes.
 }
+\seealso{
+\url{https://jokergoo.github.io/circlize_book/book/initialize-genomic-plot.html#initialize-with-general-genomic-category}
+}
 \examples{
-# There is no example
-NULL
+df = read.cytoband()$df
+circos.genomicInitialize(df)
+
+df = data.frame(name = c("TP53", "TP63", "TP73"),
+                start = c(7565097, 189349205, 3569084),
+                end = c(7590856, 189615068, 3652765),
+                stringsAsFactors = FALSE)
+circos.genomicInitialize(df)
+circos.clear()
+
+circos.genomicInitialize(df, major.by = 10000)
+circos.clear()
+
+circos.genomicInitialize(df, plotType = "labels")
+circos.clear()
+
+circos.genomicInitialize(df, sector.names = c("tp53", "tp63", "tp73"))
+circos.clear()
+
+circos.genomicInitialize(df, sector.names = c("tp53x", "tp63x", "tp73"))
+circos.clear()
+
+df[[1]] = factor(df[[1]], levels = c("TP73", "TP63", "TP53"))
+circos.genomicInitialize(df)
+circos.clear()
 }

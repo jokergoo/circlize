@@ -200,16 +200,43 @@ But if you do not want to do such transformation you can use this function just 
 lines between points by setting <code>straight</code> to <code>TRUE</code>.</p>
 <p>Drawing areas below lines can help to identify the direction of y-axis in cells (since it is a circle). This can be done by specifying
 <code>area</code> to <code>TURE</code>.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>factors = letters[1:9]
+circos.par(points.overflow.warning = FALSE)
+circos.initialize(factors = factors, xlim = c(0, 10))
+circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.5)</p>
+<p>circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "a")
+circos.text(5, 9, "type = 'l'", sector.index = "a", facing = "outside")</p>
+<p>circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "b", type = "o")
+circos.text(5, 9, "type = 'o'", sector.index = "b", facing = "outside")</p>
+<p>circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "c", type = "h")
+circos.text(5, 9, "type = 'h'", sector.index = "c", facing = "outside")</p>
+<p>circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "d", type = "h", baseline = 5)
+circos.text(5, 9, "type = 'h', baseline = 5", sector.index = "d", facing = "outside")</p>
+<p>circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "e", type = "s")
+circos.text(5, 9, "type = 's'", sector.index = "e", facing = "outside")</p>
+<p>circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "f", area = TRUE)
+circos.text(5, 9, "type = 'l', area = TRUE", sector.index = "f")</p>
+<p>circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "g", type = "o", area = TRUE)
+circos.text(5, 9, "type = 'o', area = TRUE", sector.index = "g")</p>
+<p>circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "h", type = "s", area = TRUE)
+circos.text(5, 9, "type = 's', area = TRUE", sector.index = "h")</p>
+<p>circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "i", area = TRUE, baseline = "top")
+circos.text(5, 9, "type = 'l', area = TRUE, baseline = 'top'", sector.index = "i")</p>
+<p>circos.clear()</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># There is no example</span>
-<span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div></pre>
+<span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

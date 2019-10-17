@@ -15,4 +15,5 @@ This function is deprecated, please use \code{\link{circos.info}} instead.
 \examples{
 # There is no example
 NULL
+
 }

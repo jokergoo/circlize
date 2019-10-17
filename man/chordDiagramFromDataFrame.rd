@@ -69,7 +69,11 @@ The data frame can have a column named "rank" which is used to control the order
 \value{
 A data frame which contains positions of links, see explanation in \code{\link{chordDiagram}}.
 }
+\seealso{
+\url{http://jokergoo.github.io/circlize_book/book/the-chorddiagram-function.html}
+}
 \examples{
 # There is no example
 NULL
+
 }

@@ -40,7 +40,14 @@ and \code{cex} which have same meaning as those in the \code{\link[graphics]{par
 It is recommended to use \code{\link{circos.points}} inside \code{panel.fun} in \code{\link{circos.trackPlotRegion}} so that
 it draws points directly on "curent" cell.
 }
+\seealso{
+\url{https://jokergoo.github.io/circlize_book/book/graphics.html#points}
+}
 \examples{
-# There is no example
-NULL
+circos.initialize(letters[1:8], xlim = c(0, 1))
+circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
+    circos.points(runif(10), runif(10))
+})
+circos.points(runif(10), runif(10), sector.index = "c", pch = 16, col = "red")
+circos.clear()
 }

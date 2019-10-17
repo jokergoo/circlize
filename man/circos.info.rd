@@ -27,7 +27,11 @@ Also, the function will print index of your current sector and current track.
 If \code{plot} is set to \code{TRUE}, the function will plot the index of the sector and the track 
 for each cell on the figure.
 }
+\seealso{
+\url{https://jokergoo.github.io/circlize_book/book/circular-layout.html#circos-info-and-circos-clear}
+}
 \examples{
 # There is no example
 NULL
+
 }

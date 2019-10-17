@@ -26,4 +26,5 @@ indicates which data frame is being used. Please see the vignette to get a more 
 \examples{
 # There is no example
 NULL
+
 }

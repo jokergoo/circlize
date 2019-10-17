@@ -25,6 +25,12 @@ This is the core function in the package. It transform data points from data coo
 A matrix with two columns (\code{theta} and \code{rou}). \code{rou} is measured in degree.
 }
 \examples{
-# There is no example
-NULL
+pdf(NULL)
+factors = c("a", "b")
+circos.initialize(factors, xlim = c(0, 1))
+circos.track(ylim = c(0, 1))
+# x = 0.5, y = 0.5 in sector a and track 1
+circlize(0.5, 0.5, sector.index = "a", track.index = 1)
+circos.clear()
+dev.off()
 }

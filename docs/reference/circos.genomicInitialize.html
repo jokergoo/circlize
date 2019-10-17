@@ -171,16 +171,37 @@ create a new track.</p>
 <p>The order of sectors related to data structure of <code>data</code>. If the first column in <code>data</code> is a factor, the order of sectors
 is <code><a href='https://rdrr.io/r/base/levels.html'>levels(data[[1]])</a></code>; If the first column is just a simple vector, the order of sectors is <code>unique(data[[1]]</code>.</p>
 <p>For more details on initializing genomic plot, please refer to the vignettes.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='https://jokergoo.github.io/circlize_book/book/initialize-genomic-plot.html#initialize-with-general-genomic-category'>https://jokergoo.github.io/circlize_book/book/initialize-genomic-plot.html#initialize-with-general-genomic-category</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># There is no example</span>
-<span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>df</span> <span class='kw'>=</span> <span class='fu'><a href='read.cytoband.html'>read.cytoband</a></span>()$<span class='no'>df</span>
+<span class='fu'>circos.genomicInitialize</span>(<span class='no'>df</span>)</div><div class='img'><img src='circos.genomicInitialize-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>df</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"TP53"</span>, <span class='st'>"TP63"</span>, <span class='st'>"TP73"</span>),
+                <span class='kw'>start</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>7565097</span>, <span class='fl'>189349205</span>, <span class='fl'>3569084</span>),
+                <span class='kw'>end</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>7590856</span>, <span class='fl'>189615068</span>, <span class='fl'>3652765</span>),
+                <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>circos.genomicInitialize</span>(<span class='no'>df</span>)</div><div class='img'><img src='circos.genomicInitialize-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()
+
+<span class='fu'>circos.genomicInitialize</span>(<span class='no'>df</span>, <span class='kw'>major.by</span> <span class='kw'>=</span> <span class='fl'>10000</span>)
+<span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()
+
+<span class='fu'>circos.genomicInitialize</span>(<span class='no'>df</span>, <span class='kw'>plotType</span> <span class='kw'>=</span> <span class='st'>"labels"</span>)</div><div class='img'><img src='circos.genomicInitialize-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()
+
+<span class='fu'>circos.genomicInitialize</span>(<span class='no'>df</span>, <span class='kw'>sector.names</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"tp53"</span>, <span class='st'>"tp63"</span>, <span class='st'>"tp73"</span>))</div><div class='img'><img src='circos.genomicInitialize-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()
+
+<span class='fu'>circos.genomicInitialize</span>(<span class='no'>df</span>, <span class='kw'>sector.names</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"tp53x"</span>, <span class='st'>"tp63x"</span>, <span class='st'>"tp73"</span>))</div><div class='img'><img src='circos.genomicInitialize-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()
+
+<span class='no'>df</span><span class='kw'>[[</span><span class='fl'>1</span>]] <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>df</span><span class='kw'>[[</span><span class='fl'>1</span>]], <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"TP73"</span>, <span class='st'>"TP63"</span>, <span class='st'>"TP53"</span>))
+<span class='fu'>circos.genomicInitialize</span>(<span class='no'>df</span>)</div><div class='img'><img src='circos.genomicInitialize-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

@@ -69,6 +69,21 @@
 # -``x1`` and position of the link on the "from" sector, the interval for the link on the "from" sector is ``c(x1-abs(value), x1)``
 # -``x2`` and position of the link on the "to" sector, the interval for the link on the "from" sector is ``c(x2-abs(value), x2)``
 # 
+# == examples
+# set.seed(999)
+# mat = matrix(sample(18, 18), 3, 6) 
+# rownames(mat) = paste0("S", 1:3)
+# colnames(mat) = paste0("E", 1:6)
+#
+# df = data.frame(from = rep(rownames(mat), times = ncol(mat)),
+#     to = rep(colnames(mat), each = nrow(mat)),
+#     value = as.vector(mat),
+#     stringsAsFactors = FALSE)
+#
+# chordDiagram(mat)
+# chordDiagram(df)
+# circos.clear()
+#
 chordDiagram = function(x, grid.col = NULL, grid.border = NA, transparency = 0.5,
 	col = NULL, row.col = NULL, column.col = NULL, 
 	order = NULL, directional = 0, xmax = NULL,
@@ -230,37 +245,6 @@ parsePreAllocateTracksValue = function(preAllocateTracks) {
 	return(mat)
 }
 
-# title
-# Adjust gaps to make chord diagrams comparable
-#
-# == param
-# -mat1 matrix that has the largest sum of absolute
-# -gap.degree gap.degree for the Chord diagram which corresponds to ``mat1``
-# -start.degree start.degree for the first Chord diagram
-# -mat2 matrix to be compared
-#
-# == details
-# Normally, in Chord Diagram, values in mat are normalized to the summation and each value is put 
-# to the circle according to its percentage, which means the width for each link only represents 
-# kind of relative value. However, when comparing two Chord Diagrams, it is necessary that unit 
-# width of links in the two plots should be represented in a same scale. This problem can be solved by 
-# adding more blank gaps to the Chord Diagram which has smaller values.
-#
-# == value
-# Sum of gaps for ``mat2``.
-#
-normalizeChordDiagramGap = function(mat1, gap.degree = circos.par("gap.degree"), 
-	start.degree = circos.par("start.degree"), mat2) {
-	percent = sum(abs(mat2)) / sum(abs(mat1))
-
-	if(length(gap.degree) == 1) {
-		gap.degree = rep(gap.degree, length(unique(rownames(mat1), colnames(mat1))))
-	}
-	blank.degree = (360 - sum(gap.degree)) * (1 - percent)
-	big.gap = (blank.degree - sum(rep()))/2
-	return(blank.degree)
-}
-
 mat2df = function(mat) {
 	nr = dim(mat)[1]
 	nc = dim(mat)[2]
@@ -345,6 +329,9 @@ mat2df = function(mat) {
 #
 # == value
 # A data frame which contains positions of links, see explanation in `chordDiagram`.
+#
+# == seealso
+# http://jokergoo.github.io/circlize_book/book/the-chorddiagram-function.html
 #
 chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transparency = 0.5,
 	col = NULL, row.col = NULL, column.col = NULL, order = NULL, directional = 0,
@@ -682,6 +669,9 @@ chordDiagramFromMatrix = function(mat, grid.col = NULL, grid.border = NA, transp
 #
 # == value
 # A data frame which contains positions of links, see explanation in `chordDiagram`.
+#
+# == seealso
+# http://jokergoo.github.io/circlize_book/book/the-chorddiagram-function.html
 #
 chordDiagramFromDataFrame = function(df, grid.col = NULL, grid.border = NA, transparency = 0.5,
 	col = NULL, order = NULL, directional = 0, xmax = NULL,
@@ -1176,6 +1166,13 @@ psubset = function(mat, ri, ci) {
 # == value
 # A numeric value which can be directly set to ``big.gap`` in the second Chord diagram.
 #
+# == examples
+# set.seed(123)
+# mat1 = matrix(sample(20, 25, replace = TRUE), 5)
+# mat2 = mat1 / 2
+# gap = calc_gap(mat1, mat2, big.gap = 10, small.gap = 1)
+# chordDiagram(mat2, directional = 1, grid.col = rep(1:5, 2), transparency = 0.5,
+#     big.gap = gap, small.gap = 1)
 calc_gap = function(x1, x2, big.gap = 10, small.gap = 1) {
 	if(is.matrix(x1)) {
 		sum1 = sum(abs(x1))

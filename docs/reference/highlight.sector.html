@@ -175,16 +175,24 @@
 
     <p>You can use <code><a href='circos.info.html'>circos.info</a></code> to find out index for all sectors and all tracks.</p>
 <p>The function calls <code><a href='draw.sector.html'>draw.sector</a></code>.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='https://jokergoo.github.io/circlize_book/book/graphics.html#highlight-sectors-and-tracks'>https://jokergoo.github.io/circlize_book/book/graphics.html#highlight-sectors-and-tracks</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># There is no example</span>
-<span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>factors</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>8</span>]
+<span class='fu'><a href='circos.initialize.html'>circos.initialize</a></span>(<span class='no'>factors</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))</div><div class='input'><span class='kw'>for</span>(<span class='no'>i</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fl'>4</span>) {
+    <span class='fu'><a href='circos.trackPlotRegion.html'>circos.trackPlotRegion</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))
+}</div><div class='input'><span class='fu'><a href='circos.info.html'>circos.info</a></span>(<span class='kw'>plot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='input'>
+<span class='fu'>highlight.sector</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a"</span>, <span class='st'>"h"</span>), <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='input'><span class='fu'>highlight.sector</span>(<span class='st'>"c"</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"#00FF0040"</span>)</div><div class='input'><span class='fu'>highlight.sector</span>(<span class='st'>"d"</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='input'><span class='fu'>highlight.sector</span>(<span class='st'>"e"</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"#0000FF40"</span>, <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>3</span>))</div><div class='input'><span class='fu'>highlight.sector</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"f"</span>, <span class='st'>"g"</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"green"</span>,
+    <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>3</span>))</div><div class='input'><span class='fu'>highlight.sector</span>(<span class='no'>factors</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"#FFFF0040"</span>, <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='img'><img src='highlight.sector-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

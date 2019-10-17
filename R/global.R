@@ -572,6 +572,9 @@ has.cell = function(sector.index, track.index) {
 #
 # If ``plot`` is set to ``TRUE``, the function will plot the index of the sector and the track 
 # for each cell on the figure.
+#
+# == seealso
+# https://jokergoo.github.io/circlize_book/book/circular-layout.html#circos-info-and-circos-clear
 circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 	sectors = get.all.sector.index()
 	tracks = get.all.track.index()
@@ -810,9 +813,10 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 # pdf(NULL)
 # circos.initialize("a", xlim = c(0, 1))
 # circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
-# 	print(CELL_META$sector.index)
-# 	print(CELL_META$xlim)
+#     print(CELL_META$sector.index)
+#     print(CELL_META$xlim)
 # })
+# print(names(CELL_META))
 # dev.off()
 CELL_META = "don't use me directly"
 class(CELL_META) = "CELL_META"

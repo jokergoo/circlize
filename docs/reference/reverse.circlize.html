@@ -149,8 +149,19 @@
     <p>A matrix with two columns (<code>x</code> and <code>y</code>)</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># There is no example</span>
-<span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/grDevices/pdf.html'>pdf</a></span>(<span class='kw'>NULL</span>)
+<span class='no'>factors</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>4</span>]
+<span class='fu'><a href='circos.initialize.html'>circos.initialize</a></span>(<span class='no'>factors</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))
+<span class='fu'><a href='circos.trackPlotRegion.html'>circos.trackPlotRegion</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))
+<span class='fu'>reverse.circlize</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>30</span>, <span class='fl'>60</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.9</span>, <span class='fl'>0.8</span>))</div><div class='output co'>#&gt;              x     y
+#&gt; [1,] 0.6781609  0.56
+#&gt; [2,] 0.3333333 -0.04</div><div class='input'><span class='fu'>reverse.circlize</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>30</span>, <span class='fl'>60</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.9</span>, <span class='fl'>0.8</span>), <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"d"</span>, <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt;              x     y
+#&gt; [1,] 0.6781609  0.56
+#&gt; [2,] 0.3333333 -0.04</div><div class='input'><span class='fu'>reverse.circlize</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>30</span>, <span class='fl'>60</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.9</span>, <span class='fl'>0.8</span>), <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"a"</span>, <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt;             x     y
+#&gt; [1,] 3.781609  0.56
+#&gt; [2,] 3.436782 -0.04</div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()
+<span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span>()</div><div class='output co'>#&gt; pdf 
+#&gt;   2 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

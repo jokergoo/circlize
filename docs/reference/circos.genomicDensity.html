@@ -182,16 +182,26 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function is a high-level graphical function, and it will create a new track.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#genomic-density-and-rainfall-plot'>https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#genomic-density-and-rainfall-plot</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># There is no example</span>
-<span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"circlize"</span>, <span class='st'>"extdata"</span>, <span class='st'>"DMR.RData"</span>))
+
+<span class='co'># rainfall</span>
+<span class='fu'><a href='circos.initializeWithIdeogram.html'>circos.initializeWithIdeogram</a></span>(<span class='kw'>plotType</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"axis"</span>, <span class='st'>"labels"</span>))</div><div class='input'>
+<span class='no'>bed_list</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>DMR_hyper</span>, <span class='no'>DMR_hypo</span>)
+<span class='fu'><a href='circos.genomicRainfall.html'>circos.genomicRainfall</a></span>(<span class='no'>bed_list</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.4</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#FF000080"</span>, <span class='st'>"#0000FF80"</span>))</div><div class='input'>
+<span class='fu'>circos.genomicDensity</span>(<span class='no'>bed_list</span><span class='kw'>[[</span><span class='fl'>1</span>]], <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#FF000080"</span>), <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)</div><div class='input'><span class='fu'>circos.genomicDensity</span>(<span class='no'>bed_list</span><span class='kw'>[[</span><span class='fl'>2</span>]], <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#0000FF80"</span>), <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)</div><div class='img'><img src='circos.genomicDensity-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

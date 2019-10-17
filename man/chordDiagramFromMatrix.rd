@@ -72,7 +72,11 @@ Internally, the matrix is transformed to a data frame and sent to \code{\link{ch
 \value{
 A data frame which contains positions of links, see explanation in \code{\link{chordDiagram}}.
 }
+\seealso{
+\url{http://jokergoo.github.io/circlize_book/book/the-chorddiagram-function.html}
+}
 \examples{
 # There is no example
 NULL
+
 }

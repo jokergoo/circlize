@@ -19,10 +19,14 @@ circos.genomicIdeogram(cytoband = system.file(package = "circlize",
   \item{track.margin}{margins for the track}
 
 }
+\seealso{
+\url{https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#ideograms}
+}
 \author{
 Zuguang Gu <z.gu@dkfz.de>
 }
 \examples{
-# There is no example
-NULL
+circos.initializeWithIdeogram(plotType = c("labels", "axis"))
+circos.track(ylim = c(0, 1))
+circos.genomicIdeogram() # put ideogram as the third track
 }

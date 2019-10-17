@@ -28,6 +28,9 @@ circos.genomicAxis(h = "top", major.at = NULL, labels = NULL,
 \details{
 It assigns proper tick labels under genomic coordinate.
 }
+\seealso{
+\url{https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#genomic-axes}
+}
 \examples{
 circos.initializeWithIdeogram(plotType = NULL)
 circos.track(ylim = c(0, 1), panel.fun = function(x, y) circos.genomicAxis())

@@ -40,11 +40,10 @@ circos.genomicLabels(bed, labels = NULL, labels.column = NULL,
 The function adds labels for the specified regions. The positions of labels are arranged
 so that they are not overlapping to each other.
 }
-\author{
-Zuguang Gu <z.gu@dkfz.de>
+\seealso{
+\url{https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#labels}
 }
 \examples{
-\dontrun{
 circos.initializeWithIdeogram(plotType = c("labels", "axis"))
 bed = generateRandomBed(nr = 100, fun = function(k) sample(letters, k, replace = TRUE))
 bed[1, 4] = "aaaaaaaa"
@@ -52,5 +51,4 @@ circos.genomicLabels(bed, labels.column = 4, side = "inside",
     col = as.numeric(factor(bed[[1]])))
 circos.genomicLabels(bed, labels.column = 4, side = "outside",
     line_col = as.numeric(factor(bed[[1]])))
-}
 }

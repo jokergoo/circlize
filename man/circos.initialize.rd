@@ -47,4 +47,5 @@ The function finally calls \code{\link[graphics]{plot}} with enforing aspect rat
 \examples{
 # There is no example
 NULL
+
 }

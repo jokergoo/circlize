@@ -33,4 +33,5 @@ Under the transformation, texts will be as close as possible to the original pos
 \examples{
 # There is no example
 NULL
+
 }

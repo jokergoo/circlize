@@ -188,8 +188,22 @@
     <div class='dont-index'><p><a href='http://jokergoo.github.io/circlize_book/book/graphics.html#text'>http://jokergoo.github.io/circlize_book/book/graphics.html#text</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># There is no example</span>
-<span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>factors</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>4</span>]
+<span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='kw'>points.overflow.warning</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'><a href='circos.initialize.html'>circos.initialize</a></span>(<span class='kw'>factors</span> <span class='kw'>=</span> <span class='no'>factors</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>10</span>))</div><div class='input'><span class='fu'><a href='circos.trackPlotRegion.html'>circos.trackPlotRegion</a></span>(<span class='kw'>factors</span> <span class='kw'>=</span> <span class='no'>factors</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>10</span>),
+  <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {
+    <span class='fu'>circos.text</span>(<span class='fl'>3</span>, <span class='fl'>1</span>, <span class='st'>"inside"</span>, <span class='kw'>facing</span> <span class='kw'>=</span> <span class='st'>"inside"</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
+    <span class='fu'>circos.text</span>(<span class='fl'>7</span>, <span class='fl'>1</span>, <span class='st'>"outside"</span>, <span class='kw'>facing</span> <span class='kw'>=</span> <span class='st'>"outside"</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
+    <span class='fu'>circos.text</span>(<span class='fl'>0</span>, <span class='fl'>5</span>, <span class='st'>"reverse.clockwise"</span>, <span class='kw'>facing</span> <span class='kw'>=</span> <span class='st'>"reverse.clockwise"</span>,
+        <span class='kw'>adj</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.5</span>, <span class='fl'>0</span>), <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
+    <span class='fu'>circos.text</span>(<span class='fl'>10</span>, <span class='fl'>5</span>, <span class='st'>"clockwise"</span>, <span class='kw'>facing</span> <span class='kw'>=</span> <span class='st'>"clockwise"</span>, <span class='kw'>adj</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.5</span>, <span class='fl'>0</span>),
+        <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
+    <span class='fu'>circos.text</span>(<span class='fl'>5</span>, <span class='fl'>5</span>, <span class='st'>"downward"</span>, <span class='kw'>facing</span> <span class='kw'>=</span> <span class='st'>"downward"</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
+    <span class='fu'>circos.text</span>(<span class='fl'>3</span>, <span class='fl'>9</span>, <span class='st'>"====bending.inside===="</span>, <span class='kw'>facing</span> <span class='kw'>=</span> <span class='st'>"bending.inside"</span>,
+        <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
+    <span class='fu'>circos.text</span>(<span class='fl'>7</span>, <span class='fl'>9</span>, <span class='st'>"====bending.outside===="</span>, <span class='kw'>facing</span> <span class='kw'>=</span> <span class='st'>"bending.outside"</span>,
+        <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.8</span>)
+})</div><div class='img'><img src='circos.text-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

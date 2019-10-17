@@ -24,6 +24,10 @@ There should be no overlap between the two sets of sectors.
 A numeric value which can be directly set to \code{big.gap} in the second Chord diagram.
 }
 \examples{
-# There is no example
-NULL
+set.seed(123)
+mat1 = matrix(sample(20, 25, replace = TRUE), 5)
+mat2 = mat1 / 2
+gap = calc_gap(mat1, mat2, big.gap = 10, small.gap = 1)
+chordDiagram(mat2, directional = 1, grid.col = rep(1:5, 2), transparency = 0.5,
+    big.gap = gap, small.gap = 1)
 }

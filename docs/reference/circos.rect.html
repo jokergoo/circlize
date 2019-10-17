@@ -119,7 +119,7 @@
 
     <pre class="usage"><span class='fu'>circos.rect</span>(<span class='no'>xleft</span>, <span class='no'>ybottom</span>, <span class='no'>xright</span>, <span class='no'>ytop</span>,
     <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"sector.index"</span>),
-    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"track.index"</span>), <span class='no'>...</span>)</pre>
+    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"track.index"</span>), <span class='kw'>rot</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,6 +149,10 @@
       <td><p>Index for the track</p></td>
     </tr>
     <tr>
+      <th>rot</th>
+      <td><p>Rotation of the rectangles. The value is measured clockwise in degree. Rotation is relative to the center of the rectangles.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>pass to <code><a href='https://rdrr.io/r/graphics/polygon.html'>polygon</a></code></p></td>
     </tr>
@@ -162,8 +166,11 @@ in the polar coordinate, the up and bottom edge become two arcs.</p>
 <p>This function can be vectorized.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># There is no example</span>
-<span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='circos.initialize.html'>circos.initialize</a></span>(<span class='kw'>fa</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"c"</span>, <span class='st'>"d"</span>), <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>10</span>))</div><div class='input'><span class='fu'><a href='circos.track.html'>circos.track</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>10</span>), <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {
+    <span class='kw'>for</span>(<span class='no'>rot</span> <span class='kw'>in</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>360</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>30</span>)) {
+        <span class='fu'>circos.rect</span>(<span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>6</span>, <span class='fl'>6</span>, <span class='kw'>rot</span> <span class='kw'>=</span> <span class='no'>rot</span>)
+    }
+}, <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</div><div class='img'><img src='circos.rect-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

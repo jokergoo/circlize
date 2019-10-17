@@ -199,28 +199,26 @@
 
     <p>The function adds labels for the specified regions. The positions of labels are arranged
 so that they are not overlapping to each other.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#labels'>https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#labels</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='circos.initializeWithIdeogram.html'>circos.initializeWithIdeogram</a></span>(<span class='kw'>plotType</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"labels"</span>, <span class='st'>"axis"</span>))
-<span class='no'>bed</span> <span class='kw'>=</span> <span class='fu'><a href='generateRandomBed.html'>generateRandomBed</a></span>(<span class='kw'>nr</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>k</span>) <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='no'>letters</span>, <span class='no'>k</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
+    <pre class="examples"><div class='input'><span class='fu'><a href='circos.initializeWithIdeogram.html'>circos.initializeWithIdeogram</a></span>(<span class='kw'>plotType</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"labels"</span>, <span class='st'>"axis"</span>))</div><div class='input'><span class='no'>bed</span> <span class='kw'>=</span> <span class='fu'><a href='generateRandomBed.html'>generateRandomBed</a></span>(<span class='kw'>nr</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>k</span>) <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='no'>letters</span>, <span class='no'>k</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
 <span class='no'>bed</span>[<span class='fl'>1</span>, <span class='fl'>4</span>] <span class='kw'>=</span> <span class='st'>"aaaaaaaa"</span>
 <span class='fu'>circos.genomicLabels</span>(<span class='no'>bed</span>, <span class='kw'>labels.column</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>side</span> <span class='kw'>=</span> <span class='st'>"inside"</span>,
-    <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>bed</span><span class='kw'>[[</span><span class='fl'>1</span>]])))
-<span class='fu'>circos.genomicLabels</span>(<span class='no'>bed</span>, <span class='kw'>labels.column</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>side</span> <span class='kw'>=</span> <span class='st'>"outside"</span>,
-    <span class='kw'>line_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>bed</span><span class='kw'>[[</span><span class='fl'>1</span>]])))
-}</div></pre>
+    <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>bed</span><span class='kw'>[[</span><span class='fl'>1</span>]])))</div><div class='input'><span class='fu'>circos.genomicLabels</span>(<span class='no'>bed</span>, <span class='kw'>labels.column</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>side</span> <span class='kw'>=</span> <span class='st'>"outside"</span>,
+    <span class='kw'>line_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>bed</span><span class='kw'>[[</span><span class='fl'>1</span>]])))</div><div class='img'><img src='circos.genomicLabels-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
-    <h2>Author</h2>
-    <p>Zuguang Gu &lt;z.gu@dkfz.de&gt;</p>
   </div>
 </div>
 

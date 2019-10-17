@@ -156,8 +156,15 @@ start position, end position and percent of overlapping. And if the input is a b
 data frame, there will be an additionally chromosome name column.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># There is no example</span>
-<span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>bed</span> <span class='kw'>=</span> <span class='fu'><a href='generateRandomBed.html'>generateRandomBed</a></span>()
+<span class='no'>bed</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span>(<span class='no'>bed</span>, <span class='no'>chr</span> <span class='kw'>==</span> <span class='st'>"chr1"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>genomicDensity</span>(<span class='no'>bed</span>))</div><div class='output co'>#&gt;    chr    start      end       pct
+#&gt; 1 chr1        1 10000000 0.5825818
+#&gt; 2 chr1  5000001 15000000 0.5389086
+#&gt; 3 chr1 10000001 20000000 0.5010497
+#&gt; 4 chr1 15000001 25000000 0.5265994
+#&gt; 5 chr1 20000001 30000000 0.4900827
+#&gt; 6 chr1 25000001 35000000 0.4860266</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -185,8 +185,74 @@
     <p>The function is a low-level graphical function and usually is put in <code>panel.fun</code> when using <code><a href='circos.genomicTrackPlotRegion.html'>circos.genomicTrackPlotRegion</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># There is no example</span>
-<span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div></pre>
+    <pre class="examples"><div class='input'><span class='co'>############################</span>
+<span class='co'>### rect matrix</span>
+<span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='st'>"track.height"</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>cell.padding</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>))
+<span class='fu'><a href='circos.initializeWithIdeogram.html'>circos.initializeWithIdeogram</a></span>(<span class='kw'>plotType</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='input'>
+<span class='no'>bed</span> <span class='kw'>=</span> <span class='fu'><a href='generateRandomBed.html'>generateRandomBed</a></span>(<span class='kw'>nr</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>nc</span> <span class='kw'>=</span> <span class='fl'>4</span>)
+<span class='fu'><a href='circos.genomicTrackPlotRegion.html'>circos.genomicTrackPlotRegion</a></span>(<span class='no'>bed</span>, <span class='kw'>stack</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='no'>...</span>) {
+    <span class='fu'>circos.genomicRect</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>region</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
+        <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='no'>...</span>)
+    <span class='no'>i</span> <span class='kw'>=</span> <span class='fu'><a href='getI.html'>getI</a></span>(<span class='no'>...</span>)
+    <span class='no'>cell.xlim</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"cell.xlim"</span>)
+    <span class='co'>#circos.lines(cell.xlim, c(i, i), lty = 2, col = "#00000040")</span>
+}, <span class='kw'>bg.border</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</div><div class='input'>
+<span class='fu'><a href='circos.genomicPosTransformLines.html'>circos.genomicPosTransformLines</a></span>(<span class='no'>bed</span>, <span class='kw'>posTransform</span> <span class='kw'>=</span> <span class='no'>posTransform.default</span>,
+    <span class='kw'>horizontalLine</span> <span class='kw'>=</span> <span class='st'>"top"</span>)</div><div class='input'>
+<span class='fu'><a href='circos.genomicTrackPlotRegion.html'>circos.genomicTrackPlotRegion</a></span>(<span class='no'>bed</span>, <span class='kw'>stack</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='no'>...</span>) {
+    <span class='fu'>circos.genomicRect</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>region</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
+        <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>posTransform</span> <span class='kw'>=</span> <span class='no'>posTransform.default</span>, <span class='no'>...</span>)
+    <span class='no'>i</span> <span class='kw'>=</span> <span class='fu'><a href='getI.html'>getI</a></span>(<span class='no'>...</span>)
+    <span class='no'>cell.xlim</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"cell.xlim"</span>)
+    <span class='co'>#circos.lines(cell.xlim, c(i, i), lty = 2, col = "#00000040")</span>
+}, <span class='kw'>bg.border</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</div><div class='input'>
+<span class='fu'><a href='circos.genomicPosTransformLines.html'>circos.genomicPosTransformLines</a></span>(<span class='no'>bed</span>, <span class='kw'>posTransform</span> <span class='kw'>=</span> <span class='no'>posTransform.default</span>,
+    <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"outside"</span>, <span class='kw'>horizontalLine</span> <span class='kw'>=</span> <span class='st'>"bottom"</span>)</div><div class='input'>
+<span class='fu'><a href='circos.genomicTrackPlotRegion.html'>circos.genomicTrackPlotRegion</a></span>(<span class='no'>bed</span>, <span class='kw'>stack</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='no'>...</span>) {
+    <span class='fu'>circos.genomicRect</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>region</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
+        <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='no'>...</span>)
+    <span class='no'>i</span> <span class='kw'>=</span> <span class='fu'><a href='getI.html'>getI</a></span>(<span class='no'>...</span>)
+    <span class='no'>cell.xlim</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"cell.xlim"</span>)
+    <span class='co'>#circos.lines(cell.xlim, c(i, i), lty = 2, col = "#00000040")</span>
+}, <span class='kw'>bg.border</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</div><div class='img'><img src='circos.genomicRect-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()
+
+<span class='co'>##########################</span>
+<span class='co'>### rect from bed list</span>
+<span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='st'>"track.height"</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>cell.padding</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>))
+<span class='fu'><a href='circos.initializeWithIdeogram.html'>circos.initializeWithIdeogram</a></span>(<span class='kw'>plotType</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='input'>
+<span class='no'>bed1</span> <span class='kw'>=</span> <span class='fu'><a href='generateRandomBed.html'>generateRandomBed</a></span>(<span class='kw'>nr</span> <span class='kw'>=</span> <span class='fl'>100</span>)
+<span class='no'>bed2</span> <span class='kw'>=</span> <span class='fu'><a href='generateRandomBed.html'>generateRandomBed</a></span>(<span class='kw'>nr</span> <span class='kw'>=</span> <span class='fl'>100</span>)
+<span class='no'>bed_list</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>bed1</span>, <span class='no'>bed2</span>)
+<span class='no'>f</span> <span class='kw'>=</span> <span class='fu'><a href='colorRamp2.html'>colorRamp2</a></span>(<span class='kw'>breaks</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>colors</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"green"</span>, <span class='st'>"black"</span>, <span class='st'>"red"</span>))
+<span class='fu'><a href='circos.genomicTrackPlotRegion.html'>circos.genomicTrackPlotRegion</a></span>(<span class='no'>bed_list</span>, <span class='kw'>stack</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+    <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='no'>...</span>) {
+
+<span class='fu'>circos.genomicRect</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'>f</span>(<span class='no'>value</span><span class='kw'>[[</span><span class='fl'>1</span>]]),
+        <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='no'>...</span>)
+    <span class='no'>i</span> <span class='kw'>=</span> <span class='fu'><a href='getI.html'>getI</a></span>(<span class='no'>...</span>)
+    <span class='no'>cell.xlim</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"cell.xlim"</span>)
+    <span class='fu'><a href='circos.lines.html'>circos.lines</a></span>(<span class='no'>cell.xlim</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>i</span>, <span class='no'>i</span>), <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"#000000"</span>)
+})</div><div class='input'>
+<span class='fu'><a href='circos.genomicTrackPlotRegion.html'>circos.genomicTrackPlotRegion</a></span>(<span class='no'>bed_list</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>3</span>),
+    <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='no'>...</span>) {
+    <span class='no'>i</span> <span class='kw'>=</span> <span class='fu'><a href='getI.html'>getI</a></span>(<span class='no'>...</span>)
+    <span class='fu'>circos.genomicRect</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='kw'>ytop</span> <span class='kw'>=</span> <span class='no'>i</span>+<span class='fl'>0.4</span>, <span class='kw'>ybottom</span> <span class='kw'>=</span> <span class='no'>i</span>-<span class='fl'>0.4</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'>f</span>(<span class='no'>value</span><span class='kw'>[[</span><span class='fl'>1</span>]]),
+        <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='no'>...</span>)
+
+<span class='no'>cell.xlim</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"cell.xlim"</span>)
+    <span class='fu'><a href='circos.lines.html'>circos.lines</a></span>(<span class='no'>cell.xlim</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>i</span>, <span class='no'>i</span>), <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"#000000"</span>)
+})</div><div class='input'>
+<span class='fu'><a href='circos.genomicTrackPlotRegion.html'>circos.genomicTrackPlotRegion</a></span>(<span class='no'>bed1</span>, <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='no'>...</span>) {
+    <span class='fu'>circos.genomicRect</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='no'>...</span>)
+
+})</div><div class='input'>
+<span class='fu'><a href='circos.genomicTrackPlotRegion.html'>circos.genomicTrackPlotRegion</a></span>(<span class='no'>bed_list</span>, <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='no'>...</span>) {
+    <span class='no'>i</span> <span class='kw'>=</span> <span class='fu'><a href='getI.html'>getI</a></span>(<span class='no'>...</span>)
+    <span class='fu'>circos.genomicRect</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>i</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='no'>...</span>)
+
+})</div><div class='img'><img src='circos.genomicRect-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

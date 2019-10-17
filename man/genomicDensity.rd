@@ -27,6 +27,7 @@ start position, end position and percent of overlapping. And if the input is a b
 data frame, there will be an additionally chromosome name column.
 }
 \examples{
-# There is no example
-NULL
+bed = generateRandomBed()
+bed = subset(bed, chr == "chr1")
+head(genomicDensity(bed))
 }

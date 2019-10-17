@@ -51,7 +51,11 @@ Being different from \code{panel.fun} in \code{\link{circos.trackPlotRegion}}, t
 argument is used to pass hidden values to low-level graphical functions. So if you are using functions like \code{circos.genomicPoints}, you should also
 add \code{...} as an additional argument into \code{circos.genomicPoints}.
 }
+\seealso{
+\url{https://jokergoo.github.io/circlize_book/book/genomic-plotting-region.html} and \url{https://jokergoo.github.io/circlize_book/book/modes-of-input.html}
+}
 \examples{
 # There is no example
 NULL
+
 }

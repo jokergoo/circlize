@@ -36,7 +36,48 @@ The function finally pass data to \code{\link{circos.genomicInitialize}} to init
 
 The style of ideogram is almost fixed, but you can customize it with your self-sefined code. Refer to vignette for demonstration.
 }
+\seealso{
+\url{https://jokergoo.github.io/circlize_book/book/initialize-genomic-plot.html#initialize-cytoband}
+}
 \examples{
-# There is no example
-NULL
+\dontrun{
+circos.initializeWithIdeogram()
+
+cytoband.file = system.file(package = "circlize",
+    "extdata", "cytoBand.txt")
+circos.initializeWithIdeogram(cytoband.file)
+
+cytoband.df = read.table(cytoband.file, colClasses = c("character", "numeric",
+    "numeric", "character", "character"), sep = "\t")
+circos.initializeWithIdeogram(cytoband.df)
+
+circos.initializeWithIdeogram(species = "hg18")
+
+circos.initializeWithIdeogram(species = "mm10")
+
+circos.initializeWithIdeogram(chromosome.index = c("chr1", "chr2"))
+
+cytoband = read.table(cytoband.file, colClasses = c("character", "numeric",
+    "numeric", "character", "character"), sep = "\t")
+circos.initializeWithIdeogram(cytoband, sort.chr = FALSE)
+
+cytoband[[1]] = factor(cytoband[[1]], levels = paste0("chr", c(22:1, "X", "Y")))
+circos.initializeWithIdeogram(cytoband, sort.chr = FALSE)
+
+cytoband = read.table(cytoband.file, colClasses = c("character", "numeric",
+    "numeric", "character", "character"), sep = "\t")
+circos.initializeWithIdeogram(cytoband, sort.chr = TRUE)
+
+circos.initializeWithIdeogram(plotType = c("axis", "labels"))
+
+circos.initializeWithIdeogram(plotType = NULL)
+
+circos.par("start.degree" = 90)
+circos.initializeWithIdeogram()
+circos.clear()
+
+circos.par("gap.degree" = rep(c(2, 4), 12))
+circos.initializeWithIdeogram()
+circos.clear()
+}
 }

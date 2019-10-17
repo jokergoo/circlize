@@ -20,4 +20,5 @@ a \code{degree} object
 \examples{
 # There is no example
 NULL
+
 }

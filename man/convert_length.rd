@@ -24,6 +24,8 @@ is applied on x direction or y direction.
 }
 \seealso{
 \code{\link{convert_x}} and \code{\link{convert_y}} convert absolute units into a data coordinate in a specified cell.
+
+\url{https://jokergoo.github.io/circlize_book/book/circular-layout.html#convert-functions}
 }
 \author{
 Zuguang Gu <z.gu@dkfz.de>

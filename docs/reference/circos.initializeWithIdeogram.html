@@ -179,16 +179,58 @@ chromosomes by <code>chromosome.index</code> or by <code>sort.chr</code>, or by 
 to find out how to control a proper <code>cytoband</code>).</p>
 <p>The function finally pass data to <code><a href='circos.genomicInitialize.html'>circos.genomicInitialize</a></code> to initialize the circular plot.</p>
 <p>The style of ideogram is almost fixed, but you can customize it with your self-sefined code. Refer to vignette for demonstration.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='https://jokergoo.github.io/circlize_book/book/initialize-genomic-plot.html#initialize-cytoband'>https://jokergoo.github.io/circlize_book/book/initialize-genomic-plot.html#initialize-cytoband</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># There is no example</span>
-<span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'>circos.initializeWithIdeogram</span>()
+
+<span class='no'>cytoband.file</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"circlize"</span>,
+    <span class='st'>"extdata"</span>, <span class='st'>"cytoBand.txt"</span>)
+<span class='fu'>circos.initializeWithIdeogram</span>(<span class='no'>cytoband.file</span>)
+
+<span class='no'>cytoband.df</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.table</a></span>(<span class='no'>cytoband.file</span>, <span class='kw'>colClasses</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"character"</span>, <span class='st'>"numeric"</span>,
+    <span class='st'>"numeric"</span>, <span class='st'>"character"</span>, <span class='st'>"character"</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\t"</span>)
+<span class='fu'>circos.initializeWithIdeogram</span>(<span class='no'>cytoband.df</span>)
+
+<span class='fu'>circos.initializeWithIdeogram</span>(<span class='kw'>species</span> <span class='kw'>=</span> <span class='st'>"hg18"</span>)
+
+<span class='fu'>circos.initializeWithIdeogram</span>(<span class='kw'>species</span> <span class='kw'>=</span> <span class='st'>"mm10"</span>)
+
+<span class='fu'>circos.initializeWithIdeogram</span>(<span class='kw'>chromosome.index</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"chr1"</span>, <span class='st'>"chr2"</span>))
+
+<span class='no'>cytoband</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.table</a></span>(<span class='no'>cytoband.file</span>, <span class='kw'>colClasses</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"character"</span>, <span class='st'>"numeric"</span>,
+    <span class='st'>"numeric"</span>, <span class='st'>"character"</span>, <span class='st'>"character"</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\t"</span>)
+<span class='fu'>circos.initializeWithIdeogram</span>(<span class='no'>cytoband</span>, <span class='kw'>sort.chr</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='no'>cytoband</span><span class='kw'>[[</span><span class='fl'>1</span>]] <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>cytoband</span><span class='kw'>[[</span><span class='fl'>1</span>]], <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>22</span>:<span class='fl'>1</span>, <span class='st'>"X"</span>, <span class='st'>"Y"</span>)))
+<span class='fu'>circos.initializeWithIdeogram</span>(<span class='no'>cytoband</span>, <span class='kw'>sort.chr</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='no'>cytoband</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.table</a></span>(<span class='no'>cytoband.file</span>, <span class='kw'>colClasses</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"character"</span>, <span class='st'>"numeric"</span>,
+    <span class='st'>"numeric"</span>, <span class='st'>"character"</span>, <span class='st'>"character"</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\t"</span>)
+<span class='fu'>circos.initializeWithIdeogram</span>(<span class='no'>cytoband</span>, <span class='kw'>sort.chr</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>circos.initializeWithIdeogram</span>(<span class='kw'>plotType</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"axis"</span>, <span class='st'>"labels"</span>))
+
+<span class='fu'>circos.initializeWithIdeogram</span>(<span class='kw'>plotType</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='st'>"start.degree"</span> <span class='kw'>=</span> <span class='fl'>90</span>)
+<span class='fu'>circos.initializeWithIdeogram</span>()
+<span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()
+
+<span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='st'>"gap.degree"</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>4</span>), <span class='fl'>12</span>))
+<span class='fu'>circos.initializeWithIdeogram</span>()
+<span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

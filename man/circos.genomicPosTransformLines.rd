@@ -37,4 +37,5 @@ to transform original positions to new positions would help for the visualizatio
 \examples{
 # There is no example
 NULL
+
 }

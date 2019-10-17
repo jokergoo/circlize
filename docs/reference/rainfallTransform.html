@@ -148,8 +148,15 @@ And if the input is a bed-format data frame, there will be the chromosome column
 <p>The row order of the returned data frame is as same as the input one.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># There is no example</span>
-<span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>bed</span> <span class='kw'>=</span> <span class='fu'><a href='generateRandomBed.html'>generateRandomBed</a></span>()
+<span class='no'>bed</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span>(<span class='no'>bed</span>, <span class='no'>chr</span> <span class='kw'>==</span> <span class='st'>"chr1"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>rainfallTransform</span>(<span class='no'>bed</span>))</div><div class='output co'>#&gt;    chr   start     end   dist
+#&gt; 1 chr1   13320   34407 628889
+#&gt; 2 chr1  663296  667762 222810
+#&gt; 3 chr1  890572  921321  15450
+#&gt; 4 chr1  936771  958927  11856
+#&gt; 5 chr1  970783 1264401  11856
+#&gt; 6 chr1 1403820 1617638 139419</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

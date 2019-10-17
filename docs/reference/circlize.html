@@ -149,8 +149,15 @@
     <p>A matrix with two columns (<code>theta</code> and <code>rou</code>). <code>rou</code> is measured in degree.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># There is no example</span>
-<span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/grDevices/pdf.html'>pdf</a></span>(<span class='kw'>NULL</span>)
+<span class='no'>factors</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a"</span>, <span class='st'>"b"</span>)
+<span class='fu'><a href='circos.initialize.html'>circos.initialize</a></span>(<span class='no'>factors</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))
+<span class='fu'><a href='circos.track.html'>circos.track</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))
+<span class='co'># x = 0.5, y = 0.5 in sector a and track 1</span>
+<span class='fu'>circlize</span>(<span class='fl'>0.5</span>, <span class='fl'>0.5</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"a"</span>, <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt;      theta  rou
+#&gt; [1,] 270.5 0.89</div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()
+<span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span>()</div><div class='output co'>#&gt; pdf 
+#&gt;   2 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

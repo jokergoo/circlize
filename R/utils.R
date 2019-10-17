@@ -13,6 +13,15 @@
 # == values
 # A matrix with two columns (``theta`` and ``rou``). ``rou`` is measured in degree.
 #
+# == example
+# pdf(NULL)
+# factors = c("a", "b")
+# circos.initialize(factors, xlim = c(0, 1))
+# circos.track(ylim = c(0, 1))
+# # x = 0.5, y = 0.5 in sector a and track 1
+# circlize(0.5, 0.5, sector.index = "a", track.index = 1)
+# circos.clear()
+# dev.off()
 circlize = function(x, y, sector.index = get.current.sector.index(),
 	track.index = get.current.track.index()) {
 
@@ -58,6 +67,17 @@ circlize = function(x, y, sector.index = get.current.sector.index(),
 #
 # == values
 # A matrix with two columns (``x`` and ``y``)
+# 
+# == example
+# pdf(NULL)
+# factors = letters[1:4]
+# circos.initialize(factors, xlim = c(0, 1))
+# circos.trackPlotRegion(ylim = c(0, 1))
+# reverse.circlize(c(30, 60), c(0.9, 0.8))
+# reverse.circlize(c(30, 60), c(0.9, 0.8), sector.index = "d", track.index = 1)
+# reverse.circlize(c(30, 60), c(0.9, 0.8), sector.index = "a", track.index = 1)
+# circos.clear()
+# dev.off()
 reverse.circlize = function(x, y, sector.index = get.current.sector.index(),
     track.index = get.current.track.index()) {
 
@@ -554,6 +574,8 @@ col2value = function(r, g, b, col_fun) {
 # == seealso
 # `convert_x` and `convert_y` convert absolute units into a data coordinate in a specified cell.
 #
+# https://jokergoo.github.io/circlize_book/book/circular-layout.html#convert-functions
+#
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
 #
@@ -707,6 +729,8 @@ convert_unit_in_data_coordinate = function(x, unit = c("mm", "cm", "inches", "ca
 # == seealso
 # `convert_y` converts on y direction.
 #
+# https://jokergoo.github.io/circlize_book/book/circular-layout.html#convert-functions
+#
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
 #
@@ -774,6 +798,8 @@ ux = function(...) {
 #
 # == seealso
 # `convert_x` converts on x direction.
+#
+# https://jokergoo.github.io/circlize_book/book/circular-layout.html#convert-functions
 #
 # == author
 # Zuguang Gu <z.gu@dkfz.de>

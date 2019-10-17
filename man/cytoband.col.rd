@@ -20,4 +20,5 @@ The color theme is from \url{http://circos.ca/tutorials/course/slides/session-2.
 \examples{
 # There is no example
 NULL
+
 }

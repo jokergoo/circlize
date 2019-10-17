@@ -132,11 +132,18 @@ Basically you can simply replace  e.g. <code><a href='get.cell.meta.data.html'>g
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/grDevices/pdf.html'>pdf</a></span>(<span class='kw'>NULL</span>)
 <span class='fu'><a href='circos.initialize.html'>circos.initialize</a></span>(<span class='st'>"a"</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))
 <span class='fu'><a href='circos.track.html'>circos.track</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {
-        <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>CELL_META</span>$<span class='no'>sector.index</span>)
-        <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>CELL_META</span>$<span class='no'>xlim</span>)
+    <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>CELL_META</span>$<span class='no'>sector.index</span>)
+    <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>CELL_META</span>$<span class='no'>xlim</span>)
 })</div><div class='output co'>#&gt; [1] "a"
 #&gt; min.data max.data 
-#&gt;        0        1 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span>()</div><div class='output co'>#&gt; pdf 
+#&gt;        0        1 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>CELL_META</span>))</div><div class='output co'>#&gt;  [1] "xlim"                 "ylim"                 "xrange"              
+#&gt;  [4] "yrange"               "xcenter"              "ycenter"             
+#&gt;  [7] "cell.xlim"            "cell.ylim"            "sector.numeric.index"
+#&gt; [10] "sector.index"         "track.index"          "xplot"               
+#&gt; [13] "yplot"                "track.margin"         "cell.padding"        
+#&gt; [16] "cell.start.degree"    "cell.end.degree"      "cell.bottom.radius"  
+#&gt; [19] "cell.top.radius"      "bg.col"               "bg.border"           
+#&gt; [22] "bg.lty"               "bg.lwd"               "track.height"        </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span>()</div><div class='output co'>#&gt; pdf 
 #&gt;   2 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -28,6 +28,51 @@
 # The function finally pass data to `circos.genomicInitialize` to initialize the circular plot.
 #
 # The style of ideogram is almost fixed, but you can customize it with your self-sefined code. Refer to vignette for demonstration.
+#
+# == seealso
+# https://jokergoo.github.io/circlize_book/book/initialize-genomic-plot.html#initialize-cytoband
+#
+# == example
+# \dontrun{
+# circos.initializeWithIdeogram()
+#
+# cytoband.file = system.file(package = "circlize",
+#     "extdata", "cytoBand.txt")
+# circos.initializeWithIdeogram(cytoband.file)
+#
+# cytoband.df = read.table(cytoband.file, colClasses = c("character", "numeric",
+#     "numeric", "character", "character"), sep = "\t")
+# circos.initializeWithIdeogram(cytoband.df)
+#
+# circos.initializeWithIdeogram(species = "hg18")
+#
+# circos.initializeWithIdeogram(species = "mm10")
+#
+# circos.initializeWithIdeogram(chromosome.index = c("chr1", "chr2"))
+#
+# cytoband = read.table(cytoband.file, colClasses = c("character", "numeric",
+#     "numeric", "character", "character"), sep = "\t")
+# circos.initializeWithIdeogram(cytoband, sort.chr = FALSE)
+#
+# cytoband[[1]] = factor(cytoband[[1]], levels = paste0("chr", c(22:1, "X", "Y")))
+# circos.initializeWithIdeogram(cytoband, sort.chr = FALSE)
+#
+# cytoband = read.table(cytoband.file, colClasses = c("character", "numeric",
+#     "numeric", "character", "character"), sep = "\t")
+# circos.initializeWithIdeogram(cytoband, sort.chr = TRUE)
+#
+# circos.initializeWithIdeogram(plotType = c("axis", "labels"))
+#
+# circos.initializeWithIdeogram(plotType = NULL)
+#
+# circos.par("start.degree" = 90)
+# circos.initializeWithIdeogram()
+# circos.clear()
+#
+# circos.par("gap.degree" = rep(c(2, 4), 12))
+# circos.initializeWithIdeogram()
+# circos.clear()
+# }
 circos.initializeWithIdeogram = function(cytoband = system.file(package = "circlize",
 	"extdata", "cytoBand.txt"), species = NULL, sort.chr = TRUE,
 	chromosome.index = usable_chromosomes(species), major.by = NULL,
@@ -100,8 +145,16 @@ circos.initializeWithIdeogram = function(cytoband = system.file(package = "circl
 # -track.height height of the ideogram track
 # -track.margin margins for the track
 #
+# == seealso
+# https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#ideograms
+#
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
+#
+# == example
+# circos.initializeWithIdeogram(plotType = c("labels", "axis"))
+# circos.track(ylim = c(0, 1))
+# circos.genomicIdeogram() # put ideogram as the third track
 #
 circos.genomicIdeogram = function(cytoband = system.file(package = "circlize",
 	"extdata", "cytoBand.txt"), species = NULL, track.height = convert_height(2, "mm"),
@@ -150,6 +203,37 @@ circos.genomicIdeogram = function(cytoband = system.file(package = "circlize",
 # is ``levels(data[[1]])``; If the first column is just a simple vector, the order of sectors is ``unique(data[[1]]``.
 #
 # For more details on initializing genomic plot, please refer to the vignettes.
+#
+# == seealso
+# https://jokergoo.github.io/circlize_book/book/initialize-genomic-plot.html#initialize-with-general-genomic-category
+#
+# == example
+# df = read.cytoband()$df
+# circos.genomicInitialize(df)
+#
+# df = data.frame(name = c("TP53", "TP63", "TP73"),
+#                 start = c(7565097, 189349205, 3569084),
+#                 end = c(7590856, 189615068, 3652765),
+#                 stringsAsFactors = FALSE)
+# circos.genomicInitialize(df)
+# circos.clear()
+#
+# circos.genomicInitialize(df, major.by = 10000)
+# circos.clear()
+#
+# circos.genomicInitialize(df, plotType = "labels")
+# circos.clear()
+#
+# circos.genomicInitialize(df, sector.names = c("tp53", "tp63", "tp73"))
+# circos.clear()
+#
+# circos.genomicInitialize(df, sector.names = c("tp53x", "tp63x", "tp73"))
+# circos.clear()
+#
+# df[[1]] = factor(df[[1]], levels = c("TP73", "TP63", "TP53"))
+# circos.genomicInitialize(df)
+# circos.clear()
+#
 circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 	plotType = c("axis", "labels"), tickLabelsStartFromZero = TRUE,
 	axis.labels.cex = 0.4*par("cex"), labels.cex = 0.8*par("cex"), 
@@ -237,6 +321,9 @@ circos.genomicInitialize = function(data, sector.names = NULL, major.by = NULL,
 # == details
 # It assigns proper tick labels under genomic coordinate.
 # 
+# == seealso
+# https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#genomic-axes
+#
 # == example
 # circos.initializeWithIdeogram(plotType = NULL)
 # circos.track(ylim = c(0, 1), panel.fun = function(x, y) circos.genomicAxis())
@@ -361,6 +448,10 @@ circos.genomicAxis = function(h = "top", major.at = NULL, labels = NULL,
 # Being different from ``panel.fun`` in `circos.trackPlotRegion`, there should be an additional argument ``...`` in ``panel.fun``. This additional
 # argument is used to pass hidden values to low-level graphical functions. So if you are using functions like ``circos.genomicPoints``, you should also
 # add ``...`` as an additional argument into ``circos.genomicPoints``.
+#
+# == seealso
+# https://jokergoo.github.io/circlize_book/book/genomic-plotting-region.html and https://jokergoo.github.io/circlize_book/book/modes-of-input.html
+#
 circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE,
 	numeric.column = NULL, jitter = 0,
 	panel.fun = function(region, value, ...)  {NULL}, ... ) {
@@ -568,6 +659,7 @@ circos.genomicTrackPlotRegion = function(data = NULL, ylim = NULL, stack = FALSE
 #
 # == details
 # shortcut function of `circos.genomicTrackPlotRegion`.
+#
 circos.genomicTrack = function(...) {
 	circos.genomicTrackPlotRegion(...)
 }
@@ -618,6 +710,59 @@ getI = function(...) {
 #
 # == details
 # The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
+#
+# == example
+# circos.par("track.height" = 0.1)
+# circos.initializeWithIdeogram(plotType = NULL)
+#
+# bed = generateRandomBed(nr = 100)
+# circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
+#     circos.genomicPoints(region, value, pch = 16, cex = 0.5, ...)
+# })
+#
+# circos.genomicTrackPlotRegion(bed, stack = TRUE, panel.fun = function(region, value, ...) {
+#     circos.genomicPoints(region, value, pch = 16, cex = 0.5, ...)
+#     i = getI(...)
+#     cell.xlim = get.cell.meta.data("cell.xlim")
+#     circos.lines(cell.xlim, c(i, i), lty = 2, col = "#00000040")
+# })
+#
+# bed1 = generateRandomBed(nr = 100)
+# bed2 = generateRandomBed(nr = 100)
+# bed_list = list(bed1, bed2)
+#
+# # data frame list
+# circos.genomicTrackPlotRegion(bed_list, panel.fun = function(region, value, ...) {
+#     cex = (value[[1]] - min(value[[1]]))/(max(value[[1]]) - min(value[[1]]))
+#     i = getI(...)
+#     circos.genomicPoints(region, value, cex = cex, pch = 16, col = i, ...)
+# })
+#
+# circos.genomicTrackPlotRegion(bed_list, stack = TRUE,
+#     panel.fun = function(region, value, ...) {
+#     cex = (value[[1]] - min(value[[1]]))/(max(value[[1]]) - min(value[[1]]))
+#     i = getI(...)
+#     circos.genomicPoints(region, value, cex = cex, pch = 16, col = i, ...)
+#     cell.xlim = get.cell.meta.data("cell.xlim")
+#     circos.lines(cell.xlim, c(i, i), lty = 2, col = "#00000040")
+# })
+#
+# bed = generateRandomBed(nr = 100, nc = 4)
+# circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
+#     cex = (value[[1]] - min(value[[1]]))/(max(value[[1]]) - min(value[[1]]))
+#     circos.genomicPoints(region, value, cex = 0.5, pch = 16, col = 1:4, ...)
+# })
+#
+# circos.genomicTrackPlotRegion(bed, stack = TRUE, panel.fun = function(region, value, ...) {
+#     cex = (value[[1]] - min(value[[1]]))/(max(value[[1]]) - min(value[[1]]))
+#     i = getI(...)
+#     circos.genomicPoints(region, value, cex = cex, pch = 16, col = i, ...)
+#     cell.xlim = get.cell.meta.data("cell.xlim")
+#     circos.lines(cell.xlim, c(i, i), lty = 2, col = "#00000040")
+# })
+#
+# circos.clear()
+#
 circos.genomicPoints = function(region, value, numeric.column = NULL, 
 	sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
@@ -721,6 +866,49 @@ circos.genomicPoints = function(region, value, numeric.column = NULL,
 #
 # == details
 # The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
+#
+# == examples
+# ### test bed
+# circos.par("track.height" = 0.1)
+# circos.initializeWithIdeogram(plotType = NULL)
+#
+# bed = generateRandomBed(nr = 100)
+# circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
+#     circos.genomicLines(region, value, type = "l", ...)
+# })
+#
+# bed1 = generateRandomBed(nr = 100)
+# bed2 = generateRandomBed(nr = 100)
+# bed_list = list(bed1, bed2)
+#
+# circos.genomicTrackPlotRegion(bed_list, panel.fun = function(region, value, ...) {
+#     i = getI(...)
+#     circos.genomicLines(region, value, col = i, ...)
+# })
+#
+# circos.genomicTrackPlotRegion(bed_list, stack = TRUE, 
+#     panel.fun = function(region, value, ...) {
+#     i = getI(...)
+#     circos.genomicLines(region, value, col = i, ...)
+# })
+#
+# bed = generateRandomBed(nr = 100, nc = 4)
+# circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
+#     circos.genomicLines(region, value, col = 1:4, ...)
+# })
+#
+# circos.genomicTrackPlotRegion(bed, stack = TRUE, panel.fun = function(region, value, ...) {
+#     i = getI(...)
+#     circos.genomicLines(region, value, col = i, ...)
+# })
+#
+# bed = generateRandomBed(nr = 100)
+# circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
+#     circos.genomicLines(region, value, type = "segment", lwd = 2, ...)
+# })
+#
+# circos.clear()
+#
 circos.genomicLines = function(region, value, numeric.column = NULL, 
 	sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
@@ -867,6 +1055,88 @@ circos.genomicLines = function(region, value, numeric.column = NULL,
 #
 # == details
 # The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
+#
+# == example
+# ############################
+# ### rect matrix
+# circos.par("track.height" = 0.1, cell.padding = c(0, 0, 0, 0))
+# circos.initializeWithIdeogram(plotType = NULL)
+#
+# bed = generateRandomBed(nr = 100, nc = 4)
+# circos.genomicTrackPlotRegion(bed, stack = TRUE, panel.fun = function(region, value, ...) {
+#     circos.genomicRect(region, value, col = sample(1:10, nrow(region), replace = TRUE), 
+#         border = NA, ...)
+#     i = getI(...)
+#     cell.xlim = get.cell.meta.data("cell.xlim")
+#     #circos.lines(cell.xlim, c(i, i), lty = 2, col = "#00000040")
+# }, bg.border = NA)
+#
+# circos.genomicPosTransformLines(bed, posTransform = posTransform.default,
+#     horizontalLine = "top")
+#
+# circos.genomicTrackPlotRegion(bed, stack = TRUE, panel.fun = function(region, value, ...) {
+#     circos.genomicRect(region, value, col = sample(1:10, nrow(region), replace = TRUE), 
+#         border = NA, posTransform = posTransform.default, ...)
+#     i = getI(...)
+#     cell.xlim = get.cell.meta.data("cell.xlim")
+#     #circos.lines(cell.xlim, c(i, i), lty = 2, col = "#00000040")
+# }, bg.border = NA)
+#
+# circos.genomicPosTransformLines(bed, posTransform = posTransform.default,
+#     direction = "outside", horizontalLine = "bottom")
+#
+# circos.genomicTrackPlotRegion(bed, stack = TRUE, panel.fun = function(region, value, ...) {
+#     circos.genomicRect(region, value, col = sample(1:10, nrow(region), replace = TRUE), 
+#         border = NA, ...)
+#     i = getI(...)
+#     cell.xlim = get.cell.meta.data("cell.xlim")
+#     #circos.lines(cell.xlim, c(i, i), lty = 2, col = "#00000040")
+# }, bg.border = NA)
+#
+# circos.clear()
+#
+# ##########################
+# ### rect from bed list
+# circos.par("track.height" = 0.1, cell.padding = c(0, 0, 0, 0))
+# circos.initializeWithIdeogram(plotType = NULL)
+#
+# bed1 = generateRandomBed(nr = 100)
+# bed2 = generateRandomBed(nr = 100)
+# bed_list = list(bed1, bed2)
+# f = colorRamp2(breaks = c(-1, 0, 1), colors = c("green", "black", "red"))
+# circos.genomicTrackPlotRegion(bed_list, stack = TRUE,
+#     panel.fun = function(region, value, ...) {
+#  
+#     circos.genomicRect(region, value, col = f(value[[1]]), 
+#         border = NA, ...)
+#     i = getI(...)
+#     cell.xlim = get.cell.meta.data("cell.xlim")
+#     circos.lines(cell.xlim, c(i, i), lty = 2, col = "#000000")
+# })
+#
+# circos.genomicTrackPlotRegion(bed_list, ylim = c(0, 3),
+#     panel.fun = function(region, value, ...) {
+#     i = getI(...)
+#     circos.genomicRect(region, value, ytop = i+0.4, ybottom = i-0.4, col = f(value[[1]]), 
+#         border = NA, ...)
+#   
+#     cell.xlim = get.cell.meta.data("cell.xlim")
+#     circos.lines(cell.xlim, c(i, i), lty = 2, col = "#000000")
+# })
+#
+# circos.genomicTrackPlotRegion(bed1, panel.fun = function(region, value, ...) {
+#     circos.genomicRect(region, value, col = "red", border = NA, ...)
+#
+# })
+#
+# circos.genomicTrackPlotRegion(bed_list, panel.fun = function(region, value, ...) {
+#     i = getI(...)
+#     circos.genomicRect(region, value, col = i, border = NA, ...)
+#
+# })
+#
+# circos.clear()
+#
 circos.genomicRect = function(region, value = NULL, 
 	ytop = NULL, ybottom = NULL, ytop.column = NULL, ybottom.column = NULL,
 	sector.index = get.cell.meta.data("sector.index"),
@@ -985,6 +1255,23 @@ circos.genomicRect = function(region, value = NULL,
 #
 # == details
 # The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
+#
+# == example
+# circos.par("track.height" = 0.1, cell.padding = c(0, 0, 0, 0))
+# circos.initializeWithIdeogram(plotType = NULL)
+#
+# bed = generateRandomBed(nr = 20)
+#
+# circos.genomicTrackPlotRegion(bed, ylim = c(0, 1), panel.fun = function(region, value, ...) {
+#     circos.genomicText(region, value, y = 0.5, labels = "text", ...)
+# })
+#
+# bed = cbind(bed, sample(letters, nrow(bed), replace = TRUE))
+# circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
+#     circos.genomicText(region, value, labels.column = 2, ...)
+# })
+#
+# circos.clear()
 circos.genomicText = function(region, value = NULL, y = NULL, labels = NULL, labels.column = NULL,
 	numeric.column = NULL, sector.index = get.cell.meta.data("sector.index"), 
 	track.index = get.cell.meta.data("track.index"), posTransform = NULL, 
@@ -1106,6 +1393,23 @@ circos.genomicText = function(region, value = NULL, y = NULL, labels = NULL, lab
 # Of course, number of rows should be same in ``region1`` and ``region2``.
 #
 # If you want to have more controls on links, please use `circos.link` directly.
+#
+# == seealso
+# https://jokergoo.github.io/circlize_book/book/genomic-plotting-region.html#genomic-links
+#
+# == example
+# set.seed(123)
+#
+# bed1 = generateRandomBed(nr = 100)
+# bed1 = bed1[sample(nrow(bed1), 20), ]
+# bed2 = generateRandomBed(nr = 100)
+# bed2 = bed2[sample(nrow(bed2), 20), ]
+# circos.par("track.height" = 0.1, cell.padding = c(0, 0, 0, 0))
+# circos.initializeWithIdeogram()
+#
+# circos.genomicLink(bed1, bed2, col = sample(1:5, 20, replace = TRUE), border = NA)
+# circos.clear()
+#
 circos.genomicLink = function(region1, region2, 
 	rou = get_most_inside_radius(), rou1 = rou, rou2 = rou,
     col = "black", lwd = par("lwd"), lty = par("lty"), border = col, ...) {
@@ -1320,6 +1624,24 @@ circos.genomicPosTransformLines = function(data, track.height = 0.1, posTransfor
 #
 # == details
 # This function is a high-level graphical function, and it will create a new track.
+#
+# == seealso
+# https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#genomic-density-and-rainfall-plot
+#
+# == example
+# load(system.file(package = "circlize", "extdata", "DMR.RData"))
+#
+# # rainfall
+# circos.initializeWithIdeogram(plotType = c("axis", "labels"))
+#
+# bed_list = list(DMR_hyper, DMR_hypo)
+# circos.genomicRainfall(bed_list, pch = 16, cex = 0.4, col = c("#FF000080", "#0000FF80"))
+#
+# circos.genomicDensity(bed_list[[1]], col = c("#FF000080"), track.height = 0.1)
+# circos.genomicDensity(bed_list[[2]], col = c("#0000FF80"), track.height = 0.1)
+#
+# circos.clear()
+#
 circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, overlap = TRUE, 
 	col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l",
 	area = TRUE, area.baseline = NULL, baseline = 0, border = NA, ...) {
@@ -1405,6 +1727,11 @@ circos.genomicDensity = function(data, ylim.force = FALSE, window.size = NULL, o
 # If the input is a two-column data frame, the function returns a data frame with three columns: 
 # start position, end position and percent of overlapping. And if the input is a bed-format
 # data frame, there will be an additionally chromosome name column.
+#
+# == example
+# bed = generateRandomBed()
+# bed = subset(bed, chr == "chr1")
+# head(genomicDensity(bed))
 genomicDensity = function(region, window.size = 1e7, n.window = NULL, overlap = TRUE, chr.len = NULL) {
 	
 	region = validate_data_frame(region)
@@ -1631,6 +1958,24 @@ normalizeToDataFrame = function(data, sort = FALSE) {
 # the plot, it means there is a cluster of regions at that area.
 #
 # On the plot, y-axis are log10-transformed.
+#
+# == seealso
+# https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#genomic-density-and-rainfall-plot
+#
+# == example
+# load(system.file(package = "circlize", "extdata", "DMR.RData"))
+#
+# # rainfall
+# circos.initializeWithIdeogram(plotType = c("axis", "labels"))
+#
+# bed_list = list(DMR_hyper, DMR_hypo)
+# circos.genomicRainfall(bed_list, pch = 16, cex = 0.4, col = c("#FF000080", "#0000FF80"))
+#
+# circos.genomicDensity(bed_list[[1]], col = c("#FF000080"), track.height = 0.1)
+# circos.genomicDensity(bed_list[[2]], col = c("#0000FF80"), track.height = 0.1)
+#
+# circos.clear()
+#
 circos.genomicRainfall = function(data, mode = "min", ylim = NULL, col = "black", 
 	pch = par("pch"), cex = par("cex"), normalize_to_width = FALSE, ...) {
 	
@@ -1691,6 +2036,12 @@ circos.genomicRainfall = function(data, mode = "min", ylim = NULL, col = "black"
 # And if the input is a bed-format data frame, there will be the chromosome column added.
 #
 # The row order of the returned data frame is as same as the input one.
+#
+# == example
+# bed = generateRandomBed()
+# bed = subset(bed, chr == "chr1")
+# head(rainfallTransform(bed))
+#
 rainfallTransform = function(region, mode = c("min", "max", "mean", "left", "right"),
 	normalize_to_width = FALSE) {
 	
@@ -1874,18 +2225,16 @@ posTransform.text = function(region, y, labels, cex = 1, font = par("font"),
 # The function actually creates two tracks, one track for the connection lines and one track
 # for the heamtaps. The heatmaps always fill the whole track.
 #
-# == author
-# Zuguang Gu <z.gu@dkfz.de>
+# == seealso
+# https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#genomic-heatmap
 #
 # == example
-# \dontrun{
 # circos.initializeWithIdeogram(plotType = c("labels", "axis"))
 # bed = generateRandomBed(nr = 100, nc = 4)
 # col_fun = colorRamp2(c(-1, 0, 1), c("green", "black", "red"))
 # circos.genomicHeatmap(bed, col_fun, side = "inside", border = "white")
 # circos.genomicHeatmap(bed, col_fun, side = "outside", 
 #     line_col = as.numeric(factor(bed[[1]])))
-# }
 circos.genomicHeatmap = function(bed, col, na_col = "grey",
 	numeric.column = NULL, border = NA, border_lwd = par("lwd"), 
 	border_lty = par("lty"), connection_height = convert_height(5, "mm"),
@@ -1987,11 +2336,10 @@ circos.genomicHeatmap = function(bed, col, na_col = "grey",
 # The function adds labels for the specified regions. The positions of labels are arranged
 # so that they are not overlapping to each other.
 #
-# == author
-# Zuguang Gu <z.gu@dkfz.de>
+# == seealso
+# https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#labels
 # 
 # == example
-# \dontrun{
 # circos.initializeWithIdeogram(plotType = c("labels", "axis"))
 # bed = generateRandomBed(nr = 100, fun = function(k) sample(letters, k, replace = TRUE))
 # bed[1, 4] = "aaaaaaaa"
@@ -1999,7 +2347,6 @@ circos.genomicHeatmap = function(bed, col, na_col = "grey",
 #     col = as.numeric(factor(bed[[1]])))
 # circos.genomicLabels(bed, labels.column = 4, side = "outside",
 #     line_col = as.numeric(factor(bed[[1]])))
-# }
 circos.genomicLabels = function(bed, labels = NULL, labels.column = NULL,
 	facing = "clockwise", niceFacing = TRUE,
 	col = par("col"), cex = 0.8, font = par("font"), padding = 0.4,

@@ -20,4 +20,5 @@ This is only a shortcut function of \code{\link{highlight.sector}}.
 \examples{
 # There is no example
 NULL
+
 }

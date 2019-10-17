@@ -24,6 +24,7 @@ And if the input is a bed-format data frame, there will be the chromosome column
 The row order of the returned data frame is as same as the input one.
 }
 \examples{
-# There is no example
-NULL
+bed = generateRandomBed()
+bed = subset(bed, chr == "chr1")
+head(rainfallTransform(bed))
 }

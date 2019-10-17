@@ -41,4 +41,5 @@ This function can be replaced by a \code{for} loop containing \code{\link{circos
 \examples{
 # There is no example
 NULL
+
 }

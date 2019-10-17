@@ -25,4 +25,5 @@ and positions are sorted. The final number of rows may not be exactly as same as
 \examples{
 # There is no example
 NULL
+
 }

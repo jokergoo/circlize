@@ -1,6 +1,9 @@
 Changes in version 0.4.9
 -----------------------------------------------------------------------
 * `chordDiagram()`: fixed a bug when `link.overlap = TRUE` for sparse matrices.
+* `circos.rect()`: add `rot` argument.
+* add `circos.triangle()`.
+* all examples are included in R source code files
 
 Changes in version 0.4.8
 -----------------------------------------------------------------------

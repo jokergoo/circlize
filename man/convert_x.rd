@@ -27,6 +27,8 @@ A vector of numeric values which are measured in the specified data coordinate
 }
 \seealso{
 \code{\link{convert_y}} converts on y direction.
+
+\url{https://jokergoo.github.io/circlize_book/book/circular-layout.html#convert-functions}
 }
 \author{
 Zuguang Gu <z.gu@dkfz.de>

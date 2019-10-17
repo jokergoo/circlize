@@ -146,16 +146,42 @@
     <p>Assuming there are <code>n</code> nodes in the dendrogram, the positions for leaves on x-axis is <code>0.5, 1.5, ..., n - 0.5</code>.
 So you must be careful with <code>xlim</code> when you initialize the cirular layout.</p>
 <p>You can use the <code>dendextend</code> package to render the dendrograms.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='https://jokergoo.github.io/circlize_book/book/high-level-plots.html#phylogenetic-trees'>https://jokergoo.github.io/circlize_book/book/high-level-plots.html#phylogenetic-trees</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># There is no example</span>
-<span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"circlize"</span>, <span class='st'>"extdata"</span>, <span class='st'>"bird.orders.RData"</span>))
+
+<span class='no'>labels</span> <span class='kw'>=</span> <span class='no'>hc</span>$<span class='no'>labels</span>  <span class='co'># name of birds</span>
+<span class='no'>ct</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/cutree.html'>cutree</a></span>(<span class='no'>hc</span>, <span class='fl'>6</span>)  <span class='co'># cut tree into 6 pieces</span>
+<span class='no'>n</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>labels</span>)  <span class='co'># number of bird species</span>
+<span class='no'>dend</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/dendrogram.html'>as.dendrogram</a></span>(<span class='no'>hc</span>)
+
+<span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='kw'>cell.padding</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>))
+<span class='fu'><a href='circos.initialize.html'>circos.initialize</a></span>(<span class='kw'>factors</span> <span class='kw'>=</span> <span class='st'>"a"</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='no'>n</span>)) <span class='co'># only one sector</span></div><div class='input'><span class='no'>max_height</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>dend</span>, <span class='st'>"height"</span>)  <span class='co'># maximum height of the trees</span>
+<span class='fu'><a href='circos.trackPlotRegion.html'>circos.trackPlotRegion</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>bg.border</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
+    <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {
+        <span class='kw'>for</span>(<span class='no'>i</span> <span class='kw'>in</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='no'>n</span>)) {
+            <span class='fu'><a href='circos.text.html'>circos.text</a></span>(<span class='no'>i</span>-<span class='fl'>0.5</span>, <span class='fl'>0</span>, <span class='no'>labels</span>[<span class='no'>i</span>], <span class='kw'>adj</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0.5</span>),
+                <span class='kw'>facing</span> <span class='kw'>=</span> <span class='st'>"clockwise"</span>, <span class='kw'>niceFacing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+                <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>ct</span>[<span class='no'>labels</span>[<span class='no'>i</span>]], <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.7</span>)
+        }
+})</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/message.html'>suppressPackageStartupMessages</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>dendextend</span>))
+<span class='no'>dend</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/dendextend/man/color_branches.html'>color_branches</a></span>(<span class='no'>dend</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>6</span>)
+
+<span class='fu'><a href='circos.trackPlotRegion.html'>circos.trackPlotRegion</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='no'>max_height</span>), <span class='kw'>bg.border</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+    <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fl'>0.4</span>, <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {
+        <span class='fu'>circos.dendrogram</span>(<span class='no'>dend</span>, <span class='kw'>max_height</span> <span class='kw'>=</span> <span class='no'>max_height</span>)
+})</div><div class='img'><img src='circos.dendrogram-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

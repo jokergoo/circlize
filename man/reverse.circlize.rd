@@ -25,6 +25,13 @@ This is the reverse function of \code{\link{circlize}}. It transform data points
 A matrix with two columns (\code{x} and \code{y})
 }
 \examples{
-# There is no example
-NULL
+pdf(NULL)
+factors = letters[1:4]
+circos.initialize(factors, xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 1))
+reverse.circlize(c(30, 60), c(0.9, 0.8))
+reverse.circlize(c(30, 60), c(0.9, 0.8), sector.index = "d", track.index = 1)
+reverse.circlize(c(30, 60), c(0.9, 0.8), sector.index = "a", track.index = 1)
+circos.clear()
+dev.off()
 }

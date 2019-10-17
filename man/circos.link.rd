@@ -58,4 +58,5 @@ Please refer to the vignette for detailed explanation.
 \examples{
 # There is no example
 NULL
+
 }

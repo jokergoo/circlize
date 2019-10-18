@@ -7,10 +7,13 @@ Add raster images
 Add raster images
 }
 \usage{
-circos.raster(image, x, y, width, height,
+circos.raster(
+    image, x, y,
+    width, height,
     facing = c("inside", "outside", "reverse.clockwise", "clockwise",
     "downward", "bending.inside", "bending.outside"),
-    niceFacing = FALSE, sector.index = get.cell.meta.data("sector.index"),
+    niceFacing = FALSE,
+    sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"),
     scaling = 1)
 }

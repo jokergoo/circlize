@@ -7,11 +7,20 @@ Draw rectangle-like grid, specifically for genomic graphics
 Draw rectangle-like grid, specifically for genomic graphics
 }
 \usage{
-circos.genomicRect(region, value = NULL,
-    ytop = NULL, ybottom = NULL, ytop.column = NULL, ybottom.column = NULL,
+circos.genomicRect(
+    region,
+    value = NULL,
+    ytop = NULL,
+    ybottom = NULL,
+    ytop.column = NULL,
+    ybottom.column = NULL,
     sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"), posTransform = NULL,
-    col = NA, border = "black", lty = par("lty"), ...)
+    track.index = get.cell.meta.data("track.index"),
+    posTransform = NULL,
+    col = NA,
+    border = "black",
+    lty = par("lty"),
+    ...)
 }
 \arguments{
 

@@ -7,8 +7,11 @@ Add circular dendrograms
 Add circular dendrograms
 }
 \usage{
-circos.dendrogram(dend, facing = c("outside", "inside"),
-    max_height = NULL, use_x_attr = FALSE)
+circos.dendrogram(
+    dend,
+    facing = c("outside", "inside"),
+    max_height = NULL,
+    use_x_attr = FALSE)
 }
 \arguments{
 

@@ -7,8 +7,14 @@ Add points to the plotting regions in a same track
 Add points to the plotting regions in a same track
 }
 \usage{
-circos.trackPoints(factors = NULL, x, y, track.index = get.cell.meta.data("track.index"),
-    pch = par("pch"), col = par("col"), cex = par("cex"), bg = par("bg"))
+circos.trackPoints(
+    factors = NULL,
+    x, y,
+    track.index = get.cell.meta.data("track.index"),
+    pch = par("pch"),
+    col = par("col"),
+    cex = par("cex"),
+    bg = par("bg"))
 }
 \arguments{
 

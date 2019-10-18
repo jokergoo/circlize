@@ -7,10 +7,18 @@ Highlight sectors and tracks
 Highlight sectors and tracks
 }
 \usage{
-highlight.sector(sector.index, track.index = get.all.track.index(),
-    col = "#FF000040", border = NA, lwd = par("lwd"), lty = par("lty"),
-    padding = c(0, 0, 0, 0), text = NULL, text.col = par("col"),
-    text.vjust = 0.5, ...)
+highlight.sector(
+    sector.index,
+    track.index = get.all.track.index(),
+    col = "#FF000040",
+    border = NA,
+    lwd = par("lwd"),
+    lty = par("lty"),
+    padding = c(0, 0, 0, 0),
+    text = NULL,
+    text.col = par("col"),
+    text.vjust = 0.5,
+    ...)
 }
 \arguments{
 

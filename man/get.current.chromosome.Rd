@@ -16,4 +16,5 @@ should only be put inside \code{panel.fun} when using \code{\link{circos.genomic
 \examples{
 # There is no example
 NULL
+
 }

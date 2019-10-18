@@ -7,12 +7,21 @@ Draw arrow which is paralle to the circle
 Draw arrow which is paralle to the circle
 }
 \usage{
-circos.arrow(x1, x2, y = get.cell.meta.data("ycenter", sector.index, track.index),
+circos.arrow(
+    x1,
+    x2,
+    y = get.cell.meta.data("ycenter", sector.index, track.index),
     width = get.cell.meta.data("yrange", sector.index, track.index)/2,
-    sector.index = get.current.sector.index(), track.index = get.current.track.index(),
+    sector.index = get.current.sector.index(),
+    track.index = get.current.track.index(),
     arrow.head.length = convert_x(5, "mm", sector.index, track.index),
-    arrow.head.width = width*2, arrow.position = c("end", "start"),
-    tail = c("normal", "point"), border = "black", col = "white", lty = par("lty"), ...)
+    arrow.head.width = width*2,
+    arrow.position = c("end", "start"),
+    tail = c("normal", "point"),
+    border = "black",
+    col = "white",
+    lty = par("lty"),
+    ...)
 }
 \arguments{
 
@@ -50,6 +59,7 @@ circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
       col = "red", tail = ifelse(CELL_META$sector.index \%in\% c("a", "c"), 
           "point", "normal"))
 }, bg.border = NA, track.height = 0.4)
+circos.clear()
 
 ########## cell cycle ###########
 cell_cycle = data.frame(phase = factor(c("G1", "S", "G2", "M"), 

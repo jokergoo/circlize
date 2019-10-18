@@ -7,13 +7,20 @@ Draw y-axis
 Draw y-axis
 }
 \usage{
-circos.yaxis(side = c("left", "right"), at = NULL, labels = TRUE, tick = TRUE,
+circos.yaxis(
+    side = c("left", "right"),
+    at = NULL,
+    labels = TRUE,
+    tick = TRUE,
     sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"),
-    labels.font = par("font"), labels.cex = par("cex"),
+    labels.font = par("font"),
+    labels.cex = par("cex"),
     labels.niceFacing = TRUE,
     tick.length = convert_x(1, "mm", sector.index, track.index),
-    lwd = par("lwd"), col = par("col"), labels.col = par("col"))
+    lwd = par("lwd"),
+    col = par("col"),
+    labels.col = par("col"))
 }
 \arguments{
 

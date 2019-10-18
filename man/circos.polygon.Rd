@@ -7,8 +7,11 @@ Draw polygon
 Draw polygon
 }
 \usage{
-circos.polygon(x, y, sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"), ...)
+circos.polygon(
+    x, y,
+    sector.index = get.cell.meta.data("sector.index"),
+    track.index = get.cell.meta.data("track.index"),
+    ...)
 }
 \arguments{
 

@@ -49,4 +49,5 @@ left and right paddings.
 \examples{
 # There is no example
 NULL
+
 }

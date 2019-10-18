@@ -7,9 +7,14 @@ Create a track for genomic graphics
 Create a track for genomic graphics
 }
 \usage{
-circos.genomicTrackPlotRegion(data = NULL, ylim = NULL, stack = FALSE,
-    numeric.column = NULL, jitter = 0,
-    panel.fun = function(region, value, ...)  {NULL}, ...)
+circos.genomicTrackPlotRegion(
+    data = NULL,
+    ylim = NULL,
+    stack = FALSE,
+    numeric.column = NULL,
+    jitter = 0,
+    panel.fun = function(region, value, ...) {NULL},
+    ...)
 }
 \arguments{
 
@@ -57,4 +62,5 @@ add \code{...} as an additional argument into \code{circos.genomicPoints}.
 \examples{
 # There is no example
 NULL
+
 }

@@ -7,11 +7,20 @@ Draw text in a cell
 Draw text in a cell
 }
 \usage{
-circos.text(x, y, labels, sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"), direction = NULL,
+circos.text(
+    x, y,
+    labels,
+    sector.index = get.cell.meta.data("sector.index"),
+    track.index = get.cell.meta.data("track.index"),
+    direction = NULL,
     facing = c("inside", "outside", "reverse.clockwise", "clockwise",
-    "downward", "bending", "bending.inside", "bending.outside"), niceFacing = FALSE,
-    adj = par("adj"), cex = 1, col = par("col"), font = par("font"), ...)
+    "downward", "bending", "bending.inside", "bending.outside"),
+    niceFacing = FALSE,
+    adj = par("adj"),
+    cex = 1,
+    col = par("col"),
+    font = par("font"),
+    ...)
 }
 \arguments{
 

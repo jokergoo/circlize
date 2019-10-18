@@ -15,4 +15,5 @@ It simply returns a vector of all sector index.
 \examples{
 # There is no example
 NULL
+
 }

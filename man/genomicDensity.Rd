@@ -7,7 +7,12 @@ Calculate genomic region density
 Calculate genomic region density
 }
 \usage{
-genomicDensity(region, window.size = 1e7, n.window = NULL, overlap = TRUE, chr.len = NULL)
+genomicDensity(
+    region,
+    window.size = 1e7,
+    n.window = NULL,
+    overlap = TRUE,
+    chr.len = NULL)
 }
 \arguments{
 

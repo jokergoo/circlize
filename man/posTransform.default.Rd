@@ -26,4 +26,5 @@ For details why need to use position transformation, please refer to \code{\link
 \examples{
 # There is no example
 NULL
+
 }

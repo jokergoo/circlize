@@ -7,12 +7,19 @@ Create plotting regions for a whole track
 Create plotting regions for a whole track
 }
 \usage{
-circos.trackPlotRegion(factors = NULL, x = NULL, y = NULL, ylim = NULL,
-    force.ylim = TRUE, track.index = NULL,
+circos.trackPlotRegion(
+    factors = NULL,
+    x = NULL, y = NULL,
+    ylim = NULL,
+    force.ylim = TRUE,
+    track.index = NULL,
     track.height = circos.par("track.height"),
     track.margin = circos.par("track.margin"),
     cell.padding = circos.par("cell.padding"),
-    bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
+    bg.col = NA,
+    bg.border = "black",
+    bg.lty = par("lty"),
+    bg.lwd = par("lwd"),
     panel.fun = function(x, y) {NULL})
 }
 \arguments{

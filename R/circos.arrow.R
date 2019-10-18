@@ -36,6 +36,7 @@
 #       col = "red", tail = ifelse(CELL_META$sector.index \%in\% c("a", "c"), 
 #           "point", "normal"))
 # }, bg.border = NA, track.height = 0.4)
+# circos.clear()
 #
 # ########## cell cycle ###########
 # cell_cycle = data.frame(phase = factor(c("G1", "S", "G2", "M"), 
@@ -53,12 +54,21 @@
 # }, bg.border = NA, track.height = 0.3)
 # circos.clear()
 #
-circos.arrow = function(x1, x2, y = get.cell.meta.data("ycenter", sector.index, track.index), 
+circos.arrow = function(
+	x1, 
+	x2, 
+	y = get.cell.meta.data("ycenter", sector.index, track.index), 
 	width = get.cell.meta.data("yrange", sector.index, track.index)/2, 
-	sector.index = get.current.sector.index(), track.index = get.current.track.index(),
+	sector.index = get.current.sector.index(), 
+	track.index = get.current.track.index(),
 	arrow.head.length = convert_x(5, "mm", sector.index, track.index),
-	arrow.head.width = width*2, arrow.position = c("end", "start"),
-	tail = c("normal", "point"), border = "black", col = "white", lty = par("lty"), ...) {
+	arrow.head.width = width*2, 
+	arrow.position = c("end", "start"),
+	tail = c("normal", "point"), 
+	border = "black", 
+	col = "white", 
+	lty = par("lty"), 
+	...) {
 
 	arrow.position = match.arg(arrow.position)[1]
 	tail = match.arg(tail)[1]

@@ -7,8 +7,16 @@ Draw sectors or rings in a circle
 Draw sectors or rings in a circle
 }
 \usage{
-draw.sector(start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL,
-    center = c(0, 0), clock.wise = TRUE, col = NA, border = "black", lwd = par("lwd"),
+draw.sector(
+    start.degree = 0,
+    end.degree = 360,
+    rou1 = 1,
+    rou2 = NULL,
+    center = c(0, 0),
+    clock.wise = TRUE,
+    col = NA,
+    border = "black",
+    lwd = par("lwd"),
     lty = par("lty"))
 }
 \arguments{

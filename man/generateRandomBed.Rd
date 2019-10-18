@@ -7,7 +7,10 @@ Generate random genomic data
 Generate random genomic data
 }
 \usage{
-generateRandomBed(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0.5),
+generateRandomBed(
+    nr = 10000,
+    nc = 1,
+    fun = function(k) rnorm(k, 0, 0.5),
     species = NULL)
 }
 \arguments{
@@ -25,4 +28,5 @@ and positions are sorted. The final number of rows may not be exactly as same as
 \examples{
 # There is no example
 NULL
+
 }

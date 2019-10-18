@@ -7,11 +7,21 @@ Add lines to the plotting region
 Add lines to the plotting region
 }
 \usage{
-circos.lines(x, y, sector.index = get.cell.meta.data("sector.index"),
+circos.lines(
+    x, y,
+    sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"),
-    col = ifelse(area, "grey", par("col")), lwd = par("lwd"), lty = par("lty"),
-    type = "l", straight = FALSE, area = FALSE, area.baseline = NULL,
-    border = "black", baseline = "bottom", pt.col = par("col"), cex = par("cex"),
+    col = ifelse(area, "grey", par("col")),
+    lwd = par("lwd"),
+    lty = par("lty"),
+    type = "l",
+    straight = FALSE,
+    area = FALSE,
+    area.baseline = NULL,
+    border = "black",
+    baseline = "bottom",
+    pt.col = par("col"),
+    cex = par("cex"),
     pch = par("pch"))
 }
 \arguments{
@@ -80,4 +90,5 @@ circos.clear()
 \examples{
 # There is no example
 NULL
+
 }

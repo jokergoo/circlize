@@ -7,8 +7,10 @@ Add an ideogram track
 Add an ideogram track
 }
 \usage{
-circos.genomicIdeogram(cytoband = system.file(package = "circlize",
-    "extdata", "cytoBand.txt"), species = NULL, track.height = convert_height(2, "mm"),
+circos.genomicIdeogram(
+    cytoband = system.file(package = "circlize", "extdata", "cytoBand.txt"),
+    species = NULL,
+    track.height = convert_height(2, "mm"),
     track.margin = circos.par("track.margin"))
 }
 \arguments{

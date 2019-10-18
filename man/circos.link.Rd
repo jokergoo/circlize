@@ -7,13 +7,30 @@ Draw links between points or/and intervals
 Draw links between points or/and intervals
 }
 \usage{
-circos.link(sector.index1, point1, sector.index2, point2,
+circos.link(
+    sector.index1,
+    point1,
+    sector.index2,
+    point2,
     rou = get_most_inside_radius(),
-    rou1 = rou, rou2 = rou, h = NULL, h.ratio = 0.5, w = 1, h2 = h, w2 = w,
-    col = "black", lwd = par("lwd"), lty = par("lty"), border = col,
-    directional = 0, arr.length = ifelse(arr.type == "big.arrow", 0.02, 0.4),
-    arr.width = arr.length/2, arr.type = "triangle", arr.lty = lty,
-    arr.lwd = lwd, arr.col = col)
+    rou1 = rou,
+    rou2 = rou,
+    h = NULL,
+    h.ratio = 0.5,
+    w = 1,
+    h2 = h,
+    w2 = w,
+    col = "black",
+    lwd = par("lwd"),
+    lty = par("lty"),
+    border = col,
+    directional = 0,
+    arr.length = ifelse(arr.type == "big.arrow", 0.02, 0.4),
+    arr.width = arr.length/2,
+    arr.type = "triangle",
+    arr.lty = lty,
+    arr.lwd = lwd,
+    arr.col = col)
 }
 \arguments{
 
@@ -58,4 +75,5 @@ Please refer to the vignette for detailed explanation.
 \examples{
 # There is no example
 NULL
+
 }

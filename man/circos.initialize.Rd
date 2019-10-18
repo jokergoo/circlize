@@ -7,7 +7,11 @@ Initialize the circular layout
 Initialize the circular layout
 }
 \usage{
-circos.initialize(factors, x = NULL, xlim = NULL, sector.width = NULL)
+circos.initialize(
+    factors,
+    x = NULL,
+    xlim = NULL,
+    sector.width = NULL)
 }
 \arguments{
 
@@ -47,4 +51,5 @@ The function finally calls \code{\link[graphics]{plot}} with enforing aspect rat
 \examples{
 # There is no example
 NULL
+
 }

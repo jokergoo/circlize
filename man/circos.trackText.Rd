@@ -7,10 +7,19 @@ Draw text in cells among the whole track
 Draw text in cells among the whole track
 }
 \usage{
-circos.trackText(factors, x, y, labels, track.index = get.cell.meta.data("track.index"),
-    direction = NULL, facing = c("inside", "outside", "reverse.clockwise", "clockwise",
-    "downward", "bending", "bending.inside", "bending.outside"), niceFacing = FALSE,
-    adj = par("adj"), cex = 1, col = par("col"), font = par("font"))
+circos.trackText(
+    factors,
+    x, y,
+    labels,
+    track.index = get.cell.meta.data("track.index"),
+    direction = NULL,
+    facing = c("inside", "outside", "reverse.clockwise", "clockwise",
+    "downward", "bending", "bending.inside", "bending.outside"),
+    niceFacing = FALSE,
+    adj = par("adj"),
+    cex = 1,
+    col = par("col"),
+    font = par("font"))
 }
 \arguments{
 
@@ -37,4 +46,5 @@ This function can be replaced by a \code{for} loop containing \code{\link{circos
 \examples{
 # There is no example
 NULL
+
 }

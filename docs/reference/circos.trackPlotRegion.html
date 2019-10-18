@@ -117,12 +117,19 @@
     <p>Create plotting regions for a whole track</p>
     </div>
 
-    <pre class="usage"><span class='fu'>circos.trackPlotRegion</span>(<span class='kw'>factors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-    <span class='kw'>force.ylim</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>circos.trackPlotRegion</span>(
+    <span class='kw'>factors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <span class='kw'>force.ylim</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
     <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='st'>"track.height"</span>),
     <span class='kw'>track.margin</span> <span class='kw'>=</span> <span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='st'>"track.margin"</span>),
     <span class='kw'>cell.padding</span> <span class='kw'>=</span> <span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='st'>"cell.padding"</span>),
-    <span class='kw'>bg.col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>bg.border</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>bg.lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>), <span class='kw'>bg.lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>),
+    <span class='kw'>bg.col</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+    <span class='kw'>bg.border</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+    <span class='kw'>bg.lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>),
+    <span class='kw'>bg.lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>),
     <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {<span class='kw'>NULL</span>})</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>

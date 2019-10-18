@@ -216,7 +216,11 @@ is.circos.initialized = function() {
 #
 # == seealso
 # http://jokergoo.github.io/circlize_book/book/circular-layout.html
-circos.initialize = function(factors, x = NULL, xlim = NULL, sector.width = NULL) {
+circos.initialize = function(
+	factors, 
+	x = NULL, 
+	xlim = NULL, 
+	sector.width = NULL) {
 
     resetGlobalVariable()
 	

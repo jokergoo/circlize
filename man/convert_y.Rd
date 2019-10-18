@@ -7,7 +7,9 @@ Convert unit on y direction in data coordinate
 Convert unit on y direction in data coordinate
 }
 \usage{
-convert_y(x, unit = c("mm", "cm", "inches"),
+convert_y(
+    x,
+    unit = c("mm", "cm", "inches"),
     sector.index = get.current.sector.index(),
     track.index = get.current.track.index())
 }

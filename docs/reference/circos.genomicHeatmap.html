@@ -117,11 +117,20 @@
     <p>Add heatmaps for selected regions</p>
     </div>
 
-    <pre class="usage"><span class='fu'>circos.genomicHeatmap</span>(<span class='no'>bed</span>, <span class='no'>col</span>, <span class='kw'>na_col</span> <span class='kw'>=</span> <span class='st'>"grey"</span>,
-    <span class='kw'>numeric.column</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border_lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>),
-    <span class='kw'>border_lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>), <span class='kw'>connection_height</span> <span class='kw'>=</span> <span class='fu'><a href='convert_height.html'>convert_height</a></span>(<span class='fl'>5</span>, <span class='st'>"mm"</span>),
-    <span class='kw'>line_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"col"</span>), <span class='kw'>line_lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>), <span class='kw'>line_lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>),
-    <span class='kw'>heatmap_height</span> <span class='kw'>=</span> <span class='fl'>0.15</span>, <span class='kw'>side</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"inside"</span>, <span class='st'>"outside"</span>),
+    <pre class="usage"><span class='fu'>circos.genomicHeatmap</span>(
+    <span class='no'>bed</span>,
+    <span class='no'>col</span>,
+    <span class='kw'>na_col</span> <span class='kw'>=</span> <span class='st'>"grey"</span>,
+    <span class='kw'>numeric.column</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <span class='kw'>border</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+    <span class='kw'>border_lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>),
+    <span class='kw'>border_lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>),
+    <span class='kw'>connection_height</span> <span class='kw'>=</span> <span class='fu'><a href='convert_height.html'>convert_height</a></span>(<span class='fl'>5</span>, <span class='st'>"mm"</span>),
+    <span class='kw'>line_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"col"</span>),
+    <span class='kw'>line_lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>),
+    <span class='kw'>line_lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>),
+    <span class='kw'>heatmap_height</span> <span class='kw'>=</span> <span class='fl'>0.15</span>,
+    <span class='kw'>side</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"inside"</span>, <span class='st'>"outside"</span>),
     <span class='kw'>track.margin</span> <span class='kw'>=</span> <span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='st'>"track.margin"</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -157,7 +166,7 @@
     </tr>
     <tr>
       <th>connection_height</th>
-      <td><p>height of the connection lines</p></td>
+      <td><p>height of the connection lines. If it is set to <code>NULL</code>, no connection will be drawn.</p></td>
     </tr>
     <tr>
       <th>line_col</th>

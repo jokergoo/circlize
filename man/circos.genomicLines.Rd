@@ -7,13 +7,25 @@ Add lines to a plotting region, specifically for genomic graphics
 Add lines to a plotting region, specifically for genomic graphics
 }
 \usage{
-circos.genomicLines(region, value, numeric.column = NULL,
+circos.genomicLines(
+    region,
+    value,
+    numeric.column = NULL,
     sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"), posTransform = NULL,
-    col = ifelse(area, "grey", "black"), lwd = par("lwd"),
-    lty = par("lty"), type = "l",
-    area = FALSE, area.baseline = NULL, border = "black", baseline = "bottom",
-    pt.col = par("col"), cex = par("cex"), pch = par("pch"), ...)
+    track.index = get.cell.meta.data("track.index"),
+    posTransform = NULL,
+    col = ifelse(area, "grey", "black"),
+    lwd = par("lwd"),
+    lty = par("lty"),
+    type = "l",
+    area = FALSE,
+    area.baseline = NULL,
+    border = "black",
+    baseline = "bottom",
+    pt.col = par("col"),
+    cex = par("cex"),
+    pch = par("pch"),
+    ...)
 }
 \arguments{
 

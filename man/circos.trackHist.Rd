@@ -7,12 +7,26 @@ Draw histogram in cells among a whole track
 Draw histogram in cells among a whole track
 }
 \usage{
-circos.trackHist(factors, x, track.height = circos.par("track.height"),
-    track.index = NULL, force.ylim = TRUE, col = ifelse(draw.density, "black", NA),
-    border = "black", lty = par("lty"), lwd = par("lwd"),
-    bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
-    breaks = "Sturges", include.lowest = TRUE, right = TRUE, draw.density = FALSE,
-    bin.size = NULL, area = FALSE)
+circos.trackHist(
+    factors,
+    x,
+    track.height = circos.par("track.height"),
+    track.index = NULL,
+    force.ylim = TRUE,
+    col = ifelse(draw.density, "black", NA),
+    border = "black",
+    lty = par("lty"),
+    lwd = par("lwd"),
+    bg.col = NA,
+    bg.border = "black",
+    bg.lty = par("lty"),
+    bg.lwd = par("lwd"),
+    breaks = "Sturges",
+    include.lowest = TRUE,
+    right = TRUE,
+    draw.density = FALSE,
+    bin.size = NULL,
+    area = FALSE)
 }
 \arguments{
 

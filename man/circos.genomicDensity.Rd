@@ -7,9 +7,20 @@ Calculate and add genomic density track
 Calculate and add genomic density track
 }
 \usage{
-circos.genomicDensity(data, ylim.force = FALSE, window.size = NULL, overlap = TRUE,
-    col = ifelse(area, "grey", "black"), lwd = par("lwd"), lty = par("lty"), type = "l",
-    area = TRUE, area.baseline = NULL, baseline = 0, border = NA, ...)
+circos.genomicDensity(
+    data,
+    ylim.force = FALSE,
+    window.size = NULL,
+    overlap = TRUE,
+    col = ifelse(area, "grey", "black"),
+    lwd = par("lwd"),
+    lty = par("lty"),
+    type = "l",
+    area = TRUE,
+    area.baseline = NULL,
+    baseline = 0,
+    border = NA,
+    ...)
 }
 \arguments{
 

@@ -7,9 +7,15 @@ Nested zooming with two circular plots
 Nested zooming with two circular plots
 }
 \usage{
-circos.nested(f1, f2, correspondance, connection_height = convert_height(5, "mm"),
-    connection_col = NA, connection_border = "black",
-    connection_lty = par("lty"), connection_lwd = par("lwd"),
+circos.nested(
+    f1,
+    f2,
+    correspondance,
+    connection_height = convert_height(5, "mm"),
+    connection_col = NA,
+    connection_border = "black",
+    connection_lty = par("lty"),
+    connection_lwd = par("lwd"),
     adjust_start_degree = TRUE)
 }
 \arguments{
@@ -47,4 +53,5 @@ Zuguang Gu <z.gu@dkfz.de>
 \examples{
 # There is no example
 NULL
+
 }

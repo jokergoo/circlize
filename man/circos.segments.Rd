@@ -7,9 +7,15 @@ Draw segments through pairwise of points
 Draw segments through pairwise of points
 }
 \usage{
-circos.segments(x0, y0, x1, y1, sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"), straight = FALSE,
-    col = par("col"), lwd = par("lwd"), lty = par("lty"), ...)
+circos.segments(
+    x0, y0, x1, y1,
+    sector.index = get.cell.meta.data("sector.index"),
+    track.index = get.cell.meta.data("track.index"),
+    straight = FALSE,
+    col = par("col"),
+    lwd = par("lwd"),
+    lty = par("lty"),
+    ...)
 }
 \arguments{
 
@@ -29,4 +35,5 @@ circos.segments(x0, y0, x1, y1, sector.index = get.cell.meta.data("sector.index"
 \examples{
 # There is no example
 NULL
+
 }

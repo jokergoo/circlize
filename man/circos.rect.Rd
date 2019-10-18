@@ -7,9 +7,12 @@ Draw rectangle-like grid
 Draw rectangle-like grid
 }
 \usage{
-circos.rect(xleft, ybottom, xright, ytop,
+circos.rect(
+    xleft, ybottom, xright, ytop,
     sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"), rot = 0, ...)
+    track.index = get.cell.meta.data("track.index"),
+    rot = 0,
+    ...)
 }
 \arguments{
 

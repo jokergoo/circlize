@@ -7,7 +7,9 @@ Convert to polar coordinate system
 Convert to polar coordinate system
 }
 \usage{
-circlize(x, y, sector.index = get.current.sector.index(),
+circlize(
+    x, y,
+    sector.index = get.current.sector.index(),
     track.index = get.current.track.index())
 }
 \arguments{

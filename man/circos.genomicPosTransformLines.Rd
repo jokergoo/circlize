@@ -7,10 +7,17 @@ Add genomic position transformation lines between tracks
 Add genomic position transformation lines between tracks
 }
 \usage{
-circos.genomicPosTransformLines(data, track.height = 0.1, posTransform = NULL,
-    horizontalLine = c("none", "top", "bottom", "both"), track.margin = c(0, 0),
-    direction = c("inside", "outside"), col = "black", lwd = par("lwd"),
-    lty = par("lty"), ...)
+circos.genomicPosTransformLines(
+    data,
+    track.height = 0.1,
+    posTransform = NULL,
+    horizontalLine = c("none", "top", "bottom", "both"),
+    track.margin = c(0, 0),
+    direction = c("inside", "outside"),
+    col = "black",
+    lwd = par("lwd"),
+    lty = par("lty"),
+    ...)
 }
 \arguments{
 
@@ -37,4 +44,5 @@ to transform original positions to new positions would help for the visualizatio
 \examples{
 # There is no example
 NULL
+
 }

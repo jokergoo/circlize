@@ -7,10 +7,17 @@ Genomic position transformation function specifically for text
 Genomic position transformation function specifically for text
 }
 \usage{
-posTransform.text(region, y, labels, cex = 1, font = par("font"),
+posTransform.text(
+    region,
+    y,
+    labels,
+    cex = 1,
+    font = par("font"),
     sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"), padding = 0,
-    extend = 0, ...)
+    track.index = get.cell.meta.data("track.index"),
+    padding = 0,
+    extend = 0,
+    ...)
 }
 \arguments{
 
@@ -33,4 +40,5 @@ Under the transformation, texts will be as close as possible to the original pos
 \examples{
 # There is no example
 NULL
+
 }

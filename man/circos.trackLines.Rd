@@ -7,10 +7,22 @@ Add lines to the plotting regions in a same track
 Add lines to the plotting regions in a same track
 }
 \usage{
-circos.trackLines(factors, x, y, track.index = get.cell.meta.data("track.index"),
-    col = par("col"), lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
-    area = FALSE, area.baseline = NULL, border = "black", baseline = "bottom",
-    pt.col = par("col"), cex = par("cex"), pch = par("pch"))
+circos.trackLines(
+    factors,
+    x, y,
+    track.index = get.cell.meta.data("track.index"),
+    col = par("col"),
+    lwd = par("lwd"),
+    lty = par("lty"),
+    type = "l",
+    straight = FALSE,
+    area = FALSE,
+    area.baseline = NULL,
+    border = "black",
+    baseline = "bottom",
+    pt.col = par("col"),
+    cex = par("cex"),
+    pch = par("pch"))
 }
 \arguments{
 
@@ -41,4 +53,5 @@ This function can be replaced by a \code{for} loop containing \code{\link{circos
 \examples{
 # There is no example
 NULL
+
 }

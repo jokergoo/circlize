@@ -7,11 +7,20 @@ Add heatmaps for selected regions
 Add heatmaps for selected regions
 }
 \usage{
-circos.genomicHeatmap(bed, col, na_col = "grey",
-    numeric.column = NULL, border = NA, border_lwd = par("lwd"),
-    border_lty = par("lty"), connection_height = convert_height(5, "mm"),
-    line_col = par("col"), line_lwd = par("lwd"), line_lty = par("lty"),
-    heatmap_height = 0.15, side = c("inside", "outside"),
+circos.genomicHeatmap(
+    bed,
+    col,
+    na_col = "grey",
+    numeric.column = NULL,
+    border = NA,
+    border_lwd = par("lwd"),
+    border_lty = par("lty"),
+    connection_height = convert_height(5, "mm"),
+    line_col = par("col"),
+    line_lwd = par("lwd"),
+    line_lty = par("lty"),
+    heatmap_height = 0.15,
+    side = c("inside", "outside"),
     track.margin = circos.par("track.margin"))
 }
 \arguments{

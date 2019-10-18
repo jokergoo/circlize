@@ -7,10 +7,18 @@ Add points to a plotting region, specifically for genomic graphics
 Add points to a plotting region, specifically for genomic graphics
 }
 \usage{
-circos.genomicPoints(region, value, numeric.column = NULL,
+circos.genomicPoints(
+    region,
+    value,
+    numeric.column = NULL,
     sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"), posTransform = NULL,
-    pch = par("pch"), col = par("col"), cex = par("cex"), bg = par("bg"), ...)
+    track.index = get.cell.meta.data("track.index"),
+    posTransform = NULL,
+    pch = par("pch"),
+    col = par("col"),
+    cex = par("cex"),
+    bg = par("bg"),
+    ...)
 }
 \arguments{
 

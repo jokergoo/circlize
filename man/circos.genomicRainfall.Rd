@@ -7,8 +7,15 @@ Genomic rainfall plot
 Genomic rainfall plot
 }
 \usage{
-circos.genomicRainfall(data, mode = "min", ylim = NULL, col = "black",
-    pch = par("pch"), cex = par("cex"), normalize_to_width = FALSE, ...)
+circos.genomicRainfall(
+    data,
+    mode = "min",
+    ylim = NULL,
+    col = "black",
+    pch = par("pch"),
+    cex = par("cex"),
+    normalize_to_width = FALSE,
+    ...)
 }
 \arguments{
 

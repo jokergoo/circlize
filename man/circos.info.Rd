@@ -33,4 +33,5 @@ for each cell on the figure.
 \examples{
 # There is no example
 NULL
+
 }

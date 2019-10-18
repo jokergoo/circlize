@@ -19,4 +19,5 @@ If you meet some errors when re-drawing the circular plot, try running this func
 \examples{
 # There is no example
 NULL
+
 }

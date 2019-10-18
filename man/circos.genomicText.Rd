@@ -7,12 +7,27 @@ Draw text in a cell, specifically for genomic graphics
 Draw text in a cell, specifically for genomic graphics
 }
 \usage{
-circos.genomicText(region, value = NULL, y = NULL, labels = NULL, labels.column = NULL,
-    numeric.column = NULL, sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"), posTransform = NULL,
-    direction = NULL, facing = "inside", niceFacing = FALSE,
-    adj = par("adj"), cex = 1, col = "black", font = par("font"), padding = 0,
-    extend = 0, align_to = "region", ...)
+circos.genomicText(
+    region,
+    value = NULL,
+    y = NULL,
+    labels = NULL,
+    labels.column = NULL,
+    numeric.column = NULL,
+    sector.index = get.cell.meta.data("sector.index"),
+    track.index = get.cell.meta.data("track.index"),
+    posTransform = NULL,
+    direction = NULL,
+    facing = "inside",
+    niceFacing = FALSE,
+    adj = par("adj"),
+    cex = 1,
+    col = "black",
+    font = par("font"),
+    padding = 0,
+    extend = 0,
+    align_to = "region",
+    ...)
 }
 \arguments{
 

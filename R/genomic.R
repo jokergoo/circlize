@@ -2210,7 +2210,7 @@ posTransform.text = function(region, y, labels, cex = 1, font = par("font"),
 # -border border of the heatmap grids.
 # -border_lwd line width for borders of heatmap grids
 # -border_lty line style for borders of heatmap grids
-# -connection_height height of the connection lines
+# -connection_height height of the connection lines. If it is set to ``NULL``, no connection will be drawn.
 # -line_col col of the connection line. The value can be a vector.
 # -line_lwd line width of the connection lines.
 # -line_lty line style of the connection lines.
@@ -2279,11 +2279,13 @@ circos.genomicHeatmap = function(bed, col, na_col = "grey",
 		dim(border) = dim(col)
 	}
 	if(side == "inside") {
-		circos.genomicPosTransformLines(bed, posTransform = posTransform.default, 
-		    horizontalLine = "top", track.height = connection_height,
-		    track.margin = c(convert_height(1, "mm"), track.margin[2]), 
-		    cell.padding = c(0, 0, 0, 0),
-		    col = line_col, lwd = line_lwd, lty = line_lty)
+		if(!is.null(connection_height)) {
+			circos.genomicPosTransformLines(bed, posTransform = posTransform.default, 
+			    horizontalLine = "top", track.height = connection_height,
+			    track.margin = c(convert_height(1, "mm"), track.margin[2]), 
+			    cell.padding = c(0, 0, 0, 0),
+			    col = line_col, lwd = line_lwd, lty = line_lty)
+		}
 		circos.genomicTrackPlotRegion(bed, stack = TRUE, 
 		    panel.fun = function(region, value, ...) {
 		    	l = bed[, 1] == CELL_META$sector.index
@@ -2303,11 +2305,13 @@ circos.genomicHeatmap = function(bed, col, na_col = "grey",
 		            posTransform = posTransform.default, ...)
 			}, bg.border = NA, track.height = heatmap_height, track.margin = c(0, track.margin[2]),
 			cell.padding = c(0, 0, 0, 0))
-		circos.genomicPosTransformLines(bed, posTransform = posTransform.default, 
-		    direction = "outside", horizontalLine = "bottom", track.height = connection_height,
-		    track.margin = c(track.margin[2], convert_height(1, "mm")), 
-		    cell.padding = c(0, 0, 0, 0), 
-		    col = line_col, lwd = line_lwd, lty = line_lty)
+		if(!is.null(connection_height)) {
+			circos.genomicPosTransformLines(bed, posTransform = posTransform.default, 
+			    direction = "outside", horizontalLine = "bottom", track.height = connection_height,
+			    track.margin = c(track.margin[2], convert_height(1, "mm")), 
+			    cell.padding = c(0, 0, 0, 0), 
+			    col = line_col, lwd = line_lwd, lty = line_lty)
+		}
 	}
 }
 

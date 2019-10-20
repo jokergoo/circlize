@@ -27,8 +27,9 @@
 # cytoband = read.table(system.file(package = "circlize", "extdata", "cytoBand.txt"), 
 #     colClasses = c("character", "numeric", "numeric", "character", "character"), sep = "\t")
 # data = read.cytoband(cytoband = cytoband)
-read.cytoband = function(cytoband = system.file(package = "circlize",
-    "extdata", "cytoBand.txt"), species = NULL, 
+read.cytoband = function(
+	cytoband = system.file(package = "circlize", "extdata", "cytoBand.txt"), 
+	species = NULL, 
     chromosome.index = usable_chromosomes(species), 
     sort.chr = TRUE) {
 
@@ -132,8 +133,9 @@ read.cytoband = function(cytoband = system.file(package = "circlize",
 # chromInfo = read.table(system.file(package = "circlize", "extdata", "chromInfo.txt"), 
 #     colClasses = c("character", "numeric"), sep = "\t")
 # data = read.chromInfo(chromInfo = chromInfo)
-read.chromInfo = function(chromInfo = system.file(package = "circlize",
-    "extdata", "chromInfo.txt"), species = NULL, 
+read.chromInfo = function(
+	chromInfo = system.file(package = "circlize", "extdata", "chromInfo.txt"), 
+	species = NULL, 
     chromosome.index = usable_chromosomes(species), 
     sort.chr = TRUE) {
 	
@@ -268,7 +270,10 @@ cytoband.col = function(x) {
 # == details
 # The function will uniformly sample positions from the genome. Chromosome names start with "chr"
 # and positions are sorted. The final number of rows may not be exactly as same as ``nr``.
-generateRandomBed = function(nr = 10000, nc = 1, fun = function(k) rnorm(k, 0, 0.5),
+generateRandomBed = function(
+	nr = 10000, 
+	nc = 1, 
+	fun = function(k) rnorm(k, 0, 0.5),
     species = NULL) {
 	cyto = read.cytoband(species = species)
 	chr.len = cyto$chr.len

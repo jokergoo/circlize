@@ -117,14 +117,24 @@
     <p>Add labels to specified genomic regions</p>
     </div>
 
-    <pre class="usage"><span class='fu'>circos.genomicLabels</span>(<span class='no'>bed</span>, <span class='kw'>labels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>labels.column</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-    <span class='kw'>facing</span> <span class='kw'>=</span> <span class='st'>"clockwise"</span>, <span class='kw'>niceFacing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-    <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"col"</span>), <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>font</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"font"</span>), <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>0.4</span>,
+    <pre class="usage"><span class='fu'>circos.genomicLabels</span>(
+    <span class='no'>bed</span>,
+    <span class='kw'>labels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <span class='kw'>labels.column</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <span class='kw'>facing</span> <span class='kw'>=</span> <span class='st'>"clockwise"</span>,
+    <span class='kw'>niceFacing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+    <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"col"</span>),
+    <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
+    <span class='kw'>font</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"font"</span>),
+    <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>0.4</span>,
     <span class='kw'>connection_height</span> <span class='kw'>=</span> <span class='fu'><a href='convert_height.html'>convert_height</a></span>(<span class='fl'>5</span>, <span class='st'>"mm"</span>),
-    <span class='kw'>line_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"col"</span>), <span class='kw'>line_lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>), <span class='kw'>line_lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>),
+    <span class='kw'>line_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"col"</span>),
+    <span class='kw'>line_lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>),
+    <span class='kw'>line_lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>),
     <span class='kw'>labels_height</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='convert_height.html'>convert_height</a></span>(<span class='fl'>1.5</span>, <span class='st'>"cm"</span>),
     <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(<span class='fu'><a href='https://rdrr.io/r/graphics/strwidth.html'>strwidth</a></span>(<span class='no'>labels</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='no'>cex</span>, <span class='kw'>font</span> <span class='kw'>=</span> <span class='no'>font</span>)))),
-    <span class='kw'>side</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"inside"</span>, <span class='st'>"outside"</span>), <span class='kw'>track.margin</span> <span class='kw'>=</span> <span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='st'>"track.margin"</span>))</pre>
+    <span class='kw'>side</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"inside"</span>, <span class='st'>"outside"</span>),
+    <span class='kw'>track.margin</span> <span class='kw'>=</span> <span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='st'>"track.margin"</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

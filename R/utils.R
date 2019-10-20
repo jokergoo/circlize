@@ -22,8 +22,10 @@
 # circlize(0.5, 0.5, sector.index = "a", track.index = 1)
 # circos.clear()
 # dev.off()
-circlize = function(x, y, sector.index = get.current.sector.index(),
-	track.index = get.current.track.index()) {
+circlize = function(
+    x, y, 
+    sector.index = get.current.sector.index(),
+    track.index = get.current.track.index()) {
 
     if(missing(y)) {
         if(ncol(x) >= 2) {
@@ -78,7 +80,9 @@ circlize = function(x, y, sector.index = get.current.sector.index(),
 # reverse.circlize(c(30, 60), c(0.9, 0.8), sector.index = "a", track.index = 1)
 # circos.clear()
 # dev.off()
-reverse.circlize = function(x, y, sector.index = get.current.sector.index(),
+reverse.circlize = function(
+    x, y, 
+    sector.index = get.current.sector.index(),
     track.index = get.current.track.index()) {
 
     if(missing(y)) {
@@ -756,7 +760,9 @@ convert_unit_in_data_coordinate = function(x, unit = c("mm", "cm", "inches", "ca
 #         circos.lines(c(0, line_length_on_x), c(0, line_length_on_y), col = "orange")
 #     })
 # circos.clear()
-convert_x = function(x, unit = c("mm", "cm", "inches"),
+convert_x = function(
+    x, 
+    unit = c("mm", "cm", "inches"),
     sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"),
     h = get.cell.meta.data("ycenter", sector.index = sector.index, 
@@ -807,7 +813,9 @@ ux = function(...) {
 # == example
 # # see example on `convert_x` page 
 # NULL
-convert_y = function(x, unit = c("mm", "cm", "inches"),
+convert_y = function(
+    x, 
+    unit = c("mm", "cm", "inches"),
     sector.index = get.current.sector.index(),
     track.index = get.current.track.index()) {
     convert_unit_in_data_coordinate(x, unit = unit, sector.index = sector.index, 

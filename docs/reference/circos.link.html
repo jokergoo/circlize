@@ -117,13 +117,30 @@
     <p>Draw links between points or/and intervals</p>
     </div>
 
-    <pre class="usage"><span class='fu'>circos.link</span>(<span class='no'>sector.index1</span>, <span class='no'>point1</span>, <span class='no'>sector.index2</span>, <span class='no'>point2</span>,
+    <pre class="usage"><span class='fu'>circos.link</span>(
+    <span class='no'>sector.index1</span>,
+    <span class='no'>point1</span>,
+    <span class='no'>sector.index2</span>,
+    <span class='no'>point2</span>,
     <span class='kw'>rou</span> <span class='kw'>=</span> <span class='fu'>get_most_inside_radius</span>(),
-    <span class='kw'>rou1</span> <span class='kw'>=</span> <span class='no'>rou</span>, <span class='kw'>rou2</span> <span class='kw'>=</span> <span class='no'>rou</span>, <span class='kw'>h</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>h.ratio</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>w</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>h2</span> <span class='kw'>=</span> <span class='no'>h</span>, <span class='kw'>w2</span> <span class='kw'>=</span> <span class='no'>w</span>,
-    <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>), <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>), <span class='kw'>border</span> <span class='kw'>=</span> <span class='no'>col</span>,
-    <span class='kw'>directional</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>arr.length</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>arr.type</span> <span class='kw'>==</span> <span class='st'>"big.arrow"</span>, <span class='fl'>0.02</span>, <span class='fl'>0.4</span>),
-    <span class='kw'>arr.width</span> <span class='kw'>=</span> <span class='no'>arr.length</span>/<span class='fl'>2</span>, <span class='kw'>arr.type</span> <span class='kw'>=</span> <span class='st'>"triangle"</span>, <span class='kw'>arr.lty</span> <span class='kw'>=</span> <span class='no'>lty</span>,
-    <span class='kw'>arr.lwd</span> <span class='kw'>=</span> <span class='no'>lwd</span>, <span class='kw'>arr.col</span> <span class='kw'>=</span> <span class='no'>col</span>)</pre>
+    <span class='kw'>rou1</span> <span class='kw'>=</span> <span class='no'>rou</span>,
+    <span class='kw'>rou2</span> <span class='kw'>=</span> <span class='no'>rou</span>,
+    <span class='kw'>h</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <span class='kw'>h.ratio</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+    <span class='kw'>w</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+    <span class='kw'>h2</span> <span class='kw'>=</span> <span class='no'>h</span>,
+    <span class='kw'>w2</span> <span class='kw'>=</span> <span class='no'>w</span>,
+    <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+    <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>),
+    <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>),
+    <span class='kw'>border</span> <span class='kw'>=</span> <span class='no'>col</span>,
+    <span class='kw'>directional</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+    <span class='kw'>arr.length</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>arr.type</span> <span class='kw'>==</span> <span class='st'>"big.arrow"</span>, <span class='fl'>0.02</span>, <span class='fl'>0.4</span>),
+    <span class='kw'>arr.width</span> <span class='kw'>=</span> <span class='no'>arr.length</span>/<span class='fl'>2</span>,
+    <span class='kw'>arr.type</span> <span class='kw'>=</span> <span class='st'>"triangle"</span>,
+    <span class='kw'>arr.lty</span> <span class='kw'>=</span> <span class='no'>lty</span>,
+    <span class='kw'>arr.lwd</span> <span class='kw'>=</span> <span class='no'>lwd</span>,
+    <span class='kw'>arr.col</span> <span class='kw'>=</span> <span class='no'>col</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

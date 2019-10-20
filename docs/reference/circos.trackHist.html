@@ -117,12 +117,26 @@
     <p>Draw histogram in cells among a whole track</p>
     </div>
 
-    <pre class="usage"><span class='fu'>circos.trackHist</span>(<span class='no'>factors</span>, <span class='no'>x</span>, <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='st'>"track.height"</span>),
-    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>force.ylim</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>draw.density</span>, <span class='st'>"black"</span>, <span class='fl'>NA</span>),
-    <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>), <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>),
-    <span class='kw'>bg.col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>bg.border</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>bg.lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>), <span class='kw'>bg.lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>),
-    <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='st'>"Sturges"</span>, <span class='kw'>include.lowest</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>right</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>draw.density</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-    <span class='kw'>bin.size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>area</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>circos.trackHist</span>(
+    <span class='no'>factors</span>,
+    <span class='no'>x</span>,
+    <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='st'>"track.height"</span>),
+    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <span class='kw'>force.ylim</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+    <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>draw.density</span>, <span class='st'>"black"</span>, <span class='fl'>NA</span>),
+    <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+    <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>),
+    <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>),
+    <span class='kw'>bg.col</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+    <span class='kw'>bg.border</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+    <span class='kw'>bg.lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>),
+    <span class='kw'>bg.lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>),
+    <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='st'>"Sturges"</span>,
+    <span class='kw'>include.lowest</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+    <span class='kw'>right</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+    <span class='kw'>draw.density</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+    <span class='kw'>bin.size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <span class='kw'>area</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

@@ -34,9 +34,15 @@
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
 #
-circos.nested = function(f1, f2, correspondance, connection_height = convert_height(5, "mm"),
-	connection_col = NA, connection_border = "black",
-	connection_lty = par("lty"), connection_lwd = par("lwd"),
+circos.nested = function(
+	f1, 
+	f2, 
+	correspondance, 
+	connection_height = convert_height(5, "mm"),
+	connection_col = NA, 
+	connection_border = "black",
+	connection_lty = par("lty"), 
+	connection_lwd = par("lwd"),
 	adjust_start_degree = TRUE) {
 
 	on.exit(circos.clear())

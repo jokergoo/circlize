@@ -76,12 +76,19 @@
 #     circos.points(x, y)
 # }, track.height = 0.2, bg.border = rand_color(8))
 # circos.clear()
-circos.trackPlotRegion = function(factors = NULL, x = NULL, y = NULL, ylim = NULL,
-    force.ylim = TRUE, track.index = NULL,
+circos.trackPlotRegion = function(
+	factors = NULL, 
+	x = NULL, y = NULL, 
+	ylim = NULL,
+    force.ylim = TRUE, 
+    track.index = NULL,
 	track.height = circos.par("track.height"),
 	track.margin = circos.par("track.margin"),
 	cell.padding = circos.par("cell.padding"),
-    bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
+    bg.col = NA, 
+    bg.border = "black", 
+    bg.lty = par("lty"), 
+    bg.lwd = par("lwd"),
     panel.fun = function(x, y) {NULL}) {
 
     if(!is.circos.initialized()) {
@@ -299,9 +306,13 @@ circos.track = function(...) {
 #             CELL_META$cell.xlim[2], CELL_META$cell.ylim[2],
 #             col = "#FF000080")
 # circos.clear()
-circos.updatePlotRegion = function(sector.index = get.cell.meta.data("sector.index"),
+circos.updatePlotRegion = function(
+	sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"),
-    bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd")) {
+    bg.col = NA, 
+    bg.border = "black", 
+    bg.lty = par("lty"), 
+    bg.lwd = par("lwd")) {
 
     if(!has.cell(sector.index, track.index)) {
         stop_wrap("You can only update an existed cell.")
@@ -336,9 +347,16 @@ circos.update = function(...)  {
 }
 
 # internal, so we do not need to check arguments
-circos.createPlotRegion = function(track.start, track.height = circos.par("track.height"),
-    sector.index = get.cell.meta.data("sector.index"), track.index = get.cell.meta.data("track.index"), ylim,
-    bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd")) {
+circos.createPlotRegion = function(
+	track.start, 
+	track.height = circos.par("track.height"),
+    sector.index = get.cell.meta.data("sector.index"), 
+    track.index = get.cell.meta.data("track.index"), 
+    ylim,
+    bg.col = NA, 
+    bg.border = "black", 
+    bg.lty = par("lty"), 
+    bg.lwd = par("lwd")) {
 
 	# we do not have such meta for the cell, so we need to calculate them
 	sector.data = get.sector.data(sector.index)
@@ -425,9 +443,14 @@ circos.createPlotRegion = function(track.start, track.height = circos.par("track
 # })
 # circos.points(runif(10), runif(10), sector.index = "c", pch = 16, col = "red")
 # circos.clear()
-circos.points = function(x, y, sector.index = get.cell.meta.data("sector.index"),
+circos.points = function(
+	x, y, 
+	sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"),
-    pch = par("pch"), col = par("col"), cex = par("cex"), bg = par("bg")) {
+    pch = par("pch"), 
+    col = par("col"), 
+    cex = par("cex"), 
+    bg = par("bg")) {
 
     if(!has.cell(sector.index, track.index)) {
         stop_wrap("'circos.points' can only be used after the plotting region has been created")
@@ -480,8 +503,14 @@ circos.points = function(x, y, sector.index = get.cell.meta.data("sector.index")
 # circos.track(ylim = c(0, 1))
 # circos.trackPoints(df$fa, x = df$x, y = df$y, pch = 16, col = as.numeric(factor(df$fa)))
 # circos.clear()
-circos.trackPoints = function(factors = NULL, x, y, track.index = get.cell.meta.data("track.index"),
-    pch = par("pch"), col = par("col"), cex = par("cex"), bg = par("bg")) {
+circos.trackPoints = function(
+	factors = NULL, 
+	x, y, 
+	track.index = get.cell.meta.data("track.index"),
+    pch = par("pch"), 
+    col = par("col"), 
+    cex = par("cex"), 
+    bg = par("bg")) {
 
     # basic check here
     if(length(x) != length(factors) || length(y) != length(factors)) {
@@ -588,11 +617,21 @@ circos.trackPoints = function(factors = NULL, x, y, track.index = get.cell.meta.
 # circos.text(5, 9, "type = 'l', area = TRUE, baseline = 'top'", sector.index = "i")
 #
 # circos.clear()
-circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
+circos.lines = function(
+	x, y, 
+	sector.index = get.cell.meta.data("sector.index"),
     track.index = get.cell.meta.data("track.index"),
-    col = ifelse(area, "grey", par("col")), lwd = par("lwd"), lty = par("lty"),
-    type = "l", straight = FALSE, area = FALSE, area.baseline = NULL,
-    border = "black", baseline = "bottom", pt.col = par("col"), cex = par("cex"),
+    col = ifelse(area, "grey", par("col")), 
+    lwd = par("lwd"), 
+    lty = par("lty"),
+    type = "l", 
+    straight = FALSE, 
+    area = FALSE, 
+    area.baseline = NULL,
+    border = "black", 
+    baseline = "bottom", 
+    pt.col = par("col"), 
+    cex = par("cex"),
     pch = par("pch")) {
 
 	if(!is.null(area.baseline)) {
@@ -706,10 +745,22 @@ circos.lines = function(x, y, sector.index = get.cell.meta.data("sector.index"),
 # each part corresponds to one factor (sector index) and then add lines in cells by calling `circos.lines`.
 #
 # This function can be replaced by a ``for`` loop containing `circos.lines`.
-circos.trackLines = function(factors, x, y, track.index = get.cell.meta.data("track.index"),
-    col = par("col"), lwd = par("lwd"), lty = par("lty"), type = "l", straight = FALSE,
-	area = FALSE, area.baseline = NULL, border = "black", baseline = "bottom",
-    pt.col = par("col"), cex = par("cex"), pch = par("pch")) {
+circos.trackLines = function(
+	factors, 
+	x, y, 
+	track.index = get.cell.meta.data("track.index"),
+    col = par("col"), 
+    lwd = par("lwd"), 
+    lty = par("lty"), 
+    type = "l", 
+    straight = FALSE,
+	area = FALSE, 
+	area.baseline = NULL, 
+	border = "black", 
+	baseline = "bottom",
+    pt.col = par("col"), 
+    cex = par("cex"), 
+    pch = par("pch")) {
 
 	if(!is.null(area.baseline)) {
 		baseline = area.baseline
@@ -795,9 +846,12 @@ circos.trackLines = function(factors, x, y, track.index = get.cell.meta.data("tr
 #     }
 # }, track.height = 0.5)
 #
-circos.rect = function(xleft, ybottom, xright, ytop,
+circos.rect = function(
+	xleft, ybottom, xright, ytop,
 	sector.index = get.cell.meta.data("sector.index"),
-	track.index = get.cell.meta.data("track.index"), rot = 0, ...) {
+	track.index = get.cell.meta.data("track.index"), 
+	rot = 0, 
+	...) {
 
     # if(! (length(xleft) == 1 &&
     #       length(ybottom) == 1 &&
@@ -986,8 +1040,11 @@ circos.triangle = function(x1, y1, x2, y2, x3, y3, ...) {
 #     circos.lines(x1, loess.predict$fit)
 # })
 # circos.clear()
-circos.polygon = function(x, y, sector.index = get.cell.meta.data("sector.index"),
-	track.index = get.cell.meta.data("track.index"), ...) {
+circos.polygon = function(
+	x, y, 
+	sector.index = get.cell.meta.data("sector.index"),
+	track.index = get.cell.meta.data("track.index"), 
+	...) {
 
     if(!has.cell(sector.index, track.index)) {
         stop_wrap("'circos.polygon' can only be used after the plotting region been created.")
@@ -1018,9 +1075,15 @@ circos.polygon = function(x, y, sector.index = get.cell.meta.data("sector.index"
 # -lty line type of the segments
 # -... pass to `graphics::lines`
 #
-circos.segments = function(x0, y0, x1, y1, sector.index = get.cell.meta.data("sector.index"),
-	track.index = get.cell.meta.data("track.index"), straight = FALSE,
-	col = par("col"), lwd = par("lwd"), lty = par("lty"), ...) {
+circos.segments = function(
+	x0, y0, x1, y1, 
+	sector.index = get.cell.meta.data("sector.index"),
+	track.index = get.cell.meta.data("track.index"), 
+	straight = FALSE,
+	col = par("col"), 
+	lwd = par("lwd"), 
+	lty = par("lty"), 
+	...) {
 
 	n1 = length(x0)
     n2 = length(y0)
@@ -1143,11 +1206,20 @@ circos.segments = function(x0, y0, x1, y1, sector.index = get.cell.meta.data("se
 #         cex = 0.8)
 # })
 # circos.clear()
-circos.text = function(x, y, labels, sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"), direction = NULL,
+circos.text = function(
+	x, y, 
+	labels, 
+	sector.index = get.cell.meta.data("sector.index"),
+    track.index = get.cell.meta.data("track.index"), 
+    direction = NULL,
     facing = c("inside", "outside", "reverse.clockwise", "clockwise",
-	"downward", "bending", "bending.inside", "bending.outside"), niceFacing = FALSE,
-	adj = par("adj"), cex = 1, col = par("col"), font = par("font"), ...) {
+	    "downward", "bending", "bending.inside", "bending.outside"), 
+    niceFacing = FALSE,
+	adj = par("adj"), 
+	cex = 1, 
+	col = par("col"), 
+	font = par("font"), 
+	...) {
 
     len_x = length(x)
     len_y = length(y)
@@ -1408,10 +1480,19 @@ degree = function(x) {
 # each part corresponds to one factor (sector index) and then add texts in cells by calling `circos.text`.
 #
 # This function can be replaced by a ``for`` loop containing `circos.text`.
-circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.data("track.index"),
-    direction = NULL, facing = c("inside", "outside", "reverse.clockwise", "clockwise",
-	"downward", "bending", "bending.inside", "bending.outside"), niceFacing = FALSE,
-    adj = par("adj"), cex = 1, col = par("col"), font = par("font")) {
+circos.trackText = function(
+	factors, 
+	x, y, 
+	labels, 
+	track.index = get.cell.meta.data("track.index"),
+    direction = NULL, 
+    facing = c("inside", "outside", "reverse.clockwise", "clockwise",
+	    "downward", "bending", "bending.inside", "bending.outside"), 
+    niceFacing = FALSE,
+    adj = par("adj"), 
+    cex = 1, 
+    col = par("col"), 
+    font = par("font")) {
 
     # basic check here
     if(length(x) != length(factors) || length(y) != length(factors)) {
@@ -1553,15 +1634,27 @@ circos.trackText = function(factors, x, y, labels, track.index = get.cell.meta.d
 # }
 # circos.clear()
 # }
-circos.axis = function(h = "top", major.at = NULL, labels = TRUE, major.tick = TRUE,
+circos.axis = function(
+	h = "top", 
+	major.at = NULL, 
+	labels = TRUE, 
+	major.tick = TRUE,
 	sector.index = get.cell.meta.data("sector.index"),
 	track.index = get.cell.meta.data("track.index"),
-	labels.font = par("font"), labels.cex = par("cex"),
-	labels.facing = "inside", labels.direction = NULL, labels.niceFacing = TRUE,
-	direction = c("outside", "inside"), minor.ticks = 4,
-	major.tick.percentage = 0.1, labels.away.percentage = major.tick.percentage/2,
+	labels.font = par("font"), 
+	labels.cex = par("cex"),
+	labels.facing = "inside", 
+	labels.direction = NULL, 
+	labels.niceFacing = TRUE,
+	direction = c("outside", "inside"), 
+	minor.ticks = 4,
+	major.tick.percentage = 0.1, 
+	labels.away.percentage = major.tick.percentage/2,
 	major.tick.length = convert_y(1, "mm", sector.index, track.index),
-	lwd = par("lwd"), col = par("col"), labels.col = par("col"), labels.pos.adjust = TRUE) {
+	lwd = par("lwd"), 
+	col = par("col"), 
+	labels.col = par("col"), 
+	labels.pos.adjust = TRUE) {
 
     if(!is.null(labels.direction)) {
         labels.facing = switch(labels.direction[1],
@@ -1766,7 +1859,8 @@ circos.xaxis = function(...) {
 	circos.axis(...)
 }
 
-.default.major.by = function(sector.index = get.cell.meta.data("sector.index"),
+.default.major.by = function(
+	sector.index = get.cell.meta.data("sector.index"),
 	track.index = get.cell.meta.data("track.index")) {
 	# start.degree - end.degree is always a positive value.
 	d = circos.par("major.by.degree")
@@ -1822,13 +1916,20 @@ circos.xaxis = function(...) {
 # circos.clear()
 #
 # par(op)
-circos.yaxis = function(side = c("left", "right"), at = NULL, labels = TRUE, tick = TRUE,
+circos.yaxis = function(
+	side = c("left", "right"), 
+	at = NULL, 
+	labels = TRUE, 
+	tick = TRUE,
 	sector.index = get.cell.meta.data("sector.index"),
 	track.index = get.cell.meta.data("track.index"),
-	labels.font = par("font"), labels.cex = par("cex"),
+	labels.font = par("font"), 
+	labels.cex = par("cex"),
 	labels.niceFacing = TRUE,
 	tick.length = convert_x(1, "mm", sector.index, track.index),
-	lwd = par("lwd"), col = par("col"), labels.col = par("col")) {
+	lwd = par("lwd"), 
+	col = par("col"), 
+	labels.col = par("col")) {
 
 	ylim = get.cell.meta.data("ylim", sector.index, track.index)
 
@@ -1941,12 +2042,26 @@ circos.yaxis = function(side = c("left", "right"), at = NULL, labels = TRUE, tic
 #   col = "#999999", border = "#999999")
 # circos.clear()
 #
-circos.trackHist = function(factors, x, track.height = circos.par("track.height"),
-    track.index = NULL, force.ylim = TRUE, col = ifelse(draw.density, "black", NA),
-	border = "black", lty = par("lty"), lwd = par("lwd"),
-    bg.col = NA, bg.border = "black", bg.lty = par("lty"), bg.lwd = par("lwd"),
-    breaks = "Sturges", include.lowest = TRUE, right = TRUE, draw.density = FALSE,
-    bin.size = NULL, area = FALSE) {
+circos.trackHist = function(
+	factors, 
+	x, 
+	track.height = circos.par("track.height"),
+    track.index = NULL, 
+    force.ylim = TRUE, 
+    col = ifelse(draw.density, "black", NA),
+	border = "black", 
+	lty = par("lty"), 
+	lwd = par("lwd"),
+    bg.col = NA, 
+    bg.border = "black", 
+    bg.lty = par("lty"), 
+    bg.lwd = par("lwd"),
+    breaks = "Sturges", 
+    include.lowest = TRUE, 
+    right = TRUE, 
+    draw.density = FALSE,
+    bin.size = NULL, 
+    area = FALSE) {
 
     # basic check here
     if(length(x) != length(factors)) {
@@ -2098,8 +2213,16 @@ circos.trackHist = function(factors, x, track.height = circos.par("track.height"
 # draw.sector(pos[1, "theta"], pos[2, "theta"], pos[1, "rou"], pos[2, "rou"], 
 #     clock.wise = TRUE, col = "#00FFFF40")
 # circos.clear()
-draw.sector = function(start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL,
-	center = c(0, 0), clock.wise = TRUE, col = NA, border = "black", lwd = par("lwd"),
+draw.sector = function(
+	start.degree = 0, 
+	end.degree = 360, 
+	rou1 = 1, 
+	rou2 = NULL,
+	center = c(0, 0), 
+	clock.wise = TRUE, 
+	col = NA, 
+	border = "black", 
+	lwd = par("lwd"),
 	lty = par("lty")) {
 
 	is.circular = function(start.degree, end.degree) {
@@ -2242,10 +2365,18 @@ draw.sector = function(start.degree = 0, end.degree = 360, rou1 = 1, rou2 = NULL
 #     lwd = 2, track.index = c(2, 3))
 # highlight.sector(factors, col = "#FFFF0040", track.index = 4)
 # circos.clear()
-highlight.sector = function(sector.index, track.index = get.all.track.index(),
-	col = "#FF000040", border = NA, lwd = par("lwd"), lty = par("lty"),
-	padding = c(0, 0, 0, 0), text = NULL, text.col = par("col"),
-	text.vjust = 0.5, ...) {
+highlight.sector = function(
+	sector.index, 
+	track.index = get.all.track.index(),
+	col = "#FF000040", 
+	border = NA, 
+	lwd = par("lwd"), 
+	lty = par("lty"),
+	padding = c(0, 0, 0, 0), 
+	text = NULL, 
+	text.col = par("col"),
+	text.vjust = 0.5, 
+	...) {
 
 	sectors = get.all.sector.index()
 	if(!all(sector.index %in% sectors)) {
@@ -2395,8 +2526,11 @@ parse_unit = function(str) {
 #         circos.dendrogram(dend, max_height = max_height)
 # })
 # circos.clear()
-circos.dendrogram = function(dend, facing = c("outside", "inside"), 
-    max_height = NULL, use_x_attr = FALSE) {
+circos.dendrogram = function(
+	dend, 
+	facing = c("outside", "inside"), 
+    max_height = NULL, 
+    use_x_attr = FALSE) {
 
 	facing = match.arg(facing)[1]
 

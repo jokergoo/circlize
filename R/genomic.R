@@ -2268,7 +2268,7 @@ circos.genomicHeatmap = function(bed, col, na_col = "grey",
 	if(is.function(col)) {
 		col = col(mat)
 	}
-	col[is.na(col)] = "grey"
+	col[is.na(col)] = na_col
 	if(length(border) == 1) {
 		if(is.na(border)) {
 			border = col

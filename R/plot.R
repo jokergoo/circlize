@@ -157,13 +157,13 @@ circos.trackPlotRegion = function(
         set.current.track.index(track.index)
     }
 
-
+    all_le = get.all.sector.index()
     le = levels(factors)
-	nlevel = length(le)
-    bg.col = recycle.with.levels(bg.col, le)
-    bg.border = recycle.with.levels(bg.border, le)
-    bg.lty = recycle.with.levels(bg.lty, le)
-    bg.lwd = recycle.with.levels(bg.lwd, le)
+    nlevel = length(all_le)
+    bg.col = recycle.with.levels(bg.col, all_le)
+    bg.border = recycle.with.levels(bg.border, all_le)
+    bg.lty = recycle.with.levels(bg.lty, all_le)
+    bg.lwd = recycle.with.levels(bg.lwd, all_le)
 
      # whether to force ylim for all cells in a track same
     if(is.null(ylim)) {
@@ -201,8 +201,8 @@ circos.trackPlotRegion = function(
 	# if `ylim` is specified
     if(!is.null(ylim)) {
 		if(is.vector(ylim) && length(ylim) == 2) {
-			ylim = matrix(rep(ylim, length(le)), ncol = 2, byrow = TRUE)
-		} else if(is.matrix(ylim) && ncol(ylim) == 2 && nrow(ylim) == length(le)) {
+			ylim = matrix(rep(ylim, nlevel), ncol = 2, byrow = TRUE)
+		} else if(is.matrix(ylim) && ncol(ylim) == 2 && nrow(ylim) == nlevel) {
 
 		} else {
 			stop_wrap("Wrong `ylim` format.")
@@ -210,7 +210,7 @@ circos.trackPlotRegion = function(
     }
 
     # now for each factor, create plotting region
-    for(i in seq_along(le)) {
+    for(i in seq_along(all_le)) {
 		# `ylim` is prior to `y`
         if(is.null(ylim)) {
 			ylim2 = y.range[i, ]
@@ -220,43 +220,30 @@ circos.trackPlotRegion = function(
 
         # create plotting region for single cell
         circos.createPlotRegion(track.start = track.start,
-                              track.height = track.height, sector.index = le[i],
+                              track.height = track.height, sector.index = all_le[i],
                               track.index = track.index,
                               ylim = ylim2, bg.col = bg.col[i],
                               bg.border = bg.border[i], bg.lty = bg.lty[i], bg.lwd = bg.lwd[i])
 
-		l = factors == le[i]
-        if(! is.null(panel.fun)) {
-            if(is.null(x)) {
-                nx = NULL
-            } else {
-                nx = x[l]
-            }
+        if(all_le[i] %in% le) {
+    		l = factors == le[i]
+            if(! is.null(panel.fun)) {
+                if(is.null(x)) {
+                    nx = NULL
+                } else {
+                    nx = x[l]
+                }
 
-            if(is.null(y)) {
-                ny = NULL
-            } else {
-                ny = y[l]
-            }
+                if(is.null(y)) {
+                    ny = NULL
+                } else {
+                    ny = y[l]
+                }
 
-            panel.fun(nx, ny)
+                panel.fun(nx, ny)
+            }
         }
-
     }
-
-	# and those sectors not include in factors
-    le2 = setdiff(get.all.sector.index(), levels(factors))
-	if(length(le2)) {
-		for(i in seq_along(le2)) {
-
-			# ylim is the most recent ``ylim2``
-			circos.createPlotRegion(track.start = track.start,
-								  track.height = track.height, sector.index = le2[i],
-								  track.index = track.index,
-								  ylim = ylim2, bg.col = NA,
-								  bg.border = NA)
-		}
-	}
 
 	circos.par(track.margin = o.track.margin)
 	circos.par(cell.padding = o.cell.padding)

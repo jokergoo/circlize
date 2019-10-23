@@ -6,6 +6,8 @@ Changes in version 0.4.9
 * all examples are included in R source code files
 * `circos.genomicHeatmap()`: `connection_height` can be set to `NULL` to remove the
    connection lines.
+* `circos.trackPlotRegion()`: cells in all sectors are plotted if `fa` does not provide complete
+  set of categories.
 
 Changes in version 0.4.8
 -----------------------------------------------------------------------

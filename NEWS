@@ -8,6 +8,7 @@ Changes in version 0.4.9
    connection lines.
 * `circos.trackPlotRegion()`: cells in all sectors are plotted if `fa` does not provide complete
   set of categories.
+* `circos.initialize()`: give warnings if `fa` is in numeric mode.
 
 Changes in version 0.4.8
 -----------------------------------------------------------------------

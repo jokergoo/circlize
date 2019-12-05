@@ -461,7 +461,7 @@ get.all.track.index = function() {
 	if(is.null(.CELL.DATA)) {
 		return(integer(0))
 	} else {
-		return(seq_along(.CELL.DATA[[ which(sapply(.CELL.DATA, length) > 0)[1] ]]))
+		return(seq_len(max(sapply(.CELL.DATA[ which(sapply(.CELL.DATA, length) > 0) ], function(x) length(x)))))
 	}
 }
 

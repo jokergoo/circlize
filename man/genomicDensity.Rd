@@ -12,6 +12,7 @@ genomicDensity(
     window.size = 1e7,
     n.window = NULL,
     overlap = TRUE,
+    count_by = c("percent", "number"),
     chr.len = NULL)
 }
 \arguments{
@@ -20,6 +21,7 @@ genomicDensity(
   \item{window.size}{Window size to calculate genomic density}
   \item{n.window}{number of windows, if it is specified, \code{window.size} is ignored}
   \item{overlap}{Whether two neighbouring windows have half overlap}
+  \item{count_by}{How to count the value for each window, \code{percent}: percent of the window covered by the input regions; \code{number}: number of regions that overlap to the window.}
   \item{chr.len}{the chromosome length. The value should be named vector}
 
 }
@@ -28,11 +30,12 @@ It calculate the percent of each genomic windows that is covered by the input re
 }
 \value{
 If the input is a two-column data frame, the function returns a data frame with three columns: 
-start position, end position and percent of overlapping. And if the input is a bed-format
+start position, end position and the overlapping (value depends on the \code{count_by} argument). And if the input is a bed-format
 data frame, there will be an additionally chromosome name column.
 }
 \examples{
 bed = generateRandomBed()
 bed = subset(bed, chr == "chr1")
 head(genomicDensity(bed))
+head(genomicDensity(bed, count_by = "number"))
 }

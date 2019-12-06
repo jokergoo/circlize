@@ -460,6 +460,8 @@ get.all.track.index = function() {
 	.CELL.DATA = get(".CELL.DATA", envir = .CIRCOS.ENV)
 	if(is.null(.CELL.DATA)) {
 		return(integer(0))
+	} else if(all(sapply(.CELL.DATA, length) == 0)) {
+		return(integer(0))
 	} else {
 		return(seq_len(max(sapply(.CELL.DATA[ which(sapply(.CELL.DATA, length) > 0) ], function(x) length(x)))))
 	}

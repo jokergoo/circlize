@@ -226,6 +226,10 @@ circos.initialize = function(
 	
 	.SECTOR.DATA = get(".SECTOR.DATA", envir = .CIRCOS.ENV)
 	.CELL.DATA = get(".CELL.DATA", envir = .CIRCOS.ENV)
+
+	if(is.numeric(factor)) {
+		warning_wrap("Your `factor` is numeric, it will be converted to characters internally.")
+	}
 	
 	if(any(factors == "")) {
 		stop_wrap("`factors` cannot contain empty strings.")

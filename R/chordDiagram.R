@@ -845,7 +845,11 @@ chordDiagramFromDataFrame = function(
 
 	rgb_mat = t(col2rgb(col, alpha = TRUE))
 	if(length(transparency) == nrow(rgb_mat)) {
-		col = rgb(rgb_mat, maxColorValue = 255, alpha = (1-transparency)*255)
+		if(all(is.na(transparency))) {
+			col = rgb(rgb_mat, maxColorValue = 255)
+		} else {
+			col = rgb(rgb_mat, maxColorValue = 255, alpha = (1-transparency)*255)
+		}
 	} else {
 		if(is.na(transparency)) {
 			col = rgb(rgb_mat, maxColorValue = 255, alpha = rgb_mat[, 4])

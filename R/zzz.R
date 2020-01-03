@@ -15,10 +15,8 @@ If you use it in published research, please cite:
 Gu, Z. circlize implements and enhances circular visualization 
   in R. Bioinformatics 2014.
 
-This message can be suppressed with this invocation:
+This message can be suppressed by:
   suppressPackageStartupMessages(library(circlize))
-
-For Rnotebooks, use the chunk option "include = FALSE" instead.
 ========================================
 ")
     packageStartupMessage(msg)

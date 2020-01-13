@@ -11,6 +11,8 @@ Changes in version 0.4.9
 * `circos.trackPlotRegion()`: cells in all sectors are plotted if `fa` does not provide complete
   set of categories.
 * `circos.initialize()`: give warnings if `fa` is in numeric mode.
+* `chordDiagram()`: if the input is a data frame, it allows the data frame to have two numeric columns
+  and the link ends are drawn wiht unequal width.
 
 Changes in version 0.4.8
 -----------------------------------------------------------------------

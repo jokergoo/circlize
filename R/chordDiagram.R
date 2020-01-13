@@ -770,9 +770,23 @@ chordDiagramFromDataFrame = function(
 	if(ncol(df) == 2) {
 		df[, 3] = rep(1, nrow(df))
 		df[, 4] = df[, 3]
-	} else if(ncol(df) == 3) {
-		df[, 4] = df[, 3]
+	} else {
+		numeric_column = sapply(df, is.numeric); numeric_column[1:2] = FALSE
+		if(sum(numeric_column) == 0) {
+			df[, 3] = rep(1, nrow(df))
+			df[, 4] = df[, 3]
+		} else if(sum(numeric_column) == 1) {
+			df[, 3] = df[, numeric_column]
+			df[, 4] = df[, 3]
+		} else if(sum(numeric_column) >= 2) {
+			v1 = df[, which(numeric_column)[1]]
+			v2 = df[, which(numeric_column)[2]]
+			df[, 3] = v1
+			df[, 4] = v2
+			message_wrap("There are more than one numeric columns in the data frame. Take the first two numeric columns and draw the link ends with unequal width.")
+		} 
 	}
+
 	if(scale) {
 		for(nm in unique(df[, 1])) df[ df[, 1] == nm, 4] = df[ df[, 1] == nm, 3]/sum(df[ df[, 1] == nm, 3])
 		for(nm in unique(df[, 2])) df[ df[, 2] == nm, 5] = df[ df[, 2] == nm, 3]/sum(df[ df[, 2] == nm, 3])
@@ -988,7 +1002,7 @@ chordDiagramFromDataFrame = function(
 			}
 		}
 		max_o1 = sapply(od, max)
-		sum_1 = tapply(abs(df$value2), df$rn, sum)
+		sum_1 = tapply(abs(df$value1), df$rn, sum)
 		# position of root 2
 		od = tapply(abs(df$value2), df$cn, .order, link.sort[2], link.decreasing[2])
 		for(nm in names(od)) {
@@ -1016,34 +1030,34 @@ chordDiagramFromDataFrame = function(
 			df$x1[l] = pmin(df$x1[l], df$x2[l])
 			df$x2[l] = pmin(df$x1[l], df$x2[l])
 		}
-	} else {
-		for(nm in unique(c(df$rn, df$cn))) {
-			l = df$rn == nm | df$cn == nm
-			od = order(abs(df$value1[l]), decreasing = link.decreasing[1])
-			cum_pos = cumsum(abs(df$value[l])[od])
-			if(self.link == 2) {
-				ii = which(df$rn[l] == nm & df$cn[l] == nm)
-				if(length(ii)) {
-					iii = which(od == ii)
-					if(iii < length(cum_pos)) {
-						cum_pos[(iii+1):length(cum_pos)] = cum_pos[(iii+1):length(cum_pos)] + df$value[l][ii]
-					}
-				}
-			}
-			xx = NULL
-			xx[od] = cum_pos
-			l1 = df$rn == nm
-			l2 = l & !l1
-			df$x1[l1] = xx[l1[l]]
-			df$x2[l2] = xx[l2[l]]
-		}
-		l = df$rn == df$cn
-		if(self.link == 1) {
-			df$x2[l] = df$x1[l]
-		} else if(self.link == 2) {
-			df$x2[l] = df$x1[l] + abs(df$value[l])
-		}
-	}
+	} #else {
+	# 	for(nm in unique(c(df$rn, df$cn))) {
+	# 		l = df$rn == nm | df$cn == nm
+	# 		od = order(abs(df$value1[l]), decreasing = link.decreasing[1])
+	# 		cum_pos = cumsum(abs(df$value[l])[od])
+	# 		if(self.link == 2) {
+	# 			ii = which(df$rn[l] == nm & df$cn[l] == nm)
+	# 			if(length(ii)) {
+	# 				iii = which(od == ii)
+	# 				if(iii < length(cum_pos)) {
+	# 					cum_pos[(iii+1):length(cum_pos)] = cum_pos[(iii+1):length(cum_pos)] + df$value[l][ii]
+	# 				}
+	# 			}
+	# 		}
+	# 		xx = NULL
+	# 		xx[od] = cum_pos
+	# 		l1 = df$rn == nm
+	# 		l2 = l & !l1
+	# 		df$x1[l1] = xx[l1[l]]
+	# 		df$x2[l2] = xx[l2[l]]
+	# 	}
+	# 	l = df$rn == df$cn
+	# 	if(self.link == 1) {
+	# 		df$x2[l] = df$x1[l]
+	# 	} else if(self.link == 2) {
+	# 		df$x2[l] = df$x1[l] + abs(df$value[l])
+	# 	}
+	# }
 
 	#######################################
 

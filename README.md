@@ -1,36 +1,36 @@
 
 
-# circlize: circular visualization in R <a href="http://jokergoo.github.io/circlize_book/book/"><img src="http://jokergoo.github.io/circlize_book/book/images/circlize_cover.jpg" width=240 align="right" ></a>
+# circlize: circular visualization in R <a href="https://jokergoo.github.io/circlize_book/book/"><img src="https://jokergoo.github.io/circlize_book/book/images/circlize_cover.jpg" width=240 align="right" ></a>
 
 
 [![Build Status](https://travis-ci.org/jokergoo/circlize.svg)](https://travis-ci.org/jokergoo/circlize)
 [![codecov](https://img.shields.io/codecov/c/github/jokergoo/circlize.svg)](https://codecov.io/github/jokergoo/circlize)
-[![CRAN](http://www.r-pkg.org/badges/version/circlize)](https://cran.r-project.org/web/packages/circlize/index.html) 
-[![CRAN](https://cranlogs.r-pkg.org/badges/grand-total/circlize)](https://cran.r-project.org/web/packages/circlize/index.html) 
+[![CRAN](https://www.r-pkg.org/badges/version/circlize)](https://cran.r-project.org/web/packages/circlize/index.html)
+[![CRAN](https://cranlogs.r-pkg.org/badges/grand-total/circlize)](https://cran.r-project.org/web/packages/circlize/index.html)
 
-Circular layout is an efficient way for the visualization of huge 
-    amounts of information. Here the circlize package provides an implementation 
-    of circular layout generation in R as well as an enhancement of available 
-    software. The flexibility of this package is based on the usage of low-level 
-    graphics functions such that self-defined high-level graphics can be easily 
-    implemented by users for specific purposes. Together with the seamless 
-    connection between the powerful computational and visual environment in R, 
-    circlize givesa users more convenience and freedom to design figures for 
+Circular layout is an efficient way for the visualization of huge
+    amounts of information. Here the circlize package provides an implementation
+    of circular layout generation in R as well as an enhancement of available
+    software. The flexibility of this package is based on the usage of low-level
+    graphics functions such that self-defined high-level graphics can be easily
+    implemented by users for specific purposes. Together with the seamless
+    connection between the powerful computational and visual environment in R,
+    circlize givesa users more convenience and freedom to design figures for
     better understanding complex patterns behind multi-dimensional data.
 
 ## Citation
 
-Zuguang Gu, Lei Gu, Roland Eils, Matthias Schlesner, Benedikt Brors, circlize Implements and enhances circular visualization in R. Bioinformatics (Oxford, England) 2014. [PubMed](http://www.ncbi.nlm.nih.gov/pubmed/24930139)
+Zuguang Gu, Lei Gu, Roland Eils, Matthias Schlesner, Benedikt Brors, circlize Implements and enhances circular visualization in R. Bioinformatics (Oxford, England) 2014. [PubMed](https://www.ncbi.nlm.nih.gov/pubmed/24930139)
 
 ## Documentation
 
-The full documentations are available at http://jokergoo.github.io/circlize_book/book/ and the online website is at https://jokergoo.github.io/circlize/.
+The full documentations are available at https://jokergoo.github.io/circlize_book/book/ and the online website is at https://jokergoo.github.io/circlize/.
 
 ## Examples
 
 See https://jokergoo.github.io/circlize_examples/.
 
-<img width="700" alt="circlize_example" src="http://jokergoo.github.io/circlize_book/book/images/ciclize_examples.jpg">
+<img width="700" alt="circlize_example" src="https://jokergoo.github.io/circlize_book/book/images/ciclize_examples.jpg">
 
 ## Install
 
@@ -48,11 +48,11 @@ devtools::install_github("jokergoo/circlize")
 
 ## Basic design
 
-Since most of the figures are composed of points, lines and polygons, 
+Since most of the figures are composed of points, lines and polygons,
 we just need to implement functions for drawing points, lines and polygons,
 then the plots will not be restricted in any specific types.
 
-Current there are following low-level graphic functions: 
+Current there are following low-level graphic functions:
 
 - `circos.points()`
 - `circos.lines()`
@@ -63,8 +63,8 @@ Current there are following low-level graphic functions:
 - `circos.raster()`
 - `circos.arrow()`
 - `circos.link()`, This maybe the unique feature for circos layout to represent relationships between elements.
- 
-For drawing points, lines and text through the whole track (among several sectors), the following 
+
+For drawing points, lines and text through the whole track (among several sectors), the following
 functions are available:
 
 - `circos.trackPoints()`
@@ -85,7 +85,7 @@ Theoretically, you are able to draw most kinds of circular plots by the above fu
 For specific use in Genomics, we also implement functions which add graphics in genome scale.
 
 Functions to initialize circular plot with genomic coordinates:
- 
+
 - `circos.initializeWithIdeogram()`
 - `circos.genomicInitialize()`
 

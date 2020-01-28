@@ -52,11 +52,11 @@
 # when the table represents information of directional relations. This function
 # visualize tables in a circular way.
 #
-# This function is flexible and contains some settings that may be a little difficult to understand. 
+# This function is flexible and contains some settings that may be a little difficult to understand.
 # Please refer to vignette for better explanation.
 #
 # == seealso
-# http://jokergoo.github.io/circlize_book/book/the-chorddiagram-function.html
+# https://jokergoo.github.io/circlize_book/book/the-chorddiagram-function.html
 #
 # == value
 # A data frame which contains positions of links, columns are:
@@ -68,10 +68,10 @@
 # -``o2`` order of the link on the "to" sector
 # -``x1`` and position of the link on the "from" sector, the interval for the link on the "from" sector is ``c(x1-abs(value), x1)``
 # -``x2`` and position of the link on the "to" sector, the interval for the link on the "from" sector is ``c(x2-abs(value), x2)``
-# 
+#
 # == examples
 # set.seed(999)
-# mat = matrix(sample(18, 18), 3, 6) 
+# mat = matrix(sample(18, 18), 3, 6)
 # rownames(mat) = paste0("S", 1:3)
 # colnames(mat) = paste0("E", 1:6)
 #
@@ -85,45 +85,45 @@
 # circos.clear()
 #
 chordDiagram = function(
-	x, 
-	grid.col = NULL, 
-	grid.border = NA, 
+	x,
+	grid.col = NULL,
+	grid.border = NA,
 	transparency = 0.5,
-	col = NULL, 
-	row.col = NULL, 
-	column.col = NULL, 
-	order = NULL, 
-	directional = 0, 
+	col = NULL,
+	row.col = NULL,
+	column.col = NULL,
+	order = NULL,
+	directional = 0,
 	xmax = NULL,
-	symmetric = FALSE, 
-	keep.diagonal = FALSE, 
-	direction.type = "diffHeight", 
-	diffHeight = convert_height(2, "mm"), 
-	reduce = 1e-5, 
-	self.link = 2, 
+	symmetric = FALSE,
+	keep.diagonal = FALSE,
+	direction.type = "diffHeight",
+	diffHeight = convert_height(2, "mm"),
+	reduce = 1e-5,
+	self.link = 2,
 	preAllocateTracks = NULL,
-	annotationTrack = c("name", "grid", "axis"), 
+	annotationTrack = c("name", "grid", "axis"),
 	annotationTrackHeight = convert_height(c(3, 2), "mm"),
-	link.border = NA, 
-	link.lwd = par("lwd"), 
-	link.lty = par("lty"), 
-	link.sort = FALSE, 
+	link.border = NA,
+	link.lwd = par("lwd"),
+	link.lty = par("lty"),
+	link.sort = FALSE,
 	link.decreasing = TRUE,
-	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4), 
-	link.arr.width = link.arr.length/2, 
-	link.arr.type = "triangle", 
-	link.arr.lty = par("lty"), 
-	link.arr.lwd = par("lwd"), 
-	link.arr.col = par("col"), 
-	link.largest.ontop = FALSE, 
-	link.visible = TRUE, 
-	link.rank = NULL, 
-	link.overlap = FALSE, 
-	scale = FALSE, 
-	big.gap = 10, 
-	small.gap = 1, 
+	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4),
+	link.arr.width = link.arr.length/2,
+	link.arr.type = "triangle",
+	link.arr.lty = par("lty"),
+	link.arr.lwd = par("lwd"),
+	link.arr.col = par("col"),
+	link.largest.ontop = FALSE,
+	link.visible = TRUE,
+	link.rank = NULL,
+	link.overlap = FALSE,
+	scale = FALSE,
+	big.gap = 10,
+	small.gap = 1,
 	...) {
-		
+
 	if(inherits(x, "table"))  {
 		if(length(dim(x)) == 2) {
 			class(x) = "matrix"
@@ -143,7 +143,7 @@ chordDiagram = function(
 			preAllocateTracks = preAllocateTracks, annotationTrack = annotationTrack, annotationTrackHeight = annotationTrackHeight,
 			link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 			link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
-			link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
+			link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop,
 			link.visible = link.visible, link.rank = link.rank, link.overlap = link.overlap, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)
 	} else {
 		x = validate_data_frame(x)
@@ -157,7 +157,7 @@ chordDiagram = function(
 					preAllocateTracks = preAllocateTracks, annotationTrack = annotationTrack, annotationTrackHeight = annotationTrackHeight,
 					link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 					link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
-					link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
+					link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop,
 					link.visible = link.visible, link.rank = link.rank, link.overlap = link.overlap, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)))
 			} else {
 				chordDiagramFromDataFrame(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
@@ -166,7 +166,7 @@ chordDiagram = function(
 					preAllocateTracks = preAllocateTracks, annotationTrack = annotationTrack, annotationTrackHeight = annotationTrackHeight,
 					link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 					link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
-					link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
+					link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop,
 					link.visible = link.visible, link.rank = link.rank, link.overlap = link.overlap, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)
 			}
 		} else {
@@ -176,10 +176,10 @@ chordDiagram = function(
 				preAllocateTracks = preAllocateTracks, annotationTrack = annotationTrack, annotationTrackHeight = annotationTrackHeight,
 				link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 				link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
-				link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop, 
+				link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop,
 				link.visible = link.visible, link.rank = link.rank, link.overlap = link.overlap, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)
 		}
-	}	
+	}
 }
 
 # returns a list, each list containing settings for each new track
@@ -284,13 +284,13 @@ mat2df = function(mat) {
 # == param
 # -mat A table which represents as a numeric matrix.
 # -grid.col Grid colors which correspond to matrix rows/columns (or sectors). The length of the vector should be either 1 or ``length(union(rownames(mat), colnames(mat)))``.
-#           It's preferred that ``grid.col`` is a named vector of which names correspond to sectors. 
+#           It's preferred that ``grid.col`` is a named vector of which names correspond to sectors.
 #           If it is not a named vector, the order of ``grid.col`` corresponds to order of sectors.
 # -grid.border border for grids. If it is ``NULL``, the border color is same as grid color
 # -transparency Transparency of link colors, 0 means no transparency and 1 means full transparency.
 #               If transparency is already set in ``col`` or ``row.col`` or ``column.col``, this argument will be ignored.
 #               ``NA``also ignores this argument.
-# -col Colors for links. It can be a matrix which corresponds to ``mat``, or a function which generate colors 
+# -col Colors for links. It can be a matrix which corresponds to ``mat``, or a function which generate colors
 #      according to values in ``mat``, or a single value which means colors for all links are the same, or a three-column
 #      data frame in which the first two columns correspond to row names and columns and the third column is colors. You
 #      may use `colorRamp2` to generate a function which maps values to colors.
@@ -336,7 +336,7 @@ mat2df = function(mat) {
 # -link.arr.lwd line width ofthe single line link which is put in the center of the belt. The format of this argument is same as ``link.lwd``.
 # -link.arr.lty line type of the single line link which is put in the center of the belt. The format of this argument is same as ``link.lwd``.
 # -link.largest.ontop controls the order of adding links, whether based on the absolute value?
-# -link.visible whether plot the link. The value is logical, if it is set to ``FALSE``, the corresponding link will not 
+# -link.visible whether plot the link. The value is logical, if it is set to ``FALSE``, the corresponding link will not
 #            plotted, but the space is still ocuppied. The format of this argument is same as ``link.lwd``
 # -link.rank order to add links to the circle, a large value means to add it later.
 # -link.overlap if it is a directional Chord Diagram, whether the links that come or end in a same sector overlap?
@@ -352,48 +352,48 @@ mat2df = function(mat) {
 # A data frame which contains positions of links, see explanation in `chordDiagram`.
 #
 # == seealso
-# http://jokergoo.github.io/circlize_book/book/the-chorddiagram-function.html
+# https://jokergoo.github.io/circlize_book/book/the-chorddiagram-function.html
 #
 chordDiagramFromMatrix = function(
-	mat, 
-	grid.col = NULL, 
-	grid.border = NA, 
+	mat,
+	grid.col = NULL,
+	grid.border = NA,
 	transparency = 0.5,
-	col = NULL, 
-	row.col = NULL, 
-	column.col = NULL, 
-	order = NULL, 
+	col = NULL,
+	row.col = NULL,
+	column.col = NULL,
+	order = NULL,
 	directional = 0,
-	direction.type = "diffHeight", 
-	diffHeight = convert_height(2, "mm"), 
-	reduce = 1e-5, 
-	xmax = NULL, 
+	direction.type = "diffHeight",
+	diffHeight = convert_height(2, "mm"),
+	reduce = 1e-5,
+	xmax = NULL,
 	self.link = 2,
-	symmetric = FALSE, 
-	keep.diagonal = FALSE, 
+	symmetric = FALSE,
+	keep.diagonal = FALSE,
 	preAllocateTracks = NULL,
-	annotationTrack = c("name", "grid", "axis"), 
+	annotationTrack = c("name", "grid", "axis"),
 	annotationTrackHeight = convert_height(c(3, 2), "mm"),
-	link.border = NA, 
-	link.lwd = par("lwd"), 
-	link.lty = par("lty"), 
-	link.sort = FALSE, 
+	link.border = NA,
+	link.lwd = par("lwd"),
+	link.lty = par("lty"),
+	link.sort = FALSE,
 	link.decreasing = TRUE,
-	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4), 
-	link.arr.width = link.arr.length/2, 
-	link.arr.type = "triangle", 
-	link.arr.lty = par("lty"), 
-	link.arr.lwd = par("lwd"), 
-	link.arr.col = par("col"), 
-	link.largest.ontop = FALSE, 
-	link.visible = TRUE, 
-	link.rank = NULL, 
+	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4),
+	link.arr.width = link.arr.length/2,
+	link.arr.type = "triangle",
+	link.arr.lty = par("lty"),
+	link.arr.lwd = par("lwd"),
+	link.arr.col = par("col"),
+	link.largest.ontop = FALSE,
+	link.visible = TRUE,
+	link.rank = NULL,
 	link.overlap = FALSE,
-	scale = FALSE, 
-	big.gap = 10, 
-	small.gap = 1, 
+	scale = FALSE,
+	big.gap = 10,
+	small.gap = 1,
 	...) {
-	
+
 	if(!is.matrix(mat)) {
 		stop_wrap("`mat` can only be a matrix.")
 	}
@@ -434,7 +434,7 @@ chordDiagramFromMatrix = function(
 		}
 
 		mat[upper.tri(mat, diag = !keep.diagonal)] = 0
-		
+
 	}
 
 	mat[is.na(mat)] = 0
@@ -447,14 +447,14 @@ chordDiagramFromMatrix = function(
 			stop_wrap("Elements in `order` should be same as in `union(rownames(mat), colnames(mat))`.")
 		}
 	}
-	
+
 	if(is.null(rownames(mat))) {
 		rownames(mat) = paste0("R", seq_len(nrow(mat)))
 	}
 	if(is.null(colnames(mat))) {
 		colnames(mat) = paste0("C", seq_len(ncol(mat)))
 	}
-	
+
 
 	# width of the category is almost 0, it means this category has no link to the others
 	rs = rowSums(abs(mat))
@@ -490,22 +490,22 @@ chordDiagramFromMatrix = function(
 
 	# if the matrix is reduced
 	if(sum(length(ri) + length(ci)) < sum(ncol(mat) + nrow(mat))) {
-		
+
 		un = union(rownames(mat), colnames(mat))
 		nn = union(rownames(mat)[ri], colnames(mat)[ci])
 		if(length(circos.par("gap.degree")) == length(un)) {
 			old.gap.degree = circos.par("gap.degree")
 			circos.par("gap.degree" = old.gap.degree[un %in% nn])
 		}
-		
+
 		if(!is.null(grid.col)) {
 			if(is.null(names(grid.col)) && length(grid.col) == length(un)) {
 				grid.col = grid.col[un %in% nn]
 			}
 		}
-		
+
 	}
-	
+
 	mat = mat[ri, ci, drop = FALSE]
 	if(is.matrix(col)) {
 		col = col[ri, ci, drop = FALSE]
@@ -524,7 +524,7 @@ chordDiagramFromMatrix = function(
 	nn = union(names(rs), names(cs))
 	xlim = numeric(length(nn))
 	names(xlim) = nn
-	
+
 	if(!is.null(order)) {
 		xlim = xlim[order]
 	}
@@ -620,15 +620,15 @@ chordDiagramFromMatrix = function(
 	chordDiagramFromDataFrame(df[c(1, 2, 5)], grid.col = grid.col, grid.border = grid.border, transparency = NA,
 		col = psubset(col, df$ri, df$ci), order = order, xmax = xmax,
 		directional = psubset(directional, df$ri, df$ci),
-		direction.type = psubset(direction.type, df$ri, df$ci), 
-		diffHeight = diffHeight, 
+		direction.type = psubset(direction.type, df$ri, df$ci),
+		diffHeight = diffHeight,
 		reduce = 0, self.link = self.link,
 		preAllocateTracks = preAllocateTracks,
 		annotationTrack = annotationTrack, annotationTrackHeight = annotationTrackHeight,
 		link.sort = link.sort, link.decreasing = link.decreasing,
-		link.border = psubset(link.border, df$ri, df$ci), 
+		link.border = psubset(link.border, df$ri, df$ci),
 		link.lwd = psubset(link.lwd, df$ri, df$ci),
-		link.lty = psubset(link.lty, df$ri, df$ci), 
+		link.lty = psubset(link.lty, df$ri, df$ci),
 		link.arr.length = psubset(link.arr.length, df$ri, df$ci),
 		link.arr.width = psubset(link.arr.width, df$ri, df$ci),
 		link.arr.type = psubset(link.arr.type, df$ri, df$ci),
@@ -643,7 +643,7 @@ chordDiagramFromMatrix = function(
 		big.gap = big.gap,
 		small.gap = small.gap,
 		...)
-	
+
 }
 
 
@@ -655,13 +655,13 @@ chordDiagramFromMatrix = function(
 #     contains numeric values which are mapped to the width of links as well as the colors if ``col`` is specified as a color mapping function.
 #     The sectors in the plot will be ``union(df[[1]], df[[2]])``.
 # -grid.col Grid colors which correspond to sectors. The length of the vector should be either 1 or the number of sectors.
-#           It's preferred that ``grid.col`` is a named vector of which names correspond to sectors. 
+#           It's preferred that ``grid.col`` is a named vector of which names correspond to sectors.
 #           If it is not a named vector, the order of ``grid.col`` corresponds to order of sectors.
 # -grid.border border for grids. If it is ``NULL``, the border color is same as grid color
 # -transparency Transparency of link colors, 0 means no transparency and 1 means full transparency.
 #               If transparency is already set in ``col`` or ``row.col`` or ``column.col``, this argument will be ignored.
 #               ``NA``also ignores this argument.
-# -col Colors for links. It can be a vector which corresponds to connections in ``df``, or a function which generate colors 
+# -col Colors for links. It can be a vector which corresponds to connections in ``df``, or a function which generate colors
 #      according to values (the third column) in ``df``, or a single value which means colors for all links are the same. You
 #      may use `colorRamp2` to generate a function which maps values to colors.
 # -order Order of sectors. Default order is ``union(df[[1]], df[[2]])``.
@@ -670,7 +670,7 @@ chordDiagramFromMatrix = function(
 # -xmax maximum value on x-axes, the value should be a named vector.
 # -direction.type type for representing directions. Can be one or two values in "diffHeight" and "arrows". If the value contains "diffHeight",
 #            different heights of the links are used to represent the directions for which starting root has long height to give people feeling
-#            that something is comming out. If the value contains "arrows", users can customize arrows with following arguments. 
+#            that something is comming out. If the value contains "arrows", users can customize arrows with following arguments.
 #             The value can be a vector which has same length as number of rows in ``df``. Note if you want to set both ``diffHeight``
 #             and ``arrows`` for certain links, you need to embed these two options into one string such as ``"diffHeight+arrows"``.
 # -diffHeight The difference of height between two 'roots' if ``directional`` is set to ``TRUE``. If the value is set to
@@ -699,7 +699,7 @@ chordDiagramFromMatrix = function(
 # -link.arr.lwd line width ofthe single line link which is put in the center of the belt. The format of this argument is same as ``link.lwd``.
 # -link.arr.lty line type of the single line link which is put in the center of the belt. The format of this argument is same as ``link.lwd``.
 # -link.largest.ontop controls the order of adding links, whether based on the absolute value?
-# -link.visible whether plot the link. The value is logical, if it is set to ``FALSE``, the corresponding link will not 
+# -link.visible whether plot the link. The value is logical, if it is set to ``FALSE``, the corresponding link will not
 #            plotted, but the space is still ocuppied. The format of this argument is same as ``link.lwd``
 # -link.rank order to add links to the circle, a large value means to add it later.
 # -link.overlap if it is a directional Chord Diagram, whether the links that come or end in a same sector overlap?
@@ -715,41 +715,41 @@ chordDiagramFromMatrix = function(
 # A data frame which contains positions of links, see explanation in `chordDiagram`.
 #
 # == seealso
-# http://jokergoo.github.io/circlize_book/book/the-chorddiagram-function.html
+# https://jokergoo.github.io/circlize_book/book/the-chorddiagram-function.html
 #
 chordDiagramFromDataFrame = function(
-	df, 
-	grid.col = NULL, 
-	grid.border = NA, 
+	df,
+	grid.col = NULL,
+	grid.border = NA,
 	transparency = 0.5,
-	col = NULL, 
-	order = NULL, 
-	directional = 0, 
+	col = NULL,
+	order = NULL,
+	directional = 0,
 	xmax = NULL,
-	direction.type = "diffHeight", 
-	diffHeight = convert_height(2, "mm"), 
-	reduce = 1e-5, 
-	self.link = 2, 
+	direction.type = "diffHeight",
+	diffHeight = convert_height(2, "mm"),
+	reduce = 1e-5,
+	self.link = 2,
 	preAllocateTracks = NULL,
-	annotationTrack = c("name", "grid", "axis"), 
+	annotationTrack = c("name", "grid", "axis"),
 	annotationTrackHeight = convert_height(c(3, 2), "mm"),
-	link.border = NA, 
-	link.lwd = par("lwd"), 
-	link.lty = par("lty"), 
-	link.sort = FALSE, 
+	link.border = NA,
+	link.lwd = par("lwd"),
+	link.lty = par("lty"),
+	link.sort = FALSE,
 	link.decreasing = TRUE,
-	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4), 
-	link.arr.width = link.arr.length/2, 
-	link.arr.type = "triangle", 
-	link.arr.lty = par("lty"), 
-	link.arr.lwd = par("lwd"), 
-	link.arr.col = par("col"), 
-	link.largest.ontop = FALSE, 
-	link.visible = TRUE, 
-	link.rank = seq_len(nrow(df)), 
+	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4),
+	link.arr.width = link.arr.length/2,
+	link.arr.type = "triangle",
+	link.arr.lty = par("lty"),
+	link.arr.lwd = par("lwd"),
+	link.arr.col = par("col"),
+	link.largest.ontop = FALSE,
+	link.visible = TRUE,
+	link.rank = seq_len(nrow(df)),
 	link.overlap = FALSE,
-	scale = FALSE, 
-	big.gap = 10, 
+	scale = FALSE,
+	big.gap = 10,
 	small.gap = 1,
 	...) {
 
@@ -818,7 +818,7 @@ chordDiagramFromDataFrame = function(
 			cate = cate[order]
 		} else {
 			if(!setequal(order, cate)) {
-				stop_wrap("`order` should only be picked from sectors.")	
+				stop_wrap("`order` should only be picked from sectors.")
 			}
 			cate = order
 		}
@@ -855,7 +855,7 @@ chordDiagramFromDataFrame = function(
 		} else {
 			col = rep(col, nr)[1:nr]
 		}
-	} 
+	}
 
 	rgb_mat = t(col2rgb(col, alpha = TRUE))
 	if(length(transparency) == nrow(rgb_mat)) {
@@ -931,7 +931,7 @@ chordDiagramFromDataFrame = function(
 		col = col[l]
 		link.border = link.border[l]
 		link.lwd = link.lwd[l]
-		link.lty = link.lty[l] 
+		link.lty = link.lty[l]
 		link.arr.length = link.arr.length[l]
 		link.arr.width = link.arr.width[l]
 		link.arr.type = link.arr.type[l]
@@ -994,7 +994,7 @@ chordDiagramFromDataFrame = function(
 			df$o1[l] = od[[nm]] # adjust rows according to the order in current sector
 			df$x1[l][od[[nm]]] = cumsum(abs(df$value1[l])[od[[nm]]]) # position
 
-			l2 = df$rn == nm & df$cn == nm 
+			l2 = df$rn == nm & df$cn == nm
 			if(sum(l2)) { # there is a self link
 				if(self.link == 1) {
 					df$x2[l2] = df$x1[l2]+abs(df$value1[l2])*0.000001
@@ -1103,7 +1103,7 @@ chordDiagramFromDataFrame = function(
 			} else {
 				start_degree = circos.par$start.degree + (180 - d1)/2
 			}
-			suppressWarnings(circos.par(start.degree = start_degree, 
+			suppressWarnings(circos.par(start.degree = start_degree,
 				gap.after = c(rep(small.gap, n_df1 - 1), big.gap, rep(small.gap, n_df2 - 1), big.gap)))
 		} else {
 			# warning("The two sets of sectors overlap, ignore `gap.degree`.")
@@ -1134,7 +1134,7 @@ chordDiagramFromDataFrame = function(
 			}, track.height = annotationTrackHeight[which(annotationTrack %in% "name")])
     }
 	if("grid" %in% annotationTrack) {
-		circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, 
+		circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA,
 			panel.fun = function(x, y) {
 				xlim = get.cell.meta.data("xlim")
 				current.sector.index = get.cell.meta.data("sector.index")
@@ -1149,7 +1149,7 @@ chordDiagramFromDataFrame = function(
 				}
 			}, track.height = annotationTrackHeight[which(annotationTrack %in% "grid")])
 	}
-    
+
     rou = get_most_inside_radius()
     rou1 = numeric(nr)
     rou2 = numeric(nr)
@@ -1203,15 +1203,15 @@ chordDiagramFromDataFrame = function(
 			if(setequal(direction.type, c("diffHeight"))) {
 				circos.link(df$rn[k], c(df$x1[k] - abs(df$value1[k]), df$x1[k]),
 						df$cn[k], c(df$x2[k] - abs(df$value2[k]), df$x2[k]),
-						directional = 0, col = col[k], rou1 = rou1[k], rou2 = rou2[k], 
+						directional = 0, col = col[k], rou1 = rou1[k], rou2 = rou2[k],
 						border = link.border[k], lwd = link.lwd[k], lty = link.lty[k],
-						...)	
+						...)
 			} else if(grepl("arrows", direction.type[k])) {
 				circos.link(df$rn[k], c(df$x1[k] - abs(df$value1[k]), df$x1[k]),
 							df$cn[k], c(df$x2[k] - abs(df$value2[k]), df$x2[k]),
-							directional = directional[k], col = col[k], rou1 = rou1[k], rou2 = rou2[k], 
-							border = link.border[k], 
-							lwd = link.lwd[k], lty = link.lty[k], 
+							directional = directional[k], col = col[k], rou1 = rou1[k], rou2 = rou2[k],
+							border = link.border[k],
+							lwd = link.lwd[k], lty = link.lty[k],
 							arr.length = link.arr.length[k], arr.width = link.arr.width[k],
 							arr.type = link.arr.type[k], arr.col = link.arr.col[k],
 							arr.lty = link.arr.lty[k], arr.lwd = link.arr.lwd[k],
@@ -1219,7 +1219,7 @@ chordDiagramFromDataFrame = function(
 			}
 		}
     }
-	
+
 	df$col = col
 
 	suppressWarnings(circos.par("cell.padding" = o.cell.padding, "start.degree" = o.start.degree,
@@ -1264,7 +1264,7 @@ calc_gap = function(x1, x2, big.gap = 10, small.gap = 1) {
 		n2 = length(unique(x1[, 2]))
 	}
 	sum_gap1 = sum(c(rep(small.gap, n1 - 1), big.gap, rep(small.gap, n2 - 1), big.gap))
-		
+
 	if(is.matrix(x2)) {
 		sum2 = sum(abs(x2))
 		n1 = nrow(x2)

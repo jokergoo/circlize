@@ -16,3 +16,5 @@ generate_genomic_figures/
 ^docs$
 ^pkgdown$
 build_pkg_site.R
+^.*\.Rproj$
+^\.Rproj\.user$

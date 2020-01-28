@@ -29,19 +29,19 @@
 # either.
 #
 # == seealso
-# http://jokergoo.github.io/circlize_book/book/nested-zooming.html
+# https://jokergoo.github.io/circlize_book/book/nested-zooming.html
 #
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
 #
 circos.nested = function(
-	f1, 
-	f2, 
-	correspondance, 
+	f1,
+	f2,
+	correspondance,
 	connection_height = convert_height(5, "mm"),
-	connection_col = NA, 
+	connection_col = NA,
 	connection_border = "black",
-	connection_lty = par("lty"), 
+	connection_lty = par("lty"),
 	connection_lwd = par("lwd"),
 	adjust_start_degree = TRUE) {
 
@@ -98,7 +98,7 @@ circos.nested = function(
 	}
 
 	# in correspondace, positions are already sorted by the 4,5,6 columns
-	# here we test for a sector in f1(), 
+	# here we test for a sector in f1(),
 	# if(any(tapply(correspondance[, 2], correspondance[, 1], is.unsorted))) {
 	# 	warning(strwrap2("Sectors in `f2()` which belongs to one single sector in `f1()` should be sorted by positions, or else connection lines may overlap."))
 	# }
@@ -169,7 +169,7 @@ circos.nested = function(
 		col, border, lty, lwd) {
 		cell.top.radius = get.cell.meta.data("cell.top.radius")
 		cell.bottom.radius = get.cell.meta.data("cell.bottom.radius")
-		df = reverse.circlize(c(c1_theta1, c1_theta2, c2_theta1, c2_theta2), 
+		df = reverse.circlize(c(c1_theta1, c1_theta2, c2_theta1, c2_theta2),
 			c(cell.top.radius, cell.top.radius, cell.bottom.radius, cell.bottom.radius))
 
 	    x21 = df[1, 1]
@@ -199,32 +199,32 @@ circos.nested = function(
 		connection_lwd = rep(connection_lwd, nr)
 	}
 
-	# make the connections 
+	# make the connections
 	circos.track(ylim = c(0, 1), track.height = connection_height, panel.fun = function(x, y) {
 
 	    l = correspondance[[1]] == CELL_META$sector.index
 	    if(sum(l) == 0) {
 	    	return(NULL)
 	    }
-	    
+
 	    for(i in which(l)) {
 	    	make_connection(correspondance[i, 1], correspondance[i, "c1_theta1"], correspondance[i, "c1_theta2"],
 	    		correspondance[i, "c2_theta1"], correspondance[i, "c2_theta2"],
 	    		connection_col[i], connection_border[i], connection_lty[i], connection_lwd[i])
 	    }
-	    
+
 	}, track.margin = c(0, 0), cell.padding = c(0, 0, 0, 0), bg.border = NA)
 
 	circos.clear()
 
 	op = par("new")
 	par(new = TRUE)
-	
+
 	if(adjust_start_degree) {
 		circos.par(start.degree = offset)
 	}
 
-	circos.par(canvas.xlim = c(-param1$canvas.xlim[2]/r2, param1$canvas.xlim[2]/r2), 
+	circos.par(canvas.xlim = c(-param1$canvas.xlim[2]/r2, param1$canvas.xlim[2]/r2),
 		       canvas.ylim = c(-param1$canvas.xlim[2]/r2, param1$canvas.xlim[2]/r2))
 	f2()
 	circos.clear()

@@ -97,13 +97,13 @@ Changes in version 0.4.0
   measurement in different coordinates
 * enforce asp = 1 when calling plot.default
 * length of axes ticks are set to 2mm by default
-* in axis, the first axis label is shifted if it is exceed the axis and 
+* in axis, the first axis label is shifted if it is exceed the axis and
   so is for the last axis label.
 * text.vjust accepts strings as "2mm", "-2.1 cm" to represent offsets
 * `circos.segments()`: graphic parameters can be set as vectors
 * add `circos.genomicIdeogram()`, `circos.genomicHeatmap()`, `circos.genomicLabels()`
 * add `circos.nestes()`
-* vignette has been moved to http://jokergoo.github.io/circlize_book/book/index.html
+* vignette has been moved to https://jokergoo.github.io/circlize_book/book/index.html
 * add `set.current.cell()`
 * add `h.ratio` argument in `circos.link()`
 
@@ -111,7 +111,7 @@ Changes in version 0.3.10
 ----------------------------------------------------------------------------
 
 * `chordDiagram()`: fixed a bug when the input matrix is stored as a data frame
-* `rainfallTransform()`: add "left" and "right" modes, and now the row order of 
+* `rainfallTransform()`: add "left" and "right" modes, and now the row order of
    the output data frame is as same as the input one.
 * `circos.genomicInitialize()`: it can only plot axes now.
 * `posTransform.text()`: add `extend` option to control the extension of chromsomes
@@ -170,7 +170,7 @@ Changes in version 0.3.3
 
 * `rainfallTransform()` and `genomicDensity()`: can be applied on the bed-format
   data frame directly.
-* add `col2rgb()` which transforms back to the original value based on the color 
+* add `col2rgb()` which transforms back to the original value based on the color
   mapping function.
 * add `circos.yaxis()`
 
@@ -216,7 +216,7 @@ Changes in version 0.2.4
    specified as a three-column data frame.
 * `chordDiagram`: arrows can be used to identify directions
 * ·circos.link`: arrows can be used to identify directions
-* `chordDiagram`: width of self-links are not duplicated. 
+* `chordDiagram`: width of self-links are not duplicated.
 * `circos.link`: if two roots for a link overlaps, the link is de-generated
   as an area with a quadratic curve and an arc.
 * add `circos.dendrogram` which draw dendrograms (dendrogram can be rendered by
@@ -268,7 +268,7 @@ Changes in version 0.2.0
 * set default transparency to 0.5 in `chordDiagram`
 * `circlize` returns value when track.index == 0
 * fixed a bug when text facing is 'bending', all text are plotted in one cell
-* different colors for each rows can be set to `circos.genomicLines` if 
+* different colors for each rows can be set to `circos.genomicLines` if
   type %in% c("segment", "h")
 * pre-allocate the matrix in `.get_color`
 
@@ -328,7 +328,7 @@ Changes in version 0.0.9
 * add a new function `chordDiagram` which support chord diagram
 * add `facing` argument to replace `direction` in `circos.text`
 * `circos.trackPlotRegion` can be used to update a track without re-setting ylim
-* move demo to http://jokergoo.github.io/circlize
+* move demo to https://jokergoo.github.io/circlize
 * re-implement `colorRamp2`
 
 Changes in version 0.0.8
@@ -351,7 +351,7 @@ Change in version 0.0.6
 * order will not change in `circos.trackPlotRegion` when not specifying `factors`, bug fixed
 * add an example in 'draw relation' vignette
 * add a new vignette focusing on phylogenetic tree
-* support directly downloading cytoBand file from UCSC 
+* support directly downloading cytoBand file from UCSC
 
 Changes in version 0.0.5
 ------------------------------------------------------------------------------

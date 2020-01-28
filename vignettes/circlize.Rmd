@@ -3,4 +3,4 @@
 %\VignetteIndexEntry{circlize vignette}
 -->
 
-Please go to http://jokergoo.github.io/circlize_book/book/ for full vignette.
+Please go to https://jokergoo.github.io/circlize_book/book/ for full vignette.

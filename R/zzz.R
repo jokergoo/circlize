@@ -9,11 +9,14 @@ setLoadActions(function(ns) {
 ", pkgname, " version ", version, "
 CRAN page: https://cran.r-project.org/package=circlize
 Github page: https://github.com/jokergoo/circlize
-Documentation: http://jokergoo.github.io/circlize_book/book/
+Documentation: https://jokergoo.github.io/circlize_book/book/
 
 If you use it in published research, please cite:
-Gu, Z. circlize implements and enhances circular visualization 
+Gu, Z. circlize implements and enhances circular visualization
   in R. Bioinformatics 2014.
+
+This message can be suppressed by:
+  suppressPackageStartupMessages(library(circlize))
 ========================================
 ")
     packageStartupMessage(msg)

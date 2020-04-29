@@ -11,7 +11,7 @@
 #                the link would be a belt/ribbon.
 # -rou           The position of the the link ends (if ``rou1`` and ``rou2`` are not set). It is the percentage of the radius of the unit circle.
 #                By default its value is the position of bottom margin of the most inner track.
-# -rou1          The position of end 1 of the link. 
+# -rou1          The position of end 1 of the link.
 # -rou2          The position of end 2 of the link.
 # -h             Height of the link, measured as percent to the radius to the unit circle. By default it is automatically infered.
 # -h.ratio       systematically change the link height. The value is between 0 and 1.
@@ -39,48 +39,48 @@
 # Drawing links does not create any track. So you can think it is independent of the tracks.
 #
 # By default you only need to set ``sector.index1``, ``point1``, ``sector.index2`` and ``point2``. The
-# links would look nice. 
+# links would look nice.
 #
 # Please refer to the vignette for detailed explanation.
 #
 # == seealso
-# http://jokergoo.github.io/circlize_book/book/graphics.html#links
+# https://jokergoo.github.io/circlize_book/book/graphics.html#links
 #
 circos.link = function(
-	sector.index1, 
-	point1, 
-	sector.index2, 
+	sector.index1,
+	point1,
+	sector.index2,
 	point2,
     rou = get_most_inside_radius(),
-    rou1 = rou, 
-    rou2 = rou, 
-    h = NULL, 
-    h.ratio = 0.5, 
-    w = 1, 
-    h2 = h, 
+    rou1 = rou,
+    rou2 = rou,
+    h = NULL,
+    h.ratio = 0.5,
+    w = 1,
+    h2 = h,
     w2 = w,
-    col = "black", 
-    lwd = par("lwd"), 
-    lty = par("lty"), 
+    col = "black",
+    lwd = par("lwd"),
+    lty = par("lty"),
     border = col,
-    directional = 0, 
-    arr.length = ifelse(arr.type == "big.arrow", 0.02, 0.4), 
-    arr.width = arr.length/2, 
-    arr.type = "triangle", 
-    arr.lty = lty, 
-    arr.lwd = lwd, 
+    directional = 0,
+    arr.length = ifelse(arr.type == "big.arrow", 0.02, 0.4),
+    arr.width = arr.length/2,
+    arr.type = "triangle",
+    arr.lty = lty,
+    arr.lwd = lwd,
     arr.col = col) {
-    
+
     sector.data1 = get.sector.data(sector.index1)
     sector.data2 = get.sector.data(sector.index2)
-	
+
 	point1 = sort(point1)
 	point2 = sort(point2)
 
     if(length(point1) == 1 && length(point2) == 1) {  # single line
         theta1 = circlize(point1, 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
         theta2 = circlize(point2, 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
-        
+
 		d = getQuadraticPoints(theta1, theta2, rou1, rou2, h = h, h.ratio = h.ratio, w = w)
         nr = nrow(d)
         if(directional == 0) {
@@ -98,15 +98,15 @@ circos.link = function(
 	        	alpha = line_degree(d[nr-1, 1], d[nr-1, 2], d[nr, 1], d[nr, 2])
 	        	oljoin = par("ljoin")
 	        	par(ljoin = "mitre")
-	        	Arrowhead(d[nr, 1], d[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
+	        	Arrowhead(d[nr, 1], d[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width,
 	        		arr.adj = 1, arr.lwd = 0.1, arr.type = arr.type, arr.col = col, lcol = col)
 	        	par(ljoin = oljoin)
-	        } 
+	        }
 	        if(directional %in% c(-1,2)) {  # point2 to point2
 	        	alpha = line_degree(d[2, 1], d[2, 2], d[1, 1], d[1,2])
 	        	oljoin = par("ljoin")
 	        	par(ljoin = "mitre")
-	        	Arrowhead(d[1, 1], d[1, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
+	        	Arrowhead(d[1, 1], d[1, 2], alpha, arr.length = arr.length, arr.width = arr.width,
 	        		arr.adj = 1, arr.lwd = 0.1, arr.type = arr.type, arr.col = col, lcol = col)
 	        	par(ljoin = oljoin)
 	        }
@@ -150,7 +150,7 @@ circos.link = function(
 				d = rbind(d1, revMat(r2))
 				d = rbind(d, revMat(d2))
 			}
-			
+
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 			if(nrow(dcenter) > 1 & arr.type != "big.arrow") {
 		        nr = nrow(dcenter)
@@ -165,26 +165,26 @@ circos.link = function(
 		        	alpha = line_degree(dcenter[nr-1, 1], dcenter[nr-1, 2], dcenter[nr, 1], dcenter[nr, 2])
 		        	oljoin = par("ljoin")
 	        		par(ljoin = "mitre")
-		        	Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
+		        	Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width,
 		        		arr.adj = 1, arr.lwd = 0.1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
 		        	par(ljoin = oljoin)
-		        } 
+		        }
 		        if(directional %in% c(-1,2)) {  # point2 to point1
 		        	alpha = line_degree(dcenter[2, 1], dcenter[2, 2], dcenter[1, 1], dcenter[1,2])
 		        	oljoin = par("ljoin")
 		        	par(ljoin = "mitre")
-		        	Arrowhead(dcenter[1, 1], dcenter[1, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
+		        	Arrowhead(dcenter[1, 1], dcenter[1, 2], alpha, arr.length = arr.length, arr.width = arr.width,
 		        		arr.adj = 1, arr.lwd = 0.1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
 		        	par(ljoin = oljoin)
 		        }
 		    }
 		}
-		
+
 	} else if(length(point2) == 1) {
 		theta2 = circlize(point2, 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
 		theta11 = circlize(point1[1], 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
         theta12 = circlize(point1[2], 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
-        
+
         if(degreeDiff2(theta2, theta11) <= degreeDiff2(theta12, theta11) &
            degreeDiff2(theta12, theta2) <= degreeDiff2(theta12, theta11)) {
 			d = getQuadraticPoints(theta12, theta11, max(rou1,rou2), max(rou1,rou2), h = h, h.ratio = h.ratio, w = w)
@@ -233,23 +233,23 @@ circos.link = function(
 		        	alpha = line_degree(dcenter[nr-1, 1], dcenter[nr-1, 2], dcenter[nr, 1], dcenter[nr, 2])
 		        	oljoin = par("ljoin")
 	        		par(ljoin = "mitre")
-	        		Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
+	        		Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width,
 		        		arr.adj = 1, arr.lwd = 0.1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
 	        		par(ljoin = oljoin)
-		        } 
+		        }
 		        if(directional %in% c(-1,2)) {  # point2 to point1
 		        	alpha = line_degree(dcenter[2, 1], dcenter[2, 2], dcenter[1, 1], dcenter[1,2])
 		        	oljoin = par("ljoin")
 		        	par(ljoin = "mitre")
-		        	Arrowhead(dcenter[1, 1], dcenter[1, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
+		        	Arrowhead(dcenter[1, 1], dcenter[1, 2], alpha, arr.length = arr.length, arr.width = arr.width,
 		        		arr.adj = 1, arr.lwd = 0.1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
 		        	par(ljoin = oljoin)
 		        }
 		    }
 		}
-		
+
 	} else {
-		
+
 		theta11 = circlize(point1[1], 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
         theta12 = circlize(point1[2], 0, sector.index = sector.index1, track.index = 0)[1, "theta"]
 		theta21 = circlize(point2[1], 0, sector.index = sector.index2, track.index = 0)[1, "theta"]
@@ -343,22 +343,22 @@ circos.link = function(
 		        	alpha = line_degree(dcenter[nr-1, 1], dcenter[nr-1, 2], dcenter[nr, 1], dcenter[nr, 2])
 		        	oljoin = par("ljoin")
 	        		par(ljoin = "mitre")
-		        	Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
+		        	Arrowhead(dcenter[nr, 1], dcenter[nr, 2], alpha, arr.length = arr.length, arr.width = arr.width,
 		        		arr.adj = 1.5, arr.lwd = 0.1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
 		        	par(ljoin = oljoin)
-		        } 
+		        }
 		        if(directional %in% c(-1,2)) {  # point2 to point1
 		        	alpha = line_degree(dcenter[2, 1], dcenter[2, 2], dcenter[1, 1], dcenter[1,2])
 		        	oljoin = par("ljoin")
 		        	par(ljoin = "mitre")
-		        	Arrowhead(dcenter[1, 1], dcenter[1, 2], alpha, arr.length = arr.length, arr.width = arr.width, 
+		        	Arrowhead(dcenter[1, 1], dcenter[1, 2], alpha, arr.length = arr.length, arr.width = arr.width,
 		        		arr.adj = 1, arr.lwd = 0.1, arr.type = arr.type, arr.col = arr.col, lcol = arr.col)
 		        	par(ljoin = oljoin)
 		        }
 		    }
 		}
     }
-	
+
     return(invisible(NULL))
 }
 
@@ -371,7 +371,7 @@ arc.points = function(theta1, theta2, rou) {
 	ncut = l/ (2*pi/circos.par("unit.circle.segments"))
 	ncut = floor(ncut)
 	ncut = ifelse(ncut < 2, 2, ncut)
-    
+
 	x = rou * cos(as.radian(theta1 + seq_len(ncut-1)*theta_diff/(ncut-1)))
 	y = rou * sin(as.radian(theta1 + seq_len(ncut-1)*theta_diff/(ncut-1)))
 	d = cbind(x, y)
@@ -412,29 +412,29 @@ getQuadraticPoints = function(theta1, theta2, rou1, rou2, h = NULL, h.ratio = 0.
 	rou_min = min(rou1, rou2)
 	x1 = rou_min*cos(as.radian(theta1))
 	y1 = rou_min*sin(as.radian(theta1))
-	
+
 	x2 = rou_min*cos(as.radian(theta2))
 	y2 = rou_min*sin(as.radian(theta2))
-	
+
 	# determin h
 	beta = (theta1 - theta2) %% 360
 	if(beta > 180) beta = 360 - beta
 	h_auto = rou_min*(1-h.ratio*cos(as.radian(beta/2)))
-	
+
 	if(is.null(h)) {
 		h = h_auto
 	}
 	if(length(h) == 0) {
-		h = h_auto	
+		h = h_auto
 	}
 	if(h > rou_min) {
 		h = h_auto
 	}
-	
+
 	h2 = h - rou_min*(1-cos(as.radian(beta/2)))
-	
+
 	if(w < 0) h2 = -h2
-	
+
 	dis = 1/2 * sqrt((x1 - x2)^2 + (y1 - y2)^2)
 	p0 = c(-dis, 0)
 	p2 = c(dis, 0)
@@ -443,7 +443,7 @@ getQuadraticPoints = function(theta1, theta2, rou1, rou2, h = NULL, h.ratio = 0.
 	} else {
 		p1 = c(0, (1+w)/w*h2)
 	}
-	
+
 	d = quadratic.bezier(p0, p1, p2, w = w)
 
 	# shit, I don't know why!
@@ -454,14 +454,14 @@ getQuadraticPoints = function(theta1, theta2, rou1, rou2, h = NULL, h.ratio = 0.
 		alpha = alpha + 180
 		col = "green"
 	}
-	
+
 	# rotate coordinate
 	mat = matrix(c(cos(as.radian(alpha)), sin(as.radian(alpha)), -sin(as.radian(alpha)), cos(as.radian(alpha))), nrow = 2)
 	d = d %*% mat
-	
+
 	x0 = (x1+x2)/2
 	y0 = (y1+y2)/2
-	
+
 	d[, 1] = d[, 1] + x0
 	d[, 2] = d[, 2] + y0
 
@@ -470,7 +470,7 @@ getQuadraticPoints = function(theta1, theta2, rou1, rou2, h = NULL, h.ratio = 0.
 	}
 
 	#points(rou_min*cos(as.radian(theta1)), rou_min*sin(as.radian(theta1)), pch = 16, col = "blue")
-	
+
 	if(rou1 > rou2) {
 		d = rbind(c(rou1*cos(as.radian(theta1)), rou1*sin(as.radian(theta1))), d)
 	} else if(rou1 < rou2) {
@@ -509,18 +509,18 @@ quadratic.bezier.length = function(p0, p1, p2, w = 1) {
 are.lines.intersected = function(x1, y1, x2, y2) {
 	n1 = length(x1)
 	n2 = length(x2)
-	
+
 	for(i in seq_len(n1)) {
 		if(i == 1) next
-		
+
 		a_1x = x1[i-1]
 		a_1y = y1[i-1]
 		a_2x = x1[i]
 		a_2y = y1[i]
-			
+
 		k1 = (a_1y - a_2y)/(a_1x - a_2x)
-		b1 = a_1y - k1*a_1x	
-						
+		b1 = a_1y - k1*a_1x
+
 		for(j in seq_len(n2)) {
 			if(j == 1) next
 
@@ -528,14 +528,14 @@ are.lines.intersected = function(x1, y1, x2, y2) {
 			b_1y = y2[j-1]
 			b_2x = x2[j]
 			b_2y = y2[j]
-			
-			
+
+
 			k2 = (b_1y - b_2y)/(b_1x - b_2x)
 			b2 = b_1y - k2*b_1x
-				
+
 			i_x = - (b2 - b1)/(k2 - k1)
 			i_y = k1*i_x + b1
-			
+
 			a_minx = min(c(a_1x, a_2x))
 			a_maxx = max(c(a_1x, a_2x))
 			b_minx = min(c(b_1x, b_2x))

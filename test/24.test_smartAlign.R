@@ -17,27 +17,35 @@ make_plot = function(pos1, pos2, range) {
 
 range = c(0, 10)
 pos1 = rbind(c(1, 2), c(5, 6))
-make_plot(pos1, smartAlign(pos1, range = range), range)
+make_plot(pos1, smartAlign(pos1[, 1], pos1[, 2], xlim = range), range)
 
 range = c(0, 10)
 pos1 = rbind(c(-0.5, 2), c(5, 6))
-make_plot(pos1, smartAlign(pos1, range = range), range)
+make_plot(pos1, smartAlign(pos1[, 1], pos1[, 2], xlim = range), range)
 
 
 pos1 = rbind(c(1, 2), c(3, 4), c(5, 6), c(7, 8))
-par(mfrow = c(3, 3))
+par(mfrow = c(3, 3), mar = c(1, 1, 1, 1))
 for(i in 1:9) {
 	ind = sample(4, 4)
-	make_plot(pos1[ind, ], smartAlign(pos1[ind, ], range = range), range)
+	make_plot(pos1[ind, ], smartAlign(pos1[ind, 1], pos1[ind, 2], xlim = range), range)
 }
 par(mfrow = c(1, 1))
 
 pos1 = rbind(c(3, 6), c(4, 7))
-make_plot(pos1, smartAlign(pos1, range = range), range)
+make_plot(pos1, smartAlign(pos1[, 1], pos1[, 2], xlim = range), range)
 
 pos1 = rbind(c(1, 8), c(3, 10))
-make_plot(pos1, smartAlign(pos1, range = range), range)
+make_plot(pos1, smartAlign(pos1[, 1], pos1[, 2], xlim = range), range)
 
 pos1 = cbind(c(-0.0005832292,  0.2559116024,  0.6293272145,  0.9496636073),
 	         c(0.3105832, 0.4940884, 0.7906728, 1.0303364))
-make_plot(pos1, smartAlign(pos1, range = c(0, 1)), c(0, 1))
+make_plot(pos1, smartAlign(pos1[, 1], pos1[, 2], xlim = c(0, 1)), c(0, 1))
+
+
+
+pos = cbind(c(-0.01287589, 0.02396249, 0.12195961, 0.35193075, 0.55257434, 0.63590767,
+               0.68991344, 0.74391921, 0.79792498, 0.83726697, 0.87660896, 0.91595095, 0.95779655),
+            c( 0.04220345, 0.08404905, 0.18204616, 0.41201731, 0.61266090, 0.69599423,
+               0.75000000, 0.80400577, 0.85801154, 0.89735353, 0.93669552, 0.97603751, 1.01287589))
+make_plot(pos, smartAlign(pos[, 1], pos[, 2], xlim = c(0, 1)), c(0, 1))

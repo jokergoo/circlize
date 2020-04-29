@@ -11,6 +11,8 @@ Changes in version 0.4.9
 * `circos.trackPlotRegion()`: cells in all sectors are plotted if `fa` does not provide complete
   set of categories.
 * `circos.initialize()`: give warnings if `fa` is in numeric mode.
+* `circos.track()`/`circos.genomicTrack()`: gives error when the panel function was specified without
+  explicitly by the name `panel.fun`.
 
 Changes in version 0.4.8
 -----------------------------------------------------------------------

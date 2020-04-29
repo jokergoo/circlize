@@ -42,6 +42,7 @@ If you want to have more controls on links, please use \code{\link{circos.link}}
 \url{https://jokergoo.github.io/circlize_book/book/genomic-plotting-region.html#genomic-links}
 }
 \examples{
+\dontrun{
 set.seed(123)
 
 bed1 = generateRandomBed(nr = 100)
@@ -53,4 +54,5 @@ circos.initializeWithIdeogram()
 
 circos.genomicLink(bed1, bed2, col = sample(1:5, 20, replace = TRUE), border = NA)
 circos.clear()
+}
 }

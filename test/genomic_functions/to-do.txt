@@ -1,4 +1,0 @@
-- test more arguments
-- data which do not contains some chromosomes / nothing
-- define/check numeric.column
-- test situation which will cause errors

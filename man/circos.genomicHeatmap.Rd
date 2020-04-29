@@ -52,10 +52,12 @@ for the heamtaps. The heatmaps always fill the whole track.
 \url{https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#genomic-heatmap}
 }
 \examples{
+\dontrun{
 circos.initializeWithIdeogram(plotType = c("labels", "axis"))
 bed = generateRandomBed(nr = 100, nc = 4)
 col_fun = colorRamp2(c(-1, 0, 1), c("green", "black", "red"))
 circos.genomicHeatmap(bed, col_fun, side = "inside", border = "white")
 circos.genomicHeatmap(bed, col_fun, side = "outside", 
     line_col = as.numeric(factor(bed[[1]])))
+}
 }

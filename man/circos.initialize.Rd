@@ -43,7 +43,7 @@ still set the width manually. However, it is not always a good idea to change th
 the width can reflect the range of data in sectors. However, in some cases, it is useful to manually set
 the width such as you want to zoom some part of the sectors.
 
-The function finally calls \code{\link[graphics]{plot}} with enforing aspect ratio to be 1 and be ready for adding graphics.
+The function finally calls \code{\link[graphics:plot.default]{plot}} with enforing aspect ratio to be 1 and be ready for adding graphics.
 }
 \seealso{
 \url{http://jokergoo.github.io/circlize_book/book/circular-layout.html}

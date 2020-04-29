@@ -106,6 +106,10 @@ circos.trackPlotRegion = function(
 		factors = factor(factors, levels = factors)
 	}
 
+    if(is.function(factors)) {
+        stop_wrap("The panel function should be set explicitly with the argument name `panel.fun = ...`.")
+    }
+
     # although ``x`` and ``y`` are not necessary, but once they are set, they must
 	# have same length as ``factors``
     if(!is.null(y) && length(y) != length(factors) ||
@@ -2018,6 +2022,7 @@ circos.yaxis = function(
 # https://jokergoo.github.io/circlize_book/book/high-level-plots.html#histograms
 #
 # == example
+# \dontrun{
 # x = rnorm(1600)
 # factors = sample(letters[1:16], 1600, replace = TRUE)
 # circos.initialize(factors = factors, x = x)
@@ -2028,7 +2033,7 @@ circos.yaxis = function(
 # circos.trackHist(factors = factors, x = x, draw.density = TRUE, 
 #   col = "#999999", border = "#999999")
 # circos.clear()
-#
+# }
 circos.trackHist = function(
 	factors, 
 	x, 

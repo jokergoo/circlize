@@ -42,6 +42,7 @@ On the plot, y-axis are log10-transformed.
 \url{https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#genomic-density-and-rainfall-plot}
 }
 \examples{
+\dontrun{
 load(system.file(package = "circlize", "extdata", "DMR.RData"))
 
 # rainfall
@@ -54,4 +55,5 @@ circos.genomicDensity(bed_list[[1]], col = c("#FF000080"), track.height = 0.1)
 circos.genomicDensity(bed_list[[2]], col = c("#0000FF80"), track.height = 0.1)
 
 circos.clear()
+}
 }

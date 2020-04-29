@@ -59,6 +59,7 @@ high-level graphics by this package.
 \url{https://jokergoo.github.io/circlize_book/book/high-level-plots.html#histograms}
 }
 \examples{
+\dontrun{
 x = rnorm(1600)
 factors = sample(letters[1:16], 1600, replace = TRUE)
 circos.initialize(factors = factors, x = x)
@@ -69,4 +70,5 @@ circos.trackHist(factors = factors, x = x, bin.size = 0.1,
 circos.trackHist(factors = factors, x = x, draw.density = TRUE, 
   col = "#999999", border = "#999999")
 circos.clear()
+}
 }

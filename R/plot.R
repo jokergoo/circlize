@@ -2429,9 +2429,14 @@ highlight.sector = function(
 			sector.index.vector = sectors[ ss[[j]] ]
 			for(i in seq_along(ts)) {
 				track.index.vector = ts[[i]]
-				start.degree = get.cell.meta.data("cell.start.degree", sector.index.vector[1], track.index = 1)
-				end.degree = get.cell.meta.data("cell.end.degree", sector.index.vector[length(sector.index.vector)], track.index = 1)
-				rou1 = get.cell.meta.data("cell.top.radius", sector.index.vector[1], track.index.vector[1])
+                if(circos.par("clock.wise")) {
+    				start.degree = get.cell.meta.data("cell.start.degree", sector.index.vector[1], track.index = 1)
+    				end.degree = get.cell.meta.data("cell.end.degree", sector.index.vector[length(sector.index.vector)], track.index = 1)
+				} else {
+                    end.degree = get.cell.meta.data("cell.end.degree", sector.index.vector[1], track.index = 1)
+                    start.degree = get.cell.meta.data("cell.start.degree", sector.index.vector[length(sector.index.vector)], track.index = 1)
+                }
+                rou1 = get.cell.meta.data("cell.top.radius", sector.index.vector[1], track.index.vector[1])
 				rou2 = get.cell.meta.data("cell.bottom.radius", sector.index.vector[1], track.index.vector[length(track.index.vector)])
 
 				d1 = end.degree - start.degree

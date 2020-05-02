@@ -1,3 +1,8 @@
+Changes in version 0.4.10
+-----------------------------------------------------------------------
+* `highlight.sector()`: fixed a bug when circos.par("clock.wise" = FALSE)
+
+
 Changes in version 0.4.9
 -----------------------------------------------------------------------
 * `chordDiagram()`: fixed a bug when `link.overlap = TRUE` for sparse matrices.

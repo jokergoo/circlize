@@ -511,7 +511,7 @@ circos.genomicTrackPlotRegion = function(
 		if(is.numeric(numeric.column)) {
 			numeric.column = numeric.column - 3
 		}
-		if(any(numeric.column < 0)) {
+		if(any(numeric.column <= 0)) {
 			stop_wrap("Wrong value in `numeric.column`, they should be larger than 3 or character index.")
 		}
 	}
@@ -527,7 +527,7 @@ circos.genomicTrackPlotRegion = function(
 				stop_wrap("Length of `numeric.column` should only be one or length of ``data`` if it is a list of data frames.")
 			}
 			for(i in seq_along(data)) {
-				if(!is.numeric(data[[i]][-(1:3)][numeric.column[i]])) {
+				if(!is.numeric(data[[i]][-(1:3)][, numeric.column[i]])) {
 					stop_wrap("Some of your `numeric.column` are not numeric.")
 				}
 			}
@@ -547,7 +547,7 @@ circos.genomicTrackPlotRegion = function(
 		if(is.null(numeric.column)) {
 			numeric.column = which(as.logical(sapply(data[-(1:3)], is.numeric)))
 		} else {
-			if(!all(sapply(data[-(1:3)][numeric.column], is.numeric))) {
+			if(!all(sapply(data[-(1:3)][, numeric.column, drop = FALSE], is.numeric))) {
 				stop_wrap("Some of your `numeric.column` are not numeric.")
 			}
 		}

@@ -6,6 +6,8 @@ Changes in version 0.4.10
 * `circos.circos.trackPlotRegion()`: fixed a bug that sector index was wrongly
   assigned.
 * `get.cell.meta.data()`: add `cell.width` and `cell.height` arguments.
+* `circos.genomicTrackPlotRegion()`: when input is a data frame list and column.index
+   is a vector, reduce the one-column data frame to a vector.
 
 Changes in version 0.4.9
 -----------------------------------------------------------------------

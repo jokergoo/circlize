@@ -26,14 +26,16 @@ The following meta information for a cell can be obtained:
   \item{\code{track.index}}{Numeric index for the track}
   \item{\code{xlim}}{Minimal and maximal values on the x-axis}
   \item{\code{ylim}}{Minimal and maximal values on the y-axis}
-  \item{\code{xrange}}{Range of \code{xlim}. It equals to \code{xlim[2] - xlim[1]} }
+  \item{\code{xrange}}{Range of \code{xlim}. It equals to \code{xlim[2] - xlim[1]}}
   \item{\code{yrange}}{Range of \code{ylim}}
-  \item{\code{xcenter}}{Center of x-axis. It equals to \code{(xlim[2] + xlim[1])/2} }
+  \item{\code{xcenter}}{Center of x-axis. It equals to \code{(xlim[2] + xlim[1])/2}}
   \item{\code{ycenter}}{Center of y-axis}
   \item{\code{cell.xlim}}{Minimal and maximal values on the x-axis extended by cell paddings}
   \item{\code{cell.ylim}}{Minimal and maximal values on the y-axis extended by cell paddings}
   \item{\code{xplot}}{Degrees for right and left borders of the cell.}
   \item{\code{yplot}}{Radius for top and bottom borders of the cell.}
+  \item{\code{cell.width}}{Width of the cell, in degrees.}
+  \item{\code{cell.height}}{Height of the cell, simply \code{yplot[2] - yplot[1]}}
   \item{\code{cell.start.degree}}{Same as \code{xplot[1]}}
   \item{\code{cell.end.degree}}{Same as \code{xplot[2]}}
   \item{\code{cell.bottom.radius}}{Same as \code{yplot[1]}}

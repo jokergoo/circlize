@@ -15,7 +15,7 @@ cytoband.col(x)
 
 }
 \details{
-The color theme is from \url{http://circos.ca/tutorials/course/slides/session-2.pdf,} page 42.
+The color theme is from \url{https://circos.ca/tutorials/course/slides/session-2.pdf,} page 42.
 }
 \examples{
 # There is no example

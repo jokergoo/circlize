@@ -45,7 +45,7 @@ Also \code{canvas.xlim} and \code{canvas.ylim} are reset in \code{f2()}, they sh
 either.
 }
 \seealso{
-\url{http://jokergoo.github.io/circlize_book/book/nested-zooming.html}
+\url{https://jokergoo.github.io/circlize_book/book/nested-zooming.html}
 }
 \author{
 Zuguang Gu <z.gu@dkfz.de>

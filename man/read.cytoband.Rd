@@ -22,10 +22,10 @@ read.cytoband(
 
 }
 \details{
-The function read the cytoband data, sort the chromosome names and calculate the length of each chromosome. 
+The function read the cytoband data, sort the chromosome names and calculate the length of each chromosome.
 By default, it is human hg19 cytoband data.
 
-You can find the data structure of the cytoband data from \url{http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/cytoBand.txt.gz}
+You can find the data structure of the cytoband data from \url{https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/cytoBand.txt.gz}
 }
 \value{
 \describe{
@@ -37,7 +37,7 @@ You can find the data structure of the cytoband data from \url{http://hgdownload
 \examples{
 data = read.cytoband(species = "hg19")
 data = read.cytoband(cytoband = system.file(package = "circlize", "extdata", "cytoBand.txt"))
-cytoband = read.table(system.file(package = "circlize", "extdata", "cytoBand.txt"), 
+cytoband = read.table(system.file(package = "circlize", "extdata", "cytoBand.txt"),
     colClasses = c("character", "numeric", "numeric", "character", "character"), sep = "\t")
 data = read.cytoband(cytoband = cytoband)
 }

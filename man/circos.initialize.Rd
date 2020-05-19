@@ -18,7 +18,7 @@ circos.initialize(
   \item{factors}{A \code{\link{factor}} variable or a character vector which represent data categories}
   \item{x}{Data on x-axes, a vector}
   \item{xlim}{Ranges for values on x-axes, see "details" section for explanation of the format}
-  \item{sector.width}{Width for each sector. The length of the vector should be either 1 which means all sectors have same width or as same as the number of sectors. Values for the vector are relative, and they will be scaled by dividing their summation.  By default, it is \code{NULL} which means the width of sectors correspond to the data range in sectors.}
+  \item{sector.width}{Width for each sector. The length of the vector should be either 1 which means all sectors have same width or as same as the number of sectors. Values for the vector are relative, and they will be scaled by dividing their summation. By default, it is \code{NULL} which means the width of sectors correspond to the data range in sectors.}
 
 }
 \details{
@@ -46,7 +46,7 @@ the width such as you want to zoom some part of the sectors.
 The function finally calls \code{\link[graphics:plot.default]{plot}} with enforing aspect ratio to be 1 and be ready for adding graphics.
 }
 \seealso{
-\url{http://jokergoo.github.io/circlize_book/book/circular-layout.html}
+\url{https://jokergoo.github.io/circlize_book/book/circular-layout.html}
 }
 \examples{
 # There is no example

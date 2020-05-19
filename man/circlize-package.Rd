@@ -10,7 +10,7 @@ Circular visualization in R
 \details{
 This package aims to implement circular layout in R.
 
-Since most of the figures are composed of points, lines and polygons, 
+Since most of the figures are composed of points, lines and polygons,
 we just need to implement low-level functions for drawing points, lines and polygons.
 
 Current there are following low-level graphic functions:
@@ -26,7 +26,7 @@ Current there are following low-level graphic functions:
   \item \code{\link{circos.link}}
 }
 
-For drawing points, lines and text through the whole track (among several sectors), the following 
+For drawing points, lines and text through the whole track (among several sectors), the following
 functions are available:
 
 \itemize{
@@ -89,7 +89,7 @@ Finally, function that draws Chord diagram:
   \item \code{\link{chordDiagram}}
 }
 
-Please refer to the vignettes (\url{http://jokergoo.github.io/circlize_book/book/} ) to find out how to draw basic and advanced circular plots by this package.
+Please refer to the vignettes (\url{https://jokergoo.github.io/circlize_book/book/} ) to find out how to draw basic and advanced circular plots by this package.
 }
 \examples{
 # There is no example

@@ -56,7 +56,7 @@ draw.sector(get.cell.meta.data("cell.start.degree", sector.index = "a"),
             get.cell.meta.data("cell.end.degree", sector.index = "a"),
             rou1 = 1, col = "#FF000040")
 
-draw.sector(0, 360, 
+draw.sector(0, 360,
     rou1 = get.cell.meta.data("cell.top.radius", track.index = 1),
     rou2 = get.cell.meta.data("cell.bottom.radius", track.index = 1),
     col = "#00FF0040")
@@ -68,7 +68,7 @@ draw.sector(get.cell.meta.data("cell.start.degree", sector.index = "e"),
             col = "#0000FF40")
 
 pos = circlize(c(0.2, 0.8), c(0.2, 0.8), sector.index = "h", track.index = 2)
-draw.sector(pos[1, "theta"], pos[2, "theta"], pos[1, "rou"], pos[2, "rou"], 
+draw.sector(pos[1, "theta"], pos[2, "theta"], pos[1, "rou"], pos[2, "rou"],
     clock.wise = TRUE, col = "#00FFFF40")
 circos.clear()
 }

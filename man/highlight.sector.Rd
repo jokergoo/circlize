@@ -55,7 +55,7 @@ highlight.sector(c("a", "h"), track.index = 1)
 highlight.sector("c", col = "#00FF0040")
 highlight.sector("d", col = NA, border = "red", lwd = 2)
 highlight.sector("e", col = "#0000FF40", track.index = c(2, 3))
-highlight.sector(c("f", "g"), col = NA, border = "green", 
+highlight.sector(c("f", "g"), col = NA, border = "green",
     lwd = 2, track.index = c(2, 3))
 highlight.sector(factors, col = "#FFFF0040", track.index = 4)
 circos.clear()

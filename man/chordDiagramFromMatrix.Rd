@@ -50,10 +50,10 @@ chordDiagramFromMatrix(
 \arguments{
 
   \item{mat}{A table which represents as a numeric matrix.}
-  \item{grid.col}{Grid colors which correspond to matrix rows/columns (or sectors). The length of the vector should be either 1 or \code{length(union(rownames(mat), colnames(mat)))}. It's preferred that \code{grid.col} is a named vector of which names correspond to sectors.  If it is not a named vector, the order of \code{grid.col} corresponds to order of sectors.}
+  \item{grid.col}{Grid colors which correspond to matrix rows/columns (or sectors). The length of the vector should be either 1 or \code{length(union(rownames(mat), colnames(mat)))}. It's preferred that \code{grid.col} is a named vector of which names correspond to sectors. If it is not a named vector, the order of \code{grid.col} corresponds to order of sectors.}
   \item{grid.border}{border for grids. If it is \code{NULL}, the border color is same as grid color}
   \item{transparency}{Transparency of link colors, 0 means no transparency and 1 means full transparency. If transparency is already set in \code{col} or \code{row.col} or \code{column.col}, this argument will be ignored. \code{NA}also ignores this argument.}
-  \item{col}{Colors for links. It can be a matrix which corresponds to \code{mat}, or a function which generate colors  according to values in \code{mat}, or a single value which means colors for all links are the same, or a three-column data frame in which the first two columns correspond to row names and columns and the third column is colors. You may use \code{\link{colorRamp2}} to generate a function which maps values to colors.}
+  \item{col}{Colors for links. It can be a matrix which corresponds to \code{mat}, or a function which generate colors according to values in \code{mat}, or a single value which means colors for all links are the same, or a three-column data frame in which the first two columns correspond to row names and columns and the third column is colors. You may use \code{\link{colorRamp2}} to generate a function which maps values to colors.}
   \item{row.col}{Colors for links. Links from the same row in \code{mat} will have the same color. Length should be same as number of rows in \code{mat}. This argument only works when \code{col} is set to \code{NULL}.}
   \item{column.col}{Colors for links. Links from the same column in \code{mat} will have the same color. Length should be same as number of columns in \code{mat}. This argument only works when \code{col} and \code{row.col} is set to \code{NULL}.}
   \item{order}{Order of sectors. Default order is \code{union(df[[1]], df[[2]])}.}
@@ -80,7 +80,7 @@ chordDiagramFromMatrix(
   \item{link.arr.lwd}{line width ofthe single line link which is put in the center of the belt. The format of this argument is same as \code{link.lwd}.}
   \item{link.arr.lty}{line type of the single line link which is put in the center of the belt. The format of this argument is same as \code{link.lwd}.}
   \item{link.largest.ontop}{controls the order of adding links, whether based on the absolute value?}
-  \item{link.visible}{whether plot the link. The value is logical, if it is set to \code{FALSE}, the corresponding link will not  plotted, but the space is still ocuppied. The format of this argument is same as \code{link.lwd}}
+  \item{link.visible}{whether plot the link. The value is logical, if it is set to \code{FALSE}, the corresponding link will not plotted, but the space is still ocuppied. The format of this argument is same as \code{link.lwd}}
   \item{link.rank}{order to add links to the circle, a large value means to add it later.}
   \item{link.overlap}{if it is a directional Chord Diagram, whether the links that come or end in a same sector overlap?}
   \item{scale}{scale each sector to same width}
@@ -96,7 +96,7 @@ Internally, the matrix is transformed to a data frame and sent to \code{\link{ch
 A data frame which contains positions of links, see explanation in \code{\link{chordDiagram}}.
 }
 \seealso{
-\url{http://jokergoo.github.io/circlize_book/book/the-chorddiagram-function.html}
+\url{https://jokergoo.github.io/circlize_book/book/the-chorddiagram-function.html}
 }
 \examples{
 # There is no example

@@ -63,11 +63,11 @@ high-level graphics by this package.
 x = rnorm(1600)
 factors = sample(letters[1:16], 1600, replace = TRUE)
 circos.initialize(factors = factors, x = x)
-circos.trackHist(factors = factors, x = x, col = "#999999", 
+circos.trackHist(factors = factors, x = x, col = "#999999",
   border = "#999999")
-circos.trackHist(factors = factors, x = x, bin.size = 0.1, 
+circos.trackHist(factors = factors, x = x, bin.size = 0.1,
   col = "#999999", border = "#999999")
-circos.trackHist(factors = factors, x = x, draw.density = TRUE, 
+circos.trackHist(factors = factors, x = x, draw.density = TRUE,
   col = "#999999", border = "#999999")
 circos.clear()
 }

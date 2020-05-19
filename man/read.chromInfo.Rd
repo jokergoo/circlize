@@ -22,10 +22,10 @@ read.chromInfo(
 
 }
 \details{
-The function read the chromInfo data, sort the chromosome names and calculate the length of each chromosome. 
+The function read the chromInfo data, sort the chromosome names and calculate the length of each chromosome.
 By default, it is human hg19 chromInfo data.
 
-You can find the data structure for the chromInfo data from \url{http://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/chromInfo.txt.gz}
+You can find the data structure for the chromInfo data from \url{https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/chromInfo.txt.gz}
 }
 \value{
 \describe{
@@ -37,7 +37,7 @@ You can find the data structure for the chromInfo data from \url{http://hgdownlo
 \examples{
 data = read.chromInfo(species = "hg19")
 data = read.chromInfo(chromInfo = system.file(package = "circlize", "extdata", "chromInfo.txt"))
-chromInfo = read.table(system.file(package = "circlize", "extdata", "chromInfo.txt"), 
+chromInfo = read.table(system.file(package = "circlize", "extdata", "chromInfo.txt"),
     colClasses = c("character", "numeric"), sep = "\t")
 data = read.chromInfo(chromInfo = chromInfo)
 }

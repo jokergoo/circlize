@@ -687,8 +687,10 @@ show.index = function() {
 # -``ycenter``              Center of y-axis
 # -``cell.xlim``            Minimal and maximal values on the x-axis extended by cell paddings
 # -``cell.ylim``            Minimal and maximal values on the y-axis extended by cell paddings
-# -``xplot``                Degrees for right and left borders of the cell.
+# -``xplot``                Degrees for right and left borders of the cell. The values ignore the direction of the circular layout (i.e. whether it is clock wise or not).
 # -``yplot``                Radius for top and bottom borders of the cell.
+# -``cell.width``           Width of the cell, in degrees.
+# -``cell.height``          Height of the cell, simply ``yplot[2] - yplot[1]``
 # -``cell.start.degree``    Same as ``xplot[1]``
 # -``cell.end.degree``      Same as ``xplot[2]``
 # -``cell.bottom.radius``   Same as ``yplot[1]``
@@ -775,6 +777,12 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 		return(x)
 	} else if(name == "yplot") {
 		return(c(current.cell.data$track.start - current.cell.data$track.height, current.cell.data$track.start))
+	} else if(name == "cell.width") {
+		x = current.sector.data[c("start.degree", "end.degree")]
+		return((x[1] - x[2]) %% 360)
+	} else if(name == "cell.height") {
+		y = c(current.cell.data$track.start - current.cell.data$track.height, current.cell.data$track.start)
+		return(y[2] - y[1])
 	} else if(name == "track.margin") {
 		return(current.cell.data$track.margin)
 	} else if(name == "cell.padding") {
@@ -841,7 +849,7 @@ class(CELL_META) = "CELL_META"
 # names(CELL_META)
 names.CELL_META = function(x) {
 	c("xlim", "ylim", "xrange", "yrange", "xcenter", "ycenter", "cell.xlim", "cell.ylim",
-     "sector.numeric.index", "sector.index", "track.index", "xplot", "yplot", "track.margin", "cell.padding",
+     "sector.numeric.index", "sector.index", "track.index", "xplot", "yplot", "cell.width", "cell.height", "track.margin", "cell.padding",
      "cell.start.degree", "cell.end.degree", "cell.bottom.radius", "cell.top.radius", "bg.col", "bg.border",
      "bg.lty", "bg.lwd", "track.height")
 }

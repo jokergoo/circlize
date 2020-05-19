@@ -78,7 +78,7 @@ created.
 
 See vignette for examples of how to use this feature.}
 \seealso{
-\url{http://jokergoo.github.io/circlize_book/book/circular-layout.html}
+\url{https://jokergoo.github.io/circlize_book/book/circular-layout.html}
 }
 \examples{
 circos.initialize(letters[1:8], xlim = c(0, 1))

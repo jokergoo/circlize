@@ -1,7 +1,11 @@
 Changes in version 0.4.10
 -----------------------------------------------------------------------
 * `highlight.sector()`: fixed a bug when circos.par("clock.wise" = FALSE)
-
+* `circos.genomicLink()`: input data frames can have 2 columns. In this case 
+   the start and the end positions of each region are the same.
+* `circos.circos.trackPlotRegion()`: fixed a bug that sector index was wrongly
+  assigned.
+* `get.cell.meta.data()`: add `cell.width` and `cell.height` arguments.
 
 Changes in version 0.4.9
 -----------------------------------------------------------------------

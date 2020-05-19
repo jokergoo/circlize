@@ -1512,6 +1512,13 @@ circos.genomicLink = function(
 	if(nrow(region1) != nrow(region2)) {
 		stop_wrap("nrow of `region1` and `region2` differ.")
 	}
+
+	if(ncol(region1) == 2) {
+		region1[, 3] = region1[, 2]
+	}
+	if(ncol(region2) == 2) {
+		region2[, 3] = region2[, 2]
+	}
 	
 	nr = nrow(region1)
 	

@@ -230,7 +230,7 @@ circos.trackPlotRegion = function(
                               bg.border = bg.border[i], bg.lty = bg.lty[i], bg.lwd = bg.lwd[i])
 
         if(all_le[i] %in% le) {
-    		l = factors == le[i]
+    		l = factors == all_le[i]
             if(! is.null(panel.fun)) {
                 if(is.null(x)) {
                     nx = NULL

@@ -8,6 +8,9 @@ Changes in version 0.4.10
 * `get.cell.meta.data()`: add `cell.width` and `cell.height` arguments.
 * `circos.genomicTrackPlotRegion()`: when input is a data frame list and column.index
    is a vector, reduce the one-column data frame to a vector.
+* add `add.track.meta.data()` and `add.sector.meta.data()` too add user-defined cell meta data.
+* add `circos.heatmap()` to draw multi-track heatmaps.
+* add `circos.boxplot()` and `circos.violin()`.
 
 Changes in version 0.4.9
 -----------------------------------------------------------------------

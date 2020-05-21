@@ -168,6 +168,10 @@ circos.par = setGlobalOptions(
 	'__omar__' = list(   # is par("mar") the default value?
 		.value = FALSE,
 		.private = TRUE,
+		.visible = FALSE),
+	'__tempenv__' = list(
+		.value = new.env(parent = emptyenv()),
+		.private = TRUE,
 		.visible = FALSE)
 )
 
@@ -438,7 +442,14 @@ circos.clear = function() {
 	circos.par(RESET = TRUE)
 	circos.par("__tempdir__" = tmpdir)
 
+	empty_env(circos.par("__tempenv__"))
+
     return(invisible(NULL))
+}
+
+empty_env = function(env) {
+	obj = ls(envir = env, all.names = TRUE)
+	if(length(obj)) rm(list = obj, envir = env)
 }
 
 # == title
@@ -812,9 +823,40 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 	} else if(name == "track.height") {
 		return(current.cell.data$track.height)
 	} else {
-		stop_wrap("Wrong cell meta name.")
+		env = circos.par("__tempenv__")
+		if(!is.null(env$track.meta.data)) {
+			track.index = as.character(track.index)
+			if(!is.null(env$track.meta.data[[track.index]])) {
+				if(name %in% names(env$track.meta.data[[track.index]])) {
+					return(env$track.meta.data[[track.index]][[name]])
+				}
+			}
+		}
+		if(!is.null(env$sector.meta.data)) {
+			if(!is.null(env$sector.meta.data[[sector.index]])) {
+				if(name %in% names(env$sector.meta.data[[sector.index]])) {
+					return(env$sector.meta.data[[sector.index]][[name]])
+				}
+			}
+		}
 	}
+
 	return(NULL)
+}
+
+add.track.meta.data = function(name, value, track.index = get.current.track.index()) {
+	env = circos.par("__tempenv__")
+	if(is.null(env$track.meta.data)) env$track.meta.data = list()
+	track.index = as.character(track.index)
+	if(is.null(env$track.meta.data[[track.index]])) env$track.meta.data[[track.index]] = list()
+	env$track.meta.data[[track.index]][[name]] = value
+}
+
+add.sector.meta.data = function(name, value, sector.index = get.current.sector.index()) {
+	env = circos.par("__tempenv__")
+	if(is.null(env$sector.meta.data)) env$sector.meta.data = list()
+	if(is.null(env$sector.meta.data[[sector.index]])) env$sector.meta.data[[sector.index]] = list()
+	env$sector.meta.data[[sector.index]][[name]] = value
 }
 
 # == title (variable:CELL_META)
@@ -848,10 +890,32 @@ class(CELL_META) = "CELL_META"
 # == example
 # names(CELL_META)
 names.CELL_META = function(x) {
-	c("xlim", "ylim", "xrange", "yrange", "xcenter", "ycenter", "cell.xlim", "cell.ylim",
+	sector.index = get.current.sector.index()
+    track.index = get.current.track.index()
+
+	nm = c("xlim", "ylim", "xrange", "yrange", "xcenter", "ycenter", "cell.xlim", "cell.ylim",
      "sector.numeric.index", "sector.index", "track.index", "xplot", "yplot", "cell.width", "cell.height", "track.margin", "cell.padding",
      "cell.start.degree", "cell.end.degree", "cell.bottom.radius", "cell.top.radius", "bg.col", "bg.border",
      "bg.lty", "bg.lwd", "track.height")
+
+	env = circos.par("__tempenv__")
+	if(track.index > 0) {
+		if(!is.null(env$track.meta.data)) {
+			track.index = as.character(track.index)
+			if(!is.null(env$track.meta.data[[track.index]])) {
+				nm = c(nm, names(env$track.meta.data[[track.index]]))
+			}
+		}
+	}
+	if(!is.null(sector.index)) {
+		if(!is.null(env$sector.meta.data)) {
+			if(!is.null(env$sector.meta.data[[sector.index]])) {
+				nm = c(nm, names(env$sector.meta.data[[sector.index]]))
+			}
+		}
+	}
+
+	return(nm)
 }
 
 # == title

@@ -32,7 +32,7 @@ The following meta information for a cell can be obtained:
   \item{\code{ycenter}}{Center of y-axis}
   \item{\code{cell.xlim}}{Minimal and maximal values on the x-axis extended by cell paddings}
   \item{\code{cell.ylim}}{Minimal and maximal values on the y-axis extended by cell paddings}
-  \item{\code{xplot}}{Degrees for right and left borders of the cell.}
+  \item{\code{xplot}}{Degrees for right and left borders of the cell. The values ignore the direction of the circular layout (i.e. whether it is clock wise or not).}
   \item{\code{yplot}}{Radius for top and bottom borders of the cell.}
   \item{\code{cell.width}}{Width of the cell, in degrees.}
   \item{\code{cell.height}}{Height of the cell, simply \code{yplot[2] - yplot[1]}}

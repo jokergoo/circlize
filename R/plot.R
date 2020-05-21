@@ -2651,3 +2651,207 @@ circos.dendrogram = function(
 
     draw.d(dend, max_height, facing, max_width = n)
 }
+
+# == title
+# Draw boxplots
+#
+# == param
+# -value A numeric vector, a matrix or a list. If it is a matrix, boxplots are made by columns.
+# -pos Positions of the boxes.
+# -outline Whether to draw outliers.
+# -box_width Width of boxes.
+# -col Filled color of boxes.
+# -border Color for the border as well as the quantile lines.
+# -lwd Line width.
+# -lty Line style
+# -cex Point size.
+# -pch Point type.
+# -pt.col Point color
+#
+# == example
+# circos.initialize(fa = letters[1:4], xlim = c(0, 10))
+# circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
+#     for(pos in seq(0.5, 9.5, by = 1)) {
+#         value = runif(10)
+#         circos.boxplot(value, pos)
+#     }
+# })
+# circos.clear()
+#
+# circos.initialize(fa = letters[1:4], xlim = c(0, 10))
+# circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
+#     value = replicate(runif(10), n = 10, simplify = FALSE)
+#     circos.boxplot(value, 1:10 - 0.5, col = 1:10)
+# })
+# circos.clear()
+circos.boxplot = function(value, pos, outline = TRUE, box_width = 0.6,
+    col = NA, border = "black", lwd = par("lwd"), lty = par("lty"),
+    cex = par("cex"), pch = 1, pt.col = par("col")) {
+
+    single_boxplot = function(value, pos, outline = TRUE, box_width = 0.6,
+        col = NA, border = "black", lwd = par("lwd"), lty = par("lty"),
+        cex = par("cex"), pch = 1, pt.col = par("col")) {
+
+        boxplot_stats = boxplot(value, plot = FALSE)$stats
+        box_height = boxplot_stats[4, 1] - boxplot_stats[2, 1]
+
+        circos.rect(pos - 0.5* box_width, boxplot_stats[2, 1], pos + 0.5 * box_width, boxplot_stats[4, 1],
+            col = col, border = border, lty = lty, lwd = lwd)
+        circos.segments(pos - 0.5 * box_width, boxplot_stats[5, 1], pos + 0.5 * box_width, boxplot_stats[5, 1],
+            col = border, lty = lty, lwd = lwd)
+        circos.segments(pos, boxplot_stats[5, 1], pos, boxplot_stats[4, 1],
+            col = border, lty = lty, lwd = lwd)
+        circos.segments(pos, boxplot_stats[1, 1], pos, boxplot_stats[2, 1],
+            col = border, lty = lty, lwd = lwd)
+        circos.segments(pos - 0.5 * box_width, boxplot_stats[1, 1], pos + 0.5 * box_width, boxplot_stats[1, 1],
+            col = border, lty = lty, lwd = lwd)
+        circos.segments(pos - 0.5 * box_width, boxplot_stats[3, 1], pos + 0.5 * box_width, boxplot_stats[3, 1],
+            col = border, lty = lty, lwd = lwd)
+        if (outline) {
+            l1 = value > boxplot_stats[5, 1]
+            if (any(l1)) circos.points(x = rep(pos, sum(l1)), y = value[l1], cex = cex, col = pt.col, pch = pch)
+            l2 = value < boxplot_stats[1, 1]
+            if (any(l2)) circos.points(x = rep(pos, sum(l2)), y = value[l2], cex = cex, col = pt.col, pch = pch)
+        }
+    }
+
+    if(is.matrix(value)) {
+        value = as.data.frame(value)   
+    } 
+
+    if(is.list(value)) {
+        n = length(value)
+        if(length(pos) != n) {
+            stop_wrap("Length of `pos` should be same as number of boxes.")
+        }
+
+        if(length(col) == 1) col = rep(col, n)
+        if(length(border) == 1) border = rep(border, n)
+        if(length(lwd) == 1) lwd = rep(lwd, n)
+        if(length(lty) == 1) lty = rep(lty, n)
+        if(length(cex) == 1) cex = rep(cex, n)
+        if(length(pch) == 1) pch = rep(pch, n)
+        if(length(pt.col) == 1) pt.col = rep(pt.col, n)
+
+        for(i in 1:n) {
+            single_boxplot(value[[i]], pos = pos[i], outline = outline, box_width = box_width,
+                col = col[i], border = border[i], lwd = lwd[i], lty = lty[i], cex = cex[i], 
+                pch = pch[i], pt.col = pt.col[i])
+        }
+    } else if(is.atomic(value)) {
+        single_boxplot(value, pos = pos, outline = outline, box_width = box_width,
+            col = col, border = border, lwd = lwd, lty = lty, cex = cex, pch = pch, pt.col = pt.col)
+    }
+}
+
+# == title
+# Draw violin plots
+#
+# == param
+# -value A numeric vector, a matrix or a list. If it is a matrix, boxplots are made by columns.
+# -pos Positions of the boxes.
+# -violin_width Width of violins.
+# -col Filled color of boxes.
+# -border Color for the border as well as the quantile lines.
+# -lwd Line width.
+# -lty Line style
+# -show_quantile Whether to show the quantile lines.
+# -cex Point size.
+# -pch Point type.
+# -pt.col Point color
+# -max_density The maximal density value across several violins. It is used to compare between violins.
+#
+# == example
+# circos.initialize(fa = letters[1:4], xlim = c(0, 10))
+# circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
+#     for(pos in seq(0.5, 9.5, by = 1)) {
+#         value = runif(10)
+#         circos.violin(value, pos)
+#     }
+# })
+# circos.clear()
+#
+# circos.initialize(fa = letters[1:4], xlim = c(0, 10))
+# circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
+#     value = replicate(runif(10), n = 10, simplify = FALSE)
+#     circos.violin(value, 1:10 - 0.5, col = 1:10)
+# })
+# circos.clear()
+circos.violin = function(value, pos, violin_width = 0.8, 
+    col = NA, border = "black", lwd = par("lwd"), lty = par("lty"),
+    show_quantile = TRUE, pt.col = par("col"), cex = par("cex"), pch = 16,
+    max_density = NULL) {
+
+    single_violin = function(density, pos, violin_width = 0.8, 
+        col = NA, border = "black", lwd = par("lwd"), lty = par("lty"),
+        show_quantile = TRUE, pt.col = par("col"), cex = par("cex"), pch = 16,
+        max_d = max(density$y), value = NULL) {
+
+        y = density$x
+        x = density$y
+
+        x = x/max_d * (violin_width/2)
+        y = c(y, rev(y))
+        x = c(-x + pos, rev(x + pos))
+        box_stat = boxplot(value, plot = FALSE)$stat
+
+        circos.polygon(x, y, border = border, col = col, lwd = lwd, lty = lty)
+        if(show_quantile) {
+            circos.lines(c(pos, pos), box_stat[1:2, 1])
+            circos.lines(x = c(pos, pos), y = box_stat[4:5, 1])
+            circos.points(pos, box_stat[3, 1], cex = cex, col = pt.col, pch = pch)
+        }
+    }
+
+    if(is.matrix(value)) {
+        value = as.data.frame(value)   
+    } 
+
+    if(is.list(value)) {
+        n = length(value)
+        if(length(pos) != n) {
+            stop_wrap("Length of `pos` should be same as number of violins.")
+        }
+
+        if(length(col) == 1) col = rep(col, n)
+        if(length(border) == 1) border = rep(border, n)
+        if(length(lwd) == 1) lwd = rep(lwd, n)
+        if(length(lty) == 1) lty = rep(lty, n)
+        if(length(cex) == 1) cex = rep(cex, n)
+        if(length(pch) == 1) pch = rep(pch, n)
+        if(length(pt.col) == 1) pt.col = rep(pt.col, n)
+
+        density_list = lapply(value, density, na.rm = TRUE)
+        
+        for(i in seq_along(density_list)) {
+            density = density_list[[i]]
+            l = density$x >= min(value[[i]], na.rm = TRUE) & density$x <= max(value[[i]], na.rm = TRUE); l[is.na(l)] = FALSE
+            density$x = density$x[l]
+            density$y = density$y[l]
+            density_list[[i]] = density
+        }
+
+        max_d = max(sapply(density_list, function(d) max(d$y)))
+        if(!is.null(max_density)) max_d = max_density
+
+        for(i in 1:n) {
+            single_violin(density_list[[i]], pos = pos[i], violin_width = violin_width,
+                col = col[i], border = border[i], lwd = lwd[i], lty = lty[i],
+                show_quantile = show_quantile, pt.col = pt.col[i], cex = cex[i], pch = pch[i],
+                max_d = max_d, value = value[[i]])
+        }
+    } else if(is.atomic(value)) {
+        density = density(value, na.rm = TRUE)
+        l = density$x >= min(value, na.rm = TRUE) & density$x <= max(value, na.rm = TRUE); l[is.na(l)] = FALSE
+        density$x = density$x[l]
+        density$y = density$y[l]
+        max_d = max(density$y)
+        if(!is.null(max_density)) max_d = max_density
+
+        single_violin(density, pos = pos, violin_width = violin_width, 
+            col = col, border = border, lwd = lwd, lty = lty,
+            show_quantile = show_quantile, pt.col = pt.col, cex = cex, pch = pch,
+            max_d = max(density$y), value = value)
+    }
+}
+

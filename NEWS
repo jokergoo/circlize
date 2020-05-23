@@ -11,6 +11,7 @@ Changes in version 0.4.10
 * add `add.track.meta.data()` and `add.sector.meta.data()` too add user-defined cell meta data.
 * add `circos.heatmap()` to draw multi-track heatmaps.
 * add `circos.boxplot()` and `circos.violin()`.
+* sector index are all enforced to be character.
 
 Changes in version 0.4.9
 -----------------------------------------------------------------------

@@ -483,6 +483,7 @@ get.all.track.index = function() {
 }
 
 get.sector.data = function(sector.index = get.current.sector.index()) {
+	sector.index = as.character(sector.index)
 	.SECTOR.DATA = get(".SECTOR.DATA", envir = .CIRCOS.ENV)
     sector.data = as.vector(as.matrix(.SECTOR.DATA[.SECTOR.DATA[[1]] == sector.index, -1]))
     names(sector.data) = colnames(.SECTOR.DATA)[-1]
@@ -546,16 +547,20 @@ set.current.sector.index = function(x) {
 # circos.clear()
 # dev.off()
 set.current.cell = function(sector.index, track.index) {
+	sector.index = as.character(sector.index)
 	set.current.sector.index(sector.index)
 	set.current.track.index(track.index)
 }
 
 get.cell.data = function(sector.index = get.current.sector.index(), track.index = get.current.track.index()) {
+	sector.index = as.character(sector.index)
 	.CELL.DATA = get(".CELL.DATA", envir = .CIRCOS.ENV)
     .CELL.DATA[[sector.index]][[track.index]]
 }
 
 set.cell.data = function(sector.index = get.current.sector.index(), track.index = get.current.track.index(), ...) {
+	sector.index = as.character(sector.index)
+	
 	.CELL.DATA = get(".CELL.DATA", envir = .CIRCOS.ENV)
     .CELL.DATA[[sector.index]][[track.index]] = list(...)
 	assign(".CELL.DATA", .CELL.DATA, envir = .CIRCOS.ENV)
@@ -564,7 +569,8 @@ set.cell.data = function(sector.index = get.current.sector.index(), track.index 
 
 # whether cell in sector.index, track.index exists?
 has.cell = function(sector.index, track.index) {
-
+	sector.index = as.character(sector.index)
+	
 	.CELL.DATA = get(".CELL.DATA", envir = .CIRCOS.ENV)
     if(sector.index %in% names(.CELL.DATA) &&
        track.index <= length(.CELL.DATA[[sector.index]]) &&
@@ -588,7 +594,7 @@ has.cell = function(sector.index, track.index) {
 # and ``track.index`` are set to ``NULL``, the function would print index for
 # all sectors and all tracks. If ``sector.index`` and/or ``track.index`` are set,
 # the function would print ``xlim``, ``ylim``, ``cell.xlim``, ``cell.ylim``,
-# ``xplot``, ``yplot``, ``track.margin`` and ``cell.padding`` for every cell in specified sectors and tracks.
+# ``xplot``, ``yplot``, ``cell.width``, ``cell.height``, ``track.margin`` and ``cell.padding`` for every cell in specified sectors and tracks.
 # Also, the function will print index of your current sector and current track.
 #
 # If ``plot`` is set to ``TRUE``, the function will plot the index of the sector and the track
@@ -643,6 +649,8 @@ circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 					cell.ylim = get.cell.meta.data("cell.ylim", sector.index[i], track.index[j])
 					xplot = get.cell.meta.data("xplot", sector.index[i], track.index[j])
 					yplot = get.cell.meta.data("yplot", sector.index[i], track.index[j])
+				    cell.width = get.cell.meta.data("cell.width", sector.index[i], track.index[j])
+				    cell.height = get.cell.meta.data("cell.height", sector.index[i], track.index[j])
 				    track.margin = get.cell.meta.data("track.margin", sector.index[i], track.index[j])
 				    cell.padding = get.cell.meta.data("cell.padding", sector.index[i], track.index[j])
 					cat("xlim: [", xlim[1], ", ", xlim[2], "]\n", sep = "")
@@ -651,6 +659,8 @@ circos.info = function(sector.index = NULL, track.index = NULL, plot = FALSE) {
 					cat("cell.ylim: [", cell.ylim[1], ", ", cell.ylim[2], "]\n", sep = "")
 					cat("xplot (degree): [", xplot[1], ", ", xplot[2], "]\n", sep = "")
 					cat("yplot (radius): [", yplot[1], ", ", yplot[2], "]\n", sep = "")
+					cat("cell.width (degree): ", cell.width, "\n", sep = "")
+					cat("cell.height (radius): ", cell.height, "\n", sep = "")
 					cat("track.margin: c(", track.margin[1], ", ", track.margin[2], ")\n", sep = "")
 					cat("cell.padding: c(", cell.padding[1], ", ", cell.padding[2], ", ", cell.padding[3], ", ", cell.padding[4], ")\n", sep = "")
 					cat("\n")
@@ -725,6 +735,9 @@ show.index = function() {
 # circos.clear()
 get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
                               track.index = get.current.track.index()) {
+	
+	sector.index = as.character(sector.index)
+
 	if(length(sector.index) == 0) {
 		stop_wrap("It seems the circular plot has not been initialized.")
 	}
@@ -853,6 +866,7 @@ add.track.meta.data = function(name, value, track.index = get.current.track.inde
 }
 
 add.sector.meta.data = function(name, value, sector.index = get.current.sector.index()) {
+	sector.index = as.character(sector.index)
 	env = circos.par("__tempenv__")
 	if(is.null(env$sector.meta.data)) env$sector.meta.data = list()
 	if(is.null(env$sector.meta.data[[sector.index]])) env$sector.meta.data[[sector.index]] = list()

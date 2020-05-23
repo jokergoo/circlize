@@ -21,7 +21,7 @@ It tells you the basic parameters for sectors/tracks/cells. If both \code{sector
 and \code{track.index} are set to \code{NULL}, the function would print index for
 all sectors and all tracks. If \code{sector.index} and/or \code{track.index} are set,
 the function would print \code{xlim}, \code{ylim}, \code{cell.xlim}, \code{cell.ylim},
-\code{xplot}, \code{yplot}, \code{track.margin} and \code{cell.padding} for every cell in specified sectors and tracks.
+\code{xplot}, \code{yplot}, \code{cell.width}, \code{cell.height}, \code{track.margin} and \code{cell.padding} for every cell in specified sectors and tracks.
 Also, the function will print index of your current sector and current track.
 
 If \code{plot} is set to \code{TRUE}, the function will plot the index of the sector and the track

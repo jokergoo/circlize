@@ -1998,7 +1998,8 @@ circos.yaxis = function(
 #               creating the plotting regions in the next newest track.
 # -track.height Height of the track. It is the percentage to the radius of the unit circle.
 #               If to update a track, this argument is disabled.
-# -force.ylim   Whether to force all cells in the track to share the same ``ylim``. Btw, ``ylim`` is calculated automatically.
+# -ylim         Ranges on y-direction. By default, ``ylim`` is calculated automatically.
+# -force.ylim   Whether to force all cells in the track to share the same ``ylim``.
 # -col          Filled color for histogram
 # -border       Border color for histogram
 # -lty          Line style for histogram
@@ -2022,7 +2023,7 @@ circos.yaxis = function(
 # https://jokergoo.github.io/circlize_book/book/high-level-plots.html#histograms
 #
 # == example
-# \dontrun{
+# \donttest{
 # x = rnorm(1600)
 # factors = sample(letters[1:16], 1600, replace = TRUE)
 # circos.initialize(factors = factors, x = x)
@@ -2039,6 +2040,7 @@ circos.trackHist = function(
 	x,
 	track.height = circos.par("track.height"),
     track.index = NULL,
+    ylim = NULL,
     force.ylim = TRUE,
     col = ifelse(draw.density, "black", NA),
 	border = "black",
@@ -2102,7 +2104,7 @@ circos.trackHist = function(
 
     # create the plotting region
     circos.trackPlotRegion(factors = fa, y=yy, track.height = track.height,
-                      track.index = track.index, force.ylim = force.ylim,
+                      track.index = track.index, ylim = ylim, force.ylim = force.ylim,
                       bg.col = bg.col, bg.border = bg.border, bg.lty = bg.lty, bg.lwd = bg.lwd)
 
     track.index = get.current.track.index()

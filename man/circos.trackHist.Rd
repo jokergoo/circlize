@@ -12,6 +12,7 @@ circos.trackHist(
     x,
     track.height = circos.par("track.height"),
     track.index = NULL,
+    ylim = NULL,
     force.ylim = TRUE,
     col = ifelse(draw.density, "black", NA),
     border = "black",
@@ -34,7 +35,8 @@ circos.trackHist(
   \item{x}{Data on the x-axis}
   \item{track.index}{Index for the track which is going to be updated. Setting it to \code{NULL} means creating the plotting regions in the next newest track.}
   \item{track.height}{Height of the track. It is the percentage to the radius of the unit circle. If to update a track, this argument is disabled.}
-  \item{force.ylim}{Whether to force all cells in the track to share the same \code{ylim}. Btw, \code{ylim} is calculated automatically.}
+  \item{ylim}{Ranges on y-direction. By default, \code{ylim} is calculated automatically.}
+  \item{force.ylim}{Whether to force all cells in the track to share the same \code{ylim}.}
   \item{col}{Filled color for histogram}
   \item{border}{Border color for histogram}
   \item{lty}{Line style for histogram}
@@ -59,7 +61,7 @@ high-level graphics by this package.
 \url{https://jokergoo.github.io/circlize_book/book/high-level-plots.html#histograms}
 }
 \examples{
-\dontrun{
+\donttest{
 x = rnorm(1600)
 factors = sample(letters[1:16], 1600, replace = TRUE)
 circos.initialize(factors = factors, x = x)

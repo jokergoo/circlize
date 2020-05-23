@@ -365,7 +365,7 @@ circos.heatmap = function(mat, split = NULL, col, na.col = "grey",
 	    if(!is.na(bg.border)) {
 	    	circos.rect(CELL_META$cell.xlim[1], CELL_META$cell.ylim[1],
 	    		        CELL_META$cell.xlim[2], CELL_META$cell.ylim[2],
-	    		        border = bg.border, bg.lwd = bg.lwd, bg.lty = bg.lty, col = NA)
+	    		        border = bg.border, lwd = bg.lwd, lty = bg.lty, col = NA)
 	    }
 
 	}, ...)

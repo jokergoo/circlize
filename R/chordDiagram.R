@@ -1091,20 +1091,34 @@ chordDiagramFromDataFrame = function(
 
 	if((identical(circos.par("gap.after"), 1))) {  # gap.after is not set in circos.par()
 		if(length(intersect(df[, 1], df[, 2])) == 0) {
-			n_df1 = length(unique(df[, 1]))
-			n_df2 = length(unique(df[, 2]))
-			n_sector = n_df1 + n_df2
-			s1 = sum(abs(df[, 3]))
-			s2 = sum(abs(df[, 4]))
-			d1 =  (360 - small.gap*(n_sector - 2) - big.gap*2) * (s1/(s1 + s2)) + small.gap*(n_df1-1)
-			if(circos.par$start.degree == 1) circos.par$start.degree = 0
-			if(circos.par$clock.wise) {
-				start_degree = circos.par$start.degree - (180 - d1)/2
-			} else {
-				start_degree = circos.par$start.degree + (180 - d1)/2
+			ind1 = which(cate %in% df[, 1])
+			ind2 = which(cate %in% df[, 2])
+
+			if(max(ind1) < min(ind2) || max(ind2) < min(ind1)) {
+				n_df1 = length(unique(df[, 1]))
+				n_df2 = length(unique(df[, 2]))
+				s1 = sum(abs(df[, 3]))
+				s2 = sum(abs(df[, 4]))
+				if(cate[1] %in% df[ ,2]) {
+					foo = n_df1
+					n_df1 = n_df2
+					n_df2 = foo
+
+					foo = s1
+					s1 = s2
+					s2 = foo
+				}
+				n_sector = n_df1 + n_df2
+				d1 =  (360 - small.gap*(n_sector - 2) - big.gap*2) * (s1/(s1 + s2)) + small.gap*(n_df1-1)
+				if(circos.par$start.degree == 1) circos.par$start.degree = 0
+				if(circos.par$clock.wise) {
+					start_degree = circos.par$start.degree - (180 - d1)/2
+				} else {
+					start_degree = circos.par$start.degree + (180 - d1)/2
+				}
+				gap.after = c(rep(small.gap, n_df1 - 1), big.gap, rep(small.gap, n_df2 - 1), big.gap)
+				suppressWarnings(circos.par(start.degree = start_degree, gap.after = gap.after))
 			}
-			suppressWarnings(circos.par(start.degree = start_degree,
-				gap.after = c(rep(small.gap, n_df1 - 1), big.gap, rep(small.gap, n_df2 - 1), big.gap)))
 		} else {
 			# warning("The two sets of sectors overlap, ignore `gap.degree`.")
 		}

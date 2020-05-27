@@ -12,6 +12,7 @@ Changes in version 0.4.10
 * add `circos.heatmap()` to draw multi-track heatmaps.
 * add `circos.boxplot()` and `circos.violin()`.
 * sector index are all enforced to be character.
+* `circos.nested()`: now the graphic parameters are reordered accordingly as the `correspondance`.
 
 Changes in version 0.4.9
 -----------------------------------------------------------------------

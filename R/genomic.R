@@ -33,7 +33,7 @@
 # https://jokergoo.github.io/circlize_book/book/initialize-genomic-plot.html#initialize-cytoband
 #
 # == example
-# \dontrun{
+# \donttest{
 # circos.initializeWithIdeogram()
 #
 # cytoband.file = system.file(package = "circlize",
@@ -1104,7 +1104,7 @@ circos.genomicLines = function(
 # The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
 #
 # == example
-# \dontrun{
+# \donttest{
 # ############################
 # ### rect matrix
 # circos.par("track.height" = 0.1, cell.padding = c(0, 0, 0, 0))
@@ -1470,7 +1470,7 @@ circos.genomicText = function(
 # https://jokergoo.github.io/circlize_book/book/genomic-plotting-region.html#genomic-links
 #
 # == example
-# \dontrun{
+# \donttest{
 # set.seed(123)
 #
 # bed1 = generateRandomBed(nr = 100)
@@ -1728,7 +1728,7 @@ circos.genomicPosTransformLines = function(
 # load(system.file(package = "circlize", "extdata", "DMR.RData"))
 #
 # # rainfall
-# \dontrun{
+# \donttest{
 # circos.initializeWithIdeogram(plotType = c("axis", "labels"))
 #
 # bed_list = list(DMR_hyper, DMR_hypo)
@@ -2080,7 +2080,7 @@ normalizeToDataFrame = function(data, sort = FALSE) {
 # https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#genomic-density-and-rainfall-plot
 #
 # == example
-# \dontrun{
+# \donttest{
 # load(system.file(package = "circlize", "extdata", "DMR.RData"))
 #
 # # rainfall
@@ -2363,7 +2363,7 @@ posTransform.text = function(
 # https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#genomic-heatmap
 #
 # == example
-# \dontrun{
+# \donttest{
 # circos.initializeWithIdeogram(plotType = c("labels", "axis"))
 # bed = generateRandomBed(nr = 100, nc = 4)
 # col_fun = colorRamp2(c(-1, 0, 1), c("green", "black", "red"))

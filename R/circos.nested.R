@@ -47,7 +47,18 @@ circos.nested = function(
 
 	on.exit(circos.clear())
 
-	correspondance = correspondance[order(correspondance[, 2], correspondance[, 3], correspondance[, 5], correspondance[, 6]), ]
+	nr = nrow(correspondance)
+
+	od = order(correspondance[, 2], correspondance[, 3], correspondance[, 5], correspondance[, 6])
+	correspondance = correspondance[od, ]
+	if(length(connection_col) == 1) connection_col = rep(connection_col, nr) 
+	if(length(connection_border) == 1) connection_border = rep(connection_border, nr) 
+	if(length(connection_lty) == 1) connection_lty = rep(connection_lty, nr) 
+	if(length(connection_lwd) == 1) connection_lwd = rep(connection_lwd, nr) 
+	connection_col = connection_col[od]
+	connection_border = connection_border[od]
+	connection_lty = connection_lty[od]
+	connection_lwd = connection_lwd[od]
 
 	pdf(NULL)
 	oe = try({

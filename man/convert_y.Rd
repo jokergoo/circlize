@@ -25,6 +25,8 @@ convert_y(
 A vector of numeric values which are measured in the specified data coordinate
 }
 \seealso{
+For pre-defined units, users can use \code{\link{cm_y}}, \code{\link{mm_y}} and \code{\link{inches_y}}.
+
 \code{\link{convert_x}} converts on x direction.
 
 \url{https://jokergoo.github.io/circlize_book/book/circular-layout.html#convert-functions}

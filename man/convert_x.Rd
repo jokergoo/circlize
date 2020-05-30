@@ -28,6 +28,8 @@ convert_x(
 A vector of numeric values which are measured in the specified data coordinate
 }
 \seealso{
+For pre-defined units, users can use \code{\link{cm_x}}, \code{\link{mm_x}} and \code{\link{inches_x}}.
+
 \code{\link{convert_y}} converts on y direction.
 
 \url{https://jokergoo.github.io/circlize_book/book/circular-layout.html#convert-functions}
@@ -39,21 +41,21 @@ Zuguang Gu <z.gu@dkfz.de>
 fa = letters[1:10]
 circos.par(cell.padding = c(0, 0, 0, 0), track.margin = c(0, 0))
 circos.initialize(fa, xlim = cbind(rep(0, 10), runif(10, 0.5, 1.5)))
-circos.track(ylim = c(0, 1), track.height = convert_height(5, "mm"),
+circos.track(ylim = c(0, 1), track.height = mm_h(5),
     panel.fun = function(x, y) {
-        circos.lines(c(0, 0 + convert_x(5, "mm")), c(0.5, 0.5), col = "blue")
+        circos.lines(c(0, 0 + mm_x(5)), c(0.5, 0.5), col = "blue")
     })
-circos.par(track.margin = c(0, convert_height(2, "mm")))
+circos.par(track.margin = c(0, mm_h(2)))
 circos.track(ylim = c(0, 1), track.height = convert_height(1, "cm"),
     panel.fun = function(x, y) {
         xcenter = get.cell.meta.data("xcenter")
-        circos.lines(c(xcenter, xcenter), c(0, convert_y(1, "cm")), col = "red")
+        circos.lines(c(xcenter, xcenter), c(0, cm_y(1)), col = "red")
     })
-circos.par(track.margin = c(0, convert_height(5, "mm")))
-circos.track(ylim = c(0, 1), track.height = convert_height(1, "inches"),
+circos.par(track.margin = c(0, mm_h(5)))
+circos.track(ylim = c(0, 1), track.height = inch_h(1),
     panel.fun = function(x, y) {
-        line_length_on_x = convert_x(1*sqrt(2)/2, "cm")
-        line_length_on_y = convert_y(1*sqrt(2)/2, "cm")
+        line_length_on_x = cm_x(1*sqrt(2)/2)
+        line_length_on_y = cm_y(1*sqrt(2)/2)
         circos.lines(c(0, line_length_on_x), c(0, line_length_on_y), col = "orange")
     })
 circos.clear()

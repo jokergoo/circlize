@@ -380,9 +380,9 @@ circos.genomicAxis = function(
 		
 		if(is.null(labels)) {
 			if(major.by > 1e6) {
-				major.tick.labels = paste((major.at-offset)/1000000, "MB", sep = "")
+				major.tick.labels = paste((major.at-offset)/1000000, "Mb", sep = "")
 			} else if(major.by > 1e3) {
-				major.tick.labels = paste((major.at-offset)/1000, "KB", sep = "")
+				major.tick.labels = paste((major.at-offset)/1000, "kb", sep = "")
 			} else {
 				major.tick.labels = paste((major.at-offset), "bp", sep = "")
 			}

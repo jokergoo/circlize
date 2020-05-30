@@ -13,6 +13,8 @@ Changes in version 0.4.10
 * add `circos.boxplot()` and `circos.violin()`.
 * sector index are all enforced to be character.
 * `circos.nested()`: now the graphic parameters are reordered accordingly as the `correspondance`.
+* add `mm_x()`, `mm_y()`, `mm_h()`, `cm_x()`, `cm_y()`, `cm_h()`, `inches_x()`, `inches_y()`, `inches_h()`
+  functions
 
 Changes in version 0.4.9
 -----------------------------------------------------------------------

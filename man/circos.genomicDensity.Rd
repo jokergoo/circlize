@@ -51,7 +51,7 @@ This function is a high-level graphical function, and it will create a new track
 load(system.file(package = "circlize", "extdata", "DMR.RData"))
 
 # rainfall
-\dontrun{
+\donttest{
 circos.initializeWithIdeogram(plotType = c("axis", "labels"))
 
 bed_list = list(DMR_hyper, DMR_hypo)

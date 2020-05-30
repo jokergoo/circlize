@@ -43,7 +43,7 @@ circos.genomicRect(
 The function is a low-level graphical function and usually is put in \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}.
 }
 \examples{
-\dontrun{
+\donttest{
 ############################
 ### rect matrix
 circos.par("track.height" = 0.1, cell.padding = c(0, 0, 0, 0))

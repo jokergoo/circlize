@@ -21,6 +21,8 @@ e.g. how much is it in the canvas coordinate for 1 mm/cm/inches.
 
 Since in the circular plot, the aspect ratio is always 1, it does not matter this conversion
 is applied on x direction or y direction.
+
+This function is mainly used in the radical direction.
 }
 \seealso{
 \code{\link{convert_x}} and \code{\link{convert_y}} convert absolute units into a data coordinate in a specified cell.

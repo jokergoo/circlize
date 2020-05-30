@@ -42,7 +42,7 @@ On the plot, y-axis are log10-transformed.
 \url{https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#genomic-density-and-rainfall-plot}
 }
 \examples{
-\dontrun{
+\donttest{
 load(system.file(package = "circlize", "extdata", "DMR.RData"))
 
 # rainfall

@@ -44,7 +44,7 @@ The style of ideogram is almost fixed, but you can customize it with your self-s
 \url{https://jokergoo.github.io/circlize_book/book/initialize-genomic-plot.html#initialize-cytoband}
 }
 \examples{
-\dontrun{
+\donttest{
 circos.initializeWithIdeogram()
 
 cytoband.file = system.file(package = "circlize",

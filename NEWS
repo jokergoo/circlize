@@ -17,6 +17,7 @@ Changes in version 0.4.10
   functions
 * `circos.initialize():` if `gap.degree`/`gap.after` is set a named vector, the order of 
   these two options are adjusted to the real sector order.
+* add `set_track_gap()` function.
 
 Changes in version 0.4.9
 -----------------------------------------------------------------------

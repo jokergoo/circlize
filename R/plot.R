@@ -2857,3 +2857,18 @@ circos.violin = function(value, pos, violin_width = 0.8,
     }
 }
 
+# == title
+# Set gaps between tracks
+#
+# == param
+# -gap Gap between two tracks
+#
+# == example
+# circos.initialize(fa = letters[1:10], xlim = c(0, 1))
+# circos.track(ylim = c(0, 1))
+# set_track_gap(mm_h(2))
+# circos.track(ylim = c(0, 1))
+# circos.clear()
+set_track_gap = function(gap = 0.02) {
+    circos.par$track.margin = c(0, gap)
+}

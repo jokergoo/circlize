@@ -313,6 +313,11 @@ circos.initialize = function(
 	sector[["max.data"]] = max.value
 
     gap.degree = circos.par("gap.degree")
+    if(!is.null(names(gap.degree))) {
+    	if(length(setdiff(le, names(gap.degree)))) {
+    		gap.degree = gap.degree[le]
+    	}
+    }
 	if(length(gap.degree) == 1) {
 		gap.degree = rep(gap.degree, n.sector)
 	} else if(length(gap.degree) != n.sector) {
@@ -333,7 +338,7 @@ circos.initialize = function(
 		for(i in seq_len(n.sector)) {
 
 			if(sector.range[i] == 0) {
-				stop_wrap("Range of the sector ('", le[i] ,"') cannot be 0.")
+				stop_wrap("Range of the sector ('", le[i] ,"') cannot be 0. You might need to set the second and the fourth values in `circos.par$cell.padding` to 0.")
 			}
 
 			# only to ensure value are always increasing or decreasing with the absolute degree value

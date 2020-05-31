@@ -15,6 +15,8 @@ Changes in version 0.4.10
 * `circos.nested()`: now the graphic parameters are reordered accordingly as the `correspondance`.
 * add `mm_x()`, `mm_y()`, `mm_h()`, `cm_x()`, `cm_y()`, `cm_h()`, `inches_x()`, `inches_y()`, `inches_h()`
   functions
+* `circos.initialize():` if `gap.degree`/`gap.after` is set a named vector, the order of 
+  these two options are adjusted to the real sector order.
 
 Changes in version 0.4.9
 -----------------------------------------------------------------------

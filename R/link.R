@@ -32,6 +32,7 @@
 # -arr.col       Color of the arrows, pass to `shape::Arrowhead`.
 # -arr.lwd       Line width of arrows, pass to `shape::Arrowhead`.
 # -arr.lty       Line type of arrows, pass to `shape::Arrowhead`.
+# -reduce_to_mid_line Only use the middle points of ``point1`` and ``point2`` to draw the link.
 #
 # == details
 # Links are implemented as quadratic Bezier curves (https://en.wikipedia.org/wiki/B\%C3\%A9zier_curve#Rational_B.C3.A9zier_curves ).
@@ -69,13 +70,19 @@ circos.link = function(
     arr.type = "triangle",
     arr.lty = lty,
     arr.lwd = lwd,
-    arr.col = col) {
+    arr.col = col,
+    reduce_to_mid_line = FALSE) {
 
     sector.data1 = get.sector.data(sector.index1)
     sector.data2 = get.sector.data(sector.index2)
 
 	point1 = sort(point1)
 	point2 = sort(point2)
+
+	if(reduce_to_mid_line) {
+		point1 = mean(point1)
+		point2 = mean(point2)
+	}
 
     if(length(point1) == 1 && length(point2) == 1) {  # single line
         theta1 = circlize(point1, 0, sector.index = sector.index1, track.index = 0)[1, "theta"]

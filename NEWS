@@ -18,6 +18,7 @@ Changes in version 0.4.10
 * `circos.initialize():` if `gap.degree`/`gap.after` is set a named vector, the order of 
   these two options are adjusted to the real sector order.
 * add `set_track_gap()` function.
+* `circos.link()`: add `reduce_to_mid_line` argument.
 
 Changes in version 0.4.9
 -----------------------------------------------------------------------

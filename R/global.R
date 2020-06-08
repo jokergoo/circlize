@@ -314,10 +314,11 @@ circos.initialize = function(
 
     gap.degree = circos.par("gap.degree")
     if(!is.null(names(gap.degree))) {
-    	if(length(setdiff(le, names(gap.degree)))) {
+    	if(length(setdiff(le, names(gap.degree))) == 0) {
     		gap.degree = gap.degree[le]
     	}
     }
+
 	if(length(gap.degree) == 1) {
 		gap.degree = rep(gap.degree, n.sector)
 	} else if(length(gap.degree) != n.sector) {

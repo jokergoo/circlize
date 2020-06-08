@@ -120,6 +120,7 @@ chordDiagram = function(
 	link.rank = NULL,
 	link.overlap = FALSE,
 	scale = FALSE,
+	group = NULL,
 	big.gap = 10,
 	small.gap = 1,
 	...) {
@@ -144,7 +145,7 @@ chordDiagram = function(
 			link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 			link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 			link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop,
-			link.visible = link.visible, link.rank = link.rank, link.overlap = link.overlap, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)
+			link.visible = link.visible, link.rank = link.rank, link.overlap = link.overlap, scale = scale, group = group, big.gap = big.gap, small.gap = small.gap, ...)
 	} else {
 		x = validate_data_frame(x)
 		if(ncol(x) > 3) {
@@ -158,7 +159,7 @@ chordDiagram = function(
 					link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 					link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 					link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop,
-					link.visible = link.visible, link.rank = link.rank, link.overlap = link.overlap, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)))
+					link.visible = link.visible, link.rank = link.rank, link.overlap = link.overlap, scale = scale, group = group, big.gap = big.gap, small.gap = small.gap, ...)))
 			} else {
 				chordDiagramFromDataFrame(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
 					col = col, order = order, directional = directional, direction.type = direction.type,
@@ -167,7 +168,7 @@ chordDiagram = function(
 					link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 					link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 					link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop,
-					link.visible = link.visible, link.rank = link.rank, link.overlap = link.overlap, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)
+					link.visible = link.visible, link.rank = link.rank, link.overlap = link.overlap, scale = scale, group = group, big.gap = big.gap, small.gap = small.gap, ...)
 			}
 		} else {
 			chordDiagramFromDataFrame(x, grid.col = grid.col, grid.border = grid.border, transparency = transparency,
@@ -177,7 +178,7 @@ chordDiagram = function(
 				link.border = link.border, link.lwd = link.lwd, link.lty = link.lty, link.sort = link.sort, link.decreasing = link.decreasing,
 				link.arr.length = link.arr.length, link.arr.width = link.arr.width, link.arr.type = link.arr.type, link.arr.lty = link.arr.lty,
 				link.arr.lwd = link.arr.lwd, link.arr.col = link.arr.col, link.largest.ontop = link.largest.ontop,
-				link.visible = link.visible, link.rank = link.rank, link.overlap = link.overlap, scale = scale, big.gap = big.gap, small.gap = small.gap, ...)
+				link.visible = link.visible, link.rank = link.rank, link.overlap = link.overlap, scale = scale, group = group, big.gap = big.gap, small.gap = small.gap, ...)
 		}
 	}
 }
@@ -390,6 +391,7 @@ chordDiagramFromMatrix = function(
 	link.rank = NULL,
 	link.overlap = FALSE,
 	scale = FALSE,
+	group = NULL,
 	big.gap = 10,
 	small.gap = 1,
 	...) {
@@ -659,6 +661,7 @@ chordDiagramFromMatrix = function(
 		link.rank = link.rank,
 		link.overlap = link.overlap,
 		scale = scale,
+		group = group,
 		big.gap = big.gap,
 		small.gap = small.gap,
 		...)
@@ -768,6 +771,7 @@ chordDiagramFromDataFrame = function(
 	link.rank = seq_len(nrow(df)),
 	link.overlap = FALSE,
 	scale = FALSE,
+	group = NULL,
 	big.gap = 10,
 	small.gap = 1,
 	...) {
@@ -1128,6 +1132,28 @@ chordDiagramFromDataFrame = function(
 	circos.par(cell.padding = c(0, 0, 0, 0))
     o.start.degree = circos.par("start.degree")
     o.gap.after = circos.par("gap.after")
+
+    ### group_by ###
+	if(!is.null(group)) {
+		# validate `group`
+		if(is.null(names(group))) {
+			stop_wrap("`group` should be named vector where names are the sector names and values are the group labels.")
+		}
+		if(length(setdiff(cate, names(group))) > 0) {
+			stop_wrap("Names in `group` should cover all sector names.")
+		}
+		tg = table(group)
+		group_lt = split(names(group), group)
+
+		sn_by_group = unlist(group_lt)
+
+		cate = intersect(sn_by_group, cate)
+		xsum = xsum[cate]
+
+		gap.after = c(unlist(lapply(tg, function(x) c(rep(small.gap, x-1), big.gap))))
+		names(gap.after) = sn_by_group
+		circos.par(gap.after = gap.after)
+	}
 
 	if((identical(circos.par("gap.after"), 1))) {  # gap.after is not set in circos.par()
 		if(length(intersect(df[, 1], df[, 2])) == 0) {

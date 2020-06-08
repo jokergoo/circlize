@@ -474,6 +474,25 @@ chordDiagramFromMatrix = function(
 	}
 
 	keep_index = names(xlim)[xlim / sum(xlim) >= reduce]
+
+	if(length(keep_index) < length(xlim)) {
+		gap.degree = circos.par$gap.degree
+		if(length(gap.degree) > 1) {
+			if(is.null(names(gap.degree))) {
+				if(length(keep_index) != length(gap.degree)) {
+					stop_wrap("`reduce` argument causes reduction of sectors. You can either set `reduce = 0`, or adjust the `gap.degree`/`gap.after` in `circos.par()` to remove tiny sectors, or set `gap.degree`/`gap.after` as a named vector where sector names are the vector names (tiny sectors can be included).")
+				}
+			} else {
+				if(length(setdiff(nn[keep_index], names(gap.degree))) == 0) {
+
+				} else {
+					if(length(keep_index) != length(gap.degree)) {
+						stop_wrap("`reduce` argument causes reduction of sectors. You can either set `reduce = 0`, or adjust the `gap.degree`/`gap.after` in `circos.par()` to remove tiny sectors, or set `gap.degree`/`gap.after` as a named vector where sector names are the vector names (tiny sectors can be included).")
+					}
+				}
+			}
+		}
+	}
 	ri = which(rownames(mat) %in% keep_index)
 	ci = which(colnames(mat) %in% keep_index)
 
@@ -908,6 +927,7 @@ chordDiagramFromDataFrame = function(
 
 	#### reduce the data frame
 	onr = nrow(df)
+	onn = union(df[, 1], df[, 2])
 	while(1) {
 		xsum = structure(rep(0, length(cate)), names = cate)
 		for(i in seq_len(nr)) {
@@ -947,6 +967,26 @@ chordDiagramFromDataFrame = function(
 		reduce = 1e-10
 		if(nr == onr) break
 		onr = nr
+	}
+
+	nn = union(df[, 1], df[, 2])
+	if(length(nn) < length(onn)) {
+		gap.degree = circos.par$gap.degree
+		if(length(gap.degree) > 1) {
+			if(is.null(names(gap.degree))) {
+				if(length(nn) != length(gap.degree)) {
+					stop_wrap("`reduce` argument causes reduction of sectors. You can either set `reduce = 0`, or adjust the `gap.degree`/`gap.after` in `circos.par()` to remove tiny sectors, or set `gap.degree`/`gap.after` as a named vector where sector names are the vector names (tiny sectors can be included).")
+				}
+			} else {
+				if(length(setdiff(nn, names(gap.degree))) == 0) {
+
+				} else {
+					if(length(nn) != length(gap.degree)) {
+						stop_wrap("`reduce` argument causes reduction of sectors. You can either set `reduce = 0`, or adjust the `gap.degree`/`gap.after` in `circos.par()` to remove tiny sectors, or set `gap.degree`/`gap.after` as a named vector where sector names are the vector names (tiny sectors can be included).")
+					}
+				}
+			}
+		}
 	}
 
 	# re-calcualte xsum

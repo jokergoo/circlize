@@ -43,6 +43,7 @@ chordDiagramFromMatrix(
     link.rank = NULL,
     link.overlap = FALSE,
     scale = FALSE,
+    group = NULL,
     big.gap = 10,
     small.gap = 1,
     ...)

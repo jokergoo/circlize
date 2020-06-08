@@ -39,6 +39,7 @@ chordDiagramFromDataFrame(
     link.rank = seq_len(nrow(df)),
     link.overlap = FALSE,
     scale = FALSE,
+    group = NULL,
     big.gap = 10,
     small.gap = 1,
     ...)

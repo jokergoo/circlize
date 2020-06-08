@@ -40,6 +40,7 @@
 # -link.rank order to add links to the circle, a large value means to add it later.
 # -link.overlap pass to `chordDiagramFromMatrix` or `chordDiagramFromDataFrame`
 # -scale scale each sector to same width
+# -group It contains the group labels and the sector names are used as the names in the vector.
 # -big.gap Gap between the two sets of sectors. If the input is a matrix, the two sets
 #      are row sectors and column sectors. If the input is a data frame, the two sets
 #      correspond to the first column and the second column. It only works when there
@@ -342,6 +343,7 @@ mat2df = function(mat) {
 # -link.rank order to add links to the circle, a large value means to add it later.
 # -link.overlap if it is a directional Chord Diagram, whether the links that come or end in a same sector overlap?
 # -scale scale each sector to same width
+# -group It contains the group labels and the sector names are used as the names in the vector.
 # -big.gap Gap between row sectors and column sectors.
 # -small.gap Small gap between sectors.
 # -... pass to `circos.link`
@@ -726,6 +728,7 @@ chordDiagramFromMatrix = function(
 # -link.rank order to add links to the circle, a large value means to add it later.
 # -link.overlap if it is a directional Chord Diagram, whether the links that come or end in a same sector overlap?
 # -scale scale each sector to same width
+# -group It contains the group labels and the sector names are used as the names in the vector.
 # -big.gap Gaps between the sectors in the first column of ``df`` and sectors in the second column in ``df``.
 # -small.gap Small gap between sectors.
 # -... pass to `circos.link`

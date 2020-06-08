@@ -85,6 +85,7 @@ chordDiagram(
   \item{link.rank}{order to add links to the circle, a large value means to add it later.}
   \item{link.overlap}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{scale}{scale each sector to same width}
+  \item{group}{It contains the group labels and the sector names are used as the names in the vector.}
   \item{big.gap}{Gap between the two sets of sectors. If the input is a matrix, the two sets are row sectors and column sectors. If the input is a data frame, the two sets correspond to the first column and the second column. It only works when there is no intersection between the two sets.}
   \item{small.gap}{Small gap between sectors.}
   \item{...}{pass to \code{\link{circos.link}}.}

@@ -77,6 +77,7 @@ chordDiagramFromDataFrame(
   \item{link.rank}{order to add links to the circle, a large value means to add it later.}
   \item{link.overlap}{if it is a directional Chord Diagram, whether the links that come or end in a same sector overlap?}
   \item{scale}{scale each sector to same width}
+  \item{group}{It contains the group labels and the sector names are used as the names in the vector.}
   \item{big.gap}{Gaps between the sectors in the first column of \code{df} and sectors in the second column in \code{df}.}
   \item{small.gap}{Small gap between sectors.}
   \item{...}{pass to \code{\link{circos.link}}}

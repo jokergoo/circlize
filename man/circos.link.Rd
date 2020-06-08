@@ -30,7 +30,8 @@ circos.link(
     arr.type = "triangle",
     arr.lty = lty,
     arr.lwd = lwd,
-    arr.col = col)
+    arr.col = col,
+    reduce_to_mid_line = FALSE)
 }
 \arguments{
 
@@ -57,6 +58,7 @@ circos.link(
   \item{arr.col}{Color of the arrows, pass to \code{\link[shape]{Arrowhead}}.}
   \item{arr.lwd}{Line width of arrows, pass to \code{\link[shape]{Arrowhead}}.}
   \item{arr.lty}{Line type of arrows, pass to \code{\link[shape]{Arrowhead}}.}
+  \item{reduce_to_mid_line}{Only use the middle points of \code{point1} and \code{point2} to draw the link.}
 
 }
 \details{

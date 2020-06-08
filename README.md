@@ -4,7 +4,6 @@
 
 
 [![Build Status](https://travis-ci.org/jokergoo/circlize.svg)](https://travis-ci.org/jokergoo/circlize)
-[![codecov](https://img.shields.io/codecov/c/github/jokergoo/circlize.svg)](https://codecov.io/github/jokergoo/circlize)
 [![CRAN](https://www.r-pkg.org/badges/version/circlize)](https://cran.r-project.org/web/packages/circlize/index.html)
 [![CRAN](https://cranlogs.r-pkg.org/badges/grand-total/circlize)](https://cran.r-project.org/web/packages/circlize/index.html)
 

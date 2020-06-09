@@ -833,6 +833,17 @@ chordDiagramFromDataFrame = function(
 
 	cate = union(df[[1]], df[[2]])
 	if(!is.null(order)) {
+
+		if(length(grid.col) > 1) {
+			if(is.null(names(grid.col))) {
+				warning_wrap("Since you have set `order`, you should better set `grid.col` as a named vector where sector names are the vector names, or else the color will be wrongly assigned.")
+			} else {
+				if(length(setdiff(cate, names(grid.col))) > 0) {
+					warning_wrap("Since you have set `order`, you should better set `grid.col` as a named vector where sector names are the vector names (should contain all sectors).")
+				}
+			}
+		}
+
 		order = intersect(order, cate)
 		if(length(order) != length(cate)) {
 			stop_wrap("`order` should contain names of all sectors.")
@@ -855,6 +866,17 @@ chordDiagramFromDataFrame = function(
 		grid.col = rand_color(n)
 		names(grid.col) = cate
 	} else {
+		if(length(grid.col) > 1) {
+			if(!is.null(group)) {
+				if(is.null(names(grid.col))) {
+					warning_wrap("Since you have set `group`, you should better set `grid.col` as a named vector where sector names are the vector names, or else the color will be wrongly assigned.")
+				} else {
+					if(length(setdiff(cate, names(grid.col))) > 0) {
+						warning_wrap("Since you have set `group`, you should better set `grid.col` as a named vector where sector names are the vector names (should contain all sectors).")
+					}
+				}
+			}
+		}
 		if(!is.null(names(grid.col))) {
 			unnamed_grid = setdiff(cate, names(grid.col))
 			if(length(unnamed_grid) > 0) {

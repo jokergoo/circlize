@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -37,7 +41,6 @@
 
 <meta property="og:title" content="Plot Chord Diagram from a data frame — chordDiagramFromDataFrame" />
 <meta property="og:description" content="Plot Chord Diagram from a data frame" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -55,7 +58,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -69,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
       </span>
     </div>
 
@@ -90,7 +93,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/jokergoo/circlize">
+  <a href="https://github.com/jokergoo/circlize/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -149,6 +152,7 @@
     <span class='kw'>link.rank</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>df</span>)),
     <span class='kw'>link.overlap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
     <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+    <span class='kw'>group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
     <span class='kw'>big.gap</span> <span class='kw'>=</span> <span class='fl'>10</span>,
     <span class='kw'>small.gap</span> <span class='kw'>=</span> <span class='fl'>1</span>,
     <span class='no'>...</span>)</pre>
@@ -165,7 +169,7 @@
     <tr>
       <th>grid.col</th>
       <td><p>Grid colors which correspond to sectors. The length of the vector should be either 1 or the number of sectors.
- It's preferred that <code>grid.col</code> is a named vector of which names correspond to sectors. 
+ It's preferred that <code>grid.col</code> is a named vector of which names correspond to sectors.
  If it is not a named vector, the order of <code>grid.col</code> corresponds to order of sectors.</p></td>
     </tr>
     <tr>
@@ -180,7 +184,7 @@
     </tr>
     <tr>
       <th>col</th>
-      <td><p>Colors for links. It can be a vector which corresponds to connections in <code>df</code>, or a function which generate colors 
+      <td><p>Colors for links. It can be a vector which corresponds to connections in <code>df</code>, or a function which generate colors
  according to values (the third column) in <code>df</code>, or a single value which means colors for all links are the same. You
  may use <code><a href='colorRamp2.html'>colorRamp2</a></code> to generate a function which maps values to colors.</p></td>
     </tr>
@@ -201,7 +205,7 @@
       <th>direction.type</th>
       <td><p>type for representing directions. Can be one or two values in "diffHeight" and "arrows". If the value contains "diffHeight",
  different heights of the links are used to represent the directions for which starting root has long height to give people feeling
- that something is comming out. If the value contains "arrows", users can customize arrows with following arguments. 
+ that something is comming out. If the value contains "arrows", users can customize arrows with following arguments.
  The value can be a vector which has same length as number of rows in <code>df</code>. Note if you want to set both <code>diffHeight</code>
  and <code>arrows</code> for certain links, you need to embed these two options into one string such as <code>"diffHeight+arrows"</code>.</p></td>
     </tr>
@@ -287,7 +291,7 @@
     </tr>
     <tr>
       <th>link.visible</th>
-      <td><p>whether plot the link. The value is logical, if it is set to <code>FALSE</code>, the corresponding link will not 
+      <td><p>whether plot the link. The value is logical, if it is set to <code>FALSE</code>, the corresponding link will not
  plotted, but the space is still ocuppied. The format of this argument is same as <code>link.lwd</code></p></td>
     </tr>
     <tr>
@@ -301,6 +305,10 @@
     <tr>
       <th>scale</th>
       <td><p>scale each sector to same width</p></td>
+    </tr>
+    <tr>
+      <th>group</th>
+      <td><p>It contains the group labels and the sector names are used as the names in the vector.</p></td>
     </tr>
     <tr>
       <th>big.gap</th>
@@ -324,23 +332,17 @@
     <p>A data frame which contains positions of links, see explanation in <code><a href='chordDiagram.html'>chordDiagram</a></code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='http://jokergoo.github.io/circlize_book/book/the-chorddiagram-function.html'>http://jokergoo.github.io/circlize_book/book/the-chorddiagram-function.html</a></p></div>
+    <div class='dont-index'><p><a href='https://jokergoo.github.io/circlize_book/book/the-chorddiagram-function.html'>https://jokergoo.github.io/circlize_book/book/the-chorddiagram-function.html</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># There is no example</span>
 <span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div><div class='input'>
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -351,7 +353,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

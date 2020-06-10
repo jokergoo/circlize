@@ -6,10 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Circular Visualization • circlize</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
+<script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Circular Visualization">
 <meta property="og:description" content="Circular layout is an efficient way for the visualization of huge 
     amounts of information. Here this package provides an implementation 
@@ -19,14 +20,14 @@
     implemented by users for specific purposes. Together with the seamless 
     connection between the powerful computational and visual environment in R, 
     it gives users more convenience and freedom to design figures for 
-    better understanding complex patterns behind multiple dimensional data.">
-<meta name="twitter:card" content="summary">
+    better understanding complex patterns behind multiple dimensional data. 
+    The package is described in Gu et al. 2014 &lt;doi:10.1093/bioinformatics/btu393&gt;.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -39,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
       </span>
     </div>
 
@@ -60,7 +61,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/jokergoo/circlize">
+  <a href="https://github.com/jokergoo/circlize/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -77,27 +78,27 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="circlize-circular-visualization-in-r" class="section level1">
+<div id="circlize-circular-visualization-in-r-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#circlize-circular-visualization-in-r" class="anchor"></a>circlize: circular visualization in R <a href="http://jokergoo.github.io/circlize_book/book/"><img src="http://jokergoo.github.io/circlize_book/book/images/circlize_cover.jpg" width="240" align="right"></a>
+<a href="#circlize-circular-visualization-in-r-" class="anchor"></a>circlize: circular visualization in R <a href="https://jokergoo.github.io/circlize_book/book/"><img src="https://jokergoo.github.io/circlize_book/book/images/circlize_cover.jpg" width="240" align="right"></a>
 </h1></div>
 
 <p>Circular layout is an efficient way for the visualization of huge amounts of information. Here the circlize package provides an implementation of circular layout generation in R as well as an enhancement of available software. The flexibility of this package is based on the usage of low-level graphics functions such that self-defined high-level graphics can be easily implemented by users for specific purposes. Together with the seamless connection between the powerful computational and visual environment in R, circlize givesa users more convenience and freedom to design figures for better understanding complex patterns behind multi-dimensional data.</p>
 <div id="citation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#citation" class="anchor"></a>Citation</h2>
-<p>Zuguang Gu, Lei Gu, Roland Eils, Matthias Schlesner, Benedikt Brors, circlize Implements and enhances circular visualization in R. Bioinformatics (Oxford, England) 2014. <a href="http://www.ncbi.nlm.nih.gov/pubmed/24930139">PubMed</a></p>
+<p>Zuguang Gu, Lei Gu, Roland Eils, Matthias Schlesner, Benedikt Brors, circlize Implements and enhances circular visualization in R. Bioinformatics (Oxford, England) 2014. <a href="https://www.ncbi.nlm.nih.gov/pubmed/24930139">PubMed</a></p>
 </div>
 <div id="documentation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#documentation" class="anchor"></a>Documentation</h2>
-<p>The full documentations are available at <a href="http://jokergoo.github.io/circlize_book/book/" class="uri">http://jokergoo.github.io/circlize_book/book/</a> and the online website is at <a href="https://jokergoo.github.io/circlize/" class="uri">https://jokergoo.github.io/circlize/</a>.</p>
+<p>The full documentations are available at <a href="https://jokergoo.github.io/circlize_book/book/" class="uri">https://jokergoo.github.io/circlize_book/book/</a> and the online website is at <a href="https://jokergoo.github.io/circlize/" class="uri">https://jokergoo.github.io/circlize/</a>.</p>
 </div>
 <div id="examples" class="section level2">
 <h2 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h2>
 <p>See <a href="https://jokergoo.github.io/circlize_examples/" class="uri">https://jokergoo.github.io/circlize_examples/</a>.</p>
-<p><img width="700" alt="circlize_example" src="http://jokergoo.github.io/circlize_book/book/images/ciclize_examples.jpg"></p>
+<p><img width="700" alt="circlize_example" src="https://jokergoo.github.io/circlize_book/book/images/ciclize_examples.jpg"></p>
 </div>
 <div id="install" class="section level2">
 <h2 class="hasAnchor">
@@ -105,7 +106,7 @@
 <p>The package can be installed from CRAN:</p>
 <pre><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("circlize")</a></code></pre>
 <p>or directly from GitHub:</p>
-<pre><code><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">devtools::install_github("jokergoo/circlize")</a></code></pre>
+<pre><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("jokergoo/circlize")</a></code></pre>
 </div>
 <div id="basic-design" class="section level2">
 <h2 class="hasAnchor">
@@ -179,13 +180,13 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=circlize">https://​cloud.r-project.org/​package=circlize</a>
 </li>
-<li>Browse source code at <br><a href="https://github.com/jokergoo/circlize">https://​github.com/​jokergoo/​circlize</a>
+<li>Browse source code at <br><a href="https://github.com/jokergoo/circlize/">https://​github.com/​jokergoo/​circlize/​</a>
 </li>
 </ul>
 </div>
@@ -214,8 +215,7 @@
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/jokergoo/circlize"><img src="https://travis-ci.org/jokergoo/circlize.svg" alt="Build Status"></a></li>
-<li><a href="https://codecov.io/github/jokergoo/circlize"><img src="https://img.shields.io/codecov/c/github/jokergoo/circlize.svg" alt="codecov"></a></li>
-<li><a href="https://cran.r-project.org/web/packages/circlize/index.html"><img src="http://www.r-pkg.org/badges/version/circlize" alt="CRAN"></a></li>
+<li><a href="https://cran.r-project.org/web/packages/circlize/index.html"><img src="https://www.r-pkg.org/badges/version/circlize" alt="CRAN"></a></li>
 <li><a href="https://cran.r-project.org/web/packages/circlize/index.html"><img src="https://cranlogs.r-pkg.org/badges/grand-total/circlize" alt="CRAN"></a></li>
 </ul>
 </div>
@@ -228,7 +228,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

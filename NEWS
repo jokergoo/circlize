@@ -10,7 +10,7 @@ Changes in version 0.4.10
    is a vector, reduce the one-column data frame to a vector.
 * add `add.track.meta.data()` and `add.sector.meta.data()` too add user-defined cell meta data.
 * add `circos.heatmap()` to draw multi-track heatmaps.
-* add `circos.boxplot()` and `circos.violin()`.
+* add `circos.barplot()`, `circos.boxplot()` and `circos.violin()`.
 * sector index are all enforced to be character.
 * `circos.nested()`: now the graphic parameters are reordered accordingly as the `correspondance`.
 * add `mm_x()`, `mm_y()`, `mm_h()`, `cm_x()`, `cm_y()`, `cm_h()`, `inches_x()`, `inches_y()`, `inches_h()`

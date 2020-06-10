@@ -1125,3 +1125,89 @@ validate_data_frame = function(x) {
         return(x)
     }
 }
+
+
+roundrect_pos = function(xleft, ybottom, xright, ytop, radius = 0.1, 
+  asp = NULL) {
+
+  if(is.null(asp)) {
+    pin = par("pin")
+    usr = par("usr")
+    asp = pin[1]/pin[2] * (usr[4] - usr[3])/(usr[2] - usr[1])
+  }
+
+  convert_y_1 = function(y, asp) {
+    y/asp
+  }
+
+  covnert_y_2 = function(y, asp) {
+    y*asp
+  }
+
+  if(xleft > xright) {
+    foo = xleft
+    xleft = xright
+    xright = foo
+  }
+  if(ybottom > ytop) {
+    foo = ybottom
+    ybottom = ytop
+    ytop = foo
+  }
+
+  ytop = convert_y_1(ytop, asp)
+  ybottom = convert_y_1(ybottom, asp)
+
+  w = abs(xright - xleft)
+  h = abs(ytop - ybottom)
+  r = radius*min(w, h)
+
+  x = NULL
+  y = NULL
+
+  # left top 180 -> 90
+  df = polar2Cartesian(cbind(seq(180, 90, length = 20), rep(r,20)))
+  x = c(x, df[, 1] + xleft + r)
+  y = c(y, df[, 2] + ytop - r)
+
+  x = c(x, xleft + r, xright - r)
+  y = c(y, ytop, ytop)
+
+  # right top 90 -> 0
+  df = polar2Cartesian(cbind(seq(90, 0, length = 20), rep(r,20)))
+  x = c(x, df[, 1] + xright - r)
+  y = c(y, df[, 2] + ytop - r)
+
+  x = c(x, xright, xright)
+  y = c(y, ytop - r, ybottom + r)
+
+  # bottom right 0 - (-90)
+  df = polar2Cartesian(cbind(seq(0, -90, length = 20), rep(r,20)))
+  x = c(x, df[, 1] + xright - r)
+  y = c(y, df[, 2] + ybottom + r)
+
+  x = c(x, xright - r, xleft + r)
+  y = c(y, ybottom, ybottom)
+
+  # bottom left 270 - 180
+  df = polar2Cartesian(cbind(seq(270, 180, length = 20), rep(r,20)))
+  x = c(x, df[, 1] + xleft + r)
+  y = c(y, df[, 2] + ybottom + r)
+
+  x = c(x, xleft, xleft)
+  y = c(y, ybottom + r, ytop - r)
+
+  y = covnert_y_2(y, asp)
+
+  return(list(x = x, y = y))
+}
+
+# plot(c(-2, -1), c(-2, -1))
+# foo = roundrect_pos(-2, -2, -1, -1)
+# lines(foo$x, foo$y)
+
+
+# plot(c(-4, -1), c(-2, -1))
+# foo = roundrect_pos(-4, -2, -1, -1)
+# lines(foo$x, foo$y)
+

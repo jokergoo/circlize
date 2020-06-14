@@ -1167,6 +1167,9 @@ chordDiagramFromDataFrame = function(
 		if(length(setdiff(cate, names(group))) > 0) {
 			stop_wrap("Names in `group` should cover all sector names.")
 		}
+
+		group = group[intersect(names(group), cate)]
+		
 		tg = table(group)
 		group_lt = split(names(group), group)
 

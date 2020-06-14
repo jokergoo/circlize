@@ -35,13 +35,13 @@ See https://jokergoo.github.io/circlize_examples/.
 
 The package can be installed from CRAN:
 
-```
+```r
 install.packages("circlize")
 ```
 
 or directly from GitHub:
 
-```
+```r
 devtools::install_github("jokergoo/circlize")
 ```
 
@@ -55,12 +55,16 @@ Current there are following low-level graphic functions:
 
 - `circos.points()`
 - `circos.lines()`
+- `circos.segments()`
 - `circos.rect()`
 - `circos.polygon()`
 - `circos.text()`
 - `circos.axis()`
 - `circos.raster()`
 - `circos.arrow()`
+- `circos.raster()`
+- `circos.barplot()`
+- `circos.boxplot()`
 - `circos.link()`, This maybe the unique feature for circos layout to represent relationships between elements.
 
 For drawing points, lines and text through the whole track (among several sectors), the following
@@ -69,6 +73,10 @@ functions are available:
 - `circos.trackPoints()`
 - `circos.trackLines()`
 - `circos.trackText()`
+
+Draw circular heatmaps
+
+- `circos.heatmap()`
 
 Functions to arrange the circular layout:
 

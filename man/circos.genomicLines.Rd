@@ -53,6 +53,7 @@ circos.genomicLines(
 The function is a low-level graphical function and usually is put in \code{panel.fun} when using \code{\link{circos.genomicTrackPlotRegion}}.
 }
 \examples{
+\donttest{
 ### test bed
 circos.par("track.height" = 0.1)
 circos.initializeWithIdeogram(plotType = NULL)
@@ -93,4 +94,5 @@ circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
 })
 
 circos.clear()
+}
 }

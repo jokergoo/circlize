@@ -17,6 +17,7 @@ circos.heatmap.link(row_from, row_to, ...)
 
 }
 \examples{
+\donttest{
 set.seed(123)
 mat = matrix(rnorm(100*10), nrow = 100)
 rownames(mat) = paste0("R", 1:100)
@@ -30,4 +31,5 @@ circos.heatmap(mat, col = col_fun, split = split,
 	rownames.side = "outside")
 circos.heatmap.link(10, 60)
 circos.clear()
+}
 }

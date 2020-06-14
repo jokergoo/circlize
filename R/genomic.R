@@ -156,10 +156,11 @@ circos.initializeWithIdeogram = function(
 # Zuguang Gu <z.gu@dkfz.de>
 #
 # == example
+# \donttest{
 # circos.initializeWithIdeogram(plotType = c("labels", "axis"))
 # circos.track(ylim = c(0, 1))
 # circos.genomicIdeogram() # put ideogram as the third track
-#
+# }
 circos.genomicIdeogram = function(
 	cytoband = system.file(package = "circlize", "extdata", "cytoBand.txt"), 
 	species = NULL, 
@@ -903,6 +904,7 @@ circos.genomicPoints = function(
 # The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
 #
 # == examples
+# \donttest{
 # ### test bed
 # circos.par("track.height" = 0.1)
 # circos.initializeWithIdeogram(plotType = NULL)
@@ -943,7 +945,7 @@ circos.genomicPoints = function(
 # })
 #
 # circos.clear()
-#
+# }
 circos.genomicLines = function(
 	region, 
 	value, 
@@ -2489,6 +2491,7 @@ circos.genomicHeatmap = function(
 # https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#labels
 # 
 # == example
+# \donttest{
 # circos.initializeWithIdeogram(plotType = c("labels", "axis"))
 # bed = generateRandomBed(nr = 100, fun = function(k) sample(letters, k, replace = TRUE))
 # bed[1, 4] = "aaaaaaaa"
@@ -2496,6 +2499,7 @@ circos.genomicHeatmap = function(
 #     col = as.numeric(factor(bed[[1]])))
 # circos.genomicLabels(bed, labels.column = 4, side = "outside",
 #     line_col = as.numeric(factor(bed[[1]])))
+# }
 circos.genomicLabels = function(
 	bed, 
 	labels = NULL, 

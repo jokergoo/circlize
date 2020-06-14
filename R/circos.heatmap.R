@@ -186,6 +186,7 @@ circos.heatmap.validate = function(mat_list) {
 # -... Pass to `circos.track` which draws the heatmap track.
 # 
 # == example
+# \donttest{
 # set.seed(123)
 # mat1 = rbind(cbind(matrix(rnorm(50*5, mean = 1), nr = 50), 
 #                    matrix(rnorm(50*5, mean = -1), nr = 50)),
@@ -200,6 +201,7 @@ circos.heatmap.validate = function(mat_list) {
 # col_fun1 = colorRamp2(c(-2, 0, 2), c("blue", "white", "red"))
 # circos.heatmap(mat1, split = split, col = col_fun1)
 # circos.clear()
+# }
 circos.heatmap = function(mat, split = NULL, col, na.col = "grey", 
 	bg.border = NA, bg.lty = par("lty"), bg.lwd = par("lwd"), ignore.white = TRUE, 
 	cluster = TRUE, clustering.method = "complete", distance.method = "euclidean",
@@ -422,6 +424,7 @@ circos.heatmap = function(mat, split = NULL, col, na.col = "grey",
 # -... Pass to `circos.link`.
 #
 # == example
+# \donttest{
 # set.seed(123)
 # mat = matrix(rnorm(100*10), nrow = 100)
 # rownames(mat) = paste0("R", 1:100)
@@ -435,6 +438,7 @@ circos.heatmap = function(mat, split = NULL, col, na.col = "grey",
 # 	rownames.side = "outside")
 # circos.heatmap.link(10, 60)
 # circos.clear()
+# }
 circos.heatmap.link = function(row_from, row_to, ...) {
 
 	if(length(row_from) != 1) {

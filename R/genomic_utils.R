@@ -237,8 +237,6 @@ usable_chromosomes = function(species) {
 # == param
 # -x A vector containing the Giemsa stain results
 #
-# == details
-# The color theme is from https://circos.ca/tutorials/course/slides/session-2.pdf, page 42.
 cytoband.col = function(x) {
 	x = as.vector(x)
 	col.panel = c("gpos100" = rgb(0, 0, 0, maxColorValue = 255),

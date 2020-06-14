@@ -28,7 +28,9 @@ circos.genomicIdeogram(
 Zuguang Gu <z.gu@dkfz.de>
 }
 \examples{
+\donttest{
 circos.initializeWithIdeogram(plotType = c("labels", "axis"))
 circos.track(ylim = c(0, 1))
 circos.genomicIdeogram() # put ideogram as the third track
+}
 }

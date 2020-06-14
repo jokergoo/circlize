@@ -2114,6 +2114,7 @@ circos.boxplot = function(value, pos, outline = TRUE, box_width = 0.6,
 # -max_density The maximal density value across several violins. It is used to compare between violins.
 #
 # == example
+# \donttest{
 # circos.initialize(fa = letters[1:4], xlim = c(0, 10))
 # circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
 #     for(pos in seq(0.5, 9.5, by = 1)) {
@@ -2129,6 +2130,7 @@ circos.boxplot = function(value, pos, outline = TRUE, box_width = 0.6,
 #     circos.violin(value, 1:10 - 0.5, col = 1:10)
 # })
 # circos.clear()
+# }
 circos.violin = function(value, pos, violin_width = 0.8, 
     col = NA, border = "black", lwd = par("lwd"), lty = par("lty"),
     show_quantile = TRUE, pt.col = par("col"), cex = par("cex"), pch = 16,

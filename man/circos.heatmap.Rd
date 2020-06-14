@@ -41,6 +41,7 @@ circos.heatmap(mat, split = NULL, col, na.col = "grey",
 
 }
 \examples{
+\donttest{
 set.seed(123)
 mat1 = rbind(cbind(matrix(rnorm(50*5, mean = 1), nr = 50), 
                    matrix(rnorm(50*5, mean = -1), nr = 50)),
@@ -55,4 +56,5 @@ spilt = factor(split, levels = letters[1:5])
 col_fun1 = colorRamp2(c(-2, 0, 2), c("blue", "white", "red"))
 circos.heatmap(mat1, split = split, col = col_fun1)
 circos.clear()
+}
 }

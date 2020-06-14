@@ -14,9 +14,6 @@ cytoband.col(x)
   \item{x}{A vector containing the Giemsa stain results}
 
 }
-\details{
-The color theme is from \url{https://circos.ca/tutorials/course/slides/session-2.pdf,} page 42.
-}
 \examples{
 # There is no example
 NULL

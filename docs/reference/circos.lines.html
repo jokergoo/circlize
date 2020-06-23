@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11</span>
       </span>
     </div>
 
@@ -122,8 +122,8 @@
 
     <pre class="usage"><span class='fu'>circos.lines</span>(
     <span class='no'>x</span>, <span class='no'>y</span>,
-    <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"sector.index"</span>),
-    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"track.index"</span>),
+    <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.sector.index.html'>get.current.sector.index</a></span>(),
+    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.track.index.html'>get.current.track.index</a></span>(),
     <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>area</span>, <span class='st'>"grey"</span>, <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"col"</span>)),
     <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>),
     <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>),
@@ -142,43 +142,43 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>Data points on x-axis, measured in "current" data coordinate</p></td>
+      <td><p>Data points on x-axis, measured in "current" data coordinate.</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>Data points on y-axis, measured in "current" data coordinate</p></td>
+      <td><p>Data points on y-axis, measured in "current" data coordinate.</p></td>
     </tr>
     <tr>
       <th>sector.index</th>
-      <td><p>Index for the sector</p></td>
+      <td><p>Index for the sector.</p></td>
     </tr>
     <tr>
       <th>track.index</th>
-      <td><p>Index for the track</p></td>
+      <td><p>Index for the track.</p></td>
     </tr>
     <tr>
       <th>col</th>
-      <td><p>Line color</p></td>
+      <td><p>Line color.</p></td>
     </tr>
     <tr>
       <th>lwd</th>
-      <td><p>line width</p></td>
+      <td><p>Line width.</p></td>
     </tr>
     <tr>
       <th>lty</th>
-      <td><p>line style</p></td>
+      <td><p>Line style.</p></td>
     </tr>
     <tr>
       <th>type</th>
-      <td><p>line type, similar as <code>type</code> argument in <code><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></code>, but only in <code><a href='https://rdrr.io/r/base/c.html'>c("l", "o", "h", "s")</a></code></p></td>
+      <td><p>Line type, similar as <code>type</code> argument in <code><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></code>, but only in <code><a href='https://rdrr.io/r/base/c.html'>c("l", "o", "h", "s")</a></code></p></td>
     </tr>
     <tr>
       <th>straight</th>
-      <td><p>whether draw straight lines between points.</p></td>
+      <td><p>Whether draw straight lines between points.</p></td>
     </tr>
     <tr>
       <th>area</th>
-      <td><p>whether to fill the area below the lines. If it is set to <code>TRUE</code>, <code>col</code> controls the filled color in the area and <code>border</code> controls color of the line.</p></td>
+      <td><p>Whether to fill the area below the lines. If it is set to <code>TRUE</code>, <code>col</code> controls the filled color in the area and <code>border</code> controls color of the line.</p></td>
     </tr>
     <tr>
       <th>area.baseline</th>
@@ -186,23 +186,23 @@
     </tr>
     <tr>
       <th>baseline</th>
-      <td><p>the base line to draw areas. By default it is the minimal of y-range (bottom). It can be a string or a number. If a string, it should be one of <code>bottom</code> and <code>top</code>. This argument also works if <code>type</code> is set to <code>h</code>.</p></td>
+      <td><p>The base line to draw areas. By default it is the minimal of y-range (bottom). It can be a string or a number. If a string, it should be one of <code>bottom</code> and <code>top</code>. This argument also works if <code>type</code> is set to <code>h</code>.</p></td>
     </tr>
     <tr>
       <th>border</th>
-      <td><p>color for border of the area</p></td>
+      <td><p>color for border of the area.</p></td>
     </tr>
     <tr>
       <th>pt.col</th>
-      <td><p>if <code>type</code> is "o", point color</p></td>
+      <td><p>If <code>type</code> is "o", point color.</p></td>
     </tr>
     <tr>
       <th>cex</th>
-      <td><p>if <code>type</code> is "o", point size</p></td>
+      <td><p>If <code>type</code> is "o", point size.</p></td>
     </tr>
     <tr>
       <th>pch</th>
-      <td><p>if <code>type</code> is "o", point type</p></td>
+      <td><p>If <code>type</code> is "o", point type.</p></td>
     </tr>
     </table>
 
@@ -213,36 +213,21 @@ But if you do not want to do such transformation you can use this function just 
 lines between points by setting <code>straight</code> to <code>TRUE</code>.</p>
 <p>Drawing areas below lines can help to identify the direction of y-axis in cells (since it is a circle). This can be done by specifying
 <code>area</code> to <code>TURE</code>.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>factors = letters[1:9]
-circos.par(points.overflow.warning = FALSE)
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.5)</p>
-<p>circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "a")
-circos.text(5, 9, "type = 'l'", sector.index = "a", facing = "outside")</p>
-<p>circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "b", type = "o")
-circos.text(5, 9, "type = 'o'", sector.index = "b", facing = "outside")</p>
-<p>circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "c", type = "h")
-circos.text(5, 9, "type = 'h'", sector.index = "c", facing = "outside")</p>
-<p>circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "d", type = "h", baseline = 5)
-circos.text(5, 9, "type = 'h', baseline = 5", sector.index = "d", facing = "outside")</p>
-<p>circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "e", type = "s")
-circos.text(5, 9, "type = 's'", sector.index = "e", facing = "outside")</p>
-<p>circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "f", area = TRUE)
-circos.text(5, 9, "type = 'l', area = TRUE", sector.index = "f")</p>
-<p>circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "g", type = "o", area = TRUE)
-circos.text(5, 9, "type = 'o', area = TRUE", sector.index = "g")</p>
-<p>circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "h", type = "s", area = TRUE)
-circos.text(5, 9, "type = 's', area = TRUE", sector.index = "h")</p>
-<p>circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "i", area = TRUE, baseline = "top")
-circos.text(5, 9, "type = 'l', area = TRUE, baseline = 'top'", sector.index = "i")</p>
-<p>circos.clear()</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># There is no example</span>
-<span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>factors</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>9</span>]
+<span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='kw'>points.overflow.warning</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'><a href='circos.initialize.html'>circos.initialize</a></span>(<span class='kw'>factors</span> <span class='kw'>=</span> <span class='no'>factors</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>10</span>))</div><div class='input'><span class='fu'><a href='circos.trackPlotRegion.html'>circos.trackPlotRegion</a></span>(<span class='kw'>factors</span> <span class='kw'>=</span> <span class='no'>factors</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>10</span>), <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</div><div class='input'>
+<span class='fu'>circos.lines</span>(<span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)*<span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)*<span class='fl'>8</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"a"</span>)</div><div class='input'><span class='fu'><a href='circos.text.html'>circos.text</a></span>(<span class='fl'>5</span>, <span class='fl'>9</span>, <span class='st'>"type = 'l'"</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"a"</span>, <span class='kw'>facing</span> <span class='kw'>=</span> <span class='st'>"outside"</span>)</div><div class='input'>
+<span class='fu'>circos.lines</span>(<span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)*<span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)*<span class='fl'>8</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"b"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"o"</span>)</div><div class='input'><span class='fu'><a href='circos.text.html'>circos.text</a></span>(<span class='fl'>5</span>, <span class='fl'>9</span>, <span class='st'>"type = 'o'"</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"b"</span>, <span class='kw'>facing</span> <span class='kw'>=</span> <span class='st'>"outside"</span>)</div><div class='input'>
+<span class='fu'>circos.lines</span>(<span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)*<span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)*<span class='fl'>8</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"c"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"h"</span>)</div><div class='input'><span class='fu'><a href='circos.text.html'>circos.text</a></span>(<span class='fl'>5</span>, <span class='fl'>9</span>, <span class='st'>"type = 'h'"</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"c"</span>, <span class='kw'>facing</span> <span class='kw'>=</span> <span class='st'>"outside"</span>)</div><div class='input'>
+<span class='fu'>circos.lines</span>(<span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)*<span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)*<span class='fl'>8</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"d"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"h"</span>, <span class='kw'>baseline</span> <span class='kw'>=</span> <span class='fl'>5</span>)</div><div class='input'><span class='fu'><a href='circos.text.html'>circos.text</a></span>(<span class='fl'>5</span>, <span class='fl'>9</span>, <span class='st'>"type = 'h', baseline = 5"</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"d"</span>, <span class='kw'>facing</span> <span class='kw'>=</span> <span class='st'>"outside"</span>)</div><div class='input'>
+<span class='fu'>circos.lines</span>(<span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)*<span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)*<span class='fl'>8</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"e"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"s"</span>)</div><div class='input'><span class='fu'><a href='circos.text.html'>circos.text</a></span>(<span class='fl'>5</span>, <span class='fl'>9</span>, <span class='st'>"type = 's'"</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"e"</span>, <span class='kw'>facing</span> <span class='kw'>=</span> <span class='st'>"outside"</span>)</div><div class='input'>
+<span class='fu'>circos.lines</span>(<span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)*<span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)*<span class='fl'>8</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"f"</span>, <span class='kw'>area</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='input'><span class='fu'><a href='circos.text.html'>circos.text</a></span>(<span class='fl'>5</span>, <span class='fl'>9</span>, <span class='st'>"type = 'l', area = TRUE"</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"f"</span>)</div><div class='input'>
+<span class='fu'>circos.lines</span>(<span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)*<span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)*<span class='fl'>8</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"g"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"o"</span>, <span class='kw'>area</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='input'><span class='fu'><a href='circos.text.html'>circos.text</a></span>(<span class='fl'>5</span>, <span class='fl'>9</span>, <span class='st'>"type = 'o', area = TRUE"</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"g"</span>)</div><div class='input'>
+<span class='fu'>circos.lines</span>(<span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)*<span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)*<span class='fl'>8</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"h"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"s"</span>, <span class='kw'>area</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='input'><span class='fu'><a href='circos.text.html'>circos.text</a></span>(<span class='fl'>5</span>, <span class='fl'>9</span>, <span class='st'>"type = 's', area = TRUE"</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"h"</span>)</div><div class='input'>
+<span class='fu'>circos.lines</span>(<span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)*<span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>10</span>)*<span class='fl'>8</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"i"</span>, <span class='kw'>area</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>baseline</span> <span class='kw'>=</span> <span class='st'>"top"</span>)</div><div class='input'><span class='fu'><a href='circos.text.html'>circos.text</a></span>(<span class='fl'>5</span>, <span class='fl'>9</span>, <span class='st'>"type = 'l', area = TRUE, baseline = 'top'"</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"i"</span>)</div><div class='img'><img src='circos.lines-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

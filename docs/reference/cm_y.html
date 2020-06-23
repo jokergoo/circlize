@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11</span>
       </span>
     </div>
 
@@ -120,23 +120,32 @@
     <p>Convert unit on y direction in data coordinate</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cm_y</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>cm_y</span>(<span class='no'>y</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.sector.index.html'>get.current.sector.index</a></span>(),
+    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.track.index.html'>get.current.track.index</a></span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>pass to <code><a href='convert_y.html'>convert_y</a></code></p></td>
+      <th>y</th>
+      <td><p>The y-value in numeric.</p></td>
+    </tr>
+    <tr>
+      <th>sector.index</th>
+      <td><p>Index of sector.</p></td>
+    </tr>
+    <tr>
+      <th>track.index</th>
+      <td><p>Index of track.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function is same as <code><a href='convert_y.html'>convert_y</a></code> in cm unit.</p>
+    <p>See explanations in <code><a href='convert_y.html'>convert_y</a></code> page.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># see example in `convert_y` page</span>
+    <pre class="examples"><div class='input'><span class='co'># see examples in `convert_y` page</span>
 <span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

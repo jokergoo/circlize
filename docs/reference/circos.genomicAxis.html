@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11</span>
       </span>
     </div>
 
@@ -127,8 +127,8 @@
     <span class='kw'>major.by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
     <span class='kw'>tickLabelsStartFromZero</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
     <span class='kw'>labels.cex</span> <span class='kw'>=</span> <span class='fl'>0.4</span>*<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"cex"</span>),
-    <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"sector.index"</span>),
-    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"track.index"</span>),
+    <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.sector.index.html'>get.current.sector.index</a></span>(),
+    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.track.index.html'>get.current.track.index</a></span>(),
     <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -156,7 +156,7 @@
     </tr>
     <tr>
       <th>labels.cex</th>
-      <td><p>the font size for the axis tick labels.</p></td>
+      <td><p>The font size for the axis tick labels.</p></td>
     </tr>
     <tr>
       <th>sector.index</th>
@@ -180,7 +180,9 @@
     <div class='dont-index'><p><a href='https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#genomic-axes'>https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#genomic-axes</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='circos.initializeWithIdeogram.html'>circos.initializeWithIdeogram</a></span>(<span class='kw'>plotType</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='input'><span class='fu'><a href='circos.track.html'>circos.track</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) <span class='fu'>circos.genomicAxis</span>())</div><div class='img'><img src='circos.genomicAxis-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='circos.initializeWithIdeogram.html'>circos.initializeWithIdeogram</a></span>(<span class='kw'>chromosome.index</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fl'>1</span>:<span class='fl'>4</span>), <span class='kw'>plotType</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='input'><span class='fu'><a href='circos.track.html'>circos.track</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) <span class='fu'>circos.genomicAxis</span>())</div><div class='input'><span class='fu'><a href='circos.track.html'>circos.track</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)</div><div class='input'><span class='fu'><a href='circos.track.html'>circos.track</a></span>(<span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.track.index.html'>get.current.track.index</a></span>(), <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {
+    <span class='fu'>circos.genomicAxis</span>(<span class='kw'>h</span> <span class='kw'>=</span> <span class='st'>"bottom"</span>, <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"inside"</span>)
+})</div><div class='img'><img src='circos.genomicAxis-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

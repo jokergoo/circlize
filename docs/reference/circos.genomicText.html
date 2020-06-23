@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11</span>
       </span>
     </div>
 
@@ -127,8 +127,8 @@
     <span class='kw'>labels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
     <span class='kw'>labels.column</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
     <span class='kw'>numeric.column</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-    <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"sector.index"</span>),
-    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"track.index"</span>),
+    <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.sector.index.html'>get.current.sector.index</a></span>(),
+    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.track.index.html'>get.current.track.index</a></span>(),
     <span class='kw'>posTransform</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
     <span class='kw'>direction</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
     <span class='kw'>facing</span> <span class='kw'>=</span> <span class='st'>"inside"</span>,
@@ -147,11 +147,11 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>region</th>
-      <td><p>A data frame contains 2 column which correspond to start position and end position</p></td>
+      <td><p>A data frame contains 2 column which correspond to start positions and end positions.</p></td>
     </tr>
     <tr>
       <th>value</th>
-      <td><p>A data frame contains values and other information</p></td>
+      <td><p>A data frame contains values and other information.</p></td>
     </tr>
     <tr>
       <th>y</th>
@@ -159,11 +159,11 @@
     </tr>
     <tr>
       <th>labels</th>
-      <td><p>Labels of text corresponding to each genomic positions</p></td>
+      <td><p>Labels of text corresponding to each genomic positions.</p></td>
     </tr>
     <tr>
       <th>labels.column</th>
-      <td><p>If labels are in <code>value</code>, index of column in <code>value</code></p></td>
+      <td><p>If labels are in <code>value</code>, index of column in <code>value</code>.</p></td>
     </tr>
     <tr>
       <th>numeric.column</th>
@@ -172,19 +172,19 @@
     </tr>
     <tr>
       <th>sector.index</th>
-      <td><p>Pass to <code><a href='circos.rect.html'>circos.rect</a></code></p></td>
+      <td><p>Index of sector.</p></td>
     </tr>
     <tr>
       <th>track.index</th>
-      <td><p>Pass to <code><a href='circos.rect.html'>circos.rect</a></code></p></td>
+      <td><p>Index of track.</p></td>
     </tr>
     <tr>
       <th>posTransform</th>
-      <td><p>Self-defined function to transform genomic positions, see <code><a href='posTransform.default.html'>posTransform.default</a></code> for explanation</p></td>
+      <td><p>Self-defined function to transform genomic positions, see <code><a href='posTransform.default.html'>posTransform.default</a></code> for explanation.</p></td>
     </tr>
     <tr>
       <th>facing</th>
-      <td><p>Passing to <code><a href='circos.text.html'>circos.text</a></code>. Settings are similar as <code>col</code></p></td>
+      <td><p>Passing to <code><a href='circos.text.html'>circos.text</a></code>. Settings are similar as <code>col</code>.</p></td>
     </tr>
     <tr>
       <th>niceFacing</th>
@@ -196,11 +196,11 @@
     </tr>
     <tr>
       <th>adj</th>
-      <td><p>Pass to <code><a href='circos.text.html'>circos.text</a></code>. Settings are similar as <code>col</code></p></td>
+      <td><p>Pass to <code><a href='circos.text.html'>circos.text</a></code>. Settings are similar as <code>col</code>.</p></td>
     </tr>
     <tr>
       <th>cex</th>
-      <td><p>Pass to <code><a href='circos.text.html'>circos.text</a></code>. Settings are similar as <code>col</code></p></td>
+      <td><p>Pass to <code><a href='circos.text.html'>circos.text</a></code>. Settings are similar as <code>col</code>.</p></td>
     </tr>
     <tr>
       <th>col</th>
@@ -208,40 +208,40 @@
     </tr>
     <tr>
       <th>font</th>
-      <td><p>Pass to <code><a href='circos.text.html'>circos.text</a></code>. Settings are similar as <code>col</code></p></td>
+      <td><p>Pass to <code><a href='circos.text.html'>circos.text</a></code>. Settings are similar as <code>col</code>.</p></td>
     </tr>
     <tr>
       <th>padding</th>
-      <td><p>pass to <code>posTransform</code> if it is set as <code><a href='posTransform.text.html'>posTransform.text</a></code></p></td>
+      <td><p>pass to <code>posTransform</code> if it is set as <code><a href='posTransform.text.html'>posTransform.text</a></code>.</p></td>
     </tr>
     <tr>
       <th>extend</th>
-      <td><p>pass to <code>posTransform</code> if it is set as <code><a href='posTransform.text.html'>posTransform.text</a></code></p></td>
+      <td><p>pass to <code>posTransform</code> if it is set as <code><a href='posTransform.text.html'>posTransform.text</a></code>.</p></td>
     </tr>
     <tr>
       <th>align_to</th>
-      <td><p>pass to <code>posTransform</code> if it is set as <code><a href='posTransform.text.html'>posTransform.text</a></code></p></td>
+      <td><p>pass to <code>posTransform</code> if it is set as <code><a href='posTransform.text.html'>posTransform.text</a></code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Mysterious parameters</p></td>
+      <td><p>Mysterious parameters.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The function is a low-level graphical function and usually is put in <code>panel.fun</code> when using <code><a href='circos.genomicTrackPlotRegion.html'>circos.genomicTrackPlotRegion</a></code>.</p>
+    <p>The function is a low-level graphical function and usually is put in <code>panel.fun</code> when using <code><a href='circos.genomicTrack.html'>circos.genomicTrack</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='st'>"track.height"</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>cell.padding</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>))
 <span class='fu'><a href='circos.initializeWithIdeogram.html'>circos.initializeWithIdeogram</a></span>(<span class='kw'>plotType</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='input'>
 <span class='no'>bed</span> <span class='kw'>=</span> <span class='fu'><a href='generateRandomBed.html'>generateRandomBed</a></span>(<span class='kw'>nr</span> <span class='kw'>=</span> <span class='fl'>20</span>)
 
-<span class='fu'><a href='circos.genomicTrackPlotRegion.html'>circos.genomicTrackPlotRegion</a></span>(<span class='no'>bed</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='no'>...</span>) {
+<span class='fu'><a href='circos.genomicTrack.html'>circos.genomicTrack</a></span>(<span class='no'>bed</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='no'>...</span>) {
     <span class='fu'>circos.genomicText</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>labels</span> <span class='kw'>=</span> <span class='st'>"text"</span>, <span class='no'>...</span>)
 })</div><div class='input'>
 <span class='no'>bed</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='no'>bed</span>, <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='no'>letters</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>bed</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
-<span class='fu'><a href='circos.genomicTrackPlotRegion.html'>circos.genomicTrackPlotRegion</a></span>(<span class='no'>bed</span>, <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='no'>...</span>) {
+<span class='fu'><a href='circos.genomicTrack.html'>circos.genomicTrack</a></span>(<span class='no'>bed</span>, <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='no'>...</span>) {
     <span class='fu'>circos.genomicText</span>(<span class='no'>region</span>, <span class='no'>value</span>, <span class='kw'>labels.column</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
 })</div><div class='img'><img src='circos.genomicText-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()</div></pre>

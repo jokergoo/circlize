@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11</span>
       </span>
     </div>
 
@@ -133,29 +133,29 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a numeric vector</p></td>
+      <td><p>a numeric vector.</p></td>
     </tr>
     <tr>
       <th>unit</th>
-      <td><p>supported units, only "mm", "cm", "inches"</p></td>
+      <td><p>supported units, only "mm", "cm", "inches".</p></td>
     </tr>
     <tr>
       <th>sector.index</th>
-      <td><p>index for the sector where the conversion is applied</p></td>
+      <td><p>index for the sector where the conversion is applied.</p></td>
     </tr>
     <tr>
       <th>track.index</th>
-      <td><p>index for the track where the conversion is applied</p></td>
+      <td><p>index for the track where the conversion is applied.</p></td>
     </tr>
     <tr>
       <th>h</th>
-      <td><p>since the width of the cell is not identical from the top to the bottom in the cell, the position on y direction needs to be specified. By default it is at the middle point on y-axis</p></td>
+      <td><p>since the width of the cell is not identical from the top to the bottom in the cell, the position on y direction needs to be specified. By default it is at the middle point on y-axis.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A vector of numeric values which are measured in the specified data coordinate</p>
+    <p>A vector of numeric values which are measured in the specified data coordinate.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>For pre-defined units, users can use <code><a href='cm_x.html'>cm_x</a></code>, <code><a href='mm_x.html'>mm_x</a></code> and <code><a href='inches_x.html'>inches_x</a></code>.</p>
@@ -169,7 +169,7 @@
     <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {
         <span class='fu'><a href='circos.lines.html'>circos.lines</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span> + <span class='fu'><a href='mm_x.html'>mm_x</a></span>(<span class='fl'>5</span>)), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.5</span>, <span class='fl'>0.5</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>)
     })</div><div class='input'><span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='kw'>track.margin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fu'><a href='mm_h.html'>mm_h</a></span>(<span class='fl'>2</span>)))
-<span class='fu'><a href='circos.track.html'>circos.track</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fu'><a href='convert_height.html'>convert_height</a></span>(<span class='fl'>1</span>, <span class='st'>"cm"</span>),
+<span class='fu'><a href='circos.track.html'>circos.track</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fu'><a href='cm_h.html'>cm_h</a></span>(<span class='fl'>1</span>),
     <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {
         <span class='no'>xcenter</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"xcenter"</span>)
         <span class='fu'><a href='circos.lines.html'>circos.lines</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>xcenter</span>, <span class='no'>xcenter</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fu'><a href='cm_y.html'>cm_y</a></span>(<span class='fl'>1</span>)), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)

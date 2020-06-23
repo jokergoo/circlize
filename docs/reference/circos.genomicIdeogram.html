@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11</span>
       </span>
     </div>
 
@@ -123,7 +123,7 @@
     <pre class="usage"><span class='fu'>circos.genomicIdeogram</span>(
     <span class='kw'>cytoband</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"circlize"</span>, <span class='st'>"extdata"</span>, <span class='st'>"cytoBand.txt"</span>),
     <span class='kw'>species</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-    <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fu'><a href='convert_height.html'>convert_height</a></span>(<span class='fl'>2</span>, <span class='st'>"mm"</span>),
+    <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fu'><a href='mm_h.html'>mm_h</a></span>(<span class='fl'>2</span>),
     <span class='kw'>track.margin</span> <span class='kw'>=</span> <span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='st'>"track.margin"</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -131,19 +131,19 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>cytoband</th>
-      <td><p>a data frame or a file path, pass to <code><a href='read.cytoband.html'>read.cytoband</a></code></p></td>
+      <td><p>A data frame or a file path, pass to <code><a href='read.cytoband.html'>read.cytoband</a></code>.</p></td>
     </tr>
     <tr>
       <th>species</th>
-      <td><p>Abbreviations of species, pass to <code><a href='read.cytoband.html'>read.cytoband</a></code></p></td>
+      <td><p>Abbreviations of the genome, pass to <code><a href='read.cytoband.html'>read.cytoband</a></code>.</p></td>
     </tr>
     <tr>
       <th>track.height</th>
-      <td><p>height of the ideogram track</p></td>
+      <td><p>Height of the ideogram track.</p></td>
     </tr>
     <tr>
       <th>track.margin</th>
-      <td><p>margins for the track</p></td>
+      <td><p>Margins for the track.</p></td>
     </tr>
     </table>
 

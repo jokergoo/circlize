@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11</span>
       </span>
     </div>
 
@@ -121,7 +121,9 @@
     </div>
 
     <pre class="usage"><span class='fu'>circos.barplot</span>(<span class='no'>value</span>, <span class='no'>pos</span>, <span class='kw'>bar_width</span> <span class='kw'>=</span> <span class='fl'>0.6</span>,
-    <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>), <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>))</pre>
+    <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>), <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>),
+    <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.sector.index.html'>get.current.sector.index</a></span>(),
+    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.track.index.html'>get.current.track.index</a></span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -132,11 +134,11 @@
     </tr>
     <tr>
       <th>pos</th>
-      <td><p>Positions of the boxes.</p></td>
+      <td><p>Positions of the bars.</p></td>
     </tr>
     <tr>
       <th>bar_width</th>
-      <td><p>Width of bars.</p></td>
+      <td><p>Width of bars. It assumes the bars locating at <code>x = 1, 2, ...</code>.</p></td>
     </tr>
     <tr>
       <th>col</th>
@@ -154,8 +156,21 @@
       <th>lty</th>
       <td><p>Line style.</p></td>
     </tr>
+    <tr>
+      <th>sector.index</th>
+      <td><p>Index of sector.</p></td>
+    </tr>
+    <tr>
+      <th>track.index</th>
+      <td><p>Index of track.</p></td>
+    </tr>
     </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>If the input variable is a matrix, it draws a stacked barplot.</p>
+<p>Please note, the x-values of barplots are normally integer indices. Just be careful
+when initializing the circular layout.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='circos.initialize.html'>circos.initialize</a></span>(<span class='kw'>fa</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>10</span>))</div><div class='input'><span class='fu'><a href='circos.track.html'>circos.track</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {

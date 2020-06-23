@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11</span>
       </span>
     </div>
 
@@ -125,8 +125,8 @@
     <span class='kw'>major.at</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
     <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
     <span class='kw'>major.tick</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-    <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"sector.index"</span>),
-    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"track.index"</span>),
+    <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.sector.index.html'>get.current.sector.index</a></span>(),
+    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.track.index.html'>get.current.track.index</a></span>(),
     <span class='kw'>labels.font</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"font"</span>),
     <span class='kw'>labels.cex</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"cex"</span>),
     <span class='kw'>labels.facing</span> <span class='kw'>=</span> <span class='st'>"inside"</span>,
@@ -134,9 +134,7 @@
     <span class='kw'>labels.niceFacing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
     <span class='kw'>direction</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"outside"</span>, <span class='st'>"inside"</span>),
     <span class='kw'>minor.ticks</span> <span class='kw'>=</span> <span class='fl'>4</span>,
-    <span class='kw'>major.tick.percentage</span> <span class='kw'>=</span> <span class='fl'>0.1</span>,
-    <span class='kw'>labels.away.percentage</span> <span class='kw'>=</span> <span class='no'>major.tick.percentage</span>/<span class='fl'>2</span>,
-    <span class='kw'>major.tick.length</span> <span class='kw'>=</span> <span class='fu'><a href='convert_y.html'>convert_y</a></span>(<span class='fl'>1</span>, <span class='st'>"mm"</span>, <span class='no'>sector.index</span>, <span class='no'>track.index</span>),
+    <span class='kw'>major.tick.length</span> <span class='kw'>=</span> <span class='fu'><a href='mm_y.html'>mm_y</a></span>(<span class='fl'>1</span>),
     <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>),
     <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"col"</span>),
     <span class='kw'>labels.col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"col"</span>),
@@ -159,77 +157,69 @@
     </tr>
     <tr>
       <th>major.tick</th>
-      <td><p>Whether to draw major tick. If it is set to <code>FALSE</code>, there would be no minor ticks.</p></td>
+      <td><p>Whether to draw major tick. If it is set to <code>FALSE</code>, there will be no minor ticks neither.</p></td>
     </tr>
     <tr>
       <th>sector.index</th>
-      <td><p>Index for the sector</p></td>
+      <td><p>Index for the sector.</p></td>
     </tr>
     <tr>
       <th>track.index</th>
-      <td><p>Index for the track</p></td>
+      <td><p>Index for the track.</p></td>
     </tr>
     <tr>
       <th>labels.font</th>
-      <td><p>font style for the axis labels</p></td>
+      <td><p>Font style for the axis labels.</p></td>
     </tr>
     <tr>
       <th>labels.cex</th>
-      <td><p>font size for the axis labels</p></td>
+      <td><p>Font size for the axis labels.</p></td>
     </tr>
     <tr>
       <th>labels.direction</th>
-      <td><p>deprecated, use <code>facing</code> instead.</p></td>
+      <td><p>Deprecated, use <code>facing</code> instead.</p></td>
     </tr>
     <tr>
       <th>labels.facing</th>
-      <td><p>facing of labels on axis, passing to <code><a href='circos.text.html'>circos.text</a></code></p></td>
+      <td><p>Facing of labels on axis, passing to <code><a href='circos.text.html'>circos.text</a></code></p></td>
     </tr>
     <tr>
       <th>labels.niceFacing</th>
-      <td><p>Should facing of axis labels be human-easy</p></td>
+      <td><p>Should facing of axis labels be human-easy.</p></td>
     </tr>
     <tr>
       <th>direction</th>
-      <td><p>whether the axis ticks point to the outside or inside of the circle.</p></td>
+      <td><p>Whether the axis ticks point to the outside or inside of the circle.</p></td>
     </tr>
     <tr>
       <th>minor.ticks</th>
       <td><p>Number of minor ticks between two close major ticks.</p></td>
     </tr>
     <tr>
-      <th>major.tick.percentage</th>
-      <td><p>not used. Length of the major ticks. It is the percentage to the height of the cell.</p></td>
-    </tr>
-    <tr>
-      <th>labels.away.percentage</th>
-      <td><p>not used. The distance for the axis labels to the major ticks. It is the percentage to the height of the cell.</p></td>
-    </tr>
-    <tr>
       <th>major.tick.length</th>
-      <td><p>length of the major ticks, measured in "current" data coordinate. <code><a href='convert_y.html'>convert_y</a></code> can be used to convert an absolute unit to the data coordinate.</p></td>
+      <td><p>Length of the major ticks, measured in "current" data coordinate. <code><a href='convert_y.html'>convert_y</a></code> can be used to convert an absolute unit to the data coordinate.</p></td>
     </tr>
     <tr>
       <th>lwd</th>
-      <td><p>line width for ticks</p></td>
+      <td><p>Line width for ticks.</p></td>
     </tr>
     <tr>
       <th>col</th>
-      <td><p>color for the axes</p></td>
+      <td><p>Color for the axes.</p></td>
     </tr>
     <tr>
       <th>labels.col</th>
-      <td><p>color for the labels</p></td>
+      <td><p>Color for the labels.</p></td>
     </tr>
     <tr>
       <th>labels.pos.adjust</th>
-      <td><p>whether to adjust the positions of the first label and the last label. The value can be a vector of length two which correspond to the first label and the last label.</p></td>
+      <td><p>Whether to adjust the positions of the first label and the last label so that the first label  align to its left and the last label align to its right if they exceed the range on axes. The value can be a vector of length two which correspond to the first label and the last label.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>It can only draw axes on x-direction.</p>
+    <p>It only draws axes on x-direction.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='circos.yaxis.html'>circos.yaxis</a></code> draws axes on y-direction.</p>
@@ -247,8 +237,8 @@
     <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a"</span>, <span class='st'>"c"</span>, <span class='st'>"e"</span>, <span class='st'>"g"</span>, <span class='st'>"f"</span>), <span class='kw'>minor.ticks</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='input'><span class='fu'>circos.axis</span>(<span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"g"</span>, <span class='kw'>h</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>major.at</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>5</span>, <span class='fl'>7</span>, <span class='fl'>9</span>),
     <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a1"</span>, <span class='st'>"c1"</span>, <span class='st'>"e1"</span>, <span class='st'>"g1"</span>, <span class='st'>"f1"</span>), <span class='kw'>major.tick</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
     <span class='kw'>labels.facing</span> <span class='kw'>=</span> <span class='st'>"reverse.clockwise"</span>)</div><div class='input'><span class='fu'>circos.axis</span>(<span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"h"</span>, <span class='kw'>h</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>major.at</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>5</span>, <span class='fl'>7</span>, <span class='fl'>9</span>),
-    <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a1"</span>, <span class='st'>"c1"</span>, <span class='st'>"e1"</span>, <span class='st'>"g1"</span>, <span class='st'>"f1"</span>), <span class='kw'>major.tick.percentage</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
-    <span class='kw'>labels.away.percentage</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>minor.ticks</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>labels.facing</span> <span class='kw'>=</span> <span class='st'>"clockwise"</span>)</div><div class='img'><img src='circos.axis-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()
+    <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a1"</span>, <span class='st'>"c1"</span>, <span class='st'>"e1"</span>, <span class='st'>"g1"</span>, <span class='st'>"f1"</span>), <span class='kw'>minor.ticks</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+    <span class='kw'>major.tick.length</span> <span class='kw'>=</span> <span class='fu'><a href='mm_y.html'>mm_y</a></span>(<span class='fl'>5</span>), <span class='kw'>labels.facing</span> <span class='kw'>=</span> <span class='st'>"clockwise"</span>)</div><div class='img'><img src='circos.axis-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()
 
 <span class='kw'>if</span>(<span class='fl'>FALSE</span>) {
 
@@ -259,7 +249,7 @@
 <span class='fu'><a href='circos.initialize.html'>circos.initialize</a></span>(<span class='kw'>factors</span> <span class='kw'>=</span> <span class='no'>factors</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>12</span>))
 <span class='fu'><a href='circos.trackPlotRegion.html'>circos.trackPlotRegion</a></span>(<span class='kw'>factors</span> <span class='kw'>=</span> <span class='no'>factors</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>bg.border</span> <span class='kw'>=</span> <span class='fl'>NA</span>)
 <span class='fu'>circos.axis</span>(<span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='st'>"a"</span>, <span class='kw'>major.at</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>12</span>, <span class='kw'>labels</span> <span class='kw'>=</span> <span class='st'>""</span>,
-    <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"inside"</span>, <span class='kw'>major.tick.percentage</span> <span class='kw'>=</span> <span class='fl'>0.3</span>)
+    <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"inside"</span>, <span class='kw'>major.tick.length</span> <span class='kw'>=</span> <span class='fu'><a href='mm_y.html'>mm_y</a></span>(<span class='fl'>3</span>))
 <span class='fu'><a href='circos.text.html'>circos.text</a></span>(<span class='fl'>1</span>:<span class='fl'>12</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>0.5</span>, <span class='fl'>12</span>), <span class='fl'>1</span>:<span class='fl'>12</span>, <span class='kw'>facing</span> <span class='kw'>=</span> <span class='st'>"downward"</span>)
 
 <span class='kw'>while</span>(<span class='fl'>1</span>) {

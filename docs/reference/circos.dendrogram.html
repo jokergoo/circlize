@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11</span>
       </span>
     </div>
 
@@ -124,7 +124,9 @@
     <span class='no'>dend</span>,
     <span class='kw'>facing</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"outside"</span>, <span class='st'>"inside"</span>),
     <span class='kw'>max_height</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-    <span class='kw'>use_x_attr</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <span class='kw'>use_x_attr</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+    <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.sector.index.html'>get.current.sector.index</a></span>(),
+    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.track.index.html'>get.current.track.index</a></span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -135,15 +137,23 @@
     </tr>
     <tr>
       <th>facing</th>
-      <td><p>Is the dendromgrams facing inside to the circle or outside.</p></td>
+      <td><p>Is the dendromgrams facing inside to the circle or outside?</p></td>
     </tr>
     <tr>
       <th>max_height</th>
-      <td><p>Maximum height of the dendrogram. This is important if more than one dendrograms are drawn in one track and making them comparable.</p></td>
+      <td><p>Maximum height of the dendrogram. This is important if more than one dendrograms are drawn in one track and making them comparable. The height of a dendrogram can be obtained by <code><a href='https://rdrr.io/r/base/attr.html'>attr(dend, "height")</a></code>.</p></td>
     </tr>
     <tr>
       <th>use_x_attr</th>
       <td><p>Whether use the <code>x</code> attribute to determine node positions in the dendrogram, used internally.</p></td>
+    </tr>
+    <tr>
+      <th>sector.index</th>
+      <td><p>Index of sector.</p></td>
+    </tr>
+    <tr>
+      <th>track.index</th>
+      <td><p>Index of track.</p></td>
     </tr>
     </table>
 

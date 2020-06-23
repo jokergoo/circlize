@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11</span>
       </span>
     </div>
 
@@ -123,7 +123,8 @@
     <pre class="usage"><span class='fu'>circos.violin</span>(<span class='no'>value</span>, <span class='no'>pos</span>, <span class='kw'>violin_width</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
     <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>), <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>),
     <span class='kw'>show_quantile</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>pt.col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"col"</span>), <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"cex"</span>), <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>,
-    <span class='kw'>max_density</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <span class='kw'>max_density</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.sector.index.html'>get.current.sector.index</a></span>(),
+    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.track.index.html'>get.current.track.index</a></span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -175,6 +176,14 @@
     <tr>
       <th>max_density</th>
       <td><p>The maximal density value across several violins. It is used to compare between violins.</p></td>
+    </tr>
+    <tr>
+      <th>sector.index</th>
+      <td><p>Index of sector.</p></td>
+    </tr>
+    <tr>
+      <th>track.index</th>
+      <td><p>Index of track.</p></td>
     </tr>
     </table>
 

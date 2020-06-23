@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11</span>
       </span>
     </div>
 
@@ -104,9 +104,9 @@
 <h2 class="hasAnchor">
 <a href="#install" class="anchor"></a>Install</h2>
 <p>The package can be installed from CRAN:</p>
-<pre><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("circlize")</a></code></pre>
+<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"circlize"</span>)</pre></div>
 <p>or directly from GitHub:</p>
-<pre><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("jokergoo/circlize")</a></code></pre>
+<div class="sourceCode" id="cb2"><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"jokergoo/circlize"</span>)</pre></div>
 </div>
 <div id="basic-design" class="section level2">
 <h2 class="hasAnchor">
@@ -116,12 +116,16 @@
 <ul>
 <li><code><a href="reference/circos.points.html">circos.points()</a></code></li>
 <li><code><a href="reference/circos.lines.html">circos.lines()</a></code></li>
+<li><code><a href="reference/circos.segments.html">circos.segments()</a></code></li>
 <li><code><a href="reference/circos.rect.html">circos.rect()</a></code></li>
 <li><code><a href="reference/circos.polygon.html">circos.polygon()</a></code></li>
 <li><code><a href="reference/circos.text.html">circos.text()</a></code></li>
 <li><code><a href="reference/circos.axis.html">circos.axis()</a></code></li>
 <li><code><a href="reference/circos.raster.html">circos.raster()</a></code></li>
 <li><code><a href="reference/circos.arrow.html">circos.arrow()</a></code></li>
+<li><code><a href="reference/circos.raster.html">circos.raster()</a></code></li>
+<li><code><a href="reference/circos.barplot.html">circos.barplot()</a></code></li>
+<li><code><a href="reference/circos.boxplot.html">circos.boxplot()</a></code></li>
 <li>
 <code><a href="reference/circos.link.html">circos.link()</a></code>, This maybe the unique feature for circos layout to represent relationships between elements.</li>
 </ul>
@@ -130,6 +134,10 @@
 <li><code><a href="reference/circos.trackPoints.html">circos.trackPoints()</a></code></li>
 <li><code><a href="reference/circos.trackLines.html">circos.trackLines()</a></code></li>
 <li><code><a href="reference/circos.trackText.html">circos.trackText()</a></code></li>
+</ul>
+<p>Draw circular heatmaps</p>
+<ul>
+<li><code><a href="reference/circos.heatmap.html">circos.heatmap()</a></code></li>
 </ul>
 <p>Functions to arrange the circular layout:</p>
 <ul>

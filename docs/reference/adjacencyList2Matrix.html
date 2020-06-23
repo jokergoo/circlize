@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert adjacency list to adjacency matrix — adjacencyList2Matrix • circlize</title>
+<title>Convert adjacency list to an adjacency matrix — adjacencyList2Matrix • circlize</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Convert adjacency list to adjacency matrix — adjacencyList2Matrix" />
-<meta property="og:description" content="Convert adjacency list to adjacency matrix" />
+<meta property="og:title" content="Convert adjacency list to an adjacency matrix — adjacencyList2Matrix" />
+<meta property="og:description" content="Convert adjacency list to an adjacency matrix" />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11</span>
       </span>
     </div>
 
@@ -111,13 +111,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert adjacency list to adjacency matrix</h1>
+    <h1>Convert adjacency list to an adjacency matrix</h1>
     
     <div class="hidden name"><code>adjacencyList2Matrix.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Convert adjacency list to adjacency matrix</p>
+    <p>Convert adjacency list to an adjacency matrix</p>
     </div>
 
     <pre class="usage"><span class='fu'>adjacencyList2Matrix</span>(<span class='no'>lt</span>, <span class='kw'>square</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
@@ -127,22 +127,44 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>lt</th>
-      <td><p>a data frame which contains adjacency list.</p></td>
+      <td><p>A data frame which contains adjacency list.</p></td>
     </tr>
     <tr>
       <th>square</th>
-      <td><p>is the returned matrix a square matrix?</p></td>
+      <td><p>Should the returned matrix be a square matrix?</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Convert adjacency list to adjacency matrix.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># There is no example</span>
-<span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>123</span>)
+<span class='no'>df</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>from</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='no'>letters</span>, <span class='fl'>10</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
+                <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='no'>letters</span>, <span class='fl'>10</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
+                <span class='kw'>value</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)
+<span class='fu'>adjacencyList2Matrix</span>(<span class='no'>df</span>)</div><div class='output co'>#&gt;   n v y z e s i  c
+#&gt; o 1 0 0 0 0 0 0  0
+#&gt; s 0 2 0 0 0 0 0  0
+#&gt; n 0 0 3 0 0 0 0  0
+#&gt; c 0 0 0 4 0 0 0  0
+#&gt; j 0 0 0 0 5 0 0  0
+#&gt; r 0 0 0 0 0 6 0  0
+#&gt; v 0 0 7 0 0 0 0  0
+#&gt; k 0 0 8 0 0 0 0  0
+#&gt; e 0 0 0 0 0 0 9  0
+#&gt; t 0 0 0 0 0 0 0 10</div><div class='input'><span class='fu'>adjacencyList2Matrix</span>(<span class='no'>df</span>, <span class='kw'>square</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;   o s n  c j r v k e t y z i
+#&gt; o 0 0 1  0 0 0 0 0 0 0 0 0 0
+#&gt; s 0 0 0  0 0 0 2 0 0 0 0 0 0
+#&gt; n 0 0 0  0 0 0 0 0 0 0 3 0 0
+#&gt; c 0 0 0  0 0 0 0 0 0 0 0 4 0
+#&gt; j 0 0 0  0 0 0 0 0 5 0 0 0 0
+#&gt; r 0 6 0  0 0 0 0 0 0 0 0 0 0
+#&gt; v 0 0 0  0 0 0 0 0 0 0 7 0 0
+#&gt; k 0 0 0  0 0 0 0 0 0 0 8 0 0
+#&gt; e 0 0 0  0 0 0 0 0 0 0 0 0 9
+#&gt; t 0 0 0 10 0 0 0 0 0 0 0 0 0
+#&gt; y 0 0 0  0 0 0 0 0 0 0 0 0 0
+#&gt; z 0 0 0  0 0 0 0 0 0 0 0 0 0
+#&gt; i 0 0 0  0 0 0 0 0 0 0 0 0 0</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

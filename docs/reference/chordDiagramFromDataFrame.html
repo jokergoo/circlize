@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11</span>
       </span>
     </div>
 
@@ -131,6 +131,8 @@
     <span class='kw'>xmax</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
     <span class='kw'>direction.type</span> <span class='kw'>=</span> <span class='st'>"diffHeight"</span>,
     <span class='kw'>diffHeight</span> <span class='kw'>=</span> <span class='fu'><a href='convert_height.html'>convert_height</a></span>(<span class='fl'>2</span>, <span class='st'>"mm"</span>),
+    <span class='kw'>link.target.prop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+    <span class='kw'>target.prop.height</span> <span class='kw'>=</span> <span class='fu'><a href='mm_h.html'>mm_h</a></span>(<span class='fl'>1</span>),
     <span class='kw'>reduce</span> <span class='kw'>=</span> <span class='fl'>1e-5</span>,
     <span class='kw'>self.link</span> <span class='kw'>=</span> <span class='fl'>2</span>,
     <span class='kw'>preAllocateTracks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -139,6 +141,7 @@
     <span class='kw'>link.border</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
     <span class='kw'>link.lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>),
     <span class='kw'>link.lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>),
+    <span class='kw'>link.auto</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
     <span class='kw'>link.sort</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
     <span class='kw'>link.decreasing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
     <span class='kw'>link.arr.length</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>link.arr.type</span> <span class='kw'>==</span> <span class='st'>"big.arrow"</span>, <span class='fl'>0.02</span>, <span class='fl'>0.4</span>),
@@ -149,7 +152,8 @@
     <span class='kw'>link.arr.col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"col"</span>),
     <span class='kw'>link.largest.ontop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
     <span class='kw'>link.visible</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-    <span class='kw'>link.rank</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>df</span>)),
+    <span class='kw'>link.rank</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <span class='kw'>link.zindex</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>df</span>)),
     <span class='kw'>link.overlap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
     <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
     <span class='kw'>group</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -216,6 +220,15 @@
  than the end root. The value can be a vector which has same length as number of rows in <code>df</code>.</p></td>
     </tr>
     <tr>
+      <th>link.target.prop</th>
+      <td><p>If the Chord diagram is directional, for each source sector, whether to draw bars that shows the proportion of 
+ target sectors.</p></td>
+    </tr>
+    <tr>
+      <th>target.prop.height</th>
+      <td><p>The height of the bars when <code>link.target.prop</code> is turned on.</p></td>
+    </tr>
+    <tr>
       <th>reduce</th>
       <td><p>if the ratio of the width of certain grid compared to the whole circle is less than this value, the grid is removed on the plot.
  Set it to value less than zero if you want to keep all tiny grid.</p></td>
@@ -251,6 +264,10 @@
     <tr>
       <th>link.lty</th>
       <td><p>style for link borders, single scalar or a vector which has the same length as nrows of <code>df</code> or a data frame</p></td>
+    </tr>
+    <tr>
+      <th>link.auto</th>
+      <td><p>Whether to automatically arrange links on the circle to make them less twisted.</p></td>
     </tr>
     <tr>
       <th>link.sort</th>
@@ -290,12 +307,16 @@
       <td><p>controls the order of adding links, whether based on the absolute value?</p></td>
     </tr>
     <tr>
+      <th>link.rank</th>
+      <td><p>This is argument is removed.</p></td>
+    </tr>
+    <tr>
       <th>link.visible</th>
       <td><p>whether plot the link. The value is logical, if it is set to <code>FALSE</code>, the corresponding link will not
  plotted, but the space is still ocuppied. The format of this argument is same as <code>link.lwd</code></p></td>
     </tr>
     <tr>
-      <th>link.rank</th>
+      <th>link.zindex</th>
       <td><p>order to add links to the circle, a large value means to add it later.</p></td>
     </tr>
     <tr>

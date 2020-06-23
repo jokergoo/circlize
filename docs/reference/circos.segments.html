@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11</span>
       </span>
     </div>
 
@@ -122,8 +122,8 @@
 
     <pre class="usage"><span class='fu'>circos.segments</span>(
     <span class='no'>x0</span>, <span class='no'>y0</span>, <span class='no'>x1</span>, <span class='no'>y1</span>,
-    <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"sector.index"</span>),
-    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"track.index"</span>),
+    <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.sector.index.html'>get.current.sector.index</a></span>(),
+    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.track.index.html'>get.current.track.index</a></span>(),
     <span class='kw'>straight</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
     <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"col"</span>),
     <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>),
@@ -135,55 +135,59 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x0</th>
-      <td><p>x coordinates for starting points</p></td>
+      <td><p>x coordinates for starting points.</p></td>
     </tr>
     <tr>
       <th>y0</th>
-      <td><p>y coordinates for ending points</p></td>
+      <td><p>y coordinates for ending points.</p></td>
     </tr>
     <tr>
       <th>x1</th>
-      <td><p>x coordinates for starting points</p></td>
+      <td><p>x coordinates for starting points.</p></td>
     </tr>
     <tr>
       <th>y1</th>
-      <td><p>y coordinates for ending points</p></td>
+      <td><p>y coordinates for ending points.</p></td>
     </tr>
     <tr>
       <th>sector.index</th>
-      <td><p>Index for the sector</p></td>
+      <td><p>Index for the sector.</p></td>
     </tr>
     <tr>
       <th>track.index</th>
-      <td><p>Index for the track</p></td>
+      <td><p>Index for the track.</p></td>
     </tr>
     <tr>
       <th>straight</th>
-      <td><p>whether the segment is a straight line</p></td>
+      <td><p>Whether the segment is a straight line.</p></td>
     </tr>
     <tr>
       <th>col</th>
-      <td><p>color of the segments</p></td>
+      <td><p>Color of the segments.</p></td>
     </tr>
     <tr>
       <th>lwd</th>
-      <td><p>line width of the segments</p></td>
+      <td><p>Line width of the segments.</p></td>
     </tr>
     <tr>
       <th>lty</th>
-      <td><p>line type of the segments</p></td>
+      <td><p>Line type of the segments.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>pass to <code><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></code></p></td>
+      <td><p>Pass to <code><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></code>.</p></td>
     </tr>
     </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># There is no example</span>
-<span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='circos.initialize.html'>circos.initialize</a></span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>8</span>], <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))</div><div class='input'><span class='fu'><a href='circos.track.html'>circos.track</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {
+    <span class='no'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0.2</span>, <span class='fl'>0.8</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)
+    <span class='no'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0.2</span>, <span class='fl'>0.8</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)
+
+<span class='fu'>circos.segments</span>(<span class='no'>x</span>, <span class='fl'>0.1</span>, <span class='no'>x</span>, <span class='fl'>0.9</span>)
+    <span class='fu'>circos.segments</span>(<span class='fl'>0.1</span>, <span class='no'>y</span>, <span class='fl'>0.9</span>, <span class='no'>y</span>)
+})</div><div class='img'><img src='circos.segments-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

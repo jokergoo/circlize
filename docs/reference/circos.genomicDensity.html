@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11</span>
       </span>
     </div>
 
@@ -141,44 +141,46 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>A bed-file-like data frame or a list of data frames</p></td>
+      <td><p>A bed-file-like data frame or a list of data frames. If the input is a list of data frames.
+ there will be multiple density plot in one same track.</p></td>
     </tr>
     <tr>
       <th>ylim.force</th>
-      <td><p>Whether to force upper bound of <code>ylim</code> to be 1.</p></td>
+      <td><p>Whether to force upper bound of <code>ylim</code> to be 1. Ignored if <code>count_by</code> is set to <code>number</code>.</p></td>
     </tr>
     <tr>
       <th>window.size</th>
-      <td><p>Pass to <code><a href='genomicDensity.html'>genomicDensity</a></code></p></td>
+      <td><p>Pass to <code><a href='genomicDensity.html'>genomicDensity</a></code>.</p></td>
     </tr>
     <tr>
       <th>overlap</th>
-      <td><p>Pass to <code><a href='genomicDensity.html'>genomicDensity</a></code></p></td>
+      <td><p>Pass to <code><a href='genomicDensity.html'>genomicDensity</a></code>.</p></td>
     </tr>
     <tr>
       <th>count_by</th>
-      <td><p>Pass to <code><a href='genomicDensity.html'>genomicDensity</a></code></p></td>
+      <td><p>Pass to <code><a href='genomicDensity.html'>genomicDensity</a></code>.</p></td>
     </tr>
     <tr>
       <th>col</th>
       <td><p>Colors. It should be length of one. If <code>data</code> is a list of data frames, the length of <code>col</code>
- can also be the length of the list.</p></td>
+ can also be the length of the list. If multiple sets of genomic regions are visualized in one
+ single track, you should set the colors with transparency to distinguish them.</p></td>
     </tr>
     <tr>
       <th>lwd</th>
-      <td><p>Width of lines</p></td>
+      <td><p>Width of lines, the same setting as <code>col</code> argument.</p></td>
     </tr>
     <tr>
       <th>lty</th>
-      <td><p>Style of lines</p></td>
+      <td><p>Style of lines, the same setting as <code>col</code> argument.</p></td>
     </tr>
     <tr>
       <th>type</th>
-      <td><p>Type of lines, see <code><a href='circos.lines.html'>circos.lines</a></code></p></td>
+      <td><p>Type of lines, see <code><a href='circos.lines.html'>circos.lines</a></code>.</p></td>
     </tr>
     <tr>
       <th>area</th>
-      <td><p>See <code><a href='circos.lines.html'>circos.lines</a></code></p></td>
+      <td><p>See <code><a href='circos.lines.html'>circos.lines</a></code>.</p></td>
     </tr>
     <tr>
       <th>area.baseline</th>
@@ -186,21 +188,26 @@
     </tr>
     <tr>
       <th>baseline</th>
-      <td><p>See <code><a href='circos.lines.html'>circos.lines</a></code></p></td>
+      <td><p>See <code><a href='circos.lines.html'>circos.lines</a></code>.</p></td>
     </tr>
     <tr>
       <th>border</th>
-      <td><p>See <code><a href='circos.lines.html'>circos.lines</a></code></p></td>
+      <td><p>See <code><a href='circos.lines.html'>circos.lines</a></code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Pass to <code><a href='circos.trackPlotRegion.html'>circos.trackPlotRegion</a></code></p></td>
+      <td><p>Pass to <code><a href='circos.trackPlotRegion.html'>circos.trackPlotRegion</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function is a high-level graphical function, and it will create a new track.</p>
+<p>If you have multiple sets of genomic regions, you should make sure the density ranges 
+for all sets are similar, or I suggest you should put them into different tracks. One example
+can be found in the "Examples" Section where the density range for <code>bed_list[[2]]</code> is too high
+compared to the range for <code>bed_list[[1]]</code>, thus, it is better to put the two sets of
+regions into two separate tracks.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#genomic-density-and-rainfall-plot'>https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#genomic-density-and-rainfall-plot</a></p></div>
@@ -213,8 +220,10 @@
 <span class='fu'><a href='circos.initializeWithIdeogram.html'>circos.initializeWithIdeogram</a></span>(<span class='kw'>plotType</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"axis"</span>, <span class='st'>"labels"</span>))</div><div class='input'>
 <span class='no'>bed_list</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>DMR_hyper</span>, <span class='no'>DMR_hypo</span>)
 <span class='fu'><a href='circos.genomicRainfall.html'>circos.genomicRainfall</a></span>(<span class='no'>bed_list</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.4</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#FF000080"</span>, <span class='st'>"#0000FF80"</span>))</div><div class='input'>
-<span class='fu'>circos.genomicDensity</span>(<span class='no'>bed_list</span><span class='kw'>[[</span><span class='fl'>1</span>]], <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#FF000080"</span>), <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)</div><div class='input'><span class='fu'>circos.genomicDensity</span>(<span class='no'>bed_list</span><span class='kw'>[[</span><span class='fl'>2</span>]], <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#0000FF80"</span>), <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)</div><div class='img'><img src='circos.genomicDensity-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()
+<span class='fu'>circos.genomicDensity</span>(<span class='no'>bed_list</span><span class='kw'>[[</span><span class='fl'>1</span>]], <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#FF000080"</span>), <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)</div><div class='input'><span class='fu'>circos.genomicDensity</span>(<span class='no'>bed_list</span><span class='kw'>[[</span><span class='fl'>2</span>]], <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#0000FF80"</span>), <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)</div><div class='img'><img src='circos.genomicDensity-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()
+
+<span class='co'>############ draw the two densities in one track  #############</span>
+<span class='fu'><a href='circos.initializeWithIdeogram.html'>circos.initializeWithIdeogram</a></span>(<span class='kw'>plotType</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"axis"</span>, <span class='st'>"labels"</span>))</div><div class='input'><span class='fu'>circos.genomicDensity</span>(<span class='no'>bed_list</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#FF000080"</span>, <span class='st'>"#0000FF80"</span>), <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)</div><div class='img'><img src='circos.genomicDensity-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()
 <span class='co'># }</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

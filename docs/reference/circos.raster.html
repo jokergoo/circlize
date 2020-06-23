@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11</span>
       </span>
     </div>
 
@@ -126,8 +126,8 @@
     <span class='kw'>facing</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"inside"</span>, <span class='st'>"outside"</span>, <span class='st'>"reverse.clockwise"</span>, <span class='st'>"clockwise"</span>,
     <span class='st'>"downward"</span>, <span class='st'>"bending.inside"</span>, <span class='st'>"bending.outside"</span>),
     <span class='kw'>niceFacing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-    <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"sector.index"</span>),
-    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"track.index"</span>),
+    <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.sector.index.html'>get.current.sector.index</a></span>(),
+    <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.track.index.html'>get.current.track.index</a></span>(),
     <span class='kw'>scaling</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -135,46 +135,49 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>image</th>
-      <td><p>a <code>raster</code> object, or an object that can be converted by <code><a href='https://rdrr.io/r/grDevices/as.raster.html'>as.raster</a></code></p></td>
+      <td><p>A <code>raster</code> object, or an object that can be converted by <code><a href='https://rdrr.io/r/grDevices/as.raster.html'>as.raster</a></code>.</p></td>
     </tr>
     <tr>
       <th>x</th>
-      <td><p>position of the center of the raster image, measued in the data coordinate in the cell</p></td>
+      <td><p>Position of the center of the raster image, measued in the data coordinate in the cell.</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>position of the center of the raster image, measued in the data coordinate in the cell</p></td>
+      <td><p>Position of the center of the raster image, measued in the data coordinate in the cell.</p></td>
     </tr>
     <tr>
       <th>width</th>
-      <td><p>width of the raster image. When <code>facing</code> is one of "inside", "outside", "clockwise" and "reverse.clockwise", the image should have absolute size where the value of <code>width</code> should be specified like <code>20mm</code>, <code>1cm</code> or <code>0.5inche</code>. When <code>facing</code> is one of <code>bending.inside</code> and <code>bending.outside</code>, the value of <code>width</code> is measured in the data coordinate in the cell.</p></td>
+      <td><p>Width of the raster image. When <code>facing</code> is one of "inside", "outside", "clockwise" and "reverse.clockwise", the image should have absolute size where the value of <code>width</code> should be specified like <code>20mm</code>, <code>1cm</code> or <code>0.5inche</code>. When <code>facing</code> is one of <code>bending.inside</code> and <code>bending.outside</code>, the value of <code>width</code> is measured in the data coordinate in the cell.</p></td>
     </tr>
     <tr>
       <th>height</th>
-      <td><p>height of the raster image. Same format as <code>width</code>. If the value of <code>height</code> is omit,  default height is calculated by taking the aspect ratio of the original image. But when <code>facing</code> is one of <code>bending.inside</code> and <code>bending.outside</code>, <code>height</code> is mandatory to set.</p></td>
+      <td><p>Height of the raster image. Same format as <code>width</code>. If the value of <code>height</code> is omit,  default height is calculated by taking the aspect ratio of the original image. But when <code>facing</code> is one of <code>bending.inside</code> and <code>bending.outside</code>, <code>height</code> is mandatory to set.</p></td>
     </tr>
     <tr>
       <th>facing</th>
-      <td><p>facing of the raster image</p></td>
+      <td><p>Facing of the raster image.</p></td>
     </tr>
     <tr>
       <th>niceFacing</th>
-      <td><p>facing of text. Please refer to vignette for different settings</p></td>
+      <td><p>Facing of text. Please refer to vignette for different settings.</p></td>
     </tr>
     <tr>
       <th>sector.index</th>
-      <td><p>index for the sector</p></td>
+      <td><p>Index for the sector.</p></td>
     </tr>
     <tr>
       <th>track.index</th>
-      <td><p>index for the track</p></td>
+      <td><p>Index for the track.</p></td>
     </tr>
     <tr>
       <th>scaling</th>
-      <td><p>scaling factor to resize the raster image.</p></td>
+      <td><p>Scaling factor to resize the raster image.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='https://jokergoo.github.io/circlize_book/book/graphics.html#raster-image'>https://jokergoo.github.io/circlize_book/book/graphics.html#raster-image</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>png</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: png</span></div><div class='input'><span class='no'>image</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"Rlogo.png"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"circlize"</span>)

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11</span>
       </span>
     </div>
 
@@ -200,11 +200,26 @@ only be set before the initialization of the circular layout
 adding sectors on the circle. The left and right padding for <code>cell.padding</code> will also be
 ignored after the initialization because all cells in a sector would share the same
 left and right paddings.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='https://jokergoo.github.io/circlize_book/book/circular-layout.html#graphic-parameters'>https://jokergoo.github.io/circlize_book/book/circular-layout.html#graphic-parameters</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># There is no example</span>
-<span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL</div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>circos.par</span></div><div class='output co'>#&gt;  Option                  Value           
+#&gt;  -----------------------:------------------
+#&gt;  start.degree            0               
+#&gt;  gap.degree              1               
+#&gt;  gap.after               1               
+#&gt;  track.margin            0.01, 0.01      
+#&gt;  unit.circle.segments    500             
+#&gt;  cell.padding            0.02, 1, 0.02, 1
+#&gt;  track.height            0.2             
+#&gt;  points.overflow.warning TRUE            
+#&gt;  canvas.xlim             -1, 1           
+#&gt;  canvas.ylim             -1, 1           
+#&gt;  major.by.degree         10              
+#&gt;  clock.wise              TRUE            
+#&gt;  message                 TRUE            </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

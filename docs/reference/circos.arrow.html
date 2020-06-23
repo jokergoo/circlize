@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11</span>
       </span>
     </div>
 
@@ -123,11 +123,11 @@
     <pre class="usage"><span class='fu'>circos.arrow</span>(
     <span class='no'>x1</span>,
     <span class='no'>x2</span>,
-    <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"ycenter"</span>, <span class='no'>sector.index</span>, <span class='no'>track.index</span>),
-    <span class='kw'>width</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"yrange"</span>, <span class='no'>sector.index</span>, <span class='no'>track.index</span>)/<span class='fl'>2</span>,
+    <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"ycenter"</span>),
+    <span class='kw'>width</span> <span class='kw'>=</span> <span class='fu'><a href='get.cell.meta.data.html'>get.cell.meta.data</a></span>(<span class='st'>"yrange"</span>)/<span class='fl'>2</span>,
     <span class='kw'>sector.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.sector.index.html'>get.current.sector.index</a></span>(),
     <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.track.index.html'>get.current.track.index</a></span>(),
-    <span class='kw'>arrow.head.length</span> <span class='kw'>=</span> <span class='fu'><a href='convert_x.html'>convert_x</a></span>(<span class='fl'>5</span>, <span class='st'>"mm"</span>, <span class='no'>sector.index</span>, <span class='no'>track.index</span>),
+    <span class='kw'>arrow.head.length</span> <span class='kw'>=</span> <span class='fu'><a href='mm_x.html'>mm_x</a></span>(<span class='fl'>5</span>),
     <span class='kw'>arrow.head.width</span> <span class='kw'>=</span> <span class='no'>width</span>*<span class='fl'>2</span>,
     <span class='kw'>arrow.position</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"end"</span>, <span class='st'>"start"</span>),
     <span class='kw'>tail</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"normal"</span>, <span class='st'>"point"</span>),
@@ -141,86 +141,103 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x1</th>
-      <td><p>start position of the arrow on the x-axis.</p></td>
+      <td><p>Start position of the arrow on the x-axis.</p></td>
     </tr>
     <tr>
       <th>x2</th>
-      <td><p>end position of the arrow on the x-axis.</p></td>
+      <td><p>End position of the arrow on the x-axis. Note <code>x2</code> should be larger than <code>x1</code>. The direction of arrows can be controlled by <code>arrow.position</code> argument.</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>position of the arrow on the y-axis. Note this is the center of the arrow on y-axis.</p></td>
+      <td><p>Position of the arrow on the y-axis. Note this is the center of the arrow on y-axis.</p></td>
     </tr>
     <tr>
       <th>width</th>
-      <td><p>width of the arrow body.</p></td>
+      <td><p>Width of the arrow body.</p></td>
     </tr>
     <tr>
       <th>sector.index</th>
-      <td><p>index of the sector.</p></td>
+      <td><p>Index of the sector.</p></td>
     </tr>
     <tr>
       <th>track.index</th>
-      <td><p>index of the track.</p></td>
+      <td><p>Index of the track.</p></td>
     </tr>
     <tr>
       <th>arrow.head.length</th>
-      <td><p>length of the arrow head. Note the value should be smaller than the length of the arrow itself (which is <code>x2 - x1</code>).</p></td>
+      <td><p>Length of the arrow head. Note the value should be smaller than the length of the arrow itself (which is <code>x2 - x1</code>).</p></td>
     </tr>
     <tr>
       <th>arrow.head.width</th>
-      <td><p>width of the arrow head.</p></td>
+      <td><p>Width of the arrow head.</p></td>
     </tr>
     <tr>
       <th>arrow.position</th>
-      <td><p>where is the arrow head on the arrow.</p></td>
+      <td><p>Where is the arrow head on the arrow. If you want to the arrow in the reversed direction, set this value to <code>"start"</code>.</p></td>
     </tr>
     <tr>
       <th>tail</th>
-      <td><p>the shape of the arrow tail (the opposite side of arrow head).</p></td>
+      <td><p>The shape of the arrow tail (the opposite side of arrow head).</p></td>
     </tr>
     <tr>
       <th>border</th>
-      <td><p>border color of the arrow.</p></td>
+      <td><p>Border color of the arrow.</p></td>
     </tr>
     <tr>
       <th>col</th>
-      <td><p>filled color of the arrow.</p></td>
+      <td><p>Filled color of the arrow.</p></td>
     </tr>
     <tr>
       <th>lty</th>
-      <td><p>line style of the arrow.</p></td>
+      <td><p>Line style of the arrow.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>pass to <code><a href='https://rdrr.io/r/graphics/polygon.html'>polygon</a></code>.</p></td>
+      <td><p>Pass to <code><a href='https://rdrr.io/r/graphics/polygon.html'>polygon</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Note all position values are measured in the data coordinate (the coordinate in each cell).</p>
+    <p>Note all position values are measured in the data coordinate (the coordinate in each cell). For the values of
+<code>width</code>, <code>arrow.head.Length</code>, <code>arrow.head.width</code>, they can be set with <code><a href='mm_y.html'>mm_y</a></code>/<code><a href='cm_y.html'>cm_y</a></code>/<code><a href='inches_y.html'>inches_y</a></code> in absolute units.</p>
 <p>If you see points overflow warnings, you can set <code><a href='circos.par.html'>circos.par(points.overflow.warning = FALSE)</a></code> to turn it off.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='https://jokergoo.github.io/circlize_book/book/graphics.html#circular-arrows'>https://jokergoo.github.io/circlize_book/book/graphics.html#circular-arrows</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='circos.initialize.html'>circos.initialize</a></span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))</div><div class='input'><span class='fu'><a href='circos.track.html'>circos.track</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {
-  <span class='fu'>circos.arrow</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.4</span>, <span class='kw'>arrow.head.length</span> <span class='kw'>=</span> <span class='fu'><a href='ux.html'>ux</a></span>(<span class='fl'>1</span>, <span class='st'>"cm"</span>),
-      <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>tail</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>CELL_META</span>$<span class='no'>sector.index</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a"</span>, <span class='st'>"c"</span>),
-          <span class='st'>"point"</span>, <span class='st'>"normal"</span>))
-}, <span class='kw'>bg.border</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fl'>0.4</span>)</div><div class='img'><img src='circos.arrow-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()
+    <pre class="examples"><div class='input'><span class='no'>op</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='kw'>no.readonly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='kw'>mfrow</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>))
+<span class='fu'><a href='circos.initialize.html'>circos.initialize</a></span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))
+<span class='no'>col</span> <span class='kw'>=</span> <span class='fu'><a href='rand_color.html'>rand_color</a></span>(<span class='fl'>4</span>)
+<span class='no'>tail</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"point"</span>, <span class='st'>"normal"</span>, <span class='st'>"point"</span>, <span class='st'>"normal"</span>)
+<span class='fu'><a href='circos.track.html'>circos.track</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {
+    <span class='fu'>circos.arrow</span>(<span class='kw'>x1</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>x2</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.4</span>,
+        <span class='kw'>arrow.head.width</span> <span class='kw'>=</span> <span class='fl'>0.6</span>, <span class='kw'>arrow.head.length</span> <span class='kw'>=</span> <span class='fu'><a href='cm_x.html'>cm_x</a></span>(<span class='fl'>1</span>),
+        <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>col</span>[<span class='no'>CELL_META</span>$<span class='no'>sector.numeric.index</span>],
+        <span class='kw'>tail</span> <span class='kw'>=</span> <span class='no'>tail</span>[<span class='no'>CELL_META</span>$<span class='no'>sector.numeric.index</span>])
+}, <span class='kw'>bg.border</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fl'>0.4</span>)
+<span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()
+
+<span class='fu'><a href='circos.initialize.html'>circos.initialize</a></span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))</div><div class='input'><span class='no'>tail</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"point"</span>, <span class='st'>"normal"</span>, <span class='st'>"point"</span>, <span class='st'>"normal"</span>)
+<span class='fu'><a href='circos.track.html'>circos.track</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {
+    <span class='fu'>circos.arrow</span>(<span class='kw'>x1</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>x2</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.4</span>,
+        <span class='kw'>arrow.head.width</span> <span class='kw'>=</span> <span class='fl'>0.6</span>, <span class='kw'>arrow.head.length</span> <span class='kw'>=</span> <span class='fu'><a href='cm_x.html'>cm_x</a></span>(<span class='fl'>1</span>),
+        <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>col</span>[<span class='no'>CELL_META</span>$<span class='no'>sector.numeric.index</span>],
+        <span class='kw'>tail</span> <span class='kw'>=</span> <span class='no'>tail</span>[<span class='no'>CELL_META</span>$<span class='no'>sector.numeric.index</span>],
+        <span class='kw'>arrow.position</span> <span class='kw'>=</span> <span class='st'>"start"</span>)
+}, <span class='kw'>bg.border</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fl'>0.4</span>)</div><div class='img'><img src='circos.arrow-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='no'>op</span>)
 
 <span class='co'>########## cell cycle ###########</span>
 <span class='no'>cell_cycle</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>phase</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"G1"</span>, <span class='st'>"S"</span>, <span class='st'>"G2"</span>, <span class='st'>"M"</span>),
                                     <span class='kw'>levels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"G1"</span>, <span class='st'>"S"</span>, <span class='st'>"G2"</span>, <span class='st'>"M"</span>)),
                         <span class='kw'>hour</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>11</span>, <span class='fl'>8</span>, <span class='fl'>4</span>, <span class='fl'>1</span>))
 <span class='no'>color</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#66C2A5"</span>, <span class='st'>"#FC8D62"</span>, <span class='st'>"#8DA0CB"</span>, <span class='st'>"#E78AC3"</span>)
-<span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='kw'>start.degree</span> <span class='kw'>=</span> <span class='fl'>90</span>)
-<span class='fu'><a href='circos.initialize.html'>circos.initialize</a></span>(<span class='no'>cell_cycle</span>$<span class='no'>phase</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>0</span>, <span class='fl'>4</span>), <span class='no'>cell_cycle</span>$<span class='no'>hour</span>))</div><div class='input'><span class='fu'><a href='circos.track.html'>circos.track</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {
+<span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='kw'>start.degree</span> <span class='kw'>=</span> <span class='fl'>90</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 'start.degree' can only be modified before `circos.initialize`, or</span>
+#&gt; <span class='warning'>maybe you forgot to call `circos.clear` in your last plot.</span></div><div class='input'><span class='fu'><a href='circos.initialize.html'>circos.initialize</a></span>(<span class='no'>cell_cycle</span>$<span class='no'>phase</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>0</span>, <span class='fl'>4</span>), <span class='no'>cell_cycle</span>$<span class='no'>hour</span>))</div><div class='input'><span class='fu'><a href='circos.track.html'>circos.track</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {
   <span class='fu'>circos.arrow</span>(<span class='no'>CELL_META</span>$<span class='no'>xlim</span>[<span class='fl'>1</span>], <span class='no'>CELL_META</span>$<span class='no'>xlim</span>[<span class='fl'>2</span>],
-      <span class='kw'>arrow.head.width</span> <span class='kw'>=</span> <span class='no'>CELL_META</span>$<span class='no'>yrange</span>*<span class='fl'>0.8</span>, <span class='kw'>arrow.head.length</span> <span class='kw'>=</span> <span class='fu'><a href='ux.html'>ux</a></span>(<span class='fl'>1</span>, <span class='st'>"cm"</span>),
+      <span class='kw'>arrow.head.width</span> <span class='kw'>=</span> <span class='no'>CELL_META</span>$<span class='no'>yrange</span>*<span class='fl'>0.8</span>, <span class='kw'>arrow.head.length</span> <span class='kw'>=</span> <span class='fu'><a href='cm_x.html'>cm_x</a></span>(<span class='fl'>1</span>),
       <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>color</span>[<span class='no'>CELL_META</span>$<span class='no'>sector.numeric.index</span>])
   <span class='fu'><a href='circos.text.html'>circos.text</a></span>(<span class='no'>CELL_META</span>$<span class='no'>xcenter</span>, <span class='no'>CELL_META</span>$<span class='no'>ycenter</span>, <span class='no'>CELL_META</span>$<span class='no'>sector.index</span>,
       <span class='kw'>facing</span> <span class='kw'>=</span> <span class='st'>"downward"</span>)

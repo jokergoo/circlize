@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">circlize</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.11</span>
       </span>
     </div>
 
@@ -130,12 +130,11 @@
     <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
     <span class='kw'>font</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"font"</span>),
     <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>0.4</span>,
-    <span class='kw'>connection_height</span> <span class='kw'>=</span> <span class='fu'><a href='convert_height.html'>convert_height</a></span>(<span class='fl'>5</span>, <span class='st'>"mm"</span>),
+    <span class='kw'>connection_height</span> <span class='kw'>=</span> <span class='fu'><a href='mm_h.html'>mm_h</a></span>(<span class='fl'>5</span>),
     <span class='kw'>line_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"col"</span>),
     <span class='kw'>line_lwd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lwd"</span>),
     <span class='kw'>line_lty</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='st'>"lty"</span>),
-    <span class='kw'>labels_height</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='convert_height.html'>convert_height</a></span>(<span class='fl'>1.5</span>, <span class='st'>"cm"</span>),
-    <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(<span class='fu'><a href='https://rdrr.io/r/graphics/strwidth.html'>strwidth</a></span>(<span class='no'>labels</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='no'>cex</span>, <span class='kw'>font</span> <span class='kw'>=</span> <span class='no'>font</span>)))),
+    <span class='kw'>labels_height</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='cm_h.html'>cm_h</a></span>(<span class='fl'>1.5</span>), <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(<span class='fu'><a href='https://rdrr.io/r/graphics/strwidth.html'>strwidth</a></span>(<span class='no'>labels</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='no'>cex</span>, <span class='kw'>font</span> <span class='kw'>=</span> <span class='no'>font</span>)))),
     <span class='kw'>side</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"inside"</span>, <span class='st'>"outside"</span>),
     <span class='kw'>track.margin</span> <span class='kw'>=</span> <span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='st'>"track.margin"</span>))</pre>
 
@@ -144,67 +143,67 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>bed</th>
-      <td><p>a data frame in bed format</p></td>
+      <td><p>A data frame in bed format.</p></td>
     </tr>
     <tr>
       <th>labels</th>
-      <td><p>a vector of labels corresponding to rows in <code>bed</code></p></td>
+      <td><p>A vector of labels corresponding to rows in <code>bed</code>.</p></td>
     </tr>
     <tr>
       <th>labels.column</th>
-      <td><p>if the label column is already in <code>bed</code>, the index for this column in <code>bed</code></p></td>
+      <td><p>If the label column is already in <code>bed</code>, the index for this column in <code>bed</code>.</p></td>
     </tr>
     <tr>
       <th>facing</th>
-      <td><p>facing of the labels. The value can only be 'clockwise' or 'reverse.clockwise'.</p></td>
+      <td><p>fFacing of the labels. The value can only be <code>"clockwise"</code> or <code>"reverse.clockwise"</code>.</p></td>
     </tr>
     <tr>
       <th>niceFacing</th>
-      <td><p>whether automatically adjust the facing of the labels.</p></td>
+      <td><p>Whether automatically adjust the facing of the labels.</p></td>
     </tr>
     <tr>
       <th>col</th>
-      <td><p>color for the labels</p></td>
+      <td><p>Color for the labels.</p></td>
     </tr>
     <tr>
       <th>cex</th>
-      <td><p>size of the labels</p></td>
+      <td><p>Aize of the labels.</p></td>
     </tr>
     <tr>
       <th>font</th>
-      <td><p>font of the labels</p></td>
+      <td><p>Font of the labels.</p></td>
     </tr>
     <tr>
       <th>padding</th>
-      <td><p>padding of the labels, the value is the ratio to the height of the label</p></td>
+      <td><p>Padding of the labels, the value is the ratio to the height of the label.</p></td>
     </tr>
     <tr>
       <th>connection_height</th>
-      <td><p>height of the connection track</p></td>
+      <td><p>Height of the connection track.</p></td>
     </tr>
     <tr>
       <th>line_col</th>
-      <td><p>color for the connection lines</p></td>
+      <td><p>Color for the connection lines.</p></td>
     </tr>
     <tr>
       <th>line_lwd</th>
-      <td><p>line width for the connection lines</p></td>
+      <td><p>Line width for the connection lines.</p></td>
     </tr>
     <tr>
       <th>line_lty</th>
-      <td><p>line type for the connectioin lines</p></td>
+      <td><p>Line type for the connectioin lines.</p></td>
     </tr>
     <tr>
       <th>labels_height</th>
-      <td><p>height of the labels track</p></td>
+      <td><p>Height of the labels track.</p></td>
     </tr>
     <tr>
       <th>side</th>
-      <td><p>side of the labels track, is it in the inside of the track where the regions are marked?</p></td>
+      <td><p>Side of the labels track, is it in the inside of the track where the regions are marked?</p></td>
     </tr>
     <tr>
       <th>track.margin</th>
-      <td><p>bottom and top margins</p></td>
+      <td><p>Bottom and top margins.</p></td>
     </tr>
     </table>
 
@@ -212,18 +211,20 @@
 
     <p>The function adds labels for the specified regions. The positions of labels are arranged
 so that they are not overlapping to each other.</p>
+<p>This function creates two tracks, one for the connection lines and one for the labels.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#labels'>https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#labels</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'><a href='circos.initializeWithIdeogram.html'>circos.initializeWithIdeogram</a></span>(<span class='kw'>plotType</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"labels"</span>, <span class='st'>"axis"</span>))</div><div class='input'><span class='no'>bed</span> <span class='kw'>=</span> <span class='fu'><a href='generateRandomBed.html'>generateRandomBed</a></span>(<span class='kw'>nr</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>k</span>) <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='no'>letters</span>, <span class='no'>k</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
-<span class='no'>bed</span>[<span class='fl'>1</span>, <span class='fl'>4</span>] <span class='kw'>=</span> <span class='st'>"aaaaaaaa"</span>
-<span class='fu'>circos.genomicLabels</span>(<span class='no'>bed</span>, <span class='kw'>labels.column</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>side</span> <span class='kw'>=</span> <span class='st'>"inside"</span>,
-    <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>bed</span><span class='kw'>[[</span><span class='fl'>1</span>]])))</div><div class='input'><span class='fu'>circos.genomicLabels</span>(<span class='no'>bed</span>, <span class='kw'>labels.column</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>side</span> <span class='kw'>=</span> <span class='st'>"outside"</span>,
-    <span class='kw'>line_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>bed</span><span class='kw'>[[</span><span class='fl'>1</span>]])))</div><div class='img'><img src='circos.genomicLabels-1.png' alt='' width='700' height='433' /></div><div class='input'># }
-</div></pre>
+<span class='fu'><a href='circos.initializeWithIdeogram.html'>circos.initializeWithIdeogram</a></span>()</div><div class='input'><span class='no'>bed</span> <span class='kw'>=</span> <span class='fu'><a href='generateRandomBed.html'>generateRandomBed</a></span>(<span class='kw'>nr</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>k</span>) <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='no'>letters</span>, <span class='no'>k</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
+<span class='no'>bed</span>[<span class='fl'>1</span>, <span class='fl'>4</span>] <span class='kw'>=</span> <span class='st'>"aaaaa"</span>
+<span class='fu'>circos.genomicLabels</span>(<span class='no'>bed</span>, <span class='kw'>labels.column</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>side</span> <span class='kw'>=</span> <span class='st'>"inside"</span>)</div><div class='img'><img src='circos.genomicLabels-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()
+
+<span class='fu'><a href='circos.initializeWithIdeogram.html'>circos.initializeWithIdeogram</a></span>(<span class='kw'>plotType</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='input'><span class='fu'>circos.genomicLabels</span>(<span class='no'>bed</span>, <span class='kw'>labels.column</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>side</span> <span class='kw'>=</span> <span class='st'>"outside"</span>,
+    <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>bed</span><span class='kw'>[[</span><span class='fl'>1</span>]])), <span class='kw'>line_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>bed</span><span class='kw'>[[</span><span class='fl'>1</span>]])))</div><div class='input'><span class='fu'><a href='circos.genomicIdeogram.html'>circos.genomicIdeogram</a></span>()</div><div class='img'><img src='circos.genomicLabels-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='circos.clear.html'>circos.clear</a></span>()
+<span class='co'># }</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

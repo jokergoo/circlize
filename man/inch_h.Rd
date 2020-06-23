@@ -11,16 +11,14 @@ inch_h(...)
 }
 \arguments{
 
-  \item{...}{pass to \code{\link{convert_length}}}
+  \item{...}{pass to \code{\link{inches_h}}}
 
 }
 \details{
-This function is same as \code{\link{convert_length}} in inch unit.
-}
-\author{
-Zuguang Gu <z.gu@dkfz.de>
+This function is the same as \code{\link{inches_h}}.
 }
 \examples{
-# see example in `convert_length` page
+# There is no example
 NULL
+
 }

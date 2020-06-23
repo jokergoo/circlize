@@ -73,6 +73,12 @@ resetGlobalVariable()
 # adding sectors on the circle. The left and right padding for ``cell.padding`` will also be
 # ignored after the initialization because all cells in a sector would share the same
 # left and right paddings.
+#
+# == seealso
+# https://jokergoo.github.io/circlize_book/book/circular-layout.html#graphic-parameters
+#
+# == example
+# circos.par
 circos.par = function(..., RESET = FALSE, READ.ONLY = NULL, LOCAL = FALSE, ADD = FALSE) {}
 circos.par = setGlobalOptions(
 	start.degree = list(
@@ -172,7 +178,8 @@ circos.par = setGlobalOptions(
 	'__tempenv__' = list(
 		.value = new.env(parent = emptyenv()),
 		.private = TRUE,
-		.visible = FALSE)
+		.visible = FALSE),
+	message = TRUE
 )
 
 # before initialization, .SECTOR.DATA is NULL
@@ -230,6 +237,18 @@ circos.initialize = function(
 
 	.SECTOR.DATA = get(".SECTOR.DATA", envir = .CIRCOS.ENV)
 	.CELL.DATA = get(".CELL.DATA", envir = .CIRCOS.ENV)
+
+	if(missing(factors)) {
+		if(is.matrix(xlim) || is.data.frame(xlim)) {
+			if(is.null(rownames(xlim))) {
+				stop_wrap("Since `factors` is not specified, row names of `xlim` are taken as `factors`, thus `xlim` should be a two-column matrix with row names.")
+			} else {
+				factors = rownames(xlim)
+			}
+		} else {
+			stop_wrap("Since `factors` is not specified, row names of `xlim` are taken as `factors`, thus `xlim` should be a two-column matrix with row names.")
+		}
+	}
 
 	if(is.numeric(factor)) {
 		warning_wrap("Your `factor` is numeric, it will be converted to characters internally.")
@@ -593,7 +612,7 @@ has.cell = function(sector.index, track.index) {
 # == param
 # -sector.index Which sectors you want to look at? It can be a vector.
 # -track.index  Which tracks you want to look at? It can be a vector.
-# -plot         Whether to add information on the plot
+# -plot         Whether to add information on the plot.
 #
 # == details
 # It tells you the basic parameters for sectors/tracks/cells. If both ``sector.index``

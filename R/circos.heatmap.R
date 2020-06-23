@@ -66,6 +66,9 @@ is.circos.heatmap.cached = function() {
 # -distance.method Distance method, pass to `stats::dist`.
 # -dend.callback A callback function that is applied to the dendrogram in every sector.
 # 
+# == seealso
+# https://jokergoo.github.io/2020/05/21/make-circular-heatmaps/
+#
 circos.heatmap.initialize = function(mat, split = NULL, cluster = TRUE, 
 	clustering.method = "complete", distance.method = "euclidean",
 	dend.callback = function(dend, m, si) reorder(dend, rowMeans(m))) {
@@ -185,6 +188,9 @@ circos.heatmap.validate = function(mat_list) {
 # -show.sector.labels Whether to show sector labels.
 # -... Pass to `circos.track` which draws the heatmap track.
 # 
+# == seealso
+# https://jokergoo.github.io/2020/05/21/make-circular-heatmaps/
+#
 # == example
 # \donttest{
 # set.seed(123)

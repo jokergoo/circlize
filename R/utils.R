@@ -4,8 +4,8 @@
 # == param
 # -x            Data points on x-axis. The value can also be a two-column matrix/data frame if you put x and y data points into one variable.
 # -y            Data points on y-axis.
-# -sector.index Index for the sector to convert the coordinates
-# -track.index  Index for the track to convert the coordinates
+# -sector.index Index for the sector to convert the coordinates.
+# -track.index  Index for the track to convert the coordinates.
 #
 # == details
 # This is the core function in the package. It transform data points from data coordinate system (in a specific cell) to the polar coordinate system.
@@ -410,11 +410,11 @@ circos.approx = function(x, y, resolution = 0.1, sector.index = get.cell.meta.da
 # Add transparency to colors
 #
 # == param
-# -col a vector of colors
-# -transparency transparency, numeric value between 0 and 1
+# -col A vector of colors.
+# -transparency Transparency, numeric value between 0 and 1.
 #
 # == value
-# A vector of colors
+# A vector of colors.
 #
 # == example
 # add_transparency("red", 0.5)
@@ -435,15 +435,19 @@ get_most_inside_radius = function() {
 }
 
 # == title
-# Convert adjacency list to adjacency matrix
+# Convert adjacency list to an adjacency matrix
 #
 # == param
-# -lt a data frame which contains adjacency list.
-# -square is the returned matrix a square matrix?
+# -lt A data frame which contains adjacency list.
+# -square Should the returned matrix be a square matrix?
 #
-# == details
-# Convert adjacency list to adjacency matrix.
-#
+# == example
+# set.seed(123)
+# df = data.frame(from = sample(letters, 10, replace = TRUE), 
+#                 to = sample(letters, 10, replace = TRUE), 
+#                 value = 1:10)
+# adjacencyList2Matrix(df)
+# adjacencyList2Matrix(df, square = TRUE)
 adjacencyList2Matrix = function(lt, square = FALSE) {
 	lt = as.data.frame(lt)
 	if(ncol(lt) == 2) {
@@ -481,6 +485,30 @@ adjacencyList2Matrix = function(lt, square = FALSE) {
 	return(mat)
 }
 
+
+# == title
+# Convert adjacency matrix to an adjacency list
+#
+# == param
+# -mat A numeric matrix.
+# -keep.zero Whether to keep the interactions with value zero.
+#
+# == example
+# set.seed(999)
+# mat = matrix(sample(18, 18), 3, 6) 
+# rownames(mat) = paste0("S", 1:3)
+# colnames(mat) = paste0("E", 1:6)
+# adjacencyMatrix2List(mat)
+adjacencyMatrix2List = function(mat, keep.zero = FALSE) {
+    if(is.null(rownames(mat))) rownames(mat) = as.character(seq_len(nrow(mat)))
+    if(is.null(colnames(mat))) colnames(mat) = as.character(seq_len(ncol(mat)))
+    df = data.frame(from = rep(rownames(mat), times = ncol(mat)),
+        to = rep(colnames(mat), each = nrow(mat)),
+        value = as.vector(mat),
+        stringsAsFactors = FALSE)
+    if(!keep.zero) df = df[df$value != 0, , drop = FALSE]
+    return(df)
+}
 
 
 # == title
@@ -589,11 +617,11 @@ col2value = function(r, g, b, col_fun) {
 # fa = letters[1:10]
 # circos.par(cell.padding = c(0, 0, 0, 0), track.margin = c(0, 0))
 # circos.initialize(fa, xlim = cbind(rep(0, 10), runif(10, 0.5, 1.5)))
-# circos.track(ylim = c(0, 1), track.height = convert_length(5, "mm"))
-# circos.par(track.margin = c(0, convert_length(2, "mm")))
-# circos.track(ylim = c(0, 1), track.height = convert_length(1, "cm"))
-# circos.par(track.margin = c(0, convert_length(5, "mm")))
-# circos.track(ylim = c(0, 1), track.height = convert_length(1, "inches"))
+# circos.track(ylim = c(0, 1), track.height = mm_h(5))
+# circos.par(track.margin = c(0, mm_h(2)))
+# circos.track(ylim = c(0, 1), track.height = cm_h(1))
+# circos.par(track.margin = c(0, mm_h(5)))
+# circos.track(ylim = c(0, 1), track.height = inch_h(1))
 # circos.clear()
 convert_length = function(x, unit = c("mm", "cm", "inches")) {
 
@@ -649,17 +677,11 @@ convert_height = function(...) {
 # Convert units
 #
 # == param
-# -... pass to `convert_length`
+# -... pass to `convert_length`.
 #
 # == details
-# This function is same as `convert_length`.
+# Please do not use this function. Use `mm_h`/`cm_h`/inches_h` instead.
 #
-# == author
-# Zuguang Gu <z.gu@dkfz.de>
-#
-# == example
-# # see example in `convert_length` page
-# NULL
 uh = function(...) {
     convert_length(...)
 }
@@ -725,15 +747,15 @@ convert_unit_in_data_coordinate = function(x, unit = c("mm", "cm", "inches", "ca
 # Convert unit on x direction in data coordinate
 #
 # == param
-# -x a numeric vector
-# -unit supported units, only "mm", "cm", "inches"
-# -sector.index index for the sector where the conversion is applied
-# -track.index index for the track where the conversion is applied
+# -x a numeric vector.
+# -unit supported units, only "mm", "cm", "inches".
+# -sector.index index for the sector where the conversion is applied.
+# -track.index index for the track where the conversion is applied.
 # -h since the width of the cell is not identical from the top to the bottom in the cell, the position on
-#   y direction needs to be specified. By default it is at the middle point on y-axis
+#   y direction needs to be specified. By default it is at the middle point on y-axis.
 #
 # == value
-# A vector of numeric values which are measured in the specified data coordinate
+# A vector of numeric values which are measured in the specified data coordinate.
 #
 # == seealso
 # For pre-defined units, users can use `cm_x`, `mm_x` and `inches_x`.
@@ -754,7 +776,7 @@ convert_unit_in_data_coordinate = function(x, unit = c("mm", "cm", "inches", "ca
 #         circos.lines(c(0, 0 + mm_x(5)), c(0.5, 0.5), col = "blue")
 #     })
 # circos.par(track.margin = c(0, mm_h(2)))
-# circos.track(ylim = c(0, 1), track.height = convert_height(1, "cm"),
+# circos.track(ylim = c(0, 1), track.height = cm_h(1),
 #     panel.fun = function(x, y) {
 #         xcenter = get.cell.meta.data("xcenter")
 #         circos.lines(c(xcenter, xcenter), c(0, cm_y(1)), col = "red")
@@ -782,17 +804,11 @@ convert_x = function(
 # Convert unit on x direction in data coordinate
 #
 # == param
-# -... pass to `convert_x`
+# -... pass to `convert_x`.
 #
 # == details
-# This function is same as `convert_x`.
+# Please do not use this function. Use `mm_x`/`cm_x`/inches_x` instead.
 #
-# == author
-# Zuguang Gu <z.gu@dkfz.de>
-#
-# == example
-# # see example in `convert_x` page
-# NULL
 ux = function(...) {
     convert_x(...)
 }
@@ -835,17 +851,11 @@ convert_y = function(
 # Convert unit on y direction in data coordinate
 #
 # == param
-# -... pass to `convert_y`
+# -... pass to `convert_y`.
 #
 # == details
-# This function is same as `convert_y`.
+# Please do not use this function. Use `mm_y`/`cm_y`/inches_y` instead.
 #
-# == author
-# Zuguang Gu <z.gu@dkfz.de>
-#
-# == example
-# # see example in `convert_y` page
-# NULL
 uy = function(...) {
     convert_y(...)
 }
@@ -880,217 +890,227 @@ convert_unit_in_canvas_coordinate = function(x, unit = c("mm", "cm", "inches")) 
 # Convert unit on x direction in data coordinate
 #
 # == param
-# -... pass to `convert_x`
+# -x The x-value in numeric.
+# -sector.index Index of sector.
+# -track.index Index of track.
+# -... Pass to `convert_x`.
 #
 # == details
-# This function is same as `convert_x` in cm unit.
+# See explanations in `convert_x` page.
 #
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
 #
 # == example
-# # see example in `convert_x` page
+# # see examples in `convert_x` page
 # NULL
-cm_x = function(...) {
-    convert_x(..., unit = "cm")
+cm_x = function(x, sector.index = get.current.sector.index(),
+    track.index = get.current.track.index(), ...) {
+    convert_x(x, unit = "cm", sector.index = sector.index, track.index = track.index, ...)
 }
+
 # == title
 # Convert unit on y direction in data coordinate
 #
 # == param
-# -... pass to `convert_y`
+# -y The y-value in numeric.
+# -sector.index Index of sector.
+# -track.index Index of track.
 #
 # == details
-# This function is same as `convert_y` in cm unit.
+# See explanations in `convert_y` page.
 #
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
 #
 # == example
-# # see example in `convert_y` page
+# # see examples in `convert_y` page
 # NULL
-cm_y = function(...) {
-    convert_y(..., unit = "cm")
+cm_y = function(y, sector.index = get.current.sector.index(),
+    track.index = get.current.track.index()) {
+    convert_y(y, unit = "cm", sector.index = sector.index, track.index = track.index)
 }
+
 # == title
 # Convert units
 #
 # == param
-# -... pass to `convert_length`
+# -h The height in numeric.
 #
 # == details
-# This function is same as `convert_length` in cm unit.
+# See explanations in `convert_length` page.
 #
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
 #
 # == example
-# # see example in `convert_length` page
+# # see examples in `convert_length` page
 # NULL
-cm_h = function(...) {
-    convert_length(..., unit = "cm")
+cm_h = function(h) {
+    convert_length(h, unit = "cm")
 }
+
 # == title
 # Convert unit on x direction in data coordinate
 #
 # == param
-# -... pass to `convert_x`
+# -x The x-value in numeric.
+# -sector.index Index of sector.
+# -track.index Index of track.
+# -... Pass to `convert_x`.
 #
 # == details
-# This function is same as `convert_x` in mm unit.
+# See explanations in `convert_x` page.
 #
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
 #
 # == example
-# # see example in `convert_x` page
+# # see examples in `convert_x` page
 # NULL
-mm_x = function(...) {
-    convert_x(..., unit = "mm")
+mm_x = function(x, sector.index = get.current.sector.index(),
+    track.index = get.current.track.index(), ...) {
+    convert_x(x, unit = "mm", sector.index = sector.index, track.index = track.index, ...)
 }
+
 # == title
 # Convert unit on y direction in data coordinate
 #
 # == param
-# -... pass to `convert_y`
+# -y The y-value in numeric.
+# -sector.index Index of sector.
+# -track.index Index of track.
 #
 # == details
-# This function is same as `convert_y` in mm unit.
+# See explanations in `convert_y` page.
 #
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
 #
 # == example
-# # see example in `convert_y` page
+# # see examples in `convert_y` page
 # NULL
-mm_y = function(...) {
-    convert_y(..., unit = "mm")
+mm_y = function(y, sector.index = get.current.sector.index(),
+    track.index = get.current.track.index()) {
+    convert_y(y, unit = "mm", sector.index = sector.index, track.index = track.index)
 }
+
 # == title
 # Convert units
 #
 # == param
-# -... pass to `convert_length`
+# -h The height in numeric.
 #
 # == details
-# This function is same as `convert_length` in mm unit.
+# See explanations in `convert_length` page.
 #
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
 #
 # == example
-# # see example in `convert_length` page
+# # see examples in `convert_length` page
 # NULL
-mm_h = function(...) {
-    convert_length(..., unit = "mm")
+mm_h = function(h) {
+    convert_length(h, unit = "mm")
 }
+
 # == title
 # Convert unit on x direction in data coordinate
 #
 # == param
-# -... pass to `convert_x`
+# -x The x-value in numeric.
+# -sector.index Index of sector.
+# -track.index Index of track.
+# -... Pass to `convert_x`.
 #
 # == details
-# This function is same as `convert_x` in inch unit.
+# See explanations in `convert_x` page.
 #
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
 #
 # == example
-# # see example in `convert_x` page
+# # see examples in `convert_x` page
 # NULL
-inches_x = function(...) {
-    convert_x(..., unit = "inches")
+inches_x = function(x, sector.index = get.current.sector.index(),
+    track.index = get.current.track.index(), ...) {
+    convert_x(x, unit = "inches", sector.index = sector.index, track.index = track.index, ...)
 }
+
 # == title
 # Convert unit on y direction in data coordinate
 #
 # == param
-# -... pass to `convert_y`
+# -y The y-value in numeric.
+# -sector.index Index of sector.
+# -track.index Index of track.
 #
 # == details
-# This function is same as `convert_y` in inch unit.
+# See explanations in `convert_y` page.
 #
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
 #
 # == example
-# # see example in `convert_y` page
+# # see examples in `convert_y` page
 # NULL
-inches_y = function(...) {
-    convert_y(..., unit = "inches")
+inches_y = function(y, sector.index = get.current.sector.index(),
+    track.index = get.current.track.index()) {
+    convert_y(y, unit = "inches", sector.index = sector.index, track.index = track.index)
 }
+
 # == title
 # Convert units
 #
 # == param
-# -... pass to `convert_length`
+# -h The height in numeric.
 #
 # == details
-# This function is same as `convert_length` in inch unit.
+# See explanations in `convert_length` page.
 #
 # == author
 # Zuguang Gu <z.gu@dkfz.de>
 #
 # == example
-# # see example in `convert_length` page
+# # see examples in `convert_length` page
 # NULL
-inches_h = function(...) {
-    convert_length(..., unit = "inches")
+inches_h = function(h) {
+    convert_length(h, unit = "inches")
 }
+
 # == title
 # Convert unit on x direction in data coordinate
 #
 # == param
-# -... pass to `convert_x`
+# -... pass to `inches_x`.
 #
 # == details
-# This function is same as `convert_x` in inch unit.
-#
-# == author
-# Zuguang Gu <z.gu@dkfz.de>
-#
-# == example
-# # see example in `convert_x` page
-# NULL
+# This function is the same as `inches_x`.
 inch_x = function(...) {
-    convert_x(..., unit = "inches")
+    inches_x(...)
 }
 # == title
 # Convert unit on y direction in data coordinate
 #
 # == param
-# -... pass to `convert_y`
+# -... pass to `inches_y`
 #
 # == details
-# This function is same as `convert_y` in inch unit.
-#
-# == author
-# Zuguang Gu <z.gu@dkfz.de>
-#
-# == example
-# # see example in `convert_y` page
-# NULL
+# This function is the same as `inches_y`.
 inch_y = function(...) {
-    convert_y(..., unit = "inches")
+    inches_y(...)
 }
+
 # == title
 # Convert units
 #
 # == param
-# -... pass to `convert_length`
+# -... pass to `inches_h`
 #
 # == details
-# This function is same as `convert_length` in inch unit.
-#
-# == author
-# Zuguang Gu <z.gu@dkfz.de>
-#
-# == example
-# # see example in `convert_length` page
-# NULL
+# This function is the same as `inches_h`.
 inch_h = function(...) {
-    convert_length(..., unit = "inches")
+    inches_h(...)
 }
 
 stop_wrap = function(...) {

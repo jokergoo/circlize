@@ -40,6 +40,9 @@ circos.heatmap(mat, split = NULL, col, na.col = "grey",
   \item{...}{Pass to \code{\link{circos.track}} which draws the heatmap track.}
 
 }
+\seealso{
+\url{https://jokergoo.github.io/2020/05/21/make-circular-heatmaps/}
+}
 \examples{
 \donttest{
 set.seed(123)

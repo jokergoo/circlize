@@ -11,16 +11,14 @@ ux(...)
 }
 \arguments{
 
-  \item{...}{pass to \code{\link{convert_x}}}
+  \item{...}{pass to \code{\link{convert_x}}.}
 
 }
 \details{
-This function is same as \code{\link{convert_x}}.
-}
-\author{
-Zuguang Gu <z.gu@dkfz.de>
+Please do not use this function. Use \code{\link{mm_x}}/\code{\link{cm_x}}/inches_x` instead.
 }
 \examples{
-# see example in `convert_x` page
+# There is no example
 NULL
+
 }

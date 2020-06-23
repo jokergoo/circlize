@@ -18,6 +18,9 @@
 # - `circos.segments`
 # - `circos.text`
 # - `circos.axis`, `circos.xaxis`, `circos.yaxis`
+# - `circos.barplot`
+# - `circos.boxplot`
+# - `circos.violin`
 # - `circos.link`
 #
 # For drawing points, lines and text through the whole track (among several sectors), the following
@@ -26,11 +29,15 @@
 # - `circos.trackPoints`
 # - `circos.trackLines`
 # - `circos.trackText`
+# Draw circular heatmaps
+#
+# - `circos.heatmap`
 #
 # Functions to arrange circular layout:
 #
 # - `circos.initialize`
 # - `circos.track`
+# - `circos.nested`
 # - `circos.update`
 # - `circos.par`
 # - `circos.info`

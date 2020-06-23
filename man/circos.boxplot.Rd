@@ -9,22 +9,30 @@ Draw boxplots
 \usage{
 circos.boxplot(value, pos, outline = TRUE, box_width = 0.6,
     col = NA, border = "black", lwd = par("lwd"), lty = par("lty"),
-    cex = par("cex"), pch = 1, pt.col = par("col"))
+    cex = par("cex"), pch = 1, pt.col = par("col"),
+    sector.index = get.current.sector.index(),
+    track.index = get.current.track.index())
 }
 \arguments{
 
-  \item{value}{A numeric vector, a matrix or a list. If it is a matrix, boxplots are made by columns.}
+  \item{value}{A numeric vector, a matrix or a list. If it is a matrix, boxplots are made by columns (each column is a box).}
   \item{pos}{Positions of the boxes.}
   \item{outline}{Whether to draw outliers.}
-  \item{box_width}{Width of boxes.}
+  \item{box_width}{Width of boxes. It assumes the bars locating at \code{x = 1, 2, ...}.}
   \item{col}{Filled color of boxes.}
   \item{border}{Color for the border as well as the quantile lines.}
   \item{lwd}{Line width.}
   \item{lty}{Line style}
   \item{cex}{Point size.}
   \item{pch}{Point type.}
-  \item{pt.col}{Point color}
+  \item{pt.col}{Point color.}
+  \item{sector.index}{Index of sector.}
+  \item{track.index}{Index of track.}
 
+}
+\details{
+Please note, the x-values of boxplots are normally integer indices. Just be careful
+when initializing the circular layout.
 }
 \examples{
 circos.initialize(fa = letters[1:4], xlim = c(0, 10))

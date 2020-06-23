@@ -1,10 +1,10 @@
 \name{calc_gap}
 \alias{calc_gap}
 \title{
-Calculate gap to make two Chord diagram with same scale
+Calculate gaps to make two Chord diagrams in the same scale
 }
 \description{
-Calculate gap to make two Chord diagram with same scale
+Calculate gaps to make two Chord diagrams in the same scale
 }
 \usage{
 calc_gap(x1, x2, big.gap = 10, small.gap = 1)
@@ -18,7 +18,7 @@ calc_gap(x1, x2, big.gap = 10, small.gap = 1)
 
 }
 \details{
-There should be no overlap between the two sets of sectors.
+Both Chord diagrams should be both two-group Chord diagram.
 }
 \value{
 A numeric value which can be directly set to \code{big.gap} in the second Chord diagram.
@@ -26,6 +26,8 @@ A numeric value which can be directly set to \code{big.gap} in the second Chord 
 \examples{
 set.seed(123)
 mat1 = matrix(sample(20, 25, replace = TRUE), 5)
+chordDiagram(mat1, directional = 1, grid.col = rep(1:5, 2), transparency = 0.5,
+    big.gap = 10, small.gap = 1)
 mat2 = mat1 / 2
 gap = calc_gap(mat1, mat2, big.gap = 10, small.gap = 1)
 chordDiagram(mat2, directional = 1, grid.col = rep(1:5, 2), transparency = 0.5,

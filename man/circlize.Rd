@@ -16,8 +16,8 @@ circlize(
 
   \item{x}{Data points on x-axis. The value can also be a two-column matrix/data frame if you put x and y data points into one variable.}
   \item{y}{Data points on y-axis.}
-  \item{sector.index}{Index for the sector to convert the coordinates}
-  \item{track.index}{Index for the track to convert the coordinates}
+  \item{sector.index}{Index for the sector to convert the coordinates.}
+  \item{track.index}{Index for the track to convert the coordinates.}
 
 }
 \details{

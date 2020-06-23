@@ -11,13 +11,13 @@ circos.triangle(x1, y1, x2, y2, x3, y3, ...)
 }
 \arguments{
 
-  \item{x1}{x-coordinates for the first point}
-  \item{y1}{y-coordinates for the first point}
-  \item{x2}{x-coordinates for the second point}
-  \item{y2}{y-coordinates for the second point}
-  \item{x3}{x-coordinates for the third point}
-  \item{y3}{y-coordinates for the third point}
-  \item{...}{pass to \code{\link{circos.polygon}}}
+  \item{x1}{x-coordinates for the first point.}
+  \item{y1}{y-coordinates for the first point.}
+  \item{x2}{x-coordinates for the second point.}
+  \item{y2}{y-coordinates for the second point.}
+  \item{x3}{x-coordinates for the third point.}
+  \item{y3}{y-coordinates for the third point.}
+  \item{...}{Pass to \code{\link{circos.polygon}}.}
 
 }
 \examples{

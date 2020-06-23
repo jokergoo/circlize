@@ -13,7 +13,7 @@ circos.info(sector.index = NULL, track.index = NULL, plot = FALSE)
 
   \item{sector.index}{Which sectors you want to look at? It can be a vector.}
   \item{track.index}{Which tracks you want to look at? It can be a vector.}
-  \item{plot}{Whether to add information on the plot}
+  \item{plot}{Whether to add information on the plot.}
 
 }
 \details{

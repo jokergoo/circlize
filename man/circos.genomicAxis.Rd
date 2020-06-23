@@ -14,8 +14,8 @@ circos.genomicAxis(
     major.by = NULL,
     tickLabelsStartFromZero = TRUE,
     labels.cex = 0.4*par("cex"),
-    sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"),
+    sector.index = get.current.sector.index(),
+    track.index = get.current.track.index(),
     ...)
 }
 \arguments{
@@ -25,7 +25,7 @@ circos.genomicAxis(
   \item{labels}{labels corresponding to \code{major.at}. If \code{labels} is set, \code{major.at} must be set.}
   \item{major.by}{Increment of major ticks. It is calculated automatically if the value is not set (about every 10 degrees there is a major tick).}
   \item{tickLabelsStartFromZero}{Whether axis tick labels start from 0? This will only affect the axis labels while not affect x-values in cells.}
-  \item{labels.cex}{the font size for the axis tick labels.}
+  \item{labels.cex}{The font size for the axis tick labels.}
   \item{sector.index}{Index for the sector}
   \item{track.index}{Index for the track}
   \item{...}{Other arguments pass to \code{\link{circos.axis}}.}
@@ -38,7 +38,11 @@ It assigns proper tick labels under genomic coordinate.
 \url{https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#genomic-axes}
 }
 \examples{
-circos.initializeWithIdeogram(plotType = NULL)
+circos.initializeWithIdeogram(chromosome.index = paste0("chr", 1:4), plotType = NULL)
 circos.track(ylim = c(0, 1), panel.fun = function(x, y) circos.genomicAxis())
+circos.track(ylim = c(0, 1), track.height = 0.1)
+circos.track(track.index = get.current.track.index(), panel.fun = function(x, y) {
+    circos.genomicAxis(h = "bottom", direction = "inside")
+})
 circos.clear()
 }

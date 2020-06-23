@@ -9,8 +9,8 @@ Add points to a plotting region
 \usage{
 circos.points(
     x, y,
-    sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"),
+    sector.index = get.current.sector.index(),
+    track.index = get.current.track.index(),
     pch = par("pch"),
     col = par("col"),
     cex = par("cex"),

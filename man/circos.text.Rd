@@ -10,8 +10,8 @@ Draw text in a cell
 circos.text(
     x, y,
     labels,
-    sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"),
+    sector.index = get.current.sector.index(),
+    track.index = get.current.track.index(),
     direction = NULL,
     facing = c("inside", "outside", "reverse.clockwise", "clockwise",
     "downward", "bending", "bending.inside", "bending.outside"),

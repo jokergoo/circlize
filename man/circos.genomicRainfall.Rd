@@ -19,14 +19,14 @@ circos.genomicRainfall(
 }
 \arguments{
 
-  \item{data}{A bed-file-like data frame or a list of data frames}
-  \item{mode}{how to calculate the distance of two neighbouring regions, pass to \code{\link{rainfallTransform}}}
-  \item{ylim}{ylim for rainfall plot track. If \code{normalize_to_width} is \code{FALSE}, the value should correspond to log10(dist+1), and if \code{normalize_to_width} is \code{TRUE}, the value should correspond to log2(rel_dist).}
+  \item{data}{A bed-file-like data frame or a list of data frames.}
+  \item{mode}{How to calculate the distance of two neighbouring regions, pass to \code{\link{rainfallTransform}}.}
+  \item{ylim}{ylim for rainfall plot track. If \code{normalize_to_width} is \code{FALSE}, the value should correspond to \code{log10(dist+1)}, and if \code{normalize_to_width} is \code{TRUE}, the value should correspond to \code{log2(rel_dist)}.}
   \item{col}{Color of points. It should be length of one. If \code{data} is a list, the length of \code{col} can also be the length of the list.}
-  \item{pch}{Style of points}
-  \item{cex}{Size of points}
+  \item{pch}{Style of points.}
+  \item{cex}{Size of points.}
   \item{normalize_to_width}{If it is \code{TRUE}, the value is the relative distance divided by the width of the region.}
-  \item{...}{Pass to \code{\link{circos.trackPlotRegion}}}
+  \item{...}{Pass to \code{\link{circos.trackPlotRegion}}.}
 
 }
 \details{

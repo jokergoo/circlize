@@ -3,25 +3,25 @@
 # Add raster images
 #
 # == param
-# -image a ``raster`` object, or an object that can be converted by `grDevices::as.raster`
-# -x position of the center of the raster image, measued in the data coordinate in the cell
-# -y position of the center of the raster image, measued in the data coordinate in the cell
-# -width width of the raster image. When ``facing`` is one of "inside", "outside", "clockwise"
+# -image A ``raster`` object, or an object that can be converted by `grDevices::as.raster`.
+# -x Position of the center of the raster image, measued in the data coordinate in the cell.
+# -y Position of the center of the raster image, measued in the data coordinate in the cell.
+# -width Width of the raster image. When ``facing`` is one of "inside", "outside", "clockwise"
 #        and "reverse.clockwise", the image should have absolute size where the value of ``width``
 #        should be specified like ``20mm``, ``1cm`` or ``0.5inche``. When ``facing`` is one of
 #        ``bending.inside`` and ``bending.outside``, the value of ``width`` is measured in the data
 #         coordinate in the cell.
-# -height height of the raster image. Same format as ``width``. If the value of ``height`` is omit, 
+# -height Height of the raster image. Same format as ``width``. If the value of ``height`` is omit, 
 #         default height is calculated by taking the aspect ratio of the original image. But when
 #         ``facing`` is one of ``bending.inside`` and ``bending.outside``, ``height`` is mandatory to set.
-# -facing facing of the raster image
-# -niceFacing facing of text. Please refer to vignette for different settings
-# -sector.index index for the sector
-# -track.index index for the track
-# -scaling scaling factor to resize the raster image.
+# -facing Facing of the raster image.
+# -niceFacing Facing of text. Please refer to vignette for different settings.
+# -sector.index Index for the sector.
+# -track.index Index for the track.
+# -scaling Scaling factor to resize the raster image.
 #
-# == author
-# Zuguang Gu <z.gu@dkfz.de>
+# == seealso
+# https://jokergoo.github.io/circlize_book/book/graphics.html#raster-image
 #
 # == example
 # require(png)
@@ -57,8 +57,8 @@ circos.raster = function(
 	facing = c("inside", "outside", "reverse.clockwise", "clockwise",
         "downward", "bending.inside", "bending.outside"),
     niceFacing = FALSE, 
-    sector.index = get.cell.meta.data("sector.index"), 
-    track.index = get.cell.meta.data("track.index"), 
+    sector.index = get.current.sector.index(), 
+    track.index = get.current.track.index(), 
     scaling = 1) {
 
 	# convert image to raster class

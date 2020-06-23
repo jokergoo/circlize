@@ -11,7 +11,7 @@ circos.track(...)
 }
 \arguments{
 
-  \item{...}{pass to \code{\link{circos.trackPlotRegion}}}
+  \item{...}{Pass to \code{\link{circos.trackPlotRegion}}.}
 
 }
 \details{

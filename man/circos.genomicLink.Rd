@@ -21,16 +21,16 @@ circos.genomicLink(
 }
 \arguments{
 
-  \item{region1}{A genomic data frame}
-  \item{region2}{A genomic data frame}
-  \item{rou}{Pass to \code{\link{circos.link}}}
-  \item{rou1}{Pass to \code{\link{circos.link}}}
-  \item{rou2}{Pass to \code{\link{circos.link}}}
-  \item{col}{Pass to \code{\link{circos.link}}, length can be either one or nrow of \code{region1}}
-  \item{lwd}{Pass to \code{\link{circos.link}}, length can be either one or nrow of \code{region1}}
-  \item{lty}{Pass to \code{\link{circos.link}}, length can be either one or nrow of \code{region1}}
-  \item{border}{Pass to \code{\link{circos.link}}, length can be either one or nrow of \code{region1}}
-  \item{...}{Pass to \code{\link{circos.link}}}
+  \item{region1}{A data frame in bed format.}
+  \item{region2}{A data frame in bed format.}
+  \item{rou}{Pass to \code{\link{circos.link}}.}
+  \item{rou1}{Pass to \code{\link{circos.link}}.}
+  \item{rou2}{Pass to \code{\link{circos.link}}.}
+  \item{col}{Pass to \code{\link{circos.link}}, length can be either one or nrow of \code{region1}.}
+  \item{lwd}{Pass to \code{\link{circos.link}}, length can be either one or nrow of \code{region1}.}
+  \item{lty}{Pass to \code{\link{circos.link}}, length can be either one or nrow of \code{region1}.}
+  \item{border}{Pass to \code{\link{circos.link}}, length can be either one or nrow of \code{region1}.}
+  \item{...}{Pass to \code{\link{circos.link}}.}
 
 }
 \details{

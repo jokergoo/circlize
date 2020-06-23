@@ -11,12 +11,12 @@ add_transparency(col, transparency = 0)
 }
 \arguments{
 
-  \item{col}{a vector of colors}
-  \item{transparency}{transparency, numeric value between 0 and 1}
+  \item{col}{A vector of colors.}
+  \item{transparency}{Transparency, numeric value between 0 and 1.}
 
 }
 \value{
-A vector of colors
+A vector of colors.
 }
 \examples{
 add_transparency("red", 0.5)

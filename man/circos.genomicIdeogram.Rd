@@ -10,15 +10,15 @@ Add an ideogram track
 circos.genomicIdeogram(
     cytoband = system.file(package = "circlize", "extdata", "cytoBand.txt"),
     species = NULL,
-    track.height = convert_height(2, "mm"),
+    track.height = mm_h(2),
     track.margin = circos.par("track.margin"))
 }
 \arguments{
 
-  \item{cytoband}{a data frame or a file path, pass to \code{\link{read.cytoband}}}
-  \item{species}{Abbreviations of species, pass to \code{\link{read.cytoband}}}
-  \item{track.height}{height of the ideogram track}
-  \item{track.margin}{margins for the track}
+  \item{cytoband}{A data frame or a file path, pass to \code{\link{read.cytoband}}.}
+  \item{species}{Abbreviations of the genome, pass to \code{\link{read.cytoband}}.}
+  \item{track.height}{Height of the ideogram track.}
+  \item{track.margin}{Margins for the track.}
 
 }
 \seealso{

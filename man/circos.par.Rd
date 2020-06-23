@@ -46,8 +46,9 @@ adding sectors on the circle. The left and right padding for \code{cell.padding}
 ignored after the initialization because all cells in a sector would share the same
 left and right paddings.
 }
+\seealso{
+\url{https://jokergoo.github.io/circlize_book/book/circular-layout.html#graphic-parameters}
+}
 \examples{
-# There is no example
-NULL
-
+circos.par
 }

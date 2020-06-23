@@ -11,9 +11,9 @@ smartAlign(x1, x2, xlim)
 }
 \arguments{
 
-  \item{x1}{position which corresponds to the top of the text}
-  \item{x2}{position which corresponds to the bottom of the text }
-  \item{xlim}{ranges on x-axis}
+  \item{x1}{Position which corresponds to the top of the text.}
+  \item{x2}{Position which corresponds to the bottom of the text.}
+  \item{xlim}{Ranges on x-axis.}
 
 }
 \details{

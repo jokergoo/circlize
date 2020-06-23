@@ -11,8 +11,11 @@ circos.xaxis(...)
 }
 \arguments{
 
-  \item{...}{all pass to \code{\link{circos.axis}}}
+  \item{...}{All pass to \code{\link{circos.axis}}.}
 
+}
+\details{
+This function is identical to \code{\link{circos.axis}}.
 }
 \examples{
 # There is no example

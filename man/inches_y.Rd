@@ -7,20 +7,23 @@ Convert unit on y direction in data coordinate
 Convert unit on y direction in data coordinate
 }
 \usage{
-inches_y(...)
+inches_y(y, sector.index = get.current.sector.index(),
+    track.index = get.current.track.index())
 }
 \arguments{
 
-  \item{...}{pass to \code{\link{convert_y}}}
+  \item{y}{The y-value in numeric.}
+  \item{sector.index}{Index of sector.}
+  \item{track.index}{Index of track.}
 
 }
 \details{
-This function is same as \code{\link{convert_y}} in inch unit.
+See explanations in \code{\link{convert_y}} page.
 }
 \author{
 Zuguang Gu <z.gu@dkfz.de>
 }
 \examples{
-# see example in `convert_y` page
+# see examples in `convert_y` page
 NULL
 }

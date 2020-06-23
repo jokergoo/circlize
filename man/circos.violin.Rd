@@ -10,7 +10,8 @@ Draw violin plots
 circos.violin(value, pos, violin_width = 0.8,
     col = NA, border = "black", lwd = par("lwd"), lty = par("lty"),
     show_quantile = TRUE, pt.col = par("col"), cex = par("cex"), pch = 16,
-    max_density = NULL)
+    max_density = NULL, sector.index = get.current.sector.index(),
+    track.index = get.current.track.index())
 }
 \arguments{
 
@@ -26,6 +27,8 @@ circos.violin(value, pos, violin_width = 0.8,
   \item{pch}{Point type.}
   \item{pt.col}{Point color}
   \item{max_density}{The maximal density value across several violins. It is used to compare between violins.}
+  \item{sector.index}{Index of sector.}
+  \item{track.index}{Index of track.}
 
 }
 \examples{

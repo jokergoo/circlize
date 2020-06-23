@@ -9,8 +9,8 @@ Draw rectangle-like grid
 \usage{
 circos.rect(
     xleft, ybottom, xright, ytop,
-    sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"),
+    sector.index = get.current.sector.index(),
+    track.index = get.current.track.index(),
     rot = 0,
     ...)
 }

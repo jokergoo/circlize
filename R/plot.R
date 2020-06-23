@@ -260,7 +260,7 @@ circos.trackPlotRegion = function(
 # Create plotting regions for a whole track
 #
 # == param
-# -... pass to `circos.trackPlotRegion`
+# -... Pass to `circos.trackPlotRegion`.
 #
 # == details
 # Shortcut function of `circos.trackPlotRegion`.
@@ -722,7 +722,7 @@ parse_unit = function(str) {
 # Set gaps between tracks
 #
 # == param
-# -gap Gap between two tracks
+# -gap Gap between two tracks. Use `mm_h`/`cm_h`/`inches_h` to set in absolute units.
 #
 # == example
 # circos.initialize(fa = letters[1:10], xlim = c(0, 1))

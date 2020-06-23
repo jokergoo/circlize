@@ -1,3 +1,8 @@
+Changes in version 0.4.11
+-----------------------------------------------------------------------
+* `chordDiagram()`: add `link.auto` argument
+* `chordDiagram()`: add `link.target.prop` and `target.prop.height` arguments
+
 Changes in version 0.4.10
 -----------------------------------------------------------------------
 * `highlight.sector()`: fixed a bug when circos.par("clock.wise" = FALSE)

@@ -7,20 +7,20 @@ Convert units
 Convert units
 }
 \usage{
-mm_h(...)
+mm_h(h)
 }
 \arguments{
 
-  \item{...}{pass to \code{\link{convert_length}}}
+  \item{h}{The height in numeric.}
 
 }
 \details{
-This function is same as \code{\link{convert_length}} in mm unit.
+See explanations in \code{\link{convert_length}} page.
 }
 \author{
 Zuguang Gu <z.gu@dkfz.de>
 }
 \examples{
-# see example in `convert_length` page
+# see examples in `convert_length` page
 NULL
 }

@@ -21,15 +21,18 @@ chordDiagram(
     symmetric = FALSE,
     keep.diagonal = FALSE,
     direction.type = "diffHeight",
-    diffHeight = convert_height(2, "mm"),
+    diffHeight = mm_h(2),
+    link.target.prop = TRUE,
+    target.prop.height = mm_h(1),
     reduce = 1e-5,
     self.link = 2,
     preAllocateTracks = NULL,
     annotationTrack = c("name", "grid", "axis"),
-    annotationTrackHeight = convert_height(c(3, 2), "mm"),
+    annotationTrackHeight = mm_h(c(3, 2)),
     link.border = NA,
     link.lwd = par("lwd"),
     link.lty = par("lty"),
+    link.auto = TRUE,
     link.sort = FALSE,
     link.decreasing = TRUE,
     link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4),
@@ -41,6 +44,7 @@ chordDiagram(
     link.largest.ontop = FALSE,
     link.visible = TRUE,
     link.rank = NULL,
+    link.zindex = NULL,
     link.overlap = FALSE,
     scale = FALSE,
     group = NULL,
@@ -64,6 +68,8 @@ chordDiagram(
   \item{keep.diagonal}{pass to \code{\link{chordDiagramFromMatrix}}}
   \item{direction.type}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{diffHeight}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{link.target.prop}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{target.prop.height}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{reduce}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{self.link}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{preAllocateTracks}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
@@ -72,6 +78,7 @@ chordDiagram(
   \item{link.border}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{link.lwd}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{link.lty}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
+  \item{link.auto}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{link.sort}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{link.decreasing}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{link.arr.length}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
@@ -82,7 +89,8 @@ chordDiagram(
   \item{link.arr.col}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{link.largest.ontop}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{link.visible}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
-  \item{link.rank}{order to add links to the circle, a large value means to add it later.}
+  \item{link.rank}{This is argument is removed.}
+  \item{link.zindex}{order to add links to the circle, a large value means to add it later.}
   \item{link.overlap}{pass to \code{\link{chordDiagramFromMatrix}} or \code{\link{chordDiagramFromDataFrame}}}
   \item{scale}{scale each sector to same width}
   \item{group}{It contains the group labels and the sector names are used as the names in the vector.}

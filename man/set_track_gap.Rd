@@ -11,7 +11,7 @@ set_track_gap(gap = 0.02)
 }
 \arguments{
 
-  \item{gap}{Gap between two tracks}
+  \item{gap}{Gap between two tracks. Use \code{\link{mm_h}}/\code{\link{cm_h}}/\code{\link{inches_h}} to set in absolute units.}
 
 }
 \examples{

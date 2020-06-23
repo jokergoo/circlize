@@ -11,16 +11,14 @@ inch_y(...)
 }
 \arguments{
 
-  \item{...}{pass to \code{\link{convert_y}}}
+  \item{...}{pass to \code{\link{inches_y}}}
 
 }
 \details{
-This function is same as \code{\link{convert_y}} in inch unit.
-}
-\author{
-Zuguang Gu <z.gu@dkfz.de>
+This function is the same as \code{\link{inches_y}}.
 }
 \examples{
-# see example in `convert_y` page
+# There is no example
 NULL
+
 }

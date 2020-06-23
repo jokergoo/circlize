@@ -21,6 +21,9 @@ circos.heatmap.initialize(mat, split = NULL, cluster = TRUE,
   \item{dend.callback}{A callback function that is applied to the dendrogram in every sector.}
 
 }
+\seealso{
+\url{https://jokergoo.github.io/2020/05/21/make-circular-heatmaps/}
+}
 \examples{
 # There is no example
 NULL

@@ -11,16 +11,14 @@ inch_x(...)
 }
 \arguments{
 
-  \item{...}{pass to \code{\link{convert_x}}}
+  \item{...}{pass to \code{\link{inches_x}}.}
 
 }
 \details{
-This function is same as \code{\link{convert_x}} in inch unit.
-}
-\author{
-Zuguang Gu <z.gu@dkfz.de>
+This function is the same as \code{\link{inches_x}}.
 }
 \examples{
-# see example in `convert_x` page
+# There is no example
 NULL
+
 }

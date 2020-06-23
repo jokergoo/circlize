@@ -11,16 +11,14 @@ uy(...)
 }
 \arguments{
 
-  \item{...}{pass to \code{\link{convert_y}}}
+  \item{...}{pass to \code{\link{convert_y}}.}
 
 }
 \details{
-This function is same as \code{\link{convert_y}}.
-}
-\author{
-Zuguang Gu <z.gu@dkfz.de>
+Please do not use this function. Use \code{\link{mm_y}}/\code{\link{cm_y}}/inches_y` instead.
 }
 \examples{
-# see example in `convert_y` page
+# There is no example
 NULL
+
 }

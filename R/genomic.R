@@ -144,10 +144,10 @@ circos.initializeWithIdeogram = function(
 # Add an ideogram track
 #
 # == param
-# -cytoband a data frame or a file path, pass to `read.cytoband`
-# -species Abbreviations of species, pass to `read.cytoband`
-# -track.height height of the ideogram track
-# -track.margin margins for the track
+# -cytoband A data frame or a file path, pass to `read.cytoband`.
+# -species Abbreviations of the genome, pass to `read.cytoband`.
+# -track.height Height of the ideogram track.
+# -track.margin Margins for the track.
 #
 # == seealso
 # https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#ideograms
@@ -164,7 +164,7 @@ circos.initializeWithIdeogram = function(
 circos.genomicIdeogram = function(
 	cytoband = system.file(package = "circlize", "extdata", "cytoBand.txt"), 
 	species = NULL, 
-	track.height = convert_height(2, "mm"),
+	track.height = mm_h(2),
 	track.margin = circos.par("track.margin")) {
 
 	chromosome.index = get.all.sector.index()
@@ -191,14 +191,14 @@ circos.genomicIdeogram = function(
 # Initialize circular plot with any genomic data
 #
 # == param
-# -data         A data frame containing genomic data.
+# -data         A data frame in bed format.
 # -sector.names Labels for each sectors which will be drawn along each sector. It will not modify values of sector index.
 # -major.by     Increment of major ticks. It is calculated automatically if the value is not set (about every 10 degrees there is a major tick).
 # -plotType     If it is not ``NULL``, there will create a new track containing axis and names for sectors.
 #               This argument controls which part should be drawn, ``axis`` for genomic axis and ``labels`` for chromosome names
 # -tickLabelsStartFromZero Whether axis tick labels start from 0? This will only affect the axis labels while not affect x-values in cells.
-# -axis.labels.cex the font size for the axis tick labels.
-# -labels.cex   the font size for the labels.
+# -axis.labels.cex The font size for the axis tick labels.
+# -labels.cex   The font size for the labels.
 # -track.height If ``PlotType`` is not ``NULL``, height of the annotation track.
 # -...          Pass to `circos.initialize`
 #
@@ -225,7 +225,10 @@ circos.genomicIdeogram = function(
 # circos.genomicInitialize(df)
 # circos.clear()
 #
-# circos.genomicInitialize(df, major.by = 10000)
+# circos.genomicInitialize(df, tickLabelsStartFromZero = FALSE)
+# circos.clear()
+#
+# circos.genomicInitialize(df, major.by = 5000)
 # circos.clear()
 #
 # circos.genomicInitialize(df, plotType = "labels")
@@ -326,7 +329,7 @@ circos.genomicInitialize = function(
 # -labels labels corresponding to ``major.at``. If ``labels`` is set, ``major.at`` must be set.
 # -major.by Increment of major ticks. It is calculated automatically if the value is not set (about every 10 degrees there is a major tick).
 # -tickLabelsStartFromZero Whether axis tick labels start from 0? This will only affect the axis labels while not affect x-values in cells.
-# -labels.cex the font size for the axis tick labels.
+# -labels.cex The font size for the axis tick labels.
 # -sector.index Index for the sector
 # -track.index  Index for the track
 # -... Other arguments pass to `circos.axis`.
@@ -338,8 +341,12 @@ circos.genomicInitialize = function(
 # https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#genomic-axes
 #
 # == example
-# circos.initializeWithIdeogram(plotType = NULL)
+# circos.initializeWithIdeogram(chromosome.index = paste0("chr", 1:4), plotType = NULL)
 # circos.track(ylim = c(0, 1), panel.fun = function(x, y) circos.genomicAxis())
+# circos.track(ylim = c(0, 1), track.height = 0.1)
+# circos.track(track.index = get.current.track.index(), panel.fun = function(x, y) {
+#     circos.genomicAxis(h = "bottom", direction = "inside")
+# })
 # circos.clear()
 #
 circos.genomicAxis = function(
@@ -349,8 +356,8 @@ circos.genomicAxis = function(
 	major.by = NULL, 
 	tickLabelsStartFromZero = TRUE,
 	labels.cex = 0.4*par("cex"), 
-	sector.index = get.cell.meta.data("sector.index"),
-	track.index = get.cell.meta.data("track.index"), 
+	sector.index = get.current.sector.index(),
+	track.index = get.current.track.index(), 
 	...) {
 
 	if(!h %in% c("top", "bottom")) {
@@ -683,7 +690,7 @@ circos.genomicTrackPlotRegion = function(
 # Create a track for genomic graphics
 #
 # == param
-# -... pass to `circos.genomicTrackPlotRegion`
+# -... Pass to `circos.genomicTrackPlotRegion`.
 #
 # == details
 # shortcut function of `circos.genomicTrackPlotRegion`.
@@ -721,34 +728,37 @@ getI = function(...) {
 # Add points to a plotting region, specifically for genomic graphics
 #
 # ==param
-# -region A data frame contains 2 columns which correspond to start positions and end positions
-# -value  A data frame contains values and other information
+# -region A data frame contains 2 columns which correspond to start positions and end positions.
+# -value  A data frame contains values and other information.
 # -numeric.column Which column in ``value`` data frame should be taken as y-value.
 #                 If it is not defined, the whole numeric columns in ``value`` will be taken.
-# -sector.index Pass to `circos.points`
-# -track.index Pass to `circos.points`
+# -sector.index Index of sector.
+# -track.index Index of track.
 # -posTransform Self-defined function to transform genomic positions, see `posTransform.default` for explanation
-# -col color of points. If there is only one numeric column, the length of ``col`` can be either one or number of rows of ``region``.
+# -col Color of points. If there is only one numeric column, the length of ``col`` can be either one or number of rows of ``region``.
 #      If there are more than one numeric column, the length of ``col`` can be either one or number of numeric columns.
-#      Pass to `circos.points`
-# -pch Type of points. Settings are similar as ``col``. Pass to `circos.points`
-# -cex Size of points. Settings are similar as ``col``. Pass to `circos.points`
-# -bg background colors for points.
-# -... Mysterious parameters
+#      Pass to `circos.points`.
+# -pch Type of points. Settings are similar as ``col``. Pass to `circos.points`.
+# -cex Size of points. Settings are similar as ``col``. Pass to `circos.points`.
+# -bg Background colors for points.
+# -... Mysterious parameters.
 #
 # == details
-# The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
+# The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrack`.
+#
+# The function behaviours differently from different formats of input, see the examples in 
+# the "Examples" Section or go to https://jokergoo.github.io/circlize_book/book/modes-of-input.html for more details.
 #
 # == example
 # circos.par("track.height" = 0.1)
 # circos.initializeWithIdeogram(plotType = NULL)
 #
 # bed = generateRandomBed(nr = 100)
-# circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
+# circos.genomicTrack(bed, panel.fun = function(region, value, ...) {
 #     circos.genomicPoints(region, value, pch = 16, cex = 0.5, ...)
 # })
 #
-# circos.genomicTrackPlotRegion(bed, stack = TRUE, panel.fun = function(region, value, ...) {
+# circos.genomicTrack(bed, stack = TRUE, panel.fun = function(region, value, ...) {
 #     circos.genomicPoints(region, value, pch = 16, cex = 0.5, ...)
 #     i = getI(...)
 #     cell.xlim = get.cell.meta.data("cell.xlim")
@@ -760,13 +770,13 @@ getI = function(...) {
 # bed_list = list(bed1, bed2)
 #
 # # data frame list
-# circos.genomicTrackPlotRegion(bed_list, panel.fun = function(region, value, ...) {
+# circos.genomicTrack(bed_list, panel.fun = function(region, value, ...) {
 #     cex = (value[[1]] - min(value[[1]]))/(max(value[[1]]) - min(value[[1]]))
 #     i = getI(...)
 #     circos.genomicPoints(region, value, cex = cex, pch = 16, col = i, ...)
 # })
 #
-# circos.genomicTrackPlotRegion(bed_list, stack = TRUE,
+# circos.genomicTrack(bed_list, stack = TRUE,
 #     panel.fun = function(region, value, ...) {
 #     cex = (value[[1]] - min(value[[1]]))/(max(value[[1]]) - min(value[[1]]))
 #     i = getI(...)
@@ -776,12 +786,12 @@ getI = function(...) {
 # })
 #
 # bed = generateRandomBed(nr = 100, nc = 4)
-# circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
+# circos.genomicTrack(bed, panel.fun = function(region, value, ...) {
 #     cex = (value[[1]] - min(value[[1]]))/(max(value[[1]]) - min(value[[1]]))
 #     circos.genomicPoints(region, value, cex = 0.5, pch = 16, col = 1:4, ...)
 # })
 #
-# circos.genomicTrackPlotRegion(bed, stack = TRUE, panel.fun = function(region, value, ...) {
+# circos.genomicTrack(bed, stack = TRUE, panel.fun = function(region, value, ...) {
 #     cex = (value[[1]] - min(value[[1]]))/(max(value[[1]]) - min(value[[1]]))
 #     i = getI(...)
 #     circos.genomicPoints(region, value, cex = cex, pch = 16, col = i, ...)
@@ -877,31 +887,34 @@ circos.genomicPoints = function(
 # Add lines to a plotting region, specifically for genomic graphics
 #
 # == param
-# -region A data frame contains 2 column which correspond to start position and end position
-# -value  A data frame contains values and other information
+# -region A data frame contains 2 column which correspond to start positions and end positions.
+# -value  A data frame contains values and other information.
 # -numeric.column Which column in ``value`` data frame should be taken as y-value.
 #                 If it is not defined, the whole numeric columns in ``value`` will be taken.
-# -sector.index Pass to `circos.lines`
-# -track.index Pass to `circos.lines`
-# -posTransform Self-defined function to transform genomic positions, see `posTransform.default` for explaination
+# -sector.index Index of sector.
+# -track.index Index of track.
+# -posTransform Self-defined function to transform genomic positions, see `posTransform.default` for explaination.
 # -col col of lines/areas. If there are more than one numeric column, the length of ``col`` can be either one or number of numeric columns.
 #      If there is only one numeric column and type is either ``segment`` or ``h``, 
 #      the length of ``col`` can be either one or number of rows of ``region``.
 #      pass to `circos.lines`
-# -lwd Settings are similar as ``col``. Pass to `circos.lines`
-# -lty Settings are similar as ``col``. Pass to `circos.lines`
+# -lwd Settings are similar as ``col``. Pass to `circos.lines`.
+# -lty Settings are similar as ``col``. Pass to `circos.lines`.
 # -type There is an additional option ``segment`` which plot segment lines from start position to end position. Settings are similar as ``col``. Pass to `circos.lines`. 
-# -area Settings are similar as ``col``. Pass to `circos.lines`
+# -area Settings are similar as ``col``. Pass to `circos.lines`.
 # -area.baseline Deprecated, use ``baseline`` instead.
-# -baseline Settings are similar as ``col``. Pass to `circos.lines`
-# -border Settings are similar as ``col``. Pass to `circos.lines`
-# -pt.col Settings are similar as ``col``. Pass to `circos.lines`
-# -cex Settings are similar as ``col``. Pass to `circos.lines`
-# -pch Settings are similar as ``col``. Pass to `circos.lines`
-# -... mysterious parameters
+# -baseline Settings are similar as ``col``. Pass to `circos.lines`.
+# -border Settings are similar as ``col``. Pass to `circos.lines`.
+# -pt.col Settings are similar as ``col``. Pass to `circos.lines`.
+# -cex Settings are similar as ``col``. Pass to `circos.lines`.
+# -pch Settings are similar as ``col``. Pass to `circos.lines`.
+# -... Mysterious parameters.
 #
 # == details
-# The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
+# The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrack`.
+#
+# The function behaviours differently from different formats of input, see the examples in 
+# the "Examples" Section or go to https://jokergoo.github.io/circlize_book/book/modes-of-input.html for more details.
 #
 # == examples
 # \donttest{
@@ -910,7 +923,7 @@ circos.genomicPoints = function(
 # circos.initializeWithIdeogram(plotType = NULL)
 #
 # bed = generateRandomBed(nr = 100)
-# circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
+# circos.genomicTrack(bed, panel.fun = function(region, value, ...) {
 #     circos.genomicLines(region, value, type = "l", ...)
 # })
 #
@@ -918,29 +931,29 @@ circos.genomicPoints = function(
 # bed2 = generateRandomBed(nr = 100)
 # bed_list = list(bed1, bed2)
 #
-# circos.genomicTrackPlotRegion(bed_list, panel.fun = function(region, value, ...) {
+# circos.genomicTrack(bed_list, panel.fun = function(region, value, ...) {
 #     i = getI(...)
 #     circos.genomicLines(region, value, col = i, ...)
 # })
 #
-# circos.genomicTrackPlotRegion(bed_list, stack = TRUE, 
+# circos.genomicTrack(bed_list, stack = TRUE, 
 #     panel.fun = function(region, value, ...) {
 #     i = getI(...)
 #     circos.genomicLines(region, value, col = i, ...)
 # })
 #
 # bed = generateRandomBed(nr = 100, nc = 4)
-# circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
+# circos.genomicTrack(bed, panel.fun = function(region, value, ...) {
 #     circos.genomicLines(region, value, col = 1:4, ...)
 # })
 #
-# circos.genomicTrackPlotRegion(bed, stack = TRUE, panel.fun = function(region, value, ...) {
+# circos.genomicTrack(bed, stack = TRUE, panel.fun = function(region, value, ...) {
 #     i = getI(...)
 #     circos.genomicLines(region, value, col = i, ...)
 # })
 #
 # bed = generateRandomBed(nr = 100)
-# circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
+# circos.genomicTrack(bed, panel.fun = function(region, value, ...) {
 #     circos.genomicLines(region, value, type = "segment", lwd = 2, ...)
 # })
 #
@@ -950,8 +963,8 @@ circos.genomicLines = function(
 	region, 
 	value, 
 	numeric.column = NULL, 
-	sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"), 
+	sector.index = get.current.sector.index(),
+    track.index = get.current.track.index(), 
     posTransform = NULL, 
 	col = ifelse(area, "grey", "black"), 
 	lwd = par("lwd"),
@@ -1088,65 +1101,28 @@ circos.genomicLines = function(
 # Draw rectangle-like grid, specifically for genomic graphics
 #
 # == param
-# -region A data frame contains 2 column which correspond to start position and end position
-# -value  A data frame contains values and other information
-# -ytop A vector or a single value indicating top position of rectangles
-# -ybottom A vector or a single value indicating bottom position of rectangles
-# -ytop.column If ``ytop`` is in ``value``, the index of the column
-# -ybottom.column If ``ybottom`` is in ``value``, the index of the column
-# -sector.index Pass to `circos.rect`
-# -track.index Pass to `circos.rect`
-# -posTransform Self-defined function to transform genomic positions, see `posTransform.default` for explaination
-# -col The length of ``col`` can be either one or number of rows of ``region``. Pass to `circos.rect`
-# -border Settings are similar as ``col``. Pass to `circos.rect`
-# -lty Settings are similar as ``col``. Pass to `circos.rect`
-# -... Mysterious parameters
+# -region A data frame contains 2 column which correspond to start positions and end positions.
+# -value  A data frame contains values and other information.
+# -ytop A vector or a single value indicating top position of rectangles.
+# -ybottom A vector or a single value indicating bottom position of rectangles.
+# -ytop.column If ``ytop`` is in ``value``, the index of the column.
+# -ybottom.column If ``ybottom`` is in ``value``, the index of the column.
+# -sector.index Index of sector.
+# -track.index Index of track.
+# -posTransform Self-defined function to transform genomic positions, see `posTransform.default` for explaination.
+# -col The length of ``col`` can be either one or number of rows of ``region``. Pass to `circos.rect`.
+# -border Settings are similar as ``col``. Pass to `circos.rect`.
+# -lty Settings are similar as ``col``. Pass to `circos.rect`.
+# -... Mysterious parameters.
 #
 # == details
-# The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
+# The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrack`.
+#
+# The function behaviours differently from different formats of input, see the examples in 
+# the "Examples" Section or go to https://jokergoo.github.io/circlize_book/book/modes-of-input.html for more details.
 #
 # == example
 # \donttest{
-# ############################
-# ### rect matrix
-# circos.par("track.height" = 0.1, cell.padding = c(0, 0, 0, 0))
-# circos.initializeWithIdeogram(plotType = NULL)
-#
-# bed = generateRandomBed(nr = 100, nc = 4)
-# circos.genomicTrackPlotRegion(bed, stack = TRUE, panel.fun = function(region, value, ...) {
-#     circos.genomicRect(region, value, col = sample(1:10, nrow(region), replace = TRUE), 
-#         border = NA, ...)
-#     i = getI(...)
-#     cell.xlim = get.cell.meta.data("cell.xlim")
-#     #circos.lines(cell.xlim, c(i, i), lty = 2, col = "#00000040")
-# }, bg.border = NA)
-#
-# circos.genomicPosTransformLines(bed, posTransform = posTransform.default,
-#     horizontalLine = "top")
-#
-# circos.genomicTrackPlotRegion(bed, stack = TRUE, panel.fun = function(region, value, ...) {
-#     circos.genomicRect(region, value, col = sample(1:10, nrow(region), replace = TRUE), 
-#         border = NA, posTransform = posTransform.default, ...)
-#     i = getI(...)
-#     cell.xlim = get.cell.meta.data("cell.xlim")
-#     #circos.lines(cell.xlim, c(i, i), lty = 2, col = "#00000040")
-# }, bg.border = NA)
-#
-# circos.genomicPosTransformLines(bed, posTransform = posTransform.default,
-#     direction = "outside", horizontalLine = "bottom")
-#
-# circos.genomicTrackPlotRegion(bed, stack = TRUE, panel.fun = function(region, value, ...) {
-#     circos.genomicRect(region, value, col = sample(1:10, nrow(region), replace = TRUE), 
-#         border = NA, ...)
-#     i = getI(...)
-#     cell.xlim = get.cell.meta.data("cell.xlim")
-#     #circos.lines(cell.xlim, c(i, i), lty = 2, col = "#00000040")
-# }, bg.border = NA)
-#
-# circos.clear()
-#
-# ##########################
-# ### rect from bed list
 # circos.par("track.height" = 0.1, cell.padding = c(0, 0, 0, 0))
 # circos.initializeWithIdeogram(plotType = NULL)
 #
@@ -1154,7 +1130,7 @@ circos.genomicLines = function(
 # bed2 = generateRandomBed(nr = 100)
 # bed_list = list(bed1, bed2)
 # f = colorRamp2(breaks = c(-1, 0, 1), colors = c("green", "black", "red"))
-# circos.genomicTrackPlotRegion(bed_list, stack = TRUE,
+# circos.genomicTrack(bed_list, stack = TRUE,
 #     panel.fun = function(region, value, ...) {
 #  
 #     circos.genomicRect(region, value, col = f(value[[1]]), 
@@ -1164,7 +1140,7 @@ circos.genomicLines = function(
 #     circos.lines(cell.xlim, c(i, i), lty = 2, col = "#000000")
 # })
 #
-# circos.genomicTrackPlotRegion(bed_list, ylim = c(0, 3),
+# circos.genomicTrack(bed_list, ylim = c(0, 3),
 #     panel.fun = function(region, value, ...) {
 #     i = getI(...)
 #     circos.genomicRect(region, value, ytop = i+0.4, ybottom = i-0.4, col = f(value[[1]]), 
@@ -1174,12 +1150,12 @@ circos.genomicLines = function(
 #     circos.lines(cell.xlim, c(i, i), lty = 2, col = "#000000")
 # })
 #
-# circos.genomicTrackPlotRegion(bed1, panel.fun = function(region, value, ...) {
+# circos.genomicTrack(bed1, panel.fun = function(region, value, ...) {
 #     circos.genomicRect(region, value, col = "red", border = NA, ...)
 #
 # })
 #
-# circos.genomicTrackPlotRegion(bed_list, panel.fun = function(region, value, ...) {
+# circos.genomicTrack(bed_list, panel.fun = function(region, value, ...) {
 #     i = getI(...)
 #     circos.genomicRect(region, value, col = i, border = NA, ...)
 #
@@ -1194,8 +1170,8 @@ circos.genomicRect = function(
 	ybottom = NULL, 
 	ytop.column = NULL, 
 	ybottom.column = NULL,
-	sector.index = get.cell.meta.data("sector.index"),
-    track.index = get.cell.meta.data("track.index"), 
+	sector.index = get.current.sector.index(),
+    track.index = get.current.track.index(), 
     posTransform = NULL, 
 	col = NA, 
 	border = "black", 
@@ -1290,30 +1266,30 @@ circos.genomicRect = function(
 # Draw text in a cell, specifically for genomic graphics
 #
 # == param
-# -region A data frame contains 2 column which correspond to start position and end position
-# -value  A data frame contains values and other information
+# -region A data frame contains 2 column which correspond to start positions and end positions.
+# -value  A data frame contains values and other information.
 # -y A vector or a single value indicating position of text.
-# -labels Labels of text corresponding to each genomic positions
-# -labels.column If labels are in ``value``, index of column in ``value``
+# -labels Labels of text corresponding to each genomic positions.
+# -labels.column If labels are in ``value``, index of column in ``value``.
 # -numeric.column Which column in ``value`` data frame should be taken as y-value.
 #                 If it is not defined, only the first numeric columns in ``value`` will be taken.
-# -sector.index Pass to `circos.rect`
-# -track.index Pass to `circos.rect`
-# -posTransform Self-defined function to transform genomic positions, see `posTransform.default` for explanation
-# -facing Passing to `circos.text`. Settings are similar as ``col`` 
+# -sector.index Index of sector.
+# -track.index Index of track.
+# -posTransform Self-defined function to transform genomic positions, see `posTransform.default` for explanation.
+# -facing Passing to `circos.text`. Settings are similar as ``col``.
 # -niceFacing   Should the facing of text be adjusted to fit human eyes?
 # -direction Deprecated, use ``facing`` instead. 
-# -adj Pass to `circos.text`. Settings are similar as ``col``
-# -cex Pass to `circos.text`. Settings are similar as ``col``
+# -adj Pass to `circos.text`. Settings are similar as ``col``.
+# -cex Pass to `circos.text`. Settings are similar as ``col``.
 # -col Pass to `circos.text`. The length of ``col`` can be either one or number of rows of ``region``.
-# -font Pass to `circos.text`. Settings are similar as ``col``
-# -padding pass to ``posTransform`` if it is set as `posTransform.text`
-# -extend pass to ``posTransform`` if it is set as `posTransform.text`
-# -align_to pass to ``posTransform`` if it is set as `posTransform.text`
-# -... Mysterious parameters
+# -font Pass to `circos.text`. Settings are similar as ``col``.
+# -padding pass to ``posTransform`` if it is set as `posTransform.text`.
+# -extend pass to ``posTransform`` if it is set as `posTransform.text`.
+# -align_to pass to ``posTransform`` if it is set as `posTransform.text`.
+# -... Mysterious parameters.
 #
 # == details
-# The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrackPlotRegion`.
+# The function is a low-level graphical function and usually is put in ``panel.fun`` when using `circos.genomicTrack`.
 #
 # == example
 # circos.par("track.height" = 0.1, cell.padding = c(0, 0, 0, 0))
@@ -1321,12 +1297,12 @@ circos.genomicRect = function(
 #
 # bed = generateRandomBed(nr = 20)
 #
-# circos.genomicTrackPlotRegion(bed, ylim = c(0, 1), panel.fun = function(region, value, ...) {
+# circos.genomicTrack(bed, ylim = c(0, 1), panel.fun = function(region, value, ...) {
 #     circos.genomicText(region, value, y = 0.5, labels = "text", ...)
 # })
 #
 # bed = cbind(bed, sample(letters, nrow(bed), replace = TRUE))
-# circos.genomicTrackPlotRegion(bed, panel.fun = function(region, value, ...) {
+# circos.genomicTrack(bed, panel.fun = function(region, value, ...) {
 #     circos.genomicText(region, value, labels.column = 2, ...)
 # })
 #
@@ -1338,8 +1314,8 @@ circos.genomicText = function(
 	labels = NULL, 
 	labels.column = NULL,
 	numeric.column = NULL, 
-	sector.index = get.cell.meta.data("sector.index"), 
-	track.index = get.cell.meta.data("track.index"), 
+	sector.index = get.current.sector.index(), 
+	track.index = get.current.track.index(), 
 	posTransform = NULL, 
 	direction = NULL, 
 	facing = "inside", 
@@ -1452,16 +1428,16 @@ circos.genomicText = function(
 # Add links from two sets of genomic positions
 #
 # == param
-# -region1 A genomic data frame
-# -region2 A genomic data frame
-# -rou Pass to `circos.link`
-# -rou1 Pass to `circos.link`
-# -rou2 Pass to `circos.link`
-# -col Pass to `circos.link`, length can be either one or nrow of ``region1``
-# -lwd Pass to `circos.link`, length can be either one or nrow of ``region1``
-# -lty Pass to `circos.link`, length can be either one or nrow of ``region1``
-# -border Pass to `circos.link`, length can be either one or nrow of ``region1``
-# -... Pass to `circos.link`
+# -region1 A data frame in bed format.
+# -region2 A data frame in bed format.
+# -rou Pass to `circos.link`.
+# -rou1 Pass to `circos.link`.
+# -rou2 Pass to `circos.link`.
+# -col Pass to `circos.link`, length can be either one or nrow of ``region1``.
+# -lwd Pass to `circos.link`, length can be either one or nrow of ``region1``.
+# -lty Pass to `circos.link`, length can be either one or nrow of ``region1``.
+# -border Pass to `circos.link`, length can be either one or nrow of ``region1``.
+# -... Pass to `circos.link`.
 #
 # == details
 # Of course, number of rows should be same in ``region1`` and ``region2``.
@@ -1554,17 +1530,17 @@ circos.genomicLink = function(
 # Add genomic position transformation lines between tracks
 #
 # == param
-# -data A data frame containing genomic data
-# -track.height Height of the track
+# -data A data frame containing genomic data.
+# -track.height Height of the track.
 # -posTransform Genomic position transformation function, see `posTransform.default` for an example.
-# -horizontalLine Whether to draw horizontal lines which indicate region width 
-# -track.margin Margin of tracks
+# -horizontalLine Whether to draw horizontal lines which indicate region width .
+# -track.margin Margin of tracks.
 # -direction Type of the transformation. ``inside`` means position transformed track are located inside 
 #       and ``outside`` means position transformed track are located outside.
-# -col Color of lines, can be length of one or nrow of ``data``
-# -lwd Width of lines
-# -lty Style of lines
-# -... pass to `circos.trackPlotRegion`
+# -col Color of lines, can be length of one or nrow of ``data``.
+# -lwd Width of lines.
+# -lty Style of lines.
+# -... Pass to `circos.trackPlotRegion`.
 #
 # == details
 # There is one representative situation when such position transformation needs to be applied. 
@@ -1704,24 +1680,32 @@ circos.genomicPosTransformLines = function(
 # Calculate and add genomic density track
 #
 # == param
-# -data A bed-file-like data frame or a list of data frames
-# -ylim.force Whether to force upper bound of ``ylim`` to be 1.
-# -window.size Pass to `genomicDensity`
-# -overlap Pass to `genomicDensity`
-# -count_by Pass to `genomicDensity`
+# -data A bed-file-like data frame or a list of data frames. If the input is a list of data frames.
+#     there will be multiple density plot in one same track.
+# -ylim.force Whether to force upper bound of ``ylim`` to be 1. Ignored if ``count_by`` is set to ``number``.
+# -window.size Pass to `genomicDensity`.
+# -overlap Pass to `genomicDensity`.
+# -count_by Pass to `genomicDensity`.
 # -col  Colors. It should be length of one. If ``data`` is a list of data frames, the length of ``col``
-#       can also be the length of the list.
-# -lwd  Width of lines
-# -lty  Style of lines
-# -type Type of lines, see `circos.lines`
-# -area See `circos.lines`
+#       can also be the length of the list. If multiple sets of genomic regions are visualized in one
+#       single track, you should set the colors with transparency to distinguish them.
+# -lwd  Width of lines, the same setting as ``col`` argument.
+# -lty  Style of lines, the same setting as ``col`` argument.
+# -type Type of lines, see `circos.lines`.
+# -area See `circos.lines`.
 # -area.baseline Deprecated, use ``baseline`` instead.
-# -baseline See `circos.lines`
-# -border See `circos.lines`
-# -... Pass to `circos.trackPlotRegion`
+# -baseline See `circos.lines`.
+# -border See `circos.lines`.
+# -... Pass to `circos.trackPlotRegion`.
 #
 # == details
 # This function is a high-level graphical function, and it will create a new track.
+#
+# If you have multiple sets of genomic regions, you should make sure the density ranges 
+# for all sets are similar, or I suggest you should put them into different tracks. One example
+# can be found in the "Examples" Section where the density range for ``bed_list[[2]]`` is too high
+# compared to the range for ``bed_list[[1]]``, thus, it is better to put the two sets of
+# regions into two separate tracks.
 #
 # == seealso
 # https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#genomic-density-and-rainfall-plot
@@ -1738,7 +1722,11 @@ circos.genomicPosTransformLines = function(
 #
 # circos.genomicDensity(bed_list[[1]], col = c("#FF000080"), track.height = 0.1)
 # circos.genomicDensity(bed_list[[2]], col = c("#0000FF80"), track.height = 0.1)
+# circos.clear()
 #
+# ############ draw the two densities in one track  #############
+# circos.initializeWithIdeogram(plotType = c("axis", "labels"))
+# circos.genomicDensity(bed_list, col = c("#FF000080", "#0000FF80"), track.height = 0.2)
 # circos.clear()
 # }
 circos.genomicDensity = function(
@@ -1796,11 +1784,12 @@ circos.genomicDensity = function(
 		#cat(window.size, "is choosen as the window size.\n")
 	}
 	
+	count_by = match.arg(count_by)[1]
 	df = vector("list", length = length(data))
 	for(i in seq_along(data)) {
 		df[[i]] = genomicDensity(data[[i]], window.size = window.size, overlap = overlap, count_by = count_by)
 	}
-	if(ylim.force) {
+	if(ylim.force && count_by == "percent") {
 		ymax = 1
 	} else {
 		ymax = max(sapply(df, function(gr) max(gr[[4]])))
@@ -2058,16 +2047,16 @@ normalizeToDataFrame = function(data, sort = FALSE) {
 # Genomic rainfall plot
 #
 # == param
-# -data A bed-file-like data frame or a list of data frames
-# -mode how to calculate the distance of two neighbouring regions, pass to `rainfallTransform`
-# -ylim ylim for rainfall plot track. If ``normalize_to_width`` is ``FALSE``, the value should correspond to log10(dist+1),
-#       and if ``normalize_to_width`` is ``TRUE``, the value should correspond to log2(rel_dist).
+# -data A bed-file-like data frame or a list of data frames.
+# -mode How to calculate the distance of two neighbouring regions, pass to `rainfallTransform`.
+# -ylim ylim for rainfall plot track. If ``normalize_to_width`` is ``FALSE``, the value should correspond to ``log10(dist+1)``,
+#       and if ``normalize_to_width`` is ``TRUE``, the value should correspond to ``log2(rel_dist)``.
 # -col  Color of points. It should be length of one. If ``data`` is a list, the length of ``col``
 #       can also be the length of the list.
-# -pch  Style of points
-# -cex  Size of points
+# -pch  Style of points.
+# -cex  Size of points.
 # -normalize_to_width If it is ``TRUE``, the value is the relative distance divided by the width of the region.
-# -... Pass to `circos.trackPlotRegion`
+# -... Pass to `circos.trackPlotRegion`.
 #
 # == details
 # This is high-level graphical function, which mean, it will create a new track.
@@ -2339,20 +2328,22 @@ posTransform.text = function(
 # Add heatmaps for selected regions
 #
 # == param
-# -bed a data frame in bed format, the matrix is stored from the fourth column.
-# -col colors for the heatmaps. The value can be a matrix or a color mapping function generated by `colorRamp2`.
-# -na_col color for NA values.
-# -numeric.column column index for the numeric columns. The values can be integer index or character index
-# -border border of the heatmap grids.
-# -border_lwd line width for borders of heatmap grids
-# -border_lty line style for borders of heatmap grids
-# -connection_height height of the connection lines. If it is set to ``NULL``, no connection will be drawn.
-# -line_col col of the connection line. The value can be a vector.
-# -line_lwd line width of the connection lines.
-# -line_lty line style of the connection lines.
-# -heatmap_height height of the heatmap track
-# -side side of the heatmaps. Is the heatmap facing inside or outside?
-# -track.margin bottom and top margins
+# -bed A data frame in bed format, the matrix should be stored from the fourth column.
+# -col Colors for the heatmaps. The value can be a matrix or a color mapping function generated by `colorRamp2`.
+# -na_col Color for NA values.
+# -numeric.column Column index for the numeric columns. The values can be integer index or character index.
+#     By default it takes all numeric columns from the fourth column.
+# -border Border of the heatmap grids.
+# -border_lwd Line width for borders of heatmap grids.
+# -border_lty Line style for borders of heatmap grids.
+# -connection_height Height of the connection lines. If it is set to ``NULL``, no connection will be drawn.
+#        Use `mm_h`/`cm_h`/`inches_h` to set a height in absolute unit.
+# -line_col Color of the connection lines. The value can be a vector.
+# -line_lwd Line width of the connection lines.
+# -line_lty Line style of the connection lines.
+# -heatmap_height Height of the heatmap track
+# -side Side of the heatmaps. Is the heatmap facing inside or outside?
+# -track.margin Bottom and top margins.
 #
 # == details
 # The function visualizes heatmaps which correspond to a subset of regions in the genome.
@@ -2381,7 +2372,7 @@ circos.genomicHeatmap = function(
 	border = NA, 
 	border_lwd = par("lwd"), 
 	border_lty = par("lty"), 
-	connection_height = convert_height(5, "mm"),
+	connection_height = mm_h(5),
 	line_col = par("col"), 
 	line_lwd = par("lwd"), 
 	line_lty = par("lty"),
@@ -2466,39 +2457,45 @@ circos.genomicHeatmap = function(
 # Add labels to specified genomic regions
 #
 # == param
-# -bed a data frame in bed format
-# -labels a vector of labels corresponding to rows in ``bed``
-# -labels.column if the label column is already in ``bed``, the index for this column in ``bed``
-# -facing facing of the labels. The value can only be 'clockwise' or 'reverse.clockwise'.
-# -niceFacing whether automatically adjust the facing of the labels.
-# -col color for the labels
-# -cex size of the labels
-# -font font of the labels
-# -padding padding of the labels, the value is the ratio to the height of the label
-# -connection_height height of the connection track
-# -line_col color for the connection lines
-# -line_lwd line width for the connection lines
-# -line_lty line type for the connectioin lines
-# -labels_height height of the labels track
-# -side side of the labels track, is it in the inside of the track where the regions are marked?
-# -track.margin bottom and top margins
+# -bed A data frame in bed format.
+# -labels A vector of labels corresponding to rows in ``bed``.
+# -labels.column If the label column is already in ``bed``, the index for this column in ``bed``.
+# -facing fFacing of the labels. The value can only be ``"clockwise"`` or ``"reverse.clockwise"``.
+# -niceFacing Whether automatically adjust the facing of the labels.
+# -col Color for the labels.
+# -cex Aize of the labels.
+# -font Font of the labels.
+# -padding Padding of the labels, the value is the ratio to the height of the label.
+# -connection_height Height of the connection track.
+# -line_col Color for the connection lines.
+# -line_lwd Line width for the connection lines.
+# -line_lty Line type for the connectioin lines.
+# -labels_height Height of the labels track.
+# -side Side of the labels track, is it in the inside of the track where the regions are marked?
+# -track.margin Bottom and top margins.
 #
 # == details
 # The function adds labels for the specified regions. The positions of labels are arranged
 # so that they are not overlapping to each other.
+#
+# This function creates two tracks, one for the connection lines and one for the labels.
 #
 # == seealso
 # https://jokergoo.github.io/circlize_book/book/high-level-genomic-functions.html#labels
 # 
 # == example
 # \donttest{
-# circos.initializeWithIdeogram(plotType = c("labels", "axis"))
-# bed = generateRandomBed(nr = 100, fun = function(k) sample(letters, k, replace = TRUE))
-# bed[1, 4] = "aaaaaaaa"
-# circos.genomicLabels(bed, labels.column = 4, side = "inside",
-#     col = as.numeric(factor(bed[[1]])))
+# circos.initializeWithIdeogram()
+# bed = generateRandomBed(nr = 50, fun = function(k) sample(letters, k, replace = TRUE))
+# bed[1, 4] = "aaaaa"
+# circos.genomicLabels(bed, labels.column = 4, side = "inside")
+# circos.clear()
+#
+# circos.initializeWithIdeogram(plotType = NULL)
 # circos.genomicLabels(bed, labels.column = 4, side = "outside",
-#     line_col = as.numeric(factor(bed[[1]])))
+#     col = as.numeric(factor(bed[[1]])), line_col = as.numeric(factor(bed[[1]])))
+# circos.genomicIdeogram()
+# circos.clear()
 # }
 circos.genomicLabels = function(
 	bed, 
@@ -2510,12 +2507,11 @@ circos.genomicLabels = function(
 	cex = 0.8, 
 	font = par("font"), 
 	padding = 0.4,
-	connection_height = convert_height(5, "mm"), 
+	connection_height = mm_h(5), 
 	line_col = par("col"), 
 	line_lwd = par("lwd"), 
 	line_lty = par("lty"),
-	labels_height = min(c(convert_height(1.5, "cm"), 
-		max(strwidth(labels, cex = cex, font = font)))),
+	labels_height = min(c(cm_h(1.5), max(strwidth(labels, cex = cex, font = font)))),
 	side = c("inside", "outside"), 
 	track.margin = circos.par("track.margin")) {
 
@@ -2630,9 +2626,9 @@ circos.genomicLabels = function(
 # Adjust positions of text
 #
 # == param
-# -x1 position which corresponds to the top of the text
-# -x2 position which corresponds to the bottom of the text 
-# -xlim ranges on x-axis
+# -x1 Position which corresponds to the top of the text.
+# -x2 Position which corresponds to the bottom of the text.
+# -xlim Ranges on x-axis.
 #
 # == details
 # used internally

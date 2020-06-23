@@ -11,16 +11,14 @@ uh(...)
 }
 \arguments{
 
-  \item{...}{pass to \code{\link{convert_length}}}
+  \item{...}{pass to \code{\link{convert_length}}.}
 
 }
 \details{
-This function is same as \code{\link{convert_length}}.
-}
-\author{
-Zuguang Gu <z.gu@dkfz.de>
+Please do not use this function. Use \code{\link{mm_h}}/\code{\link{cm_h}}/inches_h` instead.
 }
 \examples{
-# see example in `convert_length` page
+# There is no example
 NULL
+
 }

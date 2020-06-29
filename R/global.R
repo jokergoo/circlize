@@ -54,6 +54,8 @@ resetGlobalVariable()
 #     the region. So if some points are out of the plotting region, ``circlize`` would continue drawing the points and printing warnings. In some
 #     cases, draw something out of the plotting region is useful, such as draw
 #     some legend or text. Set this value to ``FALSE`` to turn off the warnings.
+# -``circle.margin``  Margin in the horizontal direction and in the vertical direction. The value should be a positive numeric vector of length two
+#      and the values are the fraction to the unit circle. So A value of ``c(x, y)`` means ``circos.par(canvas.xlim = c(-1, 1)*(1+x), canvas.ylim = c(-1, 1)*(1+y))``.
 # -``canvas.xlim``              The coordinate for the canvas. Because ``circlize`` draws everything (or almost everything) inside the unit circle,
 #     the default ``canvas.xlim`` and ``canvas.ylim`` for the canvas would be all ``c(-1, 1)``. However, you can set it to a more broad
 #     interval if you want to draw other things out of the circle. By choosing proper
@@ -133,8 +135,23 @@ circos.par = setGlobalOptions(
 		}),
 	track.height = 0.2,
 	points.overflow.warning = TRUE,
+	circle.margin = list(
+		.value = c(0, 0),
+		.filter = function(x) {
+			if(is.circos.initialized()){
+				warning_wrap("'circle.margin' can only be modified before `circos.initialize`, or maybe you forgot to call `circos.clear` in your last plot.")
+			}
+			if(any(x <= 0)) {
+				stop_wrap("The value of `circle.margin` should be positive.")
+			}
+			if(length(x) == 1) x = rep(x, 2)
+			return(x)
+		}
+	),
 	canvas.xlim = list(
-		.value = c(-1, 1),
+		.value = function() {
+			c(-1, 1)*(1 + .v$circle.margin[1])
+		},
 		.filter = function(x) {
 			if(is.circos.initialized()){
 				warning_wrap("'canvas.xlim' can only be modified before `circos.initialize`, or maybe you forgot to call `circos.clear` in your last plot.")
@@ -142,7 +159,9 @@ circos.par = setGlobalOptions(
 			return(x)
 		}),
 	canvas.ylim = list(
-		.value = c(-1, 1),
+		.value = function() {
+			c(-1, 1)*(1 + .v$circle.margin[2])
+		},
 		.filter = function(x) {
 			if(is.circos.initialized()){
 				warning_wrap("'canvas.ylim' can only be modified before `circos.initialize`, or maybe you forgot to call `circos.clear` in your last plot.")

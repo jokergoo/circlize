@@ -111,7 +111,7 @@ export("ux")
 export("uy")
 
 import(graphics)
-importFrom("GlobalOptions", setGlobalOptions)
+import("GlobalOptions")
 importFrom("colorspace", HLS)
 importFrom("colorspace", HSV)
 importFrom("colorspace", LAB)

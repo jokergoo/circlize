@@ -14,7 +14,7 @@ Circular layout is an efficient way for the visualization of huge
     graphics functions such that self-defined high-level graphics can be easily
     implemented by users for specific purposes. Together with the seamless
     connection between the powerful computational and visual environment in R,
-    circlize givesa users more convenience and freedom to design figures for
+    circlize gives users more convenience and freedom to design figures for
     better understanding complex patterns behind multi-dimensional data.
 
 ## Citation

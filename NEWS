@@ -2,7 +2,7 @@ Changes in version 0.4.11
 -----------------------------------------------------------------------
 * `chordDiagram()`: add `link.auto` argument
 * `chordDiagram()`: add `link.target.prop` and `target.prop.height` arguments
-# `circos.par()`: add `circle.margin` option
+* `circos.par()`: add `circle.margin` option
 
 Changes in version 0.4.10
 -----------------------------------------------------------------------

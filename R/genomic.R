@@ -387,9 +387,9 @@ circos.genomicAxis = function(
 		}
 		
 		if(is.null(labels)) {
-			if(major.by > 1e6) {
+			if(major.by >= 1e6) {
 				major.tick.labels = paste((major.at-offset)/1000000, "Mb", sep = "")
-			} else if(major.by > 1e3) {
+			} else if(major.by >= 1e3) {
 				major.tick.labels = paste((major.at-offset)/1000, "kb", sep = "")
 			} else {
 				major.tick.labels = paste((major.at-offset), "bp", sep = "")
@@ -408,9 +408,9 @@ circos.genomicAxis = function(
 		}
 
 		if(is.null(labels)) {
-			if(major.by > 1e6) {
+			if(major.by >= 1e6) {
 				major.tick.labels = paste(major.at/1000000, "MB", sep = "")
-			} else if(major.by > 1e3) {
+			} else if(major.by >= 1e3) {
 				major.tick.labels = paste(major.at/1000, "KB", sep = "")
 			} else {
 				major.tick.labels = paste(major.at, "bp", sep = "")

@@ -2610,7 +2610,7 @@ circos.genomicLabels = function(
 		circos.genomicPosTransformLines(bed2, 
 			posTransform = function(region, value) {
 				l = bed2[[1]] == get.cell.meta.data("sector.index", track.index = i_track)
-				posTransform.text(region, y = 1, labels = value[[1]], cex = cex[l], font = font[l], 
+				posTransform.text(region, y = 0, labels = value[[1]], cex = cex[l], font = font[l], 
 					track.index = i_track, padding = padding, extend = extend)
 			},
 			direction = "outside", horizontalLine = "bottom",

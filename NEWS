@@ -3,6 +3,7 @@ Changes in version 0.4.11
 * `chordDiagram()`: add `link.auto` argument
 * `chordDiagram()`: add `link.target.prop` and `target.prop.height` arguments
 * `circos.par()`: add `circle.margin` option
+* `circos.genomicLabels()`: fixed a bug when `direction = "outside"`
 
 Changes in version 0.4.10
 -----------------------------------------------------------------------

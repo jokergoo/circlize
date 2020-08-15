@@ -5,6 +5,7 @@ Changes in version 0.4.11
 * `circos.par()`: add `circle.margin` option
 * `circos.genomicLabels()`: fixed a bug when `direction = "outside"`
 * add `xaxis.clock.wise` option in `circos.par()`
+* `chordDiagram()`: now the scaling is properly applied.
 
 Changes in version 0.4.10
 -----------------------------------------------------------------------

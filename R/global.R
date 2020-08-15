@@ -64,6 +64,7 @@ resetGlobalVariable()
 #     circle in the region of (0, pi/2).
 # -``canvas.ylim``              The coordinate for the canvas. By default it is ``c(-1, 1)``
 # -``clock.wise``               The direction for adding sectors. Default is ``TRUE``.
+# -``xaxis.clock.wise``    The direction in the x-axes for all sectors. Default is ``TRUE``.
 #
 # Similar as `graphics::par`, you can get the parameter values by specifying the
 # names of parameters and you can set the parameter values by specifying a
@@ -174,6 +175,14 @@ circos.par = setGlobalOptions(
 		.filter = function(x) {
 			if(is.circos.initialized()){
 				warning_wrap("'clock.wise' can only be modified before `circos.initialize`, or maybe you forgot to call `circos.clear` in your last plot.")
+			}
+			return(x)
+		}),
+	xaxis.clock.wise = list(
+		.value = TRUE,
+		.filter = function(x) {
+			if(is.circos.initialized()){
+				warning_wrap("'xaxis.clock.wise' can only be modified before `circos.initialize`, or maybe you forgot to call `circos.clear` in your last plot.")
 			}
 			return(x)
 		}),

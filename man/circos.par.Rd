@@ -34,6 +34,7 @@ Global parameters for the circular layout. Currently supported parameters are:
   \item{\code{canvas.xlim}}{The coordinate for the canvas. Because \code{circlize} draws everything (or almost everything) inside the unit circle, the default \code{canvas.xlim} and \code{canvas.ylim} for the canvas would be all \code{c(-1, 1)}. However, you can set it to a more broad interval if you want to draw other things out of the circle. By choosing proper \code{canvas.xlim} and \code{canvas.ylim}, you can draw part of the circle. E.g. setting \code{canvas.xlim} to \code{c(0, 1)} and \code{canvas.ylim} to \code{c(0, 1)} would only draw circle in the region of (0, pi/2).}
   \item{\code{canvas.ylim}}{The coordinate for the canvas. By default it is \code{c(-1, 1)}}
   \item{\code{clock.wise}}{The direction for adding sectors. Default is \code{TRUE}.}
+  \item{\code{xaxis.clock.wise}}{The direction in the x-axes for all sectors. Default is \code{TRUE}.}
 }
 
 Similar as \code{\link[graphics]{par}}, you can get the parameter values by specifying the

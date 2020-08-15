@@ -38,6 +38,10 @@ circlize = function(
        
     theta = sector.data["start.degree"] - (x - sector.data["min.value"]) / (sector.data["max.value"] - sector.data["min.value"]) *
             abs(sector.data["start.degree"] - sector.data["end.degree"])
+
+    if(!circos.par("xaxis.clock.wise")) {
+        theta = sector.data["start.degree"] - theta + sector.data["end.degree"]
+    }
     
 	if(track.index == 0) {
 		rou = rep(1, length(theta))

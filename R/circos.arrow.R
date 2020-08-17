@@ -94,7 +94,11 @@ circos.arrow = function(
 	set.current.cell(sector.index, track.index)
 
 	if(x2 <= x1) {
-		stop_wrap("`x2` should be larger than `x1`. Set `arrow.position = 'start'`\nto get reverse clockwise arrows.")
+		# stop_wrap("`x2` should be larger than `x1`. Set `arrow.position = 'start'` to get reverse clockwise arrows.")
+		x3 = x1
+		x1 = x2
+		x2 = x3
+		arrow.position = setdiff(c("end", "start"), arrow.position)
 	}
 	
 	if(abs(x2 - x1 - arrow.head.length) < 1e-6) {

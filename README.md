@@ -25,6 +25,15 @@ Zuguang Gu, Lei Gu, Roland Eils, Matthias Schlesner, Benedikt Brors, circlize Im
 
 The full documentations are available at https://jokergoo.github.io/circlize_book/book/ and the online website is at https://jokergoo.github.io/circlize/.
 
+## Blog posts
+
+There are the following blog posts focusing on specific topics.
+
+-[Make circular heatmaps](https://jokergoo.github.io/2020/05/21/make-circular-heatmaps/)
+-[Multiple-group Chord diagram](https://jokergoo.github.io/2020/06/08/multiple-group-chord-diagram/)
+-[Changes in circlize 0.4.10](https://jokergoo.github.io/2020/06/14/changes-in-circlize-0.4.10/)
+-[Reverse x-axes in the circular plot](https://jokergoo.github.io/2020/08/17/reverse-x-axes-in-the-circular-plot/)
+
 ## Examples
 
 See https://jokergoo.github.io/circlize_examples/.

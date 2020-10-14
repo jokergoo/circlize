@@ -8,6 +8,7 @@ Changes in version 0.4.11
 * `chordDiagram()`: now the scaling is properly applied.
 * `chordDiagram()`: link positions are optimized so they have minimal intersections.
    `link.auto` argument is ignored and removed.
+* `circos.dendrogram()`: support arbitary numbers of branches on each node.
 
 Changes in version 0.4.10
 -----------------------------------------------------------------------

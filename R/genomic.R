@@ -851,6 +851,8 @@ circos.genomicPoints = function(
 		value = data.frame(value = value)
 		numeric.column = 1
 	}
+
+	if(ncol(value) == 1) numeric.column = 1
 	
 	if(!is.null(posTransform)) {
 		region = posTransform(region)
@@ -864,7 +866,6 @@ circos.genomicPoints = function(
 	}
 	
 	nc = length(numeric.column)
-
 	pch = .normalizeGraphicalParam(pch, nc, nr, "pch")
 	col = .normalizeGraphicalParam(col, nc, nr, "col")
 	cex = .normalizeGraphicalParam(cex, nc, nr, "cex")
@@ -1018,6 +1019,7 @@ circos.genomicLines = function(
 		value = data.frame(value = value)
 		numeric.column = 1
 	}
+	if(ncol(value) == 1) numeric.column = 1
 
 	if(!is.null(posTransform)) {
 		region = posTransform(region)

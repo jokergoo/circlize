@@ -984,25 +984,25 @@ chordDiagramFromDataFrame = function(
 	directional = .normalize_to_vector(directional, df[1:2], default = 0)
 	direction.type = .normalize_to_vector(direction.type, df[1:2], default = "diffHeight")
 
-	if(link.auto) {
-		od = order(factor(df[, 2], levels = cate), 
-			       factor(df[, 1], levels = cate))
-		df = df[od, , drop = FALSE]
-		col = col[od]
-		link.border = link.border[od]
-		link.lwd = link.lwd[od]
-		link.lty = link.lty[od]
-		link.arr.length = link.arr.length[od]
-		link.arr.width = link.arr.width[od]
-		link.arr.type = link.arr.type[od]
-		link.arr.lty = link.arr.lty[od]
-		link.arr.lwd = link.arr.lwd[od]
-		link.arr.col = link.arr.col[od]
-		link.visible = link.visible[od]
-		link.zindex = link.zindex[od]
-		directional = directional[od]
-		direction.type = direction.type[od]
-	}
+	# if(link.auto) {
+	# 	od = order(factor(df[, 2], levels = cate), 
+	# 		       factor(df[, 1], levels = cate))
+	# 	df = df[od, , drop = FALSE]
+	# 	col = col[od]
+	# 	link.border = link.border[od]
+	# 	link.lwd = link.lwd[od]
+	# 	link.lty = link.lty[od]
+	# 	link.arr.length = link.arr.length[od]
+	# 	link.arr.width = link.arr.width[od]
+	# 	link.arr.type = link.arr.type[od]
+	# 	link.arr.lty = link.arr.lty[od]
+	# 	link.arr.lwd = link.arr.lwd[od]
+	# 	link.arr.col = link.arr.col[od]
+	# 	link.visible = link.visible[od]
+	# 	link.zindex = link.zindex[od]
+	# 	directional = directional[od]
+	# 	direction.type = direction.type[od]
+	# }
 
 	#### reduce the data frame
 	onr = nrow(df)
@@ -1105,9 +1105,19 @@ chordDiagramFromDataFrame = function(
 	if(length(link.sort) == 1) link.sort = rep(link.sort, 2)
 	if(length(link.decreasing) == 1) link.decreasing = rep(link.decreasing, 2)
 
-	if(is.logical(link.sort)) {
+	if(link.sort[1]) {
 		# position of root 1
 		od = tapply(abs(df$value1), df$rn, .order, link.sort[1], link.decreasing[1])
+	} else {
+		od = tapply(seq_len(nrow(df)), df$rn, function(ind) {
+			rn = df[ind[1], "rn"]
+			cn = df[ind, "cn"]
+			fa = c(cate, cate)
+			i = which(fa == rn)[1]
+			fa = fa[seq(i, i + length(cate) - 1)]
+			order(factor(cn, levels = fa), decreasing = TRUE)
+		})
+	}
 		for(nm in names(od)) {  # for each sector
 			l = df$rn == nm # rows in df that correspond to current sector
 			df$o1[l] = od[[nm]] # adjust rows according to the order in current sector
@@ -1123,7 +1133,18 @@ chordDiagramFromDataFrame = function(
 		max_o1 = sapply(od, max)
 		sum_1 = tapply(abs(df$value1), df$rn, sum)
 		# position of root 2
+	if(link.sort[2]) {
 		od = tapply(abs(df$value2), df$cn, .order, link.sort[2], link.decreasing[2])
+	} else { 
+		od = tapply(seq_len(nrow(df)), df$cn, function(ind) {
+			cn = df[ind[1], "cn"]
+			rn = df[ind, "rn"]
+			fa = c(cate, cate)
+			i = which(fa == cn)[1]
+			fa = fa[seq(i, i + length(cate) - 1)]
+			order(factor(rn, levels = fa), decreasing = TRUE)
+		})
+	}	
 		for(nm in names(od)) {
 			if(!is.na(max_o1[nm])) { # if cn already in rn
 				l = df$cn == nm
@@ -1149,7 +1170,7 @@ chordDiagramFromDataFrame = function(
 			df$x1[l] = pmin(df$x1[l], df$x2[l])
 			df$x2[l] = pmin(df$x1[l], df$x2[l])
 		}
-	} #else {
+	 #else {
 	# 	for(nm in unique(c(df$rn, df$cn))) {
 	# 		l = df$rn == nm | df$cn == nm
 	# 		od = order(abs(df$value1[l]), decreasing = link.decreasing[1])

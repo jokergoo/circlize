@@ -6,6 +6,7 @@ Changes in version 0.4.11
 * `circos.genomicLabels()`: fixed a bug when `direction = "outside"`
 * add `xaxis.clock.wise` option in `circos.par()`
 * `chordDiagram()`: now the scaling is properly applied.
+* `chordDiagram()`: link positions are optimized so they have minimal intersections.
 
 Changes in version 0.4.10
 -----------------------------------------------------------------------

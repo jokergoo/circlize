@@ -1403,7 +1403,7 @@ chordDiagramFromDataFrame = function(
 	df$col = col
 
 	if(link.target.prop && all(grepl("diffHeight", direction.type)) && min(diffHeight) > 0) {
-		if(all(directional == 1)) {
+		if(all(directional %in% c(1, 2))) {
 			last.track.index = rev(get.all.track.index())[1]
 			for(i in seq_len(nrow(df))) {
 			    if(abs(df$value1[i]) > 0) {
@@ -1415,7 +1415,8 @@ chordDiagramFromDataFrame = function(
 			            col = grid.col[df$cn[i]], border = NA)
 			    }
 			}
-		} else if(all(directional == -1)) {
+		} 
+		if(all(directional %in% c(-1, 2))) {
 			last.track.index = rev(get.all.track.index())[1]
 			for(i in seq_len(nrow(df))) {
 			    if(abs(df$value1[i]) > 0) {

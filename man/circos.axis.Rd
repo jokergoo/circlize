@@ -58,15 +58,15 @@ It only draws axes on x-direction.
 \url{https://jokergoo.github.io/circlize_book/book/graphics.html#axes}
 }
 \examples{
-factors = letters[1:8]
+sectors = letters[1:8]
 circos.par(points.overflow.warning = FALSE)
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.1,
+circos.initialize(sectors, xlim = c(0, 10))
+circos.trackPlotRegion(sectors, ylim = c(0, 10), track.height = 0.1,
     bg.border = NA, panel.fun = function(x, y) {
         circos.text(5, 10, get.cell.meta.data("sector.index"))
 })
 
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
+circos.trackPlotRegion(sectors, ylim = c(0, 10))
 circos.axis(sector.index = "a")
 circos.axis(sector.index = "b", direction = "inside", labels.facing = "outside")
 circos.axis(sector.index = "c", h = "bottom")
@@ -89,8 +89,8 @@ if(FALSE) {
 factors = letters[1]
 
 circos.par("gap.degree" = 0, "cell.padding" = c(0, 0, 0, 0), "start.degree" = 90)
-circos.initialize(factors = factors, xlim = c(0, 12))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.border = NA)
+circos.initialize(sectors, xlim = c(0, 12))
+circos.trackPlotRegion(sectors, ylim = c(0, 1), bg.border = NA)
 circos.axis(sector.index = "a", major.at = 0:12, labels = "",
     direction = "inside", major.tick.length = mm_y(3))
 circos.text(1:12, rep(0.5, 12), 1:12, facing = "downward")

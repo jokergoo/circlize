@@ -21,7 +21,7 @@ circos.triangle(x1, y1, x2, y2, x3, y3, ...)
 
 }
 \examples{
-circos.initialize(fa = c("a", "b", "c", "d"), xlim = c(0, 10))
+circos.initialize(c("a", "b", "c", "d"), xlim = c(0, 10))
 circos.track(ylim = c(0, 10), panel.fun = function(x, y) {
     circos.triangle(c(2, 2), c(2, 8),
                     c(8, 8), c(2, 8),

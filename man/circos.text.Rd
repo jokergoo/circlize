@@ -46,10 +46,10 @@ The function is similar to \code{\link[graphics]{text}}. All you need to note is
 \url{https://jokergoo.github.io/circlize_book/book/graphics.html#text}
 }
 \examples{
-factors = letters[1:4]
+sectors = letters[1:4]
 circos.par(points.overflow.warning = FALSE)
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10),
+circos.initialize(sectors, xlim = c(0, 10))
+circos.trackPlotRegion(factors, ylim = c(0, 10),
   track.height = 0.5, panel.fun = function(x, y) {
     circos.text(3, 1, "inside", facing = "inside", cex = 0.8)
     circos.text(7, 1, "outside", facing = "outside", cex = 0.8)

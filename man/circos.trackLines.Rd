@@ -9,7 +9,6 @@ Add lines to the plotting regions in a same track
 \usage{
 circos.trackLines(
     sectors,
-    factors = sectors,
     x, y,
     track.index = get.current.track.index(),
     col = par("col"),
@@ -23,7 +22,8 @@ circos.trackLines(
     baseline = "bottom",
     pt.col = par("col"),
     cex = par("cex"),
-    pch = par("pch"))
+    pch = par("pch"),
+    factors = sectors)
 }
 \arguments{
 

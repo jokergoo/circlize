@@ -34,7 +34,7 @@ in the polar coordinate, the up and bottom edge become two arcs.
 This function can be vectorized.
 }
 \examples{
-circos.initialize(fa = c("a", "b", "c", "d"), xlim = c(0, 10))
+circos.initialize(c("a", "b", "c", "d"), xlim = c(0, 10))
 circos.track(ylim = c(0, 10), panel.fun = function(x, y) {
     for(rot in seq(0, 360, by = 30)) {
         circos.rect(2, 2, 6, 6, rot = rot)

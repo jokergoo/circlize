@@ -8,10 +8,11 @@ Initialize the circular layout
 }
 \usage{
 circos.initialize(
-    sectors = NULL, factors = sectors,
+    sectors = NULL,
     x = NULL,
     xlim = NULL,
-    sector.width = NULL)
+    sector.width = NULL,
+    factors = sectors)
 }
 \arguments{
 

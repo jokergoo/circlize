@@ -8,7 +8,7 @@ Draw histogram in cells among a whole track
 }
 \usage{
 circos.trackHist(
-    sectors, factors = sectors,
+    sectors,
     x,
     track.height = circos.par("track.height"),
     track.index = NULL,
@@ -27,7 +27,8 @@ circos.trackHist(
     right = TRUE,
     draw.density = FALSE,
     bin.size = NULL,
-    area = FALSE)
+    area = FALSE,
+    factors = sectors)
 }
 \arguments{
 
@@ -64,13 +65,13 @@ high-level graphics by this package.
 \examples{
 \donttest{
 x = rnorm(1600)
-factors = sample(letters[1:16], 1600, replace = TRUE)
-circos.initialize(factors = factors, x = x)
-circos.trackHist(factors = factors, x = x, col = "#999999",
+sectors = sample(letters[1:16], 1600, replace = TRUE)
+circos.initialize(sectors, x = x)
+circos.trackHist(sectors, x = x, col = "#999999",
   border = "#999999")
-circos.trackHist(factors = factors, x = x, bin.size = 0.1,
+circos.trackHist(sectors, x = x, bin.size = 0.1,
   col = "#999999", border = "#999999")
-circos.trackHist(factors = factors, x = x, draw.density = TRUE,
+circos.trackHist(sectors x = x, draw.density = TRUE,
   col = "#999999", border = "#999999")
 circos.clear()
 }

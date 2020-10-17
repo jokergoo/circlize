@@ -8,7 +8,7 @@ Draw text in cells among the whole track
 }
 \usage{
 circos.trackText(
-    sectors, factors = sectors,
+    sectors,
     x, y,
     labels,
     track.index = get.current.track.index(),
@@ -19,7 +19,8 @@ circos.trackText(
     adj = par("adj"),
     cex = 1,
     col = par("col"),
-    font = par("font"))
+    font = par("font"),
+    factors = sectors)
 }
 \arguments{
 

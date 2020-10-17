@@ -53,10 +53,10 @@ Drawing areas below lines can help to identify the direction of y-axis in cells 
 \code{area} to \code{TURE}.
 }
 \examples{
-factors = letters[1:9]
+sectors = letters[1:9]
 circos.par(points.overflow.warning = FALSE)
-circos.initialize(factors = factors, xlim = c(0, 10))
-circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.5)
+circos.initialize(sectors, xlim = c(0, 10))
+circos.trackPlotRegion(sectors, ylim = c(0, 10), track.height = 0.5)
 
 circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "a")
 circos.text(5, 9, "type = 'l'", sector.index = "a", facing = "outside")

@@ -8,7 +8,7 @@ Create plotting regions for a whole track
 }
 \usage{
 circos.trackPlotRegion(
-    sectors = NULL, factors = sectors,
+    sectors = NULL,
     x = NULL, y = NULL,
     ylim = NULL,
     force.ylim = TRUE,
@@ -20,7 +20,8 @@ circos.trackPlotRegion(
     bg.border = "black",
     bg.lty = par("lty"),
     bg.lwd = par("lwd"),
-    panel.fun = function(x, y) {NULL})
+    panel.fun = function(x, y) {NULL},
+    factors = sectors)
 }
 \arguments{
 

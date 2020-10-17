@@ -159,7 +159,7 @@
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Assuming there are <code>n</code> nodes in the dendrogram, the positions for leaves on x-axis is <code>0.5, 1.5, ..., n - 0.5</code>.
+    <p>Assuming there are <code>n</code> nodes in the dendrogram, the positions for leaves on x-axis are always <code>0.5, 1.5, ..., n - 0.5</code>.
 So you must be careful with <code>xlim</code> when you initialize the cirular layout.</p>
 <p>You can use the <code>dendextend</code> package to render the dendrograms.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -175,7 +175,7 @@ So you must be careful with <code>xlim</code> when you initialize the cirular la
 <span class='no'>dend</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/dendrogram.html'>as.dendrogram</a></span>(<span class='no'>hc</span>)
 
 <span class='fu'><a href='circos.par.html'>circos.par</a></span>(<span class='kw'>cell.padding</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>))
-<span class='fu'><a href='circos.initialize.html'>circos.initialize</a></span>(<span class='kw'>factors</span> <span class='kw'>=</span> <span class='st'>"a"</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='no'>n</span>)) <span class='co'># only one sector</span></div><div class='input'><span class='no'>max_height</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>dend</span>, <span class='st'>"height"</span>)  <span class='co'># maximum height of the trees</span>
+<span class='fu'><a href='circos.initialize.html'>circos.initialize</a></span>(<span class='kw'>sectors</span> <span class='kw'>=</span> <span class='st'>"a"</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='no'>n</span>)) <span class='co'># only one sector</span></div><div class='input'><span class='no'>max_height</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>dend</span>, <span class='st'>"height"</span>)  <span class='co'># maximum height of the trees</span>
 <span class='fu'><a href='circos.trackPlotRegion.html'>circos.trackPlotRegion</a></span>(<span class='kw'>ylim</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>bg.border</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>track.height</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
     <span class='kw'>panel.fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) {
         <span class='kw'>for</span>(<span class='no'>i</span> <span class='kw'>in</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='no'>n</span>)) {

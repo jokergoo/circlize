@@ -180,6 +180,8 @@
  the region. So if some points are out of the plotting region, <code>circlize</code> would continue drawing the points and printing warnings. In some
  cases, draw something out of the plotting region is useful, such as draw
  some legend or text. Set this value to <code>FALSE</code> to turn off the warnings.</p></dd>
+  <dt><code>circle.margin</code></dt><dd><p>Margin in the horizontal direction and in the vertical direction. The value should be a positive numeric vector of length two
+ and the values are the fraction to the unit circle. So A value of <code><a href='https://rdrr.io/r/base/c.html'>c(x, y)</a></code> means <code>circos.par(canvas.xlim = c(-1, 1)*(1+x), canvas.ylim = c(-1, 1)*(1+y))</code>.</p></dd>
   <dt><code>canvas.xlim</code></dt><dd><p>The coordinate for the canvas. Because <code>circlize</code> draws everything (or almost everything) inside the unit circle,
  the default <code>canvas.xlim</code> and <code>canvas.ylim</code> for the canvas would be all <code><a href='https://rdrr.io/r/base/c.html'>c(-1, 1)</a></code>. However, you can set it to a more broad
  interval if you want to draw other things out of the circle. By choosing proper
@@ -188,6 +190,7 @@
  circle in the region of (0, pi/2).</p></dd>
   <dt><code>canvas.ylim</code></dt><dd><p>The coordinate for the canvas. By default it is <code><a href='https://rdrr.io/r/base/c.html'>c(-1, 1)</a></code></p></dd>
   <dt><code>clock.wise</code></dt><dd><p>The direction for adding sectors. Default is <code>TRUE</code>.</p></dd>
+  <dt><code>xaxis.clock.wise</code></dt><dd><p>The direction in the x-axes for all sectors. Default is <code>TRUE</code>.</p></dd>
 
 </dl>
 
@@ -215,10 +218,12 @@ left and right paddings.</p>
 #&gt;  cell.padding            0.02, 1, 0.02, 1
 #&gt;  track.height            0.2             
 #&gt;  points.overflow.warning TRUE            
+#&gt;  circle.margin           0, 0            
 #&gt;  canvas.xlim             -1, 1           
 #&gt;  canvas.ylim             -1, 1           
 #&gt;  major.by.degree         10              
 #&gt;  clock.wise              TRUE            
+#&gt;  xaxis.clock.wise        TRUE            
 #&gt;  message                 TRUE            </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

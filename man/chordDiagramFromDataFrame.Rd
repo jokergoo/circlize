@@ -70,7 +70,7 @@ chordDiagramFromDataFrame(
   \item{link.border}{border for links, single scalar or a vector which has the same length as nrows of \code{df} or a data frame}
   \item{link.lwd}{width for link borders, single scalar or a vector which has the same length as nrows of \code{df} or a data frame}
   \item{link.lty}{style for link borders, single scalar or a vector which has the same length as nrows of \code{df} or a data frame}
-  \item{link.auto}{Whether to automatically arrange links on the circle to make them less twisted.}
+  \item{link.auto}{Ignored.}
   \item{link.sort}{whether sort links on every sector based on the width of the links on it. If it is set to "overall", all links are sorted regardless whether they are from the first column or the second column.}
   \item{link.decreasing}{for \code{link.sort}}
   \item{link.arr.length}{pass to \code{\link{circos.link}}. The format of this argument is same as \code{link.lwd}.}

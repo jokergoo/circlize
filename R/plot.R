@@ -2,8 +2,9 @@
 # Create plotting regions for a whole track
 #
 # == param
-# -factors      A `factor` or a character vector which represents categories of data, if it is ``NULL``,
+# -sectors      A `factor` or a character vector which represents categories of data, if it is ``NULL``,
 #               then it uses all sector index.
+# -factors      The same as ``sectors``. It will be removed in future versions. 
 # -x            Data on x-axis. It is only used if ``panel.fun`` is set.
 # -y            Data on y-axis
 # -ylim         Range of data on y-axis
@@ -77,7 +78,7 @@
 # }, track.height = 0.2, bg.border = rand_color(8))
 # circos.clear()
 circos.trackPlotRegion = function(
-	factors = NULL,
+	sectors = NULL, 
 	x = NULL, y = NULL,
 	ylim = NULL,
     force.ylim = TRUE,
@@ -89,7 +90,8 @@ circos.trackPlotRegion = function(
     bg.border = "black",
     bg.lty = par("lty"),
     bg.lwd = par("lwd"),
-    panel.fun = function(x, y) {NULL}) {
+    panel.fun = function(x, y) {NULL},
+    factors = sectors) {
 
     if(!is.circos.initialized()) {
     	stop_wrap("Your circular plot has not been initialized yet!")
@@ -106,7 +108,7 @@ circos.trackPlotRegion = function(
 		factors = factor(factors, levels = factors)
 	}
 
-    if(is.function(factors)) {
+    if(is.function(factors) || is.function(x) || is.function(y) || is.function(ylim)) {
         stop_wrap("The panel function should be set explicitly with the argument name `panel.fun = ...`.")
     }
 
@@ -114,7 +116,7 @@ circos.trackPlotRegion = function(
 	# have same length as ``factors``
     if(!is.null(y) && length(y) != length(factors) ||
 	   !is.null(x) && length(x) != length(factors)) {
-        stop_wrap("Length of data and length of factors differ.")
+        stop_wrap("Length of data and length of sectors differ.")
     }
 
 	# need to be a factor
@@ -421,8 +423,8 @@ circos.createPlotRegion = function(
 # draw.sector(0, 180, rou1 = 0.25, center = c(-0.5, 0.5), border = 2, lwd = 2, lty = 2)
 # draw.sector(0, 360, rou1 = 0.7, rou2 = 0.6, col = "#0000FF80")
 #
-# factors = letters[1:8]
-# circos.initialize(factors, xlim = c(0, 1))
+# sectors = letters[1:8]
+# circos.initialize(sectors, xlim = c(0, 1))
 # for(i in 1:3) {
 #     circos.trackPlotRegion(ylim = c(0, 1))
 # }
@@ -584,8 +586,8 @@ draw.sector = function(
 # https://jokergoo.github.io/circlize_book/book/graphics.html#highlight-sectors-and-tracks
 #
 # == example
-# factors = letters[1:8]
-# circos.initialize(factors, xlim = c(0, 1))
+# sectors = letters[1:8]
+# circos.initialize(sectors, xlim = c(0, 1))
 # for(i in 1:4) {
 #     circos.trackPlotRegion(ylim = c(0, 1))
 # }
@@ -597,7 +599,7 @@ draw.sector = function(
 # highlight.sector("e", col = "#0000FF40", track.index = c(2, 3))
 # highlight.sector(c("f", "g"), col = NA, border = "green",
 #     lwd = 2, track.index = c(2, 3))
-# highlight.sector(factors, col = "#FFFF0040", track.index = 4)
+# highlight.sector(sectors, col = "#FFFF0040", track.index = 4)
 # circos.clear()
 highlight.sector = function(
 	sector.index,
@@ -725,7 +727,7 @@ parse_unit = function(str) {
 # -gap Gap between two tracks. Use `mm_h`/`cm_h`/`inches_h` to set in absolute units.
 #
 # == example
-# circos.initialize(fa = letters[1:10], xlim = c(0, 1))
+# circos.initialize(letters[1:10], xlim = c(0, 1))
 # circos.track(ylim = c(0, 1))
 # set_track_gap(mm_h(2))
 # circos.track(ylim = c(0, 1))

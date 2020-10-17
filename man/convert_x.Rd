@@ -38,9 +38,9 @@ For pre-defined units, users can use \code{\link{cm_x}}, \code{\link{mm_x}} and 
 Zuguang Gu <z.gu@dkfz.de>
 }
 \examples{
-fa = letters[1:10]
+sectors = letters[1:10]
 circos.par(cell.padding = c(0, 0, 0, 0), track.margin = c(0, 0))
-circos.initialize(fa, xlim = cbind(rep(0, 10), runif(10, 0.5, 1.5)))
+circos.initialize(sectors, xlim = cbind(rep(0, 10), runif(10, 0.5, 1.5)))
 circos.track(ylim = c(0, 1), track.height = mm_h(5),
     panel.fun = function(x, y) {
         circos.lines(c(0, 0 + mm_x(5)), c(0.5, 0.5), col = "blue")

@@ -15,8 +15,8 @@
 #
 # == example
 # pdf(NULL)
-# factors = c("a", "b")
-# circos.initialize(factors, xlim = c(0, 1))
+# sectors = c("a", "b")
+# circos.initialize(sectors, xlim = c(0, 1))
 # circos.track(ylim = c(0, 1))
 # # x = 0.5, y = 0.5 in sector a and track 1
 # circlize(0.5, 0.5, sector.index = "a", track.index = 1)
@@ -76,8 +76,8 @@ circlize = function(
 # 
 # == example
 # pdf(NULL)
-# factors = letters[1:4]
-# circos.initialize(factors, xlim = c(0, 1))
+# sectors = letters[1:4]
+# circos.initialize(sectors, xlim = c(0, 1))
 # circos.trackPlotRegion(ylim = c(0, 1))
 # reverse.circlize(c(30, 60), c(0.9, 0.8))
 # reverse.circlize(c(30, 60), c(0.9, 0.8), sector.index = "d", track.index = 1)
@@ -618,9 +618,9 @@ col2value = function(r, g, b, col_fun) {
 # Zuguang Gu <z.gu@dkfz.de>
 #
 # == example
-# fa = letters[1:10]
+# sectors = letters[1:10]
 # circos.par(cell.padding = c(0, 0, 0, 0), track.margin = c(0, 0))
-# circos.initialize(fa, xlim = cbind(rep(0, 10), runif(10, 0.5, 1.5)))
+# circos.initialize(sectors, xlim = cbind(rep(0, 10), runif(10, 0.5, 1.5)))
 # circos.track(ylim = c(0, 1), track.height = mm_h(5))
 # circos.par(track.margin = c(0, mm_h(2)))
 # circos.track(ylim = c(0, 1), track.height = cm_h(1))
@@ -772,9 +772,9 @@ convert_unit_in_data_coordinate = function(x, unit = c("mm", "cm", "inches", "ca
 # Zuguang Gu <z.gu@dkfz.de>
 #
 # == example
-# fa = letters[1:10]
+# sectors = letters[1:10]
 # circos.par(cell.padding = c(0, 0, 0, 0), track.margin = c(0, 0))
-# circos.initialize(fa, xlim = cbind(rep(0, 10), runif(10, 0.5, 1.5)))
+# circos.initialize(sectors, xlim = cbind(rep(0, 10), runif(10, 0.5, 1.5)))
 # circos.track(ylim = c(0, 1), track.height = mm_h(5),
 #     panel.fun = function(x, y) {
 #         circos.lines(c(0, 0 + mm_x(5)), c(0.5, 0.5), col = "blue")

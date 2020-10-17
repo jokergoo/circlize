@@ -305,7 +305,12 @@ generateRandomBed = function(
 
 
 sort_chr = function(chromosome) {
+	
 	chromosome = sort(chromosome)
+
+	if(!grepl("^(chr|\\d)", chromosome[1])) {
+		return(chromosome)
+	}
 
 	chromosome.ind = gsub("chr", "", chromosome)
 	chromosome.ind = gsub("_.*$", "", chromosome.ind)

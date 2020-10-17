@@ -339,7 +339,7 @@ mat2df = function(mat) {
 # -link.border border for links, single scalar or a matrix with names or a data frame with three columns
 # -link.lwd width for link borders, single scalar or a matrix with names or a data frame with three columns
 # -link.lty style for link borders, single scalar or a matrix with names or a data frame with three columns
-# -link.auto Whether to automatically arrange links on the circle to make them less twisted.
+# -link.auto Ignored.
 # -link.sort whether sort links on every sector based on the width of the links on it. If it is set to "overall", all links are sorted regardless
 #            whether they are from rows or columns.
 # -link.decreasing for ``link.sort``
@@ -734,7 +734,7 @@ chordDiagramFromMatrix = function(
 # -link.border border for links, single scalar or a vector which has the same length as nrows of ``df`` or a data frame
 # -link.lwd width for link borders, single scalar or a vector which has the same length as nrows of ``df`` or a data frame
 # -link.lty style for link borders, single scalar or a vector which has the same length as nrows of ``df`` or a data frame
-# -link.auto Whether to automatically arrange links on the circle to make them less twisted.
+# -link.auto Ignored.
 # -link.sort whether sort links on every sector based on the width of the links on it. If it is set to "overall", all links are sorted regardless
 #            whether they are from the first column or the second column.
 # -link.decreasing for ``link.sort``
@@ -1082,6 +1082,31 @@ chordDiagramFromDataFrame = function(
 		}
 	}
 
+	### group_by ###
+	gap.after = NULL
+	if(!is.null(group)) {
+		# validate `group`
+		if(is.null(names(group))) {
+			stop_wrap("`group` should be named vector where names are the sector names and values are the group labels.")
+		}
+		if(length(setdiff(cate, names(group))) > 0) {
+			stop_wrap("Names in `group` should cover all sector names.")
+		}
+
+		group = group[intersect(names(group), cate)]
+		
+		tg = table(group)
+		group_lt = split(names(group), group)
+
+		sn_by_group = unlist(group_lt)
+
+		cate = intersect(sn_by_group, cate)
+		xsum = xsum[cate]
+
+		gap.after = c(unlist(lapply(tg, function(x) c(rep(small.gap, x-1), big.gap))))
+		names(gap.after) = sn_by_group
+	}
+
 	# add additinal columns in df
 	df$o1 = rep(0, nr)  # order of the link root in the sector
 	df$o2 = rep(0, nr)  # order of the other link root in the sector
@@ -1118,20 +1143,20 @@ chordDiagramFromDataFrame = function(
 			order(factor(cn, levels = fa), decreasing = TRUE)
 		})
 	}
-		for(nm in names(od)) {  # for each sector
-			l = df$rn == nm # rows in df that correspond to current sector
-			df$o1[l] = od[[nm]] # adjust rows according to the order in current sector
-			df$x1[l][od[[nm]]] = cumsum(abs(df$value1[l])[od[[nm]]]) # position
+	for(nm in names(od)) {  # for each sector
+		l = df$rn == nm # rows in df that correspond to current sector
+		df$o1[l] = od[[nm]] # adjust rows according to the order in current sector
+		df$x1[l][od[[nm]]] = cumsum(abs(df$value1[l])[od[[nm]]]) # position
 
-			l2 = df$rn == nm & df$cn == nm
-			if(sum(l2)) { # there is a self link
-				if(self.link == 1) {
-					df$x2[l2] = df$x1[l2]+abs(df$value1[l2])*0.000001
-				}
+		l2 = df$rn == nm & df$cn == nm
+		if(sum(l2)) { # there is a self link
+			if(self.link == 1) {
+				df$x2[l2] = df$x1[l2]+abs(df$value1[l2])*0.000001
 			}
 		}
-		max_o1 = sapply(od, max)
-		sum_1 = tapply(abs(df$value1), df$rn, sum)
+	}
+	max_o1 = sapply(od, max)
+	sum_1 = tapply(abs(df$value1), df$rn, sum)
 		# position of root 2
 	if(link.sort[2]) {
 		od = tapply(abs(df$value2), df$cn, .order, link.sort[2], link.decreasing[2])
@@ -1145,62 +1170,32 @@ chordDiagramFromDataFrame = function(
 			order(factor(rn, levels = fa), decreasing = TRUE)
 		})
 	}	
-		for(nm in names(od)) {
-			if(!is.na(max_o1[nm])) { # if cn already in rn
-				l = df$cn == nm
-				if(self.link == 1) {
-					l2 = ! df$rn[l] == nm # self link
-					# od[[nm]][l2] = order(od[[nm]][l2])
-					if(sum(l2)) {
-						od[[nm]] = order(od[[nm]][l2])
-					}
-				} else {
-					l2 = rep(TRUE, sum(l))
+	for(nm in names(od)) {
+		if(!is.na(max_o1[nm])) { # if cn already in rn
+			l = df$cn == nm
+			if(self.link == 1) {
+				l2 = ! df$rn[l] == nm # self link
+				# od[[nm]][l2] = order(od[[nm]][l2])
+				if(sum(l2)) {
+					od[[nm]] = order(od[[nm]][l2])
 				}
-				df$o2[l][l2] = od[[nm]] + max_o1[nm]
-				df$x2[l][l2][ od[[nm]] ] = cumsum(abs(df$value2[l][l2])[ od[[nm]] ]) + sum_1[nm]
 			} else {
-				l = df$cn == nm
-				df$o2[l] = od[[nm]]
-				df$x2[l][od[[nm]]] = cumsum(abs(df$value2[l])[od[[nm]]])
+				l2 = rep(TRUE, sum(l))
 			}
+			df$o2[l][l2] = od[[nm]] + max_o1[nm]
+			df$x2[l][l2][ od[[nm]] ] = cumsum(abs(df$value2[l][l2])[ od[[nm]] ]) + sum_1[nm]
+		} else {
+			l = df$cn == nm
+			df$o2[l] = od[[nm]]
+			df$x2[l][od[[nm]]] = cumsum(abs(df$value2[l])[od[[nm]]])
 		}
-		if(self.link == 1) {
-			l = df$rn == df$cn
-			df$x1[l] = pmin(df$x1[l], df$x2[l])
-			df$x2[l] = pmin(df$x1[l], df$x2[l])
-		}
-	 #else {
-	# 	for(nm in unique(c(df$rn, df$cn))) {
-	# 		l = df$rn == nm | df$cn == nm
-	# 		od = order(abs(df$value1[l]), decreasing = link.decreasing[1])
-	# 		cum_pos = cumsum(abs(df$value[l])[od])
-	# 		if(self.link == 2) {
-	# 			ii = which(df$rn[l] == nm & df$cn[l] == nm)
-	# 			if(length(ii)) {
-	# 				iii = which(od == ii)
-	# 				if(iii < length(cum_pos)) {
-	# 					cum_pos[(iii+1):length(cum_pos)] = cum_pos[(iii+1):length(cum_pos)] + df$value[l][ii]
-	# 				}
-	# 			}
-	# 		}
-	# 		xx = NULL
-	# 		xx[od] = cum_pos
-	# 		l1 = df$rn == nm
-	# 		l2 = l & !l1
-	# 		df$x1[l1] = xx[l1[l]]
-	# 		df$x2[l2] = xx[l2[l]]
-	# 	}
-	# 	l = df$rn == df$cn
-	# 	if(self.link == 1) {
-	# 		df$x2[l] = df$x1[l]
-	# 	} else if(self.link == 2) {
-	# 		df$x2[l] = df$x1[l] + abs(df$value[l])
-	# 	}
-	# }
-
-	#######################################
-
+	}
+	if(self.link == 1) {
+		l = df$rn == df$cn
+		df$x1[l] = pmin(df$x1[l], df$x2[l])
+		df$x2[l] = pmin(df$x1[l], df$x2[l])
+	}
+	
 	if(!is.null(xmax)) {
 		overlap = intersect(names(xmax), names(xsum))
 		xmax = xmax[overlap]
@@ -1231,27 +1226,7 @@ chordDiagramFromDataFrame = function(
     o.points.overflow.warning = circos.par("points.overflow.warning")
     circos.par("points.overflow.warning" = FALSE)
     ### group_by ###
-	if(!is.null(group)) {
-		# validate `group`
-		if(is.null(names(group))) {
-			stop_wrap("`group` should be named vector where names are the sector names and values are the group labels.")
-		}
-		if(length(setdiff(cate, names(group))) > 0) {
-			stop_wrap("Names in `group` should cover all sector names.")
-		}
-
-		group = group[intersect(names(group), cate)]
-		
-		tg = table(group)
-		group_lt = split(names(group), group)
-
-		sn_by_group = unlist(group_lt)
-
-		cate = intersect(sn_by_group, cate)
-		xsum = xsum[cate]
-
-		gap.after = c(unlist(lapply(tg, function(x) c(rep(small.gap, x-1), big.gap))))
-		names(gap.after) = sn_by_group
+	if(!is.null(gap.after)) {
 		circos.par(gap.after = gap.after)
 	}
 
@@ -1325,7 +1300,11 @@ chordDiagramFromDataFrame = function(
 				}
 				circos.rect(xlim[1], 0, xlim[2], 1, col = grid.col[current.sector.index], border = border.col)
 				if("axis" %in% annotationTrack) {
-					circos.axis("top", labels.cex = 0.5)
+					if(scale) {
+						circos.axis("top", labels = function(x) {paste0(round(x*100), "%")}, labels.cex = 0.5)
+					} else {
+						circos.axis("top", labels.cex = 0.5)
+					}
 				}
 			}, track.height = annotationTrackHeight[which(annotationTrack %in% "grid")])
 	}

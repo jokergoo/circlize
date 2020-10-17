@@ -74,7 +74,8 @@ circos.points = function(
 # Add points to the plotting regions in a same track
 #
 # == param
-# -factors      A `factor` or a character vector which represents the categories of data
+# -sectors      A `factor` or a character vector which represents the categories of data
+# -factors      The same as ``sectors``. It will be removed in future versions. 
 # -x            Data points on x-axis
 # -y            Data points on y-axis
 # -track.index  Index for the track
@@ -94,19 +95,21 @@ circos.points = function(
 #
 # == example
 # circos.initialize(letters[1:8], xlim = c(0, 1))
-# df = data.frame(fa = sample(letters[1:8], 100, replace = TRUE),
+# df = data.frame(sectors = sample(letters[1:8], 100, replace = TRUE),
 #                 x = runif(100), y = runif(100))
 # circos.track(ylim = c(0, 1))
-# circos.trackPoints(df$fa, x = df$x, y = df$y, pch = 16, col = as.numeric(factor(df$fa)))
+# circos.trackPoints(df$sectors, x = df$x, y = df$y, pch = 16, col = as.numeric(factor(df$fa)))
 # circos.clear()
 circos.trackPoints = function(
-	factors = NULL,
+    sectors,
 	x, y,
 	track.index = get.current.track.index(),
     pch = par("pch"),
     col = par("col"),
     cex = par("cex"),
-    bg = par("bg")) {
+    bg = par("bg"),
+    factors = sectors
+    ) {
 
     # basic check here
     if(length(x) != length(factors) || length(y) != length(factors)) {
@@ -180,10 +183,10 @@ circos.trackPoints = function(
 # ``area`` to ``TURE``.
 #
 # == example
-# factors = letters[1:9]
+# sectors = letters[1:9]
 # circos.par(points.overflow.warning = FALSE)
-# circos.initialize(factors = factors, xlim = c(0, 10))
-# circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.5)
+# circos.initialize(sectors, xlim = c(0, 10))
+# circos.trackPlotRegion(sectors, ylim = c(0, 10), track.height = 0.5)
 #
 # circos.lines(sort(runif(10)*10), runif(10)*8, sector.index = "a")
 # circos.text(5, 9, "type = 'l'", sector.index = "a", facing = "outside")
@@ -318,7 +321,8 @@ circos.lines = function(
 # Add lines to the plotting regions in a same track
 #
 # == param
-# -factors      A `factor` or a character vector which represents the categories of data.
+# -sectors      A `factor` or a character vector which represents the categories of data.
+# -factors      The same as ``sectors``. It will be removed in future versions. 
 # -x            Data points on x-axis.
 # -y            Data points on y-axis.
 # -track.index  Index for the track.
@@ -342,7 +346,7 @@ circos.lines = function(
 #
 # This function can be replaced by a ``for`` loop containing `circos.lines`.
 circos.trackLines = function(
-	factors,
+    sectors,
 	x, y,
 	track.index = get.current.track.index(),
     col = par("col"),
@@ -356,7 +360,8 @@ circos.trackLines = function(
 	baseline = "bottom",
     pt.col = par("col"),
     cex = par("cex"),
-    pch = par("pch")) {
+    pch = par("pch"),
+    factors = sectors) {
 
 	if(!is.null(area.baseline)) {
 		baseline = area.baseline
@@ -435,7 +440,7 @@ circos.trackLines = function(
 # This function can be vectorized.
 #
 # == examples
-# circos.initialize(fa = c("a", "b", "c", "d"), xlim = c(0, 10))
+# circos.initialize(c("a", "b", "c", "d"), xlim = c(0, 10))
 # circos.track(ylim = c(0, 10), panel.fun = function(x, y) {
 #     for(rot in seq(0, 360, by = 30)) {
 #         circos.rect(2, 2, 6, 6, rot = rot)
@@ -557,7 +562,7 @@ circos.rect = function(
 # -... Pass to `circos.polygon`.
 #
 # == example
-# circos.initialize(fa = c("a", "b", "c", "d"), xlim = c(0, 10))
+# circos.initialize(c("a", "b", "c", "d"), xlim = c(0, 10))
 # circos.track(ylim = c(0, 10), panel.fun = function(x, y) {
 #     circos.triangle(c(2, 2), c(2, 8),
 #                     c(8, 8), c(2, 8),
@@ -627,8 +632,8 @@ circos.triangle = function(x1, y1, x2, y2, x3, y3, ...) {
 #
 # == example
 # set.seed(123)
-# factors = letters[1:4]
-# circos.initialize(factors, xlim = c(0, 1))
+# sectors = letters[1:4]
+# circos.initialize(sectors, xlim = c(0, 1))
 # circos.trackPlotRegion(ylim = c(-3, 3), track.height = 0.4, panel.fun = function(x, y) {
 #     x1 = runif(20)
 #     y1 = x1 + rnorm(20)
@@ -803,10 +808,10 @@ circos.segments = function(
 # https://jokergoo.github.io/circlize_book/book/graphics.html#text
 #
 # == example
-# factors = letters[1:4]
+# sectors = letters[1:4]
 # circos.par(points.overflow.warning = FALSE)
-# circos.initialize(factors = factors, xlim = c(0, 10))
-# circos.trackPlotRegion(factors = factors, ylim = c(0, 10),
+# circos.initialize(sectors, xlim = c(0, 10))
+# circos.trackPlotRegion(factors, ylim = c(0, 10),
 #   track.height = 0.5, panel.fun = function(x, y) {
 #     circos.text(3, 1, "inside", facing = "inside", cex = 0.8)
 #     circos.text(7, 1, "outside", facing = "outside", cex = 0.8)
@@ -1077,7 +1082,8 @@ degree = function(x) {
 # Draw text in cells among the whole track
 #
 # == param
-# -factors      A `factor` or a character vector which represents the categories of data
+# -sectors      A `factor` or a character vector which represents the categories of data
+# -factors      The same as ``sectors``. It will be removed in future versions. 
 # -x            Data points on x-axis
 # -y            Data points on y-axis
 # -labels       Labels
@@ -1096,7 +1102,7 @@ degree = function(x) {
 #
 # This function can be replaced by a ``for`` loop containing `circos.text`.
 circos.trackText = function(
-	factors,
+	sectors, 
 	x, y,
 	labels,
 	track.index = get.current.track.index(),
@@ -1107,7 +1113,8 @@ circos.trackText = function(
     adj = par("adj"),
     cex = 1,
     col = par("col"),
-    font = par("font")) {
+    font = par("font"),
+    factors = sectors) {
 
     # basic check here
     if(length(x) != length(factors) || length(y) != length(factors)) {
@@ -1189,15 +1196,15 @@ circos.trackText = function(
 # https://jokergoo.github.io/circlize_book/book/graphics.html#axes
 #
 # == example
-# factors = letters[1:8]
+# sectors = letters[1:8]
 # circos.par(points.overflow.warning = FALSE)
-# circos.initialize(factors = factors, xlim = c(0, 10))
-# circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.1,
+# circos.initialize(sectors, xlim = c(0, 10))
+# circos.trackPlotRegion(sectors, ylim = c(0, 10), track.height = 0.1,
 #     bg.border = NA, panel.fun = function(x, y) {
 #         circos.text(5, 10, get.cell.meta.data("sector.index"))
 # })
 #
-# circos.trackPlotRegion(factors = factors, ylim = c(0, 10))
+# circos.trackPlotRegion(sectors, ylim = c(0, 10))
 # circos.axis(sector.index = "a")
 # circos.axis(sector.index = "b", direction = "inside", labels.facing = "outside")
 # circos.axis(sector.index = "c", h = "bottom")
@@ -1220,8 +1227,8 @@ circos.trackText = function(
 # factors = letters[1]
 #
 # circos.par("gap.degree" = 0, "cell.padding" = c(0, 0, 0, 0), "start.degree" = 90)
-# circos.initialize(factors = factors, xlim = c(0, 12))
-# circos.trackPlotRegion(factors = factors, ylim = c(0, 1), bg.border = NA)
+# circos.initialize(sectors, xlim = c(0, 12))
+# circos.trackPlotRegion(sectors, ylim = c(0, 1), bg.border = NA)
 # circos.axis(sector.index = "a", major.at = 0:12, labels = "",
 #     direction = "inside", major.tick.length = mm_y(3))
 # circos.text(1:12, rep(0.5, 12), 1:12, facing = "downward")
@@ -1427,13 +1434,20 @@ circos.axis = function(
 		# circos.text(x, y, labels, ...)
 	}
 
-	if(is.logical(labels) && labels) {
-		add_axis_labels(major.at[l], rep(h, sum(l)) + (major.tick.length + mm_y(0.5, sector.index, track.index))*ifelse(direction == "outside", 1, -1),
-		           labels = major.at[l], adj = labels.adj,
-		           font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
-		           facing = labels.facing, niceFacing = labels.niceFacing, h = h, col = labels.col,
-		           labels.pos.adjust = labels.pos.adjust)
-	} else if(is.logical(labels) && !labels) {
+	if(is.logical(labels)) {
+        if(labels[1]) {
+    		add_axis_labels(major.at[l], rep(h, sum(l)) + (major.tick.length + mm_y(0.5, sector.index, track.index))*ifelse(direction == "outside", 1, -1),
+    		           labels = major.at[l], adj = labels.adj,
+    		           font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
+    		           facing = labels.facing, niceFacing = labels.niceFacing, h = h, col = labels.col,
+    		           labels.pos.adjust = labels.pos.adjust)
+    	}
+    } else if(is.function(labels)) {
+        add_axis_labels(major.at[l], rep(h, sum(l)) + (major.tick.length + mm_y(0.5, sector.index, track.index))*ifelse(direction == "outside", 1, -1),
+                       labels = labels(major.at[l]), adj = labels.adj,
+                       font = labels.font, cex = labels.cex, sector.index = sector.index, track.index = track.index,
+                       facing = labels.facing, niceFacing = labels.niceFacing, h = h, col = labels.col,
+                       labels.pos.adjust = labels.pos.adjust)
 
     } else if(length(labels)) {
 		add_axis_labels(major.at[l], rep(h, sum(l)) + (major.tick.length + mm_y(0.5, sector.index, track.index))*ifelse(direction == "outside", 1, -1),
@@ -1518,11 +1532,11 @@ circos.xaxis = function(...) {
 # == example
 # op = par(no.readonly = TRUE)
 #
-# factors = letters[1:8]
+# sectors = letters[1:8]
 # circos.par(points.overflow.warning = FALSE)
 # circos.par(gap.degree = 8)
-# circos.initialize(factors = factors, xlim = c(0, 10))
-# circos.trackPlotRegion(factors = factors, ylim = c(0, 10), track.height = 0.5)
+# circos.initialize(sectors, xlim = c(0, 10))
+# circos.trackPlotRegion(sectors, ylim = c(0, 10), track.height = 0.5)
 # par(cex = 0.8)
 # for(a in letters[2:4]) {
 #   circos.yaxis(side = "left", sector.index = a)
@@ -1559,7 +1573,11 @@ circos.yaxis = function(
 
 	if(is.null(at)) {
 		at = grid.pretty(ylim)
-		labels = at
+        if(is.function(labels)) {
+            labels = labels(at)
+        } else {
+		  labels = at
+        }
 	}
 
 	ylim2 = ylim
@@ -1618,7 +1636,8 @@ circos.yaxis = function(
 # Draw histogram in cells among a whole track
 #
 # == param
-# -factors      Factors which represent the categories of data
+# -sectors      A `factor` or a character vector which represents the categories of data
+# -factors      The same as ``sectors``. It will be removed in future versions. 
 # -x            Data on the x-axis
 # -track.index  Index for the track which is going to be updated. Setting it to ``NULL`` means
 #               creating the plotting regions in the next newest track.
@@ -1651,18 +1670,18 @@ circos.yaxis = function(
 # == example
 # \donttest{
 # x = rnorm(1600)
-# factors = sample(letters[1:16], 1600, replace = TRUE)
-# circos.initialize(factors = factors, x = x)
-# circos.trackHist(factors = factors, x = x, col = "#999999",
+# sectors = sample(letters[1:16], 1600, replace = TRUE)
+# circos.initialize(sectors, x = x)
+# circos.trackHist(sectors, x = x, col = "#999999",
 #   border = "#999999")
-# circos.trackHist(factors = factors, x = x, bin.size = 0.1,
+# circos.trackHist(sectors, x = x, bin.size = 0.1,
 #   col = "#999999", border = "#999999")
-# circos.trackHist(factors = factors, x = x, draw.density = TRUE,
+# circos.trackHist(sectors x = x, draw.density = TRUE,
 #   col = "#999999", border = "#999999")
 # circos.clear()
 # }
 circos.trackHist = function(
-	factors,
+	sectors,
 	x,
 	track.height = circos.par("track.height"),
     track.index = NULL,
@@ -1681,7 +1700,8 @@ circos.trackHist = function(
     right = TRUE,
     draw.density = FALSE,
     bin.size = NULL,
-    area = FALSE) {
+    area = FALSE,
+    factors = sectors) {
 
     # basic check here
     if(length(x) != length(factors)) {
@@ -1729,7 +1749,7 @@ circos.trackHist = function(
     }
 
     # create the plotting region
-    circos.trackPlotRegion(factors = fa, y=yy, track.height = track.height,
+    circos.trackPlotRegion(sectors = fa, y=yy, track.height = track.height,
                       track.index = track.index, ylim = ylim, force.ylim = force.ylim,
                       bg.col = bg.col, bg.border = bg.border, bg.lty = bg.lty, bg.lwd = bg.lwd)
 
@@ -1748,7 +1768,7 @@ circos.trackHist = function(
 	fa = fa[l3]
 
     if(draw.density) {
-        circos.trackLines(factors = fa, xx, yy, track.index = track.index,
+        circos.trackLines(sectors = fa, xx, yy, track.index = track.index,
                           col = col, lty = lty, lwd = lwd, area = area, border = border)
     } else {
         # in each cell, draw rectangles
@@ -1812,7 +1832,7 @@ circos.trackHist = function(
 # dend = as.dendrogram(hc)
 #
 # circos.par(cell.padding = c(0, 0, 0, 0))
-# circos.initialize(factors = "a", xlim = c(0, n)) # only one sector
+# circos.initialize(sectors = "a", xlim = c(0, n)) # only one sector
 # max_height = attr(dend, "height")  # maximum height of the trees
 # circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.3,
 #     panel.fun = function(x, y) {
@@ -1998,7 +2018,7 @@ circos.dendrogram = function(
 # when initializing the circular layout.
 #
 # == example
-# circos.initialize(fa = letters[1:4], xlim = c(0, 10))
+# circos.initialize(letters[1:4], xlim = c(0, 10))
 # circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
 #     value = runif(10)
 #     circos.barplot(value, 1:10 - 0.5, col = 1:10)
@@ -2009,7 +2029,7 @@ circos.dendrogram = function(
 # })
 # circos.clear()
 #
-# circos.initialize(fa = letters[1:4], xlim = c(0, 10))
+# circos.initialize(letters[1:4], xlim = c(0, 10))
 # circos.track(ylim = c(0, 4), panel.fun = function(x, y) {
 #     value = matrix(runif(10*4), ncol = 4)
 #     circos.barplot(value, 1:10 - 0.5, col = 2:5)
@@ -2080,7 +2100,7 @@ circos.barplot = function(value, pos, bar_width = 0.6,
 # when initializing the circular layout.
 # 
 # == example
-# circos.initialize(fa = letters[1:4], xlim = c(0, 10))
+# circos.initialize(letters[1:4], xlim = c(0, 10))
 # circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
 #     for(pos in seq(0.5, 9.5, by = 1)) {
 #         value = runif(10)
@@ -2089,7 +2109,7 @@ circos.barplot = function(value, pos, bar_width = 0.6,
 # })
 # circos.clear()
 #
-# circos.initialize(fa = letters[1:4], xlim = c(0, 10))
+# circos.initialize(letters[1:4], xlim = c(0, 10))
 # circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
 #     value = replicate(runif(10), n = 10, simplify = FALSE)
 #     circos.boxplot(value, 1:10 - 0.5, col = 1:10)
@@ -2180,7 +2200,7 @@ circos.boxplot = function(value, pos, outline = TRUE, box_width = 0.6,
 #
 # == example
 # \donttest{
-# circos.initialize(fa = letters[1:4], xlim = c(0, 10))
+# circos.initialize(letters[1:4], xlim = c(0, 10))
 # circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
 #     for(pos in seq(0.5, 9.5, by = 1)) {
 #         value = runif(10)
@@ -2189,7 +2209,7 @@ circos.boxplot = function(value, pos, outline = TRUE, box_width = 0.6,
 # })
 # circos.clear()
 #
-# circos.initialize(fa = letters[1:4], xlim = c(0, 10))
+# circos.initialize(letters[1:4], xlim = c(0, 10))
 # circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
 #     value = replicate(runif(10), n = 10, simplify = FALSE)
 #     circos.violin(value, 1:10 - 0.5, col = 1:10)

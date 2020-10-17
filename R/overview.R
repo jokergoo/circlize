@@ -29,6 +29,7 @@
 # - `circos.trackPoints`
 # - `circos.trackLines`
 # - `circos.trackText`
+#
 # Draw circular heatmaps
 #
 # - `circos.heatmap`

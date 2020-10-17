@@ -51,8 +51,8 @@ get detailed information of the current cell.
 \code{\link{CELL_META}} is a short version of \code{\link{get.cell.meta.data}}.
 }
 \examples{
-factors = letters[1:4]
-circos.initialize(factors, xlim = c(0, 1))
+sectors = letters[1:4]
+circos.initialize(sectors, xlim = c(0, 1))
 circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
     print(get.cell.meta.data("xlim"))
 })

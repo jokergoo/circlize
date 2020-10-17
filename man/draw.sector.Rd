@@ -45,8 +45,8 @@ draw.sector(350, 1000, col = "#00FF0080", border = NA)
 draw.sector(0, 180, rou1 = 0.25, center = c(-0.5, 0.5), border = 2, lwd = 2, lty = 2)
 draw.sector(0, 360, rou1 = 0.7, rou2 = 0.6, col = "#0000FF80")
 
-factors = letters[1:8]
-circos.initialize(factors, xlim = c(0, 1))
+sectors = letters[1:8]
+circos.initialize(sectors, xlim = c(0, 1))
 for(i in 1:3) {
     circos.trackPlotRegion(ylim = c(0, 1))
 }

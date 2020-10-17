@@ -8,7 +8,7 @@ Draw histogram in cells among a whole track
 }
 \usage{
 circos.trackHist(
-    factors,
+    sectors, factors = sectors,
     x,
     track.height = circos.par("track.height"),
     track.index = NULL,
@@ -31,7 +31,8 @@ circos.trackHist(
 }
 \arguments{
 
-  \item{factors}{Factors which represent the categories of data}
+  \item{sectors}{A \code{\link{factor}} or a character vector which represents the categories of data}
+  \item{factors}{The same as \code{sectors}. It will be removed in future versions. }
   \item{x}{Data on the x-axis}
   \item{track.index}{Index for the track which is going to be updated. Setting it to \code{NULL} means creating the plotting regions in the next newest track.}
   \item{track.height}{Height of the track. It is the percentage to the radius of the unit circle. If to update a track, this argument is disabled.}

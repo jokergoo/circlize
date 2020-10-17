@@ -8,7 +8,8 @@ Add lines to the plotting regions in a same track
 }
 \usage{
 circos.trackLines(
-    factors,
+    sectors,
+    factors = sectors,
     x, y,
     track.index = get.current.track.index(),
     col = par("col"),
@@ -26,7 +27,8 @@ circos.trackLines(
 }
 \arguments{
 
-  \item{factors}{A \code{\link{factor}} or a character vector which represents the categories of data.}
+  \item{sectors}{A \code{\link{factor}} or a character vector which represents the categories of data.}
+  \item{factors}{The same as \code{sectors}. It will be removed in future versions. }
   \item{x}{Data points on x-axis.}
   \item{y}{Data points on y-axis.}
   \item{track.index}{Index for the track.}

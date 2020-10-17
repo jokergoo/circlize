@@ -35,7 +35,7 @@ Please note, the x-values of boxplots are normally integer indices. Just be care
 when initializing the circular layout.
 }
 \examples{
-circos.initialize(fa = letters[1:4], xlim = c(0, 10))
+circos.initialize(letters[1:4], xlim = c(0, 10))
 circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
     for(pos in seq(0.5, 9.5, by = 1)) {
         value = runif(10)
@@ -44,7 +44,7 @@ circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
 })
 circos.clear()
 
-circos.initialize(fa = letters[1:4], xlim = c(0, 10))
+circos.initialize(letters[1:4], xlim = c(0, 10))
 circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
     value = replicate(runif(10), n = 10, simplify = FALSE)
     circos.boxplot(value, 1:10 - 0.5, col = 1:10)

@@ -54,8 +54,11 @@ resetGlobalVariable()
 #     the region. So if some points are out of the plotting region, ``circlize`` would continue drawing the points and printing warnings. In some
 #     cases, draw something out of the plotting region is useful, such as draw
 #     some legend or text. Set this value to ``FALSE`` to turn off the warnings.
-# -``circle.margin``  Margin in the horizontal direction and in the vertical direction. The value should be a positive numeric vector of length two
-#      and the values are the fraction to the unit circle. So A value of ``c(x, y)`` means ``circos.par(canvas.xlim = c(-1, 1)*(1+x), canvas.ylim = c(-1, 1)*(1+y))``.
+# -``circle.margin``  Margin in the horizontal and vertical direction. The value should be a positive numeric vector
+#    and the length of it should be either 1, 2, or 4. When it has length of 1, it controls the margin on the four sides of the circle.
+#    When it has length of 2, the first value controls the margin on the left and right, and the second value controls
+#    the margin on the bottom and top side. When it has length of 4, the four values controls the margins on the left, right, bottom and top sides
+#    of the circle. So A value of ``c(x1, x2, y1, y2)`` means ``circos.par(canvas.xlim = c(-(1+x1), 1+x2), canvas.ylim = c(-(1+y1), 1+y2))``.
 # -``canvas.xlim``              The coordinate for the canvas. Because ``circlize`` draws everything (or almost everything) inside the unit circle,
 #     the default ``canvas.xlim`` and ``canvas.ylim`` for the canvas would be all ``c(-1, 1)``. However, you can set it to a more broad
 #     interval if you want to draw other things out of the circle. By choosing proper
@@ -137,7 +140,7 @@ circos.par = setGlobalOptions(
 	track.height = 0.2,
 	points.overflow.warning = TRUE,
 	circle.margin = list(
-		.value = c(0, 0),
+		.value = c(0, 0, 0, 0),
 		.filter = function(x) {
 			if(is.circos.initialized()){
 				warning_wrap("'circle.margin' can only be modified before `circos.initialize`, or maybe you forgot to call `circos.clear` in your last plot.")
@@ -145,13 +148,21 @@ circos.par = setGlobalOptions(
 			if(any(x <= 0)) {
 				stop_wrap("The value of `circle.margin` should be positive.")
 			}
-			if(length(x) == 1) x = rep(x, 2)
+			if(length(x) == 1) {
+				x = rep(x, 4)
+			} else if(length(x) == 2) {
+				x = rep(x, each = 2)
+			} else if(length(x) == 4) {
+
+			} else {
+				stop_wrap("Length of `circle.margin` can only be 1, 2, or 4.")
+			}
 			return(x)
 		}
 	),
 	canvas.xlim = list(
 		.value = function() {
-			c(-1, 1)*(1 + .v$circle.margin[1])
+			c(-(1 + .v$circle.margin[1]), (1 + .v$circle.margin[2]))
 		},
 		.filter = function(x) {
 			if(is.circos.initialized()){
@@ -161,7 +172,7 @@ circos.par = setGlobalOptions(
 		}),
 	canvas.ylim = list(
 		.value = function() {
-			c(-1, 1)*(1 + .v$circle.margin[2])
+			c(-(1 + .v$circle.margin[3]), (1 + .v$circle.margin[4]))
 		},
 		.filter = function(x) {
 			if(is.circos.initialized()){
@@ -220,7 +231,8 @@ is.circos.initialized = function() {
 # Initialize the circular layout
 #
 # == param
-# -factors A `factor` variable or a character vector which represent data categories
+# -sectors A `factor` variable or a character vector which represent data categories
+# -factors The same as ``sectors``. It will be removed in future versions. 
 # -x       Data on x-axes, a vector
 # -xlim    Ranges for values on x-axes, see "details" section for explanation of the format
 # -sector.width Width for each sector. The length of the vector should be either 1 which means
@@ -256,34 +268,35 @@ is.circos.initialized = function() {
 # == seealso
 # https://jokergoo.github.io/circlize_book/book/circular-layout.html
 circos.initialize = function(
-	factors,
+	sectors = NULL, 
 	x = NULL,
 	xlim = NULL,
-	sector.width = NULL) {
+	sector.width = NULL,
+	factors = sectors) {
 
     resetGlobalVariable()
 
 	.SECTOR.DATA = get(".SECTOR.DATA", envir = .CIRCOS.ENV)
 	.CELL.DATA = get(".CELL.DATA", envir = .CIRCOS.ENV)
 
-	if(missing(factors)) {
+	if(is.null(factors)) {
 		if(is.matrix(xlim) || is.data.frame(xlim)) {
 			if(is.null(rownames(xlim))) {
-				stop_wrap("Since `factors` is not specified, row names of `xlim` are taken as `factors`, thus `xlim` should be a two-column matrix with row names.")
+				stop_wrap("Since `sectors` is not specified, row names of `xlim` are taken as `sectors`, thus `xlim` should be a two-column matrix with row names.")
 			} else {
 				factors = rownames(xlim)
 			}
 		} else {
-			stop_wrap("Since `factors` is not specified, row names of `xlim` are taken as `factors`, thus `xlim` should be a two-column matrix with row names.")
+			stop_wrap("Since `sectors` is not specified, row names of `xlim` are taken as `sectors`, thus `xlim` should be a two-column matrix with row names.")
 		}
 	}
 
 	if(is.numeric(factor)) {
-		warning_wrap("Your `factor` is numeric, it will be converted to characters internally.")
+		warning_wrap("Your `sectors` is numeric, it will be converted to characters internally.")
 	}
 
 	if(any(factors == "")) {
-		stop_wrap("`factors` cannot contain empty strings.")
+		stop_wrap("`sectors` cannot contain empty strings.")
 	}
 
     if(! is.factor(factors)) {
@@ -316,7 +329,7 @@ circos.initialize = function(
         max.value = rep(xlim[2], length(le))
     } else if(is.matrix(xlim) || is.data.frame(xlim)) {
         if(dim(xlim)[1] != length(le) || dim(xlim)[2] != 2) {
-            stop_wrap("Since `xlim` is a matrix, it should have same number of rows as the length of the level of `factors` and number of columns of 2.")
+            stop_wrap("Since `xlim` is a matrix, it should have same number of rows as the length of the level of `sectors` and number of columns of 2.")
         }
 
         if(!is.null(rownames(xlim))) {
@@ -335,7 +348,7 @@ circos.initialize = function(
     } else if(is.vector(x)) {
 
         if(length(x) != length(factors)) {
-            stop_wrap("Length of `x` and length of `factors` differ.")
+            stop_wrap("Length of `x` and length of `sectors` differ.")
         }
         min.value = tapply(x, factors, min)
         max.value = tapply(x, factors, max)
@@ -369,7 +382,7 @@ circos.initialize = function(
 	if(length(gap.degree) == 1) {
 		gap.degree = rep(gap.degree, n.sector)
 	} else if(length(gap.degree) != n.sector) {
-		stop_wrap("Since `gap.degree` parameter has length larger than 1, it should have same length as number of levels of factors.")
+		stop_wrap("Since `gap.degree` parameter has length larger than 1, it should have same length as the number of sectors.")
 	}
 
 	start.degree = circos.par("start.degree")
@@ -779,8 +792,8 @@ show.index = function() {
 # `CELL_META` is a short version of `get.cell.meta.data`.
 #
 # == example
-# factors = letters[1:4]
-# circos.initialize(factors, xlim = c(0, 1))
+# sectors = letters[1:4]
+# circos.initialize(sectors, xlim = c(0, 1))
 # circos.trackPlotRegion(ylim = c(0, 1), panel.fun = function(x, y) {
 #     print(get.cell.meta.data("xlim"))
 # })

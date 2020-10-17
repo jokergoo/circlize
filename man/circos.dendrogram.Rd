@@ -26,7 +26,7 @@ circos.dendrogram(
 
 }
 \details{
-Assuming there are \code{n} nodes in the dendrogram, the positions for leaves on x-axis is \code{0.5, 1.5, ..., n - 0.5}.
+Assuming there are \code{n} nodes in the dendrogram, the positions for leaves on x-axis are always \code{0.5, 1.5, ..., n - 0.5}.
 So you must be careful with \code{xlim} when you initialize the cirular layout.
 
 You can use the \code{dendextend} package to render the dendrograms.
@@ -43,7 +43,7 @@ n = length(labels)  # number of bird species
 dend = as.dendrogram(hc)
 
 circos.par(cell.padding = c(0, 0, 0, 0))
-circos.initialize(factors = "a", xlim = c(0, n)) # only one sector
+circos.initialize(sectors = "a", xlim = c(0, n)) # only one sector
 max_height = attr(dend, "height")  # maximum height of the trees
 circos.trackPlotRegion(ylim = c(0, 1), bg.border = NA, track.height = 0.3,
     panel.fun = function(x, y) {

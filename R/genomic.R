@@ -116,6 +116,13 @@ circos.initializeWithIdeogram = function(
 	}
 	df = cytoband$df
 	chromosome = cytoband$chromosome
+	if(is.null(chromosome)) {
+		if(is.factor(cytoband[, 1])) {
+			chromosome = levels(cytoband$df[, 1])
+		} else {
+			chromosome = unique(cytoband$df[, 1])
+		}
+	}
 
 	if(is.null(chromosome.index)) {
 		chromosome.index = chromosome
@@ -494,7 +501,7 @@ circos.genomicTrackPlotRegion = function(
 				   rep(0, length(all.sector.index)))
 	}
 
-    if(is.function(data)) {
+    if(is.function(data) || is.function(ylim) || is.function(stack) || is.function(numeric.column)) {
         stop_wrap("The panel function should be set explicitly with the argument name `panel.fun = ...`.")
     }
 	
@@ -650,6 +657,7 @@ circos.genomicTrackPlotRegion = function(
 				ylim = range(unlist(lapply(data[-(1:3)][numeric.column], range)))
 			}
 		}
+
 		if(is.dataFrameList(data)) {
 			circos.trackPlotRegion(ylim = ylim, panel.fun = function(x, y) {
 					
@@ -1478,6 +1486,13 @@ circos.genomicLink = function(
 	region1 = validate_data_frame(region1)
 	region2 = validate_data_frame(region2)
 
+	if(ncol(region1) == 2) {
+		region1[, 3] = region1[, 2]
+	}
+	if(ncol(region2) == 2) {
+		region2[, 3] = region2[, 2]
+	}
+
 	region1 = normalizeToDataFrame(region1, sort = FALSE)
 	region2 = normalizeToDataFrame(region2, sort = FALSE)
 	
@@ -1491,13 +1506,6 @@ circos.genomicLink = function(
 	
 	if(nrow(region1) != nrow(region2)) {
 		stop_wrap("nrow of `region1` and `region2` differ.")
-	}
-
-	if(ncol(region1) == 2) {
-		region1[, 3] = region1[, 2]
-	}
-	if(ncol(region2) == 2) {
-		region2[, 3] = region2[, 2]
 	}
 	
 	nr = nrow(region1)

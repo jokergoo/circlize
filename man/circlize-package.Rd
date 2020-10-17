@@ -35,8 +35,10 @@ functions are available:
 \itemize{
   \item \code{\link{circos.trackPoints}}
   \item \code{\link{circos.trackLines}}
-  \item \code{\link{circos.trackText}} Draw circular heatmaps
+  \item \code{\link{circos.trackText}}
 }
+
+Draw circular heatmaps
 
 \itemize{
   \item \code{\link{circos.heatmap}}

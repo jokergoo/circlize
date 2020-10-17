@@ -44,8 +44,8 @@ The function calls \code{\link{draw.sector}}.
 \url{https://jokergoo.github.io/circlize_book/book/graphics.html#highlight-sectors-and-tracks}
 }
 \examples{
-factors = letters[1:8]
-circos.initialize(factors, xlim = c(0, 1))
+sectors = letters[1:8]
+circos.initialize(sectors, xlim = c(0, 1))
 for(i in 1:4) {
     circos.trackPlotRegion(ylim = c(0, 1))
 }
@@ -57,6 +57,6 @@ highlight.sector("d", col = NA, border = "red", lwd = 2)
 highlight.sector("e", col = "#0000FF40", track.index = c(2, 3))
 highlight.sector(c("f", "g"), col = NA, border = "green",
     lwd = 2, track.index = c(2, 3))
-highlight.sector(factors, col = "#FFFF0040", track.index = 4)
+highlight.sector(sectors, col = "#FFFF0040", track.index = 4)
 circos.clear()
 }

@@ -15,7 +15,7 @@ set_track_gap(gap = 0.02)
 
 }
 \examples{
-circos.initialize(fa = letters[1:10], xlim = c(0, 1))
+circos.initialize(letters[1:10], xlim = c(0, 1))
 circos.track(ylim = c(0, 1))
 set_track_gap(mm_h(2))
 circos.track(ylim = c(0, 1))

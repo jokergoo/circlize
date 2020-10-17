@@ -121,7 +121,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>circos.trackText</span>(
-    <span class='no'>factors</span>,
+    <span class='no'>sectors</span>, <span class='kw'>factors</span> <span class='kw'>=</span> <span class='no'>sectors</span>,
     <span class='no'>x</span>, <span class='no'>y</span>,
     <span class='no'>labels</span>,
     <span class='kw'>track.index</span> <span class='kw'>=</span> <span class='fu'><a href='get.current.track.index.html'>get.current.track.index</a></span>(),
@@ -138,8 +138,12 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>factors</th>
+      <th>sectors</th>
       <td><p>A <code><a href='https://rdrr.io/r/base/factor.html'>factor</a></code> or a character vector which represents the categories of data</p></td>
+    </tr>
+    <tr>
+      <th>factors</th>
+      <td><p>The same as <code>sectors</code>. It will be removed in future versions.</p></td>
     </tr>
     <tr>
       <th>x</th>

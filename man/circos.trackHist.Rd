@@ -71,7 +71,7 @@ circos.trackHist(sectors, x = x, col = "#999999",
   border = "#999999")
 circos.trackHist(sectors, x = x, bin.size = 0.1,
   col = "#999999", border = "#999999")
-circos.trackHist(sectors x = x, draw.density = TRUE,
+circos.trackHist(sectors, x = x, draw.density = TRUE,
   col = "#999999", border = "#999999")
 circos.clear()
 }

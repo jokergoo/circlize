@@ -2669,16 +2669,17 @@ smartAlign = function(x1, x2, xlim) {
 		new_x2 = numeric(length(x2))
 		for(i_cluster in unique(cluster)) {
 			index = which(cluster == i_cluster)
-			total_len = sum(x2[index] - x1[index])
+			len = x2[index] - x1[index]
+			total_len = sum(len)
 			mid = (min(x1[index]) + max(x2[index]))/2
 			if(total_len > xlim[2] - xlim[1]) {
-				tp = seq(xlim[1], xlim[2], length = length(index) + 1)
+				tp = c(0, cumsum(len)) + (xlim[1] + xlim[2])/2 - total_len/2
 			} else if(mid - total_len/2 < xlim[1]) {
-				tp = seq(xlim[1], xlim[1] + total_len, length = length(index) + 1)
+				tp = c(0, cumsum(len)) + xlim[1]
 			} else if(mid + total_len/2 > xlim[2]) {
-				tp = seq(xlim[2] - total_len, xlim[2], length = length(index) + 1)
+				tp = xlim[2] - total_len + c(0, cumsum(len))
 			} else {
-				tp = seq(mid - total_len/2, mid + total_len/2, length = length(index)+1)
+				tp = c(0, cumsum(len)) + mid - total_len/2
 			}
 			new_x1[index] = tp[-length(tp)]
 			new_x2[index] = tp[-1]

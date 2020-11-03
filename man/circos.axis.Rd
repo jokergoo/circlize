@@ -22,6 +22,7 @@ circos.axis(
     direction = c("outside", "inside"),
     minor.ticks = 4,
     major.tick.length = mm_y(1),
+    major.tick.percentage = 0.5,
     lwd = par("lwd"),
     col = par("col"),
     labels.col = par("col"),
@@ -43,6 +44,7 @@ circos.axis(
   \item{direction}{Whether the axis ticks point to the outside or inside of the circle.}
   \item{minor.ticks}{Number of minor ticks between two close major ticks.}
   \item{major.tick.length}{Length of the major ticks, measured in "current" data coordinate. \code{\link{convert_y}} can be used to convert an absolute unit to the data coordinate.}
+  \item{major.tick.percentage}{Not used any more, please directly use \code{major.tick.length}.}
   \item{lwd}{Line width for ticks.}
   \item{col}{Color for the axes.}
   \item{labels.col}{Color for the labels.}

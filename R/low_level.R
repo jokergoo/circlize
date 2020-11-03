@@ -1180,6 +1180,7 @@ circos.trackText = function(
 # -minor.ticks      Number of minor ticks between two close major ticks.
 # -major.tick.length Length of the major ticks, measured in "current" data coordinate. `convert_y` can be
 #                   used to convert an absolute unit to the data coordinate.
+# -major.tick.percentage Not used any more, please directly use ``major.tick.length``.
 # -lwd              Line width for ticks.
 # -col              Color for the axes.
 # -labels.col       Color for the labels.
@@ -1270,6 +1271,7 @@ circos.axis = function(
 	direction = c("outside", "inside"),
 	minor.ticks = 4,
 	major.tick.length = mm_y(1),
+    major.tick.percentage = 0.5,
 	lwd = par("lwd"),
 	col = par("col"),
 	labels.col = par("col"),
@@ -1325,6 +1327,9 @@ circos.axis = function(
 
 	# ticks
 	yrange = get.cell.meta.data("yrange", sector.index, track.index)
+    if(!missing(major.tick.percentage)) {
+        message("`major.tick.percentage` is not used any more, please directly use argument `major.tick.length`.")
+    }
 	# major.tick.length = yrange * major.tick.percentage
 	# major.tick.length = convert_y(2, "mm", sector.index, track.index)
 

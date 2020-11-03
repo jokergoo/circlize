@@ -1,3 +1,7 @@
+Changes in version 0.4.12
+-----------------------------------------------------------------------
+* `smartAlign()`: improved when boxes overlap
+
 Changes in version 0.4.11
 -----------------------------------------------------------------------
 * `chordDiagram()`: add `link.auto` argument

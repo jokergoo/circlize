@@ -513,6 +513,17 @@ quadratic.bezier.length = function(p0, p1, p2, w = 1) {
 
 }
 
+# quadratic.bezier = function(p0, p1, p2, w = 1) {
+# 	ncut = bezier::bezierArcLength(p = rbind(p0, p1, p2), 0, 1)$arc.length/ (2*pi/circos.par("unit.circle.segments"))
+# 	ncut = floor(ncut)
+# 	ncut = ifelse(ncut < 3, 3, ncut)
+# 	if(ncut %% 2 == 0) ncut = ncut + 1  # odd number
+
+# 	t = seq(0, 1, length.out = ncut)
+# 	p = rbind(p0, c(p0[1]*0.5, p0[2]), p1, c(p2[1]*0.5, p2[2]), p2)
+# 	bezier::bezier(t, p)
+# }
+
 are.lines.intersected = function(x1, y1, x2, y2) {
 	n1 = length(x1)
 	n2 = length(x2)

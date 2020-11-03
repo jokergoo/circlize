@@ -1,6 +1,6 @@
 Changes in version 0.4.12
 -----------------------------------------------------------------------
-* `smartAlign()`: improved when boxes overlap
+* `smartAlign()`: improved boxes overlapping
 
 Changes in version 0.4.11
 -----------------------------------------------------------------------

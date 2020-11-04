@@ -79,6 +79,13 @@ circos.link = function(
 	point1 = sort(point1)
 	point2 = sort(point2)
 
+	if(min(point1) < sector.data1["min.data"] || max(point1) > sector.data1["max.data"]) {
+		message_wrap(paste0("Note: The first link end is drawn out of sector '", sector.index1, "'."))
+	}
+	if(min(point2) < sector.data2["min.data"] || max(point2) > sector.data2["max.data"]) {
+		message_wrap(paste0("Note: The second link end is drawn out of sector '", sector.index2, "'."))
+	}
+
 	if(reduce_to_mid_line) {
 		point1 = mean(point1)
 		point2 = mean(point2)

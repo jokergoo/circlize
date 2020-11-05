@@ -263,7 +263,7 @@ circos.genomicInitialize = function(
 	...) {
 
 	data = validate_data_frame(data)
-	validate_region(data)
+	validate_region(data, check_chr = FALSE)
 	
 	if(is.factor(data[[1]])) {
 		fa = levels(data[[1]])

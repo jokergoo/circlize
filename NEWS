@@ -1,6 +1,10 @@
 Changes in version 0.4.12
 -----------------------------------------------------------------------
 * `smartAlign()`: improved boxes overlapping
+* `circos.heatmap()`: automatically convert the input to a matrix if 
+  it is a data frame
+* now validate the regions to check whether the regions are exceeding 
+  the chromosomes.
 
 Changes in version 0.4.11
 -----------------------------------------------------------------------

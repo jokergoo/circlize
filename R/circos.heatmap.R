@@ -73,6 +73,16 @@ circos.heatmap.initialize = function(mat, split = NULL, cluster = TRUE,
 	clustering.method = "complete", distance.method = "euclidean",
 	dend.callback = function(dend, m, si) reorder(dend, rowMeans(m))) {
 
+	if(!is.matrix(mat)) {
+		if(is.vector(mat) && is.atomic(mat)) {
+			mat = matrix(mat, ncol = 1)
+		} else if(is.data.frame(mat)) {
+			mat = as.matrix(mat)
+		} else {
+			stop_wrap("The input should be a matrix or a vector.")
+		}
+	}
+	
 	if(is.null(split)) {
 		if(is.matrix(mat)) {
 			split = rep("mat", nrow(mat))
@@ -218,8 +228,12 @@ circos.heatmap = function(mat, split = NULL, col, na.col = "grey",
 	show.sector.labels = FALSE, ...) {
 
 	if(!is.matrix(mat)) {
-		if(is.vector(mat)) {
+		if(is.vector(mat) && is.atomic(mat)) {
 			mat = matrix(mat, ncol = 1)
+		} else if(is.data.frame(mat)) {
+			mat = as.matrix(mat)
+		} else {
+			stop_wrap("The input should be a matrix or a vector.")
 		}
 	}
 

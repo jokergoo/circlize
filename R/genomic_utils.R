@@ -330,4 +330,19 @@ validate_region = function(df, start_column = 2, end_column = 3) {
 	if(any(df[, end_column] < df[, start_column])) {
 		stop_wrap("End positions should not be smaller than the start positions.")
 	}
+	if(is.circos.initialized()) {
+		all_chr = as.vector(df[, 1])
+		all_chr_level = unique(all_chr)
+		chr_start = sapply(all_chr_level, function(x) get.sector.data(x)["min.data"])
+		names(chr_start) = all_chr_level
+		chr_end = sapply(all_chr_level, function(x) get.sector.data(x)["max.data"])
+		names(chr_end) = all_chr_level
+
+		if(any(df[, start_column] < chr_start[all_chr])) {
+			warning_wrap("Some of the regions have start position values smaller than the start of the chromosomes.")
+		}
+		if(any(df[, end_column] > chr_end[all_chr])) {
+			warning_wrap("Some of the regions have end position values larger than the end of the chromosomes.")
+		}
+	}
 }

@@ -20,6 +20,7 @@ circos.link(
     w = 1,
     h2 = h,
     w2 = w,
+    inverse = FALSE,
     col = "black",
     lwd = par("lwd"),
     lty = par("lty"),
@@ -47,6 +48,7 @@ circos.link(
   \item{w}{Since the link is a Bezier curve, it controls the shape of Bezier curve.}
   \item{h2}{Height of the bottom edge of the link if it is a ribbon.}
   \item{w2}{Shape of the bottom edge of the link if it is a ribbon.}
+  \item{inverse}{Whether the link is inversed.}
   \item{col}{Color of the link. If the link is a ribbon, then it is the filled color for the ribbon.}
   \item{lwd}{Line (or border) width}
   \item{lty}{Line (or border) style}

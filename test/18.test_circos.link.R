@@ -237,3 +237,10 @@ circos.trackPlotRegion(ylim = c(0, 1))
 for(i in c(0.1, 0.3, 0.5, 0.7, 0.9)) {
 	circos.link("a", c(i-0.07, i-0.05), "a", c(i + 0.05, i+0.1), directional=-1, col = sample(1:8, 1), arr.col = sample(1:8, 1))
 }
+
+circos.initialize("a", xlim = c(0, 1))
+circos.trackPlotRegion(ylim = c(0, 1))
+for(i in c(0.1, 0.3, 0.5, 0.7, 0.9)) {
+	circos.link("a", c(i-0.07, i-0.05), "a", c(i + 0.05, i+0.1), directional=1, col = sample(1:8, 1), arr.col = sample(1:8, 1), inverse = TRUE)
+}
+

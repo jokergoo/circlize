@@ -18,6 +18,7 @@
 # -w             Since the link is a Bezier curve, it controls the shape of Bezier curve.
 # -h2            Height of the bottom edge of the link if it is a ribbon.
 # -w2            Shape of the bottom edge of the link if it is a ribbon.
+# -inverse       Whether the link is inversed.
 # -col           Color of the link. If the link is a ribbon, then it is the filled color for the ribbon.
 # -lwd           Line (or border) width
 # -lty           Line (or border) style
@@ -60,6 +61,7 @@ circos.link = function(
     w = 1,
     h2 = h,
     w2 = w,
+    inverse = FALSE,
     col = "black",
     lwd = par("lwd"),
     lty = par("lty"),
@@ -282,27 +284,56 @@ circos.link = function(
 			d = rbind(d, revMat(r))
 			polygon(d, col = col, lty = lty, lwd = lwd, border = border)
 		} else {
-
 			if(degreeDiff(theta11, theta22) > degreeDiff(theta12, theta21)) {
-				d1 = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h, h.ratio = h.ratio, w = w)
-		        d2 = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h2, h.ratio = h.ratio, w = w2)
+		        if(inverse) {
+			        d1 = getQuadraticPoints(theta11, theta21, rou1, rou2, h = h, h.ratio = h.ratio, w = w)
+			        d2 = getQuadraticPoints(theta12, theta22, rou1, rou2, h = h, h.ratio = h.ratio, w = w)
+			    } else {
+			    	d1 = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h, h.ratio = h.ratio, w = w)
+		       		d2 = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h2, h.ratio = h.ratio, w = w2)
+			    }
 		        if(directional == 1) {
-		        	d1x = getQuadraticPoints(theta11, theta22, rou1, rou2 - arr.length, h = h, h.ratio = h.ratio, w = w)
-			        d2x = getQuadraticPoints(theta12, theta21, rou1, rou2 - arr.length, h = h2, h.ratio = h.ratio, w = w2)
+		        	if(inverse) {
+		        		d1x = getQuadraticPoints(theta11, theta21, rou1, rou2 - arr.length, h = h, h.ratio = h.ratio, w = w)
+				        d2x = getQuadraticPoints(theta12, theta22, rou1, rou2 - arr.length, h = h, h.ratio = h.ratio, w = w)
+		        	} else {
+			        	d1x = getQuadraticPoints(theta11, theta22, rou1, rou2 - arr.length, h = h, h.ratio = h.ratio, w = w)
+				        d2x = getQuadraticPoints(theta12, theta21, rou1, rou2 - arr.length, h = h2, h.ratio = h.ratio, w = w2)
+				    }
 			    } else if(directional == -1) {
-			    	d1x = getQuadraticPoints(theta11, theta22, rou1 - arr.length, rou2, h = h, h.ratio = h.ratio, w = w)
-		        	d2x = getQuadraticPoints(theta12, theta21, rou1 - arr.length, rou2, h = h2, h.ratio = h.ratio, w = w2)
+			    	if(inverse) {
+			    		d1x = getQuadraticPoints(theta11, theta21, rou1 - arr.length, rou2, h = h, h.ratio = h.ratio, w = w)
+		        		d2x = getQuadraticPoints(theta12, theta22, rou1 - arr.length, rou2, h = h, h.ratio = h.ratio, w = w)
+			    	} else {
+				    	d1x = getQuadraticPoints(theta11, theta22, rou1 - arr.length, rou2, h = h, h.ratio = h.ratio, w = w)
+			        	d2x = getQuadraticPoints(theta12, theta21, rou1 - arr.length, rou2, h = h2, h.ratio = h.ratio, w = w2)
+			        }
 			    }
 	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, h.ratio = h.ratio, w = (w+w2)/2)
 		    } else {
-		    	d1 = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h2, h.ratio = h.ratio, w = w2)
-		        d2 = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h, h.ratio = h.ratio, w = w)
+		    	if(inverse) {
+		    		d1 = getQuadraticPoints(theta11, theta21, rou1, rou2, h = h, h.ratio = h.ratio, w = w)
+		        	d2 = getQuadraticPoints(theta12, theta22, rou1, rou2, h = h, h.ratio = h.ratio, w = w)
+		    	} else {
+			    	d1 = getQuadraticPoints(theta11, theta22, rou1, rou2, h = h2, h.ratio = h.ratio, w = w2)
+			        d2 = getQuadraticPoints(theta12, theta21, rou1, rou2, h = h, h.ratio = h.ratio, w = w)
+			    }
 		        if(directional == 1) {
-		        	d1x = getQuadraticPoints(theta11, theta22, rou1, rou2 - arr.length, h = h2, h.ratio = h.ratio, w = w2)
-			        d2x = getQuadraticPoints(theta12, theta21, rou1, rou2 - arr.length, h = h, h.ratio = h.ratio, w = w)
+		        	if(inverse) {
+			        	d1x = getQuadraticPoints(theta11, theta21, rou1, rou2 - arr.length, h = h, h.ratio = h.ratio, w = w)
+				        d2x = getQuadraticPoints(theta12, theta22, rou1, rou2 - arr.length, h = h, h.ratio = h.ratio, w = w)
+				    } else {
+				    	d1x = getQuadraticPoints(theta11, theta22, rou1, rou2 - arr.length, h = h2, h.ratio = h.ratio, w = w2)
+				        d2x = getQuadraticPoints(theta12, theta21, rou1, rou2 - arr.length, h = h, h.ratio = h.ratio, w = w)
+				    }
 	        	} else if(directional == -1) {
-		        	d1x = getQuadraticPoints(theta11, theta22, rou1 - arr.length, rou2, h = h2, h.ratio = h.ratio, w = w2)
-			        d2x = getQuadraticPoints(theta12, theta21, rou1 - arr.length, rou2, h = h, h.ratio = h.ratio, w = w)
+	        		if(inverse) {
+			        	d1x = getQuadraticPoints(theta11, theta21, rou1 - arr.length, rou2, h = h, h.ratio = h.ratio, w = w)
+				        d2x = getQuadraticPoints(theta12, theta22, rou1 - arr.length, rou2, h = h, h.ratio = h.ratio, w = w)
+				    } else {
+				    	d1x = getQuadraticPoints(theta11, theta22, rou1 - arr.length, rou2, h = h2, h.ratio = h.ratio, w = w2)
+				        d2x = getQuadraticPoints(theta12, theta21, rou1 - arr.length, rou2, h = h, h.ratio = h.ratio, w = w)
+				    }
 			    }
 	        	dcenter = getQuadraticPoints((theta11 + theta12)/2, (theta21 + theta22)/2, rou1, rou2, h = (h+h2)/2, h.ratio = h.ratio, w = (w+w2)/2)
 		    }

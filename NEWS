@@ -5,6 +5,8 @@ Changes in version 0.4.12
   it is a data frame
 * now validate the regions to check whether the regions are exceeding 
   the chromosomes.
+* `circos.link()`: add a new `inverse` argument to control whether the link
+  is inversed or not.
 
 Changes in version 0.4.11
 -----------------------------------------------------------------------

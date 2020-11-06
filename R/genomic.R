@@ -514,11 +514,11 @@ circos.genomicTrackPlotRegion = function(
 	if(is.dataFrameList(data)) {
 		for(i in seq_along(data)) {
 			data[[i]][[1]] = as.character(data[[i]][[1]])
-			validate_region(data[[i]])
+			validate_region(data[[i]], check_chr = FALSE)
 		}
 	} else {
 		data[[1]] = as.character(data[[1]])
-		validate_region(data)
+		validate_region(data, check_chr = FALSE)
 	}
 
 	# excluding the first three columns
@@ -1855,7 +1855,7 @@ genomicDensity = function(
 	region = validate_data_frame(region)
 
 	if(is.character(region[, 1]) || is.factor(region[, 1])) {
-		validate_region(region)
+		validate_region(region, check_chr = TRUE)
 		region[, 1] = as.vector(region[, 1])
 		all_chr = unique(region[, 1])
 		if(!is.null(chr.len)) {
@@ -1884,7 +1884,7 @@ genomicDensity = function(
 		})))
 	}
 	
-	validate_region(region, 1, 2)
+	validate_region(region, 1, 2, check_chr = TRUE)
 	if(ncol(region) >= 3) {
 		if(is.numeric(region[, 1])) {
 			if(max(region[, 1]) < 100) {
@@ -2112,7 +2112,7 @@ circos.genomicRainfall = function(
 	}
 	
 	for(i in seq_along(data)) {
-		validate_region(data[[i]])
+		validate_region(data[[i]], check_chr = TRUE)
 	}
 
 	if(length(col) == 1) {
@@ -2391,7 +2391,7 @@ circos.genomicHeatmap = function(
 	track.margin = circos.par("track.margin")) {
 
 	bed = validate_data_frame(bed)
-	validate_region(bed)
+	validate_region(bed, check_chr = TRUE)
 
 	mat = bed[, -(1:3), drop = FALSE]
 	if(is.null(numeric.column)) {
@@ -2526,7 +2526,7 @@ circos.genomicLabels = function(
 	track.margin = circos.par("track.margin")) {
 
 	bed = validate_data_frame(bed)
-	validate_region(bed)
+	validate_region(bed, check_chr = TRUE)
 	
 	if(is.null(labels)){
 		labels = bed[[labels.column]]

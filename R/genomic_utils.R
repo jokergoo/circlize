@@ -326,7 +326,7 @@ sort_chr = function(chromosome) {
 	return(chromosome)
 }
 
-validate_region = function(df, start_column = 2, end_column = 3, check_chr = TRUE) {
+validate_region = function(df, start_column = 2, end_column = 3, check_chr = FALSE) {
 	if(any(df[, end_column] < df[, start_column])) {
 		stop_wrap("End positions should not be smaller than the start positions.")
 	}

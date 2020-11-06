@@ -340,6 +340,10 @@ circos.link = function(
 			r2 = arc.points(theta22, theta21, rou2)
 			r1 = arc.points(theta12, theta11, rou1)
 
+			if(inverse) {
+				r2 = revMat(r2)
+			}
+
 			if(arr.type == "big.arrow") {
 				if(directional == 1) {
 					# if(nrow(r2) %% 2 == 1) {

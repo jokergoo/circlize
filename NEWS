@@ -7,6 +7,7 @@ Changes in version 0.4.12
   the chromosomes.
 * `circos.link()`: add a new `inverse` argument to control whether the link
   is inversed or not.
+* `circos.genomicLabels()`: replace `side` argument with `labels.side`.
 
 Changes in version 0.4.11
 -----------------------------------------------------------------------

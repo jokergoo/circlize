@@ -2482,6 +2482,7 @@ circos.genomicHeatmap = function(
 # -line_lty Line type for the connectioin lines.
 # -labels_height Height of the labels track.
 # -side Side of the labels track, is it in the inside of the track where the regions are marked?
+# -labels.side Same as ``side``. It will replace ``side`` in the future versions.
 # -track.margin Bottom and top margins.
 #
 # == details
@@ -2523,6 +2524,7 @@ circos.genomicLabels = function(
 	line_lty = par("lty"),
 	labels_height = min(c(cm_h(1.5), max(strwidth(labels, cex = cex, font = font)))),
 	side = c("inside", "outside"), 
+	labels.side = side,
 	track.margin = circos.par("track.margin")) {
 
 	bed = validate_data_frame(bed)
@@ -2580,7 +2582,8 @@ circos.genomicLabels = function(
 
 	op = circos.par("points.overflow.warning")
 	circos.par("points.overflow.warning" = FALSE)
-	if(side == "inside") {
+	side = match.arg(side)[1]
+	if(labels.side == "inside") {
 		# an empty track
 		circos.genomicTrackPlotRegion(bed2, ylim = c(0, 1), 
 			track.margin = c(convert_height(0.5, "mm"), track.margin[2]), 

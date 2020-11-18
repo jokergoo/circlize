@@ -23,6 +23,7 @@ circos.genomicLabels(
     line_lty = par("lty"),
     labels_height = min(c(cm_h(1.5), max(strwidth(labels, cex = cex, font = font)))),
     side = c("inside", "outside"),
+    labels.side = side,
     track.margin = circos.par("track.margin"))
 }
 \arguments{
@@ -42,6 +43,7 @@ circos.genomicLabels(
   \item{line_lty}{Line type for the connectioin lines.}
   \item{labels_height}{Height of the labels track.}
   \item{side}{Side of the labels track, is it in the inside of the track where the regions are marked?}
+  \item{labels.side}{Same as \code{side}. It will replace \code{side} in the future versions.}
   \item{track.margin}{Bottom and top margins.}
 
 }

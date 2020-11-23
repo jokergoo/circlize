@@ -7,11 +7,12 @@ Arrange links evenly on each sector
 Arrange links evenly on each sector
 }
 \usage{
-arrange_links_evenly(df)
+arrange_links_evenly(df, directional = 0)
 }
 \arguments{
 
   \item{df}{A data frame with two columns. The values should only contain sector names.}
+  \item{directional}{Whether the links are directional.}
 
 }
 \details{

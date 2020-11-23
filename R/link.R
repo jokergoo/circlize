@@ -657,6 +657,7 @@ line_degree = function(x0, y0, x1, y1) {
 #
 # == param
 # -df A data frame with two columns. The values should only contain sector names.
+# -directional Whether the links are directional.
 #
 # == details
 # This function only deals with single-line links.
@@ -676,7 +677,7 @@ line_degree = function(x0, y0, x1, y1) {
 #     circos.text(CELL_META$xcenter, CELL_META$ycenter, CELL_META$sector.index)
 # })
 #
-# df2 = arrange_links_evenly(df)
+# df2 = arrange_links_evenly(df, directional = 1)
 #
 # for(i in seq_len(nrow(df2))) {
 #     s1 = df$from[i]
@@ -686,7 +687,7 @@ line_degree = function(x0, y0, x1, y1) {
 #                 directional = 1)
 # }
 #
-arrange_links_evenly = function(df) {
+arrange_links_evenly = function(df, directional = 0) {
 
     if(!is.circos.initialized()) {
         stop_wrap("Circular layout needs to be initialized.")
@@ -699,7 +700,7 @@ arrange_links_evenly = function(df) {
     	stop_wrap("The two columns in `df` should only contain sector names.")
     }
 
-    df2 = chordDiagram(df, plot = FALSE)
+    df2 = chordDiagram(df, directional = directional + 0, plot = FALSE)
 
     link_count = table(unlist(df))
     

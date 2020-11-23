@@ -1,25 +1,25 @@
-Package: circli
-Type: Packa
-Title: Circular Visualizati
-Version: 0.4.12.1001
+Package: circlize
+Type: Package
+Title: Circular Visualization
+Version: 0.4.12.1000
 Date: 2020-11-23
-Author: Zuguang 
-Maintainer: Zuguang Gu <z.gu@dkfz.d
-Depends: R (>= 3.0.0), graphi
-Imports: GlobalOptions (>= 0.1.2), shape, grDevices, utils, stat
-    colorspace, methods, gr
-Suggests: knitr, dendextend (>= 1.0.1), ComplexHeatmap (>= 2.0.0), gridBas
-    png, markdo
-VignetteBuilder: kni
-Description: Circular layout is an efficient way for the visualization of hug
-    amounts of information. Here this package provides an implementatio
-    of circular layout generation in R as well as an enhancement of availabl
-    software. The flexibility of the package is based on the usage of low-leve
-    graphics functions such that self-defined high-level graphics can be easil
-    implemented by users for specific purposes. Together with the seamles
-    connection between the powerful computational and visual environment in R
-    it gives users more convenience and freedom to design figures fo
-    better understanding complex patterns behind multiple dimensional data
-    The package is described in Gu et al. 2014 <doi:10.1093/bioinformatics/btu393
-URL: https://github.com/jokergoo/circlize, https://jokergoo.github.io/circlize_book/boo
-License: MIT + file LICENS
+Author: Zuguang Gu
+Maintainer: Zuguang Gu <z.gu@dkfz.de>
+Depends: R (>= 3.0.0), graphics
+Imports: GlobalOptions (>= 0.1.2), shape, grDevices, utils, stats,
+    colorspace, methods, grid
+Suggests: knitr, dendextend (>= 1.0.1), ComplexHeatmap (>= 2.0.0), gridBase,
+    png, markdown
+VignetteBuilder: knitr
+Description: Circular layout is an efficient way for the visualization of huge 
+    amounts of information. Here this package provides an implementation 
+    of circular layout generation in R as well as an enhancement of available 
+    software. The flexibility of the package is based on the usage of low-level 
+    graphics functions such that self-defined high-level graphics can be easily 
+    implemented by users for specific purposes. Together with the seamless 
+    connection between the powerful computational and visual environment in R, 
+    it gives users more convenience and freedom to design figures for 
+    better understanding complex patterns behind multiple dimensional data. 
+    The package is described in Gu et al. 2014 <doi:10.1093/bioinformatics/btu393>.
+URL: https://github.com/jokergoo/circlize, https://jokergoo.github.io/circlize_book/book/
+License: MIT + file LICENSE

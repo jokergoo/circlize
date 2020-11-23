@@ -12,4 +12,5 @@ get_most_inside_radius()
 \examples{
 # There is no example
 NULL
+
 }

@@ -46,6 +46,7 @@ chordDiagramFromDataFrame(
     group = NULL,
     big.gap = 10,
     small.gap = 1,
+    plot = TRUE,
     ...)
 }
 \arguments{
@@ -88,6 +89,7 @@ chordDiagramFromDataFrame(
   \item{group}{It contains the group labels and the sector names are used as the names in the vector.}
   \item{big.gap}{Gaps between the sectors in the first column of \code{df} and sectors in the second column in \code{df}.}
   \item{small.gap}{Small gap between sectors.}
+  \item{plot}{Internally used.}
   \item{...}{pass to \code{\link{circos.link}}}
 
 }

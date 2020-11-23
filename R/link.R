@@ -650,3 +650,70 @@ line_degree = function(x0, y0, x1, y1) {
 	if(x0 > x1 && y0 < y1) alpha = (alpha + 180) %% 360
 	return(alpha)
 }
+
+
+# == title
+# Arrange links evenly on each sector
+#
+# == param
+# -df A data frame with two columns. The values should only contain sector names.
+#
+# == details
+# This function only deals with single-line links.
+#
+# == value
+# A data frame with four columns of the sectors and the positions of the links.
+#
+# == example
+# sectors = letters[1:20]
+# df = data.frame(from = sample(sectors, 40, replace = TRUE),
+#                 to   = sample(sectors, 40, replace = TRUE))
+# df = unique(df)
+# df = df[df$from != df$to, ]
+#
+# circos.initialize(sectors, xlim = c(0, 1))
+# circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
+#     circos.text(CELL_META$xcenter, CELL_META$ycenter, CELL_META$sector.index)
+# })
+#
+# df2 = arrange_links_evenly(df)
+#
+# for(i in seq_len(nrow(df2))) {
+#     s1 = df$from[i]
+#     s2 = df$to[i]
+#     circos.link(df2[i, "sector1"], df2[i, "pos1"], 
+#                 df2[i, "sector2"], df2[i, "pos2"],
+#                 directional = 1)
+# }
+#
+arrange_links_evenly = function(df) {
+
+    if(!is.circos.initialized()) {
+        stop_wrap("Circular layout needs to be initialized.")
+    }
+
+    df[, 1] = factor(df[, 1], levels = get.all.sector.index())
+    df[, 2] = factor(df[, 2], levels = get.all.sector.index())
+
+    if(any(is.na(df[, 1])) || any(is.na(df[, 2]))) {
+    	stop_wrap("The two columns in `df` should only contain sector names.")
+    }
+
+    df2 = chordDiagram(df, plot = FALSE)
+
+    link_count = table(unlist(df))
+    
+    for(i in seq_len(nrow(df2))) {
+        s1 = df2[i, 1]
+        s2 = df2[i, 2]
+        
+        xlim1 = get.cell.meta.data("xlim", sector.index = s1)
+        df2[i, "x1"] = (df2[i, "x1"] - 0.5)/(link_count[s1]) * (xlim1[2] - xlim1[1]) + xlim1[1]
+        xlim2 = get.cell.meta.data("xlim", sector.index = s2)
+        df2[i, "x2"] = (df2[i, "x2"] - 0.5)/(link_count[s2]) * (xlim2[2] - xlim2[1]) + xlim2[1]
+    }
+    df2 = df2[, c("rn", "cn", "x1", "x2")]
+    colnames(df2) = c("sector1", "sector2", "pos1", "pos2")
+    return(df2)
+}
+

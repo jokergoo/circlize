@@ -99,15 +99,15 @@ circos.link = function(
 
 		d = getQuadraticPoints(theta1, theta2, rou1, rou2, h = h, h.ratio = h.ratio, w = w)
         nr = nrow(d)
-        if(directional == 0) {
+        # if(directional == 0) {
         	lines(d, col = col, lwd = lwd, lty = lty, lend = "butt")
-        } else if(directional == 1) {
-			lines(d[-nr, , drop = FALSE], col = col, lwd = lwd, lty = lty, lend = "butt")
-		} else if(directional == -1) {
-			lines(d[-1, , drop = FALSE], col = col, lwd = lwd, lty = lty, lend = "butt")
-		} else if(directional == 2) {
-			lines(d[-c(1, nr), , drop = FALSE], col = col, lwd = lwd, lty = lty, lend = "butt")
-		}
+  #       } else if(directional == 1) {
+		# 	lines(d[-nr, , drop = FALSE], col = col, lwd = lwd, lty = lty, lend = "butt")
+		# } else if(directional == -1) {
+		# 	lines(d[-1, , drop = FALSE], col = col, lwd = lwd, lty = lty, lend = "butt")
+		# } else if(directional == 2) {
+		# 	lines(d[-c(1, nr), , drop = FALSE], col = col, lwd = lwd, lty = lty, lend = "butt")
+		# }
 
         if(nrow(d) > 1) {
 	        if(directional %in% c(1,2)) {  # point1 to point2

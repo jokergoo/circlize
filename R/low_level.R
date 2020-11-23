@@ -52,6 +52,13 @@ circos.points = function(
         stop_wrap("'circos.points' can only be used after the plotting region has been created")
     }
 
+    if(missing(y)) {
+        if(ncol(x) == 2) {
+            y = x[, 2]
+            x = x[, 1]
+        }
+    }
+
     len_x = length(x)
     len_y = length(y)
     if(len_x == 1) x = rep(x, len_y)
@@ -237,6 +244,13 @@ circos.lines = function(
 		baseline = area.baseline
 		warning_wrap("`area.baseline` is deprecated, please use `baseline` instead.")
 	}
+
+    if(missing(y)) {
+        if(ncol(x) == 2) {
+            y = x[, 2]
+            x = x[, 1]
+        }
+    }
 
 	if(length(x) != length(y)) {
 		stop_wrap("Length of x and y differ.")
@@ -841,6 +855,14 @@ circos.text = function(
 	font = par("font"),
 	...) {
 
+
+    if(missing(y)) {
+        if(ncol(x) == 2) {
+            y = x[, 2]
+            x = x[, 1]
+        }
+    }
+    
     len_x = length(x)
     len_y = length(y)
     if(len_x == 1) x = rep(x, len_y)

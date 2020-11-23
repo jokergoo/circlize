@@ -8,6 +8,8 @@ Changes in version 0.4.12
 * `circos.link()`: add a new `inverse` argument to control whether the link
   is inversed or not.
 * `circos.genomicLabels()`: replace `side` argument with `labels.side`.
+* `circos.points()`, `circos.lines()`, `circos.text()` allow argument `x` to be
+  a two-column matrix.
 
 Changes in version 0.4.11
 -----------------------------------------------------------------------

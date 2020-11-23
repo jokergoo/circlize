@@ -428,6 +428,9 @@ add_transparency = function (col, transparency = 0) {
     rgb(t(col2rgb(col)/255), alpha = 1 - transparency)
 }
 
+# == title
+# Get the inside radius of the most inner track
+#
 get_most_inside_radius = function() {
 	tracks = get.all.track.index()
 	if(length(tracks) == 0) {
@@ -1137,7 +1140,7 @@ message_wrap = function(...) {
 
 validate_data_frame = function(x) {
     if(inherits(x, "data.frame")) {
-        return(x)
+        return(as.data.frame(x))
     } else if(inherits(x, "GRanges")) {
         x = as.data.frame(x)
         return(x[, -(4:5), drop = FALSE])

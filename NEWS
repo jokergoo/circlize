@@ -11,6 +11,7 @@ Changes in version 0.4.12
 * `circos.points()`, `circos.lines()`, `circos.text()` allow argument `x` to be
   a two-column matrix.
 * add `arrange_links_evenly()` function.
+* add `circos.connect()` function.
 
 Changes in version 0.4.11
 -----------------------------------------------------------------------

@@ -750,9 +750,8 @@ circos.segments = function(
 		return(invisible(NULL))
 	}
 
-
 	if(!has.cell(sector.index, track.index)) {
-        stop_wrap("'circos.polygon' can only be used after the plotting region been created.")
+        stop_wrap("'circos.segments' can only be used after the plotting region been created.")
     }
 
 	np = length(x0)
@@ -2321,5 +2320,275 @@ circos.violin = function(value, pos, violin_width = 0.8,
             col = col, border = border, lwd = lwd, lty = lty,
             show_quantile = show_quantile, pt.col = pt.col, cex = cex, pch = pch,
             max_d = max(density$y), value = value)
+    }
+}
+
+
+
+
+get_bezier_points = function(x1, y1, x2, y2, xlim, ylim) {
+
+    x1 = (x1 - xlim[1])/(xlim[2] - xlim[1])
+    x2 = (x2 - xlim[1])/(xlim[2] - xlim[1])
+    y1 = (y1 - ylim[1])/(ylim[2] - ylim[1])
+    y2 = (y2 - ylim[1])/(ylim[2] - ylim[1])
+
+    r = 0.6 - abs(x2 - x1)/2
+    p = cbind(c(0, 0, 1, 1), c(0, r, r, 1))
+    pt = bezier::bezier(t = seq(0, 1, length = 50), p = p)
+
+    wx = x2 - x1
+    x = pt[, 1] * wx + x1
+
+    wy = y2 - y1
+    y = pt[, 2]*wy + y1
+
+    x = x*(xlim[2] - xlim[1]) + xlim[1]
+    y = y*(ylim[2] - ylim[1]) + ylim[1]
+
+    data.frame(x = x, y = y)
+}
+
+# == title
+# Draw connecting lines/ribons between two sets of points
+#
+# == param
+# -x0 x coordinates for point set 1. The value can also be a two-column matrix.
+# -y0 y coordinates for point set 1.
+# -x1 x coordinates for point set 2. The value can also be a two-column matrix.
+# -y1 y coordinates for point set 2.
+# -sector.index Index for the sector.
+# -track.index  Index for the track.
+# -type Which type of connections. Values can be "normal", "segments" and "bezier".
+# -segments.ratio When ``type`` is set to ``segments``, each connecting line is segmented into three parts.
+#        This argument controls the length of the three parts of sub-segments.
+# -col Color of the segments.
+# -border Border color of the links.
+# -lwd Line width of the segments.
+# -lty Line type of the segments.
+# -... Other arguments.
+#
+# == example
+# circos.initialize(c("a"), xlim = c(0, 1))
+# circos.track(ylim = c(0, 1), track.height = 0.7, bg.border = NA, 
+#     panel.fun = function(x, y) {
+#     circos.lines(CELL_META$cell.xlim, rep(CELL_META$cell.ylim[1], 2), col = "#CCCCCC")
+#     circos.lines(CELL_META$cell.xlim, rep(CELL_META$cell.ylim[2], 2), col = "#CCCCCC")
+#     x0 = runif(100)
+#     x1 = runif(100)
+#    
+#     circos.connect(x0, 0, x1, 1, 
+#         type = "normal", border = NA,
+#         col = rand_color(100, luminosity = "bright", transparency = 0.75))
+# })
+#
+# circos.initialize(c("a"), xlim = c(0, 1))
+# circos.track(ylim = c(0, 1), track.height = 0.7, bg.border = NA, 
+#     panel.fun = function(x, y) {
+#     circos.lines(CELL_META$cell.xlim, rep(CELL_META$cell.ylim[1], 2), col = "#CCCCCC")
+#     circos.lines(CELL_META$cell.xlim, rep(CELL_META$cell.ylim[2], 2), col = "#CCCCCC")
+#     x0 = runif(100)
+#     x1 = runif(100)
+#    
+#     circos.connect(x0, 0, x1, 1, 
+#         type = "bezier", border = NA,
+#         col = rand_color(100, luminosity = "bright", transparency = 0.75))
+# })
+#
+# circos.initialize(c("a"), xlim = c(0, 1))
+# circos.track(ylim = c(0, 1), track.height = 0.7, bg.border = NA, 
+#     panel.fun = function(x, y) {
+#     circos.lines(CELL_META$cell.xlim, rep(CELL_META$cell.ylim[1], 2), col = "#CCCCCC")
+#     circos.lines(CELL_META$cell.xlim, rep(CELL_META$cell.ylim[2], 2), col = "#CCCCCC")
+#     x0 = sort(runif(200))
+#     x0 = matrix(x0, ncol = 2, byrow = TRUE)
+#     x1 = sort(runif(200))
+#     x1 = matrix(x1, ncol = 2, byrow = TRUE)
+#
+#     circos.connect(x0, 0, x1, 1, 
+#         type = "normal", border = NA,
+#         col = rand_color(100, luminosity = "bright", transparency = 0.5))
+# })
+#
+# circos.initialize(c("a"), xlim = c(0, 1))
+# circos.track(ylim = c(0, 1), track.height = 0.7, bg.border = NA, 
+#     panel.fun = function(x, y) {
+#     circos.lines(CELL_META$cell.xlim, rep(CELL_META$cell.ylim[1], 2), col = "#CCCCCC")
+#     circos.lines(CELL_META$cell.xlim, rep(CELL_META$cell.ylim[2], 2), col = "#CCCCCC")
+#     x0 = sort(runif(500))
+#     x0 = matrix(x0, ncol = 2, byrow = TRUE)
+#     x0 = x0[sample(nrow(x0), nrow(x0)), ]
+#     x1 = sort(runif(500))
+#     x1 = matrix(x1, ncol = 2, byrow = TRUE)
+#     x1 = x1[sample(nrow(x1), nrow(x1)), ]
+#
+#     l = abs(x0[, 1] - x1[, 1]) < 0.5
+#
+#     circos.connect(x0[l ,], 0, x1[l, ], 1, 
+#         type = "bezier", border = NA,
+#         col = rand_color(sum(l), luminosity = "bright", transparency = 0.5))
+# })
+circos.connect = function(x0, y0, x1, y1,
+    sector.index = get.current.sector.index(),
+    track.index = get.current.track.index(),
+    type = c("normal", "segments", "bezier"),
+    segments.ratio = c(1, 1, 1),
+    col = par("col"),
+    border = "black",
+    lwd = par("lwd"),
+    lty = par("lty"),
+    ...) {
+
+    type = match.arg(type)[1]
+
+    if(type == "bezier") {
+        if(!requireNamespace("bezier")) {
+            stop_wrap("You need to install 'bezier' package from CRAN.")
+        }
+    }
+
+    if(is.null(nrow(x0))) {
+        n1 = length(x0)
+    } else {
+        x0 = x0[, 1:2]
+        n1 = nrow(x0)
+    }
+    n2 = length(y0)
+    if(is.null(nrow(x1))) {
+        n3 = length(x1)
+    } else {
+        x1 = x1[, 1:2]
+        n3 = nrow(x1)
+    }
+    n4 = length(y1)
+    n = max(c(n1, n2, n3, n4))
+    if(n1 == 1) { 
+        if(is.null(nrow(x0))) {
+            x0 = rep(x0, n)
+        } else {
+            x0 = matrix(rep(x0, each = n), ncol = 2)
+        }
+        n1 = n
+    }
+    if(n2 == 1) { y0 = rep(y0, n); n2 = n }
+    if(n3 == 1) { 
+        if(is.null(nrow(x1))) {
+            x1 = rep(x1, n)
+        } else {
+            x1 = matrix(rep(x1, each = n), ncol = 2)
+        }
+        n3 = n
+    }
+    if(n4 == 1) { y1 = rep(y1, n); n4 = n }
+
+    if(! (n1 == n2 && n2 == n3 && n3 == n4) ) {
+        stop_wrap("x0, y0, x1, y1 should have same length.")
+    }
+
+    if(!is.matrix(x0)) x0 = matrix(x0, ncol = 1)
+    if(!is.matrix(x1)) x1 = matrix(x1, ncol = 1)
+
+    if(length(col) == 1) col = rep(col, n)
+    if(length(border) == 1) border = rep(border, n)
+    if(length(lwd) == 1) lwd = rep(lwd, n)
+    if(length(lty) == 1) lty = rep(lty, n)
+
+
+    if(ncol(x0) == 1 && ncol(x1) == 1) {
+        if(type == "normal") {
+            circos.segments(x0, y0, x1, y1, sector.index = sector.index, track.index = track.index,
+                col = col, lwd = lwd, lty = lty, ...)
+        } else if(type == "segments") {
+            if(length(segments.ratio) == 1) segments.ratio = rep(segments.ratio, 3)
+            segments.ratio = segments.ratio[1:3]
+            segments.ratio = segments.ratio/sum(segments.ratio)
+            for(i in 1:n) {
+                w = x1[i] - x0[i]
+                h = y1[i] - y0[i]
+                circos.segments(x0[i], y0[i], x0[i], y0[i] + h*segments.ratio[1], col = col[i], lwd = lwd[i], lty = lty[i], straight = TRUE, 
+                    sector.index = sector.index, track.index = track.index)
+                circos.segments(x0[i], y0[i]+h*segments.ratio[1], x1[i], y0[i] + h*sum(segments.ratio[1:2]), col = col[i], lwd = lwd[i], lty = lty[i],
+                    sector.index = sector.index, track.index = track.index)
+                circos.segments(x1[i], y0[i]+h*sum(segments.ratio[1:2]), x1[i], y1[i], col = col[i], lwd = lwd[i], lty = lty[i], straight = TRUE,
+                    sector.index = sector.index, track.index = track.index)
+            }
+        } else if(type == "bezier") {
+            for(i in 1:n) {
+                pt = get_bezier_points(x0[i], y0[i], x1[i], y1[i], 
+                    xlim = get.cell.meta.data("xlim", sector.index = sector.index, track.index = track.index),
+                    ylim = get.cell.meta.data("ylim", sector.index = sector.index, track.index = track.index)
+                )
+                circos.lines(pt[, 1], pt[, 2], col = col[i], lwd = lwd[i], lty = lty[i],
+                    sector.index = sector.index, track.index = track.index)
+            }
+        }
+    } else {
+        if(type == "segments") {
+            stop_wrap("'segments' is only allowed for connections as lines where `x0` and `x1` are both set as vectors.")
+        }
+
+        if(type == "normal") {
+            for(i in 1:n) {
+                if(ncol(x0) == 2 && ncol(x1) == 2) {
+                    circos.polygon(c(x0[i, 1], x0[i, 2], x1[i, 2], x1[i, 1], x0[i, 1]),
+                                   c(y0[i], y0[i], y1[i], y1[i], y0[i]),
+                                   col = col[i], border = border[i], lwd = lwd[i], lty = lty[i], 
+                                   sector.index = sector.index, track.index = track.index)
+                } else if(ncol(x0) == 2 && ncol(x1) == 1) {
+                    circos.polygon(c(x0[i, 1], x0[i, 2], x1[i, 1], x0[i, 1]),
+                                   c(y0[i], y0[i], y1[i], y0[i]),
+                                   col = col[i], border = border[i], lwd = lwd[i], lty = lty[i], 
+                                   sector.index = sector.index, track.index = track.index)
+                } else if(ncol(x0) == 2 && ncol(x1) == 2) {
+                    circos.polygon(c(x0[i, 1], x1[i, 2], x1[i, 1], x0[i, 1]),
+                                   c(y0[i], y1[i], y1[i], y0[i]),
+                                   col = col[i], border = border[i], lwd = lwd[i], lty = lty[i], 
+                                   sector.index = sector.index, track.index = track.index)
+                } 
+            }
+        } else if(type == "bezier") {
+            for(i in 1:n) {
+                if(ncol(x0) == 2 && ncol(x1) == 2) {
+                    pt1 = get_bezier_points(x0[i, 2], y0[i], x1[i, 2], y1[i], 
+                        xlim = get.cell.meta.data("xlim", sector.index = sector.index, track.index = track.index),
+                        ylim = get.cell.meta.data("ylim", sector.index = sector.index, track.index = track.index)
+                    )
+                    pt2 = get_bezier_points(x1[i, 1], y1[i], x0[i, 1], y0[i], 
+                        xlim = get.cell.meta.data("xlim", sector.index = sector.index, track.index = track.index),
+                        ylim = get.cell.meta.data("ylim", sector.index = sector.index, track.index = track.index)
+                    )
+                    circos.polygon(c(pt1[, 1], pt2[, 1], pt1[1, 1]),
+                                   c(pt1[, 2], pt2[, 2], pt1[1, 2]),
+                                   col = col[i], border = border[i], lwd = lwd[i], lty = lty[i], 
+                                   sector.index = sector.index, track.index = track.index)
+                } else if(ncol(x0) == 2 && ncol(x1) == 1) {
+                    pt1 = get_bezier_points(x0[i, 2], y0[i], x1[i, 1], y1[i], 
+                        xlim = get.cell.meta.data("xlim", sector.index = sector.index, track.index = track.index),
+                        ylim = get.cell.meta.data("ylim", sector.index = sector.index, track.index = track.index)
+                    )
+                    pt2 = get_bezier_points(x1[i, 1], y1[i], x0[i, 1], y0[i], 
+                        xlim = get.cell.meta.data("xlim", sector.index = sector.index, track.index = track.index),
+                        ylim = get.cell.meta.data("ylim", sector.index = sector.index, track.index = track.index)
+                    )
+                    circos.polygon(c(pt1[, 1], pt2[, 1], pt1[1, 1]),
+                                   c(pt1[, 2], pt2[, 2], pt1[1, 2]),
+                                   col = col[i], border = border[i], lwd = lwd[i], lty = lty[i], 
+                                   sector.index = sector.index, track.index = track.index)
+                } else if(ncol(x0) == 2 && ncol(x1) == 2) {
+                    pt1 = get_bezier_points(x0[i, 1], y0[i], x1[i, 2], y1[i], 
+                        xlim = get.cell.meta.data("xlim", sector.index = sector.index, track.index = track.index),
+                        ylim = get.cell.meta.data("ylim", sector.index = sector.index, track.index = track.index)
+                    )
+                    pt2 = get_bezier_points(x1[i, 1], y1[i], x0[i, 1], y0[i], 
+                        xlim = get.cell.meta.data("xlim", sector.index = sector.index, track.index = track.index),
+                        ylim = get.cell.meta.data("ylim", sector.index = sector.index, track.index = track.index)
+                    )
+                    circos.polygon(c(pt1[, 1], pt2[, 1], pt1[1, 1]),
+                                   c(pt1[, 2], pt2[, 2], pt1[1, 2]),
+                                   col = col[i], border = border[i], lwd = lwd[i], lty = lty[i], 
+                                   sector.index = sector.index, track.index = track.index)
+                } 
+            }
+        }
     }
 }

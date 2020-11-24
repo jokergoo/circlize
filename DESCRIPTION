@@ -1,15 +1,15 @@
 Package: circlize
 Type: Package
 Title: Circular Visualization
-Version: 0.4.12.1001
-Date: 2020-11-23
+Version: 0.4.12.1002
+Date: 2020-11-24
 Author: Zuguang Gu
 Maintainer: Zuguang Gu <z.gu@dkfz.de>
 Depends: R (>= 3.0.0), graphics
 Imports: GlobalOptions (>= 0.1.2), shape, grDevices, utils, stats,
     colorspace, methods, grid
 Suggests: knitr, dendextend (>= 1.0.1), ComplexHeatmap (>= 2.0.0), gridBase,
-    png, markdown
+    png, markdown, bezier
 VignetteBuilder: knitr
 Description: Circular layout is an efficient way for the visualization of huge 
     amounts of information. Here this package provides an implementation 

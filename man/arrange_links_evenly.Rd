@@ -33,7 +33,7 @@ circos.track(ylim = c(0, 1), panel.fun = function(x, y) {
     circos.text(CELL_META$xcenter, CELL_META$ycenter, CELL_META$sector.index)
 })
 
-df2 = arrange_links_evenly(df)
+df2 = arrange_links_evenly(df, directional = 1)
 
 for(i in seq_len(nrow(df2))) {
     s1 = df$from[i]

@@ -1884,7 +1884,7 @@ genomicDensity = function(
 		})))
 	}
 	
-	validate_region(region, 1, 2, check_chr = TRUE)
+	validate_region(region, 1, 2, check_chr = FALSE)
 	if(ncol(region) >= 3) {
 		if(is.numeric(region[, 1])) {
 			if(max(region[, 1]) < 100) {

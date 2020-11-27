@@ -1505,7 +1505,7 @@ circos.genomicLink = function(
 	}
 	
 	if(nrow(region1) != nrow(region2)) {
-		stop_wrap("nrow of `region1` and `region2` differ.")
+		stop_wrap("nrow of `region1` and `region2` differ. Please check the chromosome column and make sure all the chromosomes are in the circular layout.")
 	}
 	
 	nr = nrow(region1)

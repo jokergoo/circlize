@@ -2007,6 +2007,7 @@ normalizeToDataFrame = function(data, sort = FALSE) {
 	all.chr = get.all.sector.index()
 
 	if(is.data.frame(data)) {
+		data = as.data.frame(data)
 		if(ncol(data) < 3) {
 			stop_wrap("Your data frame is less than 3 column!.")
 		}

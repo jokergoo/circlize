@@ -12,6 +12,7 @@ Changes in version 0.4.12
   a two-column matrix.
 * add `arrange_links_evenly()` function.
 * add `circos.connect()` function.
+* `circos.heatmap()`: argument `cluster` can be a clustering object.
 
 Changes in version 0.4.11
 -----------------------------------------------------------------------

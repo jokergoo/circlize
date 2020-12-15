@@ -26,7 +26,7 @@ circos.heatmap(mat, split = NULL, col, na.col = "grey",
   \item{bg.lty}{Line type of the background border.}
   \item{bg.lwd}{Line width of the background border.}
   \item{ignore.white}{Whether to draw the white color?}
-  \item{cluster}{whether to apply clustering on rows.}
+  \item{cluster}{whether to apply clustering on rows. The value can also be a \code{dendrogram}/\code{hclust} object or other objects that can be converted to with \code{\link[stats:dendrogram]{as.dendrogram}}.}
   \item{clustering.method}{Clustering method, pass to \code{\link[stats]{hclust}}.}
   \item{distance.method}{Distance method, pass to \code{\link[stats]{dist}}.}
   \item{dend.callback}{A callback function that is applied to the dendrogram in every sector.}

@@ -15,7 +15,7 @@ circos.heatmap.initialize(mat, split = NULL, cluster = TRUE,
 
   \item{mat}{A matrix or a vector. The vector is transformed as a one-column matrix.}
   \item{split}{A categorical variable. It splits the matrix into a list of matrices.}
-  \item{cluster}{whether to apply clustering on rows.}
+  \item{cluster}{whether to apply clustering on rows. The value can also be a \code{dendrogram}/\code{hclust} object or other objects that can be converted to with \code{\link[stats:dendrogram]{as.dendrogram}}.}
   \item{clustering.method}{Clustering method, pass to \code{\link[stats]{hclust}}.}
   \item{distance.method}{Distance method, pass to \code{\link[stats]{dist}}.}
   \item{dend.callback}{A callback function that is applied to the dendrogram in every sector.}

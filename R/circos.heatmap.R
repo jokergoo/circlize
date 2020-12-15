@@ -61,7 +61,8 @@ is.circos.heatmap.cached = function() {
 # == param
 # -mat A matrix or a vector. The vector is transformed as a one-column matrix.
 # -split A categorical variable. It splits the matrix into a list of matrices.
-# -cluster whether to apply clustering on rows.
+# -cluster whether to apply clustering on rows. The value can also be a ``dendrogram``/``hclust`` object or other objects that
+#      can be converted to with `stats::as.dendrogram`.
 # -clustering.method Clustering method, pass to `stats::hclust`.
 # -distance.method Distance method, pass to `stats::dist`.
 # -dend.callback A callback function that is applied to the dendrogram in every sector.
@@ -82,14 +83,6 @@ circos.heatmap.initialize = function(mat, split = NULL, cluster = TRUE,
 			stop_wrap("The input should be a matrix or a vector.")
 		}
 	}
-	
-	if(is.null(split)) {
-		if(is.matrix(mat)) {
-			split = rep("mat", nrow(mat))
-		} else {
-			split = rep("mat", length(mat))
-		}
-	}
 
 	if(!is.matrix(mat)) {
 		if(is.vector(mat)) {
@@ -97,9 +90,51 @@ circos.heatmap.initialize = function(mat, split = NULL, cluster = TRUE,
 		}
 	}
 
-	mat_list = circos.heatmap.format.input(mat, split)
+	if(identical(cluster, NA) || identical(cluster, NULL)) cluster = FALSE
+	if(!(identical(cluster, TRUE) || identical(cluster, FALSE))) {
+		cluster = as.dendrogram(cluster)
+		cluster_is_dendrogram = TRUE
+	} else {
+		if(identical(cluster, TRUE) && !is.null(split)) {
+			if(length(split) == 1) {
+				cluster = as.dendrogram(hclust(dist(mat, method = distance.method), method = clustering.method))
+				cluster_is_dendrogram = TRUE
+			} else {
+				cluster_is_dendrogram = FALSE
+			}
+		} else {
+			cluster_is_dendrogram = FALSE
+		}
+	}
+
+	if(cluster_is_dendrogram) {
+		if(is.null(split)) {
+			dend_list = list(cluster)
+			split2 = rep("group", nrow(mat))
+			names(dend_list) = split2[1]
+		} else {
+			if(length(split) > 1) {
+				stop_wrap("When `cluster` is specified as a clustering object, `split` can only be a single number.")
+			} else {
+				split2 = paste0("group", cutree(as.hclust(cluster), split))
+				dend_list = cut_into_k_dendrograms(cluster, split)
+				names(dend_list) = sapply(dend_list, function(d) {
+					split2[order.dendrogram(d)][1]
+				})
+			}
+		}
+	} else {
+		if(is.null(split)) {
+			split2 = rep("group", nrow(mat))
+		} else {
+			split2 = split
+		}
+	}
+
+	mat_list = circos.heatmap.format.input(mat, split2)
 	n = length(mat_list)
 	subset_list = attr(mat_list, "subset_list")
+	if(exists("dend_list")) dend_list = dend_list[names(mat_list)]
 
 	cell.padding = c(0, 0, 0, 0)
 	track.margin = c(0.02, 0)
@@ -117,45 +152,65 @@ circos.heatmap.initialize = function(mat, split = NULL, cluster = TRUE,
 
 	circos.par(cell.padding = cell.padding, track.margin = track.margin, gap.degree = gap.degree)
 
-	# qqcat("initialize the circular plot with @{n} matrices.\n")
 	circos.initialize(names(mat_list), xlim = cbind(rep(0, n), sapply(mat_list, nrow)))
 
-	if(is.character(mat_list[[1]])) cluster = FALSE
-
 	env = circos.par("__tempenv__")
-	if(cluster) {
-		# qqcat("perform clustering.\n")
-		dend_list = list()
-		for(nm in names(mat_list)) {
-			m = mat_list[[nm]]
-			dend = as.dendrogram(hclust(dist(m, method = distance.method), method = clustering.method))
-			dend_list[[nm]] = dend.callback(dend, m, nm)
-		}
 
+	if(cluster_is_dendrogram) {
 		for(se in get.all.sector.index()) {
 			add.sector.meta.data("row_dend", dend_list[[se]], sector.index = se)
 			add.sector.meta.data("dend", dend_list[[se]], sector.index = se)
-			add.sector.meta.data("row_order", order.dendrogram(dend_list[[se]]), sector.index = se)
-			add.sector.meta.data("order", order.dendrogram(dend_list[[se]]), sector.index = se)
+			add.sector.meta.data("row_order", rank(order.dendrogram(dend_list[[se]])), sector.index = se)
+			add.sector.meta.data("order", rank(order.dendrogram(dend_list[[se]])), sector.index = se)
 			if(!is.null(subset_list)) {
 				add.sector.meta.data("subset", subset_list[[se]], sector.index = se)
 			}
 		}
 		env$circos.heatmap.cluster = TRUE
 	} else {
-		# qqcat("use the natural order.\n")
-		for(se in get.all.sector.index()) {
-			add.sector.meta.data("row_order", 1:nrow(mat_list[[se]]), sector.index = se)
-			add.sector.meta.data("order", 1:nrow(mat_list[[se]]), sector.index = se)
-			if(!is.null(subset_list)) {
-				add.sector.meta.data("subset", subset_list[[se]], sector.index = se)
+		if(is.character(mat_list[[1]])) cluster = FALSE
+		if(cluster) {
+			# qqcat("perform clustering.\n")
+			dend_list = list()
+			for(nm in names(mat_list)) {
+				m = mat_list[[nm]]
+				dend = as.dendrogram(hclust(dist(m, method = distance.method), method = clustering.method))
+				dend_list[[nm]] = dend.callback(dend, m, nm)
 			}
+
+			for(se in get.all.sector.index()) {
+				add.sector.meta.data("row_dend", dend_list[[se]], sector.index = se)
+				add.sector.meta.data("dend", dend_list[[se]], sector.index = se)
+				add.sector.meta.data("row_order", rank(order.dendrogram(dend_list[[se]])), sector.index = se)
+				add.sector.meta.data("order", rank(order.dendrogram(dend_list[[se]])), sector.index = se)
+				if(!is.null(subset_list)) {
+					add.sector.meta.data("subset", subset_list[[se]], sector.index = se)
+				}
+			}
+			env$circos.heatmap.cluster = TRUE
+		} else {
+			# qqcat("use the natural order.\n")
+			for(se in get.all.sector.index()) {
+				add.sector.meta.data("row_order", 1:nrow(mat_list[[se]]), sector.index = se)
+				add.sector.meta.data("order", 1:nrow(mat_list[[se]]), sector.index = se)
+				if(!is.null(subset_list)) {
+					add.sector.meta.data("subset", subset_list[[se]], sector.index = se)
+				}
+			}
+			env$circos.heatmap.cluster = FALSE
 		}
-		env$circos.heatmap.cluster = FALSE
 	}
-	env$circos.heatmap.split = split
+	env$circos.heatmap.split = split2
 	env$circos.heatmap.initialized = TRUE
 
+}
+
+cut_into_k_dendrograms = function(dend, k) {
+	if(!requireNamespace("ComplexHeatmap", quietly = TRUE)) {
+		stop_wrap("You need ComplexHeatmap package to process the pre-defined dendrogram. Please install it from Bioconductor.")
+	}
+
+	dl = ComplexHeatmap:::cut_dendrogram(dend, k)$lower
 }
 
 # e.g. to check number of rows, split varaible, ...
@@ -185,7 +240,8 @@ circos.heatmap.validate = function(mat_list) {
 # -bg.lty Line type of the background border.
 # -bg.lwd Line width of the background border.
 # -ignore.white Whether to draw the white color?
-# -cluster whether to apply clustering on rows.
+# -cluster whether to apply clustering on rows. The value can also be a ``dendrogram``/``hclust`` object or other objects that
+#      can be converted to with `stats::as.dendrogram`.
 # -clustering.method Clustering method, pass to `stats::hclust`.
 # -distance.method Distance method, pass to `stats::dist`.
 # -dend.callback A callback function that is applied to the dendrogram in every sector.

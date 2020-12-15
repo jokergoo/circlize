@@ -121,6 +121,12 @@ circos.heatmap.initialize = function(mat, split = NULL, cluster = TRUE,
 				names(dend_list) = sapply(dend_list, function(d) {
 					split2[order.dendrogram(d)][1]
 				})
+
+				"order.dendrogram<-" = ComplexHeatmap:::`order.dendrogram<-`
+				dend_list = lapply(dend_list, function(d) {
+					order.dendrogram(d) = rank(order.dendrogram(d))
+					d
+				})
 			}
 		}
 	} else {
@@ -134,7 +140,12 @@ circos.heatmap.initialize = function(mat, split = NULL, cluster = TRUE,
 	mat_list = circos.heatmap.format.input(mat, split2)
 	n = length(mat_list)
 	subset_list = attr(mat_list, "subset_list")
-	if(exists("dend_list")) dend_list = dend_list[names(mat_list)]
+	if(exists("dend_list")) {
+		dend_list = dend_list[names(mat_list)]
+		for(nm in names(dend_list)) {
+			dend_list[[nm]] = dend.callback(dend_list[[nm]], mat_list[[nm]], nm)
+		}
+	}
 
 	cell.padding = c(0, 0, 0, 0)
 	track.margin = c(0.02, 0)
@@ -160,8 +171,8 @@ circos.heatmap.initialize = function(mat, split = NULL, cluster = TRUE,
 		for(se in get.all.sector.index()) {
 			add.sector.meta.data("row_dend", dend_list[[se]], sector.index = se)
 			add.sector.meta.data("dend", dend_list[[se]], sector.index = se)
-			add.sector.meta.data("row_order", rank(order.dendrogram(dend_list[[se]])), sector.index = se)
-			add.sector.meta.data("order", rank(order.dendrogram(dend_list[[se]])), sector.index = se)
+			add.sector.meta.data("row_order", order.dendrogram(dend_list[[se]]), sector.index = se)
+			add.sector.meta.data("order", order.dendrogram(dend_list[[se]]), sector.index = se)
 			if(!is.null(subset_list)) {
 				add.sector.meta.data("subset", subset_list[[se]], sector.index = se)
 			}
@@ -181,8 +192,8 @@ circos.heatmap.initialize = function(mat, split = NULL, cluster = TRUE,
 			for(se in get.all.sector.index()) {
 				add.sector.meta.data("row_dend", dend_list[[se]], sector.index = se)
 				add.sector.meta.data("dend", dend_list[[se]], sector.index = se)
-				add.sector.meta.data("row_order", rank(order.dendrogram(dend_list[[se]])), sector.index = se)
-				add.sector.meta.data("order", rank(order.dendrogram(dend_list[[se]])), sector.index = se)
+				add.sector.meta.data("row_order", order.dendrogram(dend_list[[se]]), sector.index = se)
+				add.sector.meta.data("order", order.dendrogram(dend_list[[se]]), sector.index = se)
 				if(!is.null(subset_list)) {
 					add.sector.meta.data("subset", subset_list[[se]], sector.index = se)
 				}
@@ -211,6 +222,7 @@ cut_into_k_dendrograms = function(dend, k) {
 	}
 
 	dl = ComplexHeatmap:::cut_dendrogram(dend, k)$lower
+	dl
 }
 
 # e.g. to check number of rows, split varaible, ...

@@ -9,7 +9,8 @@ Initialize circular heatmaps
 \usage{
 circos.heatmap.initialize(mat, split = NULL, cluster = TRUE,
     clustering.method = "complete", distance.method = "euclidean",
-    dend.callback = function(dend, m, si) reorder(dend, rowMeans(m)))
+    dend.callback = function(dend, m, si) reorder(dend, rowMeans(m)),
+    cell_width = rep(1, nrow(mat)))
 }
 \arguments{
 
@@ -19,6 +20,7 @@ circos.heatmap.initialize(mat, split = NULL, cluster = TRUE,
   \item{clustering.method}{Clustering method, pass to \code{\link[stats]{hclust}}.}
   \item{distance.method}{Distance method, pass to \code{\link[stats]{dist}}.}
   \item{dend.callback}{A callback function that is applied to the dendrogram in every sector.}
+  \item{cell_width}{Relative widths of heatmap cells.}
 
 }
 \seealso{

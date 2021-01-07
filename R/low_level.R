@@ -2082,7 +2082,8 @@ circos.barplot = function(value, pos, bar_width = 0.6,
         if(length(border) == 1) border = rep(border, n)
         if(length(lwd) == 1) lwd = rep(lwd, n)
         if(length(lty) == 1) lty = rep(lty, n)
-
+        if(length(bar_width) == 1) bar_width = rep(bar_width, n)
+            
         for(i in 1:n) {
             if(i == 1) {
                 circos.rect(pos - bar_width/2, 0, pos + bar_width/2, rowSums(value[, seq_len(i), drop = FALSE]), 
@@ -2110,7 +2111,7 @@ circos.barplot = function(value, pos, bar_width = 0.6,
 # -value A numeric vector, a matrix or a list. If it is a matrix, boxplots are made by columns (each column is a box).
 # -pos Positions of the boxes.
 # -outline Whether to draw outliers.
-# -box_width Width of boxes. It assumes the bars locating at ``x = 1, 2, ...``.
+# -box_width Width of boxes.
 # -col Filled color of boxes.
 # -border Color for the border as well as the quantile lines.
 # -lwd Line width.
@@ -2186,6 +2187,8 @@ circos.boxplot = function(value, pos, outline = TRUE, box_width = 0.6,
             stop_wrap("Length of `pos` should be same as number of boxes.")
         }
 
+        if(length(box_width) == 1) box_width = rep(box_width, n)
+
         if(length(col) == 1) col = rep(col, n)
         if(length(border) == 1) border = rep(border, n)
         if(length(lwd) == 1) lwd = rep(lwd, n)
@@ -2195,7 +2198,7 @@ circos.boxplot = function(value, pos, outline = TRUE, box_width = 0.6,
         if(length(pt.col) == 1) pt.col = rep(pt.col, n)
 
         for(i in 1:n) {
-            single_boxplot(value[[i]], pos = pos[i], outline = outline, box_width = box_width,
+            single_boxplot(value[[i]], pos = pos[i], outline = outline, box_width = box_width[i],
                 col = col[i], border = border[i], lwd = lwd[i], lty = lty[i], cex = cex[i], 
                 pch = pch[i], pt.col = pt.col[i])
         }
@@ -2288,6 +2291,7 @@ circos.violin = function(value, pos, violin_width = 0.8,
         if(length(cex) == 1) cex = rep(cex, n)
         if(length(pch) == 1) pch = rep(pch, n)
         if(length(pt.col) == 1) pt.col = rep(pt.col, n)
+        if(length(violin_width) == 1) violin_width = rep(violin_width, n)
 
         density_list = lapply(value, density, na.rm = TRUE)
         

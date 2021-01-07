@@ -13,6 +13,7 @@ Changes in version 0.4.12
 * add `arrange_links_evenly()` function.
 * add `circos.connect()` function.
 * `circos.heatmap()`: argument `cluster` can be a clustering object.
+* `circos.heatmap()`: add `cell_width` to control the relative width of heatmap cells.
 
 Changes in version 0.4.11
 -----------------------------------------------------------------------

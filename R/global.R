@@ -218,7 +218,8 @@ circos.par = setGlobalOptions(
 		.value = new.env(parent = emptyenv()),
 		.private = TRUE,
 		.visible = FALSE),
-	message = TRUE
+	message = TRUE,
+	help = list(.synonymous = "message")
 )
 
 # before initialization, .SECTOR.DATA is NULL

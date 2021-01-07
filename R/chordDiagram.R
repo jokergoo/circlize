@@ -1362,7 +1362,7 @@ chordDiagramFromDataFrame = function(
 
 	for(k in link_order) {
 		if(abs(df$value1[k])/sum(abs(df$value1)) < 1e-6 && abs(df$value2[k])/sum(abs(df$value2)) < 1e-6) next
-		if(link.visible[k]) {
+		if(link.visible[k] && col[k] != "#FFFFFF00") {
 			if(setequal(direction.type, c("diffHeight"))) {
 				circos.link(df$rn[k], c(df$x1[k] - abs(df$value1[k]), df$x1[k]),
 						df$cn[k], c(df$x2[k] - abs(df$value2[k]), df$x2[k]),
@@ -1389,7 +1389,7 @@ chordDiagramFromDataFrame = function(
 		if(all(directional %in% c(1, 2))) {
 			last.track.index = rev(get.all.track.index())[1]
 			for(i in seq_len(nrow(df))) {
-			    if(abs(df$value1[i]) > 0) {
+			    if(abs(df$value1[i]) > 0 && link.visible[i] && col[i] != "#FFFFFF00") {
 			    	set.current.cell(sector.index = df$rn[i], track.index = last.track.index)
 			        bar_h = convert_h_from_canvas_to_data(min(target.prop.height, min(diffHeight)))
 			        rect_y = convert_h_from_canvas_to_data(get.cell.meta.data("track.margin", track.index = last.track.index)[1] + circos.par("track.margin")[2])
@@ -1402,7 +1402,7 @@ chordDiagramFromDataFrame = function(
 		if(all(directional %in% c(-1, 2))) {
 			last.track.index = rev(get.all.track.index())[1]
 			for(i in seq_len(nrow(df))) {
-			    if(abs(df$value1[i]) > 0) {
+			    if(abs(df$value1[i]) > 0 && link.visible[i] && col[i] != "#FFFFFF00") {
 			    	set.current.cell(sector.index = df$cn[i], track.index = last.track.index)
 			        bar_h = convert_h_from_canvas_to_data(min(target.prop.height, min(diffHeight)))
 			        circos.rect(df[i, "x2"], -mm_y(1), 

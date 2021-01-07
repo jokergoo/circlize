@@ -15,6 +15,7 @@ Changes in version 0.4.12
 * `circos.heatmap()`: argument `cluster` can be a clustering object.
 * `circos.heatmap()`: add `cell_width` to control the relative width of heatmap cells.
 * add `circos.labels()`.
+* `chordDiagram()`: bars are drawn according to the visibility of links.
 
 Changes in version 0.4.11
 -----------------------------------------------------------------------

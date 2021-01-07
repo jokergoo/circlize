@@ -18,7 +18,7 @@ circos.boxplot(value, pos, outline = TRUE, box_width = 0.6,
   \item{value}{A numeric vector, a matrix or a list. If it is a matrix, boxplots are made by columns (each column is a box).}
   \item{pos}{Positions of the boxes.}
   \item{outline}{Whether to draw outliers.}
-  \item{box_width}{Width of boxes. It assumes the bars locating at \code{x = 1, 2, ...}.}
+  \item{box_width}{Width of boxes.}
   \item{col}{Filled color of boxes.}
   \item{border}{Color for the border as well as the quantile lines.}
   \item{lwd}{Line width.}

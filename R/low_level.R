@@ -2596,3 +2596,65 @@ circos.connect = function(x0, y0, x1, y1,
         }
     }
 }
+
+
+# == title
+# Add a label track
+#
+# == param
+# -sectors A vector of sector names.
+# -x Positions of the labels.
+# -labels A vector of labels.
+# -facing fFacing of the labels. The value can only be ``"clockwise"`` or ``"reverse.clockwise"``.
+# -niceFacing Whether automatically adjust the facing of the labels.
+# -col Color for the labels.
+# -cex Size of the labels.
+# -font Font of the labels.
+# -padding Padding of the labels, the value is the ratio to the height of the label.
+# -connection_height Height of the connection track.
+# -line_col Color for the connection lines.
+# -line_lwd Line width for the connection lines.
+# -line_lty Line type for the connectioin lines.
+# -labels_height Height of the labels track.
+# -side Side of the labels track, is it in the inside of the track where the regions are marked?
+# -labels.side Same as ``side``. It will replace ``side`` in the future versions.
+# -track.margin Bottom and top margins.
+#
+# == details
+# This function creates two tracks, one for the connection lines and one for the labels.
+#
+# If two labels are too close and overlap, this function automatically adjusts the positions of neighouring labels.
+circos.labels = function(
+    sectors, x, labels, 
+    facing = "clockwise", 
+    niceFacing = TRUE,
+    col = par("col"), 
+    cex = 0.8, 
+    font = par("font"), 
+    padding = 0.4,
+    connection_height = mm_h(5), 
+    line_col = par("col"), 
+    line_lwd = par("lwd"), 
+    line_lty = par("lty"),
+    labels_height = min(c(cm_h(1.5), max(strwidth(labels, cex = cex, font = font)))),
+    side = c("inside", "outside"), 
+    labels.side = side,
+    track.margin = circos.par("track.margin")) {
+
+    if(missing(sectors) && missing(x)) {
+        env = circos.par("__tempenv__")
+        if(identical(env$circos.heatmap.initialized, TRUE)) {
+            subset = unlist(lapply(env$sector.meta.data, function(x) x$subset))
+            x = unlist(lapply(env$sector.meta.data, function(x) x$cell_middle))
+            labels = labels[subset]
+            sectors = rep(names(env$sector.meta.data), times = sapply(env$sector.meta.data, function(x) length(x$subset)))
+        }
+    }
+    bed = data.frame(sectors, x, x)
+
+    circos.genomicLabels(bed, labels = labels, facing = facing, niceFacing = niceFacing, col = col, cex = cex,
+        font = font, padding = padding, connection_height = connection_height, line_col = line_col,
+        line_lwd = line_lwd, line_lty = line_lty, labels_height = labels_height, side = side, labels.side = labels.side,
+        track.margin = track.margin)
+}
+

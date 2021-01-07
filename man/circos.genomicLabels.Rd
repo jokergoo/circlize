@@ -34,7 +34,7 @@ circos.genomicLabels(
   \item{facing}{fFacing of the labels. The value can only be \code{"clockwise"} or \code{"reverse.clockwise"}.}
   \item{niceFacing}{Whether automatically adjust the facing of the labels.}
   \item{col}{Color for the labels.}
-  \item{cex}{Aize of the labels.}
+  \item{cex}{Size of the labels.}
   \item{font}{Font of the labels.}
   \item{padding}{Padding of the labels, the value is the ratio to the height of the label.}
   \item{connection_height}{Height of the connection track.}

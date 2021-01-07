@@ -2474,7 +2474,7 @@ circos.genomicHeatmap = function(
 # -facing fFacing of the labels. The value can only be ``"clockwise"`` or ``"reverse.clockwise"``.
 # -niceFacing Whether automatically adjust the facing of the labels.
 # -col Color for the labels.
-# -cex Aize of the labels.
+# -cex Size of the labels.
 # -font Font of the labels.
 # -padding Padding of the labels, the value is the ratio to the height of the label.
 # -connection_height Height of the connection track.
@@ -2583,7 +2583,7 @@ circos.genomicLabels = function(
 
 	op = circos.par("points.overflow.warning")
 	circos.par("points.overflow.warning" = FALSE)
-	side = match.arg(side)[1]
+	labels.side = side = match.arg(side)[1]
 	if(labels.side == "inside") {
 		# an empty track
 		circos.genomicTrackPlotRegion(bed2, ylim = c(0, 1), 

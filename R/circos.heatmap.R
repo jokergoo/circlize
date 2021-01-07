@@ -181,16 +181,19 @@ circos.heatmap.initialize = function(mat, split = NULL, cluster = TRUE,
 
 	if(cluster_is_dendrogram) {
 		for(se in get.all.sector.index()) {
-			cw = cell_width_list[[se]][order.dendrogram(dend)]
-			add.sector.meta.data("cell_width", cw, sector.index = se)
-			add.sector.meta.data("cell_middle", cumsum(cw) - cw/2, sector.index = se)
-
 			dend = dend_list[[se]]
+			
+			od = order.dendrogram(dend)
+			cw = cell_width_list[[se]][od]
+			od2 = order(od)
+			add.sector.meta.data("cell_width", cw[od2], sector.index = se)
+			add.sector.meta.data("cell_middle", (cumsum(cw) - cw/2)[od2], sector.index = se)
+
 			dend = ComplexHeatmap::adjust_dend_by_x(dend, cumsum(cw) - cw/2)
 			add.sector.meta.data("row_dend", dend, sector.index = se)
 			add.sector.meta.data("dend", dend, sector.index = se)
-			add.sector.meta.data("row_order", order.dendrogram(dend), sector.index = se)
-			add.sector.meta.data("order", order.dendrogram(dend), sector.index = se)
+			add.sector.meta.data("row_order", od, sector.index = se)
+			add.sector.meta.data("order", od, sector.index = se)
 			if(!is.null(subset_list)) {
 				add.sector.meta.data("subset", subset_list[[se]], sector.index = se)
 			}
@@ -210,16 +213,19 @@ circos.heatmap.initialize = function(mat, split = NULL, cluster = TRUE,
 			}
 
 			for(se in get.all.sector.index()) {
-				cw = cell_width_list[[se]][order.dendrogram(dend_list[[se]])]
-				add.sector.meta.data("cell_width", cw, sector.index = se)
-				add.sector.meta.data("cell_middle", cumsum(cw) - cw/2, sector.index = se)
-
 				dend = dend_list[[se]]
+				
+				od = order.dendrogram(dend)
+				cw = cell_width_list[[se]][od]
+				od2 = order(od)
+				add.sector.meta.data("cell_width", cw[od2], sector.index = se)
+				add.sector.meta.data("cell_middle", (cumsum(cw) - cw/2)[od2], sector.index = se)
+
 				dend = ComplexHeatmap::adjust_dend_by_x(dend, cumsum(cw) - cw/2)
 				add.sector.meta.data("row_dend", dend, sector.index = se)
 				add.sector.meta.data("dend", dend, sector.index = se)
-				add.sector.meta.data("row_order", order.dendrogram(dend_list[[se]]), sector.index = se)
-				add.sector.meta.data("order", order.dendrogram(dend_list[[se]]), sector.index = se)
+				add.sector.meta.data("row_order", od, sector.index = se)
+				add.sector.meta.data("order", od, sector.index = se)
 				if(!is.null(subset_list)) {
 					add.sector.meta.data("subset", subset_list[[se]], sector.index = se)
 				}
@@ -412,7 +418,8 @@ circos.heatmap = function(mat, split = NULL, col, na.col = "grey",
 				    nr = nrow(m)
 	    
 				    if(!is.null(rownames(m))) {
-				    	circos.text(CELL_META$cell_middle, rep(0, nr), rownames(m)[od], cex = rownames.cex[CELL_META$subset][od], 
+				    	circos.text(CELL_META$cell_middle[od], rep(0, nr), rownames(m)[od], 
+				    		cex = rownames.cex[CELL_META$subset][od], 
 				    		font = rownames.font[CELL_META$subset][od], col = rownames.col[CELL_META$subset][od],
 				    		facing = "clockwise", niceFacing = TRUE, adj = c(0, 0.5))
 				    }
@@ -469,18 +476,18 @@ circos.heatmap = function(mat, split = NULL, col, na.col = "grey",
 	    		} else {
 	    			# qqcat("@{sum(l)} white rectangles are not drawn.\n")
 	    			circos.rect(
-	    				(CELL_META$cell_middle - CELL_META$cell_width/2)[!l], 
+	    				(CELL_META$cell_middle - CELL_META$cell_width/2)[od][!l], 
 	    				(rep(nc - i, nr))[!l], 
-			            (CELL_META$cell_middle + CELL_META$cell_width/2)[!l], 
+			            (CELL_META$cell_middle + CELL_META$cell_width/2)[od][!l], 
 			            (rep(nc - i + 1, nr))[!l], 
 			            border = col_mat[, i][!l], 
 			            col = col_mat[, i][!l])
 	    		}
 	    	} else {
 		        circos.rect(
-		        	CELL_META$cell_middle - CELL_META$cell_width/2, 
+		        	(CELL_META$cell_middle - CELL_META$cell_width/2)[od], 
 		        	rep(nc - i, nr), 
-		            CELL_META$cell_middle + CELL_META$cell_width/2, 
+		            (CELL_META$cell_middle + CELL_META$cell_width/2)[od], 
 		            rep(nc - i + 1, nr), 
 		            border = col_mat[, i], col = col_mat[, i])
 		       }
@@ -518,7 +525,7 @@ circos.heatmap = function(mat, split = NULL, col, na.col = "grey",
 				    nr = nrow(m)
 	    
 				    if(!is.null(rownames(m))) {
-				    	circos.text(CELL_META$cell_middle, rep(1, nr), rownames(m)[od], cex = rownames.cex[CELL_META$subset][od], 
+				    	circos.text(CELL_META$cell_middle[od], rep(1, nr), rownames(m)[od], cex = rownames.cex[CELL_META$subset][od], 
 				    		font = rownames.font[CELL_META$subset][od], col = rownames.col[CELL_META$subset][od],
 				    		facing = "clockwise", niceFacing = TRUE, adj = c(1, 0.5))
 				    }

@@ -2,7 +2,7 @@ Package: circlize
 Type: Package
 Title: Circular Visualization
 Version: 0.4.12
-Date: 2021-1-8
+Date: 2021-1-11
 Author: Zuguang Gu
 Maintainer: Zuguang Gu <z.gu@dkfz.de>
 Depends: R (>= 3.0.0), graphics

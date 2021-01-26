@@ -20,7 +20,7 @@ colorDictionary = new.env()
 # == example
 # plot(NULL, xlim = c(1, 10), ylim = c(1, 8), axes = FALSE, ann = FALSE)
 # points(1:10, rep(1, 10), pch = 16, cex = 5, 
-#     col = rand_color(10, luminosity = "random"))
+#     col = rand_color(10))
 # points(1:10, rep(2, 10), pch = 16, cex = 5, 
 #     col = rand_color(10, luminosity = "bright"))
 # points(1:10, rep(3, 10), pch = 16, cex = 5, 
@@ -37,12 +37,21 @@ colorDictionary = new.env()
 #     col = rand_color(10, hue = "monochrome", luminosity = "bright"))
 rand_color = function(n, hue = NULL, luminosity = "random", transparency = 0) {
 
-	col = sapply(1:n, function(x) {
+	if("luminosity" %in% names(as.list(match.call()))) {
+		all_luminosity = luminosity
+	} else {
+		all_luminosity = c("bright", "light", "dark")
+	}
+	
+	col = lapply(1:n, function(x) {
 		H = pickHue(hue)
-		S = pickSaturation(H, luminosity)
-		B = pickBrightness(H, S, luminosity)
-		hex(HSV(H, S/100, B/100))
+		S = pickSaturation(H, sample(all_luminosity, 1))
+		B = pickBrightness(H, S, sample(all_luminosity, 1))
+		HSV(H, S/100, B/100)
 	})
+
+	col = sapply(col, hex)
+
 	add_transparency(col, transparency)
 }
 

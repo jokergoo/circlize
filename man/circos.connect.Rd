@@ -36,6 +36,7 @@ circos.connect(x0, y0, x1, y1,
 
 }
 \examples{
+\donttest{
 circos.initialize(c("a"), xlim = c(0, 1))
 circos.track(ylim = c(0, 1), track.height = 0.7, bg.border = NA, 
     panel.fun = function(x, y) {
@@ -95,4 +96,5 @@ circos.connect(x0[l ,], 0, x1[l, ], 1,
         type = "bezier", border = NA,
         col = rand_color(sum(l), luminosity = "bright", transparency = 0.5))
 })
+}
 }

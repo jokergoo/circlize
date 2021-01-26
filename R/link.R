@@ -668,7 +668,8 @@ line_degree = function(x0, y0, x1, y1) {
 # == example
 # sectors = letters[1:20]
 # df = data.frame(from = sample(sectors, 40, replace = TRUE),
-#                 to   = sample(sectors, 40, replace = TRUE))
+#                 to   = sample(sectors, 40, replace = TRUE),
+#                 stringsAsFactors = FALSE)
 # df = unique(df)
 # df = df[df$from != df$to, ]
 #

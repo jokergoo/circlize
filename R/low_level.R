@@ -2373,6 +2373,7 @@ get_bezier_points = function(x1, y1, x2, y2, xlim, ylim) {
 # -... Other arguments.
 #
 # == example
+# \donttest{
 # circos.initialize(c("a"), xlim = c(0, 1))
 # circos.track(ylim = c(0, 1), track.height = 0.7, bg.border = NA, 
 #     panel.fun = function(x, y) {
@@ -2432,6 +2433,7 @@ get_bezier_points = function(x1, y1, x2, y2, xlim, ylim) {
 #         type = "bezier", border = NA,
 #         col = rand_color(sum(l), luminosity = "bright", transparency = 0.5))
 # })
+# }
 circos.connect = function(x0, y0, x1, y1,
     sector.index = get.current.sector.index(),
     track.index = get.current.track.index(),

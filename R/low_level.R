@@ -2082,14 +2082,14 @@ circos.barplot = function(value, pos, bar_width = 0.6,
         if(length(border) == 1) border = rep(border, n)
         if(length(lwd) == 1) lwd = rep(lwd, n)
         if(length(lty) == 1) lty = rep(lty, n)
-        if(length(bar_width) == 1) bar_width = rep(bar_width, n)
-            
+        if(length(bar_width) == 1) bar_width = rep(bar_width, nrow(value))
+
         for(i in 1:n) {
             if(i == 1) {
                 circos.rect(pos - bar_width/2, 0, pos + bar_width/2, rowSums(value[, seq_len(i), drop = FALSE]), 
                     col = col[i], border = border[i], lwd = lwd[i], lty = lty[i])
             } else {
-                circos.rect(pos - bar_width/2, rowSums(value[, seq_len(i-1), drop = FALSE]), pos + bar_width/2, rowSums(value[, seq_len(i)]), 
+                circos.rect(pos - bar_width/2, rowSums(value[, seq_len(i-1), drop = FALSE]), pos + bar_width/2, rowSums(value[, seq_len(i), drop = FALSE]), 
                     col = col[i], border = border[i], lwd = lwd[i], lty = lty[i])
             }
         }
@@ -2187,7 +2187,7 @@ circos.boxplot = function(value, pos, outline = TRUE, box_width = 0.6,
             stop_wrap("Length of `pos` should be same as number of boxes.")
         }
 
-        if(length(box_width) == 1) box_width = rep(box_width, n)
+        if(length(box_width) == 1) box_width = rep(box_width, length(value))
 
         if(length(col) == 1) col = rep(col, n)
         if(length(border) == 1) border = rep(border, n)
@@ -2291,7 +2291,7 @@ circos.violin = function(value, pos, violin_width = 0.8,
         if(length(cex) == 1) cex = rep(cex, n)
         if(length(pch) == 1) pch = rep(pch, n)
         if(length(pt.col) == 1) pt.col = rep(pt.col, n)
-        if(length(violin_width) == 1) violin_width = rep(violin_width, n)
+        if(length(violin_width) == 1) violin_width = rep(violin_width, length(value))
 
         density_list = lapply(value, density, na.rm = TRUE)
         

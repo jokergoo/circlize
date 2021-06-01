@@ -2412,7 +2412,7 @@ circos.genomicHeatmap = function(
 
 	side = match.arg(side)
 	if(missing(col)) {
-		col = colorRamp2(seq(min(na.rm = TRUE), max(mat, na.rm = TRUE), length = 3), c("blue", "#EEEEEE", "red"))
+		col = colorRamp2(seq(min(mat, na.rm = TRUE), max(mat, na.rm = TRUE), length = 3), c("blue", "#EEEEEE", "red"))
 	}
 	if(is.function(col)) {
 		col = col(mat)

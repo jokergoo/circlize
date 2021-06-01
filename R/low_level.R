@@ -2607,7 +2607,7 @@ circos.connect = function(x0, y0, x1, y1,
 # -sectors A vector of sector names.
 # -x Positions of the labels.
 # -labels A vector of labels.
-# -facing fFacing of the labels. The value can only be ``"clockwise"`` or ``"reverse.clockwise"``.
+# -facing Facing of the labels. The value can only be ``"clockwise"`` or ``"reverse.clockwise"``.
 # -niceFacing Whether automatically adjust the facing of the labels.
 # -col Color for the labels.
 # -cex Size of the labels.
@@ -2626,6 +2626,17 @@ circos.connect = function(x0, y0, x1, y1,
 # This function creates two tracks, one for the connection lines and one for the labels.
 #
 # If two labels are too close and overlap, this function automatically adjusts the positions of neighouring labels.
+#
+# == example
+# circos.initialize(sectors = letters[1:8], xlim = c(0, 1))
+# circos.track(ylim = c(0, 1))
+# circos.labels(c("a", "a", "b", "b"), x = c(0.1, 0.12, 0.4, 0.6), labels = c(0.1, 0.12, 0.4, 0.6))
+#
+# circos.initialize(sectors = letters[1:8], xlim = c(0, 1))
+# circos.labels(c("a", "a", "b", "b"), x = c(0.1, 0.12, 0.4, 0.6), labels = c(0.1, 0.12, 0.4, 0.6),
+#     side = "outside")
+# circos.track(ylim = c(0, 1))
+# circos.clear()
 circos.labels = function(
     sectors, x, labels, 
     facing = "clockwise", 

@@ -1,3 +1,8 @@
+Changes in version 0.4.13
+-----------------------------------------------------------------------
+
+* `circos.link()`: add offset when testing whether the link is out of the sector.
+
 Changes in version 0.4.12
 -----------------------------------------------------------------------
 * `smartAlign()`: improved boxes overlapping

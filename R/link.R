@@ -82,7 +82,7 @@ circos.link = function(
 	point2 = sort(point2)
 
 	rg1 = sector.data1["max.data"] - sector.data1["min.data"]
-	if((min(point1) < sector.data1["min.data"] - rg1*1e-6 || max(point1) > sector.data1["max.data"] + rg1*1e-6) {
+	if(min(point1) < sector.data1["min.data"] - rg1*1e-6 || max(point1) > sector.data1["max.data"] + rg1*1e-6) {
 		message_wrap(paste0("Note: The first link end is drawn out of sector '", sector.index1, "'."))
 	}
 	rg2 = sector.data2["max.data"] - sector.data2["min.data"]

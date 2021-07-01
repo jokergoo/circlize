@@ -18,3 +18,5 @@ generate_genomic_figures/
 build_pkg_site.R
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.github$
+^codecov\.yml$

@@ -3,9 +3,10 @@
 # circlize: circular visualization in R <a href="https://jokergoo.github.io/circlize_book/book/"><img src="https://jokergoo.github.io/circlize_book/book/images/circlize_cover.jpg" width=240 align="right" ></a>
 
 
-[![Build Status](https://travis-ci.org/jokergoo/circlize.svg)](https://travis-ci.org/jokergoo/circlize)
+[![R-CMD-check](https://github.com/jokergoo/circlize/workflows/R-CMD-check/badge.svg)](https://github.com/jokergoo/circlize/actions)
 [![CRAN](https://www.r-pkg.org/badges/version/circlize)](https://cran.r-project.org/web/packages/circlize/index.html)
 [![CRAN](https://cranlogs.r-pkg.org/badges/grand-total/circlize)](https://cran.r-project.org/web/packages/circlize/index.html)
+[![Codecov test coverage](https://codecov.io/gh/jokergoo/circlize/branch/master/graph/badge.svg)](https://codecov.io/gh/jokergoo/circlize?branch=master)
 
 Circular layout is an efficient way for the visualization of huge
     amounts of information. Here the circlize package provides an implementation

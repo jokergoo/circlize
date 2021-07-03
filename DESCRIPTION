@@ -16,7 +16,8 @@ Suggests:
     png,
     markdown,
     bezier,
-    covr
+    covr,
+    rmarkdown
 VignetteBuilder: knitr
 Description: Circular layout is an efficient way for the visualization of huge 
     amounts of information. Here this package provides an implementation 

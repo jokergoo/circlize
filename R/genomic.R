@@ -648,13 +648,13 @@ circos.genomicTrackPlotRegion = function(
 					if(is.na(numeric.column[i])) {
 						stop_wrap("There is no numeric column in one of your data frame which calculation of `ylim` depends on. Or you can set `ylim` explicitely.")
 					}
-					range(unlist(lapply(gr[-(1:3)][ numeric.column[i] ], range)))
+					range(unlist(lapply(gr[-(1:3)][ numeric.column[i] ], range, na.rm = TRUE)))
 				})))
 			} else {
 				if(length(numeric.column) == 0) {
 					stop_wrap("There is no numeric column in your data frame which calculation of `ylim` depends on. Or you can set `ylim` explicitely.")
 				}
-				ylim = range(unlist(lapply(data[-(1:3)][numeric.column], range)))
+				ylim = range(unlist(lapply(data[-(1:3)][numeric.column], range, na.rm = TRUE)))
 			}
 		}
 

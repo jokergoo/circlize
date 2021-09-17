@@ -246,7 +246,13 @@ circos.trackPlotRegion = function(
                     ny = y[l]
                 }
 
+                current_track_index = get.current.track.index()
+
                 panel.fun(nx, ny)
+
+                if(get.current.track.index() != current_track_index) {
+                	stop_wrap("`panel_fun` should not change the current track index. Please check the functions used inside `panel_fun`.")
+                }
             }
         }
     }

@@ -1,3 +1,10 @@
+Changes in version 0.4.14
+-----------------------------------------------------------------------
+
+* `circos.genomicTrackPlotRegion()`: add `na.rm = TRUE` when using `range()`.
+* fixed a bug of `na.col` in `circos.heatmap()`.
+* improved default order of link end when duplicated rows exist in the data frame.
+
 Changes in version 0.4.13
 -----------------------------------------------------------------------
 

@@ -436,7 +436,13 @@ circos.heatmap = function(mat, split = NULL, col, na.col = "grey",
 	}
 	
 	if(is.function(col)) {
-		col_fun = col
+		col_fun = function(x) {
+			l = is.na(x)
+			v = character(length(x))
+			v[!l] = col(x[!l])
+			v[l] = na.col
+			v 
+		}
 	} else {
 		if(is.null(names(col))) {
 			stop_wrap('`col` should be a named vector.')

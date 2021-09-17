@@ -1169,7 +1169,13 @@ chordDiagramFromDataFrame = function(
 			fa = c(cate, cate)
 			i = which(fa == cn)[1]
 			fa = fa[seq(i, i + length(cate) - 1)]
-			order(factor(rn, levels = fa), decreasing = TRUE)
+			# for the ordering of duplicated rows
+			v = numeric(length(rn))
+			for(x in unique(rn)) {
+				l = rn == x
+				v[l] = seq_len(sum(l))
+			}
+			order(factor(rn, levels = fa), v, decreasing = TRUE)
 		})
 	}	
 	for(nm in names(od)) {

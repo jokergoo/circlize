@@ -26,7 +26,7 @@ Zuguang Gu <z.gu@dkfz.de>
 \examples{
 plot(NULL, xlim = c(1, 10), ylim = c(1, 8), axes = FALSE, ann = FALSE)
 points(1:10, rep(1, 10), pch = 16, cex = 5, 
-    col = rand_color(10, luminosity = "random"))
+    col = rand_color(10))
 points(1:10, rep(2, 10), pch = 16, cex = 5, 
     col = rand_color(10, luminosity = "bright"))
 points(1:10, rep(3, 10), pch = 16, cex = 5, 

@@ -57,7 +57,7 @@ f = colorRamp2(breaks = c(-1, 0, 1), colors = c("green", "black", "red"))
 circos.genomicTrack(bed_list, stack = TRUE,
     panel.fun = function(region, value, ...) {
 
-circos.genomicRect(region, value, col = f(value[[1]]), 
+    circos.genomicRect(region, value, col = f(value[[1]]), 
         border = NA, ...)
     i = getI(...)
     cell.xlim = get.cell.meta.data("cell.xlim")
@@ -70,7 +70,7 @@ circos.genomicTrack(bed_list, ylim = c(0, 3),
     circos.genomicRect(region, value, ytop = i+0.4, ybottom = i-0.4, col = f(value[[1]]), 
         border = NA, ...)
 
-cell.xlim = get.cell.meta.data("cell.xlim")
+    cell.xlim = get.cell.meta.data("cell.xlim")
     circos.lines(cell.xlim, c(i, i), lty = 2, col = "#000000")
 })
 

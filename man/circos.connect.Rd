@@ -45,7 +45,7 @@ circos.track(ylim = c(0, 1), track.height = 0.7, bg.border = NA,
     x0 = runif(100)
     x1 = runif(100)
 
-circos.connect(x0, 0, x1, 1, 
+    circos.connect(x0, 0, x1, 1, 
         type = "normal", border = NA,
         col = rand_color(100, luminosity = "bright", transparency = 0.75))
 })
@@ -58,7 +58,7 @@ circos.track(ylim = c(0, 1), track.height = 0.7, bg.border = NA,
     x0 = runif(100)
     x1 = runif(100)
 
-circos.connect(x0, 0, x1, 1, 
+    circos.connect(x0, 0, x1, 1, 
         type = "bezier", border = NA,
         col = rand_color(100, luminosity = "bright", transparency = 0.75))
 })
@@ -73,7 +73,7 @@ circos.track(ylim = c(0, 1), track.height = 0.7, bg.border = NA,
     x1 = sort(runif(200))
     x1 = matrix(x1, ncol = 2, byrow = TRUE)
 
-circos.connect(x0, 0, x1, 1, 
+    circos.connect(x0, 0, x1, 1, 
         type = "normal", border = NA,
         col = rand_color(100, luminosity = "bright", transparency = 0.5))
 })
@@ -90,9 +90,9 @@ circos.track(ylim = c(0, 1), track.height = 0.7, bg.border = NA,
     x1 = matrix(x1, ncol = 2, byrow = TRUE)
     x1 = x1[sample(nrow(x1), nrow(x1)), ]
 
-l = abs(x0[, 1] - x1[, 1]) < 0.5
+    l = abs(x0[, 1] - x1[, 1]) < 0.5
 
-circos.connect(x0[l ,], 0, x1[l, ], 1, 
+    circos.connect(x0[l ,], 0, x1[l, ], 1, 
         type = "bezier", border = NA,
         col = rand_color(sum(l), luminosity = "bright", transparency = 0.5))
 })

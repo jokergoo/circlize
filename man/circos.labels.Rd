@@ -29,7 +29,7 @@ circos.labels(
   \item{sectors}{A vector of sector names.}
   \item{x}{Positions of the labels.}
   \item{labels}{A vector of labels.}
-  \item{facing}{fFacing of the labels. The value can only be \code{"clockwise"} or \code{"reverse.clockwise"}.}
+  \item{facing}{Facing of the labels. The value can only be \code{"clockwise"} or \code{"reverse.clockwise"}.}
   \item{niceFacing}{Whether automatically adjust the facing of the labels.}
   \item{col}{Color for the labels.}
   \item{cex}{Size of the labels.}
@@ -51,7 +51,13 @@ This function creates two tracks, one for the connection lines and one for the l
 If two labels are too close and overlap, this function automatically adjusts the positions of neighouring labels.
 }
 \examples{
-# There is no example
-NULL
+circos.initialize(sectors = letters[1:8], xlim = c(0, 1))
+circos.track(ylim = c(0, 1))
+circos.labels(c("a", "a", "b", "b"), x = c(0.1, 0.12, 0.4, 0.6), labels = c(0.1, 0.12, 0.4, 0.6))
 
+circos.initialize(sectors = letters[1:8], xlim = c(0, 1))
+circos.labels(c("a", "a", "b", "b"), x = c(0.1, 0.12, 0.4, 0.6), labels = c(0.1, 0.12, 0.4, 0.6),
+    side = "outside")
+circos.track(ylim = c(0, 1))
+circos.clear()
 }

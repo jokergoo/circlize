@@ -103,19 +103,19 @@ while(1) {
     min = current.time$min
     hour = current.time$hour
 
-# erase the clock hands
+    # erase the clock hands
     draw.sector(rou1 = 0.8, border = "white", col = "white")
 
-sec.degree = 90 - sec/60 * 360
+    sec.degree = 90 - sec/60 * 360
     arrows(0, 0, cos(sec.degree/180*pi)*0.8, sin(sec.degree/180*pi)*0.8)
 
-min.degree = 90 - min/60 * 360
+    min.degree = 90 - min/60 * 360
     arrows(0, 0, cos(min.degree/180*pi)*0.7, sin(min.degree/180*pi)*0.7, lwd = 2)
 
-hour.degree = 90 - hour/12 * 360 - min/60 * 360/12
+    hour.degree = 90 - hour/12 * 360 - min/60 * 360/12
     arrows(0, 0, cos(hour.degree/180*pi)*0.4, sin(hour.degree/180*pi)*0.4, lwd = 2)
 
-Sys.sleep(1)
+    Sys.sleep(1)
 }
 circos.clear()
 }

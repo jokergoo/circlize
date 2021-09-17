@@ -38,7 +38,7 @@ circos.track(ylim = c(0, 1), track.height = 0.3, panel.fun = function(x, y) {
     x = seq(0.2, 0.8, by = 0.2)
     y = seq(0.2, 0.8, by = 0.2)
 
-circos.segments(x, 0.1, x, 0.9)
+    circos.segments(x, 0.1, x, 0.9)
     circos.segments(0.1, y, 0.9, y)
 })
 circos.clear()

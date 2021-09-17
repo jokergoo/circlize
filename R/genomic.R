@@ -290,6 +290,11 @@ circos.genomicInitialize = function(
 	circos.par(cell.padding = c(0, 0, 0, 0), points.overflow.warning = FALSE)
 	circos.initialize(factor(fa, levels = fa), xlim = cbind(x1, x2), ...)
 
+	if(circos.par$ring) {
+		op = c(op[1], 0, op[3], 0)
+    	ow = FALSE
+	}
+
 	if(is.null(track.height)) {
 		if(all(c("axis", "labels") %in% plotType)) {
 			track.height = convert_unit_in_canvas_coordinate(1.5, "mm") + strheight("0", cex = axis.labels.cex) + 
@@ -326,6 +331,20 @@ circos.genomicInitialize = function(
 	circos.par("cell.padding" = op, "points.overflow.warning" = ow)
 	return(invisible(NULL))
 }
+
+
+# == title
+# Initialize a layout for circular genome
+#
+# == param
+# -name Name of the genome (or the "chromosome name").
+# -genome_size Size of the genome
+# -plotType Pass to `circos.genomicInitialize`.
+# -... All goes to `circos.genomicInitialize`.
+#
+circos.initializeCircularGenome = function(name, genome_size, plotType = "axis", ...) {
+	circos.genomicInitialize(data.frame(name, 0, genome_size), ..., ring = TRUE, plotType = plotType)
+} 
 
 # == title
 # Add genomic axes
@@ -514,10 +533,22 @@ circos.genomicTrackPlotRegion = function(
 	if(is.dataFrameList(data)) {
 		for(i in seq_along(data)) {
 			data[[i]][[1]] = as.character(data[[i]][[1]])
+			if(circos.par$ring) {
+				l = data[[i]][, 2] > data[[i]][, 3]
+				if(any(l)) {
+					data[[i]][l, 2] = data[[i]][l, 2] - diff(get.sector.data()[c("min.value", "max.value")])
+				}
+			}
 			validate_region(data[[i]], check_chr = FALSE)
 		}
 	} else {
 		data[[1]] = as.character(data[[1]])
+		if(circos.par$ring) {
+			l = data[, 2] > data[, 3]
+			if(any(l)) {
+				data[l, 2] = data[l, 2] - diff(get.sector.data()[c("min.value", "max.value")])
+			}
+		}
 		validate_region(data, check_chr = FALSE)
 	}
 
@@ -1482,6 +1513,17 @@ circos.genomicLink = function(
     lty = par("lty"), 
     border = col, 
     ...) {
+
+	if(circos.par$ring) {
+		l = region1[, 2] > region1[, 3]
+		if(any(l)) {
+			region1[l, 2] = region1[l, 2] - diff(get.sector.data()[c("min.value", "max.value")])
+		}
+		l = region2[, 2] > region2[, 3]
+		if(any(l)) {
+			region2[l, 2] = region2[l, 2] - diff(get.sector.data()[c("min.value", "max.value")])
+		}
+	}
 	
 	region1 = validate_data_frame(region1)
 	region2 = validate_data_frame(region2)

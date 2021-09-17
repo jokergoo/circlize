@@ -75,8 +75,22 @@ circos.link = function(
     arr.col = col,
     reduce_to_mid_line = FALSE) {
 
-    sector.data1 = get.sector.data(sector.index1)
-    sector.data2 = get.sector.data(sector.index2)
+   sector.data1 = get.sector.data(sector.index1)
+   sector.data2 = get.sector.data(sector.index2)
+
+   if(circos.par$ring) {
+   	if(length(point1) == 2) {
+   		if(point1[1] > point1[2]) {
+   			point1[1] = point1[1] - diff(get.sector.data()[c("min.value", "max.value")])
+   		}
+   	}
+
+   	if(length(point2) == 2) {
+   		if(point2[1] > point2[2]) {
+   			point2[1] = point2[1] - diff(get.sector.data()[c("min.value", "max.value")])
+   		}
+   	}
+   }
 
 	point1 = sort(point1)
 	point2 = sort(point2)

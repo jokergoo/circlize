@@ -397,8 +397,14 @@ circos.createPlotRegion = function(
 
     # The plotting region is a rectangle
 	cell.ylim = yl
-    circos.rect(cell.xlim[1], cell.ylim[1], cell.xlim[2], cell.ylim[2], sector.index = sector.index, track.index = track.index,
-        col = bg.col, border = bg.border, lty = bg.lty, lwd = bg.lwd)
+
+	if(circos.par$ring) {
+		highlight.sector(sector.index = sector.index, track.index = track.index,
+	        col = bg.col, border = bg.border, lty = bg.lty, lwd = bg.lwd)
+	} else {
+	    circos.rect(cell.xlim[1], cell.ylim[1], cell.xlim[2], cell.ylim[2], sector.index = sector.index, track.index = track.index,
+	        col = bg.col, border = bg.border, lty = bg.lty, lwd = bg.lwd)
+	}
     return(invisible(NULL))
 }
 

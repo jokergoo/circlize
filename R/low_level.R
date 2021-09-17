@@ -256,6 +256,15 @@ circos.lines = function(
 		stop_wrap("Length of x and y differ.")
 	}
 
+    n = length(x)
+
+    if(circos.par$ring) {
+        l = c(x[seq(1, n-1)] > x[seq(2, n)], FALSE)
+        if(any(l)) {
+            x[l] = x[l] - get.cell.meta.data("xrange", sector.index, track.index)
+        }
+    }
+
 	if(baseline == "bottom") {
 		baseline = get.cell.meta.data("ylim", sector.index, track.index)[1]
 	} else if(baseline == "top") {
@@ -502,6 +511,13 @@ circos.rect = function(
 		stop_wrap("xleft, ybottom, xright, ytop should have same length.")
 	}
 
+    if(circos.par$ring) {
+        l = xleft > xright
+        if(any(l)) {
+            xleft[l] = xleft[l] - get.cell.meta.data("xrange", sector.index, track.index)
+        }
+    }
+
     # # no filled colors, just four edges, here edges colors are controled by ``border``
     # if(is.na(col)) {
     #     # vertical lines in the original coordinate system are still straight lines
@@ -732,6 +748,13 @@ circos.segments = function(
 	if(! (length(x0) == length(y0) && length(y0) == length(x1) && length(x1) == length(y1)) ) {
 		stop_wrap("x0, y0, x1, y1 should have same length.")
 	}
+
+    if(circos.par$ring) {
+        l = x0 > x1
+        if(any(l)) {
+            x0[l] = x0[l] - get.cell.meta.data("xrange", sector.index, track.index)
+        }
+    }
 
 	if(length(col) == 1 && length(lwd) ==1 && length(lty) == 1) {
 

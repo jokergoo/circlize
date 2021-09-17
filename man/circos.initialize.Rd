@@ -12,7 +12,8 @@ circos.initialize(
     x = NULL,
     xlim = NULL,
     sector.width = NULL,
-    factors = sectors)
+    factors = sectors,
+    ring = FALSE)
 }
 \arguments{
 

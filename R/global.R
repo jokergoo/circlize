@@ -246,6 +246,7 @@ is.circos.initialized = function() {
 #          the vector are relative, and they will be scaled by dividing their summation.
 #          By default, it is ``NULL`` which means the width of sectors correspond to the data
 #          range in sectors.
+# -ring Whether the sector represented as a ring. If yes, there should only be one sector in the circle.
 #
 # == details
 # The function allocates the sectors according to the values on x-axis.

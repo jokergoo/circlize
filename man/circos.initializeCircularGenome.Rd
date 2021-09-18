@@ -20,4 +20,5 @@ circos.initializeCircularGenome(name, genome_size, plotType = "axis", ...)
 \examples{
 # There is no example
 NULL
+
 }

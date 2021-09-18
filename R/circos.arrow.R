@@ -84,7 +84,7 @@ circos.arrow = function(
 	arrow.position = c("end", "start"),
 	tail = c("normal", "point"), 
 	border = "black", 
-	col = "white", 
+	col = "#FFCCCC", 
 	lty = par("lty"), 
 	...) {
 
@@ -93,14 +93,18 @@ circos.arrow = function(
 
 	set.current.cell(sector.index, track.index)
 
-	if(x2 <= x1) {
-		# stop_wrap("`x2` should be larger than `x1`. Set `arrow.position = 'start'` to get reverse clockwise arrows.")
-		x3 = x1
-		x1 = x2
-		x2 = x3
-		arrow.position = setdiff(c("end", "start"), arrow.position)
+	if(circos.par$ring) {
+		if(x1 > x2) x1 = x1 - get.cell.meta.data("xrange", sector.index, track.index)
+	} else {
+		if(x2 <= x1) {
+			# stop_wrap("`x2` should be larger than `x1`. Set `arrow.position = 'start'` to get reverse clockwise arrows.")
+			x3 = x1
+			x1 = x2
+			x2 = x3
+			arrow.position = setdiff(c("end", "start"), arrow.position)
+		}
 	}
-	
+
 	if(abs(x2 - x1 - arrow.head.length) < 1e-6) {
 		stop_wrap("Arrow head is too long that it is even longer than the arrow itself.")
 	}

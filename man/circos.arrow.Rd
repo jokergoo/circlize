@@ -19,7 +19,7 @@ circos.arrow(
     arrow.position = c("end", "start"),
     tail = c("normal", "point"),
     border = "black",
-    col = "white",
+    col = "#FFCCCC",
     lty = par("lty"),
     ...)
 }

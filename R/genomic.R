@@ -2599,18 +2599,61 @@ circos.genomicLabels = function(
 	line_lwd = line_lwd[od]
 	line_lty = line_lty[od]
 
-	# map all other chromosomes to the first chromosome
 	chr = get.all.sector.index()[1]
 	sector_data = get.sector.data(chr)
+	
+	## find the largest gap
+	all_chr = unique(bed[, 1])
+	rho = NULL
+	for(cr in all_chr) {
+		sub_bed = bed[bed[, 1] == cr, ]
+		rho = c(rho, circlize(sub_bed[, 2], y = rep(1, nrow(sub_bed)), sector.index = cr)[, 1])
+	}
+	if(length(rho) == 0) {
+		anchor = ((sector_data["start.degree"] + sector_data["end.degree"])/2 + 180) %% 360
+	} else if(length(rho) == 1) {
+		anchor = (rho + 180) %% 360
+	} else {
+		rho = sort(rho)
+		rho = c(rho, rho[1] + 360)
+		i = which.max(diff(rho))
+		anchor = ((rho[i] + rho[i+1])/2) %% 360
+	}
+
+	# map all other chromosomes to the first chromosome
 	chr_width = sector_data["start.degree"] - sector_data["end.degree"]
-	extend = (360 - chr_width)/chr_width
-	extend = c(0, extend)
+	# extend = (360 - chr_width)/chr_width
+	# extend = c(0, extend)
+	extend = numeric(2)
+	s1 = sector_data["start.degree"] %% 360
+	s2 = sector_data["end.degree"] %% 360
+	# if the anchor in inside the first sector
+	if(s1 < s2) { # the first sector go across theta = 0
+		s1 = s1 + 360
+		if(anchor < s2) {
+			anchor = anchor + 360
+		}
+	} 
+	
+	if(anchor >= s2 && anchor <= s1) { # anchor inside sector
+		if(s1 - s2 > 180) {
+			extend[1] = (abs(s1 - anchor) %% 360)/chr_width
+			extend[2] = -(abs(s2 - anchor) %% 360)/chr_width
+		} else {
+			extend = (360 - chr_width)/chr_width
+			extend = c(0, extend)
+		}
+	} else {
+		extend[1] = (abs(s1 - anchor) %% 360)/chr_width
+		extend[2] = (abs(s2 - anchor) %% 360)/chr_width
+	}
 
 	all_chr = unique(bed[, 1])
 	bed2 = NULL
 	for(cr in all_chr) {
 		sub_bed = bed[bed[, 1] == cr, ]
 		if(cr != chr) {
+
 			x1 = reverse.circlize(circlize(sub_bed[, 2], y = rep(1, nrow(sub_bed)), sector.index = cr), sector.index = chr)[, 1]
 			x2 = reverse.circlize(circlize(sub_bed[, 3], y = rep(1, nrow(sub_bed)), sector.index = cr), sector.index = chr)[, 1]
 			sub_bed[, 2:3] = data.frame(start = x1, end = x2)

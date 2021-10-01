@@ -29,7 +29,7 @@ chordDiagramFromDataFrame(
     link.lwd = par("lwd"),
     link.lty = par("lty"),
     link.auto = TRUE,
-    link.sort = FALSE,
+    link.sort = "default",
     link.decreasing = TRUE,
     link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4),
     link.arr.width = link.arr.length/2,
@@ -72,7 +72,7 @@ chordDiagramFromDataFrame(
   \item{link.lwd}{width for link borders, single scalar or a vector which has the same length as nrows of \code{df} or a data frame}
   \item{link.lty}{style for link borders, single scalar or a vector which has the same length as nrows of \code{df} or a data frame}
   \item{link.auto}{Ignored.}
-  \item{link.sort}{whether sort links on every sector based on the width of the links on it. If it is set to "overall", all links are sorted regardless whether they are from the first column or the second column.}
+  \item{link.sort}{whether sort links on every sector based on the width of the links on it. The value can be logical. The value can also be string "default" which automatically adjusts link orders so that links have minimal overall intersections. The value can also be a string  "asis" and it is only workable for input as a data frame so that the links have the same orders as in the original data frame.# -link.decreasing for \code{link.sort}}
   \item{link.decreasing}{for \code{link.sort}}
   \item{link.arr.length}{pass to \code{\link{circos.link}}. The format of this argument is same as \code{link.lwd}.}
   \item{link.arr.width}{pass to \code{\link[shape]{Arrowhead}}. The format of this argument is same as \code{link.lwd}.}

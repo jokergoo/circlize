@@ -6,6 +6,8 @@ Changes in version 0.4.14
 * improved default order of link end when duplicated rows exist in the data frame.
 * `circos.heatmap()`: add `cell.border`, `cell.lty` and `cell.lwd` arguments.
 * add `circos.initializeCircularGenome()`.
+* `chordDiagram()`: `link.sort` allows to sort links based on the original orders 
+   in the input data frame.
 
 Changes in version 0.4.13
 -----------------------------------------------------------------------

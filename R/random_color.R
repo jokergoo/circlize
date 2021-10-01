@@ -52,7 +52,16 @@ rand_color = function(n, hue = NULL, luminosity = "random", transparency = 0) {
 
 	col = sapply(col, hex)
 
-	add_transparency(col, transparency)
+	col = add_transparency(col, transparency)
+
+	l = substr(col, 0, 7) == "#FFFFFF"
+	try = 0
+	while(any(l) && try < 100) {
+		col[l] = rand_color(sum(l), hue = hue, luminosity = luminosity, transparency = transparency)
+		l = substr(col, 0, 7) == "#FFFFFF"
+		try = try + 1
+	}
+	col
 }
 
 pickHue = function(hue) {

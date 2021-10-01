@@ -33,7 +33,7 @@ chordDiagram(
     link.lwd = par("lwd"),
     link.lty = par("lty"),
     link.auto = TRUE,
-    link.sort = FALSE,
+    link.sort = "default",
     link.decreasing = TRUE,
     link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4),
     link.arr.width = link.arr.length/2,

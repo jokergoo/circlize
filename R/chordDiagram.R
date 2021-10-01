@@ -115,7 +115,7 @@ chordDiagram = function(
 	link.lwd = par("lwd"),
 	link.lty = par("lty"),
 	link.auto = TRUE,
-	link.sort = FALSE,
+	link.sort = "default",
 	link.decreasing = TRUE,
 	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4),
 	link.arr.width = link.arr.length/2,
@@ -340,9 +340,9 @@ mat2df = function(mat) {
 # -link.lwd width for link borders, single scalar or a matrix with names or a data frame with three columns
 # -link.lty style for link borders, single scalar or a matrix with names or a data frame with three columns
 # -link.auto Ignored.
-# -link.sort whether sort links on every sector based on the width of the links on it. If it is set to "overall", all links are sorted regardless
-#            whether they are from rows or columns.
-# -link.decreasing for ``link.sort``
+# -link.sort whether sort links on every sector based on the width of the links on it. The value can be logical. The value can also be string
+#        "default" which automatically adjusts link orders so that links have minimal overall intersections. The value can also be a string 
+#        "asis" and it is only workable for input as a data frame so that the links have the same orders as in the original data frame.# -link.decreasing for ``link.sort``
 # -link.arr.length pass to `circos.link`. The format of this argument is same as ``link.lwd``.
 # -link.arr.width pass to `shape::Arrowhead`. The format of this argument is same as ``link.lwd``.
 # -link.arr.type pass to `circos.link`, same format as ``link.lwd``. Default value is ``triangle``.
@@ -396,7 +396,7 @@ chordDiagramFromMatrix = function(
 	link.lwd = par("lwd"),
 	link.lty = par("lty"),
 	link.auto = TRUE,
-	link.sort = FALSE,
+	link.sort = "default",
 	link.decreasing = TRUE,
 	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4),
 	link.arr.width = link.arr.length/2,
@@ -735,8 +735,9 @@ chordDiagramFromMatrix = function(
 # -link.lwd width for link borders, single scalar or a vector which has the same length as nrows of ``df`` or a data frame
 # -link.lty style for link borders, single scalar or a vector which has the same length as nrows of ``df`` or a data frame
 # -link.auto Ignored.
-# -link.sort whether sort links on every sector based on the width of the links on it. If it is set to "overall", all links are sorted regardless
-#            whether they are from the first column or the second column.
+# -link.sort whether sort links on every sector based on the width of the links on it. The value can be logical. The value can also be string
+#        "default" which automatically adjusts link orders so that links have minimal overall intersections. The value can also be a string 
+#        "asis" and it is only workable for input as a data frame so that the links have the same orders as in the original data frame.# -link.decreasing for ``link.sort``
 # -link.decreasing for ``link.sort``
 # -link.arr.length pass to `circos.link`. The format of this argument is same as ``link.lwd``.
 # -link.arr.width pass to `shape::Arrowhead`. The format of this argument is same as ``link.lwd``.
@@ -788,7 +789,7 @@ chordDiagramFromDataFrame = function(
 	link.lwd = par("lwd"),
 	link.lty = par("lty"),
 	link.auto = TRUE,
-	link.sort = FALSE,
+	link.sort = "default",
 	link.decreasing = TRUE,
 	link.arr.length = ifelse(link.arr.type == "big.arrow", 0.02, 0.4),
 	link.arr.width = link.arr.length/2,
@@ -1132,10 +1133,7 @@ chordDiagramFromDataFrame = function(
 	if(length(link.sort) == 1) link.sort = rep(link.sort, 2)
 	if(length(link.decreasing) == 1) link.decreasing = rep(link.decreasing, 2)
 
-	if(link.sort[1]) {
-		# position of root 1
-		od = tapply(abs(df$value1), df$rn, .order, link.sort[1], link.decreasing[1])
-	} else {
+	if(identical(link.sort[1], "default")) {
 		od = tapply(seq_len(nrow(df)), df$rn, function(ind) {
 			rn = df[ind[1], "rn"]
 			cn = df[ind, "cn"]
@@ -1144,7 +1142,15 @@ chordDiagramFromDataFrame = function(
 			fa = fa[seq(i, i + length(cate) - 1)]
 			order(factor(cn, levels = fa), decreasing = TRUE)
 		})
+	} else if(identical(link.sort[1], "asis")) {
+		od = tapply(abs(df$value1), df$rn, .order, FALSE, FALSE)
+	} else if(identical(link.sort[1], FALSE)) {
+		od = tapply(abs(df$value1), df$rn, .order, FALSE, link.decreasing[1])
+	} else {
+		# position of root 1
+		od = tapply(abs(df$value1), df$rn, .order, link.sort[1], link.decreasing[1])
 	}
+
 	for(nm in names(od)) {  # for each sector
 		l = df$rn == nm # rows in df that correspond to current sector
 		df$o1[l] = od[[nm]] # adjust rows according to the order in current sector
@@ -1160,9 +1166,7 @@ chordDiagramFromDataFrame = function(
 	max_o1 = sapply(od, max)
 	sum_1 = tapply(abs(df$value1), df$rn, sum)
 		# position of root 2
-	if(link.sort[2]) {
-		od = tapply(abs(df$value2), df$cn, .order, link.sort[2], link.decreasing[2])
-	} else { 
+	if(identical(link.sort[2], "default")) {
 		od = tapply(seq_len(nrow(df)), df$cn, function(ind) {
 			cn = df[ind[1], "cn"]
 			rn = df[ind, "rn"]
@@ -1177,7 +1181,14 @@ chordDiagramFromDataFrame = function(
 			}
 			order(factor(rn, levels = fa), v, decreasing = TRUE)
 		})
-	}	
+	} else if(identical(link.sort[2], "asis")) {
+		od = tapply(abs(df$value2), df$cn, .order, FALSE, FALSE)
+	} else if(identical(link.sort[2], FALSE)) {
+		od = tapply(abs(df$value2), df$cn, .order, FALSE, link.decreasing[2])
+	} else {
+		od = tapply(abs(df$value2), df$cn, .order, link.sort[2], link.decreasing[2])
+	}
+
 	for(nm in names(od)) {
 		if(!is.na(max_o1[nm])) { # if cn already in rn
 			l = df$cn == nm

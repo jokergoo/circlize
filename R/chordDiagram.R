@@ -343,6 +343,7 @@ mat2df = function(mat) {
 # -link.sort whether sort links on every sector based on the width of the links on it. The value can be logical. The value can also be string
 #        "default" which automatically adjusts link orders so that links have minimal overall intersections. The value can also be a string 
 #        "asis" and it is only workable for input as a data frame so that the links have the same orders as in the original data frame.# -link.decreasing for ``link.sort``
+# -link.decreasing for ``link.sort``
 # -link.arr.length pass to `circos.link`. The format of this argument is same as ``link.lwd``.
 # -link.arr.width pass to `shape::Arrowhead`. The format of this argument is same as ``link.lwd``.
 # -link.arr.type pass to `circos.link`, same format as ``link.lwd``. Default value is ``triangle``.

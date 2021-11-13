@@ -1651,9 +1651,17 @@ circos.yaxis = function(
 
 	labels.adj = NULL
 	if(side == "left") {
-		labels.adj = c(1, 0.5)
+        if(!circos.par$xaxis.clock.wise) {
+            labels.adj = c(0, 0.5)
+        } else {
+            labels.adj = c(1, 0.5)
+        }
 	} else {
-		labels.adj = c(0, 0.5)
+        if(!circos.par$xaxis.clock.wise) {
+            labels.adj = c(1, 0.5)
+        } else {
+            labels.adj = c(0, 0.5)
+        }
 	}
 
 	if(is.logical(labels) && labels) {

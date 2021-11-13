@@ -540,7 +540,7 @@ adjacencyMatrix2List = function(mat, keep.zero = FALSE) {
 # Zuguang Gu <z.gu@dkfz.de>
 #
 # == example
-# x = seq(0, 1, length = 11)
+# x = seq(0, 1, length.out = 11)
 # col_fun = colorRamp2(c(0, 0.5, 1), c("blue", "white", "red"))
 # col = col_fun(x)
 # col2value(col, col_fun = col_fun)
@@ -1193,7 +1193,7 @@ roundrect_pos = function(xleft, ybottom, xright, ytop, radius = 0.1,
   y = NULL
 
   # left top 180 -> 90
-  df = polar2Cartesian(cbind(seq(180, 90, length = 20), rep(r,20)))
+  df = polar2Cartesian(cbind(seq(180, 90, length.out = 20), rep(r,20)))
   x = c(x, df[, 1] + xleft + r)
   y = c(y, df[, 2] + ytop - r)
 
@@ -1201,7 +1201,7 @@ roundrect_pos = function(xleft, ybottom, xright, ytop, radius = 0.1,
   y = c(y, ytop, ytop)
 
   # right top 90 -> 0
-  df = polar2Cartesian(cbind(seq(90, 0, length = 20), rep(r,20)))
+  df = polar2Cartesian(cbind(seq(90, 0, length.out = 20), rep(r,20)))
   x = c(x, df[, 1] + xright - r)
   y = c(y, df[, 2] + ytop - r)
 
@@ -1209,7 +1209,7 @@ roundrect_pos = function(xleft, ybottom, xright, ytop, radius = 0.1,
   y = c(y, ytop - r, ybottom + r)
 
   # bottom right 0 - (-90)
-  df = polar2Cartesian(cbind(seq(0, -90, length = 20), rep(r,20)))
+  df = polar2Cartesian(cbind(seq(0, -90, length.out = 20), rep(r,20)))
   x = c(x, df[, 1] + xright - r)
   y = c(y, df[, 2] + ybottom + r)
 
@@ -1217,7 +1217,7 @@ roundrect_pos = function(xleft, ybottom, xright, ytop, radius = 0.1,
   y = c(y, ybottom, ybottom)
 
   # bottom left 270 - 180
-  df = polar2Cartesian(cbind(seq(270, 180, length = 20), rep(r,20)))
+  df = polar2Cartesian(cbind(seq(270, 180, length.out = 20), rep(r,20)))
   x = c(x, df[, 1] + xleft + r)
   y = c(y, df[, 2] + ybottom + r)
 

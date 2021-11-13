@@ -1957,7 +1957,7 @@ genomicDensity = function(
 			s = s[-length(s)]
 			e = s + window.size - 1
 		} else {
-			b = seq(1, max_pos, length = 2*n.window - 1)
+			b = seq(1, max_pos, length.out = 2*n.window - 1)
 			s = b[-length(b)]
 			s = s[-length(s)]
 			e = s + b[3] - b[1] - 1
@@ -1968,7 +1968,7 @@ genomicDensity = function(
 			s = b[-length(b)]
 			e = s + window.size - 1
 		} else {
-			b = seq(1, max_pos, length = n.window)
+			b = seq(1, max_pos, length.out = n.window)
 			s = b[-length(b)]
 			e = s + b[2] - b[1]	
 		}
@@ -2454,7 +2454,7 @@ circos.genomicHeatmap = function(
 
 	side = match.arg(side)
 	if(missing(col)) {
-		col = colorRamp2(seq(min(mat, na.rm = TRUE), max(mat, na.rm = TRUE), length = 3), c("blue", "#EEEEEE", "red"))
+		col = colorRamp2(seq(min(mat, na.rm = TRUE), max(mat, na.rm = TRUE), length.out = 3), c("blue", "#EEEEEE", "red"))
 	}
 	if(is.function(col)) {
 		col = col(mat)

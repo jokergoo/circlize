@@ -18,6 +18,7 @@
 #               If it is set to ``NULL``, the function just initialize the plot but draw nothing.
 # -track.height Height of the track which contains "axis" and "labels".
 # -ideogram.height Height of the ideogram track
+# -sector.names Labels for each sectors which will be drawn along each sector. It will not modify values of sector index.
 # -...    Pass to `circos.genomicInitialize`.
 #
 # == details
@@ -82,6 +83,7 @@ circos.initializeWithIdeogram = function(
 	plotType = c("ideogram", "axis", "labels"), 
 	track.height = NULL, 
 	ideogram.height = convert_height(2, "mm"), 
+	sector.names = NULL,
 	...) {
 	
 	# proper order will be returned depending on cytoband and sort.chr
@@ -131,12 +133,16 @@ circos.initializeWithIdeogram = function(
 	# here df[[1]] is quite important, should be re-factered
 	df[[1]] = factor(as.vector(df[[1]]), levels = chromosome.index)
 	
-	# sn for sector names, but not for sector index
-	sn = unique(as.vector(df[[1]]))
+	if (is.null(sector.names)) {
+		# sn for sector names, but not for sector index
+		sn = unique(as.vector(df[[1]]))
 
-	# we do not need 'chr' prefix if it exits, it holds too much space.
-	sn = gsub("chr", "", sn)
-	
+		# we do not need 'chr' prefix if it exits, it holds too much space.
+		sn = gsub("chr", "", sn)
+	} else {
+		sn = sector.names
+	}
+
 	o.cell.padding = circos.par("cell.padding")
 	circos.par(cell.padding = c(o.cell.padding[1], 0, o.cell.padding[3], 0))
 	

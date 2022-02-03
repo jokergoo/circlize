@@ -9,6 +9,7 @@ Changes in version 0.4.14
 * `chordDiagram()`: `link.sort` allows to sort links based on the original orders 
    in the input data frame.
 * label facing is correct now for y-axis when circos.par$xaxis.clock.wise is FALSE.
+* `rand_color()`: add a new argument `friendly` that generate eye-friendly random colors.
 
 Changes in version 0.4.13
 -----------------------------------------------------------------------

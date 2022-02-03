@@ -10,6 +10,7 @@ colorDictionary = new.env()
 #      the function will extract its hue value and use that to generate colors.
 # -luminosity controls the luminosity of the generated color. The value should be a string containing ``bright``, ``light``, ``dark`` and ``random``.
 # -transparency transparency, numeric value between 0 and 1.
+# -friendly If it is true, light random colors will not be generated.
 #
 # == details
 # The code is adapted from randomColor.js (https://github.com/davidmerfield/randomColor ).
@@ -35,7 +36,21 @@ colorDictionary = new.env()
 #     col = rand_color(10, hue = "blue", luminosity = "bright"))
 # points(1:10, rep(8, 10), pch = 16, cex = 5, 
 #     col = rand_color(10, hue = "monochrome", luminosity = "bright"))
-rand_color = function(n, hue = NULL, luminosity = "random", transparency = 0) {
+rand_color = function(n, hue = NULL, luminosity = "random", transparency = 0, friendly = FALSE) {
+
+	if(friendly) {
+		col = rand_color(n, luminosity = "dark")
+		i_try = 1
+		while(1) {
+			hsv = coords(as(hex2RGB(col), "HSV"))
+			l = hsv[, 3] > 0.85 | (hsv[, 1] > 40 & hsv[, 1] < 65)
+			if(!any(l)) break
+			i_try = i_try + 1
+			if(i_try > 50) break
+			col[l] = rand_color(sum(l), luminosity = "dark")
+		}
+		return(col)
+	}
 
 	if("luminosity" %in% names(as.list(match.call()))) {
 		all_luminosity = luminosity

@@ -84,6 +84,10 @@ circos.initializeWithIdeogram = function(
 	ideogram.height = convert_height(2, "mm"), 
 	...) {
 	
+	if("sector.names" %in% names(list(...))) {
+		stop_wrap("Found argumnet `sector.names` is used. Please use the argument `chromosome.index` instead.")
+	}
+
 	# proper order will be returned depending on cytoband and sort.chr
 	e = try(cytoband <- read.cytoband(cytoband, species = species, sort.chr = sort.chr, chromosome.index = chromosome.index), silent = TRUE)
 	if(class(e) == "try-error" && !is.null(species)) {  # if species is defined

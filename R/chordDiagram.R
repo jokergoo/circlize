@@ -851,6 +851,10 @@ chordDiagramFromDataFrame = function(
 	if(scale) {
 		for(nm in unique(df[, 1])) df[ df[, 1] == nm, 4] = df[ df[, 1] == nm, 3]/(sum(abs(df[ df[, 1] == nm, 3])) + sum(abs(df[ df[, 2] == nm, 3])))
 		for(nm in unique(df[, 2])) df[ df[, 2] == nm, 5] = df[ df[, 2] == nm, 3]/(sum(abs(df[ df[, 2] == nm, 3])) + sum(abs(df[ df[, 1] == nm, 3])))
+
+		df[is.na(df[, 4]), 4] = 0
+		df[is.na(df[, 5]), 5] = 0
+
 		df = df[, -3]
 	}
 	df2 = df[1:4]

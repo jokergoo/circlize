@@ -10,6 +10,8 @@ Changes in version 0.4.14
    in the input data frame.
 * label facing is correct now for y-axis when circos.par$xaxis.clock.wise is FALSE.
 * `rand_color()`: add a new argument `friendly` that generate eye-friendly random colors.
+* `chordDiagram()`: fixed a bug when a sector have all zero values and after scaling
+  they changed to NA.
 
 Changes in version 0.4.13
 -----------------------------------------------------------------------

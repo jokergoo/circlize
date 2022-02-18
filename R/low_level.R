@@ -1321,7 +1321,10 @@ circos.axis = function(
 	labels.col = par("col"),
 	labels.pos.adjust = TRUE) {
 
+    os = get.current.sector.index()
+    ot = get.current.track.index()
     set.current.cell(sector.index, track.index)
+    on.exit(set.current.cell(os, ot))
 
     if(!is.null(labels.direction)) {
         labels.facing = switch(labels.direction[1],
@@ -1916,7 +1919,11 @@ circos.dendrogram = function(
     sector.index = get.current.sector.index(),
     track.index = get.current.track.index()) {
 
+    os = get.current.sector.index()
+    ot = get.current.track.index()
     set.current.cell(sector.index, track.index)
+    on.exit(set.current.cell(os, ot))
+    
     facing = match.arg(facing)[1]
 
     if(is.null(max_height)) {
@@ -2097,7 +2104,10 @@ circos.barplot = function(value, pos, bar_width = 0.6,
     sector.index = get.current.sector.index(),
     track.index = get.current.track.index()) {
 
+    os = get.current.sector.index()
+    ot = get.current.track.index()
     set.current.cell(sector.index, track.index)
+    on.exit(set.current.cell(os, ot))
 
     if(is.matrix(value)) {
         if(nrow(value) != length(pos)) {
@@ -2179,7 +2189,10 @@ circos.boxplot = function(value, pos, outline = TRUE, box_width = 0.6,
     sector.index = get.current.sector.index(),
     track.index = get.current.track.index()) {
 
+    os = get.current.sector.index()
+    ot = get.current.track.index()
     set.current.cell(sector.index, track.index)
+    on.exit(set.current.cell(os, ot))
 
     single_boxplot = function(value, pos, outline = TRUE, box_width = 0.6,
         col = NA, border = "black", lwd = par("lwd"), lty = par("lty"),
@@ -2282,7 +2295,10 @@ circos.violin = function(value, pos, violin_width = 0.8,
     max_density = NULL, sector.index = get.current.sector.index(),
     track.index = get.current.track.index()) {
 
+    os = get.current.sector.index()
+    ot = get.current.track.index()
     set.current.cell(sector.index, track.index)
+    on.exit(set.current.cell(os, ot))
 
     single_violin = function(density, pos, violin_width = 0.8, 
         col = NA, border = "black", lwd = par("lwd"), lty = par("lty"),

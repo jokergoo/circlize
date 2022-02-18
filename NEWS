@@ -1,3 +1,9 @@
+Changes in version 0.4.15
+-----------------------------------------------------------------------
+
+* low-level graphics functions won't change the index of sector and track.
+
+
 Changes in version 0.4.14
 -----------------------------------------------------------------------
 

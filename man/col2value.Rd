@@ -28,7 +28,7 @@ A vector of original numeric values.
 Zuguang Gu <z.gu@dkfz.de>
 }
 \examples{
-x = seq(0, 1, length = 11)
+x = seq(0, 1, length.out = 11)
 col_fun = colorRamp2(c(0, 0.5, 1), c("blue", "white", "red"))
 col = col_fun(x)
 col2value(col, col_fun = col_fun)

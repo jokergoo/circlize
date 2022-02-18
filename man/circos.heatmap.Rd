@@ -9,7 +9,8 @@ Make circular heatmaps
 \usage{
 circos.heatmap(mat, split = NULL, col, na.col = "grey",
     cell.border = NA, cell.lty = 1, cell.lwd = 1,
-    bg.border = NA, bg.lty = par("lty"), bg.lwd = par("lwd"), ignore.white = is.na(cell.border),
+    bg.border = NA, bg.lty = par("lty"), bg.lwd = par("lwd"),
+    ignore.white = is.na(cell.border),
     cluster = TRUE, clustering.method = "complete", distance.method = "euclidean",
     dend.callback = function(dend, m, si) reorder(dend, rowMeans(m)),
     dend.side = c("none", "outside", "inside"), dend.track.height = 0.1,

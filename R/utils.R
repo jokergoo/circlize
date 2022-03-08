@@ -253,7 +253,9 @@ as.degree = function(radian) {
 # -breaks A vector indicating numeric breaks
 # -colors A vector of colors which correspond to values in ``breaks``
 # -transparency A single value in ``[0, 1]``. 0 refers to no transparency and 1 refers to full transparency
-# -space color space in which colors are interpolated. Value should be one of "RGB", "HSV", "HLS", "LAB", "XYZ", "sRGB", "LUV", see `colorspace::color-class` for detail.
+# -space color space in which colors are interpolated. Value should be one of "RGB", "LAB", "XYZ", "sRGB", "LUV", see `colorspace::color-class` for detail.
+# -hcl_palette Name of the HCL palette. Value should be supported in `grDevices::hcl.pals`.
+# -reverse Whether should the colors in ``hcl_palette`` be reversed.
 #
 # == details
 # Colors are linearly interpolated according to break values and corresponding colors through CIE Lab color space (`colorspace::LAB`) by default. 
@@ -268,89 +270,111 @@ as.degree = function(radian) {
 # == example
 # col_fun = colorRamp2(c(-1, 0, 1), c("green", "white", "red"))
 # col_fun(c(-2, -1, -0.5, 0, 0.5, 1, 2))
-colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB") {
+colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB", hcl_palette = NULL, reverse = FALSE) {
 
-  if(length(breaks) != length(colors)) {
-    stop_wrap("Length of `breaks` should be equal to `colors`.\n")
-  }
-  
-  colors = colors[order(breaks)]
-  breaks = sort(breaks)
-
-  l = duplicated(breaks)
-  breaks = breaks[!l]
-  colors = colors[!l]
-
-  if(length(breaks) == 1) {
-    stop_wrap("You should have at least two distinct break values.")
-  } 
-
-
-  if(! space %in% c("RGB", "HSV", "HLS", "LAB", "XYZ", "sRGB", "LUV")) {
-    stop_wrap("`space` should be in 'RGB', 'HSV', 'HLS', 'LAB', 'XYZ', 'sRGB', 'LUV'")
-  }
-  
-  colors = t(col2rgb(colors)/255)
-
-  attr = list(breaks = breaks, colors = colors, transparency = transparency, space = space)
-
-  if(space == "LUV") {
-    i = which(apply(colors, 1, function(x) all(x == 0)))
-    colors[i, ] = 1e-5
-  }
-  
-  transparency = 1-ifelse(transparency > 1, 1, ifelse(transparency < 0, 0, transparency))[1]
-  transparency_str = sprintf("%X", round(transparency*255))
-  if(nchar(transparency_str) == 1) transparency_str = paste0("0", transparency_str)
-  
-  fun = function(x = NULL, return_rgb = FALSE, max_value = 1) {
-    if(is.null(x)) {
-      stop_wrap("Please specify `x`\n")
+    breaks_o = breaks
+    if(!is.null(hcl_palette)) {
+        breaks = sort(breaks)
+        if(length(breaks) == 2) {
+            breaks2 = seq(breaks[1], breaks[2], length = 1000)
+            colors = hcl.colors(1000, palette = hcl_palette, rev = reverse)
+        } else {
+            nb = length(breaks)
+            nl = ceiling(1000/nb)
+            breaks2 = seq(breaks[1], breaks[2], length = nl)
+            for(i in 2:(nb-1)) {
+                breaks2  = c(breaks2, seq(breaks[i], breaks[i+1], length = nl)[-1])
+            }
+            colors = hcl.colors(length(breaks2), palette = hcl_palette, rev = reverse)
+        }
+        breaks_o = breaks
+        breaks = breaks2
     }
 
-    att = attributes(x)
-    if(is.data.frame(x)) x = as.matrix(x)
-
-    l_na = is.na(x)
-    if(all(l_na)) {
-      return(rep(NA, length(l_na)))
+    if(length(breaks) != length(colors)) {
+        stop_wrap("Length of `breaks` should be equal to `colors`.\n")
     }
 
-    x2 = x[!l_na]
+    od = order(breaks)
+    breaks = breaks[od]
+
+    colors = colors[od]
     
-    x2 = ifelse(x2 < breaks[1], breaks[1],
-               ifelse(x2 > breaks[length(breaks)], breaks[length(breaks)],
-                      x2
-               ))
-    ibin = .bincode(x2, breaks, right = TRUE, include.lowest = TRUE)
-    res_col = character(length(x2))
-    for(i in unique(ibin)) {
-      l = ibin == i
-      res_col[l] = .get_color(x2[l], breaks[i], breaks[i+1], colors[i, ], colors[i+1, ], space = space)
-    }
-    res_col = paste(res_col, transparency_str[1], sep = "")
-    
-    if(return_rgb) {
-      res_col = t(col2rgb(as.vector(res_col), alpha = TRUE)/255)
-      return(res_col)
-    } else {
-      res_col2 = character(length(x))
-      res_col2[l_na] = NA
-      res_col2[!l_na] = res_col
+    l = duplicated(breaks)
+    breaks = breaks[!l]
+    colors = colors[!l]
 
-      attributes(res_col2) = att
-      return(res_col2)
+    if(length(breaks) == 1) {
+        stop_wrap("You should have at least two distinct break values.")
+    } 
+
+
+    if(! space %in% c("RGB", "LAB", "XYZ", "sRGB", "LUV")) {
+        stop_wrap("`space` should be in 'RGB', 'LAB', 'XYZ', 'sRGB', 'LUV'")
     }
-  }
-  
-  attributes(fun) = attr
-  return(fun)
+
+    colors = t(col2rgb(colors)/255)
+
+    
+    if(space == "LUV") {
+        i = which(apply(colors, 1, function(x) all(x == 0)))
+        colors[i, ] = 1e-5
+    }
+
+    transparency = 1-ifelse(transparency > 1, 1, ifelse(transparency < 0, 0, transparency))[1]
+    transparency_str = sprintf("%X", round(transparency*255))
+    if(nchar(transparency_str) == 1) transparency_str = paste0("0", transparency_str)
+
+    fun = function(x = NULL, return_rgb = FALSE, max_value = 1) {
+        if(is.null(x)) {
+            stop_wrap("Please specify `x`\n")
+        }
+
+        att = attributes(x)
+        if(is.data.frame(x)) x = as.matrix(x)
+
+        l_na = is.na(x)
+        if(all(l_na)) {
+            return(rep(NA, length(l_na)))
+        }
+
+        x2 = x[!l_na]
+
+        x2 = ifelse(x2 < breaks[1], breaks[1],
+                   ifelse(x2 > breaks[length(breaks)], breaks[length(breaks)],
+                          x2
+                   ))
+        ibin = .bincode(x2, breaks, right = TRUE, include.lowest = TRUE)
+        res_col = character(length(x2))
+        for(i in unique(ibin)) {
+            l = ibin == i
+            res_col[l] = .get_color(x2[l], breaks[i], breaks[i+1], colors[i, ], colors[i+1, ], space = space)
+        }
+        res_col = paste(res_col, transparency_str[1], sep = "")
+
+        if(return_rgb) {
+            res_col = t(col2rgb(as.vector(res_col), alpha = TRUE)/255)
+            return(res_col)
+        } else {
+            res_col2 = character(length(x))
+            res_col2[l_na] = NA
+            res_col2[!l_na] = res_col
+
+            attributes(res_col2) = att
+            return(res_col2)
+        }
+    }
+
+    attr = list(breaks = breaks_o, colors = fun(breaks_o), transparency = 1-transparency, space = space)
+
+    attributes(fun) = attr
+    return(fun)
 }
 
 .restrict_in = function(x, lower, upper) {
-  x[x > upper] = upper
-  x[x < lower] = lower
-  x
+    x[x > upper] = upper
+    x[x < lower] = lower
+    x
 }
 
 # x: vector
@@ -360,21 +384,21 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB") {
 # rgb2 vector with 3 elements
 .get_color = function(x, break1, break2, col1, col2, space) {
 
-  col1 = coords(as(sRGB(col1[1], col1[2], col1[3]), space))
-  col2 = coords(as(sRGB(col2[1], col2[2], col2[3]), space))
+    col1 = coords(as(sRGB(col1[1], col1[2], col1[3]), space))
+    col2 = coords(as(sRGB(col2[1], col2[2], col2[3]), space))
 
-  res_col = matrix(ncol = 3, nrow = length(x))
-  for(j in 1:3) {
+    res_col = matrix(ncol = 3, nrow = length(x))
+    for(j in 1:3) {
     xx = (x - break2)*(col2[j] - col1[j]) / (break2 - break1) + col2[j]
     res_col[, j] = xx
-  }
-  
-  res_col = get(space)(res_col)
-  res_col = coords(as(res_col, "sRGB"))
-  res_col[, 1] = .restrict_in(res_col[,1], 0, 1)
-  res_col[, 2] = .restrict_in(res_col[,2], 0, 1)
-  res_col[, 3] = .restrict_in(res_col[,3], 0, 1)
-  hex(sRGB(res_col))
+    }
+
+    res_col = get(space)(res_col)
+    res_col = coords(as(res_col, "sRGB"))
+    res_col[, 1] = .restrict_in(res_col[,1], 0, 1)
+    res_col[, 2] = .restrict_in(res_col[,2], 0, 1)
+    res_col[, 3] = .restrict_in(res_col[,3], 0, 1)
+    hex(sRGB(res_col))
 }
 
 # will be considered in the future

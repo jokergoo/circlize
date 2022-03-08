@@ -2,6 +2,7 @@ Changes in version 0.4.15
 -----------------------------------------------------------------------
 
 * low-level graphics functions won't change the index of sector and track.
+* `colorRamp2()`: add `hcl_palette` argument.
 
 
 Changes in version 0.4.14

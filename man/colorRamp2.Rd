@@ -7,14 +7,16 @@ Color interpolation
 Color interpolation
 }
 \usage{
-colorRamp2(breaks, colors, transparency = 0, space = "LAB")
+colorRamp2(breaks, colors, transparency = 0, space = "LAB", hcl_palette = NULL, reverse = FALSE)
 }
 \arguments{
 
   \item{breaks}{A vector indicating numeric breaks}
   \item{colors}{A vector of colors which correspond to values in \code{breaks}}
   \item{transparency}{A single value in \code{[0, 1]}. 0 refers to no transparency and 1 refers to full transparency}
-  \item{space}{color space in which colors are interpolated. Value should be one of "RGB", "HSV", "HLS", "LAB", "XYZ", "sRGB", "LUV", see \code{\link[colorspace]{color-class}} for detail.}
+  \item{space}{color space in which colors are interpolated. Value should be one of "RGB", "LAB", "XYZ", "sRGB", "LUV", see \code{\link[colorspace]{color-class}} for detail.}
+  \item{hcl_palette}{Name of the HCL palette. Value should be supported in \code{\link[grDevices:palettes]{hcl.pals}}.}
+  \item{reverse}{Whether should the colors in \code{hcl_palette} be reversed.}
 
 }
 \details{

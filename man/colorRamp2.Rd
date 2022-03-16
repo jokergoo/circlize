@@ -7,7 +7,8 @@ Color interpolation
 Color interpolation
 }
 \usage{
-colorRamp2(breaks, colors, transparency = 0, space = "LAB", hcl_palette = NULL, reverse = FALSE)
+colorRamp2(breaks, colors, transparency = 0, space = "LAB",
+    hcl_palette = NULL, reverse = FALSE)
 }
 \arguments{
 

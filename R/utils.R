@@ -270,7 +270,8 @@ as.degree = function(radian) {
 # == example
 # col_fun = colorRamp2(c(-1, 0, 1), c("green", "white", "red"))
 # col_fun(c(-2, -1, -0.5, 0, 0.5, 1, 2))
-colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB", hcl_palette = NULL, reverse = FALSE) {
+colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB", 
+    hcl_palette = NULL, reverse = FALSE) {
 
     breaks_o = breaks
     if(!is.null(hcl_palette)) {
@@ -598,6 +599,10 @@ col2value = function(r, g, b, col_fun) {
     space = attr(col_fun, "space")
 
     n = length(r)
+
+    if(inherits(colors, "character")) {
+        colors = col2rgb(colors)
+    }
 
     ## convert all colors to the specified space
     m = coords(as(sRGB(r, g, b), space))

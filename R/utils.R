@@ -309,7 +309,7 @@ colorRamp2 = function(breaks, colors, transparency = 0, space = "LAB", hcl_palet
     } 
 
 
-    if(! space %in% c("RGB", "LAB", "XYZ", "sRGB", "LUV")) {
+    if(! space %in% c("RGB", "LAB", "XYZ", "sRGB", "LUV", "HLS")) {
         stop_wrap("`space` should be in 'RGB', 'LAB', 'XYZ', 'sRGB', 'LUV'")
     }
 

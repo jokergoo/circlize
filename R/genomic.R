@@ -2345,7 +2345,7 @@ posTransform.text = function(
 	padding = 0, 
 	extend = 0, 
 	...) {
-	
+
 	if(length(y) == 1) y = rep(y, nrow(region))
 	if(length(labels) == 1) labels = rep(labels, nrow(region))
 
@@ -2634,9 +2634,6 @@ circos.genomicLabels = function(
 	# if the anchor in inside the first sector
 	if(s1 < s2) { # the first sector go across theta = 0
 		s1 = s1 + 360
-		if(anchor < s2) {
-			anchor = anchor + 360
-		}
 	} 
 	
 	if(anchor >= s2 && anchor <= s1) { # anchor inside sector
@@ -2648,18 +2645,23 @@ circos.genomicLabels = function(
 			extend = c(0, extend)
 		}
 	} else {
-		extend[1] = (abs(s1 - anchor) %% 360)/chr_width
-		extend[2] = (abs(s2 - anchor) %% 360)/chr_width
+		extend[1] = ((anchor - s1) %% 360)/chr_width  # goes reverse clockwise
+		extend[2] = ((s2 - anchor) %% 360)/chr_width  # goes clockwise
 	}
+
+	new_chr_range = c(sector_data["start.degree"] + chr_width*extend[1], sector_data["end.degree"] - chr_width*extend[2])
 
 	all_chr = unique(bed[, 1])
 	bed2 = NULL
 	for(cr in all_chr) {
 		sub_bed = bed[bed[, 1] == cr, ]
 		if(cr != chr) {
-
-			x1 = reverse.circlize(circlize(sub_bed[, 2], y = rep(1, nrow(sub_bed)), sector.index = cr), sector.index = chr)[, 1]
-			x2 = reverse.circlize(circlize(sub_bed[, 3], y = rep(1, nrow(sub_bed)), sector.index = cr), sector.index = chr)[, 1]
+			dfx1 = circlize(sub_bed[, 2], y = rep(1, nrow(sub_bed)), sector.index = cr)
+			dfx1[, 1] = (dfx1[, 1] - new_chr_range[2]) %% 360 + new_chr_range[2]
+			x1 = reverse.circlize(dfx1, sector.index = chr)[, 1]
+			dfx2 = circlize(sub_bed[, 3], y = rep(1, nrow(sub_bed)), sector.index = cr)
+			dfx2[, 1] = (dfx2[, 1] - new_chr_range[2]) %% 360 + new_chr_range[2]
+			x2 = reverse.circlize(dfx2, sector.index = chr)[, 1]
 			sub_bed[, 2:3] = data.frame(start = x1, end = x2)
 		}
 		bed2 = rbind(bed2, sub_bed)

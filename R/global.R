@@ -883,13 +883,12 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 	} else if(name == "xplot") {
 		x = current.sector.data[c("start.degree", "end.degree")]
 		names(x) = NULL
-		x = x %% 360
 		return(x)
 	} else if(name == "yplot") {
 		return(c(current.cell.data$track.start - current.cell.data$track.height, current.cell.data$track.start))
 	} else if(name == "cell.width") {
 		x = current.sector.data[c("start.degree", "end.degree")]
-		return((x[1] - x[2]) %% 360)
+		return((x[1] - x[2]))
 	} else if(name == "cell.height") {
 		y = c(current.cell.data$track.start - current.cell.data$track.height, current.cell.data$track.start)
 		return(y[2] - y[1])
@@ -900,12 +899,10 @@ get.cell.meta.data = function(name, sector.index = get.current.sector.index(),
 	} else if(name == "cell.start.degree") {
 		x = current.sector.data["start.degree"]
 		names(x) = NULL
-		x = x %% 360
 		return(x)
 	} else if(name == "cell.end.degree") {
 		x = current.sector.data["end.degree"]
 		names(x) = NULL
-		x = x %% 360
 		return(x)
 	} else if(name == "cell.bottom.radius") {
 		return(current.cell.data$track.start - current.cell.data$track.height)

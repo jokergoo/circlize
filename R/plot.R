@@ -641,6 +641,21 @@ highlight.sector = function(
 		text.vjust = 0.5
 	}
 
+	if(length(sector.index) == 1) {
+		if(inherits(padding, "AsIs")) {
+			padding2 = numeric(4)
+			padding2[c(2, 4)] = padding[c(2, 4)]/diff(get.cell.meta.data("cell.xlim", sector.index = sector.index))
+			padding2[c(1, 3)] = padding[c(1, 3)]/diff(get.cell.meta.data("cell.ylim", sector.index = sector.index))
+			padding = padding2
+		}
+	}
+
+	if(inherits(padding, "AsIs")) {
+		if(length(sector.index) > 1) {
+			stop_wrap("`padding` can be set with I() only when there is one single sector with `sector.index`.")
+		}
+	}
+
 	# if all sectors are selected
 	if(length(setdiff(sectors, sector.index)) == 0) {
 		track.index = sort(unique(track.index))
@@ -686,19 +701,20 @@ highlight.sector = function(
 			for(i in seq_along(ts)) {
 				track.index.vector = ts[[i]]
                 if(circos.par("clock.wise")) {
-    				start.degree = get.cell.meta.data("cell.start.degree", sector.index.vector[1], track.index = 1)
-    				end.degree = get.cell.meta.data("cell.end.degree", sector.index.vector[length(sector.index.vector)], track.index = 1)
+    				start.degree = get.sector.data(sector.index.vector[1])["start.degree"]
+    				end.degree = get.sector.data(sector.index.vector[length(sector.index.vector)])["end.degree"]
 				} else {
-                    end.degree = get.cell.meta.data("cell.end.degree", sector.index.vector[1], track.index = 1)
-                    start.degree = get.cell.meta.data("cell.start.degree", sector.index.vector[length(sector.index.vector)], track.index = 1)
+                    end.degree = get.sector.data(sector.index.vector[1])["end.degree"]
+                    start.degree = get.sector.data(sector.index.vector[length(sector.index.vector)])["start.degree"]
                 }
                 rou1 = get.cell.meta.data("cell.top.radius", sector.index.vector[1], track.index.vector[1])
 				rou2 = get.cell.meta.data("cell.bottom.radius", sector.index.vector[1], track.index.vector[length(track.index.vector)])
-
-				d1 = end.degree - start.degree
+				
+				d1 = abs(end.degree - start.degree)
 				d2 = rou1 - rou2
-				start.degree = start.degree - d1*padding[2]
-				end.degree = end.degree + d1*padding[4]
+				start.degree = start.degree + d1*padding[2]
+				end.degree = end.degree - d1*padding[4]
+
 				rou1 = rou1 + d2*padding[3]
 				rou2 = rou2 - d2*padding[1]
 

@@ -601,7 +601,7 @@ col2value = function(r, g, b, col_fun) {
     n = length(r)
 
     if(inherits(colors, "character")) {
-        colors = col2rgb(colors)
+        colors = t(col2rgb(colors))/255
     }
 
     ## convert all colors to the specified space

@@ -2658,10 +2658,10 @@ circos.genomicLabels = function(
 		sub_bed = bed[bed[, 1] == cr, ]
 		if(cr != chr) {
 			dfx1 = circlize(sub_bed[, 2], y = rep(1, nrow(sub_bed)), sector.index = cr)
-			dfx1[, 1] = (dfx1[, 1] - new_chr_range[2]) %% 360 + new_chr_range[2]
+			dfx1[, 1] = (dfx1[, 1] - new_chr_range[2]) + new_chr_range[2]
 			x1 = reverse.circlize(dfx1, sector.index = chr)[, 1]
 			dfx2 = circlize(sub_bed[, 3], y = rep(1, nrow(sub_bed)), sector.index = cr)
-			dfx2[, 1] = (dfx2[, 1] - new_chr_range[2]) %% 360 + new_chr_range[2]
+			dfx2[, 1] = (dfx2[, 1] - new_chr_range[2]) + new_chr_range[2]
 			x2 = reverse.circlize(dfx2, sector.index = chr)[, 1]
 			sub_bed[, 2:3] = data.frame(start = x1, end = x2)
 		}

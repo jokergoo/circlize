@@ -4,6 +4,7 @@ Changes in version 0.4.15
 * low-level graphics functions won't change the index of sector and track.
 * `colorRamp2()`: add `hcl_palette` argument.
 * `highlight.sectors()`: argument `padding` supports to wrap the vector with `I()`.
+* fixed a bug of wrong calculation of label positions in `circos.genomicLabels()`.
 
 
 Changes in version 0.4.14

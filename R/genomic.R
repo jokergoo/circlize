@@ -2370,7 +2370,7 @@ posTransform.text = function(
 	xlim = get.cell.meta.data("xlim", sector.index = sector.index, track.index = track.index)
 	xrange = xlim[2] - xlim[1]
 	xlim = c(xlim[1] - extend[1]*xrange, xlim[2] + extend[2]*xrange)
-	
+
 	x1_new = x1
 	x2_new = x2
 	l = x2 - x1 >= xlim[2] - xlim[1]; x1_new[l] = xlim[1]; x2_new[l] = xlim[2]
@@ -2648,6 +2648,7 @@ circos.genomicLabels = function(
 		extend[1] = ((anchor - s1) %% 360)/chr_width  # goes reverse clockwise
 		extend[2] = ((s2 - anchor) %% 360)/chr_width  # goes clockwise
 	}
+	extend = abs(extend)
 
 	new_chr_range = c(sector_data["start.degree"] + chr_width*extend[1], sector_data["end.degree"] - chr_width*extend[2])
 

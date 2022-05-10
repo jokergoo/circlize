@@ -78,6 +78,13 @@ circos.link = function(
    sector.data1 = get.sector.data(sector.index1)
    sector.data2 = get.sector.data(sector.index2)
 
+   if(is.data.frame(point1)) {
+   		point1 = unlist(point1)
+   }
+   if(is.data.frame(point2)) {
+   		point2 = unlist(point2)
+   }
+	
    if(circos.par$ring) {
    	if(length(point1) == 2) {
    		if(point1[1] > point1[2]) {

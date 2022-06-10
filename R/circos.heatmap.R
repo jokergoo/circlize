@@ -132,7 +132,7 @@ circos.heatmap.initialize = function(mat, split = NULL, cluster = TRUE,
 					split2[order.dendrogram(d)][1]
 				})
 
-				"order.dendrogram<-" = ComplexHeatmap:::`order.dendrogram<-`
+				"order.dendrogram<-" = getFromNamespace("order.dendrogram<-", ns = "ComplexHeatmap")
 				dend_list = lapply(dend_list, function(d) {
 					order.dendrogram(d) = rank(order.dendrogram(d))
 					d
@@ -257,7 +257,7 @@ cut_into_k_dendrograms = function(dend, k) {
 		stop_wrap("You need ComplexHeatmap package to process the pre-defined dendrogram. Please install it from Bioconductor.")
 	}
 
-	dl = ComplexHeatmap:::cut_dendrogram(dend, k)$lower
+	dl = getFromNamespace("cut_dendrogram", ns = "ComplexHeatmap")(dend, k)$lower
 	dl
 }
 

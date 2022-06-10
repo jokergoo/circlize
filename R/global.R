@@ -192,7 +192,7 @@ circos.par = setGlobalOptions(
 	xaxis.clock.wise = list(
 		.value = TRUE,
 		.filter = function(x) {
-			if(is.circos.initialized()){
+			if(is.circos.initialized() && environmentName(topenv()) != "circlize"){
 				stop_wrap("'xaxis.clock.wise' can only be modified before `circos.initialize`, or maybe you forgot to call `circos.clear` in your last plot.")
 			}
 			return(x)

@@ -259,7 +259,7 @@ circos.lines = function(
     n = length(x)
 
     if(circos.par$ring) {
-        l = c(x[seq(1, n-1)] > x[seq(2, n)], FALSE)
+        l = c(x[seq(1, n-1)] - x[seq(2, n)] > 1e-10, FALSE)
         if(any(l)) {
             x[l] = x[l] - get.cell.meta.data("xrange", sector.index, track.index)
         }
@@ -750,7 +750,7 @@ circos.segments = function(
 	}
 
     if(circos.par$ring) {
-        l = x0 > x1
+        l = x0 - x1 > 1e-10
         if(any(l)) {
             x0[l] = x0[l] - get.cell.meta.data("xrange", sector.index, track.index)
         }

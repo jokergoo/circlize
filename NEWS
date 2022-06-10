@@ -1,3 +1,9 @@
+Changes in version 0.4.16
+-----------------------------------------------------------------------
+
+* fixed a bug caused by comparing two floating numbers under "ring " mode
+
+
 Changes in version 0.4.15
 -----------------------------------------------------------------------
 

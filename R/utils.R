@@ -107,6 +107,11 @@ reverse.circlize = function(
 
 	x = (sector.data["start.degree"] - theta) / abs(sector.data["end.degree"] - sector.data["start.degree"]) *
 	    (sector.data["max.value"] - sector.data["min.value"]) + sector.data["min.value"]
+
+    if(!circos.par("xaxis.clock.wise")) {
+        x = sector.data["max.value"] - x + sector.data["min.value"]
+    }
+
 	if(track.index > 0) {
         y = (cell.data$track.height - (cell.data$track.start - rou)) / cell.data$track.height * (cell.ylim[2] - cell.ylim[1]) + cell.ylim[1]
 	} else {

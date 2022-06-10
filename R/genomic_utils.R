@@ -42,7 +42,7 @@ read.cytoband = function(
 		cytoband = paste0(circos.par("__tempdir__"), "/", species, "_cytoBand.txt.gz")
 		if(!file.exists(cytoband)) {
 			e = try(suppressWarnings(download.file(url, destfile = cytoband, quiet = TRUE)), silent = TRUE)
-			if(class(e) == "try-error") {
+			if(inherits(e, "try-error")) {
 				if(file.exists(cytoband)) file.remove(cytoband)
 				cytoband_list = readRDS(system.file("extdata", "cytoband_list.rds", package = "circlize"))
 				if(species %in% names(cytoband_list)) {
@@ -147,7 +147,7 @@ read.chromInfo = function(
 		chromInfo = paste0(circos.par("__tempdir__"), "/", species, "_chromInfo.txt.gz")
 		if(!file.exists(chromInfo)) {
 			e = try(suppressWarnings(download.file(url, destfile = chromInfo, quiet = TRUE)), silent = TRUE)
-			if(class(e) == "try-error") {
+			if(inherits(e, "try-error")) {
 				if(file.exists(chromInfo)) file.remove(chromInfo)
 				chrom_info_list = readRDS(system.file("extdata", "chrom_info_list.rds", package = "circlize"))
 				if(species %in% names(chrom_info_list)) {

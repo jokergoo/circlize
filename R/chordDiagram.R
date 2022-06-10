@@ -1391,7 +1391,7 @@ chordDiagramFromDataFrame = function(
 						directional = 0, col = col[k], rou1 = rou1[k], rou2 = rou2[k],
 						border = link.border[k], lwd = link.lwd[k], lty = link.lty[k],
 						...)
-			} else if(grepl("arrows", direction.type[k])) {
+			} else if(any(grepl("arrows", direction.type))) {
 				circos.link(df$rn[k], c(df$x1[k] - abs(df$value1[k]), df$x1[k]),
 							df$cn[k], c(df$x2[k] - abs(df$value2[k]), df$x2[k]),
 							directional = directional[k], col = col[k], rou1 = rou1[k], rou2 = rou2[k],

@@ -90,9 +90,9 @@ circos.initializeWithIdeogram = function(
 
 	# proper order will be returned depending on cytoband and sort.chr
 	e = try(cytoband <- read.cytoband(cytoband, species = species, sort.chr = sort.chr, chromosome.index = chromosome.index), silent = TRUE)
-	if(class(e) == "try-error" && !is.null(species)) {  # if species is defined
+	if(inherits(e, "try-error") && !is.null(species)) {  # if species is defined
 		e2 = try(cytoband <- read.chromInfo(species = species, sort.chr = sort.chr, chromosome.index = chromosome.index), silent = TRUE)
-		if(class(e2) == "try-error") {
+		if(inherits(e2, "try-error")) {
 			message(e)
 			message(e2)
 			stop_wrap("Cannot download either cytoband or chromInfo file from UCSC.")
@@ -115,7 +115,7 @@ circos.initializeWithIdeogram = function(
 	            cytoband = read.chromInfo(species = species, chromosome.index = chromosome, sort.chr = sort.chr)
 	        } 
 		}
-	} else if(class(e) == "try-error") {
+	} else if(inherits(e, "try-error")) {
 		stop(e)
 	}
 	df = cytoband$df
@@ -180,7 +180,7 @@ circos.genomicIdeogram = function(
 
 	chromosome.index = get.all.sector.index()
 	e = try(cytoband <- read.cytoband(cytoband, species = species, chromosome.index = chromosome.index), silent = TRUE)
-	if(class(e) == "try-error") {
+	if(inherits(e, "try-error")) {
 		stop(e)
 	}
 	df = cytoband$df
@@ -690,6 +690,10 @@ circos.genomicTrackPlotRegion = function(
 					stop_wrap("There is no numeric column in your data frame which calculation of `ylim` depends on. Or you can set `ylim` explicitely.")
 				}
 				ylim = range(unlist(lapply(data[-(1:3)][numeric.column], range, na.rm = TRUE)))
+			}
+
+			if(ylim[1] == ylim[2]) {
+				stop_wrap("It seems the data points are all the same. Please explicitly set values to `ylim`.")
 			}
 		}
 
@@ -1636,7 +1640,7 @@ circos.genomicPosTransformLines = function(
 	if(length(lty) == 1) {
 		lty = rep(lty, nr)
 	}
-	
+
 	o.track.margin = circos.par("track.margin")
 	circos.par(track.margin = track.margin)
 	
@@ -2603,6 +2607,15 @@ circos.genomicLabels = function(
 	line_lwd = line_lwd[od]
 	line_lty = line_lty[od]
 
+	if(!circos.par$xaxis.clock.wise) {
+		all_chr_vec = as.character(bed[, 1])
+		bed[, 2] = .CIRCOS.ENV$.SECTOR.DATA[all_chr_vec, "max.value"] - bed[, 2] + .CIRCOS.ENV$.SECTOR.DATA[all_chr_vec, "min.value"]
+		bed[, 3] = .CIRCOS.ENV$.SECTOR.DATA[all_chr_vec, "max.value"] - bed[, 3] + .CIRCOS.ENV$.SECTOR.DATA[all_chr_vec, "min.value"]
+		bed[, 2:3] = bed[, 3:2]
+		circos.par(xaxis.clock.wise = TRUE)
+		on.exit(circos.par(xaxis.clock.wise = FALSE))
+	}
+
 	chr = get.all.sector.index()[1]
 	sector_data = get.sector.data(chr)
 	
@@ -2635,7 +2648,7 @@ circos.genomicLabels = function(
 	if(s1 < s2) { # the first sector go across theta = 0
 		s1 = s1 + 360
 	} 
-	
+
 	if(anchor >= s2 && anchor <= s1) { # anchor inside sector
 		if(s1 - s2 > 180) {
 			extend[1] = (abs(s1 - anchor) %% 360)/chr_width
@@ -2650,6 +2663,9 @@ circos.genomicLabels = function(
 	}
 	extend = abs(extend)
 
+	if(0) segments(0, 0, cos(anchor/180*pi), sin(anchor/180*pi))
+
+	# start.degree is always larger than end.degree
 	new_chr_range = c(sector_data["start.degree"] + chr_width*extend[1], sector_data["end.degree"] - chr_width*extend[2])
 
 	all_chr = unique(bed[, 1])
@@ -2658,10 +2674,14 @@ circos.genomicLabels = function(
 		sub_bed = bed[bed[, 1] == cr, ]
 		if(cr != chr) {
 			dfx1 = circlize(sub_bed[, 2], y = rep(1, nrow(sub_bed)), sector.index = cr)
-			dfx1[, 1] = (dfx1[, 1] - new_chr_range[2]) + new_chr_range[2]
-			x1 = reverse.circlize(dfx1, sector.index = chr)[, 1]
 			dfx2 = circlize(sub_bed[, 3], y = rep(1, nrow(sub_bed)), sector.index = cr)
-			dfx2[, 1] = (dfx2[, 1] - new_chr_range[2]) + new_chr_range[2]
+			degree_diff = dfx2[, 1] - dfx1[, 1]
+			
+			l = dfx1[, 1] > new_chr_range[1] | dfx1[, 1] < new_chr_range[2]
+			if(any(l)) dfx1[l, 1] = (dfx1[l, 1] - new_chr_range[2]) %% 360 + new_chr_range[2]
+			x1 = reverse.circlize(dfx1, sector.index = chr)[, 1]
+			
+			dfx2[, 1] = dfx1[, 1] + degree_diff
 			x2 = reverse.circlize(dfx2, sector.index = chr)[, 1]
 			sub_bed[, 2:3] = data.frame(start = x1, end = x2)
 		}
@@ -2739,7 +2759,7 @@ circos.genomicLabels = function(
 # == details
 # used internally
 smartAlign = function(x1, x2, xlim) {
-	
+
 	ncluster.before = -1
 	ncluster = length(x1)
 	while(ncluster.before != ncluster) {

@@ -140,7 +140,7 @@ chordDiagram = function(
 		}
 	}
 	if(inherits(x, "matrix")) {
-		if(ncol(x) == 2 && nrow(x) > 10) {
+		if(is.character(x))
 			x = as.data.frame(x)
 		}
 	}

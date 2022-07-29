@@ -655,6 +655,8 @@ circos.heatmap.get.x = function(row_ind) {
 		
 		x = c(x, which((1:length(split))[subset][order] %in% i))
 	}
-	data.frame(sector = rep(names(row_ind_lt), times = sapply(row_ind_lt, length)), 
+	df = data.frame(sector = rep(names(row_ind_lt), times = sapply(row_ind_lt, length)), 
 		x = x - 0.5, row_ind = unlist(row_ind_lt))
+	rownames(df) = NULL
+	df
 }

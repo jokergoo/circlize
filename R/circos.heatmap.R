@@ -630,3 +630,31 @@ circos.heatmap.link = function(row_from, row_to, ...) {
 	circos.link(group1, x1 - 0.5, group2, x2 - 0.5, ...)
 
 }
+
+
+# == title
+# Get the x-position for heatmap rows
+#
+# == param
+# -row_ind A vector of row indicies.
+#
+# == value
+# A three-column data frame of the sector, the x-positions on the corresponding sectors, and the original row indicies.
+circos.heatmap.get.x = function(row_ind) {
+	env = circos.par("__tempenv__")
+	split = env$circos.heatmap.split
+
+	row_ind_lt = split(row_ind, split[row_ind])
+	row_ind_lt = row_ind_lt[sapply(row_ind_lt, length) > 0]
+	
+	x = NULL
+	for(i in row_ind_lt) {
+
+		subset = get.cell.meta.data("subset", sector.index = split[i[1]])
+		order = get.cell.meta.data("row_order", sector.index = split[i[1]])
+		
+		x = c(x, which((1:length(split))[subset][order] %in% i))
+	}
+	data.frame(sector = rep(names(row_ind_lt), times = sapply(row_ind_lt, length)), 
+		x = x - 0.5, row_ind = unlist(row_ind_lt))
+}

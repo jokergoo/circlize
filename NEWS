@@ -4,6 +4,8 @@ Changes in version 0.4.16
 * fixed a bug caused by comparing two floating numbers under "ring " mode.
 * fixed a bug where 'direction.type' was wrongly used as a vector.
 * `chordDiagram()`: if the input is a character matrix, convert it to a data frame.
+* `circos.heatmap()`: add a new function `circos.heatmap.get.x()` which calculates
+  the x-positions on sectors for original matrix rows.
 
 
 Changes in version 0.4.15

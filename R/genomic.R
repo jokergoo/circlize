@@ -12,6 +12,7 @@
 # -chromosome.index subset of chromosomes, also used to reorder chromosomes.
 # -sort.chr Whether chromosome names should be sorted (first sort by numbers then by letters).
 #           If ``chromosome.index`` is set, this argumetn is enforced to ``FALSE``
+# -draw.chr.prefix Whether draw the "chr" prefix for chromosomes.
 # -major.by     Increment of major ticks. Pass to `circos.genomicInitialize`.
 # -plotType     Which tracks should be drawn. ``ideogram`` for ideogram rectangle, ``axis`` for genomic axis and ``labels`` for chromosome names.
 #               If there is no ideogram for specified species, ``ideogram`` will be enforced to be excluded.
@@ -77,6 +78,7 @@ circos.initializeWithIdeogram = function(
 	cytoband = system.file(package = "circlize", "extdata", "cytoBand.txt"), 
 	species = NULL, 
 	sort.chr = TRUE,
+	draw.chr.prefix = FALSE,
 	chromosome.index = usable_chromosomes(species), 
 	major.by = NULL,
 	plotType = c("ideogram", "axis", "labels"), 
@@ -138,8 +140,10 @@ circos.initializeWithIdeogram = function(
 	# sn for sector names, but not for sector index
 	sn = unique(as.vector(df[[1]]))
 
-	# we do not need 'chr' prefix if it exits, it holds too much space.
-	sn = gsub("chr", "", sn)
+	if(!draw.chr.prefix) {
+		# we do not need 'chr' prefix if it exits, it holds too much space.
+		sn = gsub("chr", "", sn)
+	}
 	
 	o.cell.padding = circos.par("cell.padding")
 	circos.par(cell.padding = c(o.cell.padding[1], 0, o.cell.padding[3], 0))

@@ -6,6 +6,7 @@ Changes in version 0.4.16
 * `chordDiagram()`: if the input is a character matrix, convert it to a data frame.
 * `circos.heatmap()`: add a new function `circos.heatmap.get.x()` which calculates
   the x-positions on sectors for original matrix rows.
+* `circos.initializeWithIdeogram()`: add a new argument `draw.chr.prefix`.
 
 
 Changes in version 0.4.15

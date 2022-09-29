@@ -11,6 +11,7 @@ circos.initializeWithIdeogram(
     cytoband = system.file(package = "circlize", "extdata", "cytoBand.txt"),
     species = NULL,
     sort.chr = TRUE,
+    draw.chr.prefix = FALSE,
     chromosome.index = usable_chromosomes(species),
     major.by = NULL,
     plotType = c("ideogram", "axis", "labels"),
@@ -24,6 +25,7 @@ circos.initializeWithIdeogram(
   \item{species}{Abbreviations of species. e.g. hg19 for human, mm10 for mouse. If this value is specified, the function will download cytoBand.txt.gz from UCSC website automatically. If there is no cytoband for user's species, it will keep on trying to download chromInfo file. Pass to \code{\link{read.cytoband}} or \code{\link{read.chromInfo}}.}
   \item{chromosome.index}{subset of chromosomes, also used to reorder chromosomes.}
   \item{sort.chr}{Whether chromosome names should be sorted (first sort by numbers then by letters). If \code{chromosome.index} is set, this argumetn is enforced to \code{FALSE}}
+  \item{draw.chr.prefix}{Whether draw the "chr" prefix for chromosomes.}
   \item{major.by}{Increment of major ticks. Pass to \code{\link{circos.genomicInitialize}}.}
   \item{plotType}{Which tracks should be drawn. \code{ideogram} for ideogram rectangle, \code{axis} for genomic axis and \code{labels} for chromosome names. If there is no ideogram for specified species, \code{ideogram} will be enforced to be excluded. If it is set to \code{NULL}, the function just initialize the plot but draw nothing.}
   \item{track.height}{Height of the track which contains "axis" and "labels".}

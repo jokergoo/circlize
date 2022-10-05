@@ -1097,6 +1097,9 @@ chordDiagramFromDataFrame = function(
 		if(is.null(names(group))) {
 			stop_wrap("`group` should be named vector where names are the sector names and values are the group labels.")
 		}
+		if(any(duplicated(names(group)))) {
+			stop_wrap("Names in `group` should not be duplicated.")
+		}
 		if(length(setdiff(cate, names(group))) > 0) {
 			stop_wrap("Names in `group` should cover all sector names.")
 		}

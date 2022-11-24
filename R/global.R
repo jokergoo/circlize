@@ -529,6 +529,7 @@ circos.clear = function() {
 	circos.par("__tempdir__" = tmpdir)
 
 	empty_env(circos.par("__tempenv__"))
+	circos.par("__tempenv__" = new.env(parent = emptyenv()))
 
     return(invisible(NULL))
 }

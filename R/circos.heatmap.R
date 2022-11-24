@@ -347,10 +347,14 @@ circos.heatmap = function(mat, split = NULL, col, na.col = "grey",
 		}
 	}
 
+	env = circos.par("__tempenv__")
+
 	if(!is.circos.initialized()) {
 		cell.padding = c(0, 0, 0, 0)
 		track.margin = c(0.02, 0)
 		gap.degree = 2
+
+		env$circos.heatmap.split = NULL
 
 		if(!identical(circos.par("cell.padding"), c(0.02, 1, 0.02, 1))) {
 			cell.padding = circos.par("cell.padding")
@@ -369,8 +373,6 @@ circos.heatmap = function(mat, split = NULL, col, na.col = "grey",
 			dend.callback = dend.callback, cell_width = cell_width)
 	}
 
-	env = circos.par("__tempenv__")
-	
 	split = env$circos.heatmap.split
 	mat_list = circos.heatmap.format.input(mat, split)
 

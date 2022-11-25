@@ -1272,3 +1272,197 @@ roundrect_pos = function(xleft, ybottom, xright, ytop, radius = 0.1,
 # foo = roundrect_pos(-4, -2, -1, -1)
 # lines(foo$x, foo$y)
 
+
+
+stack_text = function(x, text, margin = 0.2, 
+    strwidth = strwidth, strheight = strheight, ...) {
+
+    tw = sapply(text, strwidth, ...)
+    th = sapply(text, strheight, ...)
+
+    e = min(c(tw, th))*margin
+
+    tw = tw + e
+
+    x1 = x - tw/2
+    x2 = x + tw/2
+    ind = seq_along(x)
+
+    od = order(x1)
+    tw = tw[od]
+    x1 = x1[od]
+    x2 = x2[od]
+    ind = ind[od]
+
+    lt = list()
+
+    i_lt = 1
+    while(length(x1)) {
+        v = ind[1]
+        x_right = x2[1]
+
+        ind_used = 1
+        for(i in seq_along(x1)[-1]) {
+            if(x1[i] >= x_right) {
+                v = c(v, ind[i])
+                x_right = x2[i]
+                ind_used = c(ind_used, i)
+            }
+        }
+        x1 = x1[-ind_used]
+        x2 = x2[-ind_used]
+        ind = ind[-ind_used]
+
+        lt[[i_lt]] = v
+
+        i_lt = i_lt + 1
+
+    }
+
+    lt
+}
+
+
+circos.strwidth = function(text, ..., 
+    sector.index = get.current.sector.index(),
+    track.index = get.current.track.index(),
+    h = get.cell.meta.data("ylim", sector.index = sector.index, track.index = track.index)[1]) {
+
+    chars = strsplit(text, "")
+        
+    nlabel = length(text)
+    strw = lapply(chars, strwidth, ...) # width of every character in text
+    
+    strw = sapply(strw, function(w) {
+        w2 = convert_unit_in_data_coordinate(w, unit = "canvas", direction = "x",
+            sector.index = sector.index, track.index = track.index, h = h)
+        sum(w2)
+    })
+
+    strw
+}
+
+circos.strheight = function(text, ..., 
+    sector.index = get.current.sector.index(),
+    track.index = get.current.track.index()) {
+
+    strh = lapply(text, strheight, ...)
+    
+    strh = sapply(strh, function(w) {
+        w2 = convert_unit_in_data_coordinate(w, unit = "canvas", direction = "y",
+            sector.index = sector.index, track.index = track.index)
+        max(w2)
+    })
+
+    strh
+}
+
+circos.strAscent = function(text, cex = par("cex"), font = par("font"), family = par("family"),
+    sector.index = get.current.sector.index(),
+    track.index = get.current.track.index()) {
+
+    sapply(text, function(t) {
+        gb = textGrob(t, gp = gpar(cex = cex, fontface = font, fontfamily = family))
+        h = grobAscent(gb)
+        h = convertHeight(h, "mm", valueOnly = TRUE)
+        mm_y(h, sector.index = sector.index, track.index = track.index)
+    })
+}
+
+circos.strDescent = function(text, cex = par("cex"), font = par("font"), family = par("family"),
+    sector.index = get.current.sector.index(),
+    track.index = get.current.track.index()) {
+
+    sapply(text, function(t) {
+        gb = textGrob(t, gp = gpar(cex = cex, fontface = font, fontfamily = family))
+        h = grobDescent(gb)
+        h = convertHeight(h, "mm", valueOnly = TRUE)
+        mm_y(h, sector.index = sector.index, track.index = track.index)
+    })
+}
+
+## code copied from circos.genomicLabels()
+refer_to_one_sector = function(sectors, x) {
+
+    bed = data.frame(sectors = sectors, x = x, order = seq_along(x))
+    od = order(bed[[1]], bed[[2]])
+    bed = bed[od, , drop = FALSE]
+
+    if(!circos.par$xaxis.clock.wise) {
+        all_chr_vec = as.character(bed[, 1])
+        bed[, 2] = .CIRCOS.ENV$.SECTOR.DATA[all_chr_vec, "max.value"] - bed[, 2] + .CIRCOS.ENV$.SECTOR.DATA[all_chr_vec, "min.value"]
+        bed[, 3] = .CIRCOS.ENV$.SECTOR.DATA[all_chr_vec, "max.value"] - bed[, 3] + .CIRCOS.ENV$.SECTOR.DATA[all_chr_vec, "min.value"]
+        bed[, 2:3] = bed[, 3:2]
+        circos.par(xaxis.clock.wise = TRUE)
+        on.exit(circos.par(xaxis.clock.wise = FALSE))
+    }
+
+    chr = get.all.sector.index()[1]
+    sector_data = get.sector.data(chr)
+    
+    all_chr = unique(bed[, 1])
+    rho = NULL
+    for(cr in all_chr) {
+        sub_bed = bed[bed[, 1] == cr, ]
+        rho = c(rho, circlize(sub_bed[, 2], y = rep(1, nrow(sub_bed)), sector.index = cr)[, 1])
+    }
+    if(length(rho) == 0) {
+        anchor = ((sector_data["start.degree"] + sector_data["end.degree"])/2 + 180) %% 360
+    } else if(length(rho) == 1) {
+        anchor = (rho + 180) %% 360
+    } else {
+        rho = sort(rho)
+        rho = c(rho, rho[1] + 360)
+        i = which.max(diff(rho))
+        anchor = ((rho[i] + rho[i+1])/2) %% 360
+    }
+
+    # map all other chromosomes to the first chromosome
+    chr_width = sector_data["start.degree"] - sector_data["end.degree"]
+    # extend = (360 - chr_width)/chr_width
+    # extend = c(0, extend)
+    extend = numeric(2)
+    s1 = sector_data["start.degree"] %% 360
+    s2 = sector_data["end.degree"] %% 360
+    # if the anchor in inside the first sector
+    if(s1 < s2) { # the first sector go across theta = 0
+        s1 = s1 + 360
+    } 
+
+    if(anchor >= s2 && anchor <= s1) { # anchor inside sector
+        if(s1 - s2 > 180) {
+            extend[1] = (abs(s1 - anchor) %% 360)/chr_width
+            extend[2] = -(abs(s2 - anchor) %% 360)/chr_width
+        } else {
+            extend = (360 - chr_width)/chr_width
+            extend = c(0, extend)
+        }
+    } else {
+        extend[1] = ((anchor - s1) %% 360)/chr_width  # goes reverse clockwise
+        extend[2] = ((s2 - anchor) %% 360)/chr_width  # goes clockwise
+    }
+    extend = abs(extend)
+
+    if(0) segments(0, 0, cos(anchor/180*pi), sin(anchor/180*pi))
+
+    # start.degree is always larger than end.degree
+    new_chr_range = c(sector_data["start.degree"] + chr_width*extend[1], sector_data["end.degree"] - chr_width*extend[2])
+
+    all_chr = unique(bed[, 1])
+    bed2 = NULL
+    for(cr in all_chr) {
+        sub_bed = bed[bed[, 1] == cr, ]
+        if(cr != chr) {
+            dfx1 = circlize(sub_bed[, 2], y = rep(1, nrow(sub_bed)), sector.index = cr)
+            
+            l = dfx1[, 1] > new_chr_range[1] | dfx1[, 1] < new_chr_range[2]
+            if(any(l)) dfx1[l, 1] = (dfx1[l, 1] - new_chr_range[2]) %% 360 + new_chr_range[2]
+            x1 = reverse.circlize(dfx1, sector.index = chr)[, 1]
+            
+            sub_bed[, 2] = data.frame(start = x1)
+        }
+        bed2 = rbind(bed2, sub_bed)
+    }
+    bed2[, 1] = chr
+    bed2
+}

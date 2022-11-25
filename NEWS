@@ -7,6 +7,7 @@ Changes in version 0.4.16
 * `circos.heatmap()`: add a new function `circos.heatmap.get.x()` which calculates
   the x-positions on sectors for original matrix rows.
 * `circos.initializeWithIdeogram()`: add a new argument `draw.chr.prefix`.
+* add `circos.stacked_text()`.
 
 
 Changes in version 0.4.15

@@ -8,6 +8,7 @@ Changes in version 0.4.16
   the x-positions on sectors for original matrix rows.
 * `circos.initializeWithIdeogram()`: add a new argument `draw.chr.prefix`.
 * add `circos.stacked_text()`.
+* `posTransform.text()`: the coordinates are now based on cell.xlim while not xlim.
 
 
 Changes in version 0.4.15

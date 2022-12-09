@@ -2375,7 +2375,7 @@ posTransform.text = function(
 	x1 = reverse.circlize(alpha1, d[, "rou"], sector.index = sector.index, track.index = track.index)[, "x"]
 	x2 = reverse.circlize(alpha2, d[, "rou"], sector.index = sector.index, track.index = track.index)[, "x"]
 	
-	xlim = get.cell.meta.data("xlim", sector.index = sector.index, track.index = track.index)
+	xlim = get.cell.meta.data("cell.xlim", sector.index = sector.index, track.index = track.index)
 	xrange = xlim[2] - xlim[1]
 	xlim = c(xlim[1] - extend[1]*xrange, xlim[2] + extend[2]*xrange)
 
@@ -2385,6 +2385,7 @@ posTransform.text = function(
 	l = x1 < xlim[1]; x1_new[l] = xlim[1]; x2_new[l] = x2[l] + xlim[1] - x1[l]
 	l = x2 > xlim[2]; x1_new[l] = x1[l] - (x2[l] - xlim[2]); x2_new[l] = xlim[2]
 	df = smartAlign(x1_new, x2_new, xlim = xlim)
+
 	return(df[od_back, ,drop = FALSE])
 }
 

@@ -11,7 +11,7 @@ circos.rect(
     xleft, ybottom, xright, ytop,
     sector.index = get.current.sector.index(),
     track.index = get.current.track.index(),
-    rot = 0,
+    radius = NULL, rot = 0,
     ...)
 }
 \arguments{
@@ -22,6 +22,7 @@ circos.rect(
   \item{ytop}{y for the right top points}
   \item{sector.index}{Index for the sector}
   \item{track.index}{Index for the track}
+  \item{radius}{Radius of the corners of rectangulars. Please set it in a form of "3mm".}
   \item{rot}{Rotation of the rectangles. The value is measured clockwise in degree. Rotation is relative to the center of the rectangles.}
   \item{...}{pass to \code{\link[graphics]{polygon}}}
 

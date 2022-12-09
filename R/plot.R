@@ -24,6 +24,7 @@
 # -bg.lwd       Line width for the border of the plotting regions. It can be vector which has the same length of sectors.
 # -panel.fun    Panel function to add graphics in each cell, see "details" section
 #               and vignette for explanation.
+# -radius       Radius of the corners of background rectangular. Please set it in a form of "3mm".
 #
 # == details
 # This function tends to be a high-level plotting function, which means,
@@ -91,6 +92,7 @@ circos.trackPlotRegion = function(
     bg.lty = par("lty"),
     bg.lwd = par("lwd"),
     panel.fun = function(x, y) {NULL},
+    radius = NULL,
     factors = sectors) {
 
     if(!is.circos.initialized()) {
@@ -229,7 +231,7 @@ circos.trackPlotRegion = function(
                               track.height = track.height, sector.index = all_le[i],
                               track.index = track.index,
                               ylim = ylim2, bg.col = bg.col[i],
-                              bg.border = bg.border[i], bg.lty = bg.lty[i], bg.lwd = bg.lwd[i])
+                              bg.border = bg.border[i], bg.lty = bg.lty[i], bg.lwd = bg.lwd[i], radius = radius)
 
         if(all_le[i] %in% le) {
     		l = factors == all_le[i]
@@ -355,7 +357,8 @@ circos.createPlotRegion = function(
     bg.col = NA,
     bg.border = "black",
     bg.lty = par("lty"),
-    bg.lwd = par("lwd")) {
+    bg.lwd = par("lwd"),
+    radius = NULL) {
 
 	# we do not have such meta for the cell, so we need to calculate them
 	sector.data = get.sector.data(sector.index)
@@ -403,7 +406,7 @@ circos.createPlotRegion = function(
 	        col = bg.col, border = bg.border, lty = bg.lty, lwd = bg.lwd)
 	} else {
 	    circos.rect(cell.xlim[1], cell.ylim[1], cell.xlim[2], cell.ylim[2], sector.index = sector.index, track.index = track.index,
-	        col = bg.col, border = bg.border, lty = bg.lty, lwd = bg.lwd)
+	        col = bg.col, border = bg.border, lty = bg.lty, lwd = bg.lwd, radius = radius)
 	}
     return(invisible(NULL))
 }

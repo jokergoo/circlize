@@ -9,6 +9,7 @@ Changes in version 0.4.16
 * `circos.initializeWithIdeogram()`: add a new argument `draw.chr.prefix`.
 * add `circos.stacked_text()`.
 * `posTransform.text()`: the coordinates are now based on cell.xlim while not xlim.
+* `circos.rect()`: support round rect.
 
 
 Changes in version 0.4.15

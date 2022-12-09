@@ -451,6 +451,7 @@ circos.trackLines = function(
 # -ytop         y for the right top points
 # -sector.index Index for the sector
 # -track.index  Index for the track
+# -radius       Radius of the corners of rectangulars. Please set it in a form of "3mm".
 # -rot          Rotation of the rectangles. The value is measured clockwise in degree.
 #               Rotation is relative to the center of the rectangles.
 # -... pass to `graphics::polygon`
@@ -474,7 +475,7 @@ circos.rect = function(
 	xleft, ybottom, xright, ytop,
 	sector.index = get.current.sector.index(),
 	track.index = get.current.track.index(),
-	rot = 0,
+    radius = NULL, rot = 0,
 	...) {
 
     # if(! (length(xleft) == 1 &&
@@ -544,39 +545,87 @@ circos.rect = function(
     # }
 
     np = length(xleft)
-    if(rot == 0) {
-        x = unlist(lapply(seq_len(np), function(i) c(xleft[i], xleft[i], xright[i], xright[i], xleft[i], NA)))
-        y = unlist(lapply(seq_len(np), function(i) c(ybottom[i], ytop[i], ytop[i], ybottom[i], ybottom[i], NA)))
-        x = x[-length(x)]
-        y = y[-length(y)]
+    if(is.null(radius)) {
+        if(rot == 0) {
+            x = unlist(lapply(seq_len(np), function(i) c(xleft[i], xleft[i], xright[i], xright[i], xleft[i], NA)))
+            y = unlist(lapply(seq_len(np), function(i) c(ybottom[i], ytop[i], ytop[i], ybottom[i], ybottom[i], NA)))
+            x = x[-length(x)]
+            y = y[-length(y)]
+        } else {
+            xcenter = (xleft + xright)/2
+            ycenter = (ybottom + ytop)/2
+
+            p1 = list(x = xleft, y = ybottom)
+            p2 = list(x = xright, y = ybottom)
+            p3 = list(x = xright, y = ytop)
+            p4 = list(x = xleft, y = ytop)
+
+            center = list(x = c(p1$x + p3$x)/2, y = (p1$y + p3$y)/2)
+
+            q1 = .rotate(p1$x, p1$y, center$x, center$y, rot/180*pi)
+            q2 = .rotate(p2$x, p2$y, center$x, center$y, rot/180*pi)
+            q3 = .rotate(p3$x, p3$y, center$x, center$y, rot/180*pi)
+            q4 = .rotate(p4$x, p4$y, center$x, center$y, rot/180*pi)
+
+            x = unlist(lapply(seq_len(np), function(i) {
+                    c(q1$x[i], q2$x[i], q3$x[i], q4$x[i], q1$x[i], NA)
+                }))
+            y = unlist(lapply(seq_len(np), function(i) {
+                    c(q1$y[i], q2$y[i], q3$y[i], q4$y[i], q1$y[i], NA)
+                }))
+            x = x[-length(x)]
+            y = y[-length(y)]
+        }
+        circos.polygon(x, y, sector.index = sector.index, track.index = track.index, ...)
     } else {
-        xcenter = (xleft + xright)/2
-        ycenter = (ybottom + ytop)/2
-
-        p1 = list(x = xleft, y = ybottom)
-        p2 = list(x = xright, y = ybottom)
-        p3 = list(x = xright, y = ytop)
-        p4 = list(x = xleft, y = ytop)
-
-        center = list(x = c(p1$x + p3$x)/2, y = (p1$y + p3$y)/2)
-
-        q1 = .rotate(p1$x, p1$y, center$x, center$y, rot/180*pi)
-        q2 = .rotate(p2$x, p2$y, center$x, center$y, rot/180*pi)
-        q3 = .rotate(p3$x, p3$y, center$x, center$y, rot/180*pi)
-        q4 = .rotate(p4$x, p4$y, center$x, center$y, rot/180*pi)
-
-        x = unlist(lapply(seq_len(np), function(i) {
-                c(q1$x[i], q2$x[i], q3$x[i], q4$x[i], q1$x[i], NA)
-            }))
-        y = unlist(lapply(seq_len(np), function(i) {
-                c(q1$y[i], q2$y[i], q3$y[i], q4$y[i], q1$y[i], NA)
-            }))
-        x = x[-length(x)]
-        y = y[-length(y)]
+        pos = list(x = numeric(0), y = numeric(0))
+        for(i in seq_len(np)) {
+            pos2 = circos.roundrect_pos(xleft[i], ybottom[i], xright[i], ytop[i], radius = radius)
+            pos$x = c(pos$x, pos2$x, NA)
+            pos$y = c(pos$y, pos2$y, NA)
+        }
+        circos.polygon(pos$x, pos$y, sector.index = sector.index, track.index = track.index, ...)
     }
-    circos.polygon(x, y, sector.index = sector.index, track.index = track.index, ...)
 
     return(invisible(NULL))
+}
+
+circos.roundrect_pos = function(xleft, ybottom, xright, ytop, radius = "4mm", 
+    sector.index = get.current.sector.index(),
+    track.index = get.current.track.index()) {
+
+    if(is.character(radius)) {
+        radius = str2unit(radius)
+    }
+
+    cell_width = abs(diff(get.cell.meta.data("xplot", sector.index = sector.index, track.index = track.index)))/360*pi*2*mean(get.cell.meta.data("yplot", sector.index = sector.index, track.index = track.index))
+    cell_height = abs(diff(get.cell.meta.data("yplot", sector.index = sector.index, track.index = track.index)))
+
+    cell.xlim = get.cell.meta.data("cell.xlim", sector.index = sector.index, track.index = track.index)
+    cell.ylim = get.cell.meta.data("cell.ylim", sector.index = sector.index, track.index = track.index)
+    cell.xrange = cell.xlim[2] - cell.xlim[1]
+    cell.yrange = cell.ylim[2] - cell.ylim[1]
+
+    w = (xright - xleft)/cell.xrange*cell_width
+    h = (ytop - ybottom)/cell.yrange*cell_height
+    radius = min(radius*2/w, radius*2/h, 0.5)
+
+    xleft0 = (xleft - cell.xlim[1])/cell.xrange*cell_width
+    xright0 = (xright - cell.xlim[1])/cell.xrange*cell_width
+    ybottom0 = (ybottom - cell.ylim[1])/cell.yrange*cell_height
+    ytop0 = (ytop - cell.ylim[1])/cell.yrange*cell_height
+    pos = roundrect_pos(xleft0, ybottom0, xright0, ytop0, radius = radius, asp = 1)
+
+    pos$x = pos$x/cell_width*cell.xrange + cell.xlim[1]
+    pos$y = pos$y/cell_height*cell.yrange + cell.ylim[1]
+
+    pos
+}
+
+str2unit = function(str) {
+    d = gsub("[^\\d]+$", "", str, perl = TRUE)
+    u = gsub("^.*[\\d.]", "", str, perl = TRUE)
+    convert_length(as.numeric(d), u)
 }
 
 # == title

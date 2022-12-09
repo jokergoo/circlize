@@ -21,6 +21,7 @@ circos.trackPlotRegion(
     bg.lty = par("lty"),
     bg.lwd = par("lwd"),
     panel.fun = function(x, y) {NULL},
+    radius = NULL,
     factors = sectors)
 }
 \arguments{
@@ -40,6 +41,7 @@ circos.trackPlotRegion(
   \item{bg.lty}{Line style for the border of the plotting regions. It can be vector which has the same length of sectors.}
   \item{bg.lwd}{Line width for the border of the plotting regions. It can be vector which has the same length of sectors.}
   \item{panel.fun}{Panel function to add graphics in each cell, see "details" section and vignette for explanation.}
+  \item{radius}{Radius of the corners of background rectangular. Please set it in a form of "3mm".}
 
 }
 \details{

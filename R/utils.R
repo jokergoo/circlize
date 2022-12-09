@@ -1189,7 +1189,7 @@ validate_data_frame = function(x) {
 
 
 roundrect_pos = function(xleft, ybottom, xright, ytop, radius = 0.1, 
-  asp = NULL) {
+  asp = NULL, plot = FALSE) {
 
   if(is.null(asp)) {
     pin = par("pin")
@@ -1259,6 +1259,8 @@ roundrect_pos = function(xleft, ybottom, xright, ytop, radius = 0.1,
   y = c(y, ybottom + r, ytop - r)
 
   y = covnert_y_2(y, asp)
+
+  if(plot) plot(x, y, type = "l")
 
   return(list(x = x, y = y))
 }

@@ -1490,6 +1490,7 @@ circos.genomicText = function(
 # -lwd Pass to `circos.link`, length can be either one or nrow of ``region1``.
 # -lty Pass to `circos.link`, length can be either one or nrow of ``region1``.
 # -border Pass to `circos.link`, length can be either one or nrow of ``region1``.
+# -inverse Pass to `circos.link`.
 # -... Pass to `circos.link`.
 #
 # == details
@@ -1524,6 +1525,7 @@ circos.genomicLink = function(
     lwd = par("lwd"), 
     lty = par("lty"), 
     border = col, 
+    inverse = NULL,
     ...) {
 
 	if(circos.par$ring) {
@@ -1570,6 +1572,14 @@ circos.genomicLink = function(
 	lwd = .normalizeGraphicalParam(lwd, 1, nr, "lwd")
 	lty = .normalizeGraphicalParam(lty, 1, nr, "lty")
 	border = .normalizeGraphicalParam(border, 1, nr, "border")
+	if(!is.null(inverse)) {
+		if(!is.logical(inverse) || any(is.na(inverse))) {
+			stop_wrap("`inverse` vector needs ot be boolean. Please check `inverse` vector type.")
+		}
+		if(length(inverse) != nr) {
+			stop_wrap("length of `inverse` vector and `region1` differ. Please check the length of the `inverse` vector.")
+		}
+	}
 
 	for(i in seq_len(nr)) {
 		if(region1[i, 2] == region1[i, 3]) {
@@ -1582,10 +1592,17 @@ circos.genomicLink = function(
 		} else {
 			point2 = c(region2[i, 2], region2[i, 3])
 		}
-		circos.link(region1[i, 1], point1,
+		if(!is.null(inverse)) {
+			circos.link(region1[i, 1], point1,
+		            region2[i, 1], point2,
+					rou1 = rou1[i], rou2 = rou2[i], col = col[i], lwd = lwd[i],
+					lty = lty[i], border = border[i], inverse = inverse[i], ...)
+		} else {
+			circos.link(region1[i, 1], point1,
 		            region2[i, 1], point2,
 					rou1 = rou1[i], rou2 = rou2[i], col = col[i], lwd = lwd[i],
 					lty = lty[i], border = border[i], ...)
+		}
 	}
 }
 
